@@ -14,6 +14,7 @@ public with sharing class RecalculateUALCostController {
     public List<UASAction> scheduleZFiledUASActionList {get; set;}
 
     public Boolean adminMode {get; set;}
+    public String selectedOrder {get; set;}
 
 
     /*
@@ -101,11 +102,26 @@ public with sharing class RecalculateUALCostController {
 
     }
 
+    public PageReference customDeductionOrder(){
+        System.debug(selectedOrder);
+        List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
+            for (UASAction uasAction : openUASActionList) {
+              Utility_Account_Subscription__c uas = 
+                new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
+                                                    Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
+              customDeductionUASList.add(uas);
+            }
+            update customDeductionUASList;
+            return null;
+    }
+
     private List<Utility_Account_Subscription__c> getUASList(Boolean open, Boolean scheduleZFiled){
         String query =      'Select Id, Name, Calculated_Annual_Cost_of_Electricity__c, '+
                             '           Subscribed_Annual_Cost_of_Electricity__c, '+
+                            '           Custom_Deduction_Order__c, '+
                             '           Opportunity__c, '+
                             '           Opportunity__r.Project_Assignment__c, '+
+                            '           Opportunity__r.stageName, '+                            
                             '           Opportunity__r.Service_Territory__c, '+
                             '           Opportunity__r.UtilityMapper__c, '+
                             '           Opportunity__r.Shared_Solar_System__r.Id, '+
@@ -122,6 +138,9 @@ public with sharing class RecalculateUALCostController {
             query += 'Order By Opportunity__r.Shared_Solar_System__r.Assignment_Order__c DESC ';
         }else if(deductionMethod == 'COD Date'){
             query += 'Order By Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC ';
+        }
+        else if(deductionMethod == 'Custom Deduction Order'){
+            query += 'Order By Custom_Deduction_Order__c ASC ';
         }
         //ApexPages.addMessage(new Apexpages.Message(ApexPages.Severity.Info,'Querying: ' + query));
         return Database.query(query);
