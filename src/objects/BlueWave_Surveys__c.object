@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Employee engagement survey webform - https://forms.bluewaverenewables.com/381479 - and responses</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Comment_Box__c</fullName>
+        <externalId>false</externalId>
+        <label>Comment Box</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Contact_Info__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Would you like to provide additional feedback as we develop the portal further? If so, please tell us the best way to contact you.</inlineHelpText>
+        <label>Contact Info</label>
+        <length>600</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Date_Created__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Created</label>
+        <length>90</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q10__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>10. My coworkers are committed to doing quality work.</inlineHelpText>
+        <label>EE_Q10</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q11__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>11. I have a best friend at work.</inlineHelpText>
+        <label>EE_Q11</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q12__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>12. In the last six months, someone at work has talked to me about my progress.</inlineHelpText>
+        <label>EE_Q12</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q13__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>13. This last year, I have had opportunities at work to learn and grow.</inlineHelpText>
+        <label>EE_Q13</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q1__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>1. On a five-point scale, where 5 means extremely satisfied and 1 means extremely dissatisfied, how satisfied are you with your company as a place to work?</inlineHelpText>
+        <label>EE_Q1</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Questions 2-14 : On a five-point scale, where 5 means strongly agree and 1 means strongly disagree, please rate your level of agreement with the following items.
+2. I know what is expected of me at work.</inlineHelpText>
+        <label>EE_Q2</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q3__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>3. I have the materials and equipment I need to do my work right.</inlineHelpText>
+        <label>EE_Q3</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q4__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>4. At work, I have the opportunity to do what I do best every day.</inlineHelpText>
+        <label>EE_Q4</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q5__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>5. In the last seven days, I have received recognition or praise for doing good work.</inlineHelpText>
+        <label>EE_Q5</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q6__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>6. My supervisor, or someone at work, seems to care about me as a person.</inlineHelpText>
+        <label>EE_Q6</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q7__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>7. There is someone at work who encourages my development.</inlineHelpText>
+        <label>EE_Q7</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q8__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>8. At work, my opinions seem to count.</inlineHelpText>
+        <label>EE_Q8</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EE_Q9__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>9. The mission or purpose of my company makes me feel my job is important.</inlineHelpText>
+        <label>EE_Q9</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Engaged_Employee__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Engagement_Score__c&gt;=4, &quot;Engaged&quot;,
+ IF(Engagement_Score__c&lt;3, &quot;Not Engaged&quot;,&quot;Neutral&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Engaged Employee?</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Engagement_Score__c</fullName>
+        <description>Weighted Average of responses</description>
+        <externalId>false</externalId>
+        <formula>(0.0769* EE_Q1__c)+(0.0769* EE_Q2__c)+(0.0769* EE_Q3__c)+(0.0769* EE_Q4__c)+(0.0769* EE_Q5__c)+(0.0769* EE_Q6__c)+(0.0769* EE_Q7__c)+(0.0769* EE_Q8__c)+(0.0769* EE_Q9__c)+(0.0769* EE_Q10__c)+(0.0769* EE_Q11__c)+(0.0769* EE_Q12__c)+(0.0769* EE_Q13__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Engagement Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PF_Q1__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How would you rate the overall partner experience with BlueWave?</inlineHelpText>
+        <label>PFQ1 Overall Experience</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PF_Q2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How clear are the next steps for each loan application?</inlineHelpText>
+        <label>PFQ2 Clear Next Steps</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PF_Q3__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>How likely would you be to recommend BlueWave to a peer in the Solar Business?</inlineHelpText>
+        <label>PFQ3 Likely to Recommend</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PF_Q4__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What are you biggest challenges with our lending process?</inlineHelpText>
+        <label>PFQ4 Biggest Challenges</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PF_Q5__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What improvements would you like to see?v</inlineHelpText>
+        <label>PFQ5 Improvements</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Survey_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Survey Group</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Team__c</fullName>
+        <externalId>false</externalId>
+        <label>Team</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>BlueWave Survey</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>BlueWave Survey Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>BlueWave Surveys</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Employee_Engagement_Survey</fullName>
+        <active>true</active>
+        <label>Employee Engagement Survey</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Partner_Feedback_Survey</fullName>
+        <active>true</active>
+        <description>Loan Partner Feedback for New Partner Portal</description>
+        <label>Partner Feedback Survey</label>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+</CustomObject>

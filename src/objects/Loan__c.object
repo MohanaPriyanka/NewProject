@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Auto_Deduction_Payments__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Auto Deduction Payments?</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_payments_from_other_sources__c</fullName>
+        <externalId>false</externalId>
+        <label>Auto payments from other sources</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Avidia_Account_Holder__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Avidia Account</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Avidia_Outstanding_Loan_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(AND(NOT(ISBLANK( IRBD_Principal_Interest_Date_Received__c )), NOT(ISBLANK(IRBD_Interest_Only_Date_Received__c))), 
+
+Principall__c - Principal_Paid__c -  IRBD_Interest_Only__c -  IRBD_Principal_interest__c,
+
+IF(AND(ISBLANK(IRBD_Principal_Interest_Date_Received__c), NOT(ISBLANK(IRBD_Interest_Only_Date_Received__c))), 
+
+Principall__c - Principal_Paid__c -  IRBD_Interest_Only__c ,
+
+Principall__c - Principal_Paid__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Avidia Outstanding Loan Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>BlueWave_Avidia_Rate__c</fullName>
+        <defaultValue>0.05</defaultValue>
+        <externalId>false</externalId>
+        <label>BlueWave/Avidia Rate</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>BlueWave_Capital__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checkbox that signifies that the loan is being fronted by BlueWave&apos;s personal capital.</description>
+        <externalId>false</externalId>
+        <label>BlueWave Capital</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Capital_Available__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan_Tranche__r.Available_Capital__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Capital Available</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Commencement_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Commencement_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Commencement Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Commencement_Datee__c</fullName>
+        <externalId>false</externalId>
+        <label>Commencement Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Current_Month_Year__c</fullName>
+        <externalId>false</externalId>
+        <formula>MONTH(TODAY()) + YEAR(TODAY())</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current Month/Year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Payment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Current Payment</label>
+        <referenceTo>Loan_Payment__c</referenceTo>
+        <relationshipLabel>Loans</relationshipLabel>
+        <relationshipName>Loans</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>DOER_Loan_Base_Rate__c</fullName>
+        <defaultValue>0.0489</defaultValue>
+        <externalId>false</externalId>
+        <label>DOER Loan Base Rate</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>DOER_Solar_Loann__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>DOER Solar Loan</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Date_of_Loan_Purchase__c</fullName>
+        <externalId>false</externalId>
+        <label>Date of Loan Purchase</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Days_in_Interest_only_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>Interest_Period_End_Date__c - Commencement_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days in Interest only Period</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Difference_Loan_Value_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan_Purchase_Price__c -  Avidia_Outstanding_Loan_Balance__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Difference (Loan Value - Balance)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Disbursal_1_Contract_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Disbursal_1_Contract_Signature_Checkbox__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Disbursal 1 (Contract) Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Disbursal_Contract_Signature__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Opportunity__r.Disbursal_1_Contract_Signature_Checkbox__c )=true,0,Opportunity__r.Disbursal_1_Contract_Signature__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Disbursal (Contract Signature</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Disbursal_Full_Install__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Opportunity__r.Disbursal_3_Full_Install_Checkbox__c )=true,0,Opportunity__r.Disbursal_3_Full_Install__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Disbursal (Full Install)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Disbursal_Mechanical_Installation__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Opportunity__r.Disbursal_2_Mechanical_Install_Checkbox__c )=true,0,Opportunity__r.Disbursal_2_Mechanical_Installation__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Disbursal (Mechanical Installation)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Excess_Cash_back_to_BW__c</fullName>
+        <externalId>false</externalId>
+        <formula>Difference_Loan_Value_Balance__c * 0.7</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Excess Cash back to BW</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Excess_Cash_stays_w_Avidia__c</fullName>
+        <externalId>false</externalId>
+        <formula>Difference_Loan_Value_Balance__c * 0.3</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Excess Cash stays w/ Avidia</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>First_Payment_Due__c</fullName>
+        <externalId>false</externalId>
+        <formula>DATE(Year(Commencement_Date__c), Month(Commencement_Date__c)+1, Day(Commencement_Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>First Payment Due</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>IRBD_Interest_Only_Date_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>IRBD (Interest Only) Date Received</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>IRBD_Interest_Only__c</fullName>
+        <externalId>false</externalId>
+        <label>IRBD (Interest Only)</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>IRBD_Principal_Interest_Date_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>IRBD (Principal &amp; Interest)Date Received</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>IRBD_Principal_interest__c</fullName>
+        <externalId>false</externalId>
+        <label>IRBD (Principal &amp; Interest)</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>IRBD_Rate__c</fullName>
+        <defaultValue>0.0189</defaultValue>
+        <externalId>false</externalId>
+        <label>IRBD Rate</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Accrued__c</fullName>
+        <externalId>false</externalId>
+        <formula>Interest_Paid__c / (Today__c -  Commencement_Date__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Accrued</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interest_Only_End_Date2__c</fullName>
+        <externalId>false</externalId>
+        <formula>Commencement_Date__c + 365</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Only End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Only_Period_DOER__c</fullName>
+        <externalId>false</externalId>
+        <label>Interest Only Period (DOER)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interest_Paid__c</fullName>
+        <externalId>false</externalId>
+        <label>Interest Paid</label>
+        <summarizedField>Loan_Payment__c.Interest_Payment__c</summarizedField>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Paid_rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>round( Interest_Paid__c,0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Paid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Period_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Interest only End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Interest_Rate__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Ratee__c</fullName>
+        <externalId>false</externalId>
+        <label>Interest Rate</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Last_Due_Date_Paid__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Due Date Paid</label>
+        <summarizedField>Loan_Payment__c.Payment_1__c</summarizedField>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Payment__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Late_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Late Category</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Late_Payments_0_30_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Late Payments (0-30 Days)</label>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Late_Category__c</field>
+            <operation>equals</operation>
+            <value>0-30 Days Late</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Late_Payments_30_60_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Late Payments (30-60 Days)</label>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Late_Category__c</field>
+            <operation>equals</operation>
+            <value>0-60 Days Late</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Late_Payments_60_90_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Late Payments (60-90 Days)</label>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Late_Category__c</field>
+            <operation>equals</operation>
+            <value>60-90 Days Late</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Late_Payments_90_120_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Late Payments (90-120 Days)</label>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Late_Category__c</field>
+            <operation>equals</operation>
+            <value>90-120 days</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Lease_Dimensions_ID_Capital__c</fullName>
+        <externalId>false</externalId>
+        <formula>UPPER(Lease_Dimensions_ID__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lease Dimensions ID Capital</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lease_Dimensions_ID__c</fullName>
+        <displayFormat>BW{0000000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Lease Dimensions ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Loan Category</label>
+        <picklist>
+            <picklistValues>
+                <fullName>RSS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CSS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Data__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Capital Pool</label>
+        <referenceTo>Loan_Data__c</referenceTo>
+        <relationshipLabel>Loans</relationshipLabel>
+        <relationshipName>Loans</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Purchase_Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Loan Purchase Price</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Tranche1__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan_Tranche__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Tranche ID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Tranche__c</fullName>
+        <externalId>false</externalId>
+        <label>Loan Tranche</label>
+        <referenceTo>Loan_Traunch__c</referenceTo>
+        <relationshipLabel>Loans</relationshipLabel>
+        <relationshipName>Loans</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Maturity_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Maturity_Date2__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maturity Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Maturity_Datee__c</fullName>
+        <externalId>false</externalId>
+        <label>Maturity Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>MonthLT__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan_Tranche__r.MonthLD__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Month_of_Loan_Purchase__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Month of Loan Purchase</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Next Due Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Days_Outstanding__c</fullName>
+        <externalId>false</externalId>
+        <formula>today() -  Last_Due_Date_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Number of Days Outstanding</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Loans</relationshipLabel>
+        <relationshipName>Loans</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Origination_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Origination_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Origination Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Origination_Datee__c</fullName>
+        <externalId>false</externalId>
+        <label>Origination Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Loans</relationshipLabel>
+        <relationshipName>Loans</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payments_On_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Payments (On Time)</label>
+        <summaryFilterItems>
+            <field>Loan_Payment__c.Late_Category__c</field>
+            <operation>equals</operation>
+            <value>On Time</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Principal_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>Principal__c -  Principal_Paid__c- Unadvanced_Funds__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Principal Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Principal_Balance_rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>round( Principal_Balance__c ,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Principal Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Principal_Paid__c</fullName>
+        <externalId>false</externalId>
+        <label>Principal Paid</label>
+        <summarizedField>Loan_Payment__c.Principal_Payment__c</summarizedField>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Principal_Paid_rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>round(Principal_Paid__c,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Principal Paid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Principal__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Loan_Amount_Financed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Principal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Principal_and_Interest_Period_DOER__c</fullName>
+        <defaultValue>120</defaultValue>
+        <externalId>false</externalId>
+        <label>Principal and Interest Period (DOER)</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Principall__c</fullName>
+        <externalId>false</externalId>
+        <label>Principal</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>5</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>System_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Loan_Principle__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>System_Costt__c</fullName>
+        <externalId>false</externalId>
+        <label>System Cost</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Today__c</fullName>
+        <externalId>false</externalId>
+        <formula>today()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Today</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Tranche_Assignment__c</fullName>
+        <externalId>false</externalId>
+        <label>Tranche Assignment</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Automatic</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type_of_Loan__c</fullName>
+        <externalId>false</externalId>
+        <label>Type of Loan</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unadvanced_Funds__c</fullName>
+        <externalId>false</externalId>
+        <formula>System_Costt__c - Disbursal_Full_Install__c - Disbursal_Mechanical_Installation__c - Disbursal_Contract_Signature__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unadvanced Funds</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Unique_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>Unique ID</label>
+        <length>45</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Update_Dummy_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Update Dummy 2</label>
+        <length>15</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Update_Dummy__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Update Dummy</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>YearLT__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan_Tranche__r.YearLD__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Year</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>last_due_date__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Due Date</label>
+        <summarizedField>Loan_Payment__c.Payment_Due_Date2__c</summarizedField>
+        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Loan</label>
+    <nameField>
+        <label>Loan Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Loans</pluralLabel>
+    <recordTypes>
+        <fullName>Loan</fullName>
+        <active>true</active>
+        <label>Loan</label>
+        <picklistValues>
+            <picklist>Loan_Category__c</picklist>
+            <values>
+                <fullName>CSS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RSS</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tranche_Assignment__c</picklist>
+            <values>
+                <fullName>Automatic</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Loan_DOER</fullName>
+        <active>true</active>
+        <label>Loan - DOER</label>
+        <picklistValues>
+            <picklist>Loan_Category__c</picklist>
+            <values>
+                <fullName>CSS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RSS</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tranche_Assignment__c</picklist>
+            <values>
+                <fullName>Automatic</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>Send_Email</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Send Email</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Loan__c.Id}&amp;template_id=00Xj0000000FmIO</url>
+    </webLinks>
+</CustomObject>

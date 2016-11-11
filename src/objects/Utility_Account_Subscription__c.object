@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Annual_Cost_of_Electricity__c</fullName>
+        <description>Total cost of electricity at the UAL level.</description>
+        <externalId>false</externalId>
+        <label>Full Annual Cost of Electricity</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Unround__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Auto Unround</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>BFG_Invoice_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>BFG Invoice Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Calculated_Customer_Subscription_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Calculated_NMC_Alloaction_kWh__c / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Customer Subscription (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Calculated_NMC_Alloaction_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>calculated_annual_cost_of_electricity__c / Opportunity__r.NMC_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated NMC Alloaction (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conga_Current_Share__c</fullName>
+        <externalId>false</externalId>
+        <formula>Share_of_System__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conga Current Share (share/100)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>8</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conga_Future_Share__c</fullName>
+        <externalId>false</externalId>
+        <formula>Future_Share_of_System__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conga Future Share (share/100)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>8</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Custom_Deduction_Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Custom Deduction Order</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Subscription_KW_DC_STATIC__c</fullName>
+        <description>Customer Subscription value at point of sale. This field is not dynamic and is populated based on a workflow.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated when Opportunity Stage Name is Pending BW Signature through the process builder. It is on this mark because of the order of execution. Once the Opp stage is set to complete the opportunity then aggregates this instead of the dynamic.</inlineHelpText>
+        <label>Current Customer Subscription (kW DC)</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Subscription_KW_DC__c</fullName>
+        <description>Made the system name logic so that schedule z customers will not change to unrounded values</description>
+        <externalId>false</externalId>
+        <formula>IF( UAS_Number__c &gt; 1 ,
+
+ Subscribed_Annual_Cost_of_Electricity__c /   Opportunity__r.NMC_Value__c / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR(Auto_Unround__c = TRUE , AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c !=   Subscribed_Annual_Cost_of_Electricity__c )),
+
+Subscribed_Annual_Cost_of_Electricity__c /  Opportunity__r.NMC_Value__c/ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c =    Subscribed_Annual_Cost_of_Electricity__c  ), Opportunity__r.Shared_Solar_System_Name__c = &apos;Fairhaven Mill Rd&apos;, Opportunity__r.Shared_Solar_System_Name__c = &apos;Oxford Clara Barton&apos;),
+
+Round(( Subscribed_Annual_Cost_of_Electricity__c /  Opportunity__r.NMC_Value__c/ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c) * 4, 0)/4,0)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Dynamic Subscription</inlineHelpText>
+        <label>Future Customer Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Full_Anticipated_NMC_Allocation_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Full Anticipated NMC Allocation (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Future Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Max_Subscription_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maximum Subscription Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Maximum_Annual_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Maximum_NMC_Allocation__c * Opportunity__r.NMC_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maximum Annual Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Maximum_NMC_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <formula>Max_Subscription_Capacity__c * Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maximum NMC Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Name_on_Account_From_Log__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Log__r.Name_on_Account__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Name on Account (From Log)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Name_on_Account__c</fullName>
+        <description>Customer&apos;s name on their electric bill</description>
+        <externalId>false</externalId>
+        <label>Name on Account</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Credit_Rate__c</fullName>
+        <description>Net Metering Credit Rate at the point of sale.</description>
+        <externalId>false</externalId>
+        <label>Net Metering Credit Rate</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Schedule_Z_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Next Schedule Z Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Submitted: Undersized</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Submitted: Oversized</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Submitted: Cancellation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Submitted: Need to Update Customer Information</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Submitted: Addition</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Submitted: Replacement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Resizing Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Co_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Project Co Assignment Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Project_Company__c</fullName>
+        <externalId>false</externalId>
+        <label>Project Company</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Fairhaven Mill Rd: BWC Origination Fairhaven One, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hopedale S Main St: BWC Origination 19 LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mendon Milford St: BWC Mystic River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mendon Providence, Thayer and Bates : BWC Wading River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Oxford Barrett P1: BWC Stillwater River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Oxford Barrett P2: BWC French River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Oxford Clara Barton: BWC Fivemile River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Plympton: BWC Bluefish River, LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Sturbridge Hare Rd: BWC Originations 8 LLC</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule Z Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Submission in Process</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Submitted</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Service_Address_From_Log__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Log__r.Service_Address__c &amp; Utility_Account_Log__r.Service_Apt_Suite__c &amp;&quot;, &quot;&amp; Utility_Account_Log__r.Service_City__c &amp;&quot; &quot;&amp; Utility_Account_Log__r.Service_State__c &amp;&quot; &quot;&amp;  Utility_Account_Log__r.Service_Zip_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Equals Utility Account Log Service Address</inlineHelpText>
+        <label>Service Address (From Log)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC_STATIC__c /  Opportunity__r.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Shared_Solar_System_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Shared Solar System Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
+        <description>Total Cost of Electricity subscribed to SSS</description>
+        <externalId>false</externalId>
+        <label>Annual Cost of Electricity</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Subscribed_NMC_Allocation_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC__c *  Opportunity__r.Shared_System_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>NMC Allocation (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Trigger_Tester__c</fullName>
+        <externalId>false</externalId>
+        <label>Trigger Tester</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UAS_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>UAS Number</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unlock_Password__c</fullName>
+        <externalId>false</externalId>
+        <label>Unlock Password</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Update_Dummy__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Field used to fire subscription dilution trigger - fired by Process Builder</description>
+        <externalId>false</externalId>
+        <label>Update Dummy</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Log__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility Account Log</label>
+        <referenceTo>Utility_Account_Log__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>calculated_annual_cost_of_electricity__c</fullName>
+        <description>The Minimum of Total UAL Cost and Maximum SSS Cost. (As more UAS are created, UAL Cost is deducted)</description>
+        <externalId>false</externalId>
+        <label>Calculated Annual Cost of Electricity</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Utility Account Subscription</label>
+    <nameField>
+        <label>Utility Account Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Utility Account Subscriptions</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Utility_Account_Subscription_Editable</fullName>
+        <active>true</active>
+        <label>Utility Account Subscription Editable</label>
+        <picklistValues>
+            <picklist>Next_Schedule_Z_Status__c</picklist>
+            <values>
+                <fullName>Not Submitted%3A Addition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Submitted%3A Replacement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resizing Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Need to Update Customer Information</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Oversized</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Undersized</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Project_Company__c</picklist>
+            <values>
+                <fullName>Fairhaven Mill Rd%3A BWC Origination Fairhaven One%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hopedale S Main St%3A BWC Origination 19 LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mendon Milford St%3A BWC Mystic River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mendon Providence%2C Thayer and Bates %3A BWC Wading River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Barrett P1%3A BWC Stillwater River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Barrett P2%3A BWC French River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Clara Barton%3A BWC Fivemile River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Plympton%3A BWC Bluefish River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sturbridge Hare Rd%3A BWC Originations 8 LLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Schedule_Z_Status__c</picklist>
+            <values>
+                <fullName>Not Submitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submission in Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Utility_Account_Subscription_on_Schedule_Z</fullName>
+        <active>true</active>
+        <label>Utility Account Subscription on Schedule Z</label>
+        <picklistValues>
+            <picklist>Next_Schedule_Z_Status__c</picklist>
+            <values>
+                <fullName>Not Submitted%3A Addition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Submitted%3A Replacement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resizing Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Need to Update Customer Information</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Oversized</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted%3A Undersized</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Project_Company__c</picklist>
+            <values>
+                <fullName>Fairhaven Mill Rd%3A BWC Origination Fairhaven One%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hopedale S Main St%3A BWC Origination 19 LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mendon Milford St%3A BWC Mystic River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mendon Providence%2C Thayer and Bates %3A BWC Wading River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Barrett P1%3A BWC Stillwater River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Barrett P2%3A BWC French River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oxford Clara Barton%3A BWC Fivemile River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Plympton%3A BWC Bluefish River%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sturbridge Hare Rd%3A BWC Originations 8 LLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Schedule_Z_Status__c</picklist>
+            <values>
+                <fullName>Not Submitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submission in Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>New_Customer_Care_Case</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Customer Care Case</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://na16.salesforce.com/500/e?&amp;RecordType=012j00000000HA8&amp;ent=Case&amp;cas14=Customer Care Case&amp;CF00Nj000000BVHR9_lkid={!Utility_Account_Subscription__c.Utility_Account_LogId__c}&amp;CF00Nj000000BVHR9={!Utility_Account_Subscription__c.Utility_Account_Log__c}&amp;CF00Nj000000ARyea_lktp={!Utility_Account_Subscription__c.OpportunityId__c}&amp;CF00Nj000000ARyea={!Utility_Account_Subscription__c.Opportunity__c}&amp;00Nj000000BVAYr=Utility Account Data Inaccurate or Missing&amp;cas11=Web</url>
+    </webLinks>
+</CustomObject>
