@@ -3,7 +3,6 @@ trigger LeadTrigger on Lead (before insert, after update, before update ) {
     assignServiceTerritoryHandler handler2 = new assignServiceTerritoryHandler(Trigger.isExecuting, Trigger.size);
     mapPCRHandler handler3 = new mapPCRHandler(Trigger.isExecuting, Trigger.size); 
     utilityAccountLogConversionHandler handler4 = new utilityAccountLogConversionHandler(Trigger.isExecuting, Trigger.size);
-    LoanPipelineHandler handler5 = new LoanPipelineHandler(Trigger.isExecuting, Trigger.size);
     
     //utilityAccountLogConversionHandler handler2 = new utilityAccountLogConversionHandler (Trigger.isExecuting, Trigger.size);
     //CoApplicantContactConvertHandler handler3 = new CoApplicantContactConvertHandler (Trigger.isExecuting, Trigger.size);
@@ -16,8 +15,7 @@ trigger LeadTrigger on Lead (before insert, after update, before update ) {
    else if(Trigger.isUpdate && Trigger.isBefore){
         handler2.OnBeforeUpdate(Trigger.new);
         handler3.OnBeforeUpdate(Trigger.new);
-        handler4.OnBeforeUpdate(Trigger.new);
-        handler5.OnBeforeUpdate(Trigger.new, Trigger.old);        
+        handler4.OnBeforeUpdate(Trigger.new);        
     }
 
     
