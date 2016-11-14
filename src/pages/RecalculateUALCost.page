@@ -30,7 +30,8 @@
                 </apex:selectList>
                 <apex:commandButton value="Set deduction method" action="{!setDeductionMethod}" />
             </apex:pageBlockSection>
-            <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1">
+            <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
+                                   id="AdjustmentSummaryOpen">
                 <apex:pageBlockTable id="openUASActionTable" value="{!openUASActionList}" var="uasAction">
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
@@ -52,6 +53,7 @@
                     </apex:column>
                     <apex:column headerValue="Custom Deduction Order" >
                         <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
                             <apex:selectOption itemLabel="1" itemValue="1" />
                             <apex:selectOption itemLabel="2" itemValue="2" />
                             <apex:selectOption itemLabel="3" itemValue="3" />
@@ -70,7 +72,7 @@
                         </apex:selectList> 
                     </apex:column>  
                     <apex:column headerValue="Submit Custom Order">
-                      <apex:commandButton value="Submit Custom Order" action="{!customDeductionOrder}"  rerender="all">
+                      <apex:commandButton value="Submit Custom Order" action="{!customDeductionOrder}"  rerender="AdjustmentSummaryOpen">
                         <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
                       </apex:commandButton>  
                     </apex:column>                                                                             
@@ -103,6 +105,7 @@
                     <apex:column value="{!uasAction.sss.Assignment_Order__c}" headerValue="Current Deduction Order" />                   
                     <apex:column headerValue="Custom Deduction Order" >
                         <apex:selectList value="{!selectedOrder}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
                             <apex:selectOption itemLabel="1" itemValue="1" />
                             <apex:selectOption itemLabel="2" itemValue="2" />
                             <apex:selectOption itemLabel="3" itemValue="3" />
@@ -163,6 +166,7 @@
                     <apex:column value="{!uasAction.sss.Assignment_Order__c}" headerValue="Current Deduction Order" />                   
                     <apex:column headerValue="Custom Deduction Order" >
                         <apex:selectList value="{!selectedOrder}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
                             <apex:selectOption itemLabel="1" itemValue="1" />
                             <apex:selectOption itemLabel="2" itemValue="2" />
                             <apex:selectOption itemLabel="3" itemValue="3" />
