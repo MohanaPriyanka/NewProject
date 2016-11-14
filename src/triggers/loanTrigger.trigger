@@ -1,6 +1,7 @@
 trigger loanTrigger on loan__c (before insert, before update, after insert, after update) {
     LoanTrancheUpdateHandler handler = new LoanTrancheUpdateHandler(Trigger.isExecuting, Trigger.size);
     createResidentialEquipmentHandler handler2 = new createResidentialEquipmentHandler(Trigger.isExecuting, Trigger.size);
+    LoanPipelineUpdatehandler handler3 = new LoanPipelineUpdatehandler (Trigger.isExecuting, Trigger.size);
     
     if(Trigger.isInsert && Trigger.isBefore){
         handler.OnBeforeInsert(Trigger.new);
@@ -9,6 +10,7 @@ trigger loanTrigger on loan__c (before insert, before update, after insert, afte
     
     if(Trigger.isInsert && Trigger.isAfter){
         handler2.OnAfterInsert(Trigger.new);
+        handler3.OnAfterInsert(Trigger.new);
     }
     
     else if(Trigger.isUpdate && Trigger.isBefore){
