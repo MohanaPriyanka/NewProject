@@ -120,18 +120,16 @@ public with sharing class RecalculateUALCostController {
     public PageReference customDeductionOrder(){
         System.debug(selectedOrder);
         List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
-            for (UASAction uasAction : openUASActionList) {
-              if (uasAction.uas.Id == uasId) {
-                System.debug('customDeductionOrder uas.Id: ' + uasAction.uas.Id);
-                System.debug('customDeductionOrder uas.CDO: ' + uasAction.uas.Custom_Deduction_Order__c);
-                Utility_Account_Subscription__c uas = 
-                  new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
-                                                      Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
-                customDeductionUASList.add(uas);
-              }
-            }
-            update customDeductionUASList;
-            return null;
+        for (UASAction uasAction : openUASActionList) {
+          if (uasAction.uas.Id == uasId) {
+            Utility_Account_Subscription__c uas = 
+              new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
+                                                  Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
+            customDeductionUASList.add(uas);
+          }
+        }
+        update customDeductionUASList;
+        return null;
     }
 
     private List<Utility_Account_Subscription__c> getUASList(Boolean open, Boolean scheduleZFiled){
@@ -172,12 +170,16 @@ public with sharing class RecalculateUALCostController {
         closedUASActionList = new List<UASAction>();
         scheduleZFiledUASActionList = new List<UASAction>();
         
+        System.debug('ualid: ' + ualId);
+        System.debug('getuaslist size: ' + getUASList(true, false).size());
+        
         Decimal amountToDeduct = Math.abs(adjustmentAmount);
         
         //Deduct from Open and Non-Schedule Z
         if(amountToDeduct > 0){
             //Check the Open == true Schedule_Z_Filed__c = false records if we are able to deduct the difference then allow the user to process it.
             for(Utility_Account_Subscription__c uas : getUASList(true, false)){
+                System.debug('open and non-szed uas: ' + uas.Subscribed_Annual_Cost_of_Electricity__c);
                 if(amountToDeduct > 0 && uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
                     Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
                     UASAction act = new UASAction(uas, deductionAmount);
