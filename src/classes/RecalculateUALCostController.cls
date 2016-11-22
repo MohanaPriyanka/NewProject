@@ -2,7 +2,6 @@ public with sharing class RecalculateUALCostController {
     
     public String ualId {get; set;}
     public String uasId {get; set;}
-    public String uasCustomDeductionOrder {get; set;}
     public String deductionMethod {get; set;}
     
     public Utility_Account_Log__c ual {get; set;}
@@ -11,9 +10,9 @@ public with sharing class RecalculateUALCostController {
     public Decimal subscribedCostOfElectricity {get; set;}
     public Decimal adjustmentAmount {get; set;}
 
-    public List<UASAction> openUASActionList {get;set;}
-    public List<UASAction> closedUASActionList {get;set;}
-    public List<UASAction> scheduleZFiledUASActionList {get;set;}
+    public List<UASAction> openUASActionList {get; set;}
+    public List<UASAction> closedUASActionList {get; set;}
+    public List<UASAction> scheduleZFiledUASActionList {get; set;}
 
     public Boolean adminMode {get; set;}
 
@@ -171,9 +170,6 @@ public with sharing class RecalculateUALCostController {
         openUASActionList = new List<UASAction>();
         closedUASActionList = new List<UASAction>();
         scheduleZFiledUASActionList = new List<UASAction>();
-        
-        System.debug('ualid: ' + ualId);
-        System.debug('getuaslist size: ' + getUASList(true, false).size());
         
         Decimal amountToDeduct = Math.abs(adjustmentAmount);
         
