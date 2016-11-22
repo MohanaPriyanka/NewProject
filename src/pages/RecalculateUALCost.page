@@ -29,6 +29,9 @@
                     <apex:selectOption itemLabel="COD Date" itemValue="COD Date" />
                 </apex:selectList>
                 <apex:commandButton value="Set deduction method" action="{!setDeductionMethod}" />
+                <apex:actionStatus id="updateStatus"
+                                   startText="updating"
+                                   stopText="" />
             </apex:pageBlockSection>
             <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
                                    id="AdjustmentSummaryOpen">
@@ -69,20 +72,19 @@
                             <apex:selectOption itemLabel="13" itemValue="13" />
                             <apex:selectOption itemLabel="14" itemValue="14" />
                             <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryOpen" action="{!customDeductionOrder}" status="updateStatus">
+                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
+                            </apex:actionSupport>
                         </apex:selectList> 
-                    </apex:column>  
-                    <apex:column headerValue="Submit Custom Order">
-                      <apex:commandButton value="Submit Custom Order" action="{!customDeductionOrder}"  rerender="AdjustmentSummaryOpen">
-                        <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                      </apex:commandButton>  
-                    </apex:column>                                                                             
+                    </apex:column>
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputText value="{!uasAction.action}"/>
                     </apex:column>
                 </apex:pageBlockTable>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1">
+            <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1"
+                                   id="AdjustmentSummaryClosed">
                 <apex:pageBlockTable id="closedUASActionTable" value="{!closedUASActionList}" var="uasAction" >
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
@@ -102,9 +104,8 @@
                     <apex:column headerValue="Amount to be deducted" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
                     </apex:column>
-                    <apex:column value="{!uasAction.sss.Assignment_Order__c}" headerValue="Current Deduction Order" />                   
                     <apex:column headerValue="Custom Deduction Order" >
-                        <apex:selectList value="{!selectedOrder}" id="deductionOrderList" size="1" multiselect="false">
+                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
                             <apex:selectOption itemLabel="" itemValue="" />
                             <apex:selectOption itemLabel="1" itemValue="1" />
                             <apex:selectOption itemLabel="2" itemValue="2" />
@@ -121,13 +122,11 @@
                             <apex:selectOption itemLabel="13" itemValue="13" />
                             <apex:selectOption itemLabel="14" itemValue="14" />
                             <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
-                        </apex:selectList> 
-                        </apex:column>  
-                        <apex:column headerValue="Submit Custom Order">
-                        <apex:commandButton value="Submit Custom Order" action="{!customDeductionOrder}" rerender="all">
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryClosed" action="{!customDeductionOrder}" status="updateStatus">
                                 <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                        </apex:commandButton>  
-                        </apex:column>                     
+                            </apex:actionSupport>
+                        </apex:selectList> 
+                    </apex:column>  
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputPanel rendered="{!adminMode}" layout="none">
                             <apex:selectList value="{!uasAction.action}" size="1" multiselect="false" rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c)}"  styleClass="sss_closed_action">
@@ -143,8 +142,9 @@
                 </apex:pageBlockTable>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1">
-                <apex:pageBlockTable id="scheduleZFiledUASActionTable" value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}">
+            <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1"
+                                   id="AdjustmentSummaryScheduleZFiled">
+                <apex:pageBlockTable value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}">
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
                     </apex:column>
@@ -163,9 +163,8 @@
                     <apex:column headerValue="Amount to be deducted" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
                     </apex:column>
-                    <apex:column value="{!uasAction.sss.Assignment_Order__c}" headerValue="Current Deduction Order" />                   
                     <apex:column headerValue="Custom Deduction Order" >
-                        <apex:selectList value="{!selectedOrder}" id="deductionOrderList" size="1" multiselect="false">
+                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
                             <apex:selectOption itemLabel="" itemValue="" />
                             <apex:selectOption itemLabel="1" itemValue="1" />
                             <apex:selectOption itemLabel="2" itemValue="2" />
@@ -181,14 +180,12 @@
                             <apex:selectOption itemLabel="12" itemValue="12" />
                             <apex:selectOption itemLabel="13" itemValue="13" />
                             <apex:selectOption itemLabel="14" itemValue="14" />
-                            <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
-                        </apex:selectList> 
-                        </apex:column>  
-                        <apex:column headerValue="Submit Custom Order">
-                        <apex:commandButton value="Submit Custom Order" action="{!customDeductionOrder}" rerender="all">
+                            <apex:selectOption itemLabel="15" itemValue="15" />
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryScheduleZFiled" action="{!customDeductionOrder}" status="updateStatus">
                                 <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                        </apex:commandButton>  
-                        </apex:column>                     
+                            </apex:actionSupport>
+                        </apex:selectList> 
+                    </apex:column>
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputPanel rendered="{!adminMode}" layout="none">
                             <apex:selectList value="{!uasAction.action}" size="1" multiselect="false" rendered="{!uasAction.sss.Schedule_Z_Filed__c}" styleClass="schedule_z_action" >

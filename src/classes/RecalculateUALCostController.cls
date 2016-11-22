@@ -2,6 +2,7 @@ public with sharing class RecalculateUALCostController {
     
     public String ualId {get; set;}
     public String uasId {get; set;}
+    public String uasCustomDeductionOrder {get; set;}
     public String deductionMethod {get; set;}
     
     public Utility_Account_Log__c ual {get; set;}
@@ -10,12 +11,11 @@ public with sharing class RecalculateUALCostController {
     public Decimal subscribedCostOfElectricity {get; set;}
     public Decimal adjustmentAmount {get; set;}
 
-    public List<UASAction> openUASActionList;
-    public List<UASAction> closedUASActionList {get; set;}
-    public List<UASAction> scheduleZFiledUASActionList {get; set;}
+    public List<UASAction> openUASActionList {get;set;}
+    public List<UASAction> closedUASActionList {get;set;}
+    public List<UASAction> scheduleZFiledUASActionList {get;set;}
 
     public Boolean adminMode {get; set;}
-    public String selectedOrder {get; set;}
 
 
     /*
@@ -103,32 +103,34 @@ public with sharing class RecalculateUALCostController {
 
     }
 
-    // Handles the case where the list is reordered
-    public List<UASAction> getOpenUASActionList() {
-      if (openUASActionList != null) {
-        openUASActionList.sort();
-        return (openUASActionList);
-      } else {
-        return (null);
-      }
-    }
-
-    public void setOpenUASActionList(List<UASAction> uasAction) {
-      openUASActionList = uasAction;
-    }
-
-    public PageReference customDeductionOrder(){
-        System.debug(selectedOrder);
+    public PageReference customDeductionOrder() {
         List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
         for (UASAction uasAction : openUASActionList) {
-          if (uasAction.uas.Id == uasId) {
-            Utility_Account_Subscription__c uas = 
-              new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
-                                                  Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
-            customDeductionUASList.add(uas);
-          }
+            if (uasAction.uas.Id == uasId) {
+                Utility_Account_Subscription__c uas = 
+                    new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
+                                                        Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
+                customDeductionUASList.add(uas);
+            }
+        }
+        for (UASAction uasAction : closedUASActionList) {
+            if (uasAction.uas.Id == uasId) {
+                Utility_Account_Subscription__c uas = 
+                    new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
+                                                        Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
+                customDeductionUASList.add(uas);
+            }
+        }
+        for (UASAction uasAction : scheduleZFiledUASActionList) {
+            if (uasAction.uas.Id == uasId) {
+                Utility_Account_Subscription__c uas = 
+                    new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
+                                                        Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
+                customDeductionUASList.add(uas);
+            }
         }
         update customDeductionUASList;
+        setDeductionMethod();
         return null;
     }
 
@@ -280,7 +282,7 @@ public with sharing class RecalculateUALCostController {
         return new PageReference('/' + ualId);
     }
 
-    public class UASAction implements Comparable {
+    public class UASAction {
         public Utility_Account_Subscription__c uas{get; set;}
         public Shared_Solar_System__c sss{get; set;}
         public Decimal deductionAmount {get; set;}
@@ -290,16 +292,6 @@ public with sharing class RecalculateUALCostController {
             this.sss = uas.Opportunity__r.Shared_Solar_System__r;
             this.deductionAmount = deductionAmount;
         }
-        public Integer compareTo(Object compareTo) {
-          UASAction compareToUASA = (UASAction) compareTo;
-          if (compareToUASA.uas.Id == uas.Id) {
-            return 0;
-          } else if (compareToUASA.uas.Custom_Deduction_Order__c < uas.Custom_Deduction_Order__c) {
-            return 1;
-          } else {
-            return -1;
-          }
-        }      
     }
 /*
 Confirmation: "Are you sure you want to recalculate this Utility Account Log?"
