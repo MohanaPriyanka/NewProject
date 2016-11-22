@@ -315,8 +315,6 @@ private class RecalculateUALCostControllerTest {
 
         System.assertEquals(4, uasList.size());
 
-        System.assertNotEquals(2, uasList.size());
-
         for (Utility_Account_Subscription__c uas : uasList) {
             if (uas.Calculated_Annual_Cost_of_Electricity__c == 5) {
                 System.assertEquals(1, uas.Custom_Deduction_Order__c);
