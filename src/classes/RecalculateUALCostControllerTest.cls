@@ -337,8 +337,7 @@ private class RecalculateUALCostControllerTest {
         RecalculateUALCostController theController = new RecalculateUALCostController();
         theController.deductionMethod = 'Custom Deduction Order';
         theController.setDeductionMethod();
-        System.debug(theController.getOpenUASActionList());
-        System.assertEquals(4, theController.getOpenUASActionList().size());
+        System.assertEquals(4, theController.openUASActionList.size());
         // Set custom order
         for (RecalculateUALCostController.UASAction uasAction : theController.openUASActionList) {
             if (uasAction.uas.Calculated_Annual_Cost_of_Electricity__c == 5) {

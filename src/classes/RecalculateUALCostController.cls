@@ -177,7 +177,6 @@ public with sharing class RecalculateUALCostController {
         if(amountToDeduct > 0){
             //Check the Open == true Schedule_Z_Filed__c = false records if we are able to deduct the difference then allow the user to process it.
             for(Utility_Account_Subscription__c uas : getUASList(true, false)){
-                System.debug('open and non-szed uas: ' + uas.Subscribed_Annual_Cost_of_Electricity__c);
                 if(amountToDeduct > 0 && uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
                     Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
                     UASAction act = new UASAction(uas, deductionAmount);
