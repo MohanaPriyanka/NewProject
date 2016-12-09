@@ -20,15 +20,6 @@
                     <apex:outputLabel value="Adjustment Amount" />
                     <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!adjustmentAmount}" /></apex:outputText>
                 </apex:pageBlockSectionItem>
-            </apex:pageBlockSection>
-            <apex:pageBlockSection columns="1" title="Deduction Method" rendered="{!BLANKVALUE(adjustmentAmount, 0) < 0}">
-                <apex:outputLabel >Select ordering where the processing would be made</apex:outputLabel>
-                <apex:selectList value="{!deductionMethod}" size="1" multiselect="false">
-                    <apex:selectOption itemLabel="Custom Deduction Order" itemValue="Custom Deduction Order" />
-                    <apex:selectOption itemLabel="Assignment Order" itemValue="Assignment Order" />
-                    <apex:selectOption itemLabel="COD Date" itemValue="COD Date" />
-                </apex:selectList>
-                <apex:commandButton value="Set deduction method" action="{!setDeductionMethod}" />
                 <apex:actionStatus id="updateStatus"
                                    startText="updating"
                                    stopText="" />
@@ -144,7 +135,8 @@
 
             <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1"
                                    id="AdjustmentSummaryScheduleZFiled">
-                <apex:pageBlockTable value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}">
+                <apex:pageBlockTable value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}"
+                                     id="scheduleZFiledUASActionTable" >
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
                     </apex:column>
@@ -226,20 +218,26 @@
         
         $('[id$=confirmDeductionButton]').click(function() {
             var message = '';
-            if('{!adminMode}' === 'false'){
-                if('{!(closedUASActionList.size + scheduleZFiledUASActionList.size) > 0 }' == 'true'){
-                    message += 'Warning: The following systems will not be deducted (Please contact your administrator for support):\n';
-                    $('[id$=closedUASActionTable] tbody tr td:nth-child(2)').each( function(){
-                       message += ' - ' + $(this).text() + '\n';
-                    });
-                    $('[id$=scheduleZFiledUASActionTable] tbody tr td:nth-child(2)').each( function(){
-                       message += ' - ' + $(this).text() + '\n';
-                    });
-                }
-            }
             message += '\nThe following systems will be deducted:\n';
             $('[id$=openUASActionTable] tbody tr td:nth-child(2)').each( function(){
                message += ' - ' + $(this).text() + '\n';
+            });
+
+            if('{!adminMode}' === 'false'){
+                if('{!(closedUASActionList.size + scheduleZFiledUASActionList.size) > 0 }' == 'true'){
+                    message += '\nWarning: The following systems will not be deducted (Please contact your administrator for support):\n';
+                }
+            }
+
+            $('[id$=closedUASActionTable] tbody tr').each( function(){
+               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
+                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
+               }
+            });
+            $('[id$=scheduleZFiledUASActionTable] tbody tr').each( function(){
+               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
+                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
+               }
             });
 
             message += '\nAre you sure you want to process the deductions? This process cannot be reversed.';
