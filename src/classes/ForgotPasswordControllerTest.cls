@@ -8,7 +8,9 @@
     	controller.username = 'test@salesforce.com';
     
     	System.assertEquals(null, controller.forgotPassword()); 
-        System.assertEquals(ForgotPasswordController.ERRORMSGSTRING + controller.username, controller.errorMsg);
+        System.assertEquals(controller.ERRORMSGSTRING, controller.errorMsg);
+
+        controller.send();
     }
 
     @IsTest public static void testForgotPasswordControllerValidUser() {
