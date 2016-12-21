@@ -213,6 +213,7 @@ public with sharing class RecalculateUALCostController {
                 for(UASAction uasAction : closedUASActionList){
                     if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0 
                         && (uasAction.action == 'Deduct and mark as Open' || uasAction.action == 'Deduct and keep as Closed')){
+                        System.debug(LoggingLevel.ERROR, uasAction);
                         uasAction.uas.Calculated_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
                         uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
                         remainingBalance -= uasAction.deductionAmount;
