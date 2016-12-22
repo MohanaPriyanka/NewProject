@@ -42,7 +42,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                                            ORDER BY Name];
 
         //select the UAS that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c, AccountId, Account.Id
+        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c, 
+                                                AccountId, Account.Id, Account.Recurring_Billing__c
                                     FROM Opportunity 
                                     WHERE StageName = 'Complete' 
                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
@@ -71,7 +72,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                            WHERE Id != null];
 
         //Generate a list of all System Bills                                                  
-        List<System_Bill__c> systemBillList =  [ SELECT ID, Shared_Solar_System__c,Shared_Solar_System_ID__c, Property_Account__r.Id
+        List<System_Bill__c> systemBillList =  [ SELECT ID, Shared_Solar_System__c,Shared_Solar_System_ID__c, Property_Account__r.Id, Opportunity__c, 
+                                                    Shared_Solar_System__r.Name, Property_Account__r.Name
                                            FROM System_Bill__c
                                            WHERE Id != null];                                                                                                                                            
         system.debug(accountBillList.size());                                     
@@ -99,6 +101,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                                          Last_Shared_Solar_System_ID__c = uas.Opportunity__r.Shared_Solar_System__r.Id);                                                         
                 ab.Unique_Id__c = uas.Opportunity__r.Account.Id + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
                 abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
+                system.debug('The Account Bill is ' + ab);
+                system.debug('The Account Bill Map is ' + abKeyToAccountBillMap);
             }
             abCounter = 1;
         }
@@ -121,13 +125,14 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
             }
         }        
         //Create the Account Bills
+        system.debug('The abKeyToAccountBillMap is ' + abKeyToAccountBillMap);
         if(abKeyToAccountBillMap.size() > 0){
             upsert abKeyToAccountBillMap.values() Unique_Id__c;
         }
-
+        system.debug('The UAS List is ' + uasList);
         for(Utility_Account_Subscription__c uas : uasList){
             if(sssIdMap.containsKey(uas.Opportunity__r.Shared_Solar_System__c)){
-                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
+                Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
                 Shared_Solar_System__c sss = sssIdMap.get(uas.Opportunity__r.Shared_Solar_System__c);
                 system.debug(sss);
             }
@@ -135,48 +140,77 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         
         Set<System_Bill__c> systemBillSet = new Set<System_Bill__c>();
         for(Opportunity opp : oppList){
+            System.debug('The Pr.Acc List is ' + opp.Account.Id);
             set<string> sbSetCheck = new set<string>();
+            System.debug('The euu is ' + sssIdToEUUMap.get(opp.Shared_Solar_System__c));
             Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
             String systemKey = opp.Shared_Solar_System__c + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
-            String parentKey = opp.Account.Id + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
+            String parentKey = opp.Account.Id + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');            
+            System.debug('The systemKey is ' + systemKey);
+            System.debug('The parentKey is ' + parentKey);
             Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
             integer sbCounter = 1;
             // Totalized_System_Bill__c tsb = sbKeyToTSBMap.get(systemKey);            
             string systemBillIdentifier;
-                system.debug(LoggingLevel.info, systemBillList.size());
-                for(i=0;i<systemBillList.size();i++){
-                    integer ifCheck = 0;
-                    if(systemBillList.get(i).Shared_Solar_System_ID__c == opp.Shared_Solar_System__r.Id
-                        && systemBilllist.get(i).Property_Account__r.Id == opp.Account.Id){
+            system.debug(LoggingLevel.info, systemBillList.size());
+            for(i=0;i<systemBillList.size();i++){
+                integer ifCheck = 0;
+                system.debug('systemBillList / sssId ' + systemBillList.get(i).Shared_Solar_System__r.Name +' ' + systemBillList.get(i).Shared_Solar_System__r.Id + ' ' + opp.Shared_Solar_System__r.Id + ' ' + opp.Shared_Solar_System__r.Name);
+                system.debug('propertyAccountId ' + systemBilllist.get(i).Property_Account__r.Name + ' ' + opp.Account.Name + opp.Name);
+                if(systemBillList.get(i).Shared_Solar_System__r.Id == opp.Shared_Solar_System__r.Id
+                    && systemBilllist.get(i).Property_Account__r.Id == opp.Account.Id){
                         ifCheck = 1;
                         sbCounter = sbCounter + 1;
-                    }
-                system.debug(LoggingLevel.info, 'The systemBill SSS ID is ' + systemBillList.get(i).Shared_Solar_System_ID__c);
-                system.debug(LoggingLevel.info, 'The opp SSS ID is ' + opp.Shared_Solar_System__r.Id);
-                system.debug(LoggingLevel.info, 'The systemBill PR.ACC ID is ' + systemBillList.get(i).Property_Account__r.Id);
-                system.debug(LoggingLevel.info, 'The opp PR.ACC ID is ' + string.ValueOf(opp.Account.Id));
+                }
+                //system.debug(LoggingLevel.info, 'The systemBill SSS ID is ' + systemBillList.get(i).Shared_Solar_System_ID__c);
+                //system.debug(LoggingLevel.info, 'The opp SSS ID is ' + opp.Shared_Solar_System__r.Id);
+                //system.debug(LoggingLevel.info, 'The systemBill PR.ACC ID is ' + systemBillList.get(i).Property_Account__r.Id);
+                //system.debug(LoggingLevel.info, 'The opp PR.ACC ID is ' + string.ValueOf(opp.Account.Id));
                 system.debug(LoggingLevel.info,ifCheck);
                 system.debug(LoggingLevel.info,sbCounter);
-                }                                                              
+            } 
+            if(opp.Account.Recurring_Billing__c == true){          
                 System_Bill__c sb = new System_Bill__c(Name = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,                                                           
-                                                             Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
-                                                             Account_Bill__c = ab.Id,
-                                                             Date__c =  euu.Date__c,
-                                                             Bill_Number__c = sbCounter,
-                                                             Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
-                                                             Property_Account__c = opp.Account.Id);
-                
-                sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
-                systemBillIdentifier = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
-                system.debug(LoggingLevel.info, systemBillIdentifier);
-                if(!sbSetCheck.contains(systemBillIdentifier)){
-                        systemBillSet.add(sb);
-                        sbSetCheck.add(systemBillIdentifier);
-                }  
+                                                            Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
+                                                            Account_Bill__c = ab.Id,
+                                                            Recurring_Billing__c = true,
+                                                            Date__c =  euu.Date__c,
+                                                            Bill_Number__c = sbCounter,
+                                                            Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
+                                                            Property_Account__c = opp.Account.Id,
+                                                            Opportunity__c = opp.Id);                                                                                 
+                    sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');            
+                    systemBillIdentifier = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
+                    system.debug(LoggingLevel.info, systemBillIdentifier);
+                    if(!sbSetCheck.contains(systemBillIdentifier)){
+                            systemBillSet.add(sb);
+                            sbSetCheck.add(systemBillIdentifier);
+                    }
+                    sbCounter = sbcounter + 1;                   
+                }
+                else{
+                    System_Bill__c sb = new System_Bill__c(Name = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,                                                           
+                                                                 Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
+                                                                 Account_Bill__c = ab.Id,
+                                                                 Date__c =  euu.Date__c,
+                                                                 Bill_Number__c = sbCounter,
+                                                                 Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
+                                                                 Property_Account__c = opp.Account.Id,
+                                                                 Opportunity__c = opp.Id);                    
+                    sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');                
+                    systemBillIdentifier = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
+                    system.debug(LoggingLevel.info, systemBillIdentifier);
+                    if(!sbSetCheck.contains(systemBillIdentifier)){
+                            systemBillSet.add(sb);
+                            sbSetCheck.add(systemBillIdentifier);
+                    } 
+                    sbcounter = sbcounter + 1;     
+                }                                                             
             sbCounter = 1;               
         }
         //Create the Utility Account Bills
         system.debug(LoggingLevel.info, systemBillSet.size());
+        System.debug(LoggingLevel.info, 'The System Bill Set Records are ' + systembillSet);
         if(systemBillSet.size() > 0){
             upsert new List<System_Bill__c>(systemBillSet) Unique_Id__c;
         }        
