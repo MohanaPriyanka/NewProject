@@ -20,16 +20,12 @@
                     <apex:outputLabel value="Adjustment Amount" />
                     <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!adjustmentAmount}" /></apex:outputText>
                 </apex:pageBlockSectionItem>
+                <apex:actionStatus id="updateStatus"
+                                   startText="updating"
+                                   stopText="" />
             </apex:pageBlockSection>
-            <apex:pageBlockSection columns="1" title="Deduction Method" rendered="{!BLANKVALUE(adjustmentAmount, 0) < 0}">
-                <apex:outputLabel >Select ordering where the processing would be made</apex:outputLabel>
-                <apex:selectList value="{!deductionMethod}" size="1" multiselect="false">
-                    <apex:selectOption itemLabel="Assignment Order" itemValue="Assignment Order" />
-                    <apex:selectOption itemLabel="COD Date" itemValue="COD Date" />
-                </apex:selectList>
-                <apex:commandButton value="Set deduction method" action="{!setDeductionMethod}" />
-            </apex:pageBlockSection>
-            <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1">
+            <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
+                                   id="AdjustmentSummaryOpen">
                 <apex:pageBlockTable id="openUASActionTable" value="{!openUASActionList}" var="uasAction">
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
@@ -49,13 +45,37 @@
                     <apex:column headerValue="Amount to be deducted" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
                     </apex:column>
+                    <apex:column headerValue="Custom Deduction Order" >
+                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
+                            <apex:selectOption itemLabel="1" itemValue="1" />
+                            <apex:selectOption itemLabel="2" itemValue="2" />
+                            <apex:selectOption itemLabel="3" itemValue="3" />
+                            <apex:selectOption itemLabel="4" itemValue="4" />
+                            <apex:selectOption itemLabel="5" itemValue="5" />
+                            <apex:selectOption itemLabel="6" itemValue="6" />
+                            <apex:selectOption itemLabel="7" itemValue="7" />
+                            <apex:selectOption itemLabel="8" itemValue="8" />
+                            <apex:selectOption itemLabel="9" itemValue="9" />
+                            <apex:selectOption itemLabel="10" itemValue="10" />
+                            <apex:selectOption itemLabel="11" itemValue="11" />
+                            <apex:selectOption itemLabel="12" itemValue="12" />
+                            <apex:selectOption itemLabel="13" itemValue="13" />
+                            <apex:selectOption itemLabel="14" itemValue="14" />
+                            <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryOpen" action="{!customDeductionOrder}" status="updateStatus">
+                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
+                            </apex:actionSupport>
+                        </apex:selectList> 
+                    </apex:column>
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputText value="{!uasAction.action}"/>
                     </apex:column>
                 </apex:pageBlockTable>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1">
+            <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1"
+                                   id="AdjustmentSummaryClosed">
                 <apex:pageBlockTable id="closedUASActionTable" value="{!closedUASActionList}" var="uasAction" >
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
@@ -75,6 +95,29 @@
                     <apex:column headerValue="Amount to be deducted" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
                     </apex:column>
+                    <apex:column headerValue="Custom Deduction Order" >
+                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
+                            <apex:selectOption itemLabel="1" itemValue="1" />
+                            <apex:selectOption itemLabel="2" itemValue="2" />
+                            <apex:selectOption itemLabel="3" itemValue="3" />
+                            <apex:selectOption itemLabel="4" itemValue="4" />
+                            <apex:selectOption itemLabel="5" itemValue="5" />
+                            <apex:selectOption itemLabel="6" itemValue="6" />
+                            <apex:selectOption itemLabel="7" itemValue="7" />
+                            <apex:selectOption itemLabel="8" itemValue="8" />
+                            <apex:selectOption itemLabel="9" itemValue="9" />
+                            <apex:selectOption itemLabel="10" itemValue="10" />
+                            <apex:selectOption itemLabel="11" itemValue="11" />
+                            <apex:selectOption itemLabel="12" itemValue="12" />
+                            <apex:selectOption itemLabel="13" itemValue="13" />
+                            <apex:selectOption itemLabel="14" itemValue="14" />
+                            <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryClosed" action="{!customDeductionOrder}" status="updateStatus">
+                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
+                            </apex:actionSupport>
+                        </apex:selectList> 
+                    </apex:column>  
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputPanel rendered="{!adminMode}" layout="none">
                             <apex:selectList value="{!uasAction.action}" size="1" multiselect="false" rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c)}"  styleClass="sss_closed_action">
@@ -90,8 +133,10 @@
                 </apex:pageBlockTable>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1">
-                <apex:pageBlockTable id="scheduleZFiledUASActionTable" value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}">
+            <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1"
+                                   id="AdjustmentSummaryScheduleZFiled">
+                <apex:pageBlockTable value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}"
+                                     id="scheduleZFiledUASActionTable" >
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
                     </apex:column>
@@ -109,6 +154,29 @@
                     </apex:column>
                     <apex:column headerValue="Amount to be deducted" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Custom Deduction Order" >
+                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
+                            <apex:selectOption itemLabel="" itemValue="" />
+                            <apex:selectOption itemLabel="1" itemValue="1" />
+                            <apex:selectOption itemLabel="2" itemValue="2" />
+                            <apex:selectOption itemLabel="3" itemValue="3" />
+                            <apex:selectOption itemLabel="4" itemValue="4" />
+                            <apex:selectOption itemLabel="5" itemValue="5" />
+                            <apex:selectOption itemLabel="6" itemValue="6" />
+                            <apex:selectOption itemLabel="7" itemValue="7" />
+                            <apex:selectOption itemLabel="8" itemValue="8" />
+                            <apex:selectOption itemLabel="9" itemValue="9" />
+                            <apex:selectOption itemLabel="10" itemValue="10" />
+                            <apex:selectOption itemLabel="11" itemValue="11" />
+                            <apex:selectOption itemLabel="12" itemValue="12" />
+                            <apex:selectOption itemLabel="13" itemValue="13" />
+                            <apex:selectOption itemLabel="14" itemValue="14" />
+                            <apex:selectOption itemLabel="15" itemValue="15" />
+                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryScheduleZFiled" action="{!customDeductionOrder}" status="updateStatus">
+                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
+                            </apex:actionSupport>
+                        </apex:selectList> 
                     </apex:column>
                     <apex:column headerValue="Action" style="width:300px;">
                         <apex:outputPanel rendered="{!adminMode}" layout="none">
@@ -150,20 +218,26 @@
         
         $('[id$=confirmDeductionButton]').click(function() {
             var message = '';
-            if('{!adminMode}' === 'false'){
-                if('{!(closedUASActionList.size + scheduleZFiledUASActionList.size) > 0 }' == 'true'){
-                    message += 'Warning: The following systems will not be deducted (Please contact your administrator for support):\n';
-                    $('[id$=closedUASActionTable] tbody tr td:nth-child(2)').each( function(){
-                       message += ' - ' + $(this).text() + '\n';
-                    });
-                    $('[id$=scheduleZFiledUASActionTable] tbody tr td:nth-child(2)').each( function(){
-                       message += ' - ' + $(this).text() + '\n';
-                    });
-                }
-            }
             message += '\nThe following systems will be deducted:\n';
             $('[id$=openUASActionTable] tbody tr td:nth-child(2)').each( function(){
                message += ' - ' + $(this).text() + '\n';
+            });
+
+            if('{!adminMode}' === 'false'){
+                if('{!(closedUASActionList.size + scheduleZFiledUASActionList.size) > 0 }' == 'true'){
+                    message += '\nWarning: The following systems will not be deducted (Please contact your administrator for support):\n';
+                }
+            }
+
+            $('[id$=closedUASActionTable] tbody tr').each( function(){
+               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
+                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
+               }
+            });
+            $('[id$=scheduleZFiledUASActionTable] tbody tr').each( function(){
+               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
+                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
+               }
             });
 
             message += '\nAre you sure you want to process the deductions? This process cannot be reversed.';
