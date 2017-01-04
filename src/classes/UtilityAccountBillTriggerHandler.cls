@@ -18,6 +18,10 @@ public with sharing class UtilityAccountBillTriggerHandler {
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         Map<string, Utility_NMC_Tariff__c > nmcMap = new Map<string, Utility_NMC_Tariff__c >();
         Map<string, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
+        Map<string, Utility_Account_Subscription__c > uasMap = new Map<string, Utility_Account_Subscription__c >();
+        String uasOppUalIdentifier;
+        Integer counter = 0;
+        //String systemBillKey;
         
         for(Utility_Account_Bill__c uab : utilityAccountBillList){
             utilityAccountLogIdToUABMap.put(uab.Utility_Account_Log__c, uab);
@@ -31,7 +35,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                              ORDER BY Date__c DESC]){
             nmcMap.put(nmcRate.Name, nmcRate);
         }
-        for(System_Bill__c systemBill : [SELECT Id, Name, Unique_ID__c
+        for(System_Bill__c systemBill : [SELECT Id, Name, Unique_Id__c, Date__c, Opportunity__r.Name, Opportunity__r.Shared_Solar_System__r.Name
                                             FROM System_Bill__c 
                                             WHERE Id != null]){
             systemBillMap.put(systemBill.Unique_Id__c, systemBill);
@@ -46,6 +50,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                             Opportunity__r.Shared_Solar_System__r.Name,
                                                           //Subscription_Key__c, 
                                                             UAS_Number__c,
+                                                            Share_of_System__c ,                                                            
                                                             Utility_Account_Log__c,
                                                             Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c, 
                                                             Opportunity__r.NMC_Value__c, 
@@ -57,16 +62,21 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                     AND Utility_Account_Log__c IN : utilityAccountLogIdToUABMap.keySet()
                                                     ORDER BY UAS_Number__c]){
             if(utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
+                uasOppUalIdentifier = uas.Opportunity__r.Id + ' ' + uas.Utility_Account_Log__c;
+                uasMap.put(uasOppUalIdentifier, uas);
                 Utility_Account_Bill__c uab = utilityAccountLogIdToUABMap.get(uas.Utility_Account_Log__c);
+                //for(System_Bill__c sbDate : systemBillMap.values()){
+                //  if(sbDate.Opportunity__r.Name == uas.Opportunity__r.Name && sbDate.Opportunity__r.Shared_Solar_System__r.Name == uas.Opportunity__r.Shared_Solar_System__r.Name){
+                //      systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(sbDate.Date__c.year(), sbDate.Date__c.month(),sbDate.Date__c.day()).format('yyyy-MM');
+                //  }
+                //}
                 string systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
-                system.debug(LoggingLevel.Info, systemBillKey);
-                integer tf = 1;
-                system.debug(LoggingLevel.Info, 'The SSS of the UAB is ' + uab.Shared_Solar_System__c );
-                system.debug(LoggingLevel.Info, 'The SSS of the UAS is ' + uas.Opportunity__r.Shared_Solar_System__c  );
+                System.debug(LoggingLevel.Info, 'The System Bill Key is ' + systemBillKey);
+                //system.debug(LoggingLevel.Info, 'The SSS of the UAB is ' + uab.Shared_Solar_System__c );
+                //system.debug(LoggingLevel.Info, 'The SSS of the UAS is ' + uas.Opportunity__r.Shared_Solar_System__c  );
                 if(uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c 
-                    && nmcMap.containsKey(uab.NMC_Rate_ID__c)
-                    && uab.passcheck__c == false){
-                    tf = 0;
+                    && nmcMap.containsKey(uab.NMC_Rate_ID__c)){
+                    counter = counter + 1;
                     UASB__c uasb = new UASB__c( Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name,
                                             Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
                                             CS_Billing_Log__c = uab.Id, 
@@ -78,15 +88,19 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Shared_Solar_System__c = uas.Opportunity__r.Shared_Solar_System__c,
                                             Total_System_Size_kW_DC__c = uas.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                             NMC_Rate__c = nmcMap.get(uab.NMC_Rate_ID__c).Value_of_Net_Metering_Credit__c,
-                                            Total_System_Production_kWh__c = uab.Production_kWh_DC__c);
+                                            Total_System_Production_kWh__c = uab.Production_kWh_DC__c,                                                                                       
+                                            Total_System_NMCs__c = uab.Total_System_NMCs__c,
+                                            Size_off_NMCs__c = uab.Size_off_NMCs__c,
+                                            Share_of_System__c = uas.Share_of_System__c);
+
                     uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                     uasbSet.add(uasb);
                     system.debug(LoggingLevel.Info, uasb);                   
                 }
-                system.debug(LoggingLevel.Info, tf);
                 system.debug(LoggingLevel.Info,uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + uas.Utility_Account_Log__c + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM'));
             }
         }
+        System.debug(LoggingLevel.Info,'counter = ' + counter);
         system.debug(LoggingLevel.Info, uasbSet.size()); 
         if(uasbSet.size() > 0) upsert new List<UASB__c>(uasbSet) Unique_Id__c;
     }

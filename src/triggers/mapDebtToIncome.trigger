@@ -1,10 +1,10 @@
 Trigger mapDebtToIncome on Lead (before insert, before update) {
 
-    set <string> leadIDs = new Set <string>( ); 
+    /*set <string> leadIDs = new Set <string>( ); 
 
     for ( Lead l : trigger.new) {
     
-        If ( l.annual_income_currency__c != null) {
+        If ( l.Annual_income_currency__c != null) {
     
             leadIDs.add (l.lead_ID__c);}
     }
@@ -34,5 +34,5 @@ Trigger mapDebtToIncome on Lead (before insert, before update) {
             l.debt_income_status__c = null;
     }
 }
-}
+}*/
 }

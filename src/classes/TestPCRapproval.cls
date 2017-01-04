@@ -2,19 +2,34 @@
 private class TestPCRapproval {
 
 Static testMethod void TestPCRapproval(){
+        
+        Product2 productVar = new Product2( name = 'BlueWave Solar Loan - MA',
+                                              State__c = 'MA',
+                                              Family = 'Solar Loan',
+                                              IsActive = TRUE,
+                                              ProductCode = 'x',
+                                              Loan_Term__c = 120,
+                                              Loan_Interest_Rate__c = .0599,
+                                              Loan_Interest_Only_Period__c = 12,
+                                              Loan_Base_Rate__c = .0625,
+                                              Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                                              Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
+       insert productVar;                                      
+                                               
 
 
         Lead lead = new Lead (LastName = 'Chan',
                                  FirstName = 'Joey',
+                                 Automatic_Product_Assignment__c = false,
                                  Email = 'test@email.com',
                                  Company = 'Cloud Jedi',
                                  Status = 'Qualified',
                                  Annual_Income_Currency__c = 50000,
                                  Loan_Amount__c = 45000,
-                                 Construction_Period_DOER__c = 0,
+                                 Product__c = productVar.Id,
                                  DOER_Solar_Loan__c = TRUE,
-                                 Pre_Approval_Form__c = TRUE,
-                                  Custom_ID__c = 'BOS'
+                                 Pre_Approval_Form__c = TRUE
+                                 //Custom_ID__c = 'BOS'
                                                              );
         insert lead;
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
@@ -29,21 +44,22 @@ Static testMethod void TestPCRapproval(){
         insert tradeacct;  
         update tradeacct;       
                                                                                
-        lead.Personal_Credit_Report__c = pcr.Id;
+        //lead.Personal_Credit_Report__c = pcr.Id;
 
-        update lead;
-
+        //update lead;
+/*
                 Lead leadA = new Lead(LastName = 'Chan',
                                                              FirstName = 'Joey',
                                                              Email = 'test@email.com',
                                                              Company = 'Cloud Jedi',
+                                                             Automatic_Product_Assignment__c = false,
                                                              Status = 'Qualified',
                                                              Annual_Income_Currency__c = 20000,
                                                              Loan_Amount__c = 65000,
-                                                             Construction_Period_DOER__c = 0,
+                                                             Product__c = productVar.Id,
                                                              DOER_Solar_Loan__c = FALSE,
-                                                             Pre_Approval_Form__c = TRUE,
-                                                             Custom_ID__c = 'BOS'
+                                                             Pre_Approval_Form__c = TRUE
+                                                             //Custom_ID__c = 'BOS'
                                                              );
         insert leadA;
         LASERCA__Personal_Credit_Report__c pcrA = new LASERCA__Personal_Credit_Report__c(
@@ -58,21 +74,24 @@ Static testMethod void TestPCRapproval(){
         insert tradeacctA;  
         update tradeacctA;    
          
-        leadA.Personal_Credit_Report__c = pcrA.Id;
+       // leadA.Personal_Credit_Report__c = pcrA.Id;
 
-        update leadA;
+       // update leadA;
+
+
         //
                     Lead leadAA = new Lead (LastName = 'Chan',
                                                              FirstName = 'Joey',
                                                              Email = 'test@email.com',
                                                              Company = 'Cloud Jedi',
+                                                             Automatic_Product_Assignment__c = false,
                                                              Status = 'Qualified',
                                                              Annual_Income_Currency__c = 20000,
                                                              Loan_Amount__c = 65000,
-                                                             Construction_Period_DOER__c = 0,
+                                                             Product__c = productVar.Id,
                                                              DOER_Solar_Loan__c = FALSE,
-                                                             Pre_Approval_Form__c = TRUE,
-                                                             Custom_ID__c = 'BOS'
+                                                             Pre_Approval_Form__c = TRUE
+                                                             //Custom_ID__c = 'BOS'
                                                              );
         insert leadAA;
         LASERCA__Personal_Credit_Report__c pcrAA = new LASERCA__Personal_Credit_Report__c(
@@ -86,24 +105,27 @@ Static testMethod void TestPCRapproval(){
         insert tradeacctAA;  
         update tradeacctAA;    
          
-        leadAA.Personal_Credit_Report__c = pcrAA.Id;
+        //leadAA.Personal_Credit_Report__c = pcrAA.Id;
 
-        update leadAA;
+        //update leadAA;
         //
 
-
-        /*        Lead leadBB = new Lead(LastName = 'Chan',
+*/
+                Lead leadBB = new Lead(LastName = 'Chan',
                                                              FirstName = 'Joey',
                                                              Email = 'test@email.com',
                                                              Company = 'Cloud Jedi',
+                                                             Automatic_Product_Assignment__c = false,
                                                              Status = 'Qualified',
-                                                             Annual_Income_Currency__c= 21150,
-                                                             Loan_Amount__c = 30000,
-                                                             Construction_Period_DOER__c = 0,
-                                                             DOER_Solar_Loan__c = TRUE,
-                                                             Custom_ID__c = 'BOS'
+                                                             Annual_Income_Currency__c = 20000,
+                                                             Loan_Amount__c = 65000,
+                                                             Product__c = productVar.Id,
+                                                             DOER_Solar_Loan__c = FALSE,
+                                                             Pre_Approval_Form__c = TRUE
+                                                             //Custom_ID__c = 'BOS'
                                                              );
-        insert leadBB;
+ 
+         insert leadBB;
         LASERCA__Personal_Credit_Report__c pcrBB = new LASERCA__Personal_Credit_Report__c(
                                                                                         LASERCA__Lead__c = leadBB.Id,
                                                                                         LASERCA__Code__c = '020',
@@ -116,12 +138,7 @@ Static testMethod void TestPCRapproval(){
                                                                                          
         insert tradeacctBB;  
         update tradeacctBB;                                                                                         
-                                                                                        
-        lead.Personal_Credit_Report__c = pcrBB.Id;
-
-        update leadBB;
-    */
-
+                                                                                    
 
     /*            Lead leadC = new Lead(LastName = 'Chan',
                                                              FirstName = 'Joey',

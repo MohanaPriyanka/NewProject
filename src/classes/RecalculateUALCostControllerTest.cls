@@ -1,6 +1,6 @@
 @isTest
-private class RecalculateUALCostControllerTest {
-    @testSetup static void setupTestData() {
+public class RecalculateUALCostControllerTest {
+    @testSetup public static void setupTestData() {
         Profile bfgStandardUser = 
             [SELECT Id from Profile WHERE Name = 'BFG Standard User'];
         User bfgUser = new User (ProfileId = bfgStandardUser.Id,
@@ -128,6 +128,10 @@ private class RecalculateUALCostControllerTest {
                                        Total_System_Size_kWh_DC__c = 1000,
                                        System_Utility__c = 'National Grid',
                                        Credit_Score_Requirement__c = 200,
+                                       Utility_NMC_Tariff__c = nmcRate.Id,
+                                       Expected_Yield_kWh_kW__c = 1300,
+                                       Assemblage_Count__c = 1,
+                                       Maximum_Subscription_Assemblage__c = 25,
                                        Assignment_order__c = '5');
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5, sss6, sss7, sss8};
 
@@ -170,6 +174,7 @@ private class RecalculateUALCostControllerTest {
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           NMC_Tariff__c = nmcRate.Id,
                                            Shared_Solar_System__c = sss8.Id);
         insert new List<Opportunity>{opp1, opp2, opp3, opp4, opp5, opp6, opp7, opp8};
 
@@ -226,8 +231,26 @@ private class RecalculateUALCostControllerTest {
                                                 Opportunity__c = opp8.Id,
                                                 Calculated_Annual_Cost_of_Electricity__c = 3000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
+                                                // Customer_Subscription_KW_DC__c = 3000 / 1 / 1300 =  2.3077
+                                                UAS_Number__c = 2,
                                                 Custom_Deduction_Order__c = 8);
-        insert new List<Utility_Account_Subscription__c>{uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8};
+        Utility_Account_Subscription__c uas9 = 
+            new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
+                                                Opportunity__c = opp8.Id,
+                                                Calculated_Annual_Cost_of_Electricity__c = 9000,
+                                                Subscribed_Annual_Cost_of_Electricity__c = 9000,
+                                                // Customer_Subscription_KW_DC__c = 9000 / 1 / 1300 =  6.9230
+                                                UAS_Number__c = 3,
+                                                Custom_Deduction_Order__c = 9);
+        Utility_Account_Subscription__c uas10 = 
+            new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
+                                                Opportunity__c = opp8.Id,
+                                                Calculated_Annual_Cost_of_Electricity__c = 10000,
+                                                Subscribed_Annual_Cost_of_Electricity__c = 10000,
+                                                // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
+                                                UAS_Number__c = 4,
+                                                Custom_Deduction_Order__c = 10);
+        insert new List<Utility_Account_Subscription__c>{uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8, uas9, uas10};
     }
 
     @isTest static void testMethodOne() {
@@ -274,6 +297,8 @@ private class RecalculateUALCostControllerTest {
                                                     FROM Shared_Solar_System__c
                                                     WHERE Id = :sssToKeepAsClosedId];
         System.assertEquals(sssToKeepAsClosed.Open__c, false);
+        theController.closedUASActionList[2].action = 'Deduct and keep as Closed';
+        theController.closedUASActionList[3].action = 'Deduct and keep as Closed';
 
         //Set deduction for Schedule Z Filed
         theController.scheduleZFiledUASActionList[0].action = 'Deduct from Schedule Z Filed';
@@ -396,7 +421,7 @@ private class RecalculateUALCostControllerTest {
 
         RecalculateUALCostController theController = new RecalculateUALCostController();
         // Adjustment amount should be total of all subscriptions
-        System.assertEquals(-20000, theController.adjustmentAmount);
+        System.assertEquals(-39000, theController.adjustmentAmount);
 
         // All subscriptions should be available to be ordered
         System.assertEquals(4, theController.openUASActionList.size());

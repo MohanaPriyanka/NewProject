@@ -144,12 +144,12 @@ public with sharing class SystemBillPaymentRollUpHandler {
         for(i=0;i<currentbill;i++){
           if(groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c > 0 
             && groupedSystemBillsList.get(i).Bill_Number__c < currentbill){
-            if(groupedSystemBillsList.get(i).Late_Payments__c + payment >= groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c)  {
+            if(payment >= groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c)  {
                     groupedSystemBillsList.get(i).Late_Payments__c = groupedSystemBillsList.get(i).Late_Payments__c + groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c; 
                     payment = payment - groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c;
                     system.debug(payment);
             }
-            else if(groupedSystemBillsList.get(i).Late_Payments__c + payment < groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c) { 
+            else if(payment < groupedSystemBillsList.get(i).Balance_Net_Late_Payments__c) { 
                     groupedSystemBillsList.get(i).Late_Payments__c = groupedSystemBillsList.get(i).Late_Payments__c + payment; payment = 0;
                     system.debug(payment);
             } 

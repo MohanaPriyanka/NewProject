@@ -1,7 +1,7 @@
 @isTest
-public class TestBillCreationandPayment3 {
+private class TestBillCreationandPayment3 {
 
-Static testMethod void TestBillCreationandPayment(){
+Static testMethod void TestBillCreationandPayment3(){
 
 /// https://cs4.salesforce.com/setup/build/viewApexClass.apexp?id=01pP0000000FrZQ
 
@@ -84,6 +84,7 @@ Static testMethod void TestBillCreationandPayment(){
                                                                                                                                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Assemblage_Count__c = 1,
+                                                                                                                                Sales_Partners__c = 'All',
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
 
       //  insert sss1;
@@ -101,151 +102,99 @@ Static testMethod void TestBillCreationandPayment(){
                                                                                                                                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Assemblage_Count__c = 1,
-                                                                                                                                Maximum_Subscription_Assemblage__c = 25));
-        Shared_Solar_System__c sss3 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P3',
-                                                                                                                                Service_Territory__c = 'SEMA',
-                                                                                                                                Open__c = true,
-                                                                                                                                Reserved_Capacity_kW_DC__c = '0',
-                                                                                                                                Capacity_Committed_kW_DC__c = 0,
-                                                                                                                                Total_System_Size_kWh_DC__c = 1445.86,
-                                                                                                                                Total_System_Size_kW_AC__c  = 996,
-                                                                                                                                System_Utility__c = 'Eversource',
-                                                                                                                                Credit_Score_Requirement__c = 200,
-                                                                                                                                Assignment_order__c = '3',
-                                                                                                                                Utility_NMC_Tariff__c = eversizeNMC.Id,
-                                                                                                                                Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Assemblage_Count__c = 1,
+                                                                                                                                Sales_Partners__c = 'All',
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
 
 
-        Shared_Solar_System__c sss4 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P4',
-                                                                                                                                Service_Territory__c = 'WCMA',
-                                                                                                                                Open__c = true,
-                                                                                                                                Reserved_Capacity_kW_DC__c = '0',
-                                                                                                                                Capacity_Committed_kW_DC__c = 0,
-                                                                                                                                Total_System_Size_kWh_DC__c = 1445.86,
-                                                                                                                                Total_System_Size_kW_AC__c  = 996,
-                                                                                                                                System_Utility__c = 'National Grid',
-                                                                                                                                Credit_Score_Requirement__c = 200,
-                                                                                                                                Assignment_order__c = '1',
-                                                                                                                                Utility_NMC_Tariff__c = ngridsizeNMC.Id,
-                                                                                                                                Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Assemblage_Count__c = 1,
-                                                                                                                                Maximum_Subscription_Assemblage__c = 25));
-        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
+        insert new List<Shared_Solar_System__c>{sss1, sss2};
 
-        System.debug('Verifying the SSS:');
-        List <Shared_Solar_System__c> sssList = [SELECT Id,Capacity_Available_to_be_Reserved__c,Total_CS_Capacity_kW_DC_Formula__c,Anchor_CS_Capacity_Committed__c FROM Shared_Solar_System__c];
-        for(Shared_Solar_System__c sss : sssList){
-            System.debug(sss);
-            System.debug(sss.Capacity_Available_to_be_Reserved__c);
-            System.debug(sss.Total_CS_Capacity_kW_DC_Formula__c);
-            System.debug(sss.Anchor_CS_Capacity_Committed__c);            
-        }             
+// create Parent Accounts
 
-// Create Parent Accounts
-         Id p = [select id from profile where name='Community Solar Community User'].id;
         Account accountA = new Account(name = 'Account A',
-            RecordTypeId = '012j00000010Ha3',
-            Recurring_Billing__c = true);       
-        Insert accountA;       
+            RecordTypeId = '012j00000010Ha3');       
+        Insert accountA;      
+
         system.debug(accountA);
 
         List <String> parentaccountIDs = new List<String>{ 
           'accountA.id'
-        };
-        Contact c = new Contact(FirstName='test', LastName ='testDashboard',AccountId = accountA.Id);
-        insert c;  
-                  
-        User u = new User(alias = 'testDash', email='testdash@test.test', emailencodingkey='UTF-8', lastname='testDashboard', 
-                          languagelocalekey='en_US', localesidkey='en_US', profileid = p, country='United States', 
-                          IsActive =true, ContactId = c.Id, timezonesidkey='America/New_York', username='testdashboard@test.test');
-        insert u;
-// Create Leads
-        Lead lead = (Lead)TestFactory.createSObject(new Lead(LastName = 'Chan',
-                                                             FirstName = 'Joey',
-                                                             Email = 'test@email.com',
-                                                             Electricity_Provider__c = 'Eversource',
-                                                             Utility_1__c = 'Eversource',
-                                                             Load_Zone__c = 'SEMA',
-                                                             Company = 'Cloud Jedi',
-                                                             Status = 'Qualified',
-                                                             Product_Line__c = 'Community Solar',
-                                                             Parent_Account__c = accountA.Id,
-                                                             System_Assignment__c = 'Automatic - Assignment Order'));
-        insert lead;
-        LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(new LASERCA__Personal_Credit_Report__c(
-                                                                                        LASERCA__Lead__c = lead.Id,
-                                                                                        LASERCA__Credit_Score_TransUnion__c = '700'), true);
-        lead.Personal_Credit_Report__c = pcr.Id;
-        lead.Status = 'Qualified';
+        };      
 
-        update lead;
 
-        System.debug([Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territory__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id]);
+ Utility_Account_Log__c ualog = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Name = '0000234',
+                                                                                                                 Account__c = accountA.Id,
+                                                                                                                 Annual_Cost_of_Electricity__c = 10000,
+                                                                                                                 Name_on_Account__c = 'jordan jordan'));
+ insert ualog;
 
-        Utility_Account_Log__c ual = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Lead__c = lead.Id,
-                                                                                                                  Annual_Cost_of_Electricity__c = 10000,
-                                                                                                                  Name_on_Account__c = 'Joey Chan'));
-        insert ual;
-        Id accountId;
+ Opportunity opportunityone = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
+                                                                                AccountId = accountA.Id,
+                                                                                Shared_Solar_System__c = sss1.Id,
+                                                                                StageName = 'Complete',
+                                                                                CS_Capacity_Allocated__c = 25,
+                                                                                CloseDate = System.today()));
 
-        Test.startTest(); 
-        System.debug('Starting LeadTriggerHandlerTest');
-        System.debug('Debug SSS - ' + [Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territory__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id ]);
-        Database.leadConvert lc = new Database.leadConvert();
-        lc.setLeadId(lead.id);
-        System.debug(lc.getAccountId());
-        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
-        lc.setConvertedStatus(convertStatus.MasterLabel);
-        lc.setDoNotCreateOpportunity(true);
-        Database.LeadConvertResult lcr = Database.convertLead(lc);
+ Opportunity opportunitytwo = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
+                                                                                AccountId = accountA.Id,
+                                                                                Shared_Solar_System__c = sss2.Id,
+                                                                                StageName = 'Complete',
+                                                                                CS_Capacity_Allocated__c = 20,
+                                                                                CloseDate = System.today())); 
+                                                                                
+ insert opportunityone;
+ insert opportunitytwo;
 
-        accountId = lc.getAccountId();
-        System.debug(LoggingLevel.info, lc.getAccountId());
-        System.assert(lcr.isSuccess());
+ Utility_Account_Subscription__c uasone = (Utility_Account_Subscription__c)TestFactory.createSObject(new Utility_Account_Subscription__c(
+                                                                                                    Name = '0000234',
+                                                                                                    Utility_Account_Log__c = ualog.Id,
+                                                                                                    Opportunity__c = opportunityone.Id,
+                                                                                                    Calculated_Annual_Cost_of_Electricity__c = 4000,
+                                                                                                    Subscribed_Annual_Cost_of_Electricity__c = 4000));
 
-        Account accountB = new Account(name = 'Account B',
-            RecordTypeId = '012j00000010Ha3',
-            Recurring_Billing__c = true);       
-        Insert accountB;  
+ Utility_Account_Subscription__c uastwo = (Utility_Account_Subscription__c)TestFactory.createSObject(new Utility_Account_Subscription__c(
+                                                                                                    Name = '000-0234',
+                                                                                                    Utility_Account_Log__c = ualog.Id,
+                                                                                                    Opportunity__c = opportunitytwo.Id,
+                                                                                                    Calculated_Annual_Cost_of_Electricity__c = 6000,
+                                                                                                    Subscribed_Annual_Cost_of_Electricity__c = 6000));
+
+insert uasone;
+insert uastwo; 
+
+uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
+uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
+update uasone;
+update uastwo;
+system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         System.debug('Verifying the opportunity:');
         List <Opportunity> oppUpdatePendingList = new List<Opportunity>();       
         List <Opportunity> oppUpdateCompleteList = new List<Opportunity>();
-        List <Opportunity> oppList = [SELECT Id, AccountId FROM Opportunity];
-        for(Opportunity opp : oppList){
+        List <Opportunity> oppList = [SELECT Id, Shared_Solar_System__c, AccountId FROM Opportunity];
+        
+     /*   for(Opportunity opp : oppList){
             opp.stageName = 'Pending BlueWave Signature';
-            opp.AccountId = AccountB.Id;
             oppUpdatePendingList.add(opp);
-            opp.stageName = 'Complete';
-            oppUpdateCompleteList.add(opp);            
-            System.debug(opp.AccountId);
+            system.debug(opp);
         }
         update oppUpdatePendingList;
-        update oppUpdateCompleteList;
-        //System.assertEquals(1, oppList.size());
 
-        System.debug('Verifying the Account:');
-        List <Account> accountList = [SELECT Id, Name, Recurring_Billing__c FROM Account];
-        System.debug(Logginglevel.Info, accountList.size());
-        for(Account acc : accountList){
-            acc.Recurring_Billing__c = TRUE;
+        for(Opportunity opptwo : oppList){
+            opptwo.stageName = 'Complete';
+            oppUpdateCompleteList.add(opptwo);  
+            system.debug(opptwo);          
+            System.debug(opptwo.AccountId);
         }
-        update accountList;    
+        update oppUpdateCompleteList;
+        */
 
-// Query for property accounts
+        List <Utility_Account_Subscription__c> uaslist = [SELECT Id, Customer_Subscription_KW_DC_STATIC__c, Subscribed_Annual_Cost_of_Electricity__c, Calculated_Annual_Cost_of_Electricity__c, Shared_Solar_System_Name__c FROM Utility_Account_Subscription__c];
 
-      /*  List <string> listpropertyids = new list <string>();
-
-          for(Account PR : [ SELECT Id
-                             FROM Account
-                             WHERE Parent_Account__c IN : parentaccountIDs]){ 
-
-              listpropertyids.add(PR.id); 
-                }
-
-        system.debug(listpropertyids);*/
+        for(Utility_Account_Subscription__c uas : uaslist){
+        system.debug(uas.Customer_Subscription_KW_DC_STATIC__c);
+        system.debug(uas.Subscribed_Annual_Cost_of_Electricity__c);
+        system.debug(uas.Calculated_Annual_Cost_of_Electricity__c);
+        }
 
 // Log Production Update - First Month
 
@@ -261,218 +210,186 @@ Static testMethod void TestBillCreationandPayment(){
                 Date__c = myDateJan 
                 );
 
-        Energy_Usage_Update__c productionupdateB1 = new Energy_Usage_Update__c (
+        Insert productionupdateA1;
+        system.debug(productionupdateA1);
+
+// Production Update Month 2
+
+        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
-                Production__c = 80000,
-                Date__c = myDateFeb 
+                Production__c = 120000,
+                Date__c = myDateFeb
                 );
-
-     /*   Energy_Usage_Update__c productionupdateC1 = new Energy_Usage_Update__c (
-                Name = 'sssA - March 2016',
-                Shared_Solar_System__c = sss1.id,
-                Production__c = 70000,
-                Date__c = myDateMar 
-                ); */
+                
+        insert productionupdateB2;
 
 
-        Account_Bill__c oldAccountBill = new Account_Bill__c(
-            name = 'Test for recurring payment',
-            Date__c = myDateJan,
-            Bill_Number__c = 1,
-            Parent_Account__c = accountB.Id
-             );
-             insert oldAccountBill;     
-
-        System_Bill__c oldSystemBill = new System_Bill__c(
-            name = 'Test for Recurring Payment',
-            Property_Account__c = accountB.Id,
-            Bill_Number__c = 1,
-            Shared_Solar_System__c = sss1.Id,
-            Recurring_Billing__c = true,
-            Account_Bill__c = oldAccountBill.Id,
-            Unique_Id__c = 'Test for Recurring Payment' + sss1.Name + '2016-01'
-            );
-            insert oldSystemBill;
-
-                     /*     ChargentOrders__ChargentOrder__c orderAOld = new ChargentOrders__ChargentOrder__c (
-                                ChargentOrders__Subtotal__c = 200,
-                                ChargentOrders__Payment_Method__c = 'Credit Card',
-                                System_Bill__c = oldSystemBill.Id,
-                                ChargentOrders__Billing_First_Name__c = 'Jordan',
-                                ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                ChargentOrders__Billing_Zip_Postal__c = '02467',
-                                ChargentOrders__Card_Type__c = 'Visa',
-                                ChargentOrders__Payment_Status__c = 'Recurring',
-                                ChargentOrders__Payment_Frequency__c = 'Monthly',
-                                ChargentOrders__Payment_Start_Date__c = myDateJan,
-                                ChargentOrders__Card_Number__c = '411111111111',
-                                ChargentOrders__Card_Security_Code__c = '999',
-                                ChargentOrders__Card_Expiration_Month__c = '02',
-                                ChargentOrders__Card_Expiration_Year__c = '2018',
-                                ChargentOrders__Card_Last_4__c = '1111'
-                                );
-                            insert orderAOld;  */
-
-        Account_Bill__c oldAccountBillB = new Account_Bill__c(
-            name = 'Test for recurring payment',
-            Date__c = myDateJan,
-            Bill_Number__c = 2,
-            Parent_Account__c = accountB.Id
-             );
-             insert oldAccountBillB;        
-
-        System_Bill__c oldSystemBillB = new System_Bill__c(
-            name = 'Test for Recurring Payment',
-            Property_Account__c = accountB.Id,
-            Bill_Number__c = 2,
-            Shared_Solar_System__c = sss1.Id,
-            Recurring_Billing__c = true,
-            Account_Bill__c = oldAccountBill.Id,
-            Unique_Id__c = 'Test for Recurring Payment' + sss1.Name + '2016-01'
-            );
-            insert oldSystemBillB;
-
-                     /*     ChargentOrders__ChargentOrder__c orderAOldB = new ChargentOrders__ChargentOrder__c (
-                                ChargentOrders__Subtotal__c = 200,
-                                ChargentOrders__Payment_Method__c = 'Credit Card',
-                                System_Bill__c = oldSystemBill.Id,
-                                ChargentOrders__Billing_First_Name__c = 'Jordan',
-                                ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                ChargentOrders__Billing_Zip_Postal__c = '02467',
-                                ChargentOrders__Card_Type__c = 'Visa',
-                                ChargentOrders__Payment_Status__c = 'Recurring',
-                                ChargentOrders__Payment_Frequency__c = 'Monthly',
-                                ChargentOrders__Payment_Start_Date__c = myDateJan,
-                                ChargentOrders__Card_Number__c = '411111111111',
-                                ChargentOrders__Card_Security_Code__c = '999',
-                                ChargentOrders__Card_Expiration_Month__c = '02',
-                                ChargentOrders__Card_Expiration_Year__c = '2018',
-                                ChargentOrders__Card_Last_4__c = '1111'
-                                );
-                            insert orderAOldB;     
-
-                            */                                      
-
-        Insert productionupdateA1;
-        Insert productionupdateB1;
-   //     Insert productionupdateC1;
+// Make payment plan balance on 2
         
+        List <System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Total_Due__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c FROM System_Bill__c];
+        system.debug(systemBillList);
 
-        system.debug(productionupdateA1);
-        //system.debug(productionupdateB1);
-       // system.debug(productionupdateC1); 
-
-// Insert on time payments in January Here 
-            
-/* ChargentBase__Gateway__c gatewayA = new ChargentBase__Gateway__c(
-            Name = 'BW Comunity Solar Account Gateway',
-            ChargentBase__Merchant_ID__c = '235986' );
-
-insert gatewayA;
-system.debug(gatewayA); */
+        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                                                                           ChargentBase__Merchant_ID__c = '235986',
+                                                                           ChargentBase__Active__c = TRUE);
+        insert chGateway;
 
                 // Query for system bills that were created from the production update
-                  List <System_Bill__c> systembills = [SELECT Id, Total_Due__c, Bill_Number__c
-                                        FROM System_Bill__c
-                                        WHERE Bill_Number__c < 10 
-                                        ORDER BY Bill_Number__c
-                                        ];
-                 
-                 system.debug(systembills);
-                // systembills.get(1).Due_This_Month__c = 200;
-                 
-          update systembills;
-          systembills.get(0).Total_Due__c = 200;
-          systembills.get(0).Recurring_Billing__c = true;
-          systembills.get(0).Property_Account__c = accountB.Id;
-          systembills.get(1).Distribute_This_Balance_as_Payment_Plan__c = true;
-          systembills.get(1).Total_Due__c = 400;
-          //systembills.get(1).Late_Payments__c = 120;
-          systembills.get(1).Recurring_Billing__c = true;
-          systembills.get(1).Property_Account__c = accountB.Id;
-          update systembills;
-                  
-                    /*      ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c (
-                                ChargentOrders__Subtotal__c = 200,
-                                ChargentOrders__Payment_Method__c = 'Credit Card',
-                                System_Bill__c = systembills.get(0).Id,
-                                ChargentOrders__Billing_First_Name__c = 'Jordan',
-                                ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                ChargentOrders__Billing_Zip_Postal__c = '02467',
-                                ChargentOrders__Card_Type__c = 'Visa',
-                                ChargentOrders__Payment_Status__c = 'Recurring',
-                                ChargentOrders__Payment_Frequency__c = 'Monthly',
-                                ChargentOrders__Payment_Start_Date__c = myDateJan,
-                                ChargentOrders__Card_Number__c = '411111111111',
-                                ChargentOrders__Card_Security_Code__c = '999',
-                                ChargentOrders__Card_Expiration_Month__c = '02',
-                                ChargentOrders__Card_Expiration_Year__c = '2018',
-                                ChargentOrders__Card_Last_4__c = '1111'
-                                );
+                for(System_Bill__c systemBill : systemBillList){
+                        if (systembill.Bill_Number__c == 2){
+                                //Pay off balance in month 2
+                                ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
+                                                                                          ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
+                                                                                          ChargentOrders__Gateway__c = chGateway.Id,
+                                                                                        //  ChargentOrders__Shipping_Name__c = systemBill.Shared_Solar_System__r.Id,
+                                                                                          ChargentOrders__Billing_First_Name__c = 'Cole',
+                                                                                          ChargentOrders__Billing_Last_Name__c = 'Swain',
+                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+                                                                                          ChargentOrders__Subtotal__c = 100,
+                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
+                                                                                          System_Bill__c = systemBill.Id,
+                                                                                          ChargentOrders__Card_Type__c = 'Visa',
+                                                                                          ChargentOrders__Card_Number__c = '411111111111',
+                                                                                          ChargentOrders__Card_Security_Code__c = '999',
+                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
+                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
+                                                                                          ChargentOrders__Card_Last_4__c = '1111'); 
+                                insert orderA;
 
-                            insert orderA;
-                            system.debug(orderA);
-                    
-                               ChargentOrders__Transaction__c transA = new ChargentOrders__Transaction__c(
-                                    ChargentOrders__Order__c = orderA.id,
-                                    ChargentOrders__Amount__c = 400,
-                                    ChargentOrders__Response_Status__c ='Approved',
-                                    ChargentOrders__Gateway_ID__c = gatewayA.id,
-                                    ChargentOrders__Gateway__c = gatewayA.id,
-                                    Distributed_Among_System_Bills__c = FALSE,
-                                    Activity_Type__c = 'Payment',
-                                    ChargentOrders__Response_Message__c = 'OK',
-                                    ChargentOrders__Type__c = 'Charge',
-                                    ChargentOrders__Payment_Method__c = 'Credit Card'
-                                );
-                            system.debug(transA);
-                            
-                           insert transA;
-                           transA.Distributed_Among_System_Bills__c = TRUE;
-                           update transA;
-                    */
-                  /*           ChargentOrders__ChargentOrder__c orderB = new ChargentOrders__ChargentOrder__c (
-                                ChargentOrders__Subtotal__c = 2000,
-                                ChargentOrders__Payment_Method__c = 'Credit Card',
-                                System_Bill__c = systembills.get(1).Id,
-                                ChargentOrders__Billing_First_Name__c = 'Jordan',
-                                ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                ChargentOrders__Billing_Zip_Postal__c = '02467',
-                                ChargentOrders__Card_Type__c = 'Visa',
-                                ChargentOrders__Card_Number__c = '411111111111',
-                                ChargentOrders__Card_Security_Code__c = '999',
-                                ChargentOrders__Card_Expiration_Month__c = '02',
-                                ChargentOrders__Card_Expiration_Year__c = '2018',
-                                ChargentOrders__Card_Last_4__c = '1111'
-                                );
-                            insert orderB;
-                            system.debug(orderB);
-                                                       
-                           
-                               ChargentOrders__Transaction__c transB = new ChargentOrders__Transaction__c(
-                                    ChargentOrders__Order__c = orderB.id,
-                                    ChargentOrders__Response_Status__c ='Approved',
-                                    ChargentOrders__Gateway_ID__c = gatewayA.id,
-                                    ChargentOrders__Gateway__c = gatewayA.id,
-                                    Distributed_Among_System_Bills__c = FALSE,
-                                    Activity_Type__c = 'Payment',
-                                    ChargentOrders__Type__c = 'Charge'
-                                );
-                            system.debug(transA);
-                            
-                           
-                           insert transB;
-                           transB.Distributed_Among_System_Bills__c = TRUE;
-                           update transB;
-                    
-                                            */        
- Test.stopTest();               
+                                ChargentOrders__Transaction__c transA = new ChargentOrders__Transaction__c(
+                                                    ChargentOrders__Order__c = orderA.id,
+                                                    ChargentOrders__Amount__c = 100,
+                                                    ChargentOrders__Response_Status__c ='Approved',
+                                                    ChargentOrders__Gateway_ID__c = chGateway.id,
+                                                    ChargentOrders__Gateway__c = chGateway.id,
+                                                    Distributed_Among_System_Bills__c = FALSE,
+                                                    ChargentOrders__Response_Message__c = 'OK',
+                                                    ChargentOrders__Type__c = 'Charge',
+                                                    ChargentOrders__Payment_Method__c = 'Credit Card',                                    
+                                                    Activity_Type__c = 'Payment');
 
- 
+                                insert transA;
+                                transA.Distributed_Among_System_Bills__c = TRUE;
+                                update transA;
+                    
+                                // Make Payment Plan on Bill 2
+                                systembill.Waive_Late_Fees__c = TRUE;
+                                systembill.Distribute_This_Balance_As_Payment_Plan__c = TRUE;
+                                //systembill.Payment_Plan_Balance_to_Distribute__c = 300;
+                                update systembill;
+                        }
+
+                }
+
+// insert 8 more months with same property and SSS as other Bills
+
+        for(System_Bill__c systemBill : systemBillList){
+
+            if (systembill.Bill_Number__c == 1){
+
+                integer j;
+                list <System_Bill__c> sbstoupdate = new list <System_Bill__c>();                     
+
+                for(j = 3; j < 10 ; j++){
+                    boolean refund = FALSE;
+                    boolean latefee = FALSE;
+                    decimal addamount = 0; 
+
+                    if(j==4){
+                        refund = TRUE;
+                        addamount = 20;
+                    }
+
+                    if(j==5){
+                        latefee = TRUE;
+                        refund = TRUE;
+                        addamount = 20;
+                    }
+
+
+                    Account_Bill__c accbillthree = new Account_Bill__c (
+                        Bill_Number__c = j,
+                        Parent_Account__c = systemBill.Property_Account_Id__c,
+                        Name = 'First Last Month 2016' + j,
+                        Unique_ID__c = '000111000111000111FAS' + j 
+                        );
+
+                    system.debug(accbillthree);
+                    insert accbillthree;
+
+                    System_Bill__c billthree = new System_Bill__c (
+                        Shared_Solar_System__c = systembill.Shared_Solar_System_Id__c,
+                        Shared_Solar_System_ID2__c = systembill.Shared_Solar_System_Id__c,
+                        Bill_Number__c = j,
+                        Account_Bill__c = accbillthree.id,
+                        Property_Account__c = systemBill.Property_Account_Id__c,
+                        Refund_This_Balance__c = refund,
+                        Amount_to_Add__c = addamount,
+                        Waive_Late_Fees__c = latefee,
+                        Name = 'First Last March 2016' + j,
+                        Unique_ID__c = '000111000111000111FAS' + j
+                        );
+
+                    sbstoupdate.add(billthree);
+
+                    //insert billthree; 
+                }
+
+                insert sbstoupdate;
+            }
+        }
+
+        List <System_Bill__c> updatedsystemBillList = [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, Shared_Solar_System__c, Property_Account_ID__c FROM System_Bill__c];
+        system.debug(updatedsystemBillList);
+
+
+        Test.StartTest();
+        for(System_Bill__c sbs : updatedsystemBillList){
+            system.debug(sbs.YTD_Payments__c);
+            system.debug(sbs.YTD_Billed__c);
+            // First bill does not have a payment, so no payments that month
+            if(sbs.Bill_Number__c == 1){
+                system.debug(sbs.Total_Payments_This_Month__c);
+                System.assert(sbs.Total_Due__c > 0);
+                System.assert(sbs.Late_Payments__c > 0);
+                System.assert(sbs.Total_Payments_This_Month__c == 0);
+            }
+
+            // Second bill has a payment, so balance should be zero and Late Fees should be waived
+            if(sbs.Bill_Number__c == 2){
+                system.debug(sbs.Balance_Net_Late_Payments__c);
+                System.assert(sbs.Total_Due__c > 0);
+                System.assert(sbs.Late_Fees__c == 0);
+                System.assert(sbs.Late_Payments__c == 0);
+                System.assert(sbs.Total_Payments_This_Month__c > 0);
+            }
+
+            // Month 2 Payment Plan should run for bill number 3 through 8 and there should be an Adjustment on bill 4
+            if(sbs.Bill_Number__c == 3){
+                system.debug(sbs.Payment_Plan_Balance__c);
+                System.assert(sbs.Payment_Plan_Balance__c > 0);
+                System.assert(sbs.Total_Due__c > 0);
+            }
+
+            if(sbs.Bill_Number__c == 4){
+                system.debug(sbs.Total_Due__c);
+                System.assert(sbs.Total_Due__c > sbs.Payment_Plan_Balance__c);
+            }
+
+            if(sbs.Bill_Number__c == 8){
+                system.debug(sbs.Payment_Plan_Balance__c);
+                System.assert(sbs.Payment_Plan_Balance__c > 0);
+            }
+
+            if(sbs.Bill_Number__c == 9){
+                system.debug(sbs.Payment_Plan_Balance__c);
+                System.assert(sbs.Payment_Plan_Balance__c == 0);
+            }
+        }
+
+        Test.StopTest();
+
 }
 }
