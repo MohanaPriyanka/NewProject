@@ -63,6 +63,8 @@ public with sharing class PCRApprovalHandler {
                  if(newPCR.get(j).Co_Applicant__c == TRUE || newPCR.get(j).LASERCA__Contact__c != NULL) {annualincome = newPCR.get(j).Co_Applicant_Income__c;}
 
             decimal monthlypayment = newPCR.get(j).Monthly_Payment_IBLS_From_Lead__c;
+            System.debug('The Loan Rate is ' + newPCR.get(j).LASERCA__Lead__r.Loan_Interest_Rate_Product__c);
+            System.debug('The Loan Amount is ' + newPCR.get(j).LASERCA__Lead__r.Loan_Amount__c);
             integer creditscore = integer.valueof(newPCR.get(j).LASERCA__Credit_Score_TransUnion__c);
             boolean manualapproval = newPCR.get(j).Solar_Loan_Manual_Approval__c;
             boolean manualdecline = newPCR.get(j).Solar_Loan_Manual_Decline__c;
@@ -205,54 +207,55 @@ public with sharing class PCRApprovalHandler {
         
           if(newPCR.get(j).Credit_PreApproval_Email_Sent__c == FALSE && Prequal_approval == 'Pre-Qualified' && newPCR.get(j).PreApproval_Form__c==TRUE && newPCR.get(j).LASERCA__Contact__c == NULL){
           
-                  if(firstname != NULL && lastname != NULL && email != NULL && referralcode !=NULL){
+    //              if(firstname != NULL && lastname != NULL && email != NULL && referralcode !=NULL){
                   
-                                  EmailTemplate et = [Select id, HtmlValue, Body from EmailTemplate where DeveloperName = 'RS_DOER_PreQualification_Approval'];
-                              system.debug(et);
-                              string htmlbody = et.HtmlValue;
-                              htmlBody = htmlBody.replace('{!Lead.Name}', firstname);
-                              htmlBody = htmlBody.replace('{!Lead.FirstName}', firstname);
-                              htmlBody = htmlBody.replace('{!Lead.LastName}', lastname);
-                              htmlBody = htmlBody.replace('{!Lead.Email}', email);
-                              htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',newPCR.get(j).PCR_Lead_ID__c );
-                              htmlBody = htmlBody.replace('{!Lead.Custom_ID__c}', referralcode);
+    //                              EmailTemplate et = [Select id, HtmlValue, Body from EmailTemplate where DeveloperName = 'RS_DOER_PreQualification_Approval'];
+    //                          system.debug(et);
+    //                          string htmlbody = et.HtmlValue;
+    //                          htmlBody = htmlBody.replace('{!Lead.Name}', firstname);
+    //                          htmlBody = htmlBody.replace('{!Lead.FirstName}', firstname);
+    //                          htmlBody = htmlBody.replace('{!Lead.LastName}', lastname);
+    //                          htmlBody = htmlBody.replace('{!Lead.Email}', email);
+    //                          htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',newPCR.get(j).PCR_Lead_ID__c );
+    //                          htmlBody = htmlBody.replace('{!Lead.Custom_ID__c}', referralcode);
 
-                                            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-                                            //  String[] toAddresses;
-                                            //   toAddresses.add(email);
-                                            // mail.setToAddresses(toAddresses);
-                                            // mail.setReplyTo('info@bluewave-capital.com');
-                                            // setOrgWideEmailAddressId(0D2j00000004JnV);
-                                            // mail.setSenderDisplayName('BlueWave Customer Care');
-                                            // mail.setTemplateId(et.Id);
-                                            mail.setHtmlBody(htmlBody);
+    //                                        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+    //                                        //  String[] toAddresses;
+    //                                        //   toAddresses.add(email);
+    //                                        // mail.setToAddresses(toAddresses);
+    //                                        // mail.setReplyTo('info@bluewave-capital.com');
+    //                                        // setOrgWideEmailAddressId(0D2j00000004JnV);
+    //                                        // mail.setSenderDisplayName('BlueWave Customer Care');
+    //                                        // mail.setTemplateId(et.Id);
+    //                                        mail.setHtmlBody(htmlBody);
                                             
-                                           for(OrgWideEmailAddress owa : [select id, Address from OrgWideEmailAddress]) {
-                                           if(owa.Address.contains('info')) mail.setOrgWideEmailAddressId(owa.id); 
-                                           system.debug(owa.id);
-                                           }
+    //                                       for(OrgWideEmailAddress owa : [select id, Address from OrgWideEmailAddress]) {
+    //                                       if(owa.Address.contains('info')) mail.setOrgWideEmailAddressId(owa.id); 
+    //                                       system.debug(owa.id);
+    //                                       }
 
                                             
-                                            if(newPCR.get(j).Partner_Email__c != NULL){
-                                            String partneremail = newPCR.get(j).Partner_Email__c;
-                                            String[] ccAddresses = new String[] {partneremail};
-                                            mail.setccAddresses(ccAddresses);
-                                            system.debug(ccAddresses);
-                                            }
+    //                                        if(newPCR.get(j).Partner_Email__c != NULL){
+    //                                        String partneremail = newPCR.get(j).Partner_Email__c;
+    //                                        String[] ccAddresses = new String[] {partneremail};
+    //                                        mail.setccAddresses(ccAddresses);
+    //                                        system.debug(ccAddresses);
+    //                                        }
                                             
-                                            string subject = 'Congrats! ' +  firstname + ', you have been prequalified for a BlueWave Mass Solar Loan'; 
-                                            mail.setSubject(subject);
-                                            mail.setTargetObjectId(newPCR.get(j).PCR_Lead_ID__c);
-                                            system.debug(newPCR.get(j).PCR_Lead_ID__c);
-                                            system.debug(newPCR.get(j).LASERCA__Lead__c);
+    //                                        string subject = 'Congrats! ' +  firstname + ', you have been prequalified for a BlueWave Mass Solar Loan'; 
+    //                                        mail.setSubject(subject);
+    //                                        mail.setTargetObjectId(newPCR.get(j).PCR_Lead_ID__c);
+    //                                        system.debug(newPCR.get(j).PCR_Lead_ID__c);
+    //                                        system.debug(newPCR.get(j).LASERCA__Lead__c);
 
 
                                                 
-                                            Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    //                                        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
           
 
-              newPCR.get(j).Credit_PreApproval_Email_Sent__c = TRUE;
-    }}
+    //          newPCR.get(j).Credit_PreApproval_Email_Sent__c = TRUE;
+    //}
+  }
     }
     }   // End if statement for null monthly debt
     }   // End if statement for old records to not trigger

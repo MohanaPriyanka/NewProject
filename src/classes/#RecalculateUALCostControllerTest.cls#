@@ -176,6 +176,12 @@ public class RecalculateUALCostControllerTest {
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
                                            Shared_Solar_System__c = sss8.Id);
+        Opportunity opp9 = new Opportunity(Name = 'Opp8',
+                                           StageName = 'Closed won',
+                                           CloseDate = System.today(),
+                                           AccountId = propertyAcc.Id,
+                                           NMC_Tariff__c = nmcRate.Id,
+                                           Shared_Solar_System__c = sss8.Id);
         insert new List<Opportunity>{opp1, opp2, opp3, opp4, opp5, opp6, opp7, opp8};
 
         Utility_Account_Log__c ual = 

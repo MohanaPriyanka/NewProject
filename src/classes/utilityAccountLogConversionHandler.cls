@@ -15,25 +15,28 @@ public with sharing class utilityAccountLogConversionHandler {
         Map<Id, Id> accountMap = new Map<Id, Id>();
 
         for(Lead L : leadsList){
-             if (l.isConverted && l.convertedAccountId != null){
+             if (l.isConverted && l.convertedAccountId != null && l.Product_Line__c == 'Community Solar'){
                       feedback2OppId.put(l.Id, l.convertedAccountId);
                       accountMap.put(l.convertedAccountId,l.convertedAccountId);
             }
         }
-         List<utility_account_log__c> ual = [SELECT Lead__c, Opportunity__c, Account__c 
-                                             FROM Utility_account_log__c 
-                                             WHERE Lead__c IN :feedback2OppId.keySet()];
-        for (utility_account_log__c u : ual){
-            u.Account__c = feedback2OppId.get(u.Lead__c);
-        }            
-        update ual;
-        List<account> acc = [SELECT UAL_convert__c 
-                             FROM Account 
-                             WHERE Id 
-                             IN :accountMap.keySet()];
-        for (Account a : acc){
-            a.UAL_convert__c = TRUE;
-        }    
-        update acc;
+
+        if(accountMap.size() > 0){
+                 List<utility_account_log__c> ual = [SELECT Lead__c, Opportunity__c, Account__c 
+                                                     FROM Utility_account_log__c 
+                                                     WHERE Lead__c IN :feedback2OppId.keySet()];
+                for (utility_account_log__c u : ual){
+                    u.Account__c = feedback2OppId.get(u.Lead__c);
+                }            
+                update ual;
+                List<account> acc = [SELECT UAL_convert__c 
+                                     FROM Account 
+                                     WHERE Id 
+                                     IN :accountMap.keySet()];
+                for (Account a : acc){
+                    a.UAL_convert__c = TRUE;
+                }    
+                update acc;
+        }
     }
 }

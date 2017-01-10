@@ -3,6 +3,11 @@ private class TestCustomerPortalControllers {
 
 Static testMethod void TestCustomerPortalControllers(){
 
+/*
+
+---------------------------------------REPLACED BY COMMUNITYSOLARCUSTOMERPORTALTEST ------------------------------------------------------------------------------
+
+
 Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (
     Name = 'Eversource SEMA Class 2', 
     Load_Zone__c = 'SEMA',
@@ -32,9 +37,10 @@ Load_U__c everLZU = new Load_U__c (
 
     Insert everLZU;
 
-Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
+Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. FR-2',
                               Service_Territory__c = 'SEMA',
                               Open__c = true,
+                              Auto_Payment_Form__c = true,
                               Reserved_Capacity_kW_DC__c = '0',
                               Capacity_Committed_kW_DC__c = 0,
                               Total_System_Size_kWh_DC__c = 1445.86,
@@ -48,16 +54,20 @@ Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett 
                               Maximum_Subscription_Assemblage__c = 25);
 insert new List<Shared_Solar_System__c>{sss1};
 
-Energy_Usage_Update__c pu = new Energy_Usage_Update__c(Date__c = Date.today(), Production__c = 2, Shared_Solar_System__c = sss1.Id);
-insert pu; 
+//Energy_Usage_Update__c pu = new Energy_Usage_Update__c(Date__c = Date.today(), Production__c = 2, Shared_Solar_System__c = sss1.Id);
+//insert pu; 
+
 
 Id p = [select id from profile where name='Community Solar Community User'].id;
 
-Account accountA = new Account(name = 'Account A', RecordTypeId = '012j00000010Ha3'); 
+Account accountA = new Account(name = 'Account A', RecordTypeId = '012j00000010Ha3', Product_Line__c ='Community Solar'); 
 insert accountA;
+
 List <String> parentaccountIDs = new List<String>{ 
     'accountA.id'
 };
+
+
 
 Contact c = new Contact(FirstName='test', LastName ='testDashboard', Account = accountA, AccountId = accountA.Id);
 insert c;
@@ -66,22 +76,23 @@ User u = new User(alias = 'testDash', email='testdash@test.test', emailencodingk
                   languagelocalekey='en_US', localesidkey='en_US', profileid = p, country='United States', 
                   IsActive =true, Contact = c, ContactId = c.Id, timezonesidkey='America/New_York', username='testdashboard@test.test');
 insert u;
-
-system.runAs(u){
-Account propertyAccountA = new Account(name = 'Property Account A', Product_Line__c = 'Community Solar', Parent_Account__c = accountA.Id);
+System.runAs(u){
+System.debug('USER ID IS ' + u.Contact.Account_Id__c);
+Account propertyAccountA = new Account(Name = 'Property Account A', Product_Line__c = 'Community Solar', 
+                                        Parent_Account__c = accountA.Id);
 insert propertyAccountA;
-
 Utility_Account_Log__c ual = new Utility_Account_Log__c(Name = '00X1ACS',
                                                         Annual_Cost_of_Electricity__c = 10000,
                                                         Name_on_Account__c = 'Joey Chan',
                                                         Account__c = propertyAccountA.Id);
 insert ual; 
 Date myCloseDate = Date.newInstance(2016, 1, 1);
+
 Opportunity opp = new Opportunity(Name = 'Cole Swain',
                                     AccountId = propertyAccountA.Id, 
                                     Shared_Solar_System__c = sss1.Id, 
                                     StageName = 'Complete',
-                                    closeDate = myCloseDate,
+                                    CloseDate = myCloseDate,
                                     NMC_Tariff__c = everSizeNMC.Id,
                                     Customer_Group__c = 'Residential',
                                     Annual_Electricity_Cost2__c = 6000,
@@ -104,28 +115,45 @@ system.debug(Logginglevel.info,'UAS Insertion ' + uas);
 
 Date myDateJan = Date.newInstance(2016, 1, 1);
 
-Account_Bill__c ab = new Account_Bill__c(Name = uas.Opportunity__r.Account.Name + ' ' + myDateJan.month() + ' ' + myDateJan.year(), 
+Account_Bill__c ab = new Account_Bill__c(Name = propertyAccountA.Name + ' ' + myDateJan.month() + ' ' + myDateJan.year(), 
                                         Date__c =  myDateJan,
                                         Parent_Account__c = propertyAccountA.Id,
                                         Bill_Number__c = 1);                                                         
 ab.Unique_Id__c = uas.Opportunity__r.Account.Id + ' ' + DateTime.newInstance(myDateJan.year(), myDateJan.month(),myDateJan.day()).format('yyyy-MM');
 insert ab;
 
-system.debug(Logginglevel.info,'AB Insertion ' + ab);
+String abStringId = string.valueOf(ab.Id);
+String abSubStringId = abStringId.subString(0,15);
+
+Blob bodyBlob = Blob.valueOf('Test Attachment');
+Attachment attach = new Attachment();
+attach.Name = 'Test Attachment'; 
+attach.Body = bodyBlob; 
+attach.ParentId = ab.Id;
+Insert attach;
+System.debug('Attachment debug');
+System.debug(attach.Id);
+System.debug(attach.ParentId);
+System.debug(ab.Id);
 
 System_Bill__c sb = new System_Bill__c(Name = opp.Name + ' ' + sss1.Name + ' ' + myDateJan.Month() + ' ' + myDateJan.Year(),                                                           
                                         Shared_Solar_System__c = sss1.Id,
                                         Account_Bill__c = ab.Id,
                                         Date__c =  myDateJan,
+                                        Unique_Id__c = opp.Name + ' ' + sss1.Name + ' ' + DateTime.newInstance(myDateJan.year(), myDateJan.month(),myDateJan.day()).format('yyyy-MM'),
                                         Bill_Number__c = 1,
+                                        Opportunity__c = opp.Id,
                                         Due_this_month__c = 100,
                                         Previous_month_overdue_balance__c = 0,
                                         Total_due__c = 100,
                                         Balance_net_late_payments__c = 100,
                                         Carry_over_balance__c = 100,
                                         Property_Account__c = propertyAccountA.Id);
-sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(myDateJan.year(), myDateJan.month(),myDateJan.day()).format('yyyy-MM');
+
+//sb.Unique_Id__c = opp.Name + ' ' + sss1.Name + ' ' + DateTime.newInstance(myDateJan.year(), myDateJan.month(),myDateJan.day()).format('yyyy-MM');
 insert sb;
+System.debug('sb account id' + ' ' + ab.Account_ID__c);
+System.debug('userId' + ' ' + u.Parent_Account_ID__c);
 
 system.debug(Logginglevel.info,'System Bill Insertion ' + sb);
 
@@ -148,7 +176,7 @@ UASB__c uasb = new UASB__c( Name = uas.Name + uas.Opportunity__r.Shared_Solar_Sy
                             Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC__c,
                             CS_Billing_Log__c = uab.Id, 
                             Date__c = uab.Date__c,
-                            //Production_Update__c = uab.Production_Update__c,
+                            //Production_Update__c = uab.Production_Update__c44,
                             Utility_Account_Subscription__c = uas.Id,  
                             Opportunity__c = uas.Opportunity__c,
                             System_Bill__c = sb.Id,
@@ -159,14 +187,13 @@ UASB__c uasb = new UASB__c( Name = uas.Name + uas.Opportunity__r.Shared_Solar_Sy
 uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
 insert uasb;
 
-system.debug(Logginglevel.info,'UASB Insertion ' + uasb);
-
-system.debug(Logginglevel.info, u.Parent_Account_ID__c);
-system.debug(Logginglevel.info, u.Contact.Account.Id);
+MyAccountController.getStatement(ab.Id);
 
 Test.startTest();
-
         MyAccountController.getMenuLabelList();
+        MyAccountController.getPaymentFormCheck();
+        MyAccountController.getPropertyAccountId(propertyAccountA.Id);
+        MyAccountController.getMyParentAccountId('All');
         MyAccountController.getMyBill('All');       
         MyAccountController.getMyBill(String.valueOf(propertyAccountA.Id).substring(0, 15));
         MyAccountController.getSystemBills('All');
@@ -193,7 +220,14 @@ Test.startTest();
         UsageChartController.getAll();                                               
         MyAccountController.getCode();                                 
         MyAccountController.sendEmail('test@test.test');                     
- Test.stopTest(); 
+Test.stopTest(); 
 }
+
+sss1.Auto_Payment_Form__c = false;
+update sss1;
+
+system.runAs(u){
+   MyAccountController.getPaymentFormCheck(); 
+}*/
 }
 }

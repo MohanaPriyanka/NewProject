@@ -50,6 +50,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                             Opportunity__r.Shared_Solar_System__r.Name,
                                                           //Subscription_Key__c, 
                                                             UAS_Number__c,
+                                                            Share_of_System__c ,                                                            
                                                             Utility_Account_Log__c,
                                                             Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c, 
                                                             Opportunity__r.NMC_Value__c, 
@@ -87,10 +88,10 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Shared_Solar_System__c = uas.Opportunity__r.Shared_Solar_System__c,
                                             Total_System_Size_kW_DC__c = uas.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                             NMC_Rate__c = nmcMap.get(uab.NMC_Rate_ID__c).Value_of_Net_Metering_Credit__c,
-                                            Total_System_Production_kWh__c = uab.Production_kWh_DC__c);
-                                            //Total_System_NMCs__c = uab.Total_System_NMCs__c,
-                                            //Size_off_NMCs__c = uab.Size_off_NMCs__c,
-                                            //Share_of_System__c = uas.Share_of_System__c);
+                                            Total_System_Production_kWh__c = uab.Production_kWh_DC__c,                                                                                       
+                                            Total_System_NMCs__c = uab.Total_System_NMCs__c,
+                                            Size_off_NMCs__c = uab.Size_off_NMCs__c,
+                                            Share_of_System__c = uas.Share_of_System__c);
                     uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                     uasbSet.add(uasb);
                     system.debug(LoggingLevel.Info, uasb);                   
