@@ -11,6 +11,8 @@ global with sharing class DynamicToStaticSubscriptionHandler {
                                     Customer_Subscription_KW_DC__c FROM Utility_Account_Subscriptions__r)
                                    FROM Opportunity
                                    WHERE Shared_Solar_System__r.id = : sssId]){
+            // If there are multiple opportunities, make sure each opp gets it's own subscription value counter
+            updatedSubscriptionValueOnOpp = 0;
             for(Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r){
                 uasList.add(uas);
                 updatedSubscriptionValueOnOpp = updatedSubscriptionValueOnOpp + uas.Customer_Subscription_KW_DC__c;
@@ -21,12 +23,6 @@ global with sharing class DynamicToStaticSubscriptionHandler {
         for(i=0;i<uasList.size();i++){
             uasList.get(i).Customer_Subscription_KW_DC_STATIC__c = uasList.get(i).Customer_Subscription_KW_DC__c;
         }   
-        /*for(Utility_Account_Subscription__c uas : [SELECT Id, Name, Opportunity__r, Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c
-                                                         FROM Utility_Account_Subscription__c   
-                                                         WHERE Opportunity__r.Shared_Solar_System__r.Id = : sssId]){
-            uas.Customer_Subscription_KW_DC_STATIC__c = uas.Customer_Subscription_KW_DC__c;
-            uasList.add(uas);
-        }*/
         update uasList;
         update oppList;
         return null;
