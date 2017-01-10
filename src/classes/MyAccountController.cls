@@ -1,32 +1,91 @@
-public with sharing class MyAccountController {
+public without sharing class MyAccountController {
  @AuraEnabled
     public static List<Account> getMenuLabelList() {
     list<Account> propertyAccountLabelList = new list<Account>();
-    User u = [Select Id, ContactId, Parent_account_id__c, Contact.Account.Id  from User where Id = :UserInfo.getUserId()];
-    String userAccountId = (string)u.Contact.Account.Id;    
-    system.debug(LoggingLevel.info, u.Parent_account_id__c);    
-    system.debug(LoggingLevel.info, u.Id);   
-    for(Account propertyAccount : [SELECT Id, name, Parent_Account_ID__c FROM Account WHERE Parent_Account_ID__c = : u.Parent_account_id__c]){
-        system.debug(LoggingLevel.info, propertyAccount.Parent_Account_ID__c);
+    User u = [SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  FROM User WHERE Id = :UserInfo.getUserId()];
+    System.debug('The user is ' + u.Parent_account_id__c);
+    String userAccountId = (string)u.Contact.Account.Id;      
+    for(Account propertyAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c FROM Account WHERE Parent_Account__c = : u.Contact.AccountId]){
+        System.debug('The returned propertyAccount is ' + propertyAccount);
         propertyAccountLabelList.add(propertyAccount);
     }    
-    system.debug(LoggingLevel.info, propertyAccountLabelList);
     return propertyAccountLabelList;
     }
-    
-  @AuraEnabled
-   public static string getMenuAccountBillItem(string menuInput) {
-      system.debug(menuInput);
-      return menuInput+ ' ' + ' has been selected';
-  } 
+
+@AuraEnabled
+  public static boolean getPaymentFormCheck () {
+    List<Opportunity> nonChargentFormList = new List<Opportunity>();
+    List<Opportunity> chargentFormList = new List<Opportunity>();
+
+    User u = [SELECT Id, ContactId, Parent_Account_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
+   
+    for (Shared_Solar_System__c sss : [SELECT Id, Name, Auto_Payment_Form__c, 
+                                        (SELECT Id, Name, Account.Parent_Account__r.Id, Account.Parent_Account__c
+                                        FROM Opportunities__r WHERE stageName = 'Complete' 
+                                        AND Account.Parent_Account__c = : u.Parent_Account_ID__c )
+                                      FROM Shared_Solar_System__c]){     
+      System.debug(LoggingLevel.info, sss.Opportunities__r.size());
+      for (Opportunity opp : sss.Opportunities__r){
+        System.debug(Logginglevel.info, 'The Opp Account ID is ' + ' ' + String.valueOf(opp.Account.Parent_Account__r.Id).substring(0,15));
+        System.debug(Logginglevel.info, 'The user account ID is ' + ' ' + u.Parent_Account_ID__c);
+
+        //if (String.valueOf(opp.Account.Parent_Account__r.Id).substring(0,15) == u.Parent_Account_ID__c){
+          if (sss.Auto_Payment_Form__c == true){
+            nonChargentFormList.add(opp);
+          } else {
+            chargentFormList.add(opp);
+          }
+        //}
+      }
+    }      
+    System.debug(Logginglevel.info, 'The nonChargentFormList size ' + ' ' + nonChargentFormList.size());
+    System.debug(Logginglevel.info, 'The ChargentFormlist size ' + ' ' + chargentFormList.size());   
+
+    if (nonChargentFormList.size() > 0 && chargentFormList.size() <= 0 ){
+    System.debug(Logginglevel.info, 'true');   
+        return true;
+    } else {
+    System.debug(Logginglevel.info, 'false ');
+        return false;
+    }
+  }
+  
+//@AuraEnabled
+//  public static boolean getPaymentFormCheck () {
+//    List<System_Bill__c> nonChargentFormList = new List<System_Bill__c>();
+//    List<System_Bill__c> chargentFormList = new List<System_Bill__c>();
+
+//    User u = [SELECT Id, ContactId, Parent_Account_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
+
+//    for (System_Bill__c systemBill : [SELECT Id, Name, Shared_Solar_System__r.Name, Shared_Solar_System__r.Id, 
+//                                             Shared_Solar_System__r.Auto_Payment_Form__c
+//                                     FROM System_Bill__c 
+//                                     WHERE Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c ]){
+//      if (systemBill.Shared_Solar_System__r.Auto_Payment_Form__c == true){
+//        nonChargentFormList.add(systemBill);
+//      } else {
+//        chargentFormList.add(systemBill);
+//      }
+//    }
+//    if (nonChargentFormList.size() <= 0){
+//        return false;
+//    } else if (nonChargentFormList.size() > 0 && chargentFormList.size() <= 0){
+//        return true;
+//    } else {
+//        return false;
+//    }
+//  } 
+
+  //@AuraEnabled
+  // public static string getMenuAccountBillItem(string menuInput) {
+  //    return menuInput+ ' ' + ' has been selected';
+  //} 
     @AuraEnabled
    public static string getPropertyAccountId(string propertyAccountId) {
-      system.debug(propertyAccountId);
       return propertyAccountId;
   }       
     @AuraEnabled
    public static Decimal getMyBill(string propertyAccountId) {
-     system.debug(LoggingLevel.info, propertyAccountId);
      User u = [Select Id, ContactId, Parent_Account_ID__c from User where Id = :UserInfo.getUserId()];
      Map<Id, Decimal> maxBillMap = new Map<Id,Decimal>();
      decimal totalBalance = 0;   
@@ -58,28 +117,28 @@ public with sharing class MyAccountController {
           }
           else{
           check = 2;
-            Account propertyAccountBalance = [Select Id, Total_Outstanding_Balance__c
+            Account propertyAccountBalance = [Select Id, Total_Outstanding_Balance__c  
                                 from Account 
-                                where Id = : propertyAccountId];
-            system.debug(logginglevel.info, propertyAccountBalance.Total_Outstanding_Balance__c);
-            system.debug(logginglevel.info, propertyAccountId);   
-            system.debug(logginglevel.info, propertyAccountBalance.Id);                                                   
+                                where Id = : propertyAccountId];                                                  
             if(propertyAccountBalance.Total_Outstanding_Balance__c != null){
                 totalBalance = propertyAccountBalance.Total_Outstanding_Balance__c;
             }
           }
-        system.debug(loggingLevel.info,check);                 
         }    
         catch(Exception ex) {         
         }
       }
-      system.debug(LoggingLevel.info, totalBalance);
       return totalBalance;   
    }
 
     @AuraEnabled
     public static List<System_Bill__c> getSystemBills(string propertyAccountId) {
-      system.debug(loggingLevel.info,propertyAccountId);
+      System.debug(LoggingLevel.info, propertyAccountId);
+      System.debug(Logginglevel.info, 'System Bill lookup check');
+      List<System_Bill__c> sbList = [SELECT ID, Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Account_ID__c 
+                                     FROM System_Bill__c];
+      List<Account> accountLIst = [SELECT Id, Name FROM Account];
+      System.debug(sbList);                                     
       User u = [Select Id, ContactId, Parent_Account_ID__c, Contact.Account.Id from User where Id = :UserInfo.getUserId()]; 
       String userAccountId = (string)u.Contact.Account.Id;    
       List<System_Bill__c> systemBillList = new List<System_Bill__c>();
@@ -91,17 +150,6 @@ public with sharing class MyAccountController {
       integer check = 0;      
       if(propertyAccountId == 'All' || propertyAccountId == null){
         check = 1;
-        /**aggregateResult sbMax= [Select  max(Bill_Number__c)maxBillNumber
-                                                FROM System_Bill__c    
-                                                WHERE Account_Bill__r.Account_ID__c  = : u.Parent_Account_Id__c];   
-        for(System_Bill__c systemBills : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Shared_Solar_System__r.Id,  Bill_Number__c, Name
-                                          FROM System_Bill__c WHERE Bill_Number__c = : maxBillNumberDecimal 
-                                          AND Account_Bill__r.Account_ID__c  = : u.Parent_Account_Id__c
-                                          ]){                                                    
-                                                  systemBillList.add(systemBills);
-                                                  system.debug(LoggingLevel.info, 'System Bills are ' + systemBills.Name);
-                                                  system.debug(LoggingLevel.info, 'System Billing Number is ' + systemBills.Bill_Number__c);                                                  
-          }       */
         aggregateResult[] sbMax= [Select Shared_Solar_System__c, max(Bill_Number__c)maxBillNumber
                                                 FROM System_Bill__c                                         
                                                 WHERE Account_Bill__r.Account_Id__c   = : u.Parent_account_id__c
@@ -122,43 +170,6 @@ public with sharing class MyAccountController {
                                                   }
           }
         }
-
-      /*
-      The following code will be used in an update and is necessary to show the most recent system bills on the payment form.
-      if(propertyAccountId == 'All' || propertyAccountId == null){
-        check = 1;
-        for(System_Bill__c sb : [SELECT Id, Name, Bill_Number__c, Shared_Solar_System__r.Id, Shared_Solar_System__c FROM System_Bill__c WHERE Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c]){
-            systemBills.add(sb);
-            systemBillsMap.put(sb.Id, sb);
-          }    
-        system.debug(LoggingLevel.info, 'SystemBills List is : ' + systemBills);   
-        for(Shared_Solar_System__c sssMax : [SELECT Id, Name FROM Shared_Solar_System__c]){
-          for(j=0;j<systemBills.size();j++){
-            if(systemBills.get(j).Shared_Solar_System__c == sssMax.Id){
-              maxBillListGroupedbySSS.add(systemBills.get(j));
-            }
-          }
-         
-          for(c=0;c<maxBillListGroupedbySSS.size();c++){
-            if(maxBillListGroupedbySSS.get(i).Bill_Number__c > billMaximum){
-              system.debug(LoggingLevel.info, 'Begin running through the Grouped SSS list');  
-              system.debug(LoggingLevel.info, 'The ' + i + '  record is' + maxBillListGroupedbySSS.get(i));                  
-              system.debug(LoggingLevel.info, 'The Bill Max before is' + billMaximum);
-              system.debug(LoggingLevel.info, 'The Bill Id before is' + billId);                 
-              billMaximum = maxBillListGroupedbySSS.get(i).Bill_Number__c;
-              system.debug(LoggingLevel.info, 'The Bill Max after is' + billMaximum); 
-              system.debug(LoggingLevel.info, 'The Bill Id after is' + billId);                             
-              billId = maxBillListGroupedbySSS.get(i).Id;             
-            }
-          }
-          systemBillList.add(systemBillsMap.get(billId));
-          billMaximum = 0;
-          billId = null; 
-          maxBillListGroupedbySSS.clear();
-        }
-        }*/ 
-
-
 
       else{
         aggregateResult[] sbMax = [Select Shared_Solar_System__c, max(Bill_Number__c)maxBillNumber
@@ -183,68 +194,6 @@ public with sharing class MyAccountController {
       return systemBillList;  
     }  
 
-
-//The following method is written because the lightning component attribute systemBills will not take System_Bill__c as a type. Therefore there must be two attributes and the object can't be stored.
-    /*@AuraEnabled
-    public static List<Id> getSystemBillsIds (string propertyAccountId) {
-      system.debug(loggingLevel.info,propertyAccountId);
-      User u = [Select Id, ContactId, Parent_Account_ID__c from User where Id = :UserInfo.getUserId()];
-      List<Id> systemBillIdList = new List<Id>();
-      decimal systemBillNumber;
-      decimal totalDue;
-      integer check = 0;      
-      if(propertyAccountId == 'All' || propertyAccountId == null){
-        check = 1;
-        aggregateResult maxSystemBillNumber = [SELECT max(Bill_number__c)maxSystemBillNumberVar FROM System_Bill__c where Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c];   
-        systemBillNumber = (decimal)maxSystemBillNumber.get('maxSystemBillNumberVar');
-        system.debug(LoggingLevel.info, systemBillNumber);
-        for(System_bill__c systemBill : [select Id, Total_Due__c, Shared_solar_system__r.Name  
-             from System_Bill__c
-             where Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
-             and Bill_number__c = : systemBillNumber 
-             order by Shared_solar_system__r.Name DESC]){
-                 systemBillIdList.add(systemBill.Id);
-                 system.debug(LoggingLevel.info, systemBillIdList);
-        }
-      }         
-      else{
-        aggregateResult maxSystemBillNumber = [SELECT max(Bill_number__c)maxSystemBillNumberVar FROM System_Bill__c where Account_Bill__r.Parent_Account__r.Id = : propertyAccountId];   
-        systemBillNumber = (decimal)maxSystemBillNumber.get('maxSystemBillNumberVar');
-        system.debug(LoggingLevel.info, systemBillNumber);
-        for(System_bill__c systemBill : [select Id, Total_Due__c, Shared_solar_system__r.Name  
-             from System_Bill__c
-             where Account_Bill__r.Parent_Account__r.Id  = : propertyAccountId
-             and Bill_number__c = : systemBillNumber 
-             order by Shared_solar_system__r.Name DESC]){
-                systemBillIdList.add(systemBill.Id);
-                system.debug(LoggingLevel.info, systemBillIdList);                 
-      }
-    }
-    return systemBillIdList;        
-    } 
-
- @AuraEnabled
-   public static Id getMyAccountBillId() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     id myAccountBill;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab = [Select Id, Month__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab.Id != null)
-            myAccountBill = ab.Id;           
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return myAccountBill;   
-   }
-   */
      @AuraEnabled
    public static Id getMyParentAccountId(String propertyAccountId) {
     if(propertyAccountId == 'All' || propertyAccountId == null){
@@ -269,50 +218,20 @@ public with sharing class MyAccountController {
     }
   }
 
-    
-/*
-     @AuraEnabled
-   public static date getMyPaymentDueDate() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     date paymentDueDate;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab1 = [Select Id, Month__c, Payment_Due_Date__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab1.Id != null)
-            paymentDueDate = ab1.Payment_Due_Date__c;
-        }
-        catch(Exception ex) {         
-        }
+  @AuraEnabled
+  public static List<Opportunity> getOpportunityIds () {
+    User u = [Select Id, ContactId, Parent_Account_ID__c from User where Id = :UserInfo.getUserId()];
+    List<Opportunity> oppList = new List<Opportunity>();
+    integer check = 0;
+      for(Opportunity opp : [SELECT Id, Name, Shared_Solar_System__r.Id
+                             FROM Opportunity
+                             WHERE Account.Parent_Account__r.Id = : u.Parent_Account_ID__c]){
+        oppList.add(opp);
       }
-      return paymentDueDate;   
-   }
-    @AuraEnabled
-   public static decimal getMySavings() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     decimal savings;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);     
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab2 = [Select Id, Month__c, Savings__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab2.Savings__c != null)
-            savings = ab2.Savings__c;
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return savings;   
-   }*/
+    System.debug(oppList);  
+    return oppList;
+  }
+
   @AuraEnabled
   public static List<Account_Bill__c> getAccountBills (string propertyAccountId) {
     system.debug(loggingLevel.info, propertyAccountId);
@@ -378,94 +297,6 @@ public with sharing class MyAccountController {
     return chargentTransactionsList;
   }  
 
-   /*  @AuraEnabled
-   public static decimal getMyPaymentAmount() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     decimal paymentAmount;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);     
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab3 = [Select Id, Month__c, Payment_Amount__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab3.Payment_Amount__c != null)
-            paymentAmount = ab3.Payment_Amount__c;
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return paymentAmount;   
-   }
-   
-     @AuraEnabled
-   public static decimal getMyDueThisMonth() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     decimal myDueThisMonth;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);     
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab5 = [Select Id, Month__c, Total_Due_This_Month__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab5.Total_Due_This_Month__c != null)
-            myDueThisMonth = ab5.Total_Due_This_Month__c;
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return myDueThisMonth;   
-   }
-     
-     @AuraEnabled
-   public static decimal getMyPreviousOverdueBalance() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     decimal previousOverdueBalance;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);     
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab6 = [Select Id, Month__c, Previous_Month_Overdue_Balance__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab6.Previous_Month_Overdue_Balance__c != null)
-            previousOverdueBalance = ab6.Previous_Month_Overdue_Balance__c;
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return previousOverdueBalance;   
-   }       
-/*
-     @AuraEnabled
-   public static date getDateofLastPayment() {
-     User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
-     date dateOfLastPayment;
-     date currentDate = date.today();
-     integer month = currentDate.month();
-     integer yearInt = currentDate.year();
-     string year = string.valueOf(yearInt);     
-      if(u.ContactId != null) {
-        try {
-          Account_Bill__c ab7 = [Select Id, Month__c, Date_of_Last_Payment__c
-                                from Account_Bill__c 
-                                where Product_Profile__r.Contact__r.Id  = : u.ContactId and Month__c = : month AND Year__c = : year];
-          if(ab7.Date_of_Last_Payment__c != null)
-            dateOfLastPayment = ab7.Date_of_Last_Payment__c;
-        }
-        catch(Exception ex) {         
-        }
-      }
-      return dateOfLastPayment;   
-   }   
-   //this is the end of the code developed by Cole Swain - colemswain@gmail.com*/
    @AuraEnabled
    public static String getCode() {
      User u = [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
@@ -480,30 +311,20 @@ public with sharing class MyAccountController {
       }
       return code;
    }  
-  /*  @AuraEnabled
-public Map<Id,Attachment> getStatementMap(){
-  Map<Id, Attachment> attachmentMap = new Map<Id, Attachment>();
-  User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
-    if(u.ContactId != null) {
-        for(Attachment a : [SELECT Id, Name, ParentId FROM Attachment]){
-            attachmentMap.put(a.ParentId, a);
-        }
-    }
-    return attachmentMap;
-}*/
-    @AuraEnabled
-public static String getStatement(String parentId){
-  system.debug(Logginglevel.info, parentId);
-  String attachmentId;
-  User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
-    if(u.ContactId != null) {
-        Attachment a = [select Id, Name from Attachment 
-            where ParentId =: parentId LIMIT 1 ];
-    attachmentId = a.Id;
+   
+ //   @AuraEnabled
+//public static String getStatement(String parentId){
+//  system.debug(Logginglevel.info, 'attachment ab id ' + parentId);
+//  String attachmentId;
+//  User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
+//    if(u.ContactId != null) {
+//        Attachment a = [select Id, Name from Attachment 
+//            where ParentId =: parentId LIMIT 1 ];
+//    attachmentId = a.Id;
             
-    }
-    return attachmentId;
-}
+//    }
+//    return attachmentId;
+//}
    @AuraEnabled
    public static String sendEmail(String emailAddress) {
      try {

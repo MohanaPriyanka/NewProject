@@ -16,7 +16,6 @@ public with sharing class PaymentGatewayAssignmentHandler {
         List<ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List<ChargentOrders__ChargentOrder__c>();
         system.debug(chOrderList);
         for(ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList){
-            system.debug(chargentOrderVar);
             chargentOrderIdList.add(chargentOrderVar);
         }
         for(ChargentOrders__ChargentOrder__c chargentOrder : [SELECT Id, Name, System_Bill__r.Shared_Solar_System__r.Id, ChargentOrders__Shipping_Name__c
@@ -33,8 +32,6 @@ public with sharing class PaymentGatewayAssignmentHandler {
         system.debug(gatewayMap.size());
         if(gatewayMap.size()>0){
             for(ChargentOrders__ChargentOrder__c chOrder : chargentOrderAssignmentList){
-                //system.debug(chOrder.System_Bill__r.Shared_Solar_System__r.Id);
-                system.debug(gatewayMap.get(chOrder.ChargentOrders__Shipping_Name__c).Id);
                 //Shipping Last name is used because the FormAssembly connectors will only allow fields like these to map SSS ID and System Bill gets updated out of sequence.
                 chOrder.ChargentOrders__Gateway__c = gatewayMap.get(chOrder.ChargentOrders__Shipping_Name__c).Id;
                 chOrderUpdateList.add(chOrder);

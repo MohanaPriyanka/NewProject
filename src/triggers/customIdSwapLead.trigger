@@ -1,6 +1,6 @@
 Trigger customIdSwapLead on Lead (before insert, before update) {
 
-    set <string> customIds = new Set <string>( ); 
+    /*set <string> customIds = new Set <string>( ); 
 
     for ( lead l : trigger.new) {
     
@@ -49,5 +49,5 @@ try{
             l.partner_email__c = null;
     }
 }
-}
+}*/
 }

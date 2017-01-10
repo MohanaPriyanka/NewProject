@@ -1,14 +1,14 @@
 trigger chargentOrderTrigger on ChargentOrders__ChargentOrder__c (before insert, after insert, before update, after update) {
-    //PaymentGatewayAssignmentHandler handler = new PaymentGatewayAssignmentHandler(Trigger.isExecuting, Trigger.size);
+    PaymentGatewayAssignmentHandler handler = new PaymentGatewayAssignmentHandler(Trigger.isExecuting, Trigger.size);
     /*
     if(Trigger.isInsert && Trigger.isAfter){
         handler.OnAfterInsert(Trigger.new);
         //EnergyUsageUpdateTriggerHandler.OnAfterInsertAsync(Trigger.newMap.keySet());
     }*/
     
-    //if(Trigger.isInsert && Trigger.isAfter){
-    // handler.OnAfterInsert(Trigger.new);
-    //}
+    if(Trigger.isInsert && Trigger.isAfter){
+        handler.OnAfterInsert(Trigger.new);
+    }
     //else if(Trigger.isUpdate && Trigger.isBefore){
         //handlerTwo.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
     //}

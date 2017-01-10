@@ -21,11 +21,14 @@ private class LeadTriggerHandlerTest {
                                                                                                                                 Assignment_order__c = '1',
                                                                                                                                 Utility_NMC_Tariff__c = nmcRate.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Assemblage_Count__c = 1,
+                                                                                                                                Assemblage_Count__c = 1,  
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
 
+        
+        sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
         insert sss1;
-
+        
+     
         //Shared_Solar_System__c sss2 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
         //                                                                                                                        Service_Territory__c = 'WCMA',
         //                                                                                                                        Open__c = true,
@@ -60,6 +63,15 @@ private class LeadTriggerHandlerTest {
         system.debug(sss1.Capacity_Available_to_be_Reserved__c);
         system.debug(sss1);      
         
+        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
+        insert Partner;
+        
+        BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
+                                            Partner__c = Partner.Id,
+                                            Custom_ID__c = 'partner');
+                                            
+        insert newSalesTeam;
+        
         Lead lead = (Lead)TestFactory.createSObject(new Lead(LastName = 'Chan',
                                                              FirstName = 'Joey',
                                                              Email = 'test@email.com',
@@ -69,14 +81,33 @@ private class LeadTriggerHandlerTest {
                                                              Company = 'Cloud Jedi',
                                                              Status = 'Qualified',
                                                              Product_Line__c = 'Community Solar',
+                                                             Custom_ID__c = 'partner',
                                                              System_Assignment__c = 'Automatic - Assignment Order'));
         insert lead;
+        
+        Lead lead2 = new Lead (LastName = 'Jordan',
+                                     FirstName = 'Pentaleri',
+                                     Email = 'test@email.com',
+                                     Electricity_Provider__c = 'National Grid',
+                                     Utility_1__c = 'National Grid',
+                                     Load_Zone__c = 'WCMA',
+                                     Company = 'Cloud Jedi',
+                                     Status = 'Qualified',
+                                     Product_Line__c = 'Community Solar',
+                                     System_Assignment__c = 'Automatic - Assignment Order');
+        insert lead2;
 
         LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(new LASERCA__Personal_Credit_Report__c(
                                                                                         LASERCA__Lead__c = lead.Id,
                                                                                         LASERCA__Credit_Score_TransUnion__c = '700'), true);
+                                                                                        
+        LASERCA__Personal_Credit_Report__c pcr2 = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(new LASERCA__Personal_Credit_Report__c(
+                                                                                        LASERCA__Lead__c = lead2.Id,
+                                                                                       LASERCA__Credit_Score_TransUnion__c = '700'), true);
         lead.Personal_Credit_Report__c = pcr.Id;
+        lead2.Personal_Credit_Report__c = pcr2.Id;
         lead.Status = 'Qualified';
+        lead2.Status = 'Qualified';
         update lead;
 
         System.debug([Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territory__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id]);
@@ -86,6 +117,11 @@ private class LeadTriggerHandlerTest {
                                                                                                                   Annual_Cost_of_Electricity__c = 10000,
                                                                                                                   Name_on_Account__c = 'Joey Chan'));
         insert ual;
+        
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(Lead__c = lead2.Id,
+                                                                 Annual_Cost_of_Electricity__c = 10000,
+                                                                 Name_on_Account__c = 'Joey Chan');
+        insert ual2;
 
 
         Test.startTest();
@@ -99,6 +135,13 @@ private class LeadTriggerHandlerTest {
         Database.LeadConvertResult lcr = Database.convertLead(lc);
         System.assert(lcr.isSuccess());
         
+        Database.leadConvert ld = new Database.leadConvert();
+        ld.setLeadId(lead2.id);
+        LeadStatus convertStatus2 = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
+        ld.setConvertedStatus(convertStatus2.MasterLabel);
+        ld.setDoNotCreateOpportunity(true);
+        Database.LeadConvertResult ldr = Database.convertLead(ld);
+       
         System.debug('Verifying the opportunity:');
         List<Opportunity> oppList = [Select Id, Name, AccountId, Shared_Solar_System__c, Shared_Solar_System__r.Name From Opportunity ];
         for(Opportunity opp : oppList){

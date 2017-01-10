@@ -23,7 +23,8 @@ public with sharing class RecurringPaymentsHandler {
         string chOrderValueSystemBillIdentifier;
         String chOrderCheckSystemBillIdentifier;
 
-        List<UASB__c> uasbList = [SELECT Id, Name, System_Bill__r.Property_Account__c, System_Bill__r.Discounted_Bill__c,  
+
+        List<UASB__c> uasbList = [SELECT Id, Name, System_Bill__r.Property_Account__c, System_Bill__r.Discounted_Bill__c,  System_Bill__r.Name,
                                     System_Bill__r.Property_Account__r.Id, System_Bill__r.Total_Due__c, System_Bill__r.Due_This_Month__c, 
                                     System_Bill__r.Property_Account__r.Name, System_Bill__r.Recurring_Payment_Id__c, 
                                     System_Bill__r.Property_Account__r.Recurring_Billing__c
@@ -45,7 +46,7 @@ public with sharing class RecurringPaymentsHandler {
         system.Debug(propertyAccountSet.size());
         system.Debug(conditionalDebugCheck);
         for(System_Bill__C oldSystemBillSet : [SELECT Id, Name, Recurring_Payment_Id__c, Property_Account__r.Id, Unique_Id__c, Opportunity__r.Id, 
-                                                                (SELECT Id, Name, System_Bill__r.Property_Account__c, System_Bill__r.Recurring_Payment_Id__c, System_Bill__r.Bill_Number__c ,
+                                                                (SELECT Id, Name, System_Bill__r.Name, System_Bill__r.Property_Account__c, System_Bill__r.Recurring_Payment_Id__c, System_Bill__r.Bill_Number__c ,
                                                                     ChargentOrders__Charge_Amount__c, Unique_Id__c, ChargentOrders__Payment_Status__c, System_Bill__r.Unique_Id__c, 
                                                                     System_Bill__r.Opportunity__r.Id, System_Bill__r.Shared_Solar_System__r.Id
                                                                 FROM Chargent_Orders__r 
@@ -55,6 +56,7 @@ public with sharing class RecurringPaymentsHandler {
                                                 WHERE Recurring_Billing__c = TRUE
                                                 AND Property_Account__r.Id IN : propertyAccountSet]){
             system.debug(oldSystemBillSet.Property_Account__r.Id);
+            System.debug('The System bill Chargent Order List is ' + oldSystemBillSet.Chargent_Orders__r);
             system.debug(propertyAccountSet);
             conditionalDebugCheck = 'No Execution';
             
@@ -66,14 +68,14 @@ public with sharing class RecurringPaymentsHandler {
                     if(chOrderMap.size() > 0 ){                   
                         for(ChargentOrders__ChargentOrder__c  chOrderCheck : chOrderMap.values()){
                             chOrderCheckSystemBillIdentifier = chOrderCheck.System_Bill__r.Opportunity__r.Id + ' ' + chOrderCheck.System_Bill__r.Shared_Solar_System__r.Id;
-                            //System.debug('chOrderValueSystemBillIdentifier' + ' ' + chOrderValueSystemBillIdentifier);
-                            //System.debug('chOrderCheckSystemBillIdentifier' + ' ' + chOrderCheckSystemBillIdentifier);
-                            //System.debug('chOrderCheck.System_Bill__r.Unique_ID__c = ' + ' ' +  chOrderCheck.System_Bill__r.Unique_ID__c);
-                            //System.debug('chOrderValue.System_Bill__r.Unique_ID__c = ' + ' ' +  chOrderValue.System_Bill__r.Unique_ID__c);                          
-                            //System.debug(chOrderCheck);
-                            //System.debug(chOrderCheck.System_Bill__r.Bill_Number__c);
-                            //System.debug(chOrderValue.System_Bill__r.Bill_Number__c);
-                            if(chOrderValueSystemBillIdentifier == chOrderCheckSystemBillIdentifier){
+                            System.debug('chOrderValueSystemBillIdentifier' + ' ' + chOrderValueSystemBillIdentifier);
+                            System.debug('chOrderCheckSystemBillIdentifier' + ' ' + chOrderCheckSystemBillIdentifier);
+                            System.debug('chOrderCheck.System_Bill__r.Unique_ID__c = ' + ' ' +  chOrderCheck.System_Bill__r.Unique_ID__c);
+                            System.debug('chOrderValue.System_Bill__r.Unique_ID__c = ' + ' ' +  chOrderValue.System_Bill__r.Unique_ID__c);                          
+                            System.debug(chOrderCheck);
+                            System.debug(chOrderCheck.System_Bill__r.Bill_Number__c);
+                            System.debug(chOrderValue.System_Bill__r.Bill_Number__c);
+                            if(chOrderCheck.System_Bill__r.Unique_ID__c == chOrderValue.System_Bill__r.Unique_ID__c){
                                 if(chOrderValue.System_Bill__r.Bill_Number__c > chOrderCheck.System_Bill__r.Bill_Number__c){
                                     conditionalDebugCheck = 'Program entered into the removal of Ch.O from Map and entered a more recent Ch.O';
                                     chOrderMap.remove(chOrderCheck.System_Bill__r.Recurring_Payment_Id__c);
@@ -110,10 +112,10 @@ public with sharing class RecurringPaymentsHandler {
                 System.debug('The newSystemBillSet size = ' + newSystemBillSet.size());
                 for (System_Bill__c newSb : newSystemBillSet){                    
                     totalDue = newSb.Total_Due__c;
-                    System.debug(newSb.Total_Due__c);
-                    System.debug(newSb.Discounted_bill__c);
-                    System.debug(chOrderMap.get(newSb.Recurring_Payment_Id__c).System_Bill__c);
-                    //system.debug(chOrderMap.get(newSb.Recurring_Payment_Id__c).ChargentOrders__Charge_Amount__c);
+                    System.debug('The newSystemBillSet size is equal to ' + newSystemBillSet.size() + ' ' + 
+                        ' ' + 'The old system bill was ' + chOrderMap.get(newSb.Recurring_Payment_Id__c).System_Bill__c + ' ' + 'The new System Bill is ' + newSb.Name + ' ' + 'with an Id of ' + newSb.Id + ' ' + 'and is being assigned the Chargent Order ' + chOrderMap.get(newSb.Recurring_Payment_Id__c).Id + ' ' + 'and has a new value of ' + newSb.Total_due__c);
+                    System.debug('newSb.Id = ' + newSb.Id);
+                    System.debug('newSb = ' + newSb);
                     chOrderMap.get(newSb.Recurring_Payment_Id__c).System_Bill__c = newSb.Id;
                     chOrderMap.get(newSb.Recurring_Payment_Id__c).ChargentOrders__Charge_Amount__c = newSb.Total_Due__c;
                     System.debug(newSb.Id);
