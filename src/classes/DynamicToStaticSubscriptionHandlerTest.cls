@@ -12,20 +12,28 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
 
     @isTest static void testRollup() {
         Shared_Solar_System__c sss8 = [SELECT Id, Name, Expected_Yield_kWh_Kw__c,
-                                       (SELECT Id, CS_Capacity_Allocated__c, NMC_Value__c
+                                       (SELECT Id, Name, CS_Capacity_Allocated__c, NMC_Value__c
                                         FROM Opportunities__r)
                                        FROM Shared_Solar_System__c 
                                        WHERE Name = 'Closed Not Zed P2'];
 
         System.assertEquals(1300, sss8.Expected_Yield_kWh_Kw__c);
-        System.assertEquals(1, sss8.Opportunities__r.size());
-        System.assertEquals(1, sss8.Opportunities__r[0].NMC_Value__c);
+        System.assertEquals(2, sss8.Opportunities__r.size());
+        Opportunity opp8, opp9;
+        for (Opportunity o : sss8.Opportunities__r) {
+            if (o.Name.equals('Opp8')) {
+                opp8 = o;
+            } else if (o.Name.equals('Opp9')) {
+                opp9 = o;
+            }
+        }
+        System.assertEquals(1, opp8.NMC_Value__c);
 
         List<Utility_Account_Subscription__c> uasList = 
             [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, UAS_Number__c,
              Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c
              FROM Utility_Account_Subscription__c
-             WHERE Opportunity__c = :sss8.Opportunities__r[0].Id];
+             WHERE Opportunity__c = :opp8.Id];
                                                          
         System.assertEquals(3, uasList.size());
         Decimal answer = 0;
@@ -47,17 +55,25 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
         DynamicToStaticSubscriptionHandler.DynamicToStaticSubscriptionHandler(sss8.Id);
 
         sss8 = [SELECT Id, Name,
-                (SELECT Id, CS_Capacity_Allocated__c
+                (SELECT Id, Name, CS_Capacity_Allocated__c
                  FROM Opportunities__r)
                 FROM Shared_Solar_System__c 
                 WHERE Name = 'Closed Not Zed P2'];
-        System.assertEquals(answer, sss8.Opportunities__r[0].CS_Capacity_Allocated__c);
+        for (Opportunity o : sss8.Opportunities__r) {
+            if (o.Name.equals('Opp8')) {
+                opp8 = o;
+            } else if (o.Name.equals('Opp9')) {
+                opp9 = o;
+            }
+        }
+        System.assertEquals(answer, opp8.CS_Capacity_Allocated__c);
+        System.assertEquals(7.6923, opp9.CS_Capacity_Allocated__c);
 
         uasList = 
             [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c,
              Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c
              FROM Utility_Account_Subscription__c
-             WHERE Opportunity__c = :sss8.Opportunities__r[0].Id];
+             WHERE Opportunity__c = :opp8.Id];
         for (Utility_Account_Subscription__c uas : uasList) {
             System.assertEquals(uas.Customer_Subscription_KW_DC__c, uas.Customer_Subscription_KW_DC_STATIC__c);
         }
