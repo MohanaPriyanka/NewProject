@@ -1,9 +1,70 @@
 <apex:page controller="RecalculateUALCostController" tabStyle="Utility_Account_Log__c" sidebar="false">
-    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"  />
+    <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-1.10.2.js"/>
+    <apex:includeScript value="https://code.jquery.com/ui/1.11.2/jquery-ui.js"/>
+    <script src="../../soap/ajax/38.0/connection.js" type="text/javascript"></script>
 
-    <apex:form >
+    <style>
+        #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+        #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+        #sortable li span { position: absolute; margin-left: -1.3em; }
+        #msg { color: blue; };
+        a:idealink.link, a:visited, a:hover { border-bottom: solid 1px; }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+
+            $(document.getElementById("openUASActionTable")).find("tbody").disableSelection();
+
+            $("#msg").toggle();
+
+            $(document.getElementById("openUASActionTable")).find("tbody").sortable
+            (
+                {
+                    update: function(event, ui)
+                    {
+                        init();
+                        $("#msg").toggle();
+                        var result = $(this).sortable('toArray');
+                        length = result.length;
+                        var UASList = new Array();
+
+                        for( i=0; i < length; i++)
+                        {
+                            var uas = new sforce.SObject("Utility_Account_Subscription__c");
+                            console.log("result:");
+                            console.log(JSON.stringify(result[i]));
+                            uas.id = result[i];
+                            uas.Custom_Deduction_Order__c = i+1;
+                            UASList.push(uas);
+                            
+                            if ((i>0 && i%30 == 0) || i+1 == length)
+                            {
+                                final = sforce.connection.update(UASList);
+                                UASList = [];
+                            }
+                        }
+
+                        location.reload();
+
+                        $("#msg").toggle();
+                    }
+                }
+            )
+
+            $("#sortable").disableSelection();
+
+            function init()
+            {
+                sforce.connection.sessionId = '{!$Api.Session_ID}';
+            }
+        });
+    </script>
+    <div id="msg"><strong>Subscriptions are being updated</strong></div>
+    <apex:form id="theForm">
         <apex:outputLink value="{!URLFOR($Action.Utility_Account_Log__c.View, ualId)}">Return to Utility Account Log</apex:outputLink><br /><br />
-        <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity">
+        <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity" id="main">
             <apex:pageMessages />
             <apex:pageBlockSection columns="2" title="Information">
                 <apex:pageBlockSectionItem >
@@ -26,41 +87,55 @@
             </apex:pageBlockSection>
             <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
                                    id="AdjustmentSummaryOpen">
-                <ul style="margin: 0px;padding: 0px;" id="sortable"> 
-                    <apex:repeat value="{!openUASActionList}" var="uasAction" id="theTable2">
-                        <table width="100%">
-                            <tr>
+                <!-- included to bypass the pageblocksection -->
+                <apex:outputPanel>
 
-                                <td headerValue="UAS Name" >
-                                    <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
-                                </td>
-                                <td><apex:outputText value="{!uasAction.sss.Name}"/></td>
-                                <td><apex:outputText value="{!uasAction.sss.Open__c}"/></td>
-                                <td><apex:outputText value="{!uasAction.sss.Schedule_Z_Filed__c}"/></td>
-                                <td><apex:outputText value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}"/></td>
-                                <td><apex:outputText value="{!uasAction.sss.Estimated_COD_Date_QC__c}"/></td>
-                                <td>
-                                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/></apex:outputText>
-                                </td>
-                                <td>
-                                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
-                                </td>
-                                <td>
-                                    <li style="list-style: none;float:right;" class="ui-state-default">
-                                        <apex:inputText value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList"/>
-                                    </li>
-                                    <apex:actionSupport event="onchange" reRender="AdjustmentSummaryOpen" action="{!customDeductionOrder}" status="updateStatus">
-                                        <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                                    </apex:actionSupport>
-                                </td>
-                                <td>
-                                    <apex:outputText value="{!uasAction.action}"/>
-                                </td>
+                    <table class="list" id="openUASActionTable">
+                        <thead>
+                            <tr class="headerRow">
+                                <td></td>
+                                <td>Deduction Order</td>
+                                <td>UAS Name</td>
+                                <td>SSS Name</td>
+                                <td>Open</td>
+                                <td>Schedule Z Filed</td>
+                                <td>Capacity Available to be Reserved</td>
+                                <td>COD Date</td>
+                                <td>Subscribed Amount</td>
+                                <td>Amount to be deducted</td>
+                                <td>Action</td>
                             </tr>
-                        </table>
-                    </apex:repeat>
-                </ul>
-
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!openUASActionList}" var="uasAction">
+                                <tr class="dataRow" id="{!uasAction.uas.Id}">
+                                    <td><span class="ui-icon ui-icon-arrowthick-2-n-s"/></td>
+                                    <td>{!uasAction.uas.Custom_Deduction_Order__c}</td>
+                                    <td>
+                                        <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
+                                    </td>
+                                    <td>{!uasAction.sss.Name}</td>
+                                    <td><apex:inputCheckbox value="{!uasAction.sss.Open__c}" disabled="true"/></td>
+                                    <td><apex:inputCheckbox value="{!uasAction.sss.Schedule_Z_Filed__c}" disabled="true"/></td>
+                                    <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
+                                    <td>{!uasAction.sss.Estimated_COD_Date_QC__c}</td>
+                                    <td>
+                                        <apex:outputText value="{0, number,$###,###,##0.00}">
+                                            <apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/>
+                                        </apex:outputText>
+                                    </td>
+                                    <td>
+                                        <apex:outputText value="{0, number,$###,###,##0.00}">
+                                            <apex:param value="{!uasAction.deductionAmount}"/>
+                                        </apex:outputText>
+                                    </td>
+                                    <td>{!uasAction.action}</td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+<!--
                 <apex:pageBlockTable id="openUASActionTable" value="{!openUASActionList}" var="uasAction">
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
@@ -70,10 +145,6 @@
                     <apex:column value="{!uasAction.sss.Schedule_Z_Filed__c}" headerValue="Scheduled Z Filed" />
                     <apex:column value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}" headerValue="Capacity Available to be Reserved" />
                     <apex:column value="{!uasAction.sss.Estimated_COD_Date_QC__c}" headerValue="COD Date" />
-                    <!-- 
-                    <apex:column value="{!uasAction.sss.Customer_Group__c}" headerValue="Customer Group" />
-                    <apex:column value="{!uasAction.sss.Customer_Ratio__c}" headerValue="Customer Ratio" /> 
-                    -->
                     <apex:column headerValue="Subscribed Amount" >
                         <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}" /></apex:outputText>
                     </apex:column>
@@ -107,6 +178,7 @@
                         <apex:outputText value="{!uasAction.action}"/>
                     </apex:column>
                 </apex:pageBlockTable>
+-->
             </apex:pageBlockSection>
 
             <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1"
@@ -279,3 +351,4 @@
             return confirm(message);
         });    </script>
 </apex:page>
+
