@@ -26,6 +26,41 @@
             </apex:pageBlockSection>
             <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
                                    id="AdjustmentSummaryOpen">
+                <ul style="margin: 0px;padding: 0px;" id="sortable"> 
+                    <apex:repeat value="{!openUASActionList}" var="uasAction" id="theTable2">
+                        <table width="100%">
+                            <tr>
+
+                                <td headerValue="UAS Name" >
+                                    <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
+                                </td>
+                                <td><apex:outputText value="{!uasAction.sss.Name}"/></td>
+                                <td><apex:outputText value="{!uasAction.sss.Open__c}"/></td>
+                                <td><apex:outputText value="{!uasAction.sss.Schedule_Z_Filed__c}"/></td>
+                                <td><apex:outputText value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}"/></td>
+                                <td><apex:outputText value="{!uasAction.sss.Estimated_COD_Date_QC__c}"/></td>
+                                <td>
+                                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/></apex:outputText>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
+                                </td>
+                                <td>
+                                    <li style="list-style: none;float:right;" class="ui-state-default">
+                                        <apex:inputText value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList"/>
+                                    </li>
+                                    <apex:actionSupport event="onchange" reRender="AdjustmentSummaryOpen" action="{!customDeductionOrder}" status="updateStatus">
+                                        <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
+                                    </apex:actionSupport>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!uasAction.action}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:repeat>
+                </ul>
+
                 <apex:pageBlockTable id="openUASActionTable" value="{!openUASActionList}" var="uasAction">
                     <apex:column headerValue="UAS Name" >
                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
