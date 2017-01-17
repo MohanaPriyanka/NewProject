@@ -9,9 +9,7 @@ public with sharing class RecalculateUALCostController {
     public Decimal subscribedCostOfElectricity {get; set;}
     public Decimal adjustmentAmount {get; set;}
 
-    public List<UASAction> openUASActionList {get; set;}
-    public List<UASAction> closedUASActionList {get; set;}
-    public List<UASAction> scheduleZFiledUASActionList {get; set;}
+    public List<UASAction> uasActionList {get; set;}
 
     public Boolean adminMode {get; set;}
 
@@ -51,10 +49,7 @@ public with sharing class RecalculateUALCostController {
 
 
     public RecalculateUALCostController(){
-        openUASActionList = new List<UASAction>();
-        closedUASActionList = new List<UASAction>();
-        scheduleZFiledUASActionList = new List<UASAction>();
-
+        uasActionList = new List<UASAction>();
         //Get id from the URL parameters
         this.ualId = ApexPages.currentPage().getParameters().get('id');
 
@@ -85,28 +80,12 @@ public with sharing class RecalculateUALCostController {
         adjustmentAmount = ualCostOfElectricity - subscribedCostOfElectricity;
 
         // Query Utility Account Subscription Lists
-        getSubscriptionLists();
+        getSubscriptionLists(true);
     }
 
-    public PageReference customDeductionOrder() {
+    public PageReference updateCustomDeductionOrder() {
         List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
-        for (UASAction uasAction : openUASActionList) {
-            if (uasAction.uas.Id == uasId) {
-                Utility_Account_Subscription__c uas = 
-                    new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
-                                                        Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
-                customDeductionUASList.add(uas);
-            }
-        }
-        for (UASAction uasAction : closedUASActionList) {
-            if (uasAction.uas.Id == uasId) {
-                Utility_Account_Subscription__c uas = 
-                    new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
-                                                        Custom_Deduction_Order__c = uasAction.uas.Custom_Deduction_Order__c);
-                customDeductionUASList.add(uas);
-            }
-        }
-        for (UASAction uasAction : scheduleZFiledUASActionList) {
+        for (UASAction uasAction : uasActionList) {
             if (uasAction.uas.Id == uasId) {
                 Utility_Account_Subscription__c uas = 
                     new Utility_Account_Subscription__c(Id = uasAction.uas.Id,
@@ -115,71 +94,72 @@ public with sharing class RecalculateUALCostController {
             }
         }
         update customDeductionUASList;
-        // Re-query subscriptions to reorder lists
-        getSubscriptionLists();
+        // Re-query subscriptions to reorder lists using the Custom Deduction Order
+        getSubscriptionLists(false);
         return null;
     }
 
-    private List<Utility_Account_Subscription__c> getUASList(Boolean open, Boolean scheduleZFiled){
-        List<Utility_Account_Subscription__c> uasList = 
-            [SELECT Id, Name, Calculated_Annual_Cost_of_Electricity__c, 
-             Subscribed_Annual_Cost_of_Electricity__c, 
-             Custom_Deduction_Order__c, 
-             Opportunity__c, 
-             Opportunity__r.Project_Assignment__c, 
-             Opportunity__r.stageName,                             
-             Opportunity__r.Service_Territory__c, 
-             Opportunity__r.UtilityMapper__c, 
-             Opportunity__r.Shared_Solar_System__r.Assignment_Order__c,                 
-             Opportunity__r.Shared_Solar_System__r.Id, 
-             Opportunity__r.Shared_Solar_System__r.Name, 
-             Opportunity__r.Shared_Solar_System__r.Open__c, 
-             Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c, 
-             Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c, 
-             Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c 
-             FROM Utility_Account_Subscription__c
-             WHERE Opportunity__r.Shared_Solar_System__r.Open__c = :open
-             AND Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c = :scheduleZFiled
-             AND Utility_Account_Log__c = :ualId
-             ORDER BY Custom_Deduction_Order__c ASC NULLS LAST];
-        return uasList;
+    // defaultSortOrder is:
+    // 1. Open/Closed (Open first)
+    // 2. Subscription Size (Smallest First)
+    // 3. COD Date (Farthest Away First)
+    // 5. System Capacity Available (Largest Capacity Available First)
+    // If system is Closed, Order By Subscription size (Smallest First), then randomize for equal subscriptions.
+    // 
+    // If not sorting by the default sort order, sort by Custom Deduction Order
+    
+    private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
+        String query = 
+            'SELECT Id, Name, ' +
+            'Subscribed_Annual_Cost_of_Electricity__c, ' +
+            'Custom_Deduction_Order__c, ' +
+            'Opportunity__c, ' +
+            'Opportunity__r.Project_Assignment__c, ' +
+            'Opportunity__r.stageName, ' +
+            'Opportunity__r.Service_Territory__c, ' +
+            'Opportunity__r.UtilityMapper__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Assignment_Order__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Id, ' +
+            'Opportunity__r.Shared_Solar_System__r.Name, ' +
+            'Opportunity__r.Shared_Solar_System__r.Open__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c ' +
+            'FROM Utility_Account_Subscription__c ' +
+            'WHERE Utility_Account_Log__c =: ualId ';
+        if (defaultSortOrder) {
+            query += 
+                'ORDER BY Opportunity__r.Shared_Solar_System__r.Open__c DESC, ' +
+                'Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c ASC, ' +
+                'Subscribed_Annual_Cost_of_Electricity__c ASC, ' +
+                'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC,' +
+                'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c ASC';
+        } else {
+            query += 
+                'ORDER BY Custom_Deduction_Order__c ASC NULLS LAST';
+        }
+
+        return Database.query(query);
     }
 
-    public PageReference getSubscriptionLists() {
-        openUASActionList = new List<UASAction>();
-        closedUASActionList = new List<UASAction>();
-        scheduleZFiledUASActionList = new List<UASAction>();
-        
+    public PageReference getSubscriptionLists(boolean defaultSortOrder) {
+        uasActionList = new List<UASAction>();
         Decimal amountToDeduct = Math.abs(adjustmentAmount);
-        
-        //Deduct from Open and Non-Schedule Z
+        Integer deductionOrder = 1;
+
         if(amountToDeduct > 0){
-            //Check the Open == true Schedule_Z_Filed__c = false records if we are able to deduct the difference then allow the user to process it.
-            for(Utility_Account_Subscription__c uas : getUASList(true, false)){
+            for(Utility_Account_Subscription__c uas : getUASList(defaultSortOrder)){
                 Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
+                if (defaultSortOrder) {
+                    uas.Custom_Deduction_Order__c = deductionOrder;
+                    deductionOrder++;
+                }
                 UASAction act = new UASAction(uas, deductionAmount);
-                act.action = 'Auto deduct';
-                openUASActionList.add(act);
-                amountToDeduct -= deductionAmount;
-            }
-        }
-
-        //Check if there are any remaining balance to deduct from Closed and non-schedule Z
-        if(amountToDeduct > 0){
-            //ApexPages.addMessage(new Apexpages.Message(ApexPages.Severity.Info,'Querying Closed ' + getUASList(false, false)));
-            for(Utility_Account_Subscription__c uas : getUASList(false, false)){
-                Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
-                closedUASActionList.add(new UASAction(uas, deductionAmount));
-                amountToDeduct -= deductionAmount;
-            }
-        }
-
-        //Deduct from Schedule Z records
-        if(amountToDeduct > 0){
-            //ApexPages.addMessage(new Apexpages.Message(ApexPages.Severity.Info,'Querying Schedule Z ' + getUASList(false, true)));
-            for(Utility_Account_Subscription__c uas : getUASList(false, true)){
-                Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
-                scheduleZFiledUASActionList.add(new UASAction(uas, deductionAmount));
+                if (uas.Opportunity__r.Shared_Solar_System__r.Open__c &&
+                    !uas.Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c) {
+                    act.action = 'Auto deduct';
+                }
+                uasActionList.add(act);
                 amountToDeduct -= deductionAmount;
             }
         }
@@ -192,48 +172,33 @@ public with sharing class RecalculateUALCostController {
 
         List<Shared_Solar_System__c> sssListToUpdate = new List<Shared_Solar_System__c>();
         
-        //Process open
-        if(openUASActionList.size() > 0){
-            for(UASAction uasAction : openUASActionList){
-                if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
-                    uasAction.uas.Calculated_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
-                    uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
-                    remainingBalance -= uasAction.deductionAmount;
-
-                    if (uasAction.action == 'Deduct and mark as Closed') {
-                        uasAction.sss.Open__c = false;
-                        sssListToUpdate.add(uasAction.sss);
-                    }
-                    uasToUpdate.add(uasAction.uas);
-                }
-            }
-        }
-        if(adminMode){//this only needs to be for the scheduleZFiledUASActionList.
-            if(closedUASActionList.size() > 0){
-                for(UASAction uasAction : closedUASActionList){
-                    if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0 
-                        && (uasAction.action == 'Deduct and mark as Open' || uasAction.action == 'Deduct and keep as Closed')){
-                        uasAction.uas.Calculated_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
+        if(uasActionList.size() > 0){
+            for(UASAction uasAction : uasActionList){
+                if (uasAction.sss.Open__c) {
+                    if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
                         uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
                         remainingBalance -= uasAction.deductionAmount;
 
-                        if (uasAction.action == 'Deduct and mark as Open') {
-                            uasAction.sss.Open__c = true;
+                        if (uasAction.action == 'Deduct and mark as Closed') {
+                            uasAction.sss.Open__c = false;
                             sssListToUpdate.add(uasAction.sss);
                         }
                         uasToUpdate.add(uasAction.uas);
                     }
-                }
-            }
-            if(scheduleZFiledUASActionList.size() > 0){
-                for(UASAction uasAction : scheduleZFiledUASActionList){
-                    if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0 
-                        && uasAction.action == 'Deduct from Schedule Z Filed') {
-                        uasAction.sss.Open__c = true;
-                        uasAction.uas.Calculated_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
+                } else {
+                    if (adminMode &&
+                        uasAction.deductionAmount > 0 && 
+                        uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0 &&
+                        (uasAction.action == 'Deduct and mark as Open' || 
+                         uasAction.action == 'Deduct and keep as Closed' ||
+                         uasAction.action == 'Deduct from Schedule Z Filed')) {
                         uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
                         remainingBalance -= uasAction.deductionAmount;
                         uasToUpdate.add(uasAction.uas);
+                        if (uasAction.action == 'Deduct and mark as Open') {
+                            uasAction.sss.Open__c = true;
+                            sssListToUpdate.add(uasAction.sss);
+                        }
                     }
                 }
             }
@@ -277,8 +242,6 @@ Confirmation: "Are you sure you want to recalculate this Utility Account Log?"
 //    //Add more opportunities and utility account subscription as necessary:
 
 //}
-
-
 
 //Clarification:
 // - In the case where we added a new opportunity, do we also need to add UAS records to the other Utility Account Logs??

@@ -193,49 +193,41 @@ public class RecalculateUALCostControllerTest {
         Utility_Account_Subscription__c uas1 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp1.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 5000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 5000,
                                                 Custom_Deduction_Order__c = 1);
         Utility_Account_Subscription__c uas2 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp2.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 3000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
                                                 Custom_Deduction_Order__c = 2);
         Utility_Account_Subscription__c uas3 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp3.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 2000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 2000,
                                                 Custom_Deduction_Order__c = 3);
         Utility_Account_Subscription__c uas4 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp4.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 1000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
                                                 Custom_Deduction_Order__c = 4);
         Utility_Account_Subscription__c uas5 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp5.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 3000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
                                                 Custom_Deduction_Order__c = 5);
         Utility_Account_Subscription__c uas6 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp6.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 1000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
                                                 Custom_Deduction_Order__c = 6);
         Utility_Account_Subscription__c uas7 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp7.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 2000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 2000,
                                                 Custom_Deduction_Order__c = 7);
         Utility_Account_Subscription__c uas8 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp8.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 3000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
                                                 // Customer_Subscription_KW_DC__c = 3000 / 1 / 1300 =  2.3077
                                                 UAS_Number__c = 2,
@@ -243,7 +235,6 @@ public class RecalculateUALCostControllerTest {
         Utility_Account_Subscription__c uas9 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp8.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 9000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 9000,
                                                 // Customer_Subscription_KW_DC__c = 9000 / 1 / 1300 =  6.9230
                                                 UAS_Number__c = 3,
@@ -251,7 +242,6 @@ public class RecalculateUALCostControllerTest {
         Utility_Account_Subscription__c uas10 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp8.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 10000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
@@ -259,7 +249,6 @@ public class RecalculateUALCostControllerTest {
         Utility_Account_Subscription__c uas11 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Opportunity__c = opp9.Id,
-                                                Calculated_Annual_Cost_of_Electricity__c = 10000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
@@ -272,7 +261,7 @@ public class RecalculateUALCostControllerTest {
                                       FROM Utility_Account_Log__c
                                       WHERE Name_on_Account__c = 'Joey Chan'];
         List<Utility_Account_Subscription__c> uasList; 
-        uasList = [SELECT Id, Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
+        uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c,
                    Custom_Deduction_Order__c
                    FROM Utility_Account_Subscription__c
                    WHERE Utility_Account_Log__c = :ual.Id];
@@ -298,28 +287,28 @@ public class RecalculateUALCostControllerTest {
         RecalculateUALCostController theController = new RecalculateUALCostController();
         
         //Set deduction for closed
-        theController.closedUASActionList[0].action = 'Deduct and mark as Open';
-        Id sssToBeOpenedId = theController.closedUASActionList[0].sss.Id;
+        theController.uasActionList[0].action = 'Deduct and mark as Open';
+        Id sssToBeOpenedId = theController.uasActionList[0].sss.Id;
         Shared_Solar_System__c sssToBeOpened = [SELECT Id, Open__c
                                                 FROM Shared_Solar_System__c
                                                 WHERE Id = :sssToBeOpenedId];
         System.assertEquals(sssToBeOpened.Open__c, false);
 
-        theController.closedUASActionList[1].action = 'Deduct and keep as Closed';
-        Id sssToKeepAsClosedId = theController.closedUASActionList[1].sss.Id;
+        theController.uasActionList[1].action = 'Deduct and keep as Closed';
+        Id sssToKeepAsClosedId = theController.uasActionList[1].sss.Id;
         Shared_Solar_System__c sssToKeepAsClosed = [SELECT Id, Open__c
                                                     FROM Shared_Solar_System__c
                                                     WHERE Id = :sssToKeepAsClosedId];
         System.assertEquals(sssToKeepAsClosed.Open__c, false);
-        theController.closedUASActionList[2].action = 'Deduct and keep as Closed';
-        theController.closedUASActionList[3].action = 'Deduct and keep as Closed';
+        theController.uasActionList[2].action = 'Deduct and keep as Closed';
+        theController.uasActionList[3].action = 'Deduct and keep as Closed';
 
         //Set deduction for Schedule Z Filed
-        theController.scheduleZFiledUASActionList[0].action = 'Deduct from Schedule Z Filed';
+        theController.uasActionList[0].action = 'Deduct from Schedule Z Filed';
 
         //Set deduction for open
-        theController.openUASActionList[0].action = 'Deduct and mark as Closed';
-        Id sssToBeClosedId = theController.openUASActionList[0].sss.Id;
+        theController.uasActionList[0].action = 'Deduct and mark as Closed';
+        Id sssToBeClosedId = theController.uasActionList[0].sss.Id;
         Shared_Solar_System__c sssToBeClosed = [SELECT Id, Open__c
                                                 FROM Shared_Solar_System__c
                                                 WHERE Id = :sssToBeClosedId];
@@ -331,7 +320,7 @@ public class RecalculateUALCostControllerTest {
 
         //Check if UAS has already been deducted
         Utility_Account_Subscription__c verifyuas1 = 
-            [SELECT Id,Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c 
+            [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c 
              FROM Utility_Account_Subscription__c 
              WHERE Id = :uas1.Id];
         System.debug(uas1);
@@ -340,21 +329,21 @@ public class RecalculateUALCostControllerTest {
                       verifyuas1.Subscribed_Annual_Cost_of_Electricity__c);
 
         Utility_Account_Subscription__c verifyuas2 = 
-            [SELECT Id,Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c 
+            [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c 
              FROM Utility_Account_Subscription__c 
              WHERE Id = :uas2.Id];
         System.assert(uas2.Subscribed_Annual_Cost_of_Electricity__c > 
                       verifyuas2.Subscribed_Annual_Cost_of_Electricity__c);
 
         Utility_Account_Subscription__c verifyuas3 = 
-            [SELECT Id,Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c 
+            [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c 
              FROM Utility_Account_Subscription__c 
              WHERE Id = :uas3.Id];
         System.assert(uas2.Subscribed_Annual_Cost_of_Electricity__c > 
                       verifyuas2.Subscribed_Annual_Cost_of_Electricity__c);
 
         Utility_Account_Subscription__c verifyuas4 = 
-            [SELECT Id,Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c 
+            [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c 
              FROM Utility_Account_Subscription__c 
              WHERE Id = :uas4.Id];
         System.assert(uas2.Subscribed_Annual_Cost_of_Electricity__c > 
@@ -401,7 +390,7 @@ public class RecalculateUALCostControllerTest {
                                       WHERE Name_on_Account__c = 'Joey Chan'];
 
         List<Utility_Account_Subscription__c> uasList; 
-        uasList = [SELECT Id, Calculated_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c,
+        uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c,
                    Opportunity__c, 
                    Opportunity__r.Shared_Solar_System__r.Open__c, 
                    Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c,
@@ -415,13 +404,13 @@ public class RecalculateUALCostControllerTest {
         System.assertEquals(4, uasList.size());
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (uas.Calculated_Annual_Cost_of_Electricity__c == 5000) {
+            if (uas.Subscribed_Annual_Cost_of_Electricity__c == 5000) {
                 System.assertEquals(1, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 3000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 3000) {
                 System.assertEquals(2, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 2000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 2000) {
                 System.assertEquals(3, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 1000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 1000) {
                 System.assertEquals(4, uas.Custom_Deduction_Order__c);
             }
         }
@@ -438,11 +427,11 @@ public class RecalculateUALCostControllerTest {
         System.assertEquals(-49000, theController.adjustmentAmount);
 
         // All subscriptions should be available to be ordered
-        System.assertEquals(4, theController.openUASActionList.size());
+        System.assertEquals(4, theController.uasActionList.size());
 
         // Set custom order
-        for (RecalculateUALCostController.UASAction uasAction : theController.openUASActionList) {
-            if (uasAction.uas.Calculated_Annual_Cost_of_Electricity__c == 5000 &&
+        for (RecalculateUALCostController.UASAction uasAction : theController.uasActionList) {
+            if (uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c == 5000 &&
                 uasAction.uas.Custom_Deduction_Order__c == 1) {
                 uasAction.uas.Custom_Deduction_Order__c = 8;
                 theController.uasId = uasAction.uas.Id;
@@ -450,13 +439,13 @@ public class RecalculateUALCostControllerTest {
         }
 
         // should set custom order
-        theController.customDeductionOrder();
-        uasList = [SELECT Id, Calculated_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c
+        theController.updateCustomDeductionOrder();
+        uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c
                    FROM Utility_Account_Subscription__c
                    WHERE Utility_Account_Log__c = :ual.Id];
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (uas.Calculated_Annual_Cost_of_Electricity__c == 5000) {
+            if (uas.Subscribed_Annual_Cost_of_Electricity__c == 5000) {
                 System.assertEquals(8, uas.Custom_Deduction_Order__c);
             }
         }
@@ -465,20 +454,20 @@ public class RecalculateUALCostControllerTest {
 
         Test.stopTest();
 
-        uasList = [SELECT Id, Calculated_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c
+        uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c
                    FROM Utility_Account_Subscription__c
                    WHERE Opportunity__r.Shared_Solar_System__r.Open__c = true
                    AND Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c = false
                    AND Utility_Account_Log__c = :ual.Id];
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (uas.Calculated_Annual_Cost_of_Electricity__c == 5000) {
+            if (uas.Subscribed_Annual_Cost_of_Electricity__c == 5000) {
                 System.assertEquals(8, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 3000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 3000) {
                 System.assertEquals(2, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 2000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 2000) {
                 System.assertEquals(3, uas.Custom_Deduction_Order__c);
-            } else if (uas.Calculated_Annual_Cost_of_Electricity__c == 1000) {
+            } else if (uas.Subscribed_Annual_Cost_of_Electricity__c == 1000) {
                 System.assertEquals(4, uas.Custom_Deduction_Order__c);
             }
         }
@@ -489,7 +478,7 @@ public class RecalculateUALCostControllerTest {
                                       FROM Utility_Account_Log__c
                                       WHERE Name_on_Account__c = 'Joey Chan'];
         List<Utility_Account_Subscription__c> uasList; 
-        uasList = [SELECT Id, Calculated_Annual_Cost_of_Electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
+        uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c,
                    Custom_Deduction_Order__c
                    FROM Utility_Account_Subscription__c
                    WHERE Utility_Account_Log__c = :ual.Id];
@@ -504,19 +493,19 @@ public class RecalculateUALCostControllerTest {
             RecalculateUALCostController theController = new RecalculateUALCostController();
         
             //Set deduction for closed, deduction order 7
-            System.assertEquals(7, theController.closedUASActionList[0].uas.Custom_Deduction_Order__c);
-            theController.closedUASActionList[0].action = 'Deduct and mark as Open';
-            Id sssToBeOpenedId = theController.closedUASActionList[0].sss.Id;
+            System.assertEquals(7, theController.uasActionList[0].uas.Custom_Deduction_Order__c);
+            theController.uasActionList[0].action = 'Deduct and mark as Open';
+            Id sssToBeOpenedId = theController.uasActionList[0].sss.Id;
 
 
             //Set deduction for Schedule Z Filed, deduction order 5
-            System.assertEquals(5, theController.scheduleZFiledUASActionList[0].uas.Custom_Deduction_Order__c);
-            theController.scheduleZFiledUASActionList[0].action = 'Deduct from Schedule Z Filed';
+            System.assertEquals(5, theController.uasActionList[0].uas.Custom_Deduction_Order__c);
+            theController.uasActionList[0].action = 'Deduct from Schedule Z Filed';
 
             //Set deduction for open, deduction order 1
-            System.assertEquals(1, theController.openUASActionList[0].uas.Custom_Deduction_Order__c);
-            theController.openUASActionList[0].action = 'Deduct and mark as Closed';
-            Id sssToBeClosedId = theController.openUASActionList[0].sss.Id;
+            System.assertEquals(1, theController.uasActionList[0].uas.Custom_Deduction_Order__c);
+            theController.uasActionList[0].action = 'Deduct and mark as Closed';
+            Id sssToBeClosedId = theController.uasActionList[0].sss.Id;
 
             theController.processDeduction();
 
