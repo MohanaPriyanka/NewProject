@@ -14,48 +14,36 @@
 
     <script>
         $(document).ready(function(){
-
-            $(document.getElementById("uasActionTable")).find("tbody").disableSelection();
-
-            $("#msg").toggle();
-
-            $(document.getElementById("uasActionTable")).find("tbody").sortable
-            (
+            $(document.getElementById("uasActionTable")).find("tbody").sortable({
+                update: function(event, ui)
                 {
-                    cancel: ".ui-state-disabled",
-                    update: function(event, ui)
+                    init();
+                    var result = $(this).sortable('toArray');
+                    length = result.length;
+                    var UASList = new Array();
+
+                    for( i=0; i < length; i++)
                     {
-                        init();
-                        $("#msg").toggle();
-                        var result = $(this).sortable('toArray');
-                        length = result.length;
-                        var UASList = new Array();
-
-                        for( i=0; i < length; i++)
+                        var uas = new sforce.SObject("Utility_Account_Subscription__c");
+                        console.log("result:");
+                        console.log(JSON.stringify(result[i]));
+                        uas.id = result[i];
+                        uas.Custom_Deduction_Order__c = i+1;
+                        UASList.push(uas);
+                        
+                        if ((i>0 && i%30 == 0) || i+1 == length)
                         {
-                            var uas = new sforce.SObject("Utility_Account_Subscription__c");
-                            console.log("result:");
-                            console.log(JSON.stringify(result[i]));
-                            uas.id = result[i];
-                            uas.Custom_Deduction_Order__c = i+1;
-                            UASList.push(uas);
-                            
-                            if ((i>0 && i%30 == 0) || i+1 == length)
-                            {
-                                final = sforce.connection.update(UASList);
-                                UASList = [];
-                            }
+                            final = sforce.connection.update(UASList);
+                            UASList = [];
                         }
-
-                        updateCustomDeductionOrder();
-                        rerenderSummary();
-
-                        $("#msg").toggle();
                     }
-                }
-            )
 
-            $("#sortable").disableSelection();
+                    updateCustomDeductionOrder();
+                    rerenderSummary();
+                },
+
+                cancel: ":input,.ui-state-disabled"
+            });
 
             function init()
             {
@@ -63,7 +51,6 @@
             }
         });
     </script>
-    <div id="msg"><strong>Subscriptions are being updated</strong></div>
     <apex:form id="theForm">
         <apex:outputLink value="{!URLFOR($Action.Utility_Account_Log__c.View, ualId)}">Return to Utility Account Log</apex:outputLink><br /><br />
         <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity" id="main">
@@ -118,7 +105,7 @@
                                     <td>
                                         <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
                                     </td>
-                                    <td>{!uasAction.sss.Name}</td>
+                                    <td class="name">{!uasAction.sss.Name}</td>
                                     <td><apex:inputCheckbox value="{!uasAction.sss.Open__c}" disabled="true"/></td>
                                     <td><apex:inputCheckbox value="{!uasAction.sss.Schedule_Z_Filed__c}" disabled="true"/></td>
                                     <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
@@ -129,22 +116,25 @@
                                         </apex:outputText>
                                     </td>
                                     <td>
-                                        <apex:outputText value="{0, number,$###,###,##0.00}">
+                                        <apex:outputText styleClass="deductionAmount"
+                                                         value="{0, number,$###,###,##0.00}">
                                             <apex:param value="{!uasAction.deductionAmount}"/>
                                         </apex:outputText>
                                     </td>
                                     <td>
                                         <apex:outputPanel rendered="{!uasAction.sss.Open__c}" layout="none">
-                                            <apex:outputText value="Auto Deduct" />
+                                            <apex:outputText styleClass="action"
+                                                             value="Auto Deduct" />
                                         </apex:outputPanel>
                                         <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !adminMode)}" layout="none">
-                                            <apex:outputText value="Please contact one of Bluewave's Administrator to deduct from this record." />
+                                            <apex:outputText styleClass="action"
+                                                             value="Please contact one of Bluewave's Administrator to deduct from this record." />
                                         </apex:outputPanel>
                                         <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c, adminMode)}" layout="none">
                                             <apex:selectList value="{!uasAction.action}" 
                                                              size="1" 
                                                              multiselect="false" 
-                                                             styleClass="sss_closed_action">
+                                                             styleClass="action sss_closed_action">
                                                 <apex:selectOption itemLabel="No action" itemValue="" />
                                                 <apex:selectOption itemLabel="Deduct and mark as Open" itemValue="Deduct and mark as Open" />
                                                 <apex:selectOption itemLabel="Deduct and keep as Closed" itemValue="Deduct and keep as Closed" />
@@ -154,7 +144,7 @@
                                             <apex:selectList value="{!uasAction.action}" 
                                                              size="1" 
                                                              multiselect="false" 
-                                                             styleClass="sss_closed_action">
+                                                             styleClass="action sss_closed_action">
                                                 <apex:selectOption itemLabel="No action" itemValue="" />
                                                 <apex:selectOption itemLabel="Deduct from Schedule Z Filed" itemValue="Deduct from Schedule Z Filed" />
                                             </apex:selectList>
@@ -197,14 +187,17 @@
         $('[id$=confirmDeductionButton]').click(function() {
             var message = '';
             message += '\nThe following systems will be deducted:\n';
-            $('[id$=uasActionTable] tbody tr td:nth-child(2)').each( function(){
-               message += ' - ' + $(this).text() + '\n';
+            $('[id$=uasActionTable] tbody tr').each(function() {
+               if ($(this).find('.deductionAmount').text() != '$0.00' &&
+                   $(this).find('.action').find(':selected').text() != 'No action' &&
+                   $(this).find('.action').find(':selected').text() != 'Please contact one of Bluewave\'s Administrator to deduct from this record.') {
+                  message += ' - ' + $(this).find('.name').text() + '\n';
+               }
             });
-
-            // TODO: Need message for systems that won't be deducted if not in admin mode
 
             message += '\nAre you sure you want to process the deductions? This process cannot be reversed.';
             return confirm(message);
-        });    </script>
+        });
+    </script>
 </apex:page>
 
