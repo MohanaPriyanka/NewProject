@@ -1,9 +1,59 @@
 <apex:page controller="RecalculateUALCostController" tabStyle="Utility_Account_Log__c" sidebar="false">
-    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"  />
+    <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-1.10.2.js"/>
+    <apex:includeScript value="https://code.jquery.com/ui/1.11.2/jquery-ui.js"/>
+    <script src="../../soap/ajax/38.0/connection.js" type="text/javascript"></script>
 
-    <apex:form >
+    <style>
+        #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+        #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+        #sortable li span { position: absolute; margin-left: -1.3em; }
+        #msg { color: blue; };
+        a:idealink.link, a:visited, a:hover { border-bottom: solid 1px; }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $(document.getElementById("uasActionTable")).find("tbody").sortable({
+                update: function(event, ui)
+                {
+                    init();
+                    var result = $(this).sortable('toArray');
+                    length = result.length;
+                    var UASList = new Array();
+
+                    for( i=0; i < length; i++)
+                    {
+                        var uas = new sforce.SObject("Utility_Account_Subscription__c");
+                        console.log("result:");
+                        console.log(JSON.stringify(result[i]));
+                        uas.id = result[i];
+                        uas.Custom_Deduction_Order__c = i+1;
+                        UASList.push(uas);
+                        
+                        if ((i>0 && i%30 == 0) || i+1 == length)
+                        {
+                            final = sforce.connection.update(UASList);
+                            UASList = [];
+                        }
+                    }
+
+                    updateCustomDeductionOrder();
+                    rerenderSummary();
+                },
+
+                cancel: ":input,.ui-state-disabled"
+            });
+
+            function init()
+            {
+                sforce.connection.sessionId = '{!$Api.Session_ID}';
+            }
+        });
+    </script>
+    <apex:form id="theForm">
         <apex:outputLink value="{!URLFOR($Action.Utility_Account_Log__c.View, ualId)}">Return to Utility Account Log</apex:outputLink><br /><br />
-        <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity">
+        <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity" id="main">
             <apex:pageMessages />
             <apex:pageBlockSection columns="2" title="Information">
                 <apex:pageBlockSectionItem >
@@ -24,176 +74,94 @@
                                    startText="updating"
                                    stopText="" />
             </apex:pageBlockSection>
-            <apex:pageBlockSection title="Adjustment Summary (Open)" rendered="{!BLANKVALUE(openUASActionList.size, 0) > 0}" columns="1" 
-                                   id="AdjustmentSummaryOpen">
-                <apex:pageBlockTable id="openUASActionTable" value="{!openUASActionList}" var="uasAction">
-                    <apex:column headerValue="UAS Name" >
-                        <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
-                    </apex:column>
-                    <apex:column value="{!uasAction.sss.Name}" headerValue="SSS Name"  style="width:300px;"/>
-                    <apex:column value="{!uasAction.sss.Open__c}" headerValue="Open" />
-                    <apex:column value="{!uasAction.sss.Schedule_Z_Filed__c}" headerValue="Scheduled Z Filed" />
-                    <apex:column value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}" headerValue="Capacity Available to be Reserved" />
-                    <apex:column value="{!uasAction.sss.Estimated_COD_Date_QC__c}" headerValue="COD Date" />
-                    <!-- 
-                    <apex:column value="{!uasAction.sss.Customer_Group__c}" headerValue="Customer Group" />
-                    <apex:column value="{!uasAction.sss.Customer_Ratio__c}" headerValue="Customer Ratio" /> 
-                    -->
-                    <apex:column headerValue="Subscribed Amount" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Amount to be deducted" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Custom Deduction Order" >
-                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
-                            <apex:selectOption itemLabel="" itemValue="" />
-                            <apex:selectOption itemLabel="1" itemValue="1" />
-                            <apex:selectOption itemLabel="2" itemValue="2" />
-                            <apex:selectOption itemLabel="3" itemValue="3" />
-                            <apex:selectOption itemLabel="4" itemValue="4" />
-                            <apex:selectOption itemLabel="5" itemValue="5" />
-                            <apex:selectOption itemLabel="6" itemValue="6" />
-                            <apex:selectOption itemLabel="7" itemValue="7" />
-                            <apex:selectOption itemLabel="8" itemValue="8" />
-                            <apex:selectOption itemLabel="9" itemValue="9" />
-                            <apex:selectOption itemLabel="10" itemValue="10" />
-                            <apex:selectOption itemLabel="11" itemValue="11" />
-                            <apex:selectOption itemLabel="12" itemValue="12" />
-                            <apex:selectOption itemLabel="13" itemValue="13" />
-                            <apex:selectOption itemLabel="14" itemValue="14" />
-                            <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
-                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryOpen" action="{!customDeductionOrder}" status="updateStatus">
-                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                            </apex:actionSupport>
-                        </apex:selectList> 
-                    </apex:column>
-                    <apex:column headerValue="Action" style="width:300px;">
-                        <apex:outputText value="{!uasAction.action}"/>
-                    </apex:column>
-                </apex:pageBlockTable>
+            <apex:actionfunction name="updateCustomDeductionOrder" action="{!updateCustomDeductionOrder}"/>
+            <apex:actionfunction name="rerenderSummary" rerender="AdjustmentSummary"/>
+            <apex:pageBlockSection title="Adjustment Summary" rendered="{!BLANKVALUE(uasActionList.size, 0) > 0}" columns="1" 
+                                   id="AdjustmentSummary">
+                <!-- included to bypass the pageblocksection -->
+                <apex:outputPanel>
+
+                    <table class="list" id="uasActionTable">
+                        <thead>
+                            <tr class="headerRow">
+                                <td></td>
+                                <td>Deduction Order</td>
+                                <td>UAS Name</td>
+                                <td>SSS Name</td>
+                                <td>Open</td>
+                                <td>Schedule Z Filed</td>
+                                <td>Capacity Available to be Reserved</td>
+                                <td>COD Date</td>
+                                <td>Subscribed Amount</td>
+                                <td>Amount to be deducted</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!uasActionList}" var="uasAction">
+                                <tr id="{!uasAction.uas.Id}" class="{!if(AND(!uasAction.sss.Open__c, !adminMode), 'dataRow ui-state-disabled', 'dataRow')}">
+                                    <td><span class="ui-icon ui-icon-arrowthick-2-n-s"/></td>
+                                    <td>{!uasAction.uas.Custom_Deduction_Order__c}</td>
+                                    <td>
+                                        <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
+                                    </td>
+                                    <td class="name">{!uasAction.sss.Name}</td>
+                                    <td><apex:inputCheckbox value="{!uasAction.sss.Open__c}" disabled="true"/></td>
+                                    <td><apex:inputCheckbox value="{!uasAction.sss.Schedule_Z_Filed__c}" disabled="true"/></td>
+                                    <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
+                                    <td>{!uasAction.sss.Estimated_COD_Date_QC__c}</td>
+                                    <td>
+                                        <apex:outputText value="{0, number,$###,###,##0.00}">
+                                            <apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/>
+                                        </apex:outputText>
+                                    </td>
+                                    <td>
+                                        <apex:outputText styleClass="deductionAmount"
+                                                         value="{0, number,$###,###,##0.00}">
+                                            <apex:param value="{!uasAction.deductionAmount}"/>
+                                        </apex:outputText>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel rendered="{!uasAction.sss.Open__c}" layout="none">
+                                            <apex:outputText styleClass="action"
+                                                             value="Auto Deduct" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !adminMode)}" layout="none">
+                                            <apex:outputText styleClass="action"
+                                                             value="Please contact one of Bluewave's Administrator to deduct from this record." />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c, adminMode)}" layout="none">
+                                            <apex:selectList value="{!uasAction.action}" 
+                                                             size="1" 
+                                                             multiselect="false" 
+                                                             styleClass="action sss_closed_action">
+                                                <apex:selectOption itemLabel="No action" itemValue="" />
+                                                <apex:selectOption itemLabel="Deduct and mark as Open" itemValue="Deduct and mark as Open" />
+                                                <apex:selectOption itemLabel="Deduct and keep as Closed" itemValue="Deduct and keep as Closed" />
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, uasAction.sss.Schedule_Z_Filed__c, adminMode)}" layout="none">
+                                            <apex:selectList value="{!uasAction.action}" 
+                                                             size="1" 
+                                                             multiselect="false" 
+                                                             styleClass="action sss_closed_action">
+                                                <apex:selectOption itemLabel="No action" itemValue="" />
+                                                <apex:selectOption itemLabel="Deduct from Schedule Z Filed" itemValue="Deduct from Schedule Z Filed" />
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="Adjustment Summary (Closed)" rendered="{!BLANKVALUE(closedUASActionList.size, 0) > 0}" columns="1"
-                                   id="AdjustmentSummaryClosed">
-                <apex:pageBlockTable id="closedUASActionTable" value="{!closedUASActionList}" var="uasAction" >
-                    <apex:column headerValue="UAS Name" >
-                        <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
-                    </apex:column>
-                    <apex:column value="{!uasAction.sss.Name}" headerValue="SSS Name"  style="width:300px;"/>
-                    <apex:column value="{!uasAction.sss.Open__c}" headerValue="Open" />
-                    <apex:column value="{!uasAction.sss.Schedule_Z_Filed__c}" headerValue="Scheduled Z Filed" />
-                    <apex:column value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}" headerValue="Capacity Available to be Reserved" />
-                    <apex:column value="{!uasAction.sss.Estimated_COD_Date_QC__c}" headerValue="COD Date" />
-                    <!-- 
-                    <apex:column value="{!uasAction.sss.Customer_Group__c}" headerValue="Customer Group" />
-                    <apex:column value="{!uasAction.sss.Customer_Ratio__c}" headerValue="Customer Ratio" /> 
-                    -->
-                    <apex:column headerValue="Subscribed Amount" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Amount to be deducted" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Custom Deduction Order" >
-                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
-                            <apex:selectOption itemLabel="" itemValue="" />
-                            <apex:selectOption itemLabel="1" itemValue="1" />
-                            <apex:selectOption itemLabel="2" itemValue="2" />
-                            <apex:selectOption itemLabel="3" itemValue="3" />
-                            <apex:selectOption itemLabel="4" itemValue="4" />
-                            <apex:selectOption itemLabel="5" itemValue="5" />
-                            <apex:selectOption itemLabel="6" itemValue="6" />
-                            <apex:selectOption itemLabel="7" itemValue="7" />
-                            <apex:selectOption itemLabel="8" itemValue="8" />
-                            <apex:selectOption itemLabel="9" itemValue="9" />
-                            <apex:selectOption itemLabel="10" itemValue="10" />
-                            <apex:selectOption itemLabel="11" itemValue="11" />
-                            <apex:selectOption itemLabel="12" itemValue="12" />
-                            <apex:selectOption itemLabel="13" itemValue="13" />
-                            <apex:selectOption itemLabel="14" itemValue="14" />
-                            <apex:selectOption itemLabel="15" itemValue="15" />                                                                                   
-                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryClosed" action="{!customDeductionOrder}" status="updateStatus">
-                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                            </apex:actionSupport>
-                        </apex:selectList> 
-                    </apex:column>  
-                    <apex:column headerValue="Action" style="width:300px;">
-                        <apex:outputPanel rendered="{!adminMode}" layout="none">
-                            <apex:selectList value="{!uasAction.action}" size="1" multiselect="false" rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c)}"  styleClass="sss_closed_action">
-                                <apex:selectOption itemLabel="No action" itemValue="" />
-                                <apex:selectOption itemLabel="Deduct and mark as Open" itemValue="Deduct and mark as Open" />
-                                <apex:selectOption itemLabel="Deduct and keep as Closed" itemValue="Deduct and keep as Closed" />
-                            </apex:selectList>
-                        </apex:outputPanel>
-                        <apex:outputPanel rendered="{!NOT(adminMode)}" layout="none">
-                            <apex:outputText value="Please contact one of Bluewave's Administrator to deduct from this record." />
-                        </apex:outputPanel>
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlockSection>
-
-            <apex:pageBlockSection title="Adjustment Summary (Schedule Z Filed)" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}" columns="1"
-                                   id="AdjustmentSummaryScheduleZFiled">
-                <apex:pageBlockTable value="{!scheduleZFiledUASActionList}" var="uasAction" rendered="{!BLANKVALUE(scheduleZFiledUASActionList.size, 0) > 0}"
-                                     id="scheduleZFiledUASActionTable" >
-                    <apex:column headerValue="UAS Name" >
-                        <apex:outputLink value="/{!uasAction.uas.Id}" target="_BLANK">{!uasAction.uas.Name}</apex:outputLink>
-                    </apex:column>
-                    <apex:column value="{!uasAction.sss.Name}" headerValue="SSS Name"  style="width:300px;"/>
-                    <apex:column value="{!uasAction.sss.Open__c}" headerValue="Open" />
-                    <apex:column value="{!uasAction.sss.Schedule_Z_Filed__c}" headerValue="Scheduled Z Filed" />
-                    <apex:column value="{!uasAction.sss.Capacity_Available_to_be_Reserved__c}" headerValue="Capacity Available to be Reserved" />
-                    <apex:column value="{!uasAction.sss.Estimated_COD_Date_QC__c}" headerValue="COD Date" />
-                    <!-- 
-                    <apex:column value="{!uasAction.sss.Customer_Group__c}" headerValue="Customer Group" />
-                    <apex:column value="{!uasAction.sss.Customer_Ratio__c}" headerValue="Customer Ratio" /> 
-                    -->
-                    <apex:column headerValue="Subscribed Amount" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Amount to be deducted" >
-                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!uasAction.deductionAmount}" /></apex:outputText>
-                    </apex:column>
-                    <apex:column headerValue="Custom Deduction Order" >
-                        <apex:selectList value="{!uasAction.uas.Custom_Deduction_Order__c}" id="deductionOrderList" size="1" multiselect="false">
-                            <apex:selectOption itemLabel="" itemValue="" />
-                            <apex:selectOption itemLabel="1" itemValue="1" />
-                            <apex:selectOption itemLabel="2" itemValue="2" />
-                            <apex:selectOption itemLabel="3" itemValue="3" />
-                            <apex:selectOption itemLabel="4" itemValue="4" />
-                            <apex:selectOption itemLabel="5" itemValue="5" />
-                            <apex:selectOption itemLabel="6" itemValue="6" />
-                            <apex:selectOption itemLabel="7" itemValue="7" />
-                            <apex:selectOption itemLabel="8" itemValue="8" />
-                            <apex:selectOption itemLabel="9" itemValue="9" />
-                            <apex:selectOption itemLabel="10" itemValue="10" />
-                            <apex:selectOption itemLabel="11" itemValue="11" />
-                            <apex:selectOption itemLabel="12" itemValue="12" />
-                            <apex:selectOption itemLabel="13" itemValue="13" />
-                            <apex:selectOption itemLabel="14" itemValue="14" />
-                            <apex:selectOption itemLabel="15" itemValue="15" />
-                            <apex:actionSupport event="onchange" reRender="AdjustmentSummaryScheduleZFiled" action="{!customDeductionOrder}" status="updateStatus">
-                                <apex:param name="uasId" value="{!uasAction.uas.id}" assignTo="{!uasId}"/>
-                            </apex:actionSupport>
-                        </apex:selectList> 
-                    </apex:column>
-                    <apex:column headerValue="Action" style="width:300px;">
-                        <apex:outputPanel rendered="{!adminMode}" layout="none">
-                            <apex:selectList value="{!uasAction.action}" size="1" multiselect="false" rendered="{!uasAction.sss.Schedule_Z_Filed__c}" styleClass="schedule_z_action" >
-                                <apex:selectOption itemLabel="No action" itemValue="" />
-                                <apex:selectOption itemLabel="Deduct from Schedule Z Filed" itemValue="Deduct from Schedule Z Filed" />
-                            </apex:selectList>
-                        </apex:outputPanel>
-                        <apex:outputPanel rendered="{!NOT(adminMode)}" layout="none">
-                            <apex:outputText value="Please contact one of Bluewave's Administrator to deduct from this record." />
-                        </apex:outputPanel>
-
-                    </apex:column>
-                </apex:pageBlockTable>
-            </apex:pageBlockSection>
             <apex:pageBlockButtons >
-                <apex:commandButton value="Process Deduction" action="{!processDeduction}" rendered="{!OR(openUASActionList.size > 0, closedUASActionList.size > 0, scheduleZFiledUASActionList.size> 0)}" id="confirmDeductionButton"/>
+                <apex:commandButton rendered="{!uasActionList.size > 0}" 
+                                    value="Process Deduction" 
+                                    action="{!processDeduction}" 
+                                    id="confirmDeductionButton"/>
             </apex:pageBlockButtons>
         </apex:pageBlock>
     </apex:form>
@@ -219,28 +187,17 @@
         $('[id$=confirmDeductionButton]').click(function() {
             var message = '';
             message += '\nThe following systems will be deducted:\n';
-            $('[id$=openUASActionTable] tbody tr td:nth-child(2)').each( function(){
-               message += ' - ' + $(this).text() + '\n';
-            });
-
-            if('{!adminMode}' === 'false'){
-                if('{!(closedUASActionList.size + scheduleZFiledUASActionList.size) > 0 }' == 'true'){
-                    message += '\nWarning: The following systems will not be deducted (Please contact your administrator for support):\n';
-                }
-            }
-
-            $('[id$=closedUASActionTable] tbody tr').each( function(){
-               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
-                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
-               }
-            });
-            $('[id$=scheduleZFiledUASActionTable] tbody tr').each( function(){
-               if ($(this).find('td:eq(9)').children().find(':selected').text() !== 'No action') {
-                   message += ' - ' + $(this).find('td:eq(1)').text() + '\n';
+            $('[id$=uasActionTable] tbody tr').each(function() {
+               if ($(this).find('.deductionAmount').text() != '$0.00' &&
+                   $(this).find('.action').find(':selected').text() != 'No action' &&
+                   $(this).find('.action').text() != 'Please contact one of Bluewave\'s Administrator to deduct from this record.') {
+                  message += ' - ' + $(this).find('.name').text() + '\n';
                }
             });
 
             message += '\nAre you sure you want to process the deductions? This process cannot be reversed.';
             return confirm(message);
-        });    </script>
+        });
+    </script>
 </apex:page>
+

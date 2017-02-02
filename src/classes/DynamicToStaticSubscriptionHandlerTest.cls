@@ -11,16 +11,16 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
     }
 
     @isTest static void testRollup() {
-        Shared_Solar_System__c sss8 = [SELECT Id, Name, Expected_Yield_kWh_Kw__c,
+        Shared_Solar_System__c sss9 = [SELECT Id, Name, Expected_Yield_kWh_Kw__c,
                                        (SELECT Id, Name, CS_Capacity_Allocated__c, NMC_Value__c
                                         FROM Opportunities__r)
                                        FROM Shared_Solar_System__c 
                                        WHERE Name = 'Closed Not Zed P2'];
 
-        System.assertEquals(1300, sss8.Expected_Yield_kWh_Kw__c);
-        System.assertEquals(2, sss8.Opportunities__r.size());
+        System.assertEquals(1300, sss9.Expected_Yield_kWh_Kw__c);
+        System.assertEquals(2, sss9.Opportunities__r.size());
         Opportunity opp8, opp9;
-        for (Opportunity o : sss8.Opportunities__r) {
+        for (Opportunity o : sss9.Opportunities__r) {
             if (o.Name.equals('Opp8')) {
                 opp8 = o;
             } else if (o.Name.equals('Opp9')) {
@@ -52,14 +52,14 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
             answer += uas.Customer_Subscription_KW_DC__C;
         }
         
-        DynamicToStaticSubscriptionHandler.DynamicToStaticSubscriptionHandler(sss8.Id);
+        DynamicToStaticSubscriptionHandler.DynamicToStaticSubscriptionHandler(sss9.Id);
 
-        sss8 = [SELECT Id, Name,
+        sss9 = [SELECT Id, Name,
                 (SELECT Id, Name, CS_Capacity_Allocated__c
                  FROM Opportunities__r)
                 FROM Shared_Solar_System__c 
                 WHERE Name = 'Closed Not Zed P2'];
-        for (Opportunity o : sss8.Opportunities__r) {
+        for (Opportunity o : sss9.Opportunities__r) {
             if (o.Name.equals('Opp8')) {
                 opp8 = o;
             } else if (o.Name.equals('Opp9')) {
