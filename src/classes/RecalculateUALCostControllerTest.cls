@@ -393,6 +393,10 @@ public class RecalculateUALCostControllerTest {
             }
         }
 
+        for (RecalculateUALCostController.UASAction ua : theController.uasActionList) {
+            System.debug(ua);
+        }
+
         theController.processDeduction();
 
         Test.stopTest();
@@ -458,7 +462,7 @@ public class RecalculateUALCostControllerTest {
              WHERE Utility_Account_Log__c = :ual.Id
              AND Subscribed_Annual_Cost_of_Electricity__c > 0];
         System.debug(LoggingLevel.ERROR, ualList);
-        System.assertEquals(2, ualList.size());
+        System.assertEquals(3, ualList.size());
     }
 
     @isTest static void testCustomDeductionOrder() {

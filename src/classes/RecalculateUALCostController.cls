@@ -174,7 +174,9 @@ public with sharing class RecalculateUALCostController {
         
         if(uasActionList.size() > 0){
             for(UASAction uasAction : uasActionList){
-                if (uasAction.sss.Open__c) {
+                if (uasAction.sss.Open__c &&
+                    uasAction.action == 'Auto deduct' ||
+                    uasAction.action == 'Deduct and mark as Closed') {
                     if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
                         uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
                         remainingBalance -= uasAction.deductionAmount;
@@ -210,6 +212,9 @@ public with sharing class RecalculateUALCostController {
             update ual;
         }
 
+        for (Utility_Account_Subscription__c uas : uasToUpdate) {
+            System.debug('processDeduction: ' + uas);
+        }
         if (uasToUpdate.size() > 0) update uasToUpdate;
         if (sssToUpdate.size() > 0) update sssToUpdate.values();
 
