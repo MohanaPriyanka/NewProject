@@ -102,7 +102,7 @@ public with sharing class RecalculateUALCostController {
     // defaultSortOrder is:
     // 1. Open/Closed (Open first)
     // 2. Subscription Size (Smallest First)
-    // 3. COD Date (Farthest Away First)
+    // 3. COD Date (Blanks and farthest away first)
     // 5. System Capacity Available (Largest Capacity Available First)
     // If system is Closed, Order By Subscription size (Smallest First), then randomize for equal subscriptions.
     // 
@@ -132,8 +132,8 @@ public with sharing class RecalculateUALCostController {
                 'ORDER BY Opportunity__r.Shared_Solar_System__r.Open__c DESC, ' +
                 'Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c ASC, ' +
                 'Subscribed_Annual_Cost_of_Electricity__c ASC, ' +
-                'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC,' +
-                'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c ASC';
+                'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC NULLS LAST,' +
+                'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c DESC ';
         } else {
             query += 
                 'ORDER BY Custom_Deduction_Order__c ASC NULLS LAST';
@@ -170,7 +170,7 @@ public with sharing class RecalculateUALCostController {
         Decimal remainingBalance = Math.abs(adjustmentAmount);
         List<Utility_Account_Subscription__c> uasToUpdate = new List<Utility_Account_Subscription__c>();
 
-        List<Shared_Solar_System__c> sssListToUpdate = new List<Shared_Solar_System__c>();
+        Map<Id, Shared_Solar_System__c> sssToUpdate = new Map<Id, Shared_Solar_System__c>();
         
         if(uasActionList.size() > 0){
             for(UASAction uasAction : uasActionList){
@@ -181,7 +181,7 @@ public with sharing class RecalculateUALCostController {
 
                         if (uasAction.action == 'Deduct and mark as Closed') {
                             uasAction.sss.Open__c = false;
-                            sssListToUpdate.add(uasAction.sss);
+                            sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
                         }
                         uasToUpdate.add(uasAction.uas);
                     }
@@ -197,7 +197,7 @@ public with sharing class RecalculateUALCostController {
                         uasToUpdate.add(uasAction.uas);
                         if (uasAction.action == 'Deduct and mark as Open') {
                             uasAction.sss.Open__c = true;
-                            sssListToUpdate.add(uasAction.sss);
+                            sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
                         }
                     }
                 }
@@ -211,14 +211,14 @@ public with sharing class RecalculateUALCostController {
         }
 
         if (uasToUpdate.size() > 0) update uasToUpdate;
-        if (sssListToUpdate.size() > 0) update sssListToUpdate;
+        if (sssToUpdate.size() > 0) update sssToUpdate.values();
 
         return new PageReference('/' + ualId);
     }
 
     public class UASAction {
-        public Utility_Account_Subscription__c uas{get; set;}
-        public Shared_Solar_System__c sss{get; set;}
+        public Utility_Account_Subscription__c uas {get; set;}
+        public Shared_Solar_System__c sss {get; set;}
         public Decimal deductionAmount {get; set;}
         public String action {get; set;}
         public UASAction(Utility_Account_Subscription__c uas, Decimal deductionAmount){

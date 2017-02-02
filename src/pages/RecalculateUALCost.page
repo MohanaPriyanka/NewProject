@@ -190,7 +190,7 @@
             $('[id$=uasActionTable] tbody tr').each(function() {
                if ($(this).find('.deductionAmount').text() != '$0.00' &&
                    $(this).find('.action').find(':selected').text() != 'No action' &&
-                   $(this).find('.action').find(':selected').text() != 'Please contact one of Bluewave\'s Administrator to deduct from this record.') {
+                   $(this).find('.action').text() != 'Please contact one of Bluewave\'s Administrator to deduct from this record.') {
                   message += ' - ' + $(this).find('.name').text() + '\n';
                }
             });
