@@ -1,6 +1,6 @@
 @isTest
 private class createLoanTestClass2{
-
+/*
 Static testMethod void createLoanHandler(){
 
 // Lead Convert
@@ -124,6 +124,6 @@ System.debug(verifyLoanMA);
 System.assertEquals(newOpportunityMSLP.Id, verifyLoanMSLP.Opportunity__r.Id);
 System.assertEquals(newOpportunityMA.Id, verifyLoanMA.Opportunity__r.Id);
 System.assertEquals(newOpportunitySC.Id, verifyLoanSC.Opportunity__r.Id);
-*/
-}
+
+}*/
 }

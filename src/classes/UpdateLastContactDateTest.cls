@@ -1,5 +1,8 @@
 @isTest
-private class UpdateLastContactDateTest{
+
+
+private class UpdateLastContactDateTest{ }
+/*
 
 Static testMethod void UpdateLastContactDatetestmethod(){
 
@@ -65,3 +68,4 @@ test.stopTest();
  
 }
 }
+*/

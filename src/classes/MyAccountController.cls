@@ -136,7 +136,7 @@ public without sharing class MyAccountController {
       System.debug(LoggingLevel.info, propertyAccountId);
       System.debug(Logginglevel.info, 'System Bill lookup check');
       List<System_Bill__c> sbList = [SELECT ID, Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Account_ID__c 
-                                     FROM System_Bill__c];
+                                     FROM System_Bill__c WHERE Opportunity__r.StageName = 'Complete'];
       List<Account> accountLIst = [SELECT Id, Name FROM Account];
       System.debug(sbList);                                     
       User u = [Select Id, ContactId, Parent_Account_ID__c, Contact.Account.Id from User where Id = :UserInfo.getUserId()]; 
@@ -152,16 +152,20 @@ public without sharing class MyAccountController {
         check = 1;
         aggregateResult[] sbMax= [Select Shared_Solar_System__c, max(Bill_Number__c)maxBillNumber
                                                 FROM System_Bill__c                                         
-                                                WHERE Account_Bill__r.Account_Id__c   = : u.Parent_account_id__c
+                                                WHERE Opportunity__r.StageName = 'Complete' 
+                                                AND Account_Bill__r.Account_Id__c   = : u.Parent_account_id__c
                                                 GROUP BY Shared_Solar_System__c];          
         for(AggregateResult ar : sbMax){
           maxBillMap.put((Id)ar.get('Shared_Solar_System__c'), (decimal)ar.get('maxBillNumber'));
           system.debug(LoggingLevel.info,(decimal)ar.get('maxBillNumber'));
         }
 
-        for(System_Bill__c systemBills : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Shared_Solar_System__r.Id,  Bill_Number__c, Name, FormAssembly_Order_Helper__c, Form_ID_Helper__c
+        for(System_Bill__c systemBills : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, 
+                                            Shared_Solar_System__r.Id,  Bill_Number__c, Name, FormAssembly_Order_Helper__c, 
+                                            Form_ID_Helper__c
                                           FROM System_Bill__c 
-                                          WHERE Account_Bill__r.Account_ID__c = : u.Parent_account_id__c]){
+                                          WHERE Opportunity__r.StageName = 'Complete' 
+                                          AND Account_Bill__r.Account_ID__c = : u.Parent_account_id__c]){
                                               system.debug(LoggingLevel.info,systemBills.Name);           
                                               if(maxBillMap.get(systemBills.Shared_Solar_System__r.Id) == systemBills.Bill_Number__c){
                                                   systemBillList.add(systemBills);
@@ -174,15 +178,19 @@ public without sharing class MyAccountController {
       else{
         aggregateResult[] sbMax = [Select Shared_Solar_System__c, max(Bill_Number__c)maxBillNumber
                                                 FROM System_Bill__c
-                                                WHERE Account_Bill__r.Parent_Account__r.Id = : propertyAccountId 
+                                                WHERE Opportunity__r.StageName = 'Complete' 
+                                                AND Account_Bill__r.Parent_Account__r.Id = : propertyAccountId 
                                                 GROUP BY Shared_Solar_System__c];  
         for(AggregateResult ar : sbMax){
           maxBillMap.put((Id)ar.get('Shared_Solar_System__c'), (decimal)ar.get('maxBillNumber'));
           system.debug(LoggingLevel.info,(decimal)ar.get('maxBillNumber'));
         }
-        for(System_Bill__c systemBills : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Shared_Solar_System__r.Id,  Bill_Number__c, Name, FormAssembly_Order_Helper__c, Form_ID_Helper__c
+        for(System_Bill__c systemBills : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, 
+                                            Shared_Solar_System__r.Id,  Bill_Number__c, Name, FormAssembly_Order_Helper__c, 
+                                            Form_ID_Helper__c
                                           FROM System_Bill__c 
-                                          WHERE Account_Bill__r.Parent_Account__r.Id = : propertyAccountId]){
+                                          WHERE Opportunity__r.StageName = 'Complete' 
+                                          AND Account_Bill__r.Parent_Account__r.Id = : propertyAccountId]){
                                               system.debug(LoggingLevel.info,systemBills.Name);           
                                               if(maxBillMap.get(systemBills.Shared_Solar_System__c) == systemBills.Bill_Number__c){
                                                   systemBillList.add(systemBills);
@@ -225,7 +233,8 @@ public without sharing class MyAccountController {
     integer check = 0;
       for(Opportunity opp : [SELECT Id, Name, Shared_Solar_System__r.Id
                              FROM Opportunity
-                             WHERE Account.Parent_Account__r.Id = : u.Parent_Account_ID__c]){
+                             WHERE StageName = 'Complete'
+                             AND Account.Parent_Account__r.Id = : u.Parent_Account_ID__c]){
         oppList.add(opp);
       }
     System.debug(oppList);  

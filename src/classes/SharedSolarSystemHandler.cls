@@ -1,11 +1,3 @@
-/*
-    Developed by Cole Swain - colemswain@gmail.com (Last Updated 08/04/2016)
-    
-    summarizeCapacity aggregates the customer subscriptions per system onto the system's layout for reporting and analytics.
-    
-    JP - added anchor statuses and removed "contract pending" from reserved capacity
-*/
-
 public with sharing class SharedSolarSystemHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
@@ -18,60 +10,76 @@ public with sharing class SharedSolarSystemHandler {
         summarizeCapacity(updatedSSSList);
     }
     private void summarizeCapacity(List<Shared_Solar_System__c> sssList){ 
-        //Instantiate the variables and lists
-        list<opportunity> reservedCapacityList = new list<opportunity>();
-        list<opportunity> committedCapacityList = new list<opportunity>();
-        list<opportunity> anchorCapacityList = new list<opportunity>();
-        integer i;
+        List <string> sssidlist = new list <string> ();
+        list<Utility_Account_Subscription__c> reservedCapacityList = new list <Utility_Account_Subscription__c>();
+        list<Utility_Account_Subscription__c> committedCapacityList = new list <Utility_Account_Subscription__c>();
+        list<Utility_Account_Subscription__c> anchorCapacityList = new list <Utility_Account_Subscription__c>();
         decimal summarizedReservedCapacity = 0;
         decimal summarizedCommittedCapacity = 0;
         decimal summarizedAnchorCapacity = 0;
-        if(sssList.size()>0){
-            for(Opportunity oppList : [ SELECT CS_capacity_allocated__c, StageName, Product_line__c, 
-                                               Customer_group__c, Shared_Solar_System__c, False_record__c
-                                        FROM Opportunity
-                                        WHERE Shared_Solar_System__c != null AND False_record__c = FALSE]){
-                if(oppList.Product_line__c == 'Community Solar' && oppList.Customer_group__c != 'Anchor' 
-                    && ( oppList.StageName == 'Pending BlueWave Signature' 
-                        || oppList.StageName == 'QC in Process' 
-                        || oppList.StageName == 'Pending Quality Control Signature')){
-                    reservedCapacityList.add(oppList);
-                }
-                if(oppList.Product_line__c == 'Community Solar' && oppList.Customer_group__c != 'Anchor' && oppList.StageName == 'Complete'){
-                    committedCapacityList.add(oppList);
-                } 
-                if(oppList.Product_line__c == 'Community Solar' && oppList.Customer_group__c == 'Anchor' && oppList.StageName != 'New' && oppList.StageName != 'Dead'){
-                    anchorCapacityList.add(oppList);
-                }                                                    
+
+        for(Shared_Solar_System__c sss: sssList){
+                string sssid = sss.Id;
+                string subid = sssid.substring(0,15);
+                sssidlist.add(subid);
+                system.debug(sssidlist);
+        }
+
+        List <Utility_Account_Subscription__c> relateduas = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c, Opportunity__c, SSS_Id__c, Customer_Subscription_KW_DC_STATIC__c
+                                                              FROM Utility_Account_Subscription__c
+                                                              WHERE SSS_Id__c IN : sssidlist];
+        system.debug(relateduas);
+
+        for(Utility_Account_Subscription__c uas: relateduas){
+            if(uas.Customer_Group__c != 'Anchor' 
+                && (uas.Opportunity_Stage__c == 'Pending BlueWave Signature'
+                || uas.Opportunity_Stage__c == 'QC in Process'
+                || uas.Opportunity_Stage__c == 'Pending Quality Control Signature')){
+                    reservedCapacityList.add(uas);
+                    system.debug(uas);
             }
-            try{
-                for(Shared_Solar_System__c sssSummary : sssList){
-                    for(i=0;i<reservedCapacityList.size();i++){
-                        if(reservedCapacityList.get(i).Shared_Solar_System__c == sssSummary.Id){
-                            summarizedReservedCapacity = reservedCapacityList.get(i).CS_capacity_allocated__c + summarizedReservedCapacity;
-                        }
-                    }
-                    for(i=0;i<committedCapacityList.size();i++){
-                        if(committedCapacityList.get(i).Shared_Solar_System__c == sssSummary.Id){
-                            system.debug('Committed Capacity List Size - ' + committedCapacityList.size());
-                            system.debug('List Sequence - ' + i);
-                            system.debug('Committed Capacity - ' + committedCapacityList.get(i).CS_capacity_allocated__c );
-                            summarizedCommittedCapacity = committedCapacityList.get(i).CS_capacity_allocated__c + summarizedCommittedCapacity;
-                        }
-                    }
-                    for(i=0;i<anchorCapacityList.size();i++){
-                        if(anchorCapacityList.get(i).Shared_Solar_System__c == sssSummary.Id){
-                            summarizedAnchorCapacity = anchorCapacityList.get(i).CS_capacity_allocated__c + summarizedAnchorCapacity;
-                        }
-                    }
-                    sssSummary.Reserved_capacity_kW_DC__c = string.valueOf(summarizedReservedCapacity);  
-                    sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity; 
-                    sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;                               
-                }
+            if(uas.Opportunity_Stage__c == 'Complete' && uas.Customer_Group__c != 'Anchor'){
+                    committedCapacityList.add(uas);
+                    system.debug(uas);
             }
-            catch(system.nullpointerexception e){
-                return;
+            if(uas.Customer_Group__c == 'Anchor' 
+                && (uas.Opportunity_Stage__c != 'New'
+                || uas.Opportunity_Stage__c != 'Dead')){
+                    anchorCapacityList.add(uas);
+                    system.debug(uas);
             }
         }
+
+        for(Shared_Solar_System__c sssSummary : sssList){
+            if(reservedCapacityList.size()>0){
+                for(Utility_Account_Subscription__c res: reservedCapacityList){
+                    if(res.SSS_Id__c == sssSummary.Id && res.Customer_Subscription_KW_DC_STATIC__c != null){
+                            summarizedReservedCapacity = res.Customer_Subscription_KW_DC_STATIC__c + summarizedReservedCapacity;
+                            system.debug(summarizedReservedCapacity);
+                    }
+                }
+            }
+            if(committedCapacityList.size()>0){
+                for(Utility_Account_Subscription__c comm: committedCapacityList){
+                    if(comm.SSS_Id__c == sssSummary.Id && comm.Customer_Subscription_KW_DC_STATIC__c != null){
+                            system.debug('Committed Capacity List Size - ' + committedCapacityList.size());
+                            system.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC_STATIC__c );
+                            summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC_STATIC__c + summarizedCommittedCapacity;
+                    }
+                }
+            }
+            if(anchorCapacityList.size()>0){
+                for(Utility_Account_Subscription__c anc: anchorCapacityList){
+                    if(anc.SSS_Id__c == sssSummary.Id && anc.Customer_Subscription_KW_DC_STATIC__c != null){
+                            summarizedAnchorCapacity = anc.Customer_Subscription_KW_DC_STATIC__c + summarizedAnchorCapacity;
+                    }
+                }
+            }
+            
+            sssSummary.Reserved_capacity_kW_DC__c = string.valueOf(summarizedReservedCapacity);  
+            sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity; 
+            sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;     
+        }
+
     }
 }

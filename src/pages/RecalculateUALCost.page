@@ -79,7 +79,7 @@
             <apex:pageBlockSection title="Adjustment Summary" rendered="{!BLANKVALUE(uasActionList.size, 0) > 0}" columns="1" 
                                    id="AdjustmentSummary">
                 <!-- included to bypass the pageblocksection -->
-                <apex:outputPanel>
+                <apex:outputPanel >
 
                     <table class="list" id="uasActionTable">
                         <thead>
@@ -200,4 +200,3 @@
         });
     </script>
 </apex:page>
-

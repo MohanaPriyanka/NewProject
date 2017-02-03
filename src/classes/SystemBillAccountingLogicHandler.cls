@@ -46,7 +46,7 @@ public with sharing class SystemBillAccountingLogicHandler {
 
     List <System_Bill__c> listsystemBills = [SELECT Id, Property_Account_ID__c, Shared_Solar_System_ID__c, Bill_Number__c, Discounted_Bill__c,  
                                             Payments_Net_Previous_Balances__c, Waive_Late_Fees__c, Total_Payments_This_Month__c, Carry_Over_Balance__c, 
-                                            Late_Payments__c, Balance_Net_Late_Payments__c,
+                                            Late_Payments__c, Balance_Net_Late_Payments__c, Distribute_This_Balance_12mo__c, 
                                             Late_Fee_Payments__c, Late_Fees__c, Carry_Forward_Adjustments__c, Due_This_Month__c, Payment_Plan_Balance__c, Total_Due__c, Distribute_This_Balance_as_Payment_Plan__c,
                                             Payment_Plan_Balance_to_Distribute__c, Savings__c
                                             FROM System_Bill__c
@@ -72,8 +72,8 @@ public with sharing class SystemBillAccountingLogicHandler {
                     else {pastsixbills = 0;}
               system.debug(pastsixbills);
 
-              if(currentbill>12) {
-              pasttwelvebills = currentbill-12;}
+              if(currentbill>13) {
+              pasttwelvebills = currentbill-13;}
                     else {pasttwelvebills = 0;}
               system.debug(pasttwelvebills);
                     
@@ -81,6 +81,7 @@ public with sharing class SystemBillAccountingLogicHandler {
           Decimal sumLateFeePay = 0;
           Decimal overdue = 0;
           Decimal ppbalance = 0;
+          Decimal twelveppbalance = 0;
           Decimal ytdbilled = 0;
           Decimal ytdpayments = 0;
           boolean morerecentbills = FALSE;
@@ -143,9 +144,9 @@ public with sharing class SystemBillAccountingLogicHandler {
                             systembill.get(j).Adjustments__c = -1 * systembill.get(j).Amount_to_Deduct__c;
                         }
 
-            if (systemBill.get(j).Distribute_This_Balance_as_Payment_Plan__c == TRUE && morerecentbills == FALSE) {
+            if (systemBill.get(j).Distribute_This_Balance_as_Payment_Plan__c == TRUE || systemBill.get(j).Distribute_This_Balance_12mo__c == TRUE && morerecentbills == FALSE) {
                             systemBill.get(j).Payment_Plan_Balance_to_Distribute__c = systemBill.get(j).Carry_Over_Balance__c;
-                    }
+            }
 
             if (systemBill.get(j).Refund_this_Balance__c == FALSE){
                   systemBill.get(j).Balance_Net_Late_Payments__c = dueThisMonth - systemBill.get(j).Late_Payments__c - systemBill.get(j).Payments_Net_Previous_Balances__c; 
@@ -175,11 +176,11 @@ public with sharing class SystemBillAccountingLogicHandler {
                                     pastbillamount = listsystembills.get(i).Total_Due__c;
                                     pastbillpayment = listsystembills.get(i).Total_Payments_This_Month__c;
 
-                                      if(listsystembills.get(i).Distribute_This_Balance_as_Payment_Plan__c == TRUE){
+                                      if(listsystembills.get(i).Distribute_This_Balance_as_Payment_Plan__c == TRUE || listsystembills.get(i).Distribute_This_Balance_12mo__c == TRUE){
                                         carryoverbalance = 0;
                                         system.debug(carryoverbalance);
                                       }
-                                          else if(listsystembills.get(i).Distribute_This_Balance_as_Payment_Plan__c == FALSE){
+                                          else {
                                             carryoverbalance = listsystembills.get(i).Carry_Over_Balance__c;
                                             system.debug(carryoverbalance);
                                           }
@@ -190,6 +191,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                      for(k=0; k<listsystemBills.size();k++){
                             system.debug(listsystemBills.get(k).Bill_Number__c);
                             system.debug(listsystemBills.get(k).Distribute_This_Balance_as_Payment_Plan__c);
+                            
                             if(listsystembills.get(k).Property_Account_ID__c == ParentID 
                                 && listsystembills.get(k).Shared_Solar_System_ID__c == SSSid
                                 && listsystembills.get(k).Bill_Number__c < currentbill 
@@ -197,7 +199,16 @@ public with sharing class SystemBillAccountingLogicHandler {
                                 && listsystembills.get(k).Distribute_This_Balance_as_Payment_Plan__c == TRUE
                                 && ppbalance == 0){
                                         ppbalance = listsystembills.get(k).Payment_Plan_Balance_to_Distribute__c / 6 ;
-                                }
+                            }
+
+                            if(listsystembills.get(k).Property_Account_ID__c == ParentID 
+                                && listsystembills.get(k).Shared_Solar_System_ID__c == SSSid
+                                && listsystembills.get(k).Bill_Number__c < currentbill 
+                                && listsystembills.get(k).Bill_Number__c > pasttwelvebills
+                                && listsystembills.get(k).Distribute_This_Balance_12mo__c == TRUE
+                                && ppbalance == 0){
+                                        twelveppbalance = listsystembills.get(k).Payment_Plan_Balance_to_Distribute__c / 12 ;
+                            }
                       }
 
                      // Sums past 12 months of bills for YTD data
@@ -215,22 +226,30 @@ public with sharing class SystemBillAccountingLogicHandler {
                   overdue = carryoverbalance;
                   system.debug(overdue);
                   system.debug(ppbalance);
+                  system.debug(twelveppbalance);
 
                   systemBill.get(j).Previous_Month_Overdue_Balance__c = overdue;
                   systemBill.get(j).Due_This_Month__c = dueThisMonth; 
                   systemBill.get(j).Past_Bill_Amount__c = pastbillamount;
                   systemBill.get(j).Past_Bill_Payment__c = pastbillpayment;
-                  systemBill.get(j).Payment_Plan_Balance__c = ppbalance;
                   systemBill.get(j).YTD_Billed__c = ytdbilled;
                   systemBill.get(j).YTD_Payments__c = ytdpayments;
                   systemBill.get(j).Adjustments__c = 0;
-                             
+                    
+                    if(ppbalance > 0){
+                        systemBill.get(j).Payment_Plan_Balance__c = ppbalance;
+                    }
+
+                        else if(twelveppbalance > 0){
+                            systemBill.get(j).Payment_Plan_Balance__c = twelveppbalance;
+                        }           
+
                     if(systemBill.get(j).Waive_Late_Fees__c==FALSE){
                         systemBill.get(j).Late_Fees__c = (0.01*overdue);
                     }
 
                         else if(systemBill.get(j).Waive_Late_Fees__c==TRUE){
-                            systemBill.get(j).Late_Fees__c = 0;
+                                systemBill.get(j).Late_Fees__c = 0;
                         }
 
                     if(systemBill.get(j).Refund_this_Balance__c == TRUE && systemBill.get(j).Amount_to_Add__c > 0){
@@ -243,13 +262,13 @@ public with sharing class SystemBillAccountingLogicHandler {
 
                     system.debug(systemBill.get(j).Late_Fees__c);
                     system.debug(systemBill.get(j).Adjustments__c);
-                    systemBill.get(j).Total_Due__c = dueThisMonth + systemBill.get(j).Late_Fees__c + carryoverbalance + ppbalance + systemBill.get(j).Adjustments__c;
+                    systemBill.get(j).Total_Due__c = dueThisMonth + systemBill.get(j).Late_Fees__c + carryoverbalance + systemBill.get(j).Payment_Plan_Balance__c + systemBill.get(j).Adjustments__c;
                     system.debug(systemBill.get(j).Total_Due__c);
                     systemBill.get(j).Carry_Over_Balance__c = systemBill.get(j).Total_Due__c - systemBill.get(j).Total_Payments_This_Month__c;
 
                     // If the triggered bill is the original payment plan bill, don't push balance forward: 
 
-                    if (systemBill.get(j).Distribute_This_Balance_as_Payment_Plan__c == TRUE && morerecentbills == FALSE) {
+                    if (systemBill.get(j).Distribute_This_Balance_as_Payment_Plan__c == TRUE || systemBill.get(j).Distribute_This_Balance_12mo__c == TRUE && morerecentbills == FALSE) {
                             systemBill.get(j).Payment_Plan_Balance_to_Distribute__c = systemBill.get(j).Carry_Over_Balance__c;
                     }
 

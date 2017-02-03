@@ -23,7 +23,6 @@ public with sharing class RecurringPaymentsHandler {
         string chOrderValueSystemBillIdentifier;
         String chOrderCheckSystemBillIdentifier;
 
-
         List<UASB__c> uasbList = [SELECT Id, Name, System_Bill__r.Property_Account__c, System_Bill__r.Discounted_Bill__c,  System_Bill__r.Name,
                                     System_Bill__r.Property_Account__r.Id, System_Bill__r.Total_Due__c, System_Bill__r.Due_This_Month__c, 
                                     System_Bill__r.Property_Account__r.Name, System_Bill__r.Recurring_Payment_Id__c, 

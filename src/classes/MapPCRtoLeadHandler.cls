@@ -24,12 +24,12 @@ public with sharing class MapPCRtoLeadHandler {
   for(j = 0; j < newPCR.size(); j++){
       decimal monthlydebt = newPCR.get(j).LASERCA__Sum_of_monthly_Personal_Debt__c;
 
-      if(newPCR.get(j).LASERCA__Lead__c != null && (monthlydebt == NULL || monthlydebt == 0)){         
+      if(newPCR.get(j).LASERCA__Lead__c != null && (monthlydebt != NULL || monthlydebt != 0)){         
               system.debug(monthlydebt);
               leadids.add(newPCR.get(j).LASERCA__Lead__c);
       }
 
-      if(newPCR.get(j).LASERCA__Contact__c != null && (monthlydebt == NULL || monthlydebt == 0)){         
+      if(newPCR.get(j).LASERCA__Contact__c != null && (monthlydebt != NULL || monthlydebt != 0)){         
               system.debug(monthlydebt);
               contactids.add(newPCR.get(j).LASERCA__Contact__c);
       }
@@ -37,7 +37,7 @@ public with sharing class MapPCRtoLeadHandler {
 
   if(leadids.size()>0){
 
-  List <Lead> listleads = [ SELECT id, Product_Line__c, Personal_Credit_Report__c 
+  List <Lead> listleads = [ SELECT id, Product_Line__c, Personal_Credit_Report__c, IsConverted
                             FROM Lead
                             WHERE id IN : leadids];  
   system.debug(listleads);
@@ -50,12 +50,12 @@ public with sharing class MapPCRtoLeadHandler {
         decimal monthlydebt = newPCR.get(i).LASERCA__Sum_of_monthly_Personal_Debt__c;
 
           if(listleads.size()> 0){
-            if(newPCR.get(i).LASERCA__Lead__c != null && (monthlydebt == NULL || monthlydebt == 0)){
+            if(newPCR.get(i).LASERCA__Lead__c != null && (monthlydebt != NULL || monthlydebt != 0)){
               for(k = 0; k < listleads.size(); k++){
                 system.debug(listleads.get(k).Id);
                 system.debug(leadid);
 
-                if(listleads.get(k).id == leadid && contactid == null && listleads.get(k).Product_Line__c == 'Residential Loan' && listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id){
+                if(listleads.get(k).id == leadid && listleads.get(k).IsConverted == FALSE && contactid == null && listleads.get(k).Product_Line__c == 'Residential Loan' && listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id){
                     listleads.get(k).Personal_Credit_Report__c = newPCR.get(i).Id;
                     listleads.get(k).Maximum_monthly_Disbursement__c = newPCR.get(i).Maximum_Disbursement_Monthly__c;  
                     listleads.get(k).Debt_income_status__c = newPCR.get(i).Approval_Status__c; 
@@ -63,14 +63,14 @@ public with sharing class MapPCRtoLeadHandler {
                     system.debug(leadupdatelist);
                 }
 
-                if(listleads.get(k).id == leadid && contactid == null && listleads.get(k).Product_Line__c == 'Community Solar' && listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id){
+                if(listleads.get(k).id == leadid && listleads.get(k).IsConverted == FALSE && contactid == null && listleads.get(k).Product_Line__c == 'Community Solar' && listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id){
                     listleads.get(k).Personal_Credit_Report__c = newPCR.get(i).Id;
                     listleads.get(k).FICO_score_approval__c = newPCR.get(i).Approval_Status__c;
                     leadupdatelist.add(listleads.get(k)); 
 
                 }
 
-                if(listleads.get(k).id == newPCR.get(i).Lead_from_Contact__c && contactid != null){
+                if(listleads.get(k).id == newPCR.get(i).Lead_from_Contact__c && listleads.get(k).IsConverted == FALSE && contactid != null){
                     listleads.get(k).Personal_Credit_Report_Co_Applicant__c = newPCR.get(i).id;
                     leadupdatelist.add(listleads.get(k));
                 }

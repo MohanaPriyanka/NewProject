@@ -92,6 +92,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Total_System_NMCs__c = uab.Total_System_NMCs__c,
                                             Size_off_NMCs__c = uab.Size_off_NMCs__c,
                                             Share_of_System__c = uas.Share_of_System__c);
+
                     uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                     uasbSet.add(uasb);
                     system.debug(LoggingLevel.Info, uasb);                   
