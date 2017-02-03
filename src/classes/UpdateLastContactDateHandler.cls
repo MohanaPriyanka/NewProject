@@ -1,7 +1,8 @@
-// for mass uploads or inserts of tasks, use the "do not fire trigger" checkbox to stop this class
+public with sharing class UpdateLastContactDateHandler { }
 
+/*
 
-public with sharing class UpdateLastContactDateHandler {
+ 
   private boolean m_isExecuting = false;
   private Integer BatchSize = 0;
     
@@ -140,3 +141,4 @@ public with sharing class UpdateLastContactDateHandler {
 
   }
 }
+*/

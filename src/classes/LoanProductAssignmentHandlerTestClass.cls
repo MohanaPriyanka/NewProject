@@ -19,9 +19,9 @@ public class LoanProductAssignmentHandlerTestClass {
         //System.debug('pcrlist' + ' ' + pcrList);    
         //update pcrList;
 
-        List<Lead> qualifiedLeadList = new list<lead>();
+        List<Lead> qualifiedLeadList = new list<Lead>();
         Map<String, lead> qualifiedLeadMap = new Map<String,Lead>();        
-        for(lead leadRecord : [SELECT Id, Name, Status, FirstName, Product__c, Product__r.Id FROM lead]){
+        for(lead leadRecord : [SELECT Id, Name, Status, FirstName, Product__c, Product__r.Id FROM Lead]){
             leadRecord.Status = 'Qualified';
             System.debug('The Product ID is ' + leadRecord.Product__r.Id);
             qualifiedLeadMap.put(leadRecord.FirstName, leadRecord);
@@ -31,7 +31,7 @@ public class LoanProductAssignmentHandlerTestClass {
         
         Map<String, lead> updatedLeadMap = new Map<String,Lead>();        
         for(lead leadRecord : [SELECT Id, Name, Status, FirstName, Product__c, Product__r.Id 
-            FROM lead]){
+                               FROM Lead]){
 
             updatedLeadMap.put(leadRecord.FirstName, leadRecord);
             System.debug('The updatedLeadMap is ' + updatedLeadMap);
@@ -49,30 +49,30 @@ public class LoanProductAssignmentHandlerTestClass {
         System.debug(productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 6.99%').Id);
         System.assert(verifyleadMALoanTerm10Rate699.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 6.99%').Id);
         System.debug('Assertion 1 passed');
-        //Lead verifyLeadMALoanTerm10Rate599 = updatedLeadMap.get('leadMALoanTerm10Rate599');
+        Lead verifyLeadMALoanTerm10Rate599 = updatedLeadMap.get('leadMALoanTerm10Rate599');
         //System.debug(verifyleadMALoanTerm10Rate599.Product__r.Id);
         //System.debug(productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 5.99%').Id);
         //System.assert(verifyleadMALoanTerm10Rate599.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 5.99%').Id);
 
-        //Lead verifyLeadMALoanTerm10Rate725 = updatedLeadMap.get('leadMALoanTerm10Rate725');
-        //System.debug(verifyleadMALoanTerm10Rate725.Product__r.Id);
-        //System.debug(productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 7.25%').Id);
-        //System.assert(verifyleadMALoanTerm10Rate725.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 7.25%').Id);        
+        Lead verifyLeadMALoanTerm10Rate725 = updatedLeadMap.get('leadMALoanTerm10Rate725');
+        System.debug(verifyleadMALoanTerm10Rate725.Product__r.Id);
+        System.debug(productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 7.25%').Id);
+        System.assert(verifyleadMALoanTerm10Rate725.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 10 Year Term - 7.25%').Id);        
 
-        //Lead verifyLeadMALoanTerm20Rate699 = updatedLeadMap.get('leadMALoanTerm20Rate699');
-        //System.debug(verifyleadMALoanTerm20Rate699.Product__r.Id);
-        //System.debug(productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 6.99%').Id);
-        //System.assert(verifyleadMALoanTerm20Rate699.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 6.99%').Id);
+        Lead verifyLeadMALoanTerm20Rate699 = updatedLeadMap.get('leadMALoanTerm20Rate699');
+        System.debug(verifyleadMALoanTerm20Rate699.Product__r.Id);
+        System.debug(productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 6.99%').Id);
+        System.assert(verifyleadMALoanTerm20Rate699.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 6.99%').Id);
 
         //Lead verifyLeadMALoanTerm20Rate599 = updatedLeadMap.get('leadMALoanTerm20Rate599');
         //System.debug(verifyleadMALoanTerm20Rate599.Product__r.Id);
         //System.debug(productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 5.99%').Id);
         //System.assert(verifyleadMALoanTerm20Rate599.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 5.99%').Id);
 
-        //Lead verifyLeadMALoanTerm20Rate725 = updatedLeadMap.get('leadMALoanTerm20Rate725');
-        //System.debug(verifyleadMALoanTerm20Rate725.Product__r.Id);
-        //System.debug(productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 7.25%').Id);
-        //System.assert(verifyleadMALoanTerm20Rate725.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 7.25%').Id);   
+        Lead verifyLeadMALoanTerm20Rate725 = updatedLeadMap.get('leadMALoanTerm20Rate725');
+        System.debug(verifyleadMALoanTerm20Rate725.Product__r.Id);
+        System.debug(productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 7.25%').Id);
+        System.assert(verifyleadMALoanTerm20Rate725.Product__r.Id == productMap.get('BlueWave Solar Loan - MA - 20 Year Term - 7.25%').Id);   
     }
 }
 /*@isTest

@@ -11,90 +11,89 @@ public with sharing class referralcodehandler {
 
   public void OnBeforeInsert (Lead[] newLead){
       referralcodeinsert(newLead);
-      }
+  }
 
   public void OnBeforeUpdate(Lead[] newLeads, Lead[] oldLeads){
       referralcode(newLeads, oldLeads);
   }
 
   private void referralcodeinsert(list<Lead> trigLeads){
-        integer j;
-        integer k;
-        integer i;
-        integer h;
-        string partner;
-        list <string> customIds = new List <string>( ); 
+        string partnerlookup;
+        string salesid;
+        string email;
+        List <String> leadReferralCodeList = new List<String>();
         map <string, contact> contactReferralMap = new map <string, contact>();
-        map <string, BSST__c> partnersmap = new map <string, BSST__c>();
+        map <string, BSST__c> partnermap = new map <string, BSST__c>();
 
-        for(j = 0; j < trigLeads.size(); j++){
-                if ( trigLeads.get(j).custom_id__C != null) {
-                        customIds.add (trigLeads.get(j).custom_id__C);
-                }
+
+        for(Lead ld : trigLeads){
+            leadReferralCodeList.add('holder');
+            if(ld.Custom_ID__c != null){
+                leadReferralCodeList.add(ld.Custom_Id__c);
+            }
         }
+        
+        for (BSST__c partner : [SELECT Id, Name, Custom_Id__c, Partner__r.Id, Email__c 
+                                FROM BSST__c 
+                                WHERE Custom_Id__c IN : leadReferralCodeList]){
+                partnerMap.put(partner.Custom_Id__c, partner);
+        }
+        System.debug('PartnerMap ' + partnerMap);   
 
-        system.debug(customIds);
+        for (Contact contact : [SELECT Id, Custom_Id__c , email
+                                    FROM Contact
+                                    WHERE Custom_Id__c IN : leadReferralCodeList]){
+                contactReferralMap.put(contact.Custom_Id__c, contact);
+        }
+        System.debug('ContactMap ' + contactReferralMap);  
 
-        if(customIds.size()>0){
-
-            List <Contact> listContact = [  SELECT Id, Custom_Id__c , email
-                                            FROM Contact
-                                            WHERE Custom_Id__c IN : customIds];
-            system.debug(listContact);
-
-            List <BSST__c> listpartners = [ SELECT id, custom_id__C, partner__r.id, partner__c, email__c
-                                            FROM BSST__C
-                                            WHERE custom_id__c IN : customIds];
-            system.debug(listpartners);
+        for(lead l : trigLeads){
+            if(l.Custom_Id__c == null){
+                if(partnerMap.containsKey('holder')){
+                    system.debug(partnerMap.get('holder').Partner__r.Id);
+                    partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                    salesid = partnerMap.get('holder').Id;
+                    email = partnerMap.get('holder').Email__c;
+                }
+                else{
+                    partnerlookup = null;
+                    salesid = null;
+                    email = null;
+                }
+            }
+            if(l.Custom_Id__c != null){
+                if(partnerMap.containsKey(l.Custom_Id__c)){
+                    partnerlookup = partnerMap.get(l.Custom_Id__c).Partner__r.Id;
+                    salesid = partnerMap.get(l.Custom_Id__c).Id;
+                    email = partnerMap.get(l.Custom_Id__c).Email__c;
+                }
+                else if(contactReferralMap.containsKey(l.Custom_Id__c)){
+                    l.customer_referral__c = contactReferralMap.get(l.custom_id__C).id;
+                    l.referral_email__c = contactReferralMap.get(l.custom_id__c).email;
+                }
+                else{
+                    if(partnerMap.containsKey('holder')){
+                        partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                        salesid = partnerMap.get('holder').Id;
+                        email = partnerMap.get('holder').Email__c;
+                    }
+                }
+            }
+            system.debug(partnerlookup);
+            system.debug(salesid);
+            system.debug(email);
             
-            for(i = 0; i < listContact.size(); i++){
-                    contactReferralMap.put(listContact.get(i).custom_id__c, listContact.get(i));
+            if(partnerlookup != null){
+                l.Partner_Lookup__c = partnerlookup;
             }
-            system.debug(contactReferralMap);
-
-            for(h = 0; h < listpartners.size(); h++){
-                    partnersmap.put(listpartners.get(h).custom_id__c, listpartners.get(h));
+            if(salesid != null){
+                l.Bs_sales_id__c = salesid;
             }
-            system.debug(partnersmap);
-        }
-        
-        
-                for(k = 0; k < trigLeads.size(); k++){
-                    system.debug(contactReferralMap.get(trigLeads.get(k).custom_id__C));
-                    system.debug(partnersmap.get(trigLeads.get(k).custom_id__C));
-                    
-                    if(partnersmap.size()>0){
-                            if(partnersmap.get(trigLeads.get(k).custom_id__C) != null){  
-                                    trigleads.get(k).Partner_Lookup__c = partnersmap.get(trigleads.get(k).custom_id__C).Partner__c;
-                                    trigLeads.get(k).bs_sales_id__c = partnersmap.get(trigLeads.get(k).custom_id__C).id;
-                                    trigLeads.get(k).partner_email__c = partnersmap.get(trigLeads.get(k).custom_id__c).email__c;
-                                    system.debug(trigLeads.get(k).bs_sales_id__c);
-                                    system.debug(trigLeads.get(k).partner_email__c);
-                            }
+            if(email != null){
+                l.Partner_Email__c = email;
+            }
+        }   
 
-                                else{
-                                    trigLeads.get(k).bs_sales_id__c = null;
-                                    trigLeads.get(k).partner_email__c = null;
-                                }
-                    }
-
-                    if(contactReferralMap.size()>0){
-                            if(contactReferralMap.get(trigLeads.get(k).custom_id__C) != null){  
-                                    trigLeads.get(k).customer_referral__c = contactReferralMap.get(trigLeads.get(k).custom_id__C).id;
-                                    trigLeads.get(k).referral_email__c = contactReferralMap.get(trigLeads.get(k).custom_id__c).email;
-                                    system.debug(trigLeads.get(k).customer_referral__c);
-                                    system.debug(trigLeads.get(k).referral_email__c);
-                            }
-                            
-                                /*else{
-                                    trigLeads.get(k).customer_referral__c = null;
-                                    trigLeads.get(k).referral_email__c = null;
-                                }*/
-
-                    }
-                    system.debug(trigLeads.get(k).referral_email__c);
-
-                }
   }
 
   private void referralcode(List<Lead> oldLeads, List<Lead> newLeads){
@@ -115,7 +114,7 @@ public with sharing class referralcodehandler {
               string newvalueID = newLeads.get(m).Id;
               string newcid = newLeads.get(m).Custom_Id__c;
               string oldcid = oldvalues.get(newvalueID).Custom_Id__c;
-                  if (newcid != oldcid && newcid != null) { 
+                  if (newcid != oldcid) { 
                         triggeredleads.add(newLeads.get(m));
                   }
         } 
@@ -123,80 +122,80 @@ public with sharing class referralcodehandler {
         system.debug(triggeredleads);
 
         // begin normal process
-        integer j;
-        integer k;
-        integer i;
-        integer h;
-        string partner;
-        list <string> customIds = new List <string>( ); 
+        string partnerlookup;
+        string salesid;
+        string email;
+        List <String> leadReferralCodeList = new List<String>();
         map <string, contact> contactReferralMap = new map <string, contact>();
-        map <string, BSST__c> partnersmap = new map <string, BSST__c>();
+        map <string, BSST__c> partnermap = new map <string, BSST__c>();
 
-        for(j = 0; j < triggeredleads.size(); j++){
-                if ( triggeredleads.get(j).custom_id__C != null) {
-                        customIds.add (triggeredleads.get(j).custom_id__C);
-                }
+        for(Lead ld : triggeredleads){
+            leadReferralCodeList.add('holder');
+            if(ld.Custom_ID__c != null){
+                leadReferralCodeList.add(ld.Custom_Id__c);
+            }
         }
+        
+        for (BSST__c partner : [SELECT Id, Name, Custom_Id__c, Partner__r.Id, Email__c 
+                                FROM BSST__c 
+                                WHERE Custom_Id__c IN : leadReferralCodeList]){
+                partnerMap.put(partner.Custom_Id__c, partner);
+        }
+        System.debug('PartnerMap ' + partnerMap);   
 
-        system.debug(customIds);
+        for (Contact contact : [SELECT Id, Custom_Id__c , email
+                                    FROM Contact
+                                    WHERE Custom_Id__c IN : leadReferralCodeList]){
+                contactReferralMap.put(contact.Custom_Id__c, contact);
+        }
+        System.debug('ContactMap ' + contactReferralMap);  
 
-        if(customIds.size()>0){
-
-            List <Contact> listContact = [  SELECT Id, Custom_Id__c , email
-                                            FROM Contact
-                                            WHERE Custom_Id__c IN : customIds];
-            system.debug(listContact);
-
-            List <BSST__c> listpartners = [ SELECT id, custom_id__C, partner__r.id, partner__c, email__c
-                                            FROM BSST__C
-                                            WHERE custom_id__c IN : customIds];
-            system.debug(listpartners);
+        for(lead l : triggeredleads){
+            if(l.Custom_Id__c == null){
+                if(partnerMap.containsKey('holder')){
+                    system.debug(partnerMap.get('holder').Partner__r.Id);
+                    partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                    salesid = partnerMap.get('holder').Id;
+                    email = partnerMap.get('holder').Email__c;
+                }
+                else{
+                    partnerlookup = null;
+                    salesid = null;
+                    email = null;
+                }
+            }
+            if(l.Custom_Id__c != null){
+                if(partnerMap.containsKey(l.Custom_Id__c)){
+                    partnerlookup = partnerMap.get(l.Custom_Id__c).Partner__r.Id;
+                    salesid = partnerMap.get(l.Custom_Id__c).Id;
+                    email = partnerMap.get(l.Custom_Id__c).Email__c;
+                }
+                else if(contactReferralMap.containsKey(l.Custom_Id__c)){
+                    l.customer_referral__c = contactReferralMap.get(l.custom_id__C).id;
+                    l.referral_email__c = contactReferralMap.get(l.custom_id__c).email;
+                }
+                else{
+                    if(partnerMap.containsKey('holder')){
+                        partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                        salesid = partnerMap.get('holder').Id;
+                        email = partnerMap.get('holder').Email__c;
+                    }
+                }
+            }
+            system.debug(partnerlookup);
+            system.debug(salesid);
+            system.debug(email);
             
-            for(i = 0; i < listContact.size(); i++){
-                    contactReferralMap.put(listContact.get(i).custom_id__c, listContact.get(i));
+            if(partnerlookup != null){
+                l.Partner_Lookup__c = partnerlookup;
             }
-            system.debug(contactReferralMap);
-
-            for(h = 0; h < listpartners.size(); h++){
-                    partnersmap.put(listpartners.get(h).custom_id__c, listpartners.get(h));
+            if(salesid != null){
+                l.Bs_sales_id__c = salesid;
             }
-            system.debug(partnersmap);
+            if(email != null){
+                l.Partner_Email__c = email;
+            }
         }
-        
-        
-                for(k = 0; k < triggeredleads.size(); k++){
-                    system.debug(contactReferralMap.get(triggeredleads.get(k).custom_id__C));
-                    system.debug(partnersmap.get(triggeredleads.get(k).custom_id__C));
-                    
-                    if(partnersmap.size()>0){
-                            if(partnersmap.get(triggeredleads.get(k).custom_id__C) != null){  
-                                    triggeredleads.get(k).Partner_Lookup__c = partnersmap.get(triggeredleads.get(k).custom_id__C).Partner__c;
-                                    triggeredleads.get(k).bs_sales_id__c = partnersmap.get(triggeredleads.get(k).custom_id__C).id;
-                                    triggeredleads.get(k).partner_email__c = partnersmap.get(triggeredleads.get(k).custom_id__c).email__c;
-                                    system.debug(triggeredleads.get(k).bs_sales_id__c);
-                                    system.debug(triggeredleads.get(k).partner_email__c);
-                            }
+   }   
 
-                                else{
-                                    triggeredleads.get(k).bs_sales_id__c = null;
-                                    triggeredleads.get(k).partner_email__c = null;
-                                }
-                    }
-
-                    if(contactReferralMap.size()>0){
-                            if(contactReferralMap.get(triggeredleads.get(k).custom_id__C) != null){  
-                                    triggeredleads.get(k).customer_referral__c = contactReferralMap.get(triggeredleads.get(k).custom_id__C).id;
-                                    triggeredleads.get(k).referral_email__c = contactReferralMap.get(triggeredleads.get(k).custom_id__c).email;
-                                    system.debug(triggeredleads.get(k).customer_referral__c);
-                                    system.debug(triggeredleads.get(k).referral_email__c);
-                            }
-                            
-                                else{
-                                    triggeredleads.get(k).customer_referral__c = null;
-                                    triggeredleads.get(k).referral_email__c = null;
-                                }
-
-                    }
-                }
-    }
 }

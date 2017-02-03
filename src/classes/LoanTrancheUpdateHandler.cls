@@ -6,12 +6,87 @@ public with sharing class LoanTrancheUpdateHandler {
         m_isExecuting = isExecuting;
         BatchSize = size;
     }
-    public void OnBeforeInsert(loan__c[] newLoans){
-        assignLoanTranche(newLoans);
+    //public void OnBeforeInsert(loan__c[] newLoans){
+    //    assignLoanTranche(newLoans);
+    //}
+
+    //public void OnBeforeUpdate(loan__c[] updatedLoans, loan__c[] oldLoans, Map<ID, loan__c> oldLoanMap, Map<ID, loan__c> newLoanMap){
+    //    assignLoanTranche(updatedLoans);
+    //}   
+
+    //private List<Loan_Traunch__c> getLoanTranche(){
+    //    List<Loan_Traunch__c> trancheList = new List<Loan_Traunch__c>();                                   
+    //    //query for all of the products that are active | NOTE: will need to add queried fields as new product variations come into the system. Look for a way to return all fields.
+    //    for(Loan_Traunch__c trancheRecord : [SELECT Id, Name, State__c, Loan_Data__r.Id, Available_Capital__c, Tranche_Type__c
+    //                                    FROM Loan_Traunch__c 
+    //                                    WHERE Stage__c = 'Open']){
+    //        trancheList.add(trancheRecord);
+    //    }
+    //    system.debug(trancheList);
+    //    return trancheList;        
+    //}        
+    //private void assignLoanTranche(List<Loan__c> loanList){
+    //    List<Loan_Traunch__c> trancheList = new List<Loan_Traunch__c>(getLoanTranche());
+    //    for(Loan__c loanRecord : loanList){                            
+    //        //if(loanRecord.Product__r.Loan_Tranche_type__c != null && loanRecord.Principall__c != null && loanRecord.State__c != null){
+    //            if(trancheList.size()>0){
+    //                for(Loan_Traunch__c trancheRecord : trancheList){
+    //                system.debug(trancheRecord.Loan_Data__r.Id);
+    //                system.debug(loanRecord.Product__r.Loan_Capital_Pool__r.Id ); 
+    //                system.debug(trancheRecord.Available_Capital__c);
+    //                system.debug(loanRecord.Principall__c );
+    //                system.debug(trancheRecord.Tranche_Type__c);
+    //                system.debug(loanRecord.Product__r.Loan_Tranche_type__c );                           
+    //                    if(trancheRecord.State__c == loanRecord.State__c && 
+    //                        trancheRecord.Loan_Data__r.Id == LoanRecord.Product__r.Loan_Capital_Pool__r.Id &&
+    //                        trancheRecord.Available_Capital__c >= loanRecord.Principall__c &&
+    //                        trancheRecord.Tranche_Type__c == loanRecord.Product__r.Loan_Tranche_type__c){
+    //                            loanRecord.Loan_Tranche__c = trancheRecord.Id;
+    //                    }
+    //                }                    
+    //            }             
+    //        //}
+    //    }
+    
+
+
+
+/*
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+VERSION 2 | Used parameters in SOQL; however it did not abide by governor limits as the SOQL was done inside of for loops.
+
+
+    private List<Loan_Traunch__c> getLoanTranche (String trancheType, Decimal loanAmount, String state, Id capitalPoolId){
+        String query =      'Select Id, Name, Loan_Term__c, '+
+                            '           Loan_Financing_Fee_Terms__c '+
+                            ' From Loan_Traunch__c ';
+        query += 'Where State__c = :state ';
+        query += 'AND Capital_Pool__r.Id = :capitalPoolId ';        
+        query += 'AND Available_Capital__c >= :loanAmount ';
+        query += 'AND Tranche_Type__c >= :trancheType ';
+        query += 'AND Stage = Open ';        
+        query += 'LIMIT 1';                         
+
+        return Database.query(query);
     }
-    public void OnBeforeUpdate(loan__c[] oldLoans, loan__c[] updatedLoans, Map<ID, loan__c> oldLoanMap, Map<ID, loan__c> newLoanMap){
-        assignLoanTranche(updatedLoans);
+    private void assignLoanTranche(List<Loan__c> loanList){
+        for(Loan__c loanRecord : loanList){
+            if(loanRecord.Product__r.Loan_Tranche_type__c != null && loanRecord.Principall__c != null && loanRecord.State__c != null){
+                if(getLoanTranche(loanRecord.Product__r.Loan_Tranche_type__c, loanRecord.Principall__c, loanRecord.State__c, loanRecord.Loan_Tranche__r.Loan_Data__r.Id).size() > 0){
+                    for(Loan_Traunch__c loanTranche : getLoanTranche(loanRecord.Product__r.Loan_Tranche_type__c, loanRecord.Principall__c, loanRecord.State__c, loanRecord.Loan_Tranche__r.Loan_Data__r.Id)){
+                        loanRecord.Loan_Tranche__c = loanTranche.Id;
+                    }
+                }
+            }
+        }
     }
+ 
+
+   /* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+   VERSION 1 | Created to allows for DOER loans to go into their own tranche, SC/NC loans to be put into a BW holding tranche and for others to go into standard Avidia Tranches. Not efficient.
+
     private void assignLoanTranche(List<Loan__c> loanList){
         //instantiate the various trancheLists.
         List<Loan_Traunch__c> trancheListStandard = new List<Loan_Traunch__c>();
@@ -77,7 +152,7 @@ public with sharing class LoanTrancheUpdateHandler {
                             }
                         }    
                     }
-                }
+                }*/
     }
     /*
         
@@ -129,4 +204,3 @@ public with sharing class LoanTrancheUpdateHandler {
         get{ return !IsTriggerContext;}
     }
     */
-}

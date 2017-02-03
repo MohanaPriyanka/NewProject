@@ -1,4 +1,4 @@
-trigger DOERCalculator on Opportunity (before insert, before update) {
+trigger DOERCalculator on Opportunity (before insert, before update) {/*
 
 List <opportunity> opportunityList = new List <opportunity>( );
 List <decimal> principalInterestList = new List <decimal>( );
@@ -138,4 +138,4 @@ integer i;
                 
                 principalDeduction = principalDeduction + principalPaymentPIList.get(i);
                 
-                opp.Loan_Balance_at_Purchase__c = (disbursalOne - NPVinterestOnly) + disbursalTwo - NPVpi - principalDeduction ;}}}}
+                opp.Loan_Balance_at_Purchase__c = (disbursalOne - NPVinterestOnly) + disbursalTwo - NPVpi - principalDeduction ;}}}*/}

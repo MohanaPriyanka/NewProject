@@ -37,7 +37,7 @@ public with sharing class ProductAssignmentHandler {
         for(Lead leadRecord : leadList){
             if(leadRecord.Automatic_Product_Assignment__c == true 
                 && leadRecord.Product_Line__c == 'Residential Loan' 
-                && (leadRecord.Status == 'Qualified' || leadRecord.Pre_Approval_form__c == true ) 
+                //&& (leadRecord.Status == 'Qualified' || leadRecord.Pre_Approval_form__c == true ) 
                 && leadRecord.Loan_Term__c != null 
                 && oldLeadsMap.get(leadRecord.Id).Status != 'Qualified'){
                     system.debug('checkResi/qual/term/status');
@@ -46,32 +46,48 @@ public with sharing class ProductAssignmentHandler {
                         system.debug('checkSize');
                         for(Product2 productRecord : productList){
                             //****Product Line could have issues as all leads, opps, etc. are set as Residential Loan and the Product is going to be Solar Loan. Also, home state is returned after credit.
-                            if(productRecord.IsActive == true && productRecord.Product_Type__c == leadRecord.Product_Line__c && productRecord.Loan_Term__c == leadRecord.Loan_term__c && productRecord.State__c == leadRecord.LASERCA__Home_State__c ){
+                            if(productRecord.IsActive == true 
+                                && productRecord.Product_Type__c == leadRecord.Product_Line__c 
+                                && productRecord.Program__c == leadRecord.Product_Program__c 
+                                && productRecord.Loan_Term__c == leadRecord.Loan_term__c 
+                                && productRecord.State__c == leadRecord.LASERCA__Home_State__c ){
                                 if(leadRecord.LASER_Credit_Score__c >= productRecord.Credit_Minimum__c && leadRecord.LASER_Credit_Score__c <= productRecord.Credit_Maximum__c){
                                     system.debug('check2');
                                     //assign the product to the lead
                                     if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
                                         leadRecord.Product__c = productRecord.Id;
-                                    }else if (leadRecord.DOER_Solar_Loan__c == false && productRecord.Program__c != 'MSLP'){
-                                        leadRecord.Product__c = productRecord.Id;                                
+                                        if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (7%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .07, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Financing Fee'){
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c;
+                                            leadRecord.Loan_Financing_Fee__c = null;                                        
+                                        }
                                     }
-                                    if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
-                                        leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
-                                        leadRecord.Loan_Amount__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
-                                        //leadRecord.Loan_Interest_Rate__c = productRecord.Loan_Interest_Rate__c;
-                                    }
-                                    else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Finacing Fee'){
-                                    leadRecord.Loan_Financing_Fee__c = null;
-                                    //leadRecord.Loan_Interest_Rate__c = productRecord.Loan_Interest_Rate__c;
-                                    }                                                        
-                                }                        
-                            }
+                                    if (leadRecord.DOER_Solar_Loan__c == false && productRecord.Program__c != 'MSLP'){
+                                        leadRecord.Product__c = productRecord.Id;        
+                                        if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (7%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .07, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Financing Fee'){
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c;
+                                            leadRecord.Loan_Financing_Fee__c = null;
+                                        }                                                                   
+                                    }                                                                                                             
+                                }
                             else{
                                 continue;
                             }
                         }                    
+                    }
                 }
-            }
+            }   
         } 
     }
     /*the following class is needed in order to follow sequencing with the Pre-Qualification process. 
@@ -84,11 +100,12 @@ public with sharing class ProductAssignmentHandler {
        for (LASERCA__Personal_Credit_Report__c pcrRecord : pcrList){
             pcrLeadIdList.add(pcrRecord.PCR_Lead_ID__c);
        }
-       List<Lead> leadList = [SELECT Id, DOER_Solar_Loan__c,Name, Status, Product_Line__c, Product__c, Automatic_Product_Assignment__c,
+       List<Lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Product_Program__c, Name, Status, Product_Line__c, Product__c, Automatic_Product_Assignment__c,
                                     Loan_Term__c, LASERCA__Home_State__c, LASER_Credit_Score__c, Loan_Financing_Fee__c, 
-                                    Loan_Amount__c, Pre_Approval_form__c, System_Cost__c, Product__r.Name
+                                    Pre_Approval_form__c, System_Cost__c, Product__r.Name
                                 FROM Lead
-                                WHERE Id IN : pcrLeadIdList];
+                                WHERE Id IN : pcrLeadIdList
+                                AND isConverted = false];
 
        List<Product2> productList = new List<Product2>(getProductRecords());
         for(Lead leadRecord : leadList){
@@ -99,8 +116,9 @@ public with sharing class ProductAssignmentHandler {
                 if(productList.size() > 0){
                     system.debug('checkSize');
                     for(Product2 productRecord : productList){
-                        //****Product Line could have issues as all leads, opps, etc. are set as Residential Loan and the Product is going to be Solar Loan. Also, home state is returned after credit.
+                        //****Product Line could have issues as all leads, opps, etc. are set as Residential Loan and the Product is going to be Solar Loan. Also, home state is returned after credit.                      
                         if(leadRecord.Automatic_Product_Assignment__c == true && 
+                            productRecord.Program__c == leadRecord.Product_Program__c &&
                             productRecord.Product_Type__c == leadRecord.Product_Line__c &&
                             productRecord.Loan_Term__c == leadRecord.Loan_term__c && 
                             productRecord.State__c == leadRecord.LASERCA__Home_State__c ){
@@ -108,22 +126,31 @@ public with sharing class ProductAssignmentHandler {
                                     leadRecord.LASER_Credit_Score__c <= productRecord.Credit_Maximum__c){
                                     system.debug('check2');
                                     //assign the product to the lead
-                                    //leadRecord.Product__c = ProductRecord.Id;
-                                    if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
-                                        leadRecord.Product__c = ProductRecord.Id;
-                                    }else if (leadRecord.DOER_Solar_Loan__c == false && productRecord.Program__c == null){
-                                        leadRecord.Product__c = ProductRecord.Id;                                
-                                    }                            
-                                    System.debug('The product to be assigned has been identified as  - ' + ProductRecord.Name);
-                                    System.debug('The lead has been assigned to the product - ' + leadRecord.Product__r.Name);
-                                    if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
-                                        leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
-                                        leadRecord.Loan_Amount__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
-                                        //leadRecord.LASERCA__Lead__r.Loan_Interest_Rate__c = productRecord.Loan_Interest_Rate__c;
+                                   if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
+                                    leadRecord.Product__c = productRecord.Id;
+                                        if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (7%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .07, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Financing Fee'){
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c;
+                                            leadRecord.Loan_Financing_Fee__c = null;                                        
+                                        }
                                     }
-                                    else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Finacing Fee'){
-                                        leadRecord.Loan_Financing_Fee__c = null;
-                                    //leadRecord.LASERCA__Lead__r.Loan_Interest_Rate__c = productRecord.Loan_Interest_Rate__c;
+                                    if (leadRecord.DOER_Solar_Loan__c == false && productRecord.Program__c != 'MSLP'){
+                                        leadRecord.Product__c = productRecord.Id;        
+                                        if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .05, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (7%, $1,250)'){
+                                            leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.System_Cost__c * .07, 1250);
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c + leadRecord.Loan_Financing_Fee__c;
+                                        }else if(productRecord.Loan_Financing_Fee_Terms__c == 'No Financing Fee'){
+                                            //leadRecord.Loan_Principal__c = leadRecord.System_Cost__c;
+                                            leadRecord.Loan_Financing_Fee__c = null;
+                                        }                                                                   
                                     }                                                        
                                 }
                         //break;                               
@@ -136,10 +163,9 @@ public with sharing class ProductAssignmentHandler {
             }
         }
         System.debug(leadList);
-        update leadList;
-        
+        update leadList;       
     }    
-  
+} 
 
 
 
@@ -221,7 +247,7 @@ VERSION 4 | Created using Parameter mapping into the SOQL; however the problem w
             }
         }
     } */   
-}  
+ 
 
 /****** VERSION 3 | 
 

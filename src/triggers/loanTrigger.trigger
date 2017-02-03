@@ -1,36 +1,25 @@
+/*
+** Trigger: loanTrigger
+** SObject: Loan__c
+** Description: 
+**      ADDED 1/10/2017 by OpFocus: 
+**      + after insert and update : Parse the JSON field that contains details
+**      details for the related Loan Payments and create a Loan
+**      Payment for each entry in JSON array. 
+**
+** @see LoanTriggerHandler.cls
+*/
+
 trigger loanTrigger on loan__c (before insert, before update, after insert, after update) {
-    LoanTrancheUpdateHandler handler = new LoanTrancheUpdateHandler(Trigger.isExecuting, Trigger.size);
-    createResidentialEquipmentHandler handler2 = new createResidentialEquipmentHandler(Trigger.isExecuting, Trigger.size);
-    LoanPipelineUpdatehandler handler3 = new LoanPipelineUpdatehandler (Trigger.isExecuting, Trigger.size);
+    LoanHandler handler2 = new LoanHandler(Trigger.isExecuting, Trigger.size);
+    JSONLoanPaymentHandler jsonLoanPaymentHandler = new JSONLoanPaymentHandler();
     
-    if(Trigger.isInsert && Trigger.isBefore){
-        handler.OnBeforeInsert(Trigger.new);
-        //EnergyUsageUpdateTriggerHandler.OnAfterInsertAsync(Trigger.newMap.keySet());
-    }
-    
-    if(Trigger.isInsert && Trigger.isAfter){
+    if(Trigger.isInsert && Trigger.isAfter){        
         handler2.OnAfterInsert(Trigger.new);
-        handler3.OnAfterInsert(Trigger.new);
+        jsonLoanPaymentHandler.OnAfterInsert(Trigger.new);
     }
-    
-    else if(Trigger.isUpdate && Trigger.isBefore){
-        handler.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
-    }/*
-    else if(Trigger.isUpdate && Trigger.isAfter){
-        handler2.OnAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
-        //EnergyUsageUpdateTriggerHandler.OnAfterUpdateAsync(Trigger.newMap.keySet());
+
+    if (Trigger.isUpdate && Trigger.isAfter) {
+        jsonLoanPaymentHandler.OnAfterUpdate(Trigger.new, Trigger.oldMap);
     }
-    
-    else if(Trigger.isDelete && Trigger.isBefore){
-        handler.OnBeforeDelete(Trigger.old, Trigger.oldMap);
-    }
-    else if(Trigger.isDelete && Trigger.isAfter){
-        handler.OnAfterDelete(Trigger.old, Trigger.oldMap);
-        //EnergyUsageUpdateTriggerHandler.OnAfterDeleteAsync(Trigger.oldMap.keySet());
-    }
-    
-    else if(Trigger.isUnDelete){
-        handler.OnUndelete(Trigger.new);    
-    }
-    */
 }

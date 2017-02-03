@@ -23,6 +23,16 @@ bsst__c newBSST = new BSST__c ( name ='PartnerOne',
                                 custom_id__c = 'Partner1');
 Insert newBSST;
 
+partner__c newPartnerPlaceholde = new partner__c(name = 'Holder');
+insert newPartnerPlaceholde ;
+
+bsst__c newBSST2 = new BSST__c ( name ='Holder', 
+                                partner__c = newPartnerPlaceholde.id,
+                                email__c = 'holder@bluewave-capital.com', 
+                                custom_id__c = 'holder');
+Insert newBSST2;
+
+
 System.debug(newContact.custom_id__c);
 System.debug(newContact.Referral_Code__c);
 

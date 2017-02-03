@@ -1,6 +1,5 @@
 @isTest
-private class CoApplicantConvertTestClass
-{
+private class CoApplicantConvertTestClass{
  
 Static testMethod void CoApplicantConvertTestClass()
 {
@@ -12,6 +11,17 @@ Static testMethod void CoApplicantConvertTestClass()
         newLZU.Utility__c = 'Eversource';
         newLZU.town__c = 'Medfield';
         insert newLZU;
+
+        Date myDate = Date.newInstance(2015, 8, 30);
+
+        loan_data__c newLoanData = new loan_data__c (name = 'Loan Data', month__c = 'August', year__c = '2015');
+        insert newLoanData;
+
+        loan_traunch__c newLoanTranche = new loan_traunch__c (loan_data__c = newLoanData.id, name = 'Loan Tranche', Tranche_Cap__c = 500000);
+        insert newLoanTranche;
+
+        loan_traunch__c newLoanTranchePending = new loan_traunch__c (loan_data__c = newLoanData.id, name = 'Tranche Assignment Pending', Tranche_Cap__c = 500000);
+        insert newLoanTranchePending;  
 
         lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', company = 'BlueWave', status = 'Qualified', Parcel_Zip__c = '02052') ;
         newLead.Product_line__c = 'Residential Loan';
@@ -26,13 +36,6 @@ Static testMethod void CoApplicantConvertTestClass()
         newLead.Status = 'Qualified';
         update newLead;
         
-        Date myDate = Date.newInstance(2015, 8, 30);
-
-        loan_data__c newLoanData = new loan_data__c (name = 'Loan Data', month__c = 'August', year__c = '2015');
-        insert newLoanData;
-
-        loan_traunch__c newLoanTranche = new loan_traunch__c (loan_data__c = newLoanData.id, name = 'Loan Tranche', Tranche_Cap__c = 500000);
-        insert newLoanTranche;
          
         account newAccount = new account(name = 'Test');
         insert newAccount; 
