@@ -2,6 +2,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
+
+
     public EnergyUsageUpdateTriggerHandler(boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
         BatchSize = size;
@@ -38,6 +40,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                                            WHERE Utility_Account_Log__c != null
                                                            //AND Opportunity__r.StageName = 'Complete' 
                                                            AND Opportunity__c != null 
+                                                           AND Customer_Group__c != 'Anchor'
                                                            AND Opportunity__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
                                                            ORDER BY Name];
 
@@ -46,6 +49,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                                 AccountId, Account.Id, Account.Recurring_Billing__c
                                     FROM Opportunity 
                                     WHERE StageName = 'Complete' 
+                                    AND Customer_Group__c != 'Anchor'
                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
                                     ORDER BY Name];                                                           
         for(Shared_Solar_System__c sss : [  SELECT  Id, Name
