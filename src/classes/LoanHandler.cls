@@ -840,7 +840,7 @@ public with sharing class LoanHandler{
 
     public void assignResidentialEquipmentToLoan(List<Loan__c> loanList){
         System.debug('Begin assignResidentialEquipmentToLoan method');
-        List<Residential_Equipment__c> equipmentUpdateList = new List<Residential_Equipment__c>();
+        List<Residential_Equipment__c> equipmentUpdateList =   new List<Residential_Equipment__c>();
         List<String> leadIdList = new List<String>();
         for (Loan__c loan : loanList){
             leadIdList.add(loan.Lead__c);

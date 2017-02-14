@@ -40,6 +40,9 @@ public with sharing class SLPDashboardHandler {
                                                 Loan__r.Name, Task_Type__c
                                                 FROM Partner_Task__c 
                                                 WHERE  Name = : stageName 
+                                                AND Parent__c = true
+                                                AND Sub_Task_Type__c = null
+                                                AND Parent_Task__c = null                                                  
                                                 AND Status__c = 'Pending' 
                                                 AND Partner__r.Name = 'BlueWave Customer Care'];            
             return taskList;
@@ -48,6 +51,9 @@ public with sharing class SLPDashboardHandler {
             List<Partner_Task__c> taskList = [SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, Loan__r.Name, Task_Type__c
                                                 FROM Partner_Task__c 
                                                 WHERE Status__c = 'Pending' 
+                                                AND Parent__c = true
+                                                AND Sub_Task_Type__c = null
+                                                AND Parent_Task__c = null                                                  
                                                 AND Partner__r.Name = 'BlueWave Customer Care'];                    
             return taskList;
 
