@@ -5,6 +5,8 @@ global class CustomerCommunicationHandler Implements Schedulable {
             system.debug('entered');
             decimal outstandingbalance;
             List <Account> billedacclist = new list <Account> ();
+            List <Messaging.SingleEmailMessage> emailstosend =  new list <Messaging.SingleEmailMessage> ();    
+
 
             RecordType rt = [ SELECT Id
                               FROM RecordType
@@ -32,7 +34,8 @@ global class CustomerCommunicationHandler Implements Schedulable {
             // send your bill is X days past due email, if their bill is X days past due
 
             if(billedacclist.size()>0){
-                  for (Account act : billedacclist){
+                for (Account act : billedacclist){
+                    if(act.Last_Bill_Send_Date__c != null && act.Send_Bills_Contact__c != null){
                       datetime lastbill = act.Last_Bill_Send_Date__c;
                       date lbsd = date.newinstance(lastbill.year(), lastbill.month(), lastbill.day());
                       date duedate = lbsd + 17;
@@ -50,9 +53,21 @@ global class CustomerCommunicationHandler Implements Schedulable {
                       string subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
                       string dollar = string.valueof(act.Total_Outstanding_Balance__c);
                       string balance = '$' + dollar;
-
+                      
                         // Select the correct template
-                      if(contactid != null && act.Recurring_Billing__c == False){  
+                      if(contactid != null 
+                          && act.Recurring_Billing__c == False
+                          && (duedate == mydate
+                              || act.Days_Past_Due__c==7 
+                              || act.Days_Past_Due__c==15
+                              || act.Days_Past_Due__c==30
+                              || act.Days_Past_Due__c==45
+                              || act.Days_Past_Due__c==60
+                              || act.Days_Past_Due__c==67
+                              || act.Days_Past_Due__c==74
+                              || act.Days_Past_Due__c==81
+                              || act.Days_Past_Due__c==88
+                              || act.Days_Past_Due__c==90)){  
 
                         if(duedate == mydate){
                           for(EmailTemplate et : templatelist){
@@ -158,9 +173,10 @@ global class CustomerCommunicationHandler Implements Schedulable {
                               htmlBody = htmlBody.replace('{!Account.Name}', fullname);
                               htmlBody = htmlBody.replace('{!Account.Total_Outstanding_Balance__c}', balance);
                         }
-
+                        
+                        if(htmlBody != null && htmlbody != 'DONOTSEND'){
                         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-           
+                       
                         mail.setHtmlBody(htmlBody);
                                                         
                         for(OrgWideEmailAddress owa : [SELECT id, Address 
@@ -175,11 +191,20 @@ global class CustomerCommunicationHandler Implements Schedulable {
                         mail.setccAddresses(ccAddresses);
                         system.debug(ccAddresses);      
                         mail.setSubject(subject);
-                        mail.setTargetObjectId(contactid);
-                    
-                        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+                        mail.setTargetObjectId(contactid);                        
+                        
+                        emailstosend.add(mail);
+     
+                        }
+
+                        htmlbody = 'DONOTSEND';
+                        system.debug(htmlbody);
+
                       }
+                    }
                   }
+
+              Messaging.sendEmail(emailstosend);  
             }     
 
 
