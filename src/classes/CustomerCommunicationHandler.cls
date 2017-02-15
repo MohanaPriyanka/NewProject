@@ -174,7 +174,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                               htmlBody = htmlBody.replace('{!Account.Total_Outstanding_Balance__c}', balance);
                         }
                         
-                        if(htmlBody != null || htmlbody != 'DONOTSEND'){
+                        if(htmlBody != null && htmlbody != 'DONOTSEND'){
                         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                        
                         mail.setHtmlBody(htmlBody);
@@ -194,7 +194,6 @@ global class CustomerCommunicationHandler Implements Schedulable {
                         mail.setTargetObjectId(contactid);                        
                         
                         emailstosend.add(mail);
-                        //Messaging.sendEmail(new Messaging.MassEmailMessage[] {mail});
      
                         }
 
