@@ -16,7 +16,10 @@ public with sharing class PaymentGatewayAssignmentHandler {
         List<ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List<ChargentOrders__ChargentOrder__c>();
         system.debug(chOrderList);
         for(ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList){
+           if(chargentOrderVar.ChargentOrders__Shipping_Name__c != null 
+           && chargentOrderVar.ChargentOrders__Shipping_Name__c != 'CCfee'){
             chargentOrderIdList.add(chargentOrderVar);
+           }
         }
         for(ChargentOrders__ChargentOrder__c chargentOrder : [SELECT Id, Name, System_Bill__r.Shared_Solar_System__r.Id, ChargentOrders__Shipping_Name__c
                                                               FROM ChargentOrders__ChargentOrder__c 

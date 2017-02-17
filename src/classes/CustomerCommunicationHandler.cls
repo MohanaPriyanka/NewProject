@@ -186,6 +186,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                                     system.debug(owa.id);
                               }
                         }
+                        
                                                         
                         String[] ccAddresses = new String[] {'jpentaleri@bluewave-capital.com'};
                         mail.setccAddresses(ccAddresses);

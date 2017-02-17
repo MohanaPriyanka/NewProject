@@ -54,12 +54,15 @@ global class MonthlyEmailHandler Implements Schedulable {
             }
             
             for(Contact con : contactlist){
+                if(con.Email != null){
                  contactmap.put (con.AccountId, con);
                  system.debug(contactmap);
+                }
             }
 
             if(paracclist.size()>0){
                   for (Account act : paracclist){
+                    if(contactmap.containsKey(act.id)){
                       system.debug(act);
                       string email;
                       string htmlbody; 
@@ -84,7 +87,7 @@ global class MonthlyEmailHandler Implements Schedulable {
                       }
 
                       Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-           
+
                       mail.setHtmlBody(htmlBody);
                                                         
                       if(fromemailid != null){
@@ -96,8 +99,13 @@ global class MonthlyEmailHandler Implements Schedulable {
                       system.debug(ccAddresses);      
                       mail.setSubject(subject);
                       mail.setTargetObjectId(contactid);
-                    
-                      Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+                      List <Messaging.SingleEmailMessage> messages = new List <Messaging.SingleEmailMessage>();
+                      messages.add(mail);
+
+                     // Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+                      Messaging.sendEmail(messages);
+                    }
                   }
             }     
 

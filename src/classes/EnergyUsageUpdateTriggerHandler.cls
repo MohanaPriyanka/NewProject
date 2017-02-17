@@ -2,8 +2,6 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
-
-
     public EnergyUsageUpdateTriggerHandler(boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
         BatchSize = size;
