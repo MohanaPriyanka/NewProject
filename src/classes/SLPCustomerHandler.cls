@@ -38,10 +38,10 @@ public with sharing class SLPCustomerHandler {
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
     System.debug('the loanId is ' + loanId);
     User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
-    List<Residential_Equipment__c> equipmentList = [SELECT Id, Name, Loan__r.Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
+    List<Residential_Equipment__c> equipmentList = [SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
                                                       Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name, Loan__r.System_Costt__c, 
                                                       Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, Interconnected__c, Mechanically_Installed__c,
-                                                      Interconnection_date__c, Mechanical_Installation_Date__c, Loan__r.Principall__c
+                                                      Interconnection_date__c, Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c
                                                     FROM Residential_Equipment__c 
                                                     WHERE Loan__c = : loanId 
                                                     LIMIT 1];
@@ -57,7 +57,7 @@ public with sharing class SLPCustomerHandler {
 	    List<Partner_Task__c> completedTaskList = [SELECT Id, Name, Status__c, Completion_Date__c, Task_Sequence__c, Loan__r.Name
 	    											FROM Partner_Task__c
 	    											WHERE Loan__c = : loanId
-	    											AND Status__c = 'Complete'
+	    											AND Status__c = 'Pending'
 				                                  	AND Parent__c = true
 				                                  	AND Sub_Task_Type__c = null
 				                                  	AND Parent_Task__c = null    										
@@ -214,12 +214,11 @@ public with sharing class SLPCustomerHandler {
    @AuraEnabled
     public static void saveCustomerInformation(Residential_Equipment__c equipment, String equipmentId, String loanId, Loan__c loan) {
         System.debug('begin the saveEquipmentInformation method');
-        System.debug('the equipment record is ' + equipment);
-        System.debug('the equipment id is ' + equipmentId);
         User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
-        
+        if(equipment.Type_of_Module__c == ' ' ){
+        }
         //update the equipment information
-        Residential_Equipment__c equipmentRecord = [SELECT Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
+        Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
                                                            Mechanically_Installed__c, Interconnected__c 
                                                     FROM Residential_Equipment__c
@@ -227,13 +226,13 @@ public with sharing class SLPCustomerHandler {
         if(equipment.Generator_NamePlate_Capacity__c != null){
           equipmentRecord.Generator_Nameplate_Capacity__c = equipment.Generator_NamePlate_Capacity__c;
         }
-        if(equipment.Type_of_Module__c != null){
+        if(String.isNotBlank(equipment.Type_of_Module__c)){
           equipmentRecord.Type_of_Module__c = equipment.Type_of_Module__c;
         }        
         if(equipment.Number_of_Modules__c != null){
           equipmentRecord.Number_of_Modules__c = equipment.Number_of_Modules__c;
         }
-        if(equipment.Type_of_Inverter__c != null){
+        if(String.isNotBlank(equipment.Type_of_Inverter__c)){
           equipmentRecord.Type_of_Inverter__c = equipment.Type_of_Inverter__c;
         }    
         if(equipment.Number_of_Inverters__c != null){
@@ -267,26 +266,33 @@ public with sharing class SLPCustomerHandler {
         }        
         update loanRecord;
 
+        Lead leadRecord = [SELECT Id, Update_Dummy__c FROM lead WHERE Id = : equipmentRecord.Lead__r.Id];
+        if(leadRecord.Update_Dummy__c == true){
+          leadRecord.Update_Dummy__c = false;
+        }else{
+          leadRecord.Update_Dummy__c = true;
+        }
+        update leadRecord;
     }
+    
+   //@AuraEnabled
+   // public static void saveMechanicalInstallationDate(String equipmentId, String mechDate) {
+   //     System.debug('begin the saveMechanicalInstallationDate method');
+   //     System.debug('the equipment id is ' + equipmentId);
+   //     System.debug('the mechDate is ' + mechDate);
 
-   @AuraEnabled
-    public static void saveMechanicalInstallationDate(String equipmentId, String mechDate) {
-        System.debug('begin the saveMechanicalInstallationDate method');
-        System.debug('the equipment id is ' + equipmentId);
-        System.debug('the mechDate is ' + mechDate);
+   //     //DateTime mechDateTimeValue = DateTime.newInstance(mechDate);
+   //     //Date mechDateVdalue =  Date.newinstance(mechDateTimeValue.year(), mechDateTimeValue.month(), mechDateTimeValue.day());
+   //     //System.debug('the parsed date is ' + mechDateValue);
 
-        //DateTime mechDateTimeValue = DateTime.newInstance(mechDate);
-        //Date mechDateVdalue =  Date.newinstance(mechDateTimeValue.year(), mechDateTimeValue.month(), mechDateTimeValue.day());
-        //System.debug('the parsed date is ' + mechDateValue);
-
-        User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
-        Residential_Equipment__c equipmentRecord = [SELECT Id, Name, Mechanical_Installation_Date__c
-                                                    FROM Residential_Equipment__c
-                                                    WHERE Id = : equipmentId];
-        Date mechDateValue = Date.valueOf(mechDate);                                                    
-        equipmentRecord.Mechanical_Installation_Date__c = mechDateValue;                                                    
-        update equipmentRecord;
-    }
+   //     User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
+   //     Residential_Equipment__c equipmentRecord = [SELECT Id, Name, Mechanical_Installation_Date__c
+   //                                                 FROM Residential_Equipment__c
+   //                                                 WHERE Id = : equipmentId];
+   //     Date mechDateValue = Date.valueOf(mechDate);                                                    
+   //     equipmentRecord.Mechanical_Installation_Date__c = mechDateValue;                                                    
+   //     update equipmentRecord;
+   // }
 
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) { 

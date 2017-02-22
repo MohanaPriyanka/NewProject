@@ -41,6 +41,8 @@ public with sharing class SLPDashboardHandler {
                                                 FROM Partner_Task__c 
                                                 WHERE  Name = : stageName 
                                                 AND Parent__c = true
+                                                AND Loan__c != null
+                                                AND Lead__c != null
                                                 AND Sub_Task_Type__c = null
                                                 AND Parent_Task__c = null                                                  
                                                 AND Status__c = 'Pending' 
@@ -52,6 +54,8 @@ public with sharing class SLPDashboardHandler {
                                                 FROM Partner_Task__c 
                                                 WHERE Status__c = 'Pending' 
                                                 AND Parent__c = true
+                                                AND Loan__c != null
+                                                AND Lead__c != null
                                                 AND Sub_Task_Type__c = null
                                                 AND Parent_Task__c = null                                                  
                                                 AND Partner__r.Name = 'BlueWave Customer Care'];                    
