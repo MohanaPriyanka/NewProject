@@ -81,10 +81,10 @@ public with sharing class SharedSolarSystemHandler {
             if(relatedanchors.size()>0){
                 for(Opportunity anc: relatedanchors){
                     system.debug(anc.Shared_Solar_System__c);
-                    if(anc.Shared_Solar_System_Name__c == sssSummary.Name 
+                    if (anc.Shared_Solar_System_Name__c == sssSummary.Name 
                         && anc.CS_Capacity_Allocated__c != null 
                         && anc.StageName != 'new' 
-                        &&  anc.StageName != 'Dead'){
+                        &&  anc.StageName != 'Dead') {
                             summarizedAnchorCapacity = anc.CS_Capacity_Allocated__c + summarizedAnchorCapacity;
                     }
                 }

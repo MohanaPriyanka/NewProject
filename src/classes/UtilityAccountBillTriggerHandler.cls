@@ -58,6 +58,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                     FROM Utility_Account_Subscription__c 
                                                     WHERE Utility_Account_Log__c != null 
                                                     AND Opportunity__c != null 
+                                                    AND Customer_Group__c != 'Anchor'
                                                     AND Opportunity__r.StageName = 'Complete'                                                    
                                                     AND Utility_Account_Log__c IN : utilityAccountLogIdToUABMap.keySet()
                                                     ORDER BY UAS_Number__c]){
@@ -86,6 +87,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Opportunity__c = uas.Opportunity__c,
                                             System_Bill__c = systemBillMap.get(systemBillKey).Id,
                                             Shared_Solar_System__c = uas.Opportunity__r.Shared_Solar_System__c,
+                                            Billing_Period_Start_Date__c = uab.Billing_Period_Start_Date__c,
+                                            Billing_Period_End_Date__c = uab.Billing_Period_End_Date__c,
                                             Total_System_Size_kW_DC__c = uas.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                             NMC_Rate__c = nmcMap.get(uab.NMC_Rate_ID__c).Value_of_Net_Metering_Credit__c,
                                             Total_System_Production_kWh__c = uab.Production_kWh_DC__c,                                                                                       

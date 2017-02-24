@@ -80,24 +80,13 @@ Customer_group__c = 'Anchor',
 Personal_Credit_Report2__c = pcr1.Id,
 waitlist__c = FALSE, 
 closeDate = myDate, 
+CS_Capacity_Allocated__c = 22,
 //CS_Capacity_Allocated__c = 100, 
 shared_solar_system__c = myProject.id ); 
 
 insert newOpportunity3;
 
-        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(Account__c = myAccount.Id,
-                                                                Annual_Cost_of_Electricity__c = 10000,
-                                                                Name_on_Account__c = 'Joey Chan');
-        insert ual2;
-
-        Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(Utility_Account_Log__c = ual2.Id,
-                                                                Name = '1023112340',
-                                                                Opportunity__c = newOpportunity3.id,
-                                                                Customer_Subscription_KW_DC_STATIC__c = 22,
-                                                                Annual_Cost_of_Electricity__c = 1400);
-        insert uas2;
-
-        system.debug(uas2);
+     
 /*
 Opportunity newOpportunity2 = new Opportunity(name = 'Cole3', 
 account = myAccount, 
