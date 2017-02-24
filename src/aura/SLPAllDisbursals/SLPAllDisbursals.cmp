@@ -1,0 +1,100 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+	<aura:attribute name="allCompleteDisbursals" type="Object"  />
+	<aura:attribute name="allIncompleteDisbursals" type="Object"  />  
+    <aura:attribute name="disbursalUpdate" type="Disbursal__c" 
+                default="{ 'sobjectType' : 'Residential_Equipment__c',
+                             'Partner_Confirmation__c': '',
+                         }"/>
+    <aura:handler name="change" value="{!v.allCompleteDisbursals}" action="{!c.fieldChanges}"/>       
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <style>
+            @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #32CD32;
+        }
+    </style>
+   <div aura:id = "allDisbursals" class="">
+   <div class="slds-form-element slds-lookup" data-select="single">
+   <label class="slds-form-element__label" for="lookup-63">Disbursal Search</label>
+       <div class="slds-form-element__control">
+          <div class="slds-input-has-icon slds-input-has-icon--right ">
+              <ui:inputText aura:id="disbursalSearch"
+                     class="slds-lookup__search-input slds-input" 
+                     placeholder="Search Customer Name"
+                     value=""
+                     change="{!c.searchDisbursals}"/>       
+         </div>       
+      </div>
+  </div> 
+  <br></br>
+  <ui:button label="Search"
+         class=""
+         labelClass="label"
+         press="{!c.searchDisbursals}"/>      
+    <div aura:id = "customerTable" class="main2"> 
+		<br></br>
+      <div>
+        <div class="bwBluePaddingBelow slds-scrollable"><h3>Completed Disbursals</h3></div>                        
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+              <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
+			  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
+              <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>           
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.allCompleteDisbursals}" var="disbursal">
+              		<tr>
+                		<th scope="row"> <b>{!disbursal.Loan__r.Name}</b> </th>
+                        <th scope="row"> <b>{!disbursal.Type__c}</b> </th>
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                        <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
+                  		<td> <div class="slds-form-element">
+                    		<label class="slds-checkbox--toggle slds-grid">
+                        		<ui:inputCheckBox aura:id="disbursalCheck" 
+                                                  name="{!disbursal.Id}" 
+                                                  value="{!disbursal.Partner_Confirmation__c}"
+                                                  change="{!c.updateDisbursal}"/>
+                        		<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+                                <span class="slds-checkbox--faux"></span>
+                                <span class="slds-checkbox--on">Confirmed</span>
+                                <span class="slds-checkbox--off">Unconfirmed</span>
+                        		</span>
+                    		</label>
+                    	</div>
+                		</td>                        
+                    </tr>                   
+            </aura:iteration>          
+          </tbody>
+        </table>
+        <hr></hr>
+        <div class="bwBluePaddingBelow slds-scrollable"><h3>Pending Disbursals</h3></div>              
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+              <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
+			  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.allIncompleteDisbursals}" var="disbursal">
+              		<tr>
+                		<th scope="row"> <b>{!disbursal.Loan__r.Name}</b> </th>
+                        <th scope="row"> <b>{!disbursal.Type__c}</b> </th>
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                    </tr>                   
+            </aura:iteration>          
+          </tbody>
+        </table>          
+    </div>
+    </div>
+</div>         
+</aura:component>

@@ -1,0 +1,61 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" >
+    <aura:attribute name="supportURL" type="String" description="This is the URL for the Support Link." />
+    <aura:attribute name="showMenu" type="Boolean" description="This stores the state of the menu." />
+	<div class="header">
+<style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #266092;
+        }
+  </style>    
+<div class="slds-tabs--default   ">
+           <div class="rightitem image "><img src="/resource/BlueWaveIcons/Icons/Sun.png" class="logo" style="width:32.5px;"/></div>
+  <ul class="slds-tabs--default__nav proximaNova" role="tablist">
+    <li class="slds-tabs--default__item slds-text-title--caps" title="Dashboard" 
+      role="presentation"><a class="slds-tabs--default__link" href="https://bluewavememberportal.force.com/s/" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item"><b>Dashboard</b></a></li>
+    <li class="slds-tabs--default__item slds-text-title--caps" title="My Account"
+        role="presentation"><a class="slds-tabs--default__link" href="myaccount" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item"><b>My Account</b></a></li>
+    <li class="slds-tabs--default__item slds-text-title--caps" title="My Solar"
+        role="presentation"><a class="slds-tabs--default__link" href="mysolar" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item"><b>My Solar</b></a></li>
+    <li class="slds-tabs--default__item slds-text-title--caps" title="Refer a Friend"
+      role="presentation"><a class="slds-tabs--default__link" href="referafriend" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item"><b>Refer a Friend</b></a></li>
+    <li class="slds-tabs--default__item slds-text-title--caps" title="Contact BlueWave"
+        role="presentation"><a class="slds-tabs--default__link" href="http://bluewaverenewables.com/contact/" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item"><b>Contact BlueWave</b></a></li>         
+  </ul>
+
+</div>
+        
+ 
+        <!--<div class="rightitem"><h3><ui:outputURL value="{!v.supportURL}" label="Customer Support" class="headerLink"/></h3></div>
+        <div class="nav">
+    		<h3><a href="https://bluewavememberportal.force.com/s/">My Dashboard</a></h3>
+            <br></br>
+			<ul>
+    			<li>
+            		<h3><a href="myaccount">My Account</a></h3>
+        			<ul>
+                		<li><h4><a href="{!v.paymentURL}">Make a Payment</a></h4></li>
+                   		<li><h4><a href="myaccount#friend">Refer a Friend</a></h4></li>
+            		</ul>
+        		</li>
+        		<li>
+                            <br></br>
+            		<h3><a href="mysolar">My Solar</a></h3>
+        			<ul>
+                		<li><h4><a href="mysolar">My Usage</a></h4></li>
+                		<li><h4><a href="mysolar#farm">My Solar Farm</a></h4></li>
+            		</ul>
+        		</li>
+                <li>
+                            <br></br>
+            		<h3><a href="referafriend">Refer a Friend</a></h3>
+                </li>
+                </li>
+                </ul>
+   		</div>-->
+   	</div>
+</aura:component>

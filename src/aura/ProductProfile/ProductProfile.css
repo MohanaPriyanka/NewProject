@@ -1,0 +1,10 @@
+.THIS .centerHeader{
+    width: 100%;
+    text-align: center;
+}
+
+.THIS .prodContainer {
+    text-align:center;
+    vertical-align:top;
+    width:100%;
+}

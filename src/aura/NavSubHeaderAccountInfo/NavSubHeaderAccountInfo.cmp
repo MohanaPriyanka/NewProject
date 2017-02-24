@@ -1,0 +1,5 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" >
+	<div class="header">
+       	<div class="center"><h3>Account Settings</h3></div>
+   	</div>
+</aura:component>

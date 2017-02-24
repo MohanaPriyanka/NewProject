@@ -1,0 +1,113 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+	<aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    <ltng:require scripts="//www.google-analytics.com/analytics.js,https://c.la2w2.salesforceliveagent.com/content/g/js/34.0/deployment.js,/resource/BlueWaveCommunity/scripts/liveAgent.js,/resource/BlueWaveCommunity/wp-includes/js/wp-emoji-release.min.js,/resource/1455028627000/BlueWaveCommunity/scripts/emoji.js,/resource/BlueWaveCommunity/scripts/analytics.js,/resource/BlueWaveCommunity/wp-includes/js/jquery/jquery.js,/resource/BlueWaveCommunity/wp-includes/js/jquery/jquery-migrate.min.js,/resource/100/BlueWaveCommunity/wp-content/themes/bluewave/js/dist/scripts.min.js"/>
+    <aura:attribute name="mdlLoaded" type="Boolean" default="false"/>
+    <head>
+		<style type="text/css">.gm-style .gm-style-mtc label,.gm-style .gm-style-mtc div{font-weight:400}</style>
+		<link type="text/css" rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+		<style type="text/css">.gm-style .gm-style-cc span,.gm-style .gm-style-cc a,.gm-style .gm-style-mtc div{font-size:10px}</style>
+		<style type="text/css">@media print {  .gm-style .gmnoprint, .gmnoprint {    display:none  }}@media screen {  .gm-style .gmnoscreen, .gmnoscreen {    display:none  }}</style>
+		<style type="text/css">.gm-style{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}.gm-style img{max-width:none}</style>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="profile" href="http://gmpg.org/xfn/11" />
+		<link rel="pingback" href="http://bluewaverenewables.com/xmlrpc.php" />
+
+		<title>BlueWave Renewables</title>
+
+		<!-- This site is optimized with the Yoast SEO plugin v2.3.5 - https://yoast.com/wordpress/plugins/seo/ -->
+		<meta name="description" content="BlueWave is a solar energy company. We provide products for community solar and home solar residential loans. Founded in Massachusetts, BlueWave operates around the globe." />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="BlueWave Renewables" />
+		<meta property="og:description" content="BlueWave is a solar energy company. We provide products for community solar and home solar residential loans. Founded in Massachusetts, BlueWave operates around the globe." />
+		<meta property="og:url" content="http://bluewaverenewables.com/" />
+		<meta property="og:site_name" content="BlueWave" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:description" content="BlueWave is a solar energy company. We provide products for community solar and home solar residential loans. Founded in Massachusetts, BlueWave operates around the globe." />
+		<meta name="twitter:title" content="BlueWave Renewables" />
+		<meta name="twitter:domain" content="BlueWave" />
+		<meta name="google-site-verification" content="UA-68886504-1" />
+		<!-- / Yoast SEO plugin. -->
+
+		<style type="text/css">
+					img.wp-smiley,
+					img.emoji {
+						display: inline !important;
+						border: none !important;
+						box-shadow: none !important;
+						height: 1em !important;
+						width: 1em !important;
+						margin: 0 .07em !important;
+						vertical-align: -0.1em !important;
+						background: none !important;
+						padding: 0 !important;
+					}
+		</style>
+		<link rel="stylesheet" id="mdlwp-mdl-css-css" href="//storage.googleapis.com/code.getmdl.io/1.0.4/material.light_blue-teal.min.css?ver=4.3.3" type="text/css" media="all" />
+		<link rel="stylesheet" id="mdlwp-mdl-icons-css" href="//fonts.googleapis.com/icon?family=Material+Icons&amp;ver=4.3.3" type="text/css" media="all" />
+		<link rel="stylesheet" id="mdlwp-mdl-roboto-css" href="//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C600%2C400italic%2C700%2C800&amp;ver=4.3.3" type="text/css" media="all" />
+		<link rel="stylesheet" id="mdlwp-style-css" href="/resource/BlueWaveCommunity/wp-content/themes/bluewave/style.min.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="wpgmaps-style-css" href="/resource/BlueWaveCommunity/wp-content/plugins/wp-google-maps/css/wpgmza_style.css" type="text/css" media="all" />
+		<!-- This site uses the Google Analytics by Yoast plugin v5.4.6 - Universal enabled - https://yoast.com/wordpress/plugins/google-analytics/ -->
+
+		<!-- / Google Analytics by Yoast -->
+	</head>
+
+	
+	<div class="fab-button">
+		<a href="#" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="liveagent.startChat('573j00000004CFc')">
+			<i class="material-icons">chat</i>
+		</a>
+	</div>
+<div id="page" class="hfeed site mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	<header id="masthead" class="site-header mdl-layout__header" role="banner">
+		<!--<div class="mdl-layout__drawer-button">
+			<i class="material-icons">menu</i>
+		</div>-->
+
+
+
+		<div class="mdl-layout__header-row">
+			<!-- Title -->
+			<a class="logo" href="http://bluewaverenewables.com/" rel="home">
+				<img src="/resource/BlueWaveCommunity/wp-content/uploads/2015/09/Bluewave-renewables-logo-5.png" alt="BlueWave" />
+			</a>
+
+			<!-- Add spacer, to align navigation to the right -->
+			<div class="mdl-layout-spacer"/>
+
+			<nav class="mdl-navigation mdl-layout--large-screen-only">
+				<a href="http://bluewaverenewables.com/local-community-solar/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-746">Community Solar</a>
+				<a href="http://bluewaverenewables.com/independent-residential-solar-loan/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-745">Home Solar Loan</a>
+				<a href="http://bluewaverenewables.com/about/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-35">About Us</a>
+				<a href="http://bluewaverenewables.com/contact/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-36">Contact</a>
+			</nav>    
+		</div>
+
+
+	</header>
+
+
+	<div class="mdl-layout__drawer">
+		<a class="drawer-logo" href="http://bluewaverenewables.com/" rel="home">
+			<div class="mdl-layout-title">
+				<img src="/resource/BlueWaveCommunity/wp-content/uploads/2015/09/Bluewave-renewables-logo-2.png" alt="BlueWave" />
+			</div>
+		</a>
+		<nav class="mdl-navigation">
+			<a href="http://bluewaverenewables.com/local-community-solar/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-748">Community Solar</a>
+			<a href="http://bluewaverenewables.com/independent-residential-solar-loan/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-747">Home Solar Loan</a>
+			<a href="http://bluewaverenewables.com/about/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-184">About Us</a>
+			<a href="http://bluewaverenewables.com/news-stories/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-817">
+				<strong>News</strong>
+			</a>
+			<a href="http://bluewaverenewables.com/contact/" class="mdl-navigation__link menu-item menu-item-type-post_type menu-item-object-page menu-item-185">Contact</a>
+			<a href="http://bluewave-capital.com" onclick="__gaTracker('send', 'event', 'outbound-widget', 'http://bluewave-capital.com', 'Project Development »');" target="_blank" class="mdl-navigation__link menu-item menu-item-type-custom menu-item-object-custom menu-item-187">Project Development »</a>
+		</nav>
+	</div>
+    <div class="mdl-layout__content">
+
+  	</div>
+    </div>
+</aura:component>

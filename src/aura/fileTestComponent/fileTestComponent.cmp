@@ -1,0 +1,3 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"> 
+<div aura:id="fileInput" ondragover="{!c.onDragOver}" ondrop="{!c.onDrop}" >Drop Here!</div> 
+</aura:component>

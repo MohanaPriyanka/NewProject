@@ -1,0 +1,26 @@
+<aura:component controller="ImageScrollerController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="objectSource" type="String" />
+    <aura:attribute name="titleSource" type="String" />
+    <aura:attribute name="descriptionSource" type="String" />
+    <aura:attribute name="sliderLoaded" type="Boolean" default="false"/>
+    <aura:attribute name="imagesLoaded" type="Boolean" default="false"/>
+    <aura:attribute name="images" type="ImageScrollerController.ImageObject[]" />
+    <aura:handler event="aura:doneRendering" action="{!c.afterRendering}"/>
+    <ltng:require scripts="/resource/jQuery,/resource/BlueWaveCommunity/wp-content/themes/bluewave/js/jquery.flexslider-min.js,/resource/colorbox/colorbox-master/jquery.colorbox.js" styles="/resource/bxslider/jquery.bxslider.css,/resource/colorbox/colorbox-master/example4/colorbox.css" afterScriptsLoaded="{!c.afterScriptsLoaded}"/>
+    
+    <div class="flexslider">
+    	<ul class="slides">
+        <aura:iteration items="{!v.images}" var="image">
+            <li><a href="{!'#' + image.image}" class="inlineSlider"><img src="{!'/servlet/servlet.FileDownload?file=' + image.image}" /><div class="flex-caption">{!image.title}</div></a></li>
+    	</aura:iteration>
+		</ul>
+    </div>
+    <div style="display:none;">
+	    <aura:iteration items="{!v.images}" var="image">
+            <div id="{!image.image}" style="padding:5px;background:#fff;">
+                <img src="{!'/servlet/servlet.FileDownload?file=' + image.image}" title="{!image.title}" style="float:right;margin:10px;"/>
+                <aura:unescapedHtml value="{!image.body}" />
+            </div>
+        </aura:iteration>
+    </div>
+</aura:component>

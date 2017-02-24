@@ -1,0 +1,57 @@
+<aura:component controller="DashboardHeaderController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="header" type="String" description="This is the header banner text for the dashboard." />
+    <!--<aura:attribute name="paymentURL" type="String" description="This is the URL for payments." />-->
+    <aura:attribute name="name" type="String" description="This is the user's name." />
+    <aura:attribute name="menuLabels" type="Account" />    
+    <!--<aura:attribute name="isViewable" type="Boolean"  />-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="passMenuLabels" type="c:DashboardMenu"/>    
+   <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #266092;
+        }
+  </style>   
+    <br></br>         
+    <div class="panel">
+        
+	      <div class="main2 slds-float--right">             
+ 		<ui:menu >       
+   
+        	<ui:menuList class=" slds-dropdown--medium proximaNova" 
+                     aura:id="actionMenu" 
+                     visible="true"
+                     closeOnClickOutside="false"
+                     curtain="false"                    >
+          	<ui:actionMenuItem aura:id="All" label="All" click="{!c.dashboardMenuOutput}" disabled="false" hideMenuAfterSelected="false" />
+          	<aura:iteration items="{!v.menuLabels}" var="menuLabel">
+            	<ui:actionMenuItem aura:id="Id" label="{!menuLabel.Id}" body="{!menuLabel.Name}" click="{!c.dashboardMenuOutput}" disabled="false"/>
+          	</aura:iteration> 
+        	</ui:menuList>
+    	</ui:menu>    
+        </div> 
+      <div class="proximaNova" >
+        <h1>Hello {!v.name},</h1>
+	<h1>{!v.header}</h1>
+    </div>
+        <!--<a href="myaccount"><div class="notification">My Account</div></a>-->
+       <!-- <img src="/resource/BlueWaveIcons/Icons/Sun.png" class="image" style="width:100px;"/>-->
+        <!--<a href="mysolar"><div class="notification">My Solar</div></a>-->
+    <!--<aura:renderIf isTrue="{!v.isViewable}">-->
+        <!--<a href="v.paymentURL"><div class="notification">
+        	Your bill is now viewable.
+        </div></a>-->
+    <!--</aura:renderIf>-->
+          <br>
+        </br>
+  <br>
+  </br>
+        <br>
+        </br>
+
+    </div>
+</aura:component>

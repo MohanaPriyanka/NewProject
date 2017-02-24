@@ -1,0 +1,69 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<style>
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNova95 {
+        font-family: proximaNovaFont;   
+        font-size:95%;
+        color: #216093;
+    }
+</style>
+<div class="slds-context-bar ">
+  <div class="slds-context-bar__primary slds-context-bar__item--divider-right">
+    <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
+      <div class="slds-context-bar__icon-action">
+        <a href="javascript:void(0);" class="slds-icon-waffle_container slds-context-bar__button">
+          <div class="slds-icon-waffle">
+            <div class="slds-r1"></div>
+            <div class="slds-r2"></div>
+            <div class="slds-r3"></div>
+            <div class="slds-r4"></div>
+            <div class="slds-r5"></div>
+            <div class="slds-r6"></div>
+            <div class="slds-r7"></div>
+            <div class="slds-r8"></div>
+            <div class="slds-r9"></div>
+          </div>
+          <span class="slds-assistive-text">Open App Launcher</span>
+        </a>
+      </div>
+      <span class="slds-context-bar__label-action slds-context-bar__app-name ">
+        <a href="slpaddcustomer" title="Dashboard">          
+        	<span class="slds-truncate" title="{ props.appName || &#x27;App Name&#x27; }">Add a Customer</span>
+        </a>
+    </span>
+    </div>
+  </div>
+  <nav class="slds-context-bar__secondary" role="navigation">
+    <ul class="slds-grid">
+      <li class="slds-context-bar__item">
+        <a href="slpdashboard" class="slds-context-bar__label-action" title="Dashboard">
+          <span class="slds-truncate">Dashboard</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+        <a href="slpcreditstatus" class="slds-context-bar__label-action" title="Check customer's credit status">
+          <span class="slds-truncate">Credit Status</span>
+        </a>
+      </li> 
+      <li class="slds-context-bar__item">
+        <a href="/slportal/s/slpcustomer" class="slds-context-bar__label-action" title="Customers">
+          <span class="slds-truncate">Customers</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+          <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
+          <span class="slds-truncate">Disbursals</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+          <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
+          <span class="slds-truncate">Alerts</span>
+        </a>
+      </li>             
+    </ul>
+  </nav>
+</div>
+</aura:component>

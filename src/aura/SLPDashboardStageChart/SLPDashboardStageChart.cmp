@@ -1,0 +1,40 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardStageChartHandler" >
+    <ltng:require scripts="//www.gstatic.com/charts/loader.js" afterScriptsLoaded="{!c.loadChart}" />
+    <aura:registerEvent name="passStageName" type="c:SLPStageChartEvent"/> 
+    <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />    
+    <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
+    <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+         	
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #266092;
+         padding-left:20px
+        }
+               @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaGrey {
+            font-family: proximaNovaFont;    
+      		color: #7c98ad;
+        }    
+  </style>  
+	<div aura:id = "stageChart" class="main" >
+        <br></br>
+    	<h2 class="proximaNova"></h2>
+    	<br></br>
+        <div id="chart_div" ></div>
+	         <!--  <ui:inputSelectOption text="All" label="All Data" value="false"/>
+	        <ui:inputSelectOption text="6 Months" label="6 Months"/>
+	        <ui:inputSelectOption text="1 Year" label="1 Year" value="true"/>
+	        <ui:inputSelectOption text="5 Years" label="5 Years"/>
+         	<ui:inputSelectOption text="10 Years" label="10 Years"/>
+	        <ui:inputSelectOption text="1 Month" label="1 Month"/>
+	        <ui:inputSelectOption text="1 Day" label="1 Day"/>-->
+
+	</div>
+</aura:component>

@@ -1,0 +1,106 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
+    <aura:attribute name="loanList" type="List" />
+    <aura:attribute name="taskList" type="Object"  /> 
+    <aura:attribute name="partnerTaskList" type="Object"  /> 
+    <aura:attribute name="taskBoardRecords" type="Map" />  
+    <!--<aura:attribute name="eventToggle" type="Boolean" default="true" />  -->
+	<aura:registerEvent name="customerWindow" type="c:SLPDashboardEvent"/>     
+    <aura:handler event="c:SLPStageChartEvent" action="{!c.filterStageList}" />  
+	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />     
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+ <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;   
+     		font-size:55%;
+      		color: #FFFFFF;
+        }
+     
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreen {
+            font-family: proximaNovaFont;   
+     		font-size:200%;
+      		color: #32CD32;
+        }
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #32CD32;
+        }     
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataRedSmall {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #7c98ad;
+        }     
+        .proximaNovaDataWhite {
+            font-family: proximaNovaFont;   
+     		font-size:200%;
+      		color: #ffffff;
+        }         
+     
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaBWBlue {
+            font-family: proximaNovaFont;   
+     		font-size:220%;
+      		color: #216093;
+     		
+        }     
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaBWBlueTable {
+            font-family: proximaNovaFont;   
+     		font-size:70%;
+      		color: #216093;
+     		
+        }        
+  </style>   
+    <div aura:id = "taskTable" class="main2"> 
+		<br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+              <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>              
+              <th scope="col"><span class="slds-truncate"><b>Task</b></span></th>              
+              <th scope="col"><span class="slds-truncate"><b>View</b></span></th>              
+           
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.partnerTaskList}" var="task">
+              		<tr>
+                		<th scope="row"> <b>{!task.Lead__r.Name}</b> </th>
+                        <th scope="row"> <b>{!task.Loan__r.Product__r.Name}</b> </th>
+                		<th scope="row"> <b>{!task.Name}</b> </th>   
+                		<th><ui:button label="View"
+                           class="{!task.Loan__r.Id}"
+                           labelClass="label"
+                           press="{!c.openCustomerWindow}"/>   </th>                       
+                    </tr>                    
+            </aura:iteration> 
+         
+          </tbody>
+        </table>
+    </div>
+    </div>
+</aura:component>

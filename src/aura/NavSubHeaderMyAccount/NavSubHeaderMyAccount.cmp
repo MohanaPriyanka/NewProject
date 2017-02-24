@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" >
+	<div class="header">
+       	<div class="leftitem"><h3>My Account</h3></div>
+        <div class="rightitem"><h3>Support</h3></div>
+   	</div>
+</aura:component>

@@ -1,0 +1,245 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">  
+  <aura:attribute name="myBill" type="Decimal"  />
+  <aura:attribute name="accountId" type="String"  />
+  <aura:attribute name="parentAccountId" type="String"  />  
+  <aura:attribute name="paymentURL" type="String"  />
+  <aura:attribute name="userMessage" type="String"  />
+  <aura:attribute name="userOutputMessage" type="String"  />
+  <aura:attribute name="menuOutputMessage" type="String" />
+  <aura:attribute name="menuLabels" type="Account" />
+  <aura:attribute name="Opportunitys" type="Object" />   
+  <aura:attribute name="SystemBills" type="Decimal" />
+  <aura:attribute name="SystemBillsId" type="Id" />
+  <aura:attribute name="AccountBills" type="Object" />
+  <aura:attribute name="statementId" type="String" />
+  <aura:attribute name="statementIdMap" type="Map" />      
+  <aura:attribute name="PaymentLogs" type="Object" />     
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #266092;
+        }
+      
+              @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaWhite {
+            font-family: proximaNovaFont;    
+      		color: #FFFFFF;
+        }
+      
+              @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaBlack {
+            font-family: proximaNovaFont;    
+      		color: #495055;
+        }
+  </style>
+  <div class="main">   
+     <div class="myMenu">
+     <b><h3 class="proximaNova">My Community Solar Accounts</h3></b>            
+     <ui:menu >       
+        <ui:menuList class=" slds-dropdown--small proximaNova" 
+                     aura:id="actionMenu" 
+                     visible="true"
+                     closeOnClickOutside="false"
+                     curtain="false"                    >
+          <ui:actionMenuItem aura:id="All" label="All" click="{!c.accountMenuOutput}" disabled="false" hideMenuAfterSelected="false" selected='true' />
+          <aura:iteration items="{!v.menuLabels}" var="menuLabel">
+            <ui:actionMenuItem aura:id="{!menuLabel.Id}" label="{!menuLabel.Id}" body="{!menuLabel.Name}" click="{!c.accountMenuOutput}" disabled="false"/>
+          </aura:iteration> 
+        </ui:menuList>
+    </ui:menu>
+    </div>       
+  <br></br> 
+  <br></br>
+
+ <!--<div aura:id="menuMessage" class="hide">
+    Menu Output: <ui:outputText aura:id="menuOutput" value="{!v.SystemBills[0]}"/>
+  </div>-->
+<section class="slds-clearfix">      
+    <br /><br />
+    <b><h3 class="proximaNova"> Current Balance Due: </h3></b>           
+    <div><h2 class="myBill proximaNovaBlack "><ui:outputCurrency value="{!v.myBill}" /></h2><br /><br /><br /><br /> </div> 
+    <div><a href="{!'https://forms.bluewaverenewables.com/381491?tfa_10=' + v.myBill + '&amp;' +                      
+                      'tfa_113=' + v.accountId + '&amp;' +
+                  	  'tfa_169=' + v.myBill + '&amp;' +
+                  	  'tfa_229=' + v.parentAccountId + '&amp;' + 
+                      'tfa_115=' + v.SystemBills[0].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_117=' + v.SystemBills[1].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_119=' + v.SystemBills[2].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_121=' + v.SystemBills[3].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_123=' + v.SystemBills[4].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_125=' + v.SystemBills[5].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_127=' + v.SystemBills[6].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_129=' + v.SystemBills[7].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_131=' + v.SystemBills[8].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_133=' + v.SystemBills[9].Carry_Over_Balance__c + '&amp;' + 
+                      'tfa_138=' + v.SystemBills[0].Id + '&amp;' + 
+                      'tfa_156=' + v.SystemBills[1].Id + '&amp;' + 
+                      'tfa_142=' + v.SystemBills[2].Id + '&amp;' + 
+                      'tfa_150=' + v.SystemBills[3].Id + '&amp;' + 
+                      'tfa_152=' + v.SystemBills[4].Id + '&amp;' + 
+                      'tfa_148=' + v.SystemBills[5].Id + '&amp;' + 
+                      'tfa_140=' + v.SystemBills[6].Id + '&amp;' + 
+                      'tfa_154=' + v.SystemBills[7].Id + '&amp;' + 
+                      'tfa_144=' + v.SystemBills[8].Id + '&amp;' + 
+                      'tfa_135=' + v.SystemBills[9].Id + '&amp;' +
+                      'tfa_278=' + v.SystemBills[0].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_280=' + v.SystemBills[1].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_282=' + v.SystemBills[2].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_284=' + v.SystemBills[3].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_286=' + v.SystemBills[4].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_288=' + v.SystemBills[5].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_290=' + v.SystemBills[6].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_292=' + v.SystemBills[7].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_294=' + v.SystemBills[8].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_296=' + v.SystemBills[9].Shared_Solar_System__r.Id + '&amp;' +                  
+                  	  'tfa_198=' + v.SystemBills[0].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_200=' + v.SystemBills[1].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_202=' + v.SystemBills[2].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_204=' + v.SystemBills[3].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_206=' + v.SystemBills[4].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_208=' + v.SystemBills[5].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_210=' + v.SystemBills[6].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_212=' + v.SystemBills[7].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_214=' + v.SystemBills[8].FormAssembly_Order_Helper__c + '&amp;' + 
+                      'tfa_216=' + v.SystemBills[9].FormAssembly_Order_Helper__c + '&amp;'}"               
+                target="_blank">
+        <div aura:id="paymentButton" class="proximaNovaWhite notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Make a payment</div>
+        </a>
+   		<a href="{!'https://forms.bluewaverenewables.com/381563?tfa365=' + v.accountId + '&amp;' +                      
+                      'tfa_370=' + v.Opportunitys[0].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_387=' + v.Opportunitys[0].Id + '&amp;' + 
+                      'tfa_371=' + v.Opportunitys[1].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_389=' + v.Opportunitys[1].Id + '&amp;' + 
+                      'tfa_373=' + v.Opportunitys[2].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_391=' + v.Opportunitys[2].Id + '&amp;' +  
+                      'tfa_375=' + v.Opportunitys[3].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_393=' + v.Opportunitys[3].Id + '&amp;' +  
+                      'tfa_377=' + v.Opportunitys[4].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_395=' + v.Opportunitys[4].Id + '&amp;' +  
+                      'tfa_379=' + v.Opportunitys[5].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_397=' + v.Opportunitys[5].Id + '&amp;' +  
+                      'tfa_381=' + v.Opportunitys[6].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_399=' + v.Opportunitys[6].Id + '&amp;' +  
+                      'tfa_383=' + v.Opportunitys[7].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_401=' + v.Opportunitys[7].Id + '&amp;' +  
+                      'tfa_385=' + v.Opportunitys[8].Shared_Solar_System__r.Id + '&amp;' + 
+                      'tfa_403=' + v.Opportunitys[8].Id + '&amp;'}" 
+           target="_blank">
+            <div aura:id="autoPaymentFormButton" class="proximaNovaWhite noDisplay notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Enter Payment Details</div>
+        </a>           
+    </div>
+	<br></br>
+    <br></br>
+    <b><h3 class="proximaNova"> My Statements: </h3>   </b> 
+	<br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+          <thead>
+            <tr class="slds-text-heading--label proximaNova " >
+              <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>              
+              <th scope="col"><span class="slds-truncate"><b>Statement Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Due Date</b></span></th>
+              <!--<th scope="col"><span class="slds-truncate "><b>Last Payment Date</b></span></th>-->
+              <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>   
+              <!--<th scope="col"><div class="slds-truncate" title="View"><b>View Statement</b></div></th>-->
+            </tr>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!v.AccountBills}" var="accountBill">
+              <tr>
+                <th scope="row"> {!accountBill.Parent_Account__r.Name} </th>                
+                <th scope="row"> {!accountBill.Date__c} </th>
+                <th scope="row"> {!accountBill.Bill_Due_Date__c} </th> 
+                <!--<th scope="row"> {!accountBill.Date_c} </th>-->   
+                <th scope="row"> {!accountBill.Activity_Type__c} </th>
+                <th scope="row"><ui:outputCurrency value="{!accountBill.Total_Due_Minus_Payment_Plan__c}" /></th>
+                <th scope="row"><ui:outputCurrency value="{!accountBill.Balance_Net_Late_Payments__c}" /></th>     
+             <td>                  
+               <!--<form class="account-form" onSubmit="{!c.navigateToStatement}" >
+              	<input type='hidden' value="{!accountBill.Id}" class="account-name" />-->
+                <!-- BELOW IS THE NAVIGAT TO STATEMENT BUTTON
+						<ui:button label="View"
+                            class="{!accountBill.Id}"
+                         labelClass="label"
+                         press="{!c.navigateToStatement}" />-->
+              	<!--<lightning:button label="View"
+                  				class = "{!accountBill.Id}"
+                                iconName="utility:page"
+                                iconPosition="left"
+                                variant= "brand"
+                                onClick = "{!c.navigateToStatement}"
+                                />             -->                                                
+              <!-- </form>
+             <div><a href="{!'https://c.na16.content.force.com/servlet/servlet.FileDownload?file=' + v.statementId }"               
+                target="_blank"><div class="proximaNovaWhite notification box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);">View Statement (Coming Soon)</div></a></div>  -->
+                 </td>
+                 </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+        <br></br>
+        <br></br>
+        <b><h3 class="proximaNova"> My Transactions: </h3>   </b>   
+        <br></br>
+        <table class="slds-table slds-table--bordered   slds-table--striped box proximaNovaBlack">
+          <thead>
+            <tr class="slds-text-heading--label proximaNova" >
+              <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>                      
+              <th scope="col"><span class="slds-truncate"><b>Transaction Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Solar System</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+              <!--<th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>-->                  
+            </tr>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!v.PaymentLogs}" var="paymentLog">
+              <tr>
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Parent_Account__r.Name} </th> 
+                <th scope="row"> {!paymentLog.Date_of_Transaction__c} </th>                
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.System_Bill__r.Shared_Solar_System__r.Name} </th>                   
+                <th scope="row"> {!paymentLog.ChargentOrders__Type__c} </th>
+                <th scope="row"><ui:outputCurrency value="{!paymentLog.Negative_Amount__c}" /></th>
+                <!--<th scope="row"><ui:outputCurrency value="{!paymentLog.System_Bill_Remaining_Balance__c}" /></th>-->                    
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>          
+      <br></br>
+            <!--<h2 class="bwblue"> Due Date</h2>            
+                <div><h2 class="paymentDueDate "><ui:outputCurrency value="{!v.paymentDueDate}" /></h2><br /><br /><br /><br /> </div>
+            <h2 class="bwblue"> This Month's Savings</h2>            
+                <div><h2 class="savings "><ui:outputCurrency value="{!v.savings}" /></h2><br /><br /><br /><br /> </div>
+            <h2 class="bwblue"> Previous Overdue Balance </h2>            
+                <div><h2 class="previousOverdueBalance "><ui:outputCurrency value="{!v.previousOverdueBalance}" /></h2><br /><br /><br /><br /> </div>
+            <h2 class="bwblue"> Due this Month</h2>            
+                <div><h2 class="myDueThisMonth "><ui:outputCurrency value="{!v.myDueThisMonth}" /></h2><br /><br /><br /><br /> </div>             
+           <h2 class="bwblue"> Your Payment </h2>            
+                <div><h2 class="paymentAmount "><ui:outputCurrency value="{!v.paymentAmount}" /></h2><br /><br /><br /><br /> </div>
+            <h2 class="bwblue"> This Month's Net Metering Credits</h2>            
+                <div><h2 class="netMeteringCreditsAllocated "><ui:outputCurrency value="{!v.netMeteringCreditsAllocated}" /></h2><br /><br /><br /><br /> </div>
+            <h2 class="bwblue"> Date of Last Payment </h2>            
+                    <div><h2 class="dateOfLastPayment "><ui:outputCurrency value="{!v.dateOfLastPayment}" /></h2><br /><br /><br /><br /> </div> -->                 
+                     
+                <!--<iframe height="1000px" id="theIframe" scrolling="false" frameborder="false" name="theIframe" src="{!'https://forms.bluewaverenewables.com/381491?tfa_10=' + v.myBill + '&amp;' + 'tfa_96=' + v.myAccountBillId}" width="50%"></iframe>-->
+                </div>  
+                <!--<div class="subtext"><h3>Who is First Associates?</h3>
+                    <h4>First Associates is BlueWave’s trusted billing partner. When you click “Pay My Bill” you will be re-directed to your First Associates login page where you can login to your account using the credentials provided to you in your billing package.</h4>
+                </div>-->
+             
+      </section>
+    </div>
+</aura:component>

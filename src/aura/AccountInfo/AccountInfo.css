@@ -1,0 +1,64 @@
+.THIS {
+}
+
+.THIS.main {
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:30px;
+    margin-bottom:50px;
+    width:60%;
+}
+
+
+.THIS th {
+    text-align:left;
+    padding:15px;
+    width:50%;
+
+}
+
+.THIS td {
+    text-align:left;
+    padding:15px;
+    width:50%;
+}
+
+.THIS tr {
+    padding: 15px;
+}
+
+.THIS table {
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:40px;
+    width:100%
+}
+.THIS tr:nth-child(even) {
+    background: #DFE0E0
+}
+.THIS tr:nth-child(odd) {
+    background: #ECECEC
+}
+
+.THIS .asettings {
+    float:left;
+    margin-right:20px;
+}
+
+.THIS .ebutton {
+    margin-top: 12px;
+    margin-left:20px;
+}
+
+.THIS .docs {
+    margin-top:40px;
+    margin-bottom:40px;
+}
+
+.THIS .bwblue {
+    color: #266092;
+}
+
+.THIS .notification {
+    cursor: pointer;
+}
