@@ -25,11 +25,14 @@ public with sharing class SharedSolarSystemHandler {
                 system.debug(sssidlist);
         }
 
-        List <Utility_Account_Subscription__c> relateduas = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c, Opportunity__c, Next_Schedule_Z_Status__c, SSS_Id__c, Customer_Subscription_KW_DC__c, Customer_Subscription_KW_DC_STATIC__c
-                                                              FROM Utility_Account_Subscription__c
-                                                              WHERE SSS_Id__c IN : sssidlist];
+        List <Utility_Account_Subscription__c> relateduas = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c, 
+                                                                Opportunity__c, Next_Schedule_Z_Status__c, SSS_Id__c, 
+                                                                Customer_Subscription_KW_DC__c, Customer_Subscription_KW_DC_STATIC__c
+                                                                FROM Utility_Account_Subscription__c
+                                                                WHERE SSS_Id__c IN : sssidlist];
 
-        List <Opportunity> relatedanchors = [ SELECT Id, StageName, Customer_Group__c, Shared_Solar_System__c, Shared_Solar_System_Name__c, CS_Capacity_Allocated__c
+        List <Opportunity> relatedanchors = [ SELECT Id, StageName, Customer_Group__c, Shared_Solar_System__c, 
+                                                Shared_Solar_System_Name__c, CS_Capacity_Allocated__c
                                                 FROM Opportunity
                                                 WHERE Customer_Group__c = 'Anchor'];
         system.debug(relateduas);
@@ -58,7 +61,8 @@ public with sharing class SharedSolarSystemHandler {
         for(Shared_Solar_System__c sssSummary : sssList){
             if(reservedCapacityList.size()>0){
                 for(Utility_Account_Subscription__c res: reservedCapacityList){
-                    if(res.SSS_Id__c == sssSummary.Id && res.Customer_Subscription_KW_DC__c != null){
+                    if(res.SSS_Id__c == sssSummary.Id 
+                        && res.Customer_Subscription_KW_DC__c != null){
                             summarizedReservedCapacity = res.Customer_Subscription_KW_DC__c + summarizedReservedCapacity;
                             system.debug(summarizedReservedCapacity);
                     }
@@ -66,7 +70,8 @@ public with sharing class SharedSolarSystemHandler {
             }
             if(committedCapacityList.size()>0){
                 for(Utility_Account_Subscription__c comm: committedCapacityList){
-                    if(comm.SSS_Id__c == sssSummary.Id && comm.Customer_Subscription_KW_DC_STATIC__c != null){
+                    if(comm.SSS_Id__c == sssSummary.Id 
+                        && comm.Customer_Subscription_KW_DC_STATIC__c != null){
                             system.debug('Committed Capacity List Size - ' + committedCapacityList.size());
                             system.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC_STATIC__c );
                             summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC_STATIC__c + summarizedCommittedCapacity;
@@ -76,7 +81,10 @@ public with sharing class SharedSolarSystemHandler {
             if(relatedanchors.size()>0){
                 for(Opportunity anc: relatedanchors){
                     system.debug(anc.Shared_Solar_System__c);
-                    if(anc.Shared_Solar_System_Name__c == sssSummary.Name && anc.CS_Capacity_Allocated__c != null && anc.StageName != 'new' &&  anc.StageName != 'Dead'){
+                    if(anc.Shared_Solar_System_Name__c == sssSummary.Name 
+                        && anc.CS_Capacity_Allocated__c != null 
+                        && anc.StageName != 'new' 
+                        &&  anc.StageName != 'Dead'){
                             summarizedAnchorCapacity = anc.CS_Capacity_Allocated__c + summarizedAnchorCapacity;
                     }
                 }
