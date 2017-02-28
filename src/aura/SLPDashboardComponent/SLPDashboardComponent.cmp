@@ -15,8 +15,9 @@
         }
         .proximaNova {
             font-family: proximaNovaFont;   
-     		font-size:55%;
+     		font-size:75%;
       		color: #FFFFFF;
+          padding-right:2.5%;
         }
      
         @font-face {
@@ -25,8 +26,10 @@
         }
         .proximaNovaDataGreen {
             font-family: proximaNovaFont;   
-     		font-size:200%;
-      		color: #32CD32;
+     		font-size:150%;
+      		color: #00b2a9;
+          padding-top:1.5%;
+          padding-left:2.5%;
         }
         @font-face {
             font-family: proximaNovaFont;
@@ -48,8 +51,10 @@
         }     
         .proximaNovaDataWhite {
             font-family: proximaNovaFont;   
-     		font-size:200%;
+     		font-size:150%;
       		color: #ffffff;
+          padding-top:1.5%;
+          padding-left:2.5%;          
         }         
      
         @font-face {

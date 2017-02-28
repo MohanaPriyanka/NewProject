@@ -24,22 +24,37 @@
     float:right;
 }
 
+.THIS .paddingLeft {
+    padding-left:15%;
+}
+
 .THIS .documentsButtonLeft {
-    width:30%;
-    float:left; 
+    width:20%;
+    float:left;
+    padding-top:2.25%;    
+    padding-left:20%; 
 
 }
 .THIS .documentsButtonCenter {
-    width:30%;
+    width:20%;
     float:left;
    	margin-left:7%;
-
 
 }
 
 .THIS .documentsButtonRight {
     width:30%;
-    float:right;  
+    float:right; 
+    padding-top:2.25%;
+    padding-right:30%; 
+
+}
+
+.THIS .salesAgreementButtonRight {
+    width:30%;
+    float:right; 
+    padding-top:2.25%;
+    padding-right:40%; 
 
 }
 
@@ -59,6 +74,11 @@
 
 .THIS .box {
     box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
+}
+
+.THIS .CustomerInfobox {
+    box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
+    background-color: #6CA6CD;
 }
 
 .THIS.main2 {

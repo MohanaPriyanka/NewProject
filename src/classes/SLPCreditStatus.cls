@@ -9,7 +9,7 @@ public class SLPCreditStatus {
                     		FROM Lead 
                     		WHERE Partner_Lookup__r.Name = 'BlueWave Customer Care'
                     		AND Status = 'Unfinished'
-                    		ORDER BY Pre_Qualification_Status__c];      
+                    		ORDER BY Pre_Qualification_Status__c DESC];      
     	return leadList;            	
       }else{
       	List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
@@ -19,6 +19,30 @@ public class SLPCreditStatus {
                     		AND Status = 'Unfinished'];      
     	return leadList;       	
       }	
+  }
+
+  @AuraEnabled 
+  public static List<Product2> getCustomerProducts (String leadId) {
+    System.debug('Begin the getProducts method');
+    User u = [SELECT Id, Name, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
+    Lead leadRecord = [SELECT Id, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c 
+                            FROM Lead
+                            WHERE Id = : leadId];
+    System.debug('the lead product line is ' + leadRecord.Product_Line__c);       
+    System.debug('the lead product prgoram is ' + leadRecord.Product_Program__c);
+    System.debug('the lead product state is ' + leadRecord.LASERCA__Home_State__c);
+    System.debug('the lead product credit ' + leadRecord.LASER_Credit_Score__c);
+
+        List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c 
+                                      FROM Product2 
+                                      WHERE Product_Type__c = : leadRecord.Product_Line__c
+                                      AND Program__c = : leadRecord.Product_Program__c
+                                      AND State__c = : leadRecord.LASERCA__Home_State__c
+                                      AND Credit_Minimum__c <= : leadRecord.LASER_Credit_Score__c
+                                      AND Credit_Maximum__c >= : leadRecord.LASER_Credit_Score__c
+                                      AND isActive = true]; 
+      System.debug('the product list is ' + productList);                                       
+      return productList;                      
 
   //  }
 
@@ -33,4 +57,6 @@ public class SLPCreditStatus {
   //  }
   //}
 	}
+
+
 }

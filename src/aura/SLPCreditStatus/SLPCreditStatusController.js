@@ -31,49 +31,107 @@
         $A.enqueueAction(action);        
     },
 
-    navigate : function(component, event, helper) {
-        var action = component.get("c.getLeads"); 
+    getProducts : function(component, event, helper) { 
         var source = event.getSource();
-        var leadId = source.get("v.class");
-        
+        var leadId = source.get("v.class");               
+        var action = component.get("c.getCustomerProducts"); 
+        var customerTable = component.find("customerTable");
+        var productTable = component.find("productTable");
+        var searchBar = component.find("customerSearchBar");
+        var searchButton = component.find("customerSearchButton");
+
+        component.set("v.leadId", leadId);
+
         action.setParams({leadId : leadId});
-        
+
         action.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                component.set("v.selectedCustomer", resp.getReturnValue(0));
-                var lead = resp.getReturnValue()[0];
-                var address = lead.LASERCA__Home_Address__c;
-                var city = lead.LASERCA__Home_City__c;
-                var state = lead.LASERCA__Home_State__c;
-                var zip = lead.LASERCA__Home_Zip__c;
-                var income = lead.Annual_Income_Currency__c;
-                var systemCost = lead.System_Cost__c;
-                var updateDummy = lead.Update_Dummy;
-                if(updateDummy == true){
-                    updateDummy = false;
-                }else{
-                    updateDummy = true;
-                }
-                var leadId = lead.Id;                         
-                var urlEvent = $A.get("e.force:navigateToURL");
-                urlEvent.setParams({
-                  "url": 'https://forms.bluewaverenewables.com/381587?tfa_1299=' + address 
-                    + '&' + 'tfa_154=' + state 
-                    + '&' + 'tfa_526=' + leadId 
-                    + '&' + 'tfa_1295=' + updateDummy
-                    + '&' + 'tfa_1300=' + city 
-                    + '&' + 'tfa_1301=' + zip                     
-                });
-                urlEvent.fire();                
+                component.set("v.allProducts", resp.getReturnValue());
+                $A.util.addClass(customerTable, 'noDisplay');
+                $A.util.addClass(searchButton, 'noDisplay');
+                $A.util.addClass(searchBar, 'noDisplay');
+                $A.util.removeClass(productTable, 'noDisplay');
             }
             else {
                 $A.log("Errors", resp.getError());
             }
         });        
-        $A.enqueueAction(action);     
-             
-        
-        //Find the text value of the component with aura:id set to "address"
+        $A.enqueueAction(action);        
+    },        
 
+    updateProductSelection : function(component, event, helper) { 
+        var source = event.getSource();
+        var productId = source.get("v.class"); 
+        var productTerm = source.get("v.name");
+        var productValue = source.get("v.value");
+        //if(productValue == true) {
+        component.set("v.productId", productId); 
+        component.set("v.loanTerm", productTerm); 
+        //}              
+    },       
+
+    navigate : function(component, event, helper) {
+        var action = component.get("c.getLeads"); 
+        var source = event.getSource();
+        //var leadId = source.get("v.class");
+        var leadId = component.get("v.leadId");
+        var productId = component.get("v.productId");
+        var loanTerm = component.get("v.loanTerm");
+        
+        action.setParams({leadId : leadId});
+        if(loanTerm > 0 && loanTerm != null) {
+            action.setCallback(this,function(resp){ 
+                if(resp.getState() == 'SUCCESS') {
+                    component.set("v.selectedCustomer", resp.getReturnValue(0));
+                    var lead = resp.getReturnValue()[0];
+                    var address = lead.LASERCA__Home_Address__c;
+                    var city = lead.LASERCA__Home_City__c;
+                    var state = lead.LASERCA__Home_State__c;
+                    var zip = lead.LASERCA__Home_Zip__c;
+                    var income = lead.Annual_Income_Currency__c;
+                    var systemCost = lead.System_Cost__c;
+                    var updateDummy = lead.Update_Dummy;
+                    if(updateDummy == true){
+                        updateDummy = false;
+                    }else{
+                        updateDummy = true;
+                    }
+                    var leadId = lead.Id;                         
+                    var urlEvent = $A.get("e.force:navigateToURL");
+                    urlEvent.setParams({
+                      "url": 'https://forms.bluewaverenewables.com/381587?tfa_1299=' + address 
+                        + '&' + 'tfa_154=' + state 
+                        + '&' + 'tfa_526=' + leadId 
+                        + '&' + 'tfa_1295=' + updateDummy
+                        + '&' + 'tfa_1300=' + city 
+                        + '&' + 'tfa_1302=' + productId 
+                        + '&' + 'tfa_1301=' + zip     
+                        + '&' + 'tfa_1303=' + loanTerm                  
+                    });
+                    urlEvent.fire();                
+                }
+                else {
+                    $A.log("Errors", resp.getError());
+                }
+            });        
+            $A.enqueueAction(action);                              
+        }else {
+            alert("Please select a product");
+        }        
+        //Find the text value of the component with aura:id set to "address"
     },
+
+    exitProductSelection : function(component, event, helper) { 
+        var customerTable = component.find("customerTable");
+        var productTable = component.find("productTable");
+        var searchBar = component.find("customerSearchBar");
+        var searchButton = component.find("customerSearchButton");
+
+        $A.util.removeClass(customerTable, 'noDisplay');
+        $A.util.removeClass(searchButton, 'noDisplay');
+        $A.util.removeClass(searchBar, 'noDisplay');
+        $A.util.addClass(productTable, 'noDisplay');      
+        $A.get('e.force:refreshView').fire();
+    },    
+
 })

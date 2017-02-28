@@ -54,6 +54,7 @@
             
             if(resp.getState() == 'SUCCESS') {
                 if(resp.getReturnValue() == 'Run Credit Check'){
+                    component.set("v.blueWaveReviewAlert", false);
                     $A.util.addClass(creditToggle, 'slds-is-active ');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.removeClass(reviewToggle, 'slds-is-active');
@@ -69,6 +70,7 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }else if(resp.getReturnValue() == 'Provide All Customer Information'){
+                    component.set("v.blueWaveReviewAlert", false);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.removeClass(reviewToggle, 'slds-is-active');
@@ -84,6 +86,7 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Under BlueWave Review'){
+                    component.set("v.blueWaveReviewAlert", true);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');
@@ -99,6 +102,7 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
+                    component.set("v.blueWaveReviewAlert", false);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');                    
@@ -114,6 +118,7 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Mechanical Installation'){
+                    component.set("v.blueWaveReviewAlert", false);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');                    
@@ -128,6 +133,7 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Interconnection'){
+                    component.set("v.blueWaveReviewAlert", false);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
 					$A.util.addClass(reviewToggle, 'slds-is-active');                                        
@@ -143,6 +149,7 @@
                     $A.util.addClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else{
+                    component.set("v.blueWaveReviewAlert", false);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                 	$A.util.addClass(reviewToggle, 'slds-is-active');
@@ -228,13 +235,17 @@
         
         var parentSubTaskToggle = component.find("parentSubTasks");
         var subTaskTypeToggle = component.find("subTaskType");
+        var subTaskToggle = component.find("subTaskTable");
         var exitParentSubTasksButton = component.find("exitParentSubTasksTable");
 
         $A.util.addClass(parentSubTaskToggle, 'noDisplay');          
         $A.util.addClass(subTaskTypeToggle, 'noDisplay'); 
-        
+        $A.util.addClass(subTaskToggle, 'noDisplay'); 
+
         component.set("v.customerInformation", null);
-	},
+        component.set("v.parentSubTaskList", null);       
+    },
+
     
 	openTaskInformation : function(component, event, helper) {
         
@@ -248,7 +259,6 @@
         $A.util.addClass(customerInformationToggle, 'noDisplay');
         $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
-        
         var subTaskHeaderToggle = component.find("subTaskHeader");           
         var subTaskTableToggle = component.find("subTaskTable");
         $A.util.addClass(subTaskTableToggle, 'noDisplay');
@@ -272,6 +282,7 @@
 	},  
     
 	openCustomerInformation : function(component, event, helper) {
+        var loanId = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
         var customerInformationToggle = component.find("customerInformation");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
@@ -281,11 +292,25 @@
         $A.util.removeClass(customerInformationToggle, 'noDisplay');
         $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
-        
+        component.set("v.blueWaveReviewAlert", false);
+
         var subTaskHeaderToggle = component.find("subTaskHeader");           
         var subTaskTableToggle = component.find("subTaskTable");
         $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');        
+        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');   
+
+        var customerInformationAction = component.get("c.getCustomerInformation"); 
+        customerInformationAction.setParams({loanId : label})
+        customerInformationAction.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });                
+        $A.enqueueAction(customerInformationAction);
+
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
@@ -293,13 +318,13 @@
         var customerInformationToggle = component.find("customerInformation");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
-        
-        
+        component.set("v.blueWaveReviewAlert", false);
+
         $A.util.addClass(taskTableToggle, 'noDisplay');
         $A.util.addClass(customerInformationToggle, 'noDisplay');
         $A.util.removeClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.removeClass(disbursalIncompleteTableToggle, 'noDisplay');
-
+        
 
         var subTaskHeaderToggle = component.find("subTaskHeader");           
         var subTaskTableToggle = component.find("subTaskTable");
@@ -536,7 +561,7 @@
 		component.set("v.subTaskList", null);   
     },
     
-    navigateSystemDocs : function(component, event, helper) {
+    navigateInstallationDocs : function(component, event, helper) {
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");                        
         var equipmentId = component.get("v.customerInformation.Id"); 
         var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
@@ -555,6 +580,26 @@
         });
         urlEvent.fire();                
     },
+
+    navigateInterconnectionDocs : function(component, event, helper) {
+        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");                        
+        var equipmentId = component.get("v.customerInformation.Id"); 
+        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        if(updateDummy == true){
+            updateDummy = false;
+        }else{
+            updateDummy = true;
+        }
+        
+        var urlEvent = $A.get("e.force:navigateToURL");
+        urlEvent.setParams({
+          "url": 'https://forms.bluewaverenewables.com/381589?tfa_814=' + leadId 
+            + '&' + 'tfa_821=' + equipmentId
+            + '&' + 'tfa_828=' + updateDummy
+
+        });
+        urlEvent.fire();                
+    },    
     
     navigateIncomeDocs : function(component, event, helper) {
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");                        

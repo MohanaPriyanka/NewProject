@@ -1,0 +1,61 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAlertsHandler" access="global">
+	<aura:attribute name="partnerAlerts" type="Object"  />   
+	<aura:attribute name="partnerAlert" type="Object"  />   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <style>
+            @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #32CD32;
+        }
+    </style>    
+   	<div aura:id = "allAlerts" class="">
+   	<div aura:id = "alertCard" class="box noDisplay "> 
+		<article class="slds-card">
+		  <div class="slds-card__header slds-grid">
+		    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+		      <div class="slds-media__figure">
+		      </div>
+		      <div class="slds-media__body">
+		        <h2>
+		            <span class="slds-text-heading--small">{!v.partnerAlert.Name}</span>
+		        </h2>
+		      </div>
+		    </header>
+		  </div>
+		  <div class="paddingLeft">{!v.partnerAlert.Body__c}</div>
+		  <div class="slds-card__footer ">{!v.partnerAlert.Date__c}</div>
+		</article>
+	</div>
+	<br></br>   	    
+    <div aura:id = "alertsTable" class="main2"> 
+	<br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+              <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>   
+			  <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                   
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.partnerAlerts}" var="alert">
+              		<tr>
+                		<th scope="row"> <b>{!alert.Name}</b> </th>
+                		<th scope="row"> <b>{!alert.Date__c}</b> </th>               	                      
+                		<th><ui:button label="View"
+                           class="{!alert.Id}"
+                           labelClass="label"
+                           press="{!c.openAlert}"/>   </th>                       
+                    </tr>                    
+            </aura:iteration>          
+          </tbody>
+        </table>
+    </div>
+    </div>   
+</div>         
+</aura:component>

@@ -35,6 +35,11 @@
     margin-right:auto;
 }
 
+.THIS .paddingLeft10 {
+    padding-left:8%;
+    color: #236192;
+}
+
 .THIS #chart_div {
 	width: 100%;
     height: 500px;

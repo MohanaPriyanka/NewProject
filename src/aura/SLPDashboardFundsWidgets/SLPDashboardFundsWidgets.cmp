@@ -8,69 +8,7 @@
     <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
 
  <style type="text/css">
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNova {
-            font-family: proximaNovaFont;   
-     		font-size:55%;
-      		color: #FFFFFF;
-        }
-     
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataGreen {
-            font-family: proximaNovaFont;   
-     		font-size:34px;
-      		color: #00b2a9;
-        }
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataGreenSmall {
-            font-family: proximaNovaFont;   
-     		font-size:100%;
-      		color: #00b2a9;
-        }     
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataRedSmall {
-            font-family: proximaNovaFont;   
-     		font-size:100%;
-      		color: #7c98ad;
-        }     
-        .proximaNovaDataWhite {
-            font-family: proximaNovaFont;   
-     		font-size:200%;
-      		color: #ffffff;
-        }         
-     
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaBWBlue {
-            font-family: proximaNovaFont;   
-     		font-size:220%;
-      		color: #216093;
-     		
-        }     
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaBWBlueTable {
-            font-family: proximaNovaFont;   
-     		font-size:70%;
-      		color: #216093;
-     		
-        }        
+
   </style>  
     <ltng:require styles="/resource/icons/assets/styles/salesforce-lightning-design-system-ltng.css" />  
     <img src="{!'/sfsites/c/resource/'+v.partnerLogo[0]}"/>
@@ -110,11 +48,10 @@
                     <div class="headertop ">
                     	<div class="navtext proximaNova text-align: center vertical-align: text-center">
                     		<h2>Systems Contracted</h2>
-                            <br></br>
-                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center padding-top:10%">
+                      </div>                        
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
                                 <ui:outputCurrency value="{!v.totalCostandDisbrsals[0]}" /> 
                             </div>
-                    	</div>
                     </div>
                 </a>        
 		    </div>
@@ -123,11 +60,11 @@
                     <div class="headertop ">
                         <div class="navtext proximaNova text-align: center vertical-align: text-center">
                     		<h2>Funds Disbursed</h2>
-                            <br></br>
-                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center padding-top:10%">
+                         </div>
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
                                 <ui:outputCurrency value="{!v.totalCostandDisbrsals[1]}" />                            
                         	</div>
-                        </div>
+                       
                     </div>
                 </a>        
 		    </div>            
@@ -136,11 +73,10 @@
                     <div class="headertop ">
                         <div class="navtext proximaNova text-align: center vertical-align: text-center">
                     		<h2>Funds Pending</h2>
-                            <br></br>
-                            <div class="navtext proximaNovaDataWhite text-align: center vertical-align: text-center padding-top:10%">
+                        </div>                        
+                            <div class="navtext proximaNovaDataWhite text-align: center vertical-align: text-center ">
                                 <ui:outputCurrency value="{!v.totalCostandDisbrsals[2]}" />                            
                         	</div>                            
-                        </div>
                     </div>
                 </a>        
 		    </div>

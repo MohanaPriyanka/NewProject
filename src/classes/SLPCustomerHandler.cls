@@ -21,7 +21,8 @@ public with sharing class SLPCustomerHandler {
                     Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode,
                     (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
                     FROM Loan__c 
-                    WHERE Partner__r.Name = 'BlueWave Customer Care'];      
+                    WHERE Partner__r.Name = 'BlueWave Customer Care'
+                    ORDER BY createdDate];      
     return loanList;      
     }else {
       List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
@@ -29,7 +30,8 @@ public with sharing class SLPCustomerHandler {
                     (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
                     FROM Loan__c 
                     WHERE Name LIKE : '%'+searchValue+'%'
-                    AND Partner__r.Name = 'BlueWave Customer Care'];
+                    AND Partner__r.Name = 'BlueWave Customer Care'
+                    ORDER BY createdDate];
     return loanList;                               
     }
   }

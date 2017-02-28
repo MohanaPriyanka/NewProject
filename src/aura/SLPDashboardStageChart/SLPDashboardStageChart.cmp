@@ -10,8 +10,8 @@
          	
         }
         .proximaNova {
-            font-family: proximaNovaFont;    
-      		color: #266092;
+          font-family: proximaNovaFont;    
+      		color: #236192;
          padding-left:20px
         }
                @font-face {
@@ -27,6 +27,7 @@
         <br></br>
     	<h2 class="proximaNova"></h2>
     	<br></br>
+        <h1 class="paddingLeft10"> Customers by Stage </h1>
         <div id="chart_div" ></div>
 	         <!--  <ui:inputSelectOption text="All" label="All Data" value="false"/>
 	        <ui:inputSelectOption text="6 Months" label="6 Months"/>

@@ -26,7 +26,7 @@
             <div class="slds-r8"></div>
             <div class="slds-r9"></div>
           </div>
-          <span class="slds-assistive-text">Open App Launcher</span>
+          <span class="slds-assistive-text"></span>
         </a>
       </div>
       <span class="slds-context-bar__label-action slds-context-bar__app-name ">
@@ -59,7 +59,7 @@
         </a>
       </li>
       <li class="slds-context-bar__item">
-          <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
+          <a href="/slportal/s/slpalerts" class="slds-context-bar__label-action" title="Disbursals">
           <span class="slds-truncate">Alerts</span>
         </a>
       </li>             

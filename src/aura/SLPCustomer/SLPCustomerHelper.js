@@ -19,6 +19,7 @@ getProgressBarData : function(component, event, helper) {
             
             if(resp.getState() == 'SUCCESS') {
                 if(resp.getReturnValue() == 'Run Credit Check'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                     $A.util.addClass(creditToggle, 'slds-is-active ');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.removeClass(reviewToggle, 'slds-is-active');
@@ -33,7 +34,8 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }else if(resp.getReturnValue() == 'Provide All Customer Information'){
-                	$A.util.addClass(creditToggle, 'slds-is-active');
+                    component.set("v.blueWaveReviewAlert", false);                	
+                    $A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.removeClass(reviewToggle, 'slds-is-active');
                     $A.util.removeClass(contractToggle, 'slds-is-active');
@@ -47,6 +49,7 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Under BlueWave Review'){
+                    component.set("v.blueWaveReviewAlert", true);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');
@@ -61,6 +64,7 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');                    
@@ -75,6 +79,7 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Mechanical Installation'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');                    
@@ -89,6 +94,7 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else if(resp.getReturnValue() == 'Interconnection'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
 					$A.util.addClass(reviewToggle, 'slds-is-active');                                        
@@ -103,6 +109,7 @@ getProgressBarData : function(component, event, helper) {
                     $A.util.addClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
                 }else{
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                 	$A.util.addClass(reviewToggle, 'slds-is-active');
@@ -120,6 +127,7 @@ getProgressBarData : function(component, event, helper) {
             }
             else {
                 $A.log("Errors", resp.getError());
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.removeClass(creditToggle, 'slds-is-active');
                     $A.util.removeClass(systemInfoToggle, 'slds-is-active');
                 	$A.util.removeClass(reviewToggle, 'slds-is-active');

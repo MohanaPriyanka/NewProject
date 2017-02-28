@@ -20,7 +20,10 @@ public with sharing class LoanHandler{
     
     //On Before Update of Lead Record
     public void onBeforeLeadUpdate(List<Lead> convertedLeads){
+        //map the loan, equipment and partner tasks to the opporunity upon conversion
         mapLoanToOpportunity(convertedLeads);
+        mapEquipmentToOpportunity(convertedLeads);     
+        mapPartnerTasksToOpportunity(convertedLeads);   
     }
 
     //On After Update of Lead Record
@@ -217,7 +220,51 @@ public with sharing class LoanHandler{
                 }            
                 update loan;
         }
-    }    
+    }  
+
+    public void mapEquipmentToOpportunity(List<Lead> leadsList){
+        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
+        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+
+        for(Lead L : leadsList){
+             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
+                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
+                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+            }
+        }
+
+        if(opportunityMap.size() > 0){
+                 List<Residential_Equipment__c > equipment = [SELECT Lead__c, Opportunity__c 
+                                                               FROM Residential_Equipment__c 
+                                                               WHERE Lead__c IN :feedback2OppId.keySet()];
+                for (Residential_Equipment__c equipmentRecord : equipment){
+                    equipmentRecord.Opportunity__c = feedback2OppId.get(equipmentRecord.Lead__c);
+                }            
+                update equipment;
+        }
+    }  
+
+    public void mapPartnerTasksToOpportunity(List<Lead> leadsList){
+        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
+        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+
+        for(Lead L : leadsList){
+             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
+                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
+                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+            }
+        }
+
+        if(opportunityMap.size() > 0){
+                 List<Partner_Task__c > partnerTasks = [SELECT Lead__c, Opportunity__c 
+                                                       FROM Partner_Task__c 
+                                                       WHERE Lead__c IN :feedback2OppId.keySet()];
+                for (Partner_Task__c task : partnerTasks){
+                    task.Opportunity__c = feedback2OppId.get(task.Lead__c);
+                }            
+                update partnerTasks;
+        }
+    }                 
 
     public List<Loan__c> assignLoanTranche(List<Loan__c> newLoanList){
         System.debug('Begin assignLoanTranche method');
@@ -1094,5 +1141,3 @@ public with sharing class LoanHandler{
 //duplicate key values if more than one lead is updated at once.
 
 //and max out the sequnce number at the last one
-
-

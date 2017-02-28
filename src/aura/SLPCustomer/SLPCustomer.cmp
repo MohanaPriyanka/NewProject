@@ -2,7 +2,7 @@
     <aura:attribute name="loanList" type="Object"  /> 
     <aura:attribute name="customer" type="Object"  />
     <aura:attribute name="customerInformation" type="Object" />
-	<aura:attribute name="customerDates" type="String" />
+	  <aura:attribute name="customerDates" type="String" />
     <aura:attribute name="taskType" type="String" access="global" />
     <aura:attribute name="parentSubTaskButton" type="Boolean"  /> 
     <aura:attribute name="partnerTaskList" type="Object"  />
@@ -11,15 +11,16 @@
     <aura:attribute name="dateToggle" type="Boolean"  />
     <aura:attribute name="customerWindowLoanList" type="Object"  /> 
     <aura:attribute name="customerWindowTaskList" type="Object"  />  
-	<aura:attribute name="taskMap" type="Map"  />      
+	  <aura:attribute name="taskMap" type="Map"  />      
     <aura:attribute name="completeDisbursalList" type="Object"  />
     <aura:attribute name="incompleteDisbursalList" type="Object"  />    
     <aura:attribute name="taskViewButtonToggle" type="Boolean"  />
-	<aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
+    <aura:attribute name="blueWaveReviewAlert" type="Boolean"  />     
+	  <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
     <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}" />
     <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}" />      
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
- 	<aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
+ 	  <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
     
   <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
     default="{ 'sobjectType' : 'Residential_Equipment__c',
@@ -57,10 +58,20 @@ reloaded by clicking the view button on the dashboard page-->
      		font-size:95%;
       		color: #FFFFFF;
         }
+
+            @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaBrand {
+            font-family: proximaNovaFont;   
+        font-size:32px;
+          color: #236192;
+        }        
     </style>
     <div aura:id = "customerPage" class="noDisplayBar"> 	
-        <div aura:id="customerName" class="main2"> 
-            <div  class="center"><h1> {!v.customer.Name} </h1></div>
+        <div aura:id="customerName" class="main2 proximaNovaBrand"> 
+            <div  class="center proximaNovaBrand"><h1> {!v.customer.Name} </h1></div>
             <hr></hr>  
         </div>
         <br></br>
@@ -173,7 +184,31 @@ reloaded by clicking the view button on the dashboard page-->
         </div>
         <hr></hr>
         <!--  _________________________________CUSTOMER INFORMATION ___________________________________ -->                
-        <div aura:id = "customerInformation" class="box noDisplay">          
+        <div aura:id = "customerInformation" class="box noDisplay"> 
+            <br></br>
+            <fieldset>
+                <div class="clearfix main2"> 
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row"> 
+                      <div class="salesAgreementButtonRight">
+                           <ui:button aura:id="salesAgreementButton"
+                               class=" box slds-align--absolute-center"
+                               labelClass=""
+                               label="Submit Sales Agreement"                  
+                               press="{!c.navigateSalesAgreementDoc}"/>                           
+                      </div>                             
+                      <div class="documentsButtonLeft">
+                           <ui:button aura:id="incomeDocsButton"
+                               class=" box slds-align--absolute-center"
+                               labelClass=""
+                               label="Submit Income Documentation"                  
+                               press="{!c.navigateIncomeDocs}"/>                           
+                      </div>                          
+                  </div>
+                </div> 
+                </div>
+                <br></br>
+            </fieldset>                 
             <fieldset class="slds-form--compound paddingTop1x5">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -235,41 +270,13 @@ reloaded by clicking the view button on the dashboard page-->
                 </div>
             </fieldset>
             <br></br>
-            <fieldset>
-                <div class="clearfix main2"> 
-                <div class="slds-form-element__group">
-                	<div class="slds-form-element__row"> 
-                          <div class="documentsButtonRight">
-                           <ui:button aura:id="systemDocsButton"
-                               class=" box slds-align--absolute-center"
-                               labelClass=""
-                               label="Submit Installation Documentation"                  
-                               press="{!c.navigateSystemDocs}"/>                           
-                		  </div> 
-                          <div class="documentsButtonCenter">
-                           <ui:button aura:id="salesAgreementButton"
-                               class=" box slds-align--absolute-center"
-                               labelClass=""
-                               label="Submit Sales Agreement"                  
-                               press="{!c.navigateSalesAgreementDoc}"/>                           
-                		  </div>                             
-                          <div class="documentsButtonLeft">
-                           <ui:button aura:id="incomeDocsButton"
-                               class=" box slds-align--absolute-center"
-                               labelClass=""
-                               label="Submit Income Documentation"                  
-                               press="{!c.navigateIncomeDocs}"/>                           
-                		  </div>                          
-                	</div>
-                </div> 
-                </div>
-            </fieldset>
+
             <fieldset class="slds-form--compound ">
               <br></br>
                 <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">    
-                  </div>
+                  </div>              
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
                     <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
                       <ui:inputDate aura:id="MechInstallDate" 
@@ -278,22 +285,16 @@ reloaded by clicking the view button on the dashboard page-->
                           value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
                       />       
                     </div>
-                  	<div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-01">Mechanically Installed</label>
-                    	<div class="slds-form-element ">
-                            <label class="slds-checkbox--toggle slds-grid" value="true">
-                                <ui:inputCheckbox name="mechInstallToggle" value="{!v.customerInformation.Mechanically_Installed__c}"/>                
-                                <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-                                <span class="slds-checkbox--faux"></span>
-                                <span class="slds-checkbox--on bwSecondary">Installed</span>
-                                <span class="slds-checkbox--off">Not Installed</span>
-                                </span>
-                            </label>
-                    	</div>
-                  	</div>                    
+
+                      <div class="documentsButtonRight">
+                           <ui:button aura:id="mechInstallDocsButton"
+                               class=" box "
+                               labelClass=""
+                               label="Submit Installation Documentation"                  
+                               press="{!c.navigateInstallationDocs}"/>                           
+                      </div>                                            
                   </div>                         
-                  <div class="slds-form-element__row"> 
-                     
+                  <div class="slds-form-element__row">                     
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
                     <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
                       <ui:inputDate aura:id="interconnectionDateChanger" 
@@ -302,19 +303,14 @@ reloaded by clicking the view button on the dashboard page-->
                           value="{!v.customerInformation.Interconnection_Date__c}"                         
                       />       
                     </div>  
-                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
-                    <label class="slds-form-element__label" for="input-02">Interconnected</label>
-                    <div class="slds-form-element">
-                        <label class="slds-checkbox--toggle slds-grid">
-                            <ui:inputCheckbox name="interconnectToggle" value="{!v.customerInformation.Interconnected__c}" />
-                            <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
-                            <span class="slds-checkbox--faux"></span>
-                            <span class="slds-checkbox--on bwSecondary">Interconnected </span>
-                            <span class="slds-checkbox--off">Not Interconnected</span>
-                            </span>
-                        </label>
-                    </div>
-                  </div>                      
+
+                      <div class="documentsButtonRight">
+                           <ui:button aura:id="interconnectDocsButton"
+                               class=" box"
+                               labelClass=""
+                               label="Submit Interconnection Documentation"                  
+                               press="{!c.navigateInterconnectionDocs}"/>                           
+                      </div>                                           
                 </div>
                 </div>
                 </fieldset>             
@@ -324,6 +320,10 @@ reloaded by clicking the view button on the dashboard page-->
         </div>            
             
         <!--  _________________________________TASK TABLE ___________________________________ -->    
+        <aura:if isTrue="{!v.blueWaveReviewAlert}">
+          <h3> In some cases, the review stage may require BlueWave to reach out to borrowers to obtain sensitive information. Please be aware that this may take longer than the other stages. You will be notified when it is completed.</h3>
+          <br></br>
+        </aura:if>
         <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
           <thead>
             <tr class="slds-text-heading--label " >
@@ -334,7 +334,7 @@ reloaded by clicking the view button on the dashboard page-->
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.partnerTaskList}" var="task">
+ 			    <aura:iteration items="{!v.partnerTaskList}" var="task">
                 <tr>
                     <th scope="row"> <b>{!task.Name}</b> </th>                       
                     <th scope="row"> <b>{!task.Status__c}</b> </th>

@@ -15,4 +15,20 @@ public class SLPAddCustomer {
         insert newLead;
     }
     
+    @AuraEnabled
+    public static List<String> getPartnerLogo() {
+        User u = [Select Id, Partner_ID__c from User where Id = :UserInfo.getUserId()];
+        Partner__c partner;
+        String logoId;
+        StaticResource logo;
+        List<String> logoList = new List<String>();
+
+        partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
+        logoId = partner.Logo__c;
+        logo = [SELECT Id, Name FROM StaticResource WHERE Name = : logoId];
+        logoList.add(logoId);
+        logoList.add(logo.Id);
+        return logoList;
+    }      
+    
 }

@@ -18,8 +18,7 @@
 				});
         		formatter.format(data, 1);
     			var options = {
-                    title: 'Customers in Pending Stages',
-	      			hAxis: {title: resp.getReturnValue().units,  titleTextStyle: {color: '#333'}},
+	      			hAxis: {title: resp.getReturnValue().units,  titleTextStyle: {color: '#236192'}},
 	      			vAxis: {minValue: 0},
           			colors: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD'],
                     pieHole: 0.25,

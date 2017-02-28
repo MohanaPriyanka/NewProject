@@ -24,11 +24,6 @@
     float:right;
 }
 
-
-.THIS .floatRight {
-    float:right;
-}
-
 .THIS.expand {
     width:100px;
   -webkit-transition: width .35s ease-in-out;

@@ -50,9 +50,9 @@
               		<tr>
                 		<th scope="row"> <b>{!Customer.Name}</b> </th>
                         <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
-                		<th scope="row"> <b>{!Customer.Partner_Tasks__r.Status__c}</b> </th>
+                		    <th scope="row"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
                         <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>                
-                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>                	                      
+                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>          	                      
                 		<th><ui:button label="View"
                            class="{!Customer.Id}"
                            labelClass="label"
