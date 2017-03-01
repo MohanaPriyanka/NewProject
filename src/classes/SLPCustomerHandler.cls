@@ -1,4 +1,4 @@
-public with sharing class SLPCustomerHandler {    
+public without sharing class SLPCustomerHandler {    
 
 	@AuraEnabled 
 	public static Loan__c getCustomerLoan (String loanId) {
@@ -217,8 +217,6 @@ public with sharing class SLPCustomerHandler {
     public static void saveCustomerInformation(Residential_Equipment__c equipment, String equipmentId, String loanId, Loan__c loan) {
         System.debug('begin the saveEquipmentInformation method');
         User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
-        if(equipment.Type_of_Module__c == ' ' ){
-        }
         //update the equipment information
         Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
@@ -253,7 +251,6 @@ public with sharing class SLPCustomerHandler {
           equipmentRecord.Interconnected__c = equipment.Interconnected__c;
         }                                                                                                    
 
-
         update equipmentRecord;
 
         //update the loan information  
@@ -267,8 +264,7 @@ public with sharing class SLPCustomerHandler {
           loanRecord.System_Costt__c   = loan.System_Costt__c;      
         }        
         update loanRecord;
-
-        Lead leadRecord = [SELECT Id, Update_Dummy__c FROM lead WHERE Id = : equipmentRecord.Lead__r.Id];
+        Lead leadRecord = [SELECT Id, Update_Dummy__c FROM Lead WHERE Id = : equipmentRecord.Lead__r.Id];
         if(leadRecord.Update_Dummy__c == true){
           leadRecord.Update_Dummy__c = false;
         }else{
@@ -296,22 +292,22 @@ public with sharing class SLPCustomerHandler {
    //     update equipmentRecord;
    // }
 
-    @AuraEnabled
-    public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) { 
-        System.debug('begin the saveTheFile method');
-        System.debug('parent id is ' + parentId);
+    //@AuraEnabled
+    //public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) { 
+    //    System.debug('begin the saveTheFile method');
+    //    System.debug('parent id is ' + parentId);
 
-        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+    //    base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
-        Attachment a = new Attachment();
-        a.parentId = parentId;
+    //    Attachment a = new Attachment();
+    //    a.parentId = parentId;
  
-        a.Body = EncodingUtil.base64Decode(base64Data);
-        a.Name = fileName;
-        a.ContentType = contentType;
+    //    a.Body = EncodingUtil.base64Decode(base64Data);
+    //    a.Name = fileName;
+    //    a.ContentType = contentType;
         
-        insert a;
-        System.debug('the file is ' + a);
-        return a.Id;
-    }    
+    //    insert a;
+    //    System.debug('the file is ' + a);
+    //    return a.Id;
+    //}    
 }

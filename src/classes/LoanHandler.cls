@@ -14,7 +14,6 @@ public with sharing class LoanHandler{
 
     //On After Insertion of Loan Record
     public void onAfterInsert(List<Loan__c> newLoans){
-        System.debug('Activate CreateLoanPartnerTasks');
         createLoanPartnerTasks(newLoans);
     }
     
@@ -285,7 +284,7 @@ public with sharing class LoanHandler{
                     }
                 }                
             }
-            for (Loan_Traunch__c trancheRecord : [SELECT Id, Name, State__c, Loan_Data__r.Id, Available_Capital__c FROM Loan_Traunch__c]){
+            for (Loan_Traunch__c trancheRecord : [SELECT Id, Name, State__c, Loan_Data__r.Id, Available_Capital__c, Stage__c FROM Loan_Traunch__c]){
                 if (trancheRecord.Stage__c == 'Open' && trancheRecord.Available_Capital__c > 0 && trancheRecord.Name != 'No Available Capital - Temporary Holding Tranche'){
                     trancheRecordList.add(trancheRecord);
                 }
@@ -558,7 +557,23 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(interconnectionTask);
-            partnerSequenceCounter = partnerSequenceCounter + 1;              
+            partnerSequenceCounter = partnerSequenceCounter + 1;  
+
+            Partner_Task__c completeTask = new Partner_Task__c(
+                Name = 'Complete',
+                RecordType = parentPartnerTaskRecordType,
+                Lead__c = loanRecord.Lead__r.Id,
+                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Complete',        
+                Partner__c = loanRecord.Partner__r.Id,
+                Parent__c = true,
+                Task_Sequence__c = partnerSequenceCounter,
+                Status__c = 'Incomplete',
+                Start_Date__c = Date.today(),
+                Task_Type__c = 'Complete',
+                Loan__c = loanRecord.Id
+            );
+            parentTaskInsertList.add(completeTask);
+            partnerSequenceCounter = partnerSequenceCounter + 1;                           
 
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
                 Name = 'Provide Income Documentation',
@@ -786,15 +801,14 @@ public with sharing class LoanHandler{
             } 
             customerIncomeTypeMap.put(leadRecord.Id, customerIncomeType);            
         }
-        System.debug('The customerIncomeTypeMap is ' + customerIncomeTypeMap);
-        //System.debug('leadIdList is ' + leadIdList);
-        //System.debug('loanIdList is ' + loanIdList);
 
         for (Attachment incomeAttachment : [SELECT Id, Name, Body, ParentId, Description
                                             FROM Attachment
                                             WHERE Description != null AND ParentId IN : leadIdList]){
             for (String customerIncomeLeadId : customerIncomeTypeMap.keySet()){
+
                 if(customerIncomeLeadId == incomeAttachment.ParentId){
+
                     if(customerIncomeTypeMap.get(customerIncomeLeadId) == 'Standard'){
                         if(incomeAttachment.Description.contains('PayStub')){
                             taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
@@ -838,7 +852,6 @@ public with sharing class LoanHandler{
                 }
             }
         }
-        System.debug('The Compeleted Task List is ' + completedTaskList);
         if(completedTaskList.size()>0){
             return completedTaskList;
         }else{
@@ -994,7 +1007,11 @@ public with sharing class LoanHandler{
                     if(parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c == 'Incomplete' && task.Task_Sequence__c < parentTaskSequenceMap.size()){
                          System.debug('check');
                          System.debug('tasktoupdate' + parentTaskSequenceMap.get(taskSequenceUniqueId).Name);
-                         parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c = 'Pending';  
+                         if(parentTaskSequenceMap.get(taskSequenceUniqueId).Name == 'Complete') {
+                            parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c = 'Complete';  
+                         }else {
+                            parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c = 'Pending';  
+                         }
                          parentTaskSequenceMap.get(taskSequenceUniqueId).Start_Date__c = Date.today(); 
                          tasksToUpdate.add(parentTaskSequenceMap.get(taskSequenceUniqueId));
                     }

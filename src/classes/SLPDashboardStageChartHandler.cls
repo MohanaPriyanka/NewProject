@@ -1,4 +1,4 @@
-public with sharing class SLPDashboardStageChartHandler {
+public without sharing class SLPDashboardStageChartHandler {
 	public class StageChartResult {
 		@AuraEnabled
 		public String units {get;set;}

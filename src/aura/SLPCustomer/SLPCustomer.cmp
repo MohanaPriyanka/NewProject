@@ -231,7 +231,7 @@ reloaded by clicking the view button on the dashboard page-->
                     <ui:inputNumber aura:id="systemSize" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
                   </div>                    
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
-                    <label class="slds-form-element__label" for="input-03">Commencement Date</label>
+                    <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
                       <ui:inputDate aura:id="commencementDateChanger" 
                           class="slds-input" 
                           displayDatePicker="true"
@@ -456,7 +456,8 @@ reloaded by clicking the view button on the dashboard page-->
         </div>
         <div>
         <br></br>  
-        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->                
+        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ --> 
+        <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
         <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
           <thead>
             <tr class="slds-text-heading--label " >
@@ -492,6 +493,7 @@ reloaded by clicking the view button on the dashboard page-->
           </tbody>
         </table> 
         <br></br>    
+        <div aura:id="pendingDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Pending Disbursals</h3></div>                                
         <table aura:id="disbursalIncompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
           <thead>
             <tr class="slds-text-heading--label " >

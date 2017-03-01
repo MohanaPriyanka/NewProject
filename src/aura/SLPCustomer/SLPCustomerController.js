@@ -254,6 +254,9 @@
         var customerInformationToggle = component.find("customerInformation");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
+        var pendingDisbursalsToggle = component.find("pendingDisbursals");
+        var completedDisbursalsToggle = component.find("completeDisbursals");
+
         
         $A.util.removeClass(taskTableToggle, 'noDisplay');
         $A.util.addClass(customerInformationToggle, 'noDisplay');
@@ -263,6 +266,8 @@
         var subTaskTableToggle = component.find("subTaskTable");
         $A.util.addClass(subTaskTableToggle, 'noDisplay');
         $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
+        $A.util.addClass(pendingDisbursalsToggle, 'noDisplay');
+        $A.util.addClass(completedDisbursalsToggle, 'noDisplay');         
 
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
@@ -287,12 +292,16 @@
         var customerInformationToggle = component.find("customerInformation");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
+        var pendingDisbursalsToggle = component.find("pendingDisbursals");
+        var completedDisbursalsToggle = component.find("completeDisbursals");        
         
         $A.util.addClass(taskTableToggle, 'noDisplay'); 
         $A.util.removeClass(customerInformationToggle, 'noDisplay');
         $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
         component.set("v.blueWaveReviewAlert", false);
+        $A.util.addClass(pendingDisbursalsToggle, 'noDisplay');
+        $A.util.addClass(completedDisbursalsToggle, 'noDisplay');         
 
         var subTaskHeaderToggle = component.find("subTaskHeader");           
         var subTaskTableToggle = component.find("subTaskTable");
@@ -318,12 +327,17 @@
         var customerInformationToggle = component.find("customerInformation");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
+        var pendingDisbursalsToggle = component.find("pendingDisbursals");
+        var completedDisbursalsToggle = component.find("completeDisbursals");
+
         component.set("v.blueWaveReviewAlert", false);
 
         $A.util.addClass(taskTableToggle, 'noDisplay');
         $A.util.addClass(customerInformationToggle, 'noDisplay');
         $A.util.removeClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.removeClass(disbursalIncompleteTableToggle, 'noDisplay');
+        $A.util.removeClass(pendingDisbursalsToggle, 'noDisplay');
+        $A.util.removeClass(completedDisbursalsToggle, 'noDisplay');        
         
 
         var subTaskHeaderToggle = component.find("subTaskHeader");           

@@ -1,4 +1,4 @@
-public with sharing class SLPDashboardHandler {
+public without sharing class SLPDashboardHandler {
 
     @AuraEnabled
     public static List<Decimal> getTotalCostandDisbrsals() {    

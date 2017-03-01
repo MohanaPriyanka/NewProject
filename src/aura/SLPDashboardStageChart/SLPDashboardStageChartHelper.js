@@ -1,8 +1,9 @@
 ({
 	loadChart : function(component) {
-		google.charts.load('current', {'packages':['corechart']});
-      	google.charts.setOnLoadCallback(this.drawChart(component));
-	},
+		google.charts.load('current', {'packages':['corechart'], 'callback': this.drawChart(component)});
+      	//google.charts.setOnLoadCallback(this.drawChart(component));
+	}, 
+
     drawChart : function(component) {
 		var action = component.get("c.getAll");
     	action.setCallback(this, function(resp){

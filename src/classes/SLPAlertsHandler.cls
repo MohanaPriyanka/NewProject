@@ -1,4 +1,4 @@
-public class SLPAlertsHandler {
+public without sharing class SLPAlertsHandler {
 	@AuraEnabled 
 	public static List<Partner_Alert__c> getPartnerAlerts (String partnerId) {
 		System.debug('Begin the getPartnerAlerts method');
@@ -23,7 +23,6 @@ public class SLPAlertsHandler {
 	@AuraEnabled 
 	public static Partner_Alert__c getPartnerAlert (String alertId) {
 		System.debug('Begin the getPartnerAlert method');
-		System.debug(alertId);
 		List<Partner_Alert__c> alertList = new List<Partner_Alert__c>();
 	 	User u = [SELECT Id, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
 
