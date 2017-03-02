@@ -202,7 +202,7 @@ public without sharing class MyAccountController {
       return systemBillList;  
     }  
 
-     @AuraEnabled
+  @AuraEnabled
    public static Id getMyParentAccountId(String propertyAccountId) {
     if(propertyAccountId == 'All' || propertyAccountId == null){
       User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
@@ -225,6 +225,16 @@ public without sharing class MyAccountController {
       return propertyAccountId;
     }
   }
+
+  @AuraEnabled
+   public static Account getMyParentAccount(String propertyAccountId) {
+      Account parentAccount;
+      User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
+      if(u.ContactId != null) {
+        parentAccount = [SELECT Id, Name, Recurring_Billing__c FROM Account WHERE Id = : u.Contact.AccountId];
+      }
+      return parentAccount;    
+  }  
 
   @AuraEnabled
   public static List<Opportunity> getOpportunityIds () {
