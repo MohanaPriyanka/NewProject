@@ -12,6 +12,17 @@
     
 }
 
+.THIS .marginAround {
+    margin: 2.5%;
+}
+.THIS .marginTop {
+    padding-top: 2.5%;
+}
+.THIS .marginBottom {
+    padding-bottom: 2.5%;
+}
+
+
 .THIS .boxCenter {
     width:30%;
     float:left;
@@ -194,6 +205,12 @@
 
 .THIS .buttonRight {
 	float:right;
+    margin-right:20%;
+}
+
+.THIS .buttonLeft {
+    float:left;
+    margin-left:20%;
 }
 
 .THIS .paddingBottom1 {

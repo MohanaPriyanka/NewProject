@@ -1,0 +1,28 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="NavHeaderController">
+    <aura:attribute name="userName" type="String"  />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+     <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #FFFFFF;
+         	font-size:100%;
+        }
+  </style> 
+	<div class="header gradLeftRight ">
+    <a href="/slportal/s/slpdashboard">
+      <div class="w3-container">
+        <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
+      </div>
+    </a>
+        <div class="user"><a href="accountinfo"><h2 class="username fadeIn">{!v.userName}</h2></a>
+            <img src="{!$Resource.Gear}" class="gearimage"/>
+        </div>
+   	</div>
+    <!--<div style="clear:both;dispay:none;" />-->
+</aura:component>

@@ -14,6 +14,13 @@ public without sharing class SLPControllersTestclass {
  			Products__c = 'Residential Loan'
 		);
 		insert partnerRecord;
+
+        BSST__c salesAgentRecord = new BSST__c(
+            Name = 'BlueWave Customer Care',
+            Partner__c = partnerRecord.Id
+        );
+        insert salesAgentRecord;
+
 		RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
  		Contact contactRecord = new Contact(
  			FirstName = 'Cole', 
@@ -113,7 +120,7 @@ public without sharing class SLPControllersTestclass {
     	Test.stopTest();
     }
 
-    @isTest static void testCreditStatus() {
+    @isTest static void testCreditStatus1() {
     	Test.startTest();
     	List<Lead> leadList = new List<Lead>();
     	List<Product2> productList = new List<Product2>();
@@ -161,12 +168,66 @@ public without sharing class SLPControllersTestclass {
     		leadList.clear();
     		partnerId = null;
     		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
+            leadList.clear();               
 
     		leadId = String.valueOf(newLead.Id);
     		productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
 
     	}
     	Test.stopTest();
+    }
+
+        @isTest static void testCreditStatus2() {
+        Test.startTest();
+        List<Lead> leadList = new List<Lead>();
+        List<Product2> productList = new List<Product2>();
+        List<Product2> productReturnList = new List<Product2>();
+        List<Lead> leadReturnList = new List<Lead>();
+
+
+        String partnerId;
+        String leadId;
+        String searchValue = null;
+
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
+        Lead newLead = new Lead(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            Company = 'Cole Swain',
+            LASERCA__Home_Address__c = '55 Boston St.',
+            LASERCA__Home_City__c = 'Boston',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_Zip__c = '02052',
+            Email = 'colemswain@gmail.com',
+            LASERCA__Social_Security_Number__c = '000000001',
+            System_Cost__c = 25000,
+            Annual_Income_Currency__c = 150000,
+            Credit_Check_Acknowledged__c = true,
+            Privacy_Policy_Acknowledged__c = true,
+            Automatic_Product_Assignment__c = true,
+            Loan_Term__c = 120,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Pre_Approval_Form__c = true,
+            Unfinished_Lead__c = true,
+            Utility_Bill_Access_Acknowledged__c = true      
+        );
+        insert newLead;
+
+        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+        insert productList;
+
+        leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+
+        System.runAs(partnerUser) {
+            partnerId = String.valueOf(partnerRecord.Id);           
+            leadList = SLPCreditStatus.searchLeads(searchValue, newLead.Id);
+            leadList.clear();   
+            leadList = SLPCreditStatus.searchLeads('Test', newLead.Id);
+            leadList.clear();        
+
+        }
+        Test.stopTest();
     }
 
     @isTest static void testCustomerHandlerPartOne() {
@@ -371,5 +432,20 @@ public without sharing class SLPControllersTestclass {
 			result = SLPDashboardStageChartHandler.getAll();
     	}
     	Test.stopTest();
+    }    
+
+    @isTest static void testUserHelper() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        String testString;
+        List<String> testStringList = new List<String>();
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            testString = SLPUserHelper.getPartnerId();
+            testStringList = SLPUserHelper.getPartnerLogo();
+            testString = SLPUserHelper.getBWCCId();
+        }
+        Test.stopTest();
     }                                        
 }

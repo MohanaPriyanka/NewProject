@@ -1,6 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
     <aura:attribute name="totalCostandDisbrsals" type="List"  />   
-    <aura:attribute name="partnerLogo" type="String" />    
     <aura:attribute name="partnerAlerts" type="Object" />
     <aura:attribute name="alertPrompt" type="Boolean" />
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
@@ -9,11 +8,8 @@
 
  <style type="text/css">
 
-  </style>  
-    <ltng:require styles="/resource/icons/assets/styles/salesforce-lightning-design-system-ltng.css" />  
-    <img src="{!'/sfsites/c/resource/'+v.partnerLogo[0]}"/>
+  </style>      
     <div aura:id = "disbursalWidgets" class="main2">        
-    <br></br> 
     <aura:if isTrue="{!v.alertPrompt}" >
         <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
             aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
@@ -42,11 +38,11 @@
         </div>
     </aura:if>    
     <br></br>      
-        <div class="clearfix">               
-        	<div class="fundsBoxLeft">
-                <a href="myaccount">
+        <div class="clearfix ">               
+        	<div class="boxAnim">
+                <a href="slpcustomer">
                     <div class="headertop ">
-                    	<div class="navtext proximaNova text-align: center vertical-align: text-center">
+                    	<div class="navtext proximaNova text-align: center vertical-align: text-center ">
                     		<h2>Systems Contracted</h2>
                       </div>                        
                             <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
@@ -55,8 +51,8 @@
                     </div>
                 </a>        
 		    </div>
-        	<div class="fundsBoxCenter">
-                <a href="myaccount">
+        	<div class="boxAnimCenter">
+                <a href="slpdisbursals">
                     <div class="headertop ">
                         <div class="navtext proximaNova text-align: center vertical-align: text-center">
                     		<h2>Funds Disbursed</h2>
@@ -68,13 +64,13 @@
                     </div>
                 </a>        
 		    </div>            
-		    <div class="fundsBoxRight">
-                <a href="myaccount">
+		    <div class="boxAnimRight">
+                <a href="slpdisbursals">
                     <div class="headertop ">
                         <div class="navtext proximaNova text-align: center vertical-align: text-center">
                     		<h2>Funds Pending</h2>
                         </div>                        
-                            <div class="navtext proximaNovaDataWhite text-align: center vertical-align: text-center ">
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
                                 <ui:outputCurrency value="{!v.totalCostandDisbrsals[2]}" />                            
                         	</div>                            
                     </div>

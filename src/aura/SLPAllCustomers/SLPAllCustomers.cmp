@@ -4,19 +4,28 @@
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <style>
-            @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
         }
-        .proximaNovaDataGreenSmall {
+        .proximaNovaDataStream {
             font-family: proximaNovaFont;   
      		font-size:100%;
-      		color: #32CD32;
+      		color: #00b2a9;
         }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #266092;
+        }        
     </style>    
    <div aura:id = "allCustomers" class="">
    <div class="slds-form-element slds-lookup" data-select="single">
-   <label class="slds-form-element__label" for="lookup-63">Customer Search</label>
+   <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
        <div class="slds-form-element__control">
           <div class="slds-input-has-icon slds-input-has-icon--right ">
               <ui:inputText aura:id="customerSearch"
@@ -28,21 +37,17 @@
       </div>
   </div> 
   <br></br>
-  <ui:button label="Search"
-         class=""
-         labelClass="label"
-         press="{!c.searchCustomers}"/>      
     <div aura:id = "customerTable" class="main2"> 
 		<br></br>
       <div>
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
           <thead>
             <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
-              <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
-              <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
-			  <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>                
-              <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>              
-              <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>           
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
+			         <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>              
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>           
               </tr>
           </thead>
           <tbody>
@@ -50,9 +55,9 @@
               		<tr>
                 		<th scope="row"> <b>{!Customer.Name}</b> </th>
                         <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
-                		    <th scope="row"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
+                		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
                         <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>                
-                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>          	                      
+                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>          	                      
                 		<th><ui:button label="View"
                            class="{!Customer.Id}"
                            labelClass="label"

@@ -11,7 +11,28 @@
     float:left;
     
 }
+.THIS .image {
+    float:right;
+    margin:5px 15px 0 0;
+    -webkit-animation:spin 5s linear ;
+    -moz-animation:spin 5s linear ;
+    animation:spin 5s linear ;
+    animation:slide 20s stop 10px infinite;
+}
 
+@-moz-keyframes spin { 100% { -moz-transform: rotate(1440deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(1440deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(1440deg); transform:rotate(1440deg); } }
+
+.THIS img.logo {
+    width:10%;
+    vertical-align:middle;
+}
+
+.THIS .rightitem {
+    float:right;
+    margin:5px 15px 0 0;
+}
 .THIS .boxCenter {
     width:30%;
     float:left;

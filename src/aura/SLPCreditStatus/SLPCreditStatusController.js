@@ -16,7 +16,7 @@
     searchCustomers : function(component, event, helper) {            
         var input = component.find("customerSearch");
         var customerName = input.get("v.value");           
-        var action = component.get("c.getAllCustomers");     
+        var action = component.get("c.searchleads");     
         
         action.setParams({searchValue : customerName});
         
@@ -64,10 +64,13 @@
         var productId = source.get("v.class"); 
         var productTerm = source.get("v.name");
         var productValue = source.get("v.value");
-        //if(productValue == true) {
+        if(productValue == true) {
         component.set("v.productId", productId); 
         component.set("v.loanTerm", productTerm); 
-        //}              
+        }else {
+        component.set("v.productId", null); 
+        component.set("v.loanTerm", 0);             
+        }              
     },       
 
     navigate : function(component, event, helper) {
@@ -91,6 +94,8 @@
                     var income = lead.Annual_Income_Currency__c;
                     var systemCost = lead.System_Cost__c;
                     var updateDummy = lead.Update_Dummy;
+                    var firstName = lead.FirstName;
+                    var lastName = lead.LastName;                    
                     if(updateDummy == true){
                         updateDummy = false;
                     }else{
@@ -106,7 +111,9 @@
                         + '&' + 'tfa_1300=' + city 
                         + '&' + 'tfa_1302=' + productId 
                         + '&' + 'tfa_1301=' + zip     
-                        + '&' + 'tfa_1303=' + loanTerm                  
+                        + '&' + 'tfa_1303=' + loanTerm   
+                        + '&' + 'tfa_1304=' + firstName     
+                        + '&' + 'tfa_1305=' + lastName                                         
                     });
                     urlEvent.fire();                
                 }

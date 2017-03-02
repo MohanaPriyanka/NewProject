@@ -68,6 +68,42 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:32px;
           color: #236192;
         }        
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #00b2a9;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:90%;
+          color: #266092;
+        }                  
     </style>
     <div aura:id = "customerPage" class="noDisplayBar"> 	
         <div aura:id="customerName" class="main2 proximaNovaBrand"> 
@@ -138,7 +174,7 @@ reloaded by clicking the view button on the dashboard page-->
         <!--  _________________________________CUSTOMER INFO HEADER ___________________________________ -->                
         <table class="slds-table slds-table--bordered  slds-table--striped box">
           <thead>
-            <tr class="slds-text-heading--label  " >           
+            <tr class="slds-text-heading--label  proximaNovaDataBlue" >           
               <th scope="col"><span class="slds-truncate"><b>Agent</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>
@@ -150,11 +186,11 @@ reloaded by clicking the view button on the dashboard page-->
                 <th scope="row"> <b>{!v.customer.Sales_Agent__r.Name}</b> </th>  
                 <th scope="row"> <b>{!v.customer.Product__r.ProductCode}</b> </th>
                 <th scope="row"> <ui:outputCurrency value="{!v.customer.System_Costt__c}" /></th>    
-                <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
+                <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
               </tr>          
           </tbody>
         </table>  
-        <br></br>
+        <br></br>      
         <!--  _________________________________INFORMATION BUTTONS ___________________________________ -->                
         <div aura:id = "customerInformationButtons" class="main2">        
             <br></br>
@@ -184,7 +220,7 @@ reloaded by clicking the view button on the dashboard page-->
         </div>
         <hr></hr>
         <!--  _________________________________CUSTOMER INFORMATION ___________________________________ -->                
-        <div aura:id = "customerInformation" class="box noDisplay"> 
+        <div aura:id = "customerInformation1" class="box noDisplay"> 
             <br></br>
             <fieldset>
                 <div class="clearfix main2"> 
@@ -270,7 +306,12 @@ reloaded by clicking the view button on the dashboard page-->
                 </div>
             </fieldset>
             <br></br>
-
+              <div class="slds-align--absolute-center paddingBottom1 ">
+                    <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
+                    </div>   
+            </div>
+            <div aura:id = "customerInformation2" class="box noDisplay">                           
+            <hr></hr>
             <fieldset class="slds-form--compound ">
               <br></br>
                 <div class="slds-form-element__group">
@@ -336,8 +377,13 @@ reloaded by clicking the view button on the dashboard page-->
           <tbody>
  			    <aura:iteration items="{!v.partnerTaskList}" var="task">
                 <tr>
-                    <th scope="row"> <b>{!task.Name}</b> </th>                       
-                    <th scope="row"> <b>{!task.Status__c}</b> </th>
+                    <th scope="row"> <b>{!task.Name}</b> </th> 
+                    <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
+                      <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
+                    <aura:set attribute="else">
+                      <th scope="row"> <b>{!task.Status__c}</b> </th>
+                    </aura:set>                             
+                    </aura:if>   
                     <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
                     <aura:if isTrue="{!task.SubTasks__c}"> 
                         <th>                           
@@ -358,54 +404,14 @@ reloaded by clicking the view button on the dashboard page-->
                             </th>
                         </aura:set>                              
                     </aura:if>
-                </tr>                
-			<!--<aura:if isTrue="{!task.SubTasks__c}">         
-                <aura:iteration items="{!v.parentSubTaskList}" var="parentSubTask">
-                    <aura:if isTrue="{!task.Task_Type__c == !v.taskType}">
-                    <tr>
-                        <th scope="row" class=" bwbluePaddingRight"> <b>{!parentSubTask.Name}</b></th>     allign left slds class needed                   
-                        <th scope="row"> <b>{!parentSubTask.Status__c}</b> </th>
-                        <th scope="row"> <b>{!parentSubTask.Completion_Date__c}</b> </th>
-                        <aura:if isTrue="{!parentSubTask.SubTasks__c}">                        
-                            <th>                           
-                               <ui:button aura:id="viewButtonParentSubTask"
-                                   label="View"           
-                                   class=""
-                                   labelClass="{!parentSubTask.Id}"          
-                                   press="{!c.openSubTasks}"/>
-                               <ui:button aura:id="closeButtonParentSubTask"        
-                                   label="Close"
-                                   class=""
-                                   labelClass="{!parentSubTask.Id}"
-                                   press="{!c.exitSubTasks}"/>
-                            </th>                                                          
-                            <aura:set attribute="else">
-                                <th>
-                                    <ui:button disabled="true" />
-                                </th>
-                            </aura:set> 
-                    	</aura:if> 
-                    </tr>                    
-					<aura:if isTrue="{!parentSubTask.SubTasks__c}">                
-                        <aura:iteration items="{!v.subTaskList}" var="subTask">
-                            <tr>
-                                <th scope="row" class=" bwTeal"> <b>{!subTask.Name}</b></th>        allign left slds class needed               
-                                <th scope="row"> <b>{!subTask.Status__c}</b> </th>
-                                <th scope="row"> <b>{!subTask.Completion_Date__c}</b> </th>
-                                <th scope="row"></th>
-                            </tr>                    
-                        </aura:iteration>                     
-           		 	</aura:if> 
-				</aura:if>                                                                                                                     
-            	</aura:iteration>                     
-            </aura:if>    -->            
+                </tr>                         
             </aura:iteration>             
           </tbody>
         </table>
         <br></br>
         <!--  _________________________________SUB-TASK TABLE ___________________________________ -->                
         <!--<div aura:id="subTaskHeader" class="bwBluePaddingBelow noDisplay"><h3>Sub-Tasks - {!v.parentSubTaskList[0].Parent_Task__r.Name}</h3></div>    -->
-		<table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
+		    <table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
                       <thead>
                         <tr class="slds-text-heading--label " >
                           <th scope="col"><span class="slds-truncate"><b>Sub-Task</b></span></th> 

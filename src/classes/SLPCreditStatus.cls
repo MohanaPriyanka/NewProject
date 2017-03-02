@@ -1,30 +1,65 @@
 public without sharing class SLPCreditStatus {
   @AuraEnabled 
-  public static List<Lead> getLeads (String searchValue, String leadId) {
+  public static List<Lead> searchleads (String searchValue, String leadId) {
     System.debug('Begin the getLeads method');
-    User u = [SELECT Id, Name, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
-    //if(searchValue == null || searchValue == ''){
-      if(leadId == null){
-      	List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
+    String partnerId = SLPUserHelper.getPartnerId(); 
+    Partner__c partnerRecord;
+
+    if (partnerId == null || partnerId == '') {
+      partnerId = SLPUserHelper.getBWCCId();
+    }
+ 
+    if(searchValue == null || searchValue == ''){
+      	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
                     		FROM Lead 
-                    		WHERE Partner_Lookup__r.Name = 'BlueWave Customer Care'
+                    		WHERE Partner_Lookup__r.Id = : partnerId
                     		AND Status = 'Unfinished'
-                    		ORDER BY Pre_Qualification_Status__c DESC];      
+                    		ORDER BY Pre_Qualification_Status__c DESC, Name ASC];      
     	return leadList;            	
       }else{
-      	List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
+      	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
       									LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c
                     		FROM Lead                     		
-                    		WHERE Id = : leadId
-                    		AND Status = 'Unfinished'];      
+                    		WHERE Name LIKE : '%'+searchValue+'%'
+                        AND Partner_Lookup__r.Id = : partnerId                        
+                    		AND Status = 'Unfinished'
+                        ORDER BY Pre_Qualification_Status__c DESC, Name ASC ];      
     	return leadList;       	
       }	
   }
 
   @AuraEnabled 
+  public static List<Lead> getLeads (String searchValue, String leadId) {
+    System.debug('Begin the getLeads method');
+    String partnerId = SLPUserHelper.getPartnerId(); 
+    Partner__c partnerRecord;
+
+    if (partnerId == null || partnerId == '') {
+      partnerId = SLPUserHelper.getBWCCId();
+    }
+   
+    //if(searchValue == null || searchValue == ''){
+      if(leadId == null){
+        List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
+                        FROM Lead 
+                        WHERE Partner_Lookup__c = : partnerId
+                        AND Status = 'Unfinished'
+                        ORDER BY Pre_Qualification_Status__c DESC];      
+      return leadList;              
+      }else{
+        List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
+                        LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c
+                        FROM Lead                         
+                        WHERE Id = : leadId
+                        AND Status = 'Unfinished'];      
+      return leadList;         
+      }  
+  }
+
+  @AuraEnabled 
   public static List<Product2> getCustomerProducts (String leadId) {
     System.debug('Begin the getProducts method');
-    User u = [SELECT Id, Name, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
+    User u = [SELECT Id, Name, Firstname, LastName, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
     Lead leadRecord = [SELECT Id, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c 
                         FROM Lead
                         WHERE Id = : leadId];

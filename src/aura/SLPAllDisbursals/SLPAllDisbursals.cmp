@@ -8,19 +8,47 @@
     <aura:handler name="change" value="{!v.allCompleteDisbursals}" action="{!c.fieldChanges}"/>       
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <style>
-            @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
         }
         .proximaNovaDataGreenSmall {
             font-family: proximaNovaFont;   
      		font-size:100%;
       		color: #32CD32;
         }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:82.5%;
+          color: #266092;
+        }               
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataMountaintop {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #7C98AB;
+        }               
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #00b2a9;
+        }        
     </style>
    <div aura:id = "allDisbursals" class="">
    <div class="slds-form-element slds-lookup" data-select="single">
-   <label class="slds-form-element__label" for="lookup-63">Disbursal Search</label>
+   <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Disbursal Search</b></label>
        <div class="slds-form-element__control">
           <div class="slds-input-has-icon slds-input-has-icon--right ">
               <ui:inputText aura:id="disbursalSearch"
@@ -31,30 +59,26 @@
          </div>       
       </div>
   </div> 
-  <br></br>
-  <ui:button label="Search"
-         class=""
-         labelClass="label"
-         press="{!c.searchDisbursals}"/>      
+  <br></br>    
     <div aura:id = "customerTable" class="main2"> 
 		<br></br>
       <div>
-        <div class="bwBluePaddingBelow slds-scrollable"><h3>Completed Disbursals</h3></div>                        
+        <div class="bwBluePaddingBelow proximaNovaDataMountaintop slds-scrollable"><h3>Completed Disbursals</h3></div>                        
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
           <thead>
-            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+            <tr class="slds-text-heading--label proximaNovaDataBlue " >
               <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
               <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
-			  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
+			         <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
               <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>           
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.allCompleteDisbursals}" var="disbursal">
+ 			    <aura:iteration items="{!v.allCompleteDisbursals}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Loan__r.Name}</b> </th>
                         <th scope="row"> <b>{!disbursal.Type__c}</b> </th>
-                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
                         <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
                   		<td> <div class="slds-form-element">
                     		<label class="slds-checkbox--toggle slds-grid">
@@ -75,10 +99,10 @@
           </tbody>
         </table>
         <hr></hr>
-        <div class="bwBluePaddingBelow slds-scrollable"><h3>Pending Disbursals</h3></div>              
+        <div class="bwBluePaddingBelow proximaNovaDataMountaintop slds-scrollable"><h3>Pending Disbursals</h3></div>              
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
           <thead>
-            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+            <tr class="slds-text-heading--label proximaNovaDataBlue " >
               <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
               <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
 			  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
@@ -89,7 +113,7 @@
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Loan__r.Name}</b> </th>
                         <th scope="row"> <b>{!disbursal.Type__c}</b> </th>
-                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
                     </tr>                   
             </aura:iteration>          
           </tbody>

@@ -32,14 +32,9 @@
     },
     
     openCustomerWindow : function(component, event, helper) {          
-        //hide the task table on the dashboard
-        //var customerWindowToggle = component.get("v.eventToggle");
         var allCustomers = component.find("allCustomers");   
         $A.util.addClass(allCustomers, 'noDisplayBar');
         
-        //if(customerWindowToggle == true){
-        //send the id of the selected customer to the customer component and bring it to display
-        //the view click of customer record.
         var source = event.getSource();
         var customerLoanId = source.get("v.class");
         var evtCustomerWindow = $A.get("e.c:SLPAllCustomersEvent");

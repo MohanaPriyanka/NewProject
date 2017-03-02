@@ -14,14 +14,14 @@
 	},
 
     openAlert : function(component, event, helper) {          
-        var allCustomers = component.find("alertCard");   
-        $A.util.removeClass(allCustomers, 'noDisplayBar');
+        var alert = component.find("alertCard");   
+        $A.util.removeClass(alert, 'noDisplay');
         
         var source = event.getSource();
         var customerLoanId = source.get("v.class");
         var action = component.get("c.getPartnerAlert");
 
-        action.setParams({parnterId : customerLoanId});
+        action.setParams({alertId : customerLoanId});
         action.setCallback(this,function(resp){             
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerAlert", resp.getReturnValue());

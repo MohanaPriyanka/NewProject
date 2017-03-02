@@ -251,7 +251,9 @@
         
         var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle = component.find("customerInformation");
+        var customerInformationToggle1 = component.find("customerInformation1");
+        var customerInformationToggle2 = component.find("customerInformation2");
+
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
@@ -259,7 +261,9 @@
 
         
         $A.util.removeClass(taskTableToggle, 'noDisplay');
-        $A.util.addClass(customerInformationToggle, 'noDisplay');
+        $A.util.addClass(customerInformationToggle1, 'noDisplay');
+        $A.util.addClass(customerInformationToggle2, 'noDisplay');
+
         $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
         var subTaskHeaderToggle = component.find("subTaskHeader");           
@@ -289,14 +293,16 @@
 	openCustomerInformation : function(component, event, helper) {
         var loanId = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle = component.find("customerInformation");
+        var customerInformationToggle1 = component.find("customerInformation1");
+        var customerInformationToggle2 = component.find("customerInformation2");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
         var completedDisbursalsToggle = component.find("completeDisbursals");        
         
         $A.util.addClass(taskTableToggle, 'noDisplay'); 
-        $A.util.removeClass(customerInformationToggle, 'noDisplay');
+        $A.util.removeClass(customerInformationToggle1, 'noDisplay');
+        $A.util.removeClass(customerInformationToggle2, 'noDisplay');
         $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
         component.set("v.blueWaveReviewAlert", false);
@@ -324,7 +330,8 @@
     
 	openDisbursalInformation : function(component, event, helper) {
         var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle = component.find("customerInformation");
+        var customerInformationToggle1 = component.find("customerInformation1");
+        var customerInformationToggle2 = component.find("customerInformation2");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
@@ -333,7 +340,8 @@
         component.set("v.blueWaveReviewAlert", false);
 
         $A.util.addClass(taskTableToggle, 'noDisplay');
-        $A.util.addClass(customerInformationToggle, 'noDisplay');
+        $A.util.addClass(customerInformationToggle1, 'noDisplay');
+        $A.util.addClass(customerInformationToggle2, 'noDisplay');
         $A.util.removeClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.removeClass(disbursalIncompleteTableToggle, 'noDisplay');
         $A.util.removeClass(pendingDisbursalsToggle, 'noDisplay');

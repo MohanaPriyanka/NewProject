@@ -22,6 +22,13 @@ public without sharing class SLPDashboardStageChartHandler {
 
 	private static StageChartResult getAllStages() {
 		System.debug('Begin getAllStages method');
+	    String partnerId = SLPUserHelper.getPartnerId(); 
+	    Partner__c partnerRecord;
+
+	    if (partnerId == null || partnerId == '') {
+	      partnerId = SLPUserHelper.getBWCCId();
+	    }
+
 		StageChartResult scr = new StageChartResult();
 		scr.units = 'Stage';
 		scr.results = new Stages[0];
@@ -31,7 +38,7 @@ public without sharing class SLPDashboardStageChartHandler {
 			try {
 				AggregateResult[] stageAr = [SELECT Name, count(Id)recordCount 
 											FROM Partner_Task__c 
-											WHERE Partner__r.Name = 'BlueWave Customer Care'
+											WHERE Partner__r.Id = : partnerId
 											AND Status__c = 'Pending'
 											AND Parent_Task__c = null
 											AND Sub_Task_Type__c = null
@@ -43,7 +50,7 @@ public without sharing class SLPDashboardStageChartHandler {
 				for(Partner_Task__c taskRecord : [SELECT Id, Name, Loan__r.Id, Lead__r.Id, Loan__c, Lead__c, Status__c, 
 													Partner__r.Id, Partner__c, Task_Type__c, Task_Sequence__c
 												  FROM Partner_Task__c
-												  WHERE Partner__r.Name = 'BlueWave Customer Care'
+												  WHERE Partner__r.Id = : partnerId
 												  AND Status__c = 'Pending'
 												  AND Parent_Task__c = null
 												  AND Sub_Task_Type__c = null												  

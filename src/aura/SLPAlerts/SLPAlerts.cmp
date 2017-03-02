@@ -12,6 +12,33 @@
      		font-size:100%;
       		color: #32CD32;
         }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #00b2a9;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:90%;
+          color: #266092;
+        }            
     </style>    
    	<div aura:id = "allAlerts" class="">
    	<div aura:id = "alertCard" class="box noDisplay "> 
@@ -37,7 +64,7 @@
       <div>
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
           <thead>
-            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+            <tr class="slds-text-heading--label proximaNovaDataBlue " >
               <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>   
 			  <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                   
               </tr>
