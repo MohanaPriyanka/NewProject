@@ -1,35 +1,46 @@
 public without sharing class SLPUserHelper {
-	@AuraEnabled 
-	public static String getPartnerId () {
-		System.debug('begin the getPartnerId method');
-		String partnerId;
-	  	User u = [SELECT Id, Partner_Id__c, Contact.Partner_Lookup__c FROM User WHERE Id = :UserInfo.getUserId()];
-        partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);            
-		return partnerId;    	    
-	}
+    private static String partnerId;
 
-	@AuraEnabled 
-	public static String getBWCCId () {
-		System.debug('begin the getBWCCId method');
-		String partnerId;
-	  	User u = [SELECT Id, Partner_Id__c FROM User WHERE Name = 'BlueWave Customer Care'];
-        System.debug('the user is ' + u);
-	  	partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
-		return partnerId;    	    
-	}	
+    @AuraEnabled 
+    public static String getPartnerId() {
+        System.debug('begin the getPartnerId method');
+        if (partnerId == null) {
+            // The saved Partner ID isn't set... set it
+            User u = [SELECT Id, Partner_Id__c, Contact.Partner_Lookup__c 
+                      FROM User 
+                      WHERE Id = :UserInfo.getUserId()];
+            if (u.Partner_Id__c == null) {
+                // No Partner ID for this internal user, use the BWCC user's Partner ID instead
+                partnerId = getBWCCId();
+            } else {
+                // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
+                partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
+            }
+        }
+
+        return partnerId;
+    }
+
+    @AuraEnabled 
+    public static String getBWCCId() {
+        System.debug('begin the getBWCCId method');
+        Partner__c partnerRecord = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
+        if (partnerRecord != null) {
+            return(String.valueOf(partnerRecord.Id).subString(0,15));
+        } else {
+            return('');
+        }
+    }
+
 
     @AuraEnabled
-    public static List<String> getPartnerLogo() {
-        String partnerId = getPartnerId();
-        if (partnerId == null || partnerId == '') {
-          partnerId = getBWCCId();
-        }        
+        public static List<String> getPartnerLogo() {
         Partner__c partner;
         String logoId;
         StaticResource logo;
         List<String> logoList = new List<String>();
 
-        partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : partnerId];
+        partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : getPartnerId()];
         logoId = partner.Logo__c;
         logo = [SELECT Id, Name FROM StaticResource WHERE Name = : logoId];
         logoList.add(logoId);
