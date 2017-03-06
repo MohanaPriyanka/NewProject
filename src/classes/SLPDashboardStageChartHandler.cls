@@ -23,8 +23,8 @@ public without sharing class SLPDashboardStageChartHandler {
         AggregateResult[] stageAr = [SELECT Name, count(Id) recordCount 
                                      FROM Partner_Task__c 
                                      WHERE Partner__r.Id = : partnerId
-                                     // Just the pending ones?
-                                     // AND Status__c = 'Pending'
+                                     // Just the pending ones, should be one for each customer
+                                     AND Status__c = 'Pending'
                                      AND Parent_Task__c = null
                                      AND Sub_Task_Type__c = null
                                      // What if there isn't a lead?

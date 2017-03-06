@@ -12,22 +12,30 @@
                 chartobj.destroy();
             }
 
-            console.log('resp labels: ' + resp.getReturnValue().labels);
-            console.log('resp data: ' + resp.getReturnValue().data);
-
             chartobj = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: resp.getReturnValue().labels,
                     datasets: [
                         {
-                            data: resp.getReturnValue().counts
-                        }
-                    ]
+                            data: resp.getReturnValue().counts,
+                            backgroundColor: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD'],
+                            hoverBorderWidth: [10, 10, 10, 10, 10, 10, 10]
+                        }]
                 },
                 options: {
-                    hover: {
-                        mode: "none"
+                    title: {
+                        display: true,
+                        fontSize: 20,
+                        padding: 30,
+                        text: 'Pending Tasks by Stage'
+                    },
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    },
+                    animation: {
+                        animateScale: true
                     }
                 }
             });
