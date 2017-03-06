@@ -27,8 +27,6 @@ public without sharing class SLPDashboardStageChartHandler {
                                      AND Status__c = 'Pending'
                                      AND Parent_Task__c = null
                                      AND Sub_Task_Type__c = null
-                                     // What if there isn't a lead?
-                                     // AND Lead__r.Status = 'Qualified'
                                      GROUP BY Name];
         for (AggregateResult ar : stageAr) {
             scr.labels.add(String.valueOf(ar.get('Name')));
