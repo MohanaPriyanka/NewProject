@@ -12,30 +12,68 @@ Static testMethod void CoApplicantConvertTestClass()
         newLZU.town__c = 'Medfield';
         insert newLZU;
 
-        Date myDate = Date.newInstance(2015, 8, 30);
+        Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
+                                                Total_Capital__c = 10000000,
+                                                Investor__c = 'The Bank',
+                                                Pool_Type__c = 'Revolving Credit Line');
+        insert capitalPool;
 
-        loan_data__c newLoanData = new loan_data__c (name = 'Loan Data', month__c = 'August', year__c = '2015');
-        insert newLoanData;
+        Date myDate = Date.newInstance(2015, 2, 17);
+        Date codDate = Date.newInstance(2015, 4, 17);
+        Date codDateTwo = Date.newInstance(2015, 7, 17);
 
-        loan_traunch__c newLoanTranche = new loan_traunch__c (loan_data__c = newLoanData.id, name = 'Loan Tranche', Tranche_Cap__c = 500000);
-        insert newLoanTranche;
+        Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
+            Name = 'Avidia 1',
+            Tranche_Cap__c = 1000000,
+            Tranche_Type__c = 'Standard',
+            State__c = 'MA',
+            Stage__c = 'Open',
+            Loan_Data__c = capitalPool.id);
+        insert loanTrancheMA;  
 
-        loan_traunch__c newLoanTranchePending = new loan_traunch__c (loan_data__c = newLoanData.id, name = 'Tranche Assignment Pending', Tranche_Cap__c = 500000);
-        insert newLoanTranchePending;  
+        Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
+            Name = 'Tranche Assignment Pending',
+            Tranche_Type__c = 'Holding',
+            Stage__c = 'Closed',
+            Loan_Data__c = capitalPool.id);
+        insert loanTranchePending;                  
 
-        lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', company = 'BlueWave', status = 'Qualified', Parcel_Zip__c = '02052') ;
-        newLead.Product_line__c = 'Residential Loan';
-        newLead.application_type__c = 'Joint';
-        newLead.FirstName = 'Cole';
-        newLead.LastName = 'Swain';
-        newLead.Company = 'BlueWave';
-        newLead.Status = 'Qualified';
-        newLead.Parcel_Zip__C = '02052';
-        insert newLead;    
+        partner__c partner = new partner__c(name = 'Partner');
+        insert partner;
+
+        bsst__c newSalesId = new BSST__c (name = 'Cole Swain', partner__c = partner.id, custom_id__c = 'Cole 1');
         
+        insert NewSalesId;  
+             
+        bsst__c salesIdQuery = [SELECT id FROM Bsst__c WHERE Name = 'Cole Swain'];
+
+        Lead newLead = new lead(FirstName = 'Retired',
+                                    LastName = 'Test',
+                                    Loan_Amount__c = 25000,
+                                    Company = 'Cole Swain',
+                                    Retired__c = true,
+                                    LASERCA__Social_Security_Number__c = '000000001',
+                                    Product_Line__c = 'Residential Loan',
+                                    LASERCA__Home_State__c = 'MA',
+                                    System_Cost__c = 25000,
+                                    Unfinished_Lead__c = true,
+                                    Custom_Id__c = 'test',
+                                    Loan_Term__c = 120,
+                                    Partner_Lookup__c = partner.Id,
+                                    //Personal_Credit_Report__c = creditReportRecord.Id,
+                                    Annual_Income_Currency__c = 150000,
+                                    Product__c = null,
+                                    Product_Program__c = 'BlueWave Solar Loan',
+                                    Automatic_Product_Assignment__c = true,
+                                    Status = 'Ready for Credit Check');
+        insert newLead;
+        newLead.Unfinished_Lead__c = false;
+        update newLead;
         newLead.Status = 'Qualified';
         update newLead;
         
+        List<Partner_Task__c> partnerTasks = [SELECT Id, Name FROM Partner_Task__c];
+        System.debug('Partner tasks are ' + partnerTasks);
          
         account newAccount = new account(name = 'Test');
         insert newAccount; 

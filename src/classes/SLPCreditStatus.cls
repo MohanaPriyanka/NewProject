@@ -13,8 +13,10 @@ public without sharing class SLPCreditStatus {
       	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
                     		FROM Lead 
                     		WHERE Partner_Lookup__r.Id = : partnerId
-                    		AND Status = 'Unfinished'
-                    		ORDER BY Pre_Qualification_Status__c DESC, Name ASC];      
+                        AND (Status = 'Unfinished' 
+                          OR Status = 'Ready for Credit Check' 
+                          OR Status = 'Pre-Qualified')
+                    		ORDER BY Status ASC, createdDate DESC, Name DESC];      
     	return leadList;            	
       }else{
       	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
@@ -22,8 +24,10 @@ public without sharing class SLPCreditStatus {
                     		FROM Lead                     		
                     		WHERE Name LIKE : '%'+searchValue+'%'
                         AND Partner_Lookup__r.Id = : partnerId                        
-                    		AND Status = 'Unfinished'
-                        ORDER BY Pre_Qualification_Status__c DESC, Name ASC ];      
+                    		AND (Status = 'Unfinished' 
+                          OR Status = 'Ready for Credit Check' 
+                          OR Status = 'Pre-Qualified')
+                        ORDER BY Status ASC, createdDate DESC, Name DESC];      
     	return leadList;       	
       }	
   }
@@ -43,15 +47,17 @@ public without sharing class SLPCreditStatus {
         List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
                         FROM Lead 
                         WHERE Partner_Lookup__c = : partnerId
-                        AND Status = 'Unfinished'
-                        ORDER BY Pre_Qualification_Status__c DESC];      
+                        AND (Status = 'Unfinished' OR Status = 'Ready for Credit Check' OR Status = 'Pre-Qualified')
+                        ORDER BY Status ASC, createdDate DESC, Name DESC];      
       return leadList;              
       }else{
         List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
                         LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c
                         FROM Lead                         
                         WHERE Id = : leadId
-                        AND Status = 'Unfinished'];      
+                        AND (Status = 'Unfinished' 
+                          OR Status = 'Ready for Credit Check' 
+                          OR Status = 'Pre-Qualified')];      
       return leadList;         
       }  
   }

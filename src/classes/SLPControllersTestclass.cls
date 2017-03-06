@@ -32,7 +32,7 @@ public without sharing class SLPControllersTestclass {
 
  		User userRecord = new User(
  				Alias = 'cswain', 
- 				Email = 'aussieghound@gmail.com', 
+ 				Email = 'tropicole34@aol.com', 
  				Emailencodingkey ='UTF-8', 
  				Lastname ='Testing', 
  				Languagelocalekey ='en_US',
@@ -41,14 +41,14 @@ public without sharing class SLPControllersTestclass {
                 Country ='United States',
                 IsActive = true,
                 ContactId = contactRecord.Id,
-                Timezonesidkey='America/Los_Angeles', username='aussieghound@gmail.com');
+                Timezonesidkey='America/Los_Angeles', username='tropicole34@aol.com');
 		Insert userRecord; 
 		Test.stopTest();		                   
     }	
 
     @isTest static void testAddNewLeadRecord() {    	
         Test.startTest();
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	Lead newLead = new Lead(
     		FirstName = 'Cole',
     		LastName = 'Swain',
@@ -77,7 +77,7 @@ public without sharing class SLPControllersTestclass {
 
     @isTest static void testGetPartnerLogo() {
     	Test.startTest();
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	Partner__c partnerRecord = [SELECT Id, Logo__c FROM Partner__c];
 
     	System.runAs(partnerUser) {
@@ -88,7 +88,7 @@ public without sharing class SLPControllersTestclass {
 
     @isTest static void testAlertsHandler() {
     	Test.startTest();
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c];
     	List<Partner_Alert__c> partnerAlertList = new List<Partner_Alert__c>();
     	Partner_Alert__c partnerAlertRecord;
@@ -132,7 +132,7 @@ public without sharing class SLPControllersTestclass {
     	String leadId;
     	String searchValue = null;
 
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
     	Lead newLead = new Lead(
     		FirstName = 'Cole',
@@ -161,7 +161,15 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
 		leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
     	System.runAs(partnerUser) {
     		partnerId = String.valueOf(partnerRecord.Id);    		
     		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
@@ -189,7 +197,7 @@ public without sharing class SLPControllersTestclass {
         String leadId;
         String searchValue = null;
 
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
         Lead newLead = new Lead(
             FirstName = 'Cole',
@@ -218,7 +226,15 @@ public without sharing class SLPControllersTestclass {
         insert productList;
 
         leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
         System.runAs(partnerUser) {
             partnerId = String.valueOf(partnerRecord.Id);           
             leadList = SLPCreditStatus.searchLeads(searchValue, newLead.Id);
@@ -231,7 +247,7 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testCustomerHandlerPartOne() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
 
     	List<Lead> leadList = new List<Lead>();
     	List<Loan__c> loanReturnList = new List<Loan__c>();
@@ -251,27 +267,36 @@ public without sharing class SLPControllersTestclass {
     	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
     	insert productList;
 
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
+
 		List<Loan__c> loanList = [SELECT Id FROM Loan__c];
 		loanId = String.valueOf(loanList.get(0).Id);
+        update loanList;            
 
     	System.runAs(partnerUser) {
 			loanRecord = SLPCustomerHandler.getCustomerLoan(loanId);
 			loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
 			loanReturnList.clear();
 			loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
-					
 			equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
 			progressBarString = SLPCustomerHandler.getProgressBarData(loanId);
-
 			partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
 			partnerTaskList.clear();
 			partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
-		Test.stopTest();
 		}
+        Test.stopTest();        
 	}
 	@isTest static void testCustomerHandlerPartTwo() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];	
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];	
     	List<Lead> leadList = new List<Lead>();
     	List<Loan__c> loanReturnList = new List<Loan__c>();
     	List<Product2> productList = new List<Product2>();    		
@@ -285,8 +310,20 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
+
 		List<Loan__c> loanList = [SELECT Id FROM Loan__c];
-		loanId = String.valueOf(loanList.get(0).Id);    	
+		loanId = String.valueOf(loanList.get(0).Id);  
+
 
 		System.runAs(partnerUser) {
 
@@ -311,7 +348,7 @@ public without sharing class SLPControllersTestclass {
 		}
     }
     @isTest static void testSaveCustomerInformationMethod() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];	
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];	
     	List<Lead> leadList = new List<Lead>();
     	List<Product2> productList = new List<Product2>();    		
     	
@@ -324,10 +361,30 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;        
 		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
-		List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
+
+        List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
-                                                           Mechanically_Installed__c, Interconnected__c 
+                                                           Mechanically_Installed__c, Interconnected__c, Module_Model_Number__c, Module_Manufacturer__c, 
+                                                           Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                         FROM Residential_Equipment__c];
 
 		loanId = String.valueOf(loanList.get(0).Id);        	
@@ -339,7 +396,7 @@ public without sharing class SLPControllersTestclass {
     	Test.stopTest();
     }
     @isTest static void testGetTaskMap() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
 		Map<String, List<Partner_Task__c>> taskMap = new Map<String, List<Partner_Task__c>>();
 
     	List<Lead> leadList = new List<Lead>();
@@ -351,6 +408,15 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
 
 		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
 		loanId = String.valueOf(loanList.get(0).Id);    
@@ -364,7 +430,7 @@ public without sharing class SLPControllersTestclass {
     }    
 
     @isTest static void testDashboardHandler() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	List<Decimal> dashboardWidgetsList = new List<Decimal>();
     	List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
@@ -404,7 +470,7 @@ public without sharing class SLPControllersTestclass {
     	Test.stopTest();
     }  
     @isTest static void testDashboardStageChartHandler() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
     	Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
 
     	SLPDashboardStageChartHandler.StageChartResult result = new SLPDashboardStageChartHandler.StageChartResult(); 
@@ -417,7 +483,15 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+        }    
+        update leadList;
 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
     	Partner_Task__c partnerTask = new Partner_Task__c(
     		Name = 'Under BlueWave Review',
     		Status__c = 'Pending',
@@ -435,7 +509,7 @@ public without sharing class SLPControllersTestclass {
     }    
 
     @isTest static void testUserHelper() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'aussieghound@gmail.com'];
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
         String testString;
         List<String> testStringList = new List<String>();

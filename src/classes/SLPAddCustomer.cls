@@ -11,7 +11,7 @@ public without sharing class SLPAddCustomer {
         newLead.Company = propertyString;
         newLead.Partner_Lookup__c = partnerCustomId;
         newLead.Product_Line__c = 'Residential Loan';
-        newLead.RecordType = leadRecordType;
+        newLead.RecordTypeId = leadRecordType.Id;
         System.debug('the record type is' + newLead.RecordType);
         insert newLead;
     }

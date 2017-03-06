@@ -54,7 +54,11 @@ public without sharing class SLPDashboardStageChartHandler {
 												  AND Status__c = 'Pending'
 												  AND Parent_Task__c = null
 												  AND Sub_Task_Type__c = null												  
-												  AND Lead__r.Status = 'Qualified'
+												  AND (Lead__r.Status = 'Qualified' 
+							                          OR Lead__r.Status = 'Ready for Credit Check'
+							                          OR Lead__r.Status = 'Pending Information' 
+							                          OR Lead__r.Status = 'Pre-Qualified'
+							                          OR Lead__r.Status = 'Unfinished')
 												  ORDER BY Task_Sequence__c ASC]){
 					keys.add(taskRecord.Name);
 				}

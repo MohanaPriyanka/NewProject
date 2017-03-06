@@ -88,7 +88,11 @@
            labelClass=""
            label="View Credit Status"                  
            press="{!c.navigateCreditStatus}"/>                           
-      </div>                       
+      </div>  
+        <div class=" paddingBottom1 paddingTop1x5">
+          <ui:button label="MSLP Application" class="slds-button slds-button--brand" press="{!c.navigateToMSLP}"></ui:button>
+      </div>                   
+      <br></br>        
       <div aura:id = "inputForm" class="box">            
       <div class="box">
       <fieldset class="slds-form--compound paddingTop1x5">

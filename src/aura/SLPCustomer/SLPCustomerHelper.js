@@ -115,7 +115,8 @@ getProgressBarData : function(component, event, helper) {
                 	$A.util.addClass(reviewToggle, 'slds-is-active');
                     $A.util.addClass(contractToggle, 'slds-is-active');
                     $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active');                    
+                    $A.util.addClass(interconnectionToggle, 'slds-is-active'); 
+                    $A.util.addClass(completeToggle, 'slds-is-active');                    
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
                 	$A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
@@ -147,7 +148,7 @@ getProgressBarData : function(component, event, helper) {
         
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : label});       
+        partnerTaskList.setParams({loanId : loanUpdateIdVar});       
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());

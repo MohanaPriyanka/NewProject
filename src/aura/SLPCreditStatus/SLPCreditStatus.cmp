@@ -68,14 +68,14 @@
  			      <aura:iteration items="{!v.allCustomers}" var="Customer">
               		<tr>
                 		<th scope="row"> <b>{!Customer.Name}</b> </th>
-                    <aura:if isTrue="{!Customer.Pre_Qualification_Status__c == 'Pre-Qualified'}">                                                                 
-                      <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Pre_Qualification_Status__c}</b> </th>
+                    <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                                                                 
+                      <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Status}</b> </th>
                       <aura:set attribute="else">
-                      <th scope="row" class="proximaNovaDataMountain"> <b>{!Customer.Pre_Qualification_Status__c}</b> </th>
+                      <th scope="row" class="proximaNovaDataMountain"> <b>{!Customer.Status}</b> </th>
                       </aura:set>                             
                       </aura:if>                                
                         <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
-                    <aura:if isTrue="{!Customer.Pre_Qualification_Status__c == 'Pre-Qualified'}">                    	                      
+                    <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                    	                      
                 		<th><ui:button label="Continue Application"
                            class="{!Customer.Id}"
                            labelClass="label"
