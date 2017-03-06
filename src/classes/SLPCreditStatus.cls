@@ -10,7 +10,7 @@ public without sharing class SLPCreditStatus {
     }
  
     if(searchValue == null || searchValue == ''){
-      	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
+      	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, DOER_Solar_Loan__c
                     		FROM Lead 
                     		WHERE Partner_Lookup__r.Id = : partnerId
                         AND (Status = 'Unfinished' 
@@ -20,7 +20,7 @@ public without sharing class SLPCreditStatus {
     	return leadList;            	
       }else{
       	List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
-      									LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c
+      									LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c, DOER_Solar_Loan__c
                     		FROM Lead                     		
                     		WHERE Name LIKE : '%'+searchValue+'%'
                         AND Partner_Lookup__r.Id = : partnerId                        
@@ -44,14 +44,14 @@ public without sharing class SLPCreditStatus {
    
     //if(searchValue == null || searchValue == ''){
       if(leadId == null){
-        List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c
+        List<Lead> leadList = [SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, DOER_Solar_Loan__c
                         FROM Lead 
                         WHERE Partner_Lookup__c = : partnerId
                         AND (Status = 'Unfinished' OR Status = 'Ready for Credit Check' OR Status = 'Pre-Qualified')
                         ORDER BY Status ASC, createdDate DESC, Name DESC];      
       return leadList;              
       }else{
-        List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c,
+        List<Lead> leadList = [SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c,
                         LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c
                         FROM Lead                         
                         WHERE Id = : leadId
