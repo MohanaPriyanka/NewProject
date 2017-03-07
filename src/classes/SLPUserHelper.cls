@@ -22,16 +22,15 @@ public without sharing class SLPUserHelper {
     }
 
     @AuraEnabled 
+        
     public static String getBWCCId() {
-        System.debug('begin the getBWCCId method');
         Partner__c partnerRecord = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
-        if (partnerRecord != null) {
-            return(String.valueOf(partnerRecord.Id).subString(0,15));
-        } else {
-            return('');
+        if (partnerRecord == null) {
+            partnerRecord = [SELECT Id FROM Partner__c 
+                             WHERE Name like 'BlueWave%' or Name like 'Testcase' LIMIT 1];
         }
+        return(String.valueOf(partnerRecord.Id).subString(0,15));
     }
-
 
     @AuraEnabled
         public static List<String> getPartnerLogo() {

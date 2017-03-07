@@ -1,3 +1,9 @@
+/*
+  Name: Peter Yao
+  Description: 
+  Tested by SLPControllersTestclass
+ */
+
 public without sharing class SLPDashboardStageChartHandler {
     public class StageChartResult {
         @AuraEnabled
@@ -9,20 +15,13 @@ public without sharing class SLPDashboardStageChartHandler {
 
     @AuraEnabled
     public static StageChartResult getAll() {
-        String partnerId = SLPUserHelper.getPartnerId(); 
-        Partner__c partnerRecord;
-
-        if (partnerId == null || partnerId == '') {
-            partnerId = SLPUserHelper.getBWCCId();
-        }
-
         StageChartResult scr = new StageChartResult();
         scr.labels = new String[]{};
         scr.counts = new Integer[]{};
 
         AggregateResult[] stageAr = [SELECT Name, count(Id) recordCount 
                                      FROM Partner_Task__c 
-                                     WHERE Partner__r.Id = : partnerId
+                                     WHERE Partner__r.Id = : SLPUserHelper.getPartnerId();
                                      // Just the pending ones, should be one for each customer
                                      AND Status__c = 'Pending'
                                      AND Parent_Task__c = null
