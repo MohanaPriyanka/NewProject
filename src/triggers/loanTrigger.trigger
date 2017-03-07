@@ -1,5 +1,5 @@
 /*
-** Trigger: loanTrigger
+** Trigger: LoanTrigger
 ** SObject: Loan__c
 ** Description: 
 **      ADDED 1/10/2017 by OpFocus: 
@@ -10,7 +10,7 @@
 ** @see LoanTriggerHandler.cls
 */
 
-trigger LoanTrigger on loan__c (before insert, before update, after insert, after update) {
+trigger LoanTrigger on Loan__c (before insert, before update, after insert, after update) {
     LoanHandler handler2 = new LoanHandler(Trigger.isExecuting, Trigger.size);
     JSONLoanPaymentHandler jsonLoanPaymentHandler = new JSONLoanPaymentHandler();
     
@@ -21,5 +21,13 @@ trigger LoanTrigger on loan__c (before insert, before update, after insert, afte
 
     if (Trigger.isUpdate && Trigger.isAfter) {
         jsonLoanPaymentHandler.OnAfterUpdate(Trigger.new, Trigger.oldMap);
+    }
+
+    if (Trigger.isUpdate && Trigger.isBefore) {
+        handler2.mapLateCategory();
+    }
+
+    if (Trigger.isInsert && Trigger.isBefore) {
+        handler2.mapLateCategory();
     }
 }
