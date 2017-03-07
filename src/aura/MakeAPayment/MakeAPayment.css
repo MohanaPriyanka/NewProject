@@ -1,0 +1,86 @@
+.THIS {
+}
+
+
+.THIS.main {
+    margin-left:10%;
+    margin-right:10%;
+    margin-top:0px;
+    margin-bottom:50px;
+    width:80%;
+}
+
+
+.THIS .box {
+    box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
+}
+
+.THIS .subsection {
+    margin-left:40px;
+    margin-right:20px;
+    margin-top:30px;
+}
+
+.THIS .round-button-pay {
+    padding-top:0px;
+	display:block;
+    width:100px;
+    height:100px;
+    border-radius: 50%;
+    color:#FFFFFF;
+    text-align:center;
+    text-decoration:none;
+    background: #266092;;
+    box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0 rgba(0, 0, 0, 0.12);
+    font-size:16pt;
+    margin-left: 150px;
+}
+
+.THIS .myBill {
+    float: left;
+	margin-top: 15px;
+    padding-left: 0px;
+}
+
+
+.THIS .noDisplay {
+    display: none;
+}
+
+.THIS.noDisplayButton {
+    display: none;
+}
+
+
+.THIS .myMenu {
+    float: right;
+	margin-top: 10px;
+    margin-bottom: 0%;
+    padding-top:2.85%;
+    padding-left: 0%;
+    padding-right: 5%;
+    color: #266092;
+    
+}
+
+.THIS .myMenuHeader {
+    float: top;
+	margin-top: 0%;
+    margin-bottom: 0px;
+    padding-top: 0%;
+    padding-left: 0%;
+    color: #266092;
+}
+
+.THIS .subtext {
+    margin-top: 50px;
+}
+
+.THIS .bwblue {
+    color: #216093  ;
+}
+.THIS .bwblueCard {
+    color: #266092;
+        box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+}

@@ -1,0 +1,11 @@
+.THIS {
+    margin : 40px;
+}
+.THIS .spaceEntry {
+    margin-top:20px;
+}
+
+.THIS .centerHeader {
+    width: 100%;
+    text-align: center;
+}

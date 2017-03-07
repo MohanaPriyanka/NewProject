@@ -1,0 +1,51 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MySolarFarmController">
+    <aura:attribute name="users" type="User[]"  />
+    <aura:attribute name="farmName" type="String"  />
+    <aura:attribute name="farmCOD" type="Date"  />
+    <aura:attribute name="farmShares" type="Decimal"  />
+    <aura:attribute name="project" type="Product_Profile__c"   default="{ 'sobjectType': 'Product_Profile__c'}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+         	
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #266092;
+         
+        }
+               @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaGrey {
+            font-family: proximaNovaFont;    
+      		color: #7c98ad;
+        }    
+  </style>  
+    <a name="farm"></a>
+    <div class="main">
+        <h2 class="proximaNova">MY SOLAR FARM</h2>
+		<table>
+            <tr><th><h3><i>Coming Soon</i></h3></th><td><h3><ui:outputText value="{!v.farmName}" /></h3></td></tr>
+ 
+	    </table>
+	    <!--<div align="center">
+            <h3>Community Solar Pictures</h3><br />
+            <div class="photos">
+                <force:outputField value="{!v.project.Project_View__c}" />
+            </div>
+            <div class="photos">
+            	<aura:iteration items="{!v.users}" var="u">
+	                <img src="{!u.SmallPhotoUrl}" class="profile"/>
+	            </aura:iteration>
+            </div>
+	    </div>
+        <div aligh="left" class="photos">
+            <h4>Spread the word about the benefits of BlueWave Community Solar with friends by sharing your referral code. </h4>
+            <div class="refer"><a href="referafriend"><div class="notification">Refer a Friend</div></a></div>
+        </div>-->
+    </div>
+</aura:component>

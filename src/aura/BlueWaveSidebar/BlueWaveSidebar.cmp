@@ -1,0 +1,21 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="paymentURL" type="String"  />
+    <h3><a href="home">Dashboard</a></h3>
+	<ul>
+        <br></br>
+    	<li>
+            <h3><a href="myaccount">MY ACCOUNT</a></h3>
+        	<!--<ul>
+                <li><h4><a href="http://www.privateloanservicing.com">Make a Payment</a></h4></li>
+                    <li><h4><a href="myaccount#friend">Refer a Friend</a></h4></li>
+            </ul>-->
+        </li>
+        <li>
+            <h3><a href="mysolar">MY SAVINGS</a></h3>
+        	<!--<ul>
+                <li><h4><a href="mysolar">My Usage</a></h4></li>
+                <li><h4><a href="mysolar#farm">My Solar Farm</a></h4></li>
+            </ul>-->
+        </li>
+    </ul>
+</aura:component>

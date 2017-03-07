@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="objectSource" label="Object Source" description="Object API Name for Images" />
+    <design:attribute name="titleSource" label="Title Source" description="Field API Name for Image Title" />
+    <design:attribute name="descriptionSource" label="Description Source" description="Field API Name for Image Description" />
+</design:component>

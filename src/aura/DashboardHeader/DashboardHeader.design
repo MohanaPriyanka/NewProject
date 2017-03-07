@@ -1,0 +1,4 @@
+<design:component>
+	    <design:attribute name="header" label="Dashboard Header" description="This is the header banner text for the dashboard." />
+    	<!--<design:attribute name="paymentURL" label="Payment URL" description="This is the URL for Payments." />-->
+</design:component>

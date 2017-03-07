@@ -1,0 +1,137 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCreditStatus" access="global">
+	<aura:attribute name="allCustomers" type="Object"  />   
+  <aura:attribute name="allProducts" type="Object"  />   
+  <aura:attribute name="leadId" type="String" />
+  <aura:attribute name="productId" type="String" />  
+  <aura:attribute name="loanTerm" type="Integer" />    
+  <aura:attribute name="selectedCustomer" type="Object"  />   
+	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
+	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <style>
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #00b2a9;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:95%;
+          color: #266092;
+        }          
+    </style>    
+   <div aura:id = "allCustomers" class="">
+   <div aura:id = "customerSearchBar" class="">
+   <div class="slds-form-element slds-lookup" data-select="single">
+   <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
+       <div class="slds-form-element__control">
+          <div class="slds-input-has-icon slds-input-has-icon--right ">
+              <ui:inputText aura:id="customerSearch"
+                     class="slds-lookup__search-input slds-input" 
+                     placeholder="Search Name"
+                     value=""
+                     change="{!c.searchCustomers}"/>           
+         </div>       
+      </div>
+  </div> 
+  </div>
+  <br></br>
+           
+    <div aura:id = "customerTable" class="main2"> 
+		<br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaDataMountain " >
+              <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Pre-Qualification Status</b></span></th>
+              </tr>
+          </thead>
+          <tbody>
+ 			      <aura:iteration items="{!v.allCustomers}" var="Customer">
+              		<tr>
+                		<th scope="row"> <b>{!Customer.Name}</b> </th>
+                    <aura:if isTrue="{!Customer.Pre_Qualification_Status__c == 'Pre-Qualified'}">                                                                 
+                      <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Pre_Qualification_Status__c}</b> </th>
+                      <aura:set attribute="else">
+                      <th scope="row" class="proximaNovaDataMountain"> <b>{!Customer.Pre_Qualification_Status__c}</b> </th>
+                      </aura:set>                             
+                      </aura:if>                                
+                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
+                    <aura:if isTrue="{!Customer.Pre_Qualification_Status__c == 'Pre-Qualified'}">                    	                      
+                		<th><ui:button label="Continue Application"
+                           class="{!Customer.Id}"
+                           labelClass="label"
+                           press="{!c.getProducts}"/>   </th> 
+                      <aura:set attribute="else">
+                      <th></th>
+                      </aura:set>                             
+                    </aura:if>                                          
+                    </tr>                                      
+            </aura:iteration>          
+          </tbody>
+        </table>     
+    </div>
+    </div>
+    <div aura:id = "productTable" class="noDisplay">
+    <h2> The following products are available for this application. Please select the one you would like to apply for and click continue.</h2>
+    <hr></hr>
+    <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+      <thead>
+        <tr class="slds-text-heading--label proximaNovaDataBlue " >
+          </tr>
+      </thead>
+      <tbody>
+        <aura:iteration items="{!v.allProducts}" var="product">
+              <tr>
+                <th scope="row"> <b>{!product.Name}</b> </th>
+                    <th> <div class="slds-form-element">
+                      <label class="slds-checkbox--toggle slds-grid">
+                          <ui:inputCheckBox aura:id="productSelect" 
+                                            class="{!product.Id}"
+                                            name="{!product.Loan_Term__c}" 
+                                            value=""
+                                            change="{!c.updateProductSelection}"/>
+                          <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+                              <span class="slds-checkbox--faux"></span>
+                          </span>
+                      </label>
+                    </div>
+                  </th>                    
+                </tr>                    
+        </aura:iteration>          
+      </tbody>
+    </table>  
+    <br></br> 
+    <div class="floatRight"> 
+    <ui:button label="Continue Application"
+               class="slds-button--brand"
+               labelClass="label"
+               press="{!c.navigate}"/> 
+    </div>  
+    <div class=""> 
+    <ui:button label="Back"
+               class="slds-button--brand"
+               labelClass="label"
+               press="{!c.exitProductSelection}"/> 
+    </div>           
+    </div>        
+</div>         
+</aura:component>
