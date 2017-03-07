@@ -18,6 +18,7 @@ public without sharing class SLPAddCustomer {
     
     @AuraEnabled
     public static List<String> getPartnerLogo() {
+        User u = [Select Id, Partner_ID__c from User where Id = :UserInfo.getUserId()];
         String partnerId = SLPUserHelper.getPartnerId(); 
         if (partnerId == null || partnerId == '') {
           partnerId = SLPUserHelper.getBWCCId();
@@ -35,16 +36,6 @@ public without sharing class SLPAddCustomer {
         }
         return logoList;
     } 
-
-    @AuraEnabled
-    public static Partner__c getPartnerRecord() {
-        String partnerId = SLPUserHelper.getPartnerId(); 
-        if (partnerId == null || partnerId == '') {
-          partnerId = SLPUserHelper.getBWCCId();
-        }
-        Partner__c partnerRecord = [SELECT Id, Name, Logo__c, State__c FROM Partner__c WHERE Id = : partnerId LIMIT 1];
-        return partnerRecord;
-    }     
 
     @AuraEnabled
     public static String getPartnerCustomId() {

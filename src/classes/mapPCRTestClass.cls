@@ -30,27 +30,29 @@ lead newLead = new lead(LastName = 'Swain',
                         Email = 'test@email.com',
                         Product_Line__c = 'Residential Loan',
                         Company = 'Cloud Jedi',
-                        Status = 'Qualified',
+                        Status = 'Pending Information',
                         Annual_Income_Currency__c = 50000,
                         Loan_Amount__c = 45000,
                         Product__c = productVar.Id,
                         DOER_Solar_Loan__c = TRUE,
                         Pre_Approval_Form__c = TRUE) ;
 
-        insert newLead;
+insert newLead;
+newLead.Status = 'Qualified';
+update newLead;
 
 LASERCA__Personal_Credit_Report__c newPCR = new LASERCA__Personal_Credit_Report__c (name = 'TestCase' , 
                                                                                     LASERCA__Total_High_Credit__c = 50000, 
                                                                                     LASERCA__Credit_Score__c= '715', 
                                                                                     LASERCA__Credit_Score_TransUnion__c = '715',
                                                                                     LASERCA__Lead__c = newLead.id);
-        Insert newPCR;
+Insert newPCR;
 
 LASERCA__Trade_Accounts__c  tradeacct = new LASERCA__Trade_Accounts__c ( LASERCA__Personal_Credit_Report__c = newPCR.id,
                                                                          LASERCA__Monthly_Payment__c = 500);
                                                                                          
-        insert tradeacct;  
-        update tradeacct;   
+insert tradeacct;  
+update tradeacct;   
 
 test.startTest();
 integer j;

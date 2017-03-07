@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
-    <cacheControl>Public</cacheControl>
-    <contentType>application/javascript</contentType>
-    <description>Bundle Version 2.5.0: https://github.com/chartjs/Chart.js/releases/tag/v2.5.0</description>
-</StaticResource>

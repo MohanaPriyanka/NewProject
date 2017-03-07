@@ -137,7 +137,22 @@
         var actiongetMyAccountId = component.get("c.getMyParentAccountId");
         var actiongetMyParentAccountId = component.get("c.getMyParentAccountId");  
         var action12 = component.get("c.getSystemBills");
-		var actionPaymentLogs2 = component.get("c.getTransactions"); //loads Chargent Transactions into the tabels for the customer        
+		var actionPaymentLogs2 = component.get("c.getTransactions"); //loads Chargent Transactions into the tabels for the customer   
+   		var actionAutoPay = component.get("c.getMyParentAccount"); 
+ 
+        actionAutoPay.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+			    var paymentButtonToggle = component.find("paymentButton");  
+                var autoPaymentFormButtonToggle = component.find("autoPaymentFormButton");                
+                var autoPayTextToggle = component.find("recurringNotification"); 
+                if(resp.getReturnValue().Recurring_Billing__c == true){
+                    $A.util.addClass(autoPaymentFormButtonToggle, 'noDisplay');                                                                        
+                    $A.util.addClass(paymentButtonToggle, 'noDisplay'); 
+                    $A.util.removeClass(autoPayTextToggle, 'noDisplay');
+                }
+            }
+        })
+        $A.enqueueAction(actionAutoPay);
         
         actionPaymentFormToggle.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
