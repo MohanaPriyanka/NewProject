@@ -77,7 +77,7 @@ public with sharing class PCRApprovalHandler {
                 string firstname = newPCR.get(j).First_Name_from_Lead__c;  
                 string lastname = newPCR.get(j).Last_Name_from_Lead__c;
                 string email = newPCR.get(j).Email_from_Lead__c;
-                string link = 'www.fixthis.com';
+                string link = 'www.bluewavesolar.com';
                 string referralcode = newPCR.get(j).Related_Partner__c;
 
                 system.debug(code1);
@@ -135,7 +135,6 @@ public with sharing class PCRApprovalHandler {
                               DOERPrequal_approval = 'Pre-Qualified';
                               BWPrequal_approval = 'Unable to Pre-Qualify';
                 } 
-            
                 
                 else if (manualapproval ==FALSE 
                           && manualdecline ==FALSE 
@@ -242,7 +241,7 @@ public with sharing class PCRApprovalHandler {
                         && ld.DOER_Solar_Loan__c == FALSE  
                         && ld.Status == 'Ready for Credit Check'){ 
                               if(BW_approval == 'Approved'){
-                                    ld.Status = 'Qualified';
+                                    ld.Status = 'Pre-Qualified';
                               }
                               else if(BW_approval == 'Pending Review'){
                                     ld.Status = 'Pending Credit Review';
@@ -256,7 +255,7 @@ public with sharing class PCRApprovalHandler {
                         && ld.DOER_Solar_Loan__c == TRUE
                         && ld.Status == 'Ready for Credit Check'){ 
                               if(DOER_approval == 'Approved'){
-                                    ld.Status = 'Qualified';
+                                    ld.Status = 'Pre-Qualified';
                               }
                               else if(DOER_approval == 'Pending Review'){
                                     ld.Status = 'Pending Credit Review';
@@ -339,7 +338,7 @@ public with sharing class PCRApprovalHandler {
                     && newPCR.get(j).PreApproval_Form__c==TRUE 
                     && newPCR.get(j).LASERCA__Contact__c == NULL){  
 
-                        if(email != NULL && referralcode !=NULL && link != NULL){
+                        if(email != NULL){
                           
                             EmailTemplate et = [SELECT id, HtmlValue, Body 
                                                 FROM EmailTemplate 
@@ -349,9 +348,7 @@ public with sharing class PCRApprovalHandler {
                             string htmlbody = et.HtmlValue;
                             htmlBody = htmlBody.replace('{!Lead.Name}', firstname);
                             htmlBody = htmlBody.replace('{!Lead.Email}', email);
-                            htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', link);
                             htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',newPCR.get(j).PCR_Lead_ID__c );
-                            htmlBody = htmlBody.replace('{!Lead.Custom_ID__c}', referralcode);
 
                             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                             mail.setHtmlBody(htmlBody);
