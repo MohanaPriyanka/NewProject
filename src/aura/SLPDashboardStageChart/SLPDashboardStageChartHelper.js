@@ -1,64 +1,69 @@
 ({
-	loadChart : function(component) {
-		google.charts.load('current', {'packages':['corechart'], 'callback': this.drawChart(component)});
-      	//google.charts.setOnLoadCallback(this.drawChart(component));
-	}, 
+    loadChart : function(component) {
+        var chartobj = component.get("v.chartobj");
+        var action = component.get("c.getAll");
+    	action.setCallback(this, function(resp) {
+            var canvas = component.find('chart').getElement();
+            var ctx = canvas.getContext('2d'); 
 
-    drawChart : function(component) {
-		var action = component.get("c.getAll");
-    	action.setCallback(this, function(resp){
-            if(resp.getState() == 'SUCCESS') {
-       			var data = new google.visualization.DataTable();
-                data.addColumn('string', resp.getReturnValue().units);
-                data.addColumn('number', 'recordCount');
-                var i;
-                for(i = 0; i < resp.getReturnValue().results.length; i++) {
-                    data.addRow([resp.getReturnValue().results[i].unit, resp.getReturnValue().results[i].recordCount]);// resp.getReturnValue().results[i].consumption
-                }
-				var formatter = new google.visualization.NumberFormat({    				
-				});
-        		formatter.format(data, 1);
-    			var options = {
-	      			hAxis: {title: resp.getReturnValue().units,  titleTextStyle: {color: '#236192'}},
-	      			vAxis: {minValue: 0},
-          			colors: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD'],
-                    pieHole: 0.25,
-                    slices:{},
-	    		};
-                var chart = new google.visualization.PieChart(document.getElementById('chart_div'));             
-			    chart.selectedSlice = -1;
-                function selectHandler() {
-                    var selectedItem = chart.getSelection()[0];
-                    if (selectedItem) {
-                        var value = data.getValue(selectedItem.row,0);
-                        var rowNumber = parseInt(selectedItem.row);
-                        if(chart.selectedSlice != -1){
-                            options.slices[chart.selectedSlice] = {offset:'0'};
-                        }
-                        if(chart.selectedSlice == rowNumber){
-                            chart.selectedSlice = -1;
-                            var value = "All";
-                            var evt = $A.get("e.c:SLPStageChartEvent");
-                            evt.setParams({"stageName": value});
-                            evt.fire();                               
-                        }else{
-                            options.slices[rowNumber] = {offset:'.2'};
-                            chart.selectedSlice = rowNumber;
-                            var evt = $A.get("e.c:SLPStageChartEvent");
-                            evt.setParams({"stageName": value});
-                            evt.fire();                            
-                        }
-                        chart.draw(data,options);
+            // if chartobj is not empty, then destory the chart in the view
+            if (chartobj) {
+                chartobj.destroy();
+            }
+            
+            chartobj = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: resp.getReturnValue().labels,
+                    datasets: [
+                        {
+                            data: resp.getReturnValue().counts,
+                            backgroundColor: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD'],
+                            hoverBorderWidth: [8, 8, 8, 8, 8, 8, 8]
+                        }]
+                },
+                options: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        // By default, clicking on a legend item filters the chart. We want to enable
+                        // this only when we can also fire the SLPStageChartEvent
+                        onClick: function(event, legendItem) {}
+                    },
+                    animation: {
+                        animateScale: true
                     }
-                }		        
-                google.visualization.events.addListener(chart,'select', selectHandler);
-                chart.draw(data, options);
-                
+                }
+            });
+
+            canvas.onclick = function(evt) {
+                var activePoints = chartobj.getElementsAtEvent(evt);
+                var sce = $A.get("e.c:SLPStageChartEvent");
+                var stageName;
+                try {
+                    var chartData = activePoints[0]['_chart'].config.data;
+                    var idx = activePoints[0]['_index'];
+                    var label = chartData.labels[idx];
+                    var value = chartData.datasets[0].data[idx];
+                    stageName = label;
+                } catch (err) {
+                    // Get this: Uncaught TypeError: Cannot read property '_chart' of undefined
+                    // When clicking off the chart. There's probably a better way of handling
+                    // this?
+                    if (err.name === 'TypeError') {
+                        stageName = "All";
+                    } else {
+                        throw err;
+                    }
+                }
+                console.log("firing SLPStageChartEvent, stageName: " + stageName);
+                sce.setParams({"stageName": stageName});
+                sce.fire();
             }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-    	});
-	    $A.enqueueAction(action);
-	}
+
+            // store the chart in the attribute
+            component.set("v.chartobj",chartobj);
+        });
+        $A.enqueueAction(action);
+    }
 })
