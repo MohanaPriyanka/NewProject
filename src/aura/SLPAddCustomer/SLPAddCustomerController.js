@@ -12,17 +12,6 @@
         });    
         $A.enqueueAction(actionLogo);
 
-        var actionPartnerRecord = component.get("c.getPartnerRecord");        
-        actionPartnerRecord.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.partnerRecord", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionPartnerRecord);        
-
         var actionCustomId = component.get("c.getPartnerCustomId");        
         actionCustomId.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
@@ -60,15 +49,8 @@
                     var mslpButton = component.find("mslpbutton");
                     var applicationNotification = component.find("applicationNotification");
 
-                    var bwslButton = component.find("bwslAppButton");
-                    var avidiaLogo = component.find("avidiaLogo");
-                    var mslpDisclaimer = component.find("mslpDisclaimer");                    
-                    
-                    $A.util.addClass(mslpButton, 'noDisplayBar'); 
-                    $A.util.addClass(bwslButton, 'noDisplayBar');      
-                    $A.util.addClass(inputForm, 'noDisplayBar'); 
-                    $A.util.addClass(avidiaLogo, 'noDisplayBar');    
-                    $A.util.addClass(mslpDisclaimer, 'noDisplayBar');                                                                             
+                    $A.util.addClass(inputForm, 'noDisplayBar');
+                    $A.util.addClass(mslpButton, 'noDisplayBar');                    
                     $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
                     $A.util.removeClass(applicationNotification, 'noDisplayBar');
 
@@ -113,50 +95,8 @@
 
         });
         urlEvent.fire();                
-    },       
-
-    changeApplicationToMSLP : function(component, event, helper) {
-        component.set("v.newLead.DOER_Solar_Loan__c",true);  
-        component.set("v.newLead.Product_Program__c",'MSLP');
-                 
-        var bwslButton = component.find("bwslAppButton");
-        var mslpButton = component.find("mslpAppButton");
-        var inputFormBox = component.find("inputFormBox");
-        var avidiaLogo = component.find("avidiaLogo");
-        var mslpDisclaimer = component.find("mslpDisclaimer");
-
-        $A.util.removeClass(bwslButton, 'noDisplayBar');      
-        $A.util.addClass(mslpButton, 'noDisplayBar'); 
-        $A.util.removeClass(avidiaLogo, 'noDisplay');  
-        $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');      
-
-       // $A.util.addClass(inputFormBox, 'boxMSLP');      
-
-                  
-    }, 
-    changeApplicationToBWSL : function(component, event, helper) {
-        component.set("v.newLead.DOER_Solar_Loan__c",false);  
-        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
-
-        var bwslButton = component.find("bwslAppButton");
-        var mslpButton = component.find("mslpAppButton");
-        var inputFormBox = component.find("inputFormBox");
-        var avidiaLogo = component.find("avidiaLogo");
-        var mslpDisclaimer = component.find("mslpDisclaimer");
-
-
-        $A.util.addClass(bwslButton, 'noDisplayBar');      
-        $A.util.removeClass(mslpButton, 'noDisplayBar');
-        $A.util.addClass(avidiaLogo, 'noDisplay');   
-        $A.util.addClass(mslpDisclaimer, 'noDisplayBar');      
-
-        //$A.util.removeClass(inputFormBox, 'boxMSLP'); 
-                     
-           
-    },         
-
+    },          
 
 
     
 })
-      

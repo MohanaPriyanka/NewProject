@@ -21,6 +21,7 @@ public without sharing class SLPUserHelper {
     }
 
     @AuraEnabled 
+        
     // Get the BlueWave Customer Care Partner Id, or if that doesn't exist, another test Partner to use
     public static String getBWCCId() {
         Partner__c partnerRecord;
@@ -33,7 +34,6 @@ public without sharing class SLPUserHelper {
         }
         return(String.valueOf(partnerRecord.Id).subString(0,15));
     }
-
 
     @AuraEnabled
         public static List<String> getPartnerLogo() {

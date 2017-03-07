@@ -1,6 +1,0 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" >
-    <aura:attribute name="partnerLogo" type="String" />    
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />      
-	
-<iframe width="630" height="394" src="https://www.useloom.com/embed/5c40d3a325844e5ebddea4f98c48abd5" frameborder="0"></iframe>
-</aura:component>

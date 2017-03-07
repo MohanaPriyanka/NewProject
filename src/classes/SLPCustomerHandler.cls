@@ -11,7 +11,7 @@ public without sharing class SLPCustomerHandler {
     }
 
     List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
-                  Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode  
+                  Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode  , Partner__r.Name
                   FROM Loan__c 
                   WHERE Id = : loanId];
     System.debug('loanList is ' + loanList);
@@ -29,21 +29,21 @@ public without sharing class SLPCustomerHandler {
     }
 
     if(searchValue == null || searchValue == ''){
-      List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
-                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode,
-                    (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
+      List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c,
+                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, 
+                    (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending'  LIMIT 1)  
                     FROM Loan__c 
                     WHERE Partner__r.Id = : partnerId
-                    ORDER BY createdDate];      
+                    ORDER BY createdDate DESC];      
     return loanList;      
     }else {
-      List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
-                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode,
+      List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c,
+                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name,
                     (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
                     FROM Loan__c 
                     WHERE Name LIKE : '%'+searchValue+'%'
                     AND Partner__r.Id = : partnerId
-                    ORDER BY createdDate];
+                    ORDER BY createdDate DESC];
     return loanList;                               
     }
   }
@@ -58,14 +58,23 @@ public without sharing class SLPCustomerHandler {
       partnerId = SLPUserHelper.getBWCCId();
     }
 
-    List<Residential_Equipment__c> equipmentList = [SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
-                                                      Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name, Loan__r.System_Costt__c, 
-                                                      Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, Interconnected__c, Mechanically_Installed__c,
-                                                      Interconnection_date__c, Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c
+    List<Residential_Equipment__c> equipmentList = [SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, 
+                                                      Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, 
+                                                      Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
+                                                      Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name, 
+                                                      Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, 
+                                                      Interconnected__c, Mechanically_Installed__c, Interconnection_date__c, 
+                                                      Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,
+                                                      Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, 
+                                                      Inverter_Model_Number__c 
                                                     FROM Residential_Equipment__c 
                                                     WHERE Loan__c = : loanId 
                                                     LIMIT 1];
-    return equipmentList.get(0);         
+    if(equipmentList.size() > 0 ) {
+      return equipmentList.get(0);         
+      }else {
+        return null;
+      }
   }
 
 
@@ -284,15 +293,24 @@ public without sharing class SLPCustomerHandler {
         //update the equipment information
         Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
-                                                           Mechanically_Installed__c, Interconnected__c 
+                                                           Mechanically_Installed__c, Interconnected__c,  Module_Manufacturer__c, Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                     FROM Residential_Equipment__c
                                                     WHERE Id = : equipmentId];
         if(equipment.Generator_NamePlate_Capacity__c != null){
           equipmentRecord.Generator_Nameplate_Capacity__c = equipment.Generator_NamePlate_Capacity__c;
         }
-        if(String.isNotBlank(equipment.Type_of_Module__c)){
-          equipmentRecord.Type_of_Module__c = equipment.Type_of_Module__c;
-        }        
+        if(String.isNotBlank(equipment.Module_Model_Number__c)){
+          equipmentRecord.Module_Model_Number__c = equipment.Module_Model_Number__c;
+        }  
+        if(String.isNotBlank(equipment.Module_Manufacturer__c)){
+          equipmentRecord.Module_Manufacturer__c = equipment.Module_Manufacturer__c;
+        }    
+        if(String.isNotBlank(equipment.Inverter_Manufacturer__c)){
+          equipmentRecord.Inverter_Manufacturer__c = equipment.Inverter_Manufacturer__c;
+        }  
+        if(String.isNotBlank(equipment.Inverter_Model_Number__c)){
+          equipmentRecord.Inverter_Model_Number__c = equipment.Inverter_Model_Number__c;
+        }                                  
         if(equipment.Number_of_Modules__c != null){
           equipmentRecord.Number_of_Modules__c = equipment.Number_of_Modules__c;
         }

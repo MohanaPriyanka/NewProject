@@ -41,16 +41,19 @@ public without sharing class LoanHandler{
                 if (newLead.Id == oldLead.Id){
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
-                        && newLead.Product_Line__c == 'Residential Loan'){
+                        && newLead.Product_Line__c == 'Residential Loan'
+                        && newLead.DOER_Solar_Loan__c == false){
                         leadsToCreateLoan.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                    && newLead.Product_Line__c == 'Residential Loan' 
+                    && newLead.DOER_Solar_Loan__c == false){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
                 if (newLead.isConverted == true && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                    && newLead.Product_Line__c == 'Residential Loan' 
+                    && newLead.DOER_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
@@ -353,11 +356,6 @@ public without sharing class LoanHandler{
                                     Product__r.Disbursal_Terms__c 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
-            // make this code more efficient by creating fields on the product that allow the user to select :
-            // Number of dibursals - disubrsals percentage intervals. Parse the text by commas.
-            // Example : 
-            //      Disbursal_Count__c = 3
-            //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
                     System.debug('The partner ID is ' + loanRecord.Partner__r.Id);
@@ -463,6 +461,7 @@ public without sharing class LoanHandler{
                                    Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c 
                                    FROM Loan__c 
                                    WHERE Id IN : newLoanList]){
+
             Partner_Task__c creditTask = new Partner_Task__c(
                 Name = 'Run Credit Check',
                 RecordType = parentPartnerTaskRecordType,
@@ -553,46 +552,27 @@ public without sharing class LoanHandler{
                 );
                 parentTaskInsertList.add(mechanicalInstallationTask);
                 parentTaskTypeMapUniqueId = mechanicalInstallationTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, mechanicalInstallationTask);                
-                partnerSequenceCounter = partnerSequenceCounter + 1;                     
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);                
+                partnerSequenceCounter = partnerSequenceCounter + 1;  
+            }       
 
-                Partner_Task__c interconnectionTask = new Partner_Task__c(
-                    Name = 'Interconnection',
-                    RecordType = parentPartnerTaskRecordType,
-                    Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
-                    Partner__c = loanRecord.Partner__r.Id,
-                    Parent__c = true,
-                    Task_Sequence__c = partnerSequenceCounter,
-                    Status__c = 'Incomplete',
-                    Start_Date__c = Date.today(),
-                    Task_Type__c = 'Interconnection',
-                    Loan__c = loanRecord.Id
-                );
-                parentTaskInsertList.add(interconnectionTask);
-                parentTaskTypeMapUniqueId = interconnectionTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, interconnectionTask);            
-                partnerSequenceCounter = partnerSequenceCounter + 1;                           
-            }
-            if (loanRecord.DOER_Solar_Loann__c == true){
-                Partner_Task__c finalCompletion = new Partner_Task__c(
-                    Name = 'Final Completion Acknowledgement',
-                    RecordType = parentPartnerTaskRecordType,
-                    Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Final Completion',          
-                    Partner__c = loanRecord.Partner__r.Id,
-                    Task_Sequence__c = partnerSequenceCounter,
-                    Parent__c = true,
-                    Status__c = 'Incomplete',
-                    Start_Date__c = Date.today(),
-                    Task_Type__c = 'Final Completion',
-                    Loan__c = loanRecord.Id
-                );
-                parentTaskInsertList.add(finalCompletion);
-                parentTaskTypeMapUniqueId = finalCompletion.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, finalCompletion);                
-                partnerSequenceCounter = partnerSequenceCounter + 1;                                               
-            }
+            Partner_Task__c interconnectionTask = new Partner_Task__c(
+                Name = 'Interconnection',
+                RecordType = parentPartnerTaskRecordType,
+                Lead__c = loanRecord.Lead__r.Id,
+                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
+                Partner__c = loanRecord.Partner__r.Id,
+                Parent__c = true,
+                Task_Sequence__c = partnerSequenceCounter,
+                Status__c = 'Incomplete',
+                Start_Date__c = Date.today(),
+                Task_Type__c = 'Interconnection',
+                Loan__c = loanRecord.Id
+            );
+            parentTaskInsertList.add(interconnectionTask);
+            parentTaskTypeMapUniqueId = interconnectionTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);            
+            partnerSequenceCounter = partnerSequenceCounter + 1;                           
 
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
                 Name = 'Provide Income Documentation',
@@ -612,44 +592,24 @@ public without sharing class LoanHandler{
             subParentTaskInsertList.add(incomeDocumentationTask);
             subTaskTypeMapUniqueId = incomeDocumentationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;
             subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, incomeDocumentationTask);
-            
-            if (loanRecord.DOER_Solar_Loann__c == false){ 
-                Partner_Task__c systemInformationTask = new Partner_Task__c(
-                    Name = 'Provide all System Information',
-                    RecordType = childPartnerTaskRecordType,
-                    //Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide all System Information',                
-                    Partner__c = loanRecord.Partner__r.Id,
-                    Status__c = 'Incomplete',
-                    Start_Date__c = Date.today(),
-                    Sub_Task_Type__c = 'System Information',
-                    Task_Type__c = 'Customer Information',
-                    Parent__c = true,
-                    Parent_Task__c = allInformationTask.Id,
-                    Loan__c = loanRecord.Id
-                );            
-                subParentTaskInsertList.add(systemInformationTask);
-                subTaskTypeMapUniqueId = systemInformationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
-                subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, systemInformationTask);
-            }
-            if (loanRecord.DOER_Solar_Loann__c == true){
-                Partner_Task__c technicalApprovalTask = new Partner_Task__c(
-                    Name = 'Provide Technical Approval Documentation',
-                    //Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Technical Approval Documentation',                
-                    Partner__c = loanRecord.Partner__r.Id,
-                    Status__c = 'Incomplete',
-                    Start_Date__c = Date.today(),
-                    Sub_Task_Type__c = 'Technical Approval',
-                    Task_Type__c = 'Customer Information',
-                    //Parent__c = true,
-                    Parent_Task__c = allInformationTask.Id,
-                    Loan__c = loanRecord.Id
-                );                
-                subParentTaskInsertList.add(technicalApprovalTask);
-                subTaskTypeMapUniqueId = technicalApprovalTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
-                subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, technicalApprovalTask);
-            }
+             
+            Partner_Task__c systemInformationTask = new Partner_Task__c(
+                Name = 'Provide all System Information',
+                RecordType = childPartnerTaskRecordType,
+                //Lead__c = loanRecord.Lead__r.Id,
+                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide all System Information',                
+                Partner__c = loanRecord.Partner__r.Id,
+                Status__c = 'Incomplete',
+                Start_Date__c = Date.today(),
+                Sub_Task_Type__c = 'System Information',
+                Task_Type__c = 'Customer Information',
+                Parent__c = true,
+                Parent_Task__c = allInformationTask.Id,
+                Loan__c = loanRecord.Id
+            );
+            subParentTaskInsertList.add(systemInformationTask);
+            subTaskTypeMapUniqueId = systemInformationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
+            subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, systemInformationTask);
 
             Partner_Task__c salesAgreementTask = new Partner_Task__c(
                 Name = 'Provide Sales Agreement',
