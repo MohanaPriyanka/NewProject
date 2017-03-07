@@ -28,8 +28,12 @@
              	   'Generator_Nameplate_Capacity__c': '',
                  'Type_of_Module__c': '',
                  'Number_of_Modules__c': '',
+                 'Module_Manufacturer__c': '',
+                 'Module_Model_Number__c':'',
                  'Type_of_Inverter__c': '',
                  'Number_of_Inverters__c': '',
+                 'Inverter_Manufacturer__c': '',
+                 'Inverter_Model_Number__c': '',
                  'Mechanical_Installation_Date__c': '',
                  'Interconnection_Date__c': '',
              	   'Mechanically_Installed__c': '',
@@ -175,7 +179,7 @@ reloaded by clicking the view button on the dashboard page-->
         <table class="slds-table slds-table--bordered  slds-table--striped box">
           <thead>
             <tr class="slds-text-heading--label  proximaNovaDataBlue" >           
-              <th scope="col"><span class="slds-truncate"><b>Agent</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Partner</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
@@ -183,7 +187,7 @@ reloaded by clicking the view button on the dashboard page-->
           </thead>
           <tbody>
               <tr>
-                <th scope="row"> <b>{!v.customer.Sales_Agent__r.Name}</b> </th>  
+                <th scope="row"> <b>{!v.customer.Partner__r.Name}</b> </th>  
                 <th scope="row"> <b>{!v.customer.Product__r.ProductCode}</b> </th>
                 <th scope="row"> <ui:outputCurrency value="{!v.customer.System_Costt__c}" /></th>    
                 <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
@@ -281,23 +285,31 @@ reloaded by clicking the view button on the dashboard page-->
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Type of Modules</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Type_of_Module__c}" placeholder="{!v.customerInformation.Type_of_Module__c}"/>          
-                  </div>                  
+                    <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Modules</label>
                     <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
                   </div>                     
                 </div>
-                </div>
+                </div>                 
             </fieldset>
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Type of Inverter</label>
-                    <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Type_of_Inverter__c}" placeholder="{!v.customerInformation.Type_of_Inverter__c}"/>          
-                  </div>                     
+                    <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                        
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
                     <ui:inputNumber aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}" />          

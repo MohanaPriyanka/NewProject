@@ -7,19 +7,26 @@ public class LoanHandlerTestClass {
         System.debug(productList);
 
         List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
+        for (Lead leadRecord : leadList) {
+        	leadRecord.Unfinished_Lead__c = false;
+        }
+        update leadList;
         //insert leadList;
         System.debug(leadList);     
-
     }
     @isTest static void testLoanHandlerCreateLoan() {
  
         Test.startTest();
         //List<Product2> productList = [SELECT Id FROM Product2];
-        for (Lead leadRecord : [SELECT Id, Name, Status, Update_Dummy__c FROM Lead]) {
-        	//This update is not necessary, the insertion of the lead sets it as qualified do to the credit reports inserted with it.
-        	leadRecord.Status = 'Qualified';
-        	//leadRecord.Product__c = productList.get(0).Id;
-        }
+        //List<Lead> leadListUpdate = new List<Lead>();
+        //for (Lead leadRecord : [SELECT Id, Name, Status, Unfinished_Lead__c, Update_Dummy__c FROM Lead]) {
+        //	//This update is not necessary, the insertion of the lead sets it as qualified do to the credit reports inserted with it.
+        //	leadRecord.Unfinished_Lead__c = false;
+        //	leadListUpdate.add(leadRecord);
+        //	//leadRecord.Product__c = productList.get(0).Id;
+        //}
+        //update leadListUpdate.get(1);
+
 	    Test.stopTest();
 
 	    for (Lead leadRecordAssertion : [SELECT Id, Name, (SELECT Id FROM Loans__r), 
@@ -29,8 +36,8 @@ public class LoanHandlerTestClass {
 		    //Assert that a loan was created when the lead was set to qualified.
 		    System.Assert(leadRecordAssertion.Loans__r.size() == 1);
 		    //Assert that six parent partner tasks were created when the lead was set to qualified. 
-		    System.Assert(leadRecordAssertion.Partner_Tasks__r.size() == 7);	    	
-	    }
+		    System.Assert(leadRecordAssertion.Partner_Tasks__r.size() == 6);	    	
+	    }    
 	    //Assert that the equipment record mapped to the loan on creation
 	    for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
 	    	System.Assert(loanRecordAssertion.ResidentiaL_Equipment__r.size() == 1);	    
@@ -94,9 +101,20 @@ public class LoanHandlerTestClass {
    			loanListToUpdate.add(loanRecord);
    		}
    		update loanListToUpdate;
-   		changeLeadUpdateDummy(leadList);
+   		changeLeadUpdateDummy(leadList);   
+   		List<Partner_Task__c> partnerTaskList = [SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id FROM Partner_Task__c];
+
+
 
 	    Test.stopTest();
+   		//System.debug('Being Partner Task Review');
+ 	   // for (Partner_Task__c partnerTaskDebug : [SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id FROM Partner_Task__c]) {
+	    //	System.debug('Name : ' + partnerTaskDebug.Name);	
+	    //	System.debug('Status__c : ' + partnerTaskDebug.Status__c);	    		
+	    //	System.debug('Lead Name : ' + partnerTaskDebug.Parent_Task__r.Lead__r.Name);	    		
+	    //	System.debug('Parent Task ID : ' + partnerTaskDebug.Parent_Task__r.Id );	    		
+	    //	System.debug('Name : ' + partnerTaskDebug.Name);	    		
+	    //}  		
 	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
 	    	if(partnerTaskAssertion.Name == 'Provide PayStub Documentation') {
 	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
@@ -110,6 +128,9 @@ public class LoanHandlerTestClass {
 	    	if(partnerTaskAssertion.Name == 'Provide Tax Return (Two Years Previous)') {
 	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
 	    	}
+	    	if(partnerTaskAssertion.Name == 'Provide Income Documentation') {
+	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+	    	}	    	
 	    	if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
 	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
 	    	}
@@ -130,7 +151,11 @@ public class LoanHandlerTestClass {
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Test.startTest();
-        for (Lead l :leadList){
+        for (Lead leadRecord : leadList) {
+        	leadRecord.Status = 'Qualified';
+        }
+        update leadList;
+        for (Lead l :leadList){     
             database.leadConvert lc = new database.leadConvert();
             lc.setLeadId(l.Id);
 
@@ -155,7 +180,7 @@ public class LoanHandlerTestClass {
     		//Assert that the Eqiupment carried over to the Opportunity on conversion
     		System.Assert(oppRecord.Residential_Equipment__r.size() == 1);
     		//Assert that the Partner Tasks carried over to the Opportunity on conversion.
-    		System.Assert(oppRecord.Partner_Tasks__r.size() == 7);
+    		System.Assert(oppRecord.Partner_Tasks__r.size() == 6);
     		oppRecord.StageName = 'Complete';
     		oppListToUpdate.add(oppRecord);
     	}
@@ -194,7 +219,9 @@ public class LoanHandlerTestClass {
     		equipment.Interconnected__c = true;
     		equipmentListToUpdate.add(equipment);
     	}
-    	update equipmentListToUpdate;
+    	if(equipmentListToUpdate.size() > 0 ) {
+    		update equipmentListToUpdate;    		
+    	}
 	    
 	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
 	    	if(partnerTaskAssertion.Name == 'Interconnection') {

@@ -1,6 +1,8 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
     <aura:attribute name="partnerLogo" type="String" />    
     <aura:attribute name="partnerCustomId" type="String" />
+    <aura:attribute name="partnerRecord" type="Object" />
+
 
     <style>
         @font-face {
@@ -42,6 +44,7 @@
                                  'Email': '',
                                  'LASERCA__Social_Security_Number__c': '',
                                  'System_Cost__c':'',
+                                 'DOER_Solar_Loan__c':'false',
                                  'Annual_Income_Currency__c':'',
                              	   'Credit_Check_Acknowledged__c':'',
                              	   'Privacy_Policy_Acknowledged__c':'',
@@ -54,43 +57,55 @@
                                  'LASERCA__Birthdate__c':'',
                              }"/>
       <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-      <div aura:id="addAnotherCustomer" class="documentsButtonCenter noDisplayBar">      
-  		<!--<div class="box">
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+        <div aura:id="mslpAppButton"  class=" paddingBottom1 paddingTop1x5">
+          <ui:button 
+              label=" Go to MSLP Application" class="slds-button slds-button--brand marginBottom25" press="{!c.changeApplicationToMSLP}">
+          </ui:button>
+      </div>         
+        <div aura:id="bwslAppButton" class=" paddingBottom1 paddingTop1x5 noDisplayBar">
+          <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
+          </ui:button>
+      </div>
+      </aura:if>                      
+      <div aura:id="mslpDisclaimer" class="box noDisplayBar">
         <p class="marginAround marginTop proximaNovaDataBlue">
           Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan. 
         </p>
 
-    		<p class="marginAround  proximaNovaDataBlue">
+        <p class="marginAround  proximaNovaDataBlue">
           Avidia and BlueWave require that solar loan customers to sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.  
         </p>
 
-    		<p class="marginAround  proximaNovaDataBlue">
+        <p class="marginAround  proximaNovaDataBlue">
           The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver's license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed. 
         </p>            
       <br></br>
-      </div>-->
+      </div>
       <div aura:id="applicationNotification" class="box noDisplayBar">
         <p class="marginAround marginTop proximaNovaDataBlue">
           This customer has been added. Please check the credit status tab in the navigation bar to see their qualification status. It may take a few minutes for the credit report to run. You will receive a notificaation via email when this customer has a response. Thank you for your patience. 
         </p> 
-        <p class="marginAround marginBottom proximaNovaDataBlue">
+        <p class="marginAround proximaNovaDataBlue">
           If the customer is marked at Pre-Qualified, you may continue with the application by clicking on the button that appears next to the customer's name. If the customer is not qualified, please contact BlueWave to inquire about other possibilities. 
-        </p>         
-      </div>
-      <hr></hr>      
-      <ui:button aura:id="addAnotherCustomerButton"
-           class=" box buttonRight"
-           labelClass=""
-           label="Add Another Customer"                  
-           press="{!c.navigateAddAnotherCustomer}"/>                           
-      <ui:button aura:id="creditStatusButton"
-           class=" box buttonLeft"
-           labelClass=""
-           label="View Credit Status"                  
-           press="{!c.navigateCreditStatus}"/>                           
-      </div>                       
+        </p>
+      <hr></hr>
+      <div aura:id="addAnotherCustomer" class="documentsButtonCenter noDisplayBar">           
+        <ui:button aura:id="addAnotherCustomerButton"
+             class=" box buttonRight"
+             labelClass=""
+             label="Add Another Customer"                  
+             press="{!c.navigateAddAnotherCustomer}"/>                           
+        <ui:button aura:id="creditStatusButton"
+             class=" box buttonLeft"
+             labelClass=""
+             label="View Credit Status"                  
+             press="{!c.navigateCreditStatus}"/>                           
+      </div>                 
+      </div>            
       <div aura:id = "inputForm" class="box">            
-      <div class="box">
+      <div aura:id = "inputFormBox" class="box">
+      <img aura:id = "avidiaLogo" class="noDisplay slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaLogo}"/>
       <fieldset class="slds-form--compound paddingTop1x5">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
@@ -280,6 +295,23 @@
           </div>
           </div>                
       </fieldset>  
+      <fieldset class="slds-form--compound">
+        <div class="slds-form-element__group">
+          <div class="slds-form-element__row">                 
+          <div class="slds-form-element slds-p-horizontal--small paddingTop1x5 noDisplay">
+              <label class="slds-checkbox--toggle slds-grid">
+                  <label class="slds-form-element__label " for="mslpToggle">MSLP</label>                        
+                  <ui:inputCheckbox aura:id="mslpToggle" class="" name="mslpToggle" value="{!v.newLead.DOER_Solar_Loan__c}" required="true"  />
+                  <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
+                  <span class="slds-checkbox--faux "></span>
+                  <span class="slds-checkbox--on bwSecondary ">I Approve </span>
+                  <span class="slds-checkbox--off "></span>
+                  </span>
+              </label>
+            </div>                     
+          </div>
+          </div>             
+      </fieldset>        
 
       	<div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
               <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>

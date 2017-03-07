@@ -315,7 +315,7 @@
         $A.util.addClass(subTaskHeaderToggle, 'noDisplay');   
 
         var customerInformationAction = component.get("c.getCustomerInformation"); 
-        customerInformationAction.setParams({loanId : label})
+        customerInformationAction.setParams({loanId : loanId})
         customerInformationAction.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
@@ -325,7 +325,7 @@
             }
         });                
         $A.enqueueAction(customerInformationAction);
-
+        helper.getProgressBarData(component, event, helper);
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
@@ -363,7 +363,8 @@
                 $A.log("Errors", resp.getError());
             }
         });   
-        
+        $A.enqueueAction(completeLoanDisbursals);  
+
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");        
         incompleteLoanDisbursals.setParams({loanId : label});        
 		incompleteLoanDisbursals.setCallback(this,function(resp){
@@ -375,9 +376,11 @@
             }
         });         
         
-        $A.enqueueAction(completeLoanDisbursals);       
+     
                   
-        $A.enqueueAction(incompleteLoanDisbursals);        
+        $A.enqueueAction(incompleteLoanDisbursals);    
+        helper.getProgressBarData(component, event, helper);
+
         
 	},
     
