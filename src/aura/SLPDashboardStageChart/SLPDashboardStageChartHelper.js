@@ -25,7 +25,10 @@
                 options: {
                     legend: {
                         display: true,
-                        position: 'right'
+                        position: 'right',
+                        // By default, clicking on a legend item filters the chart. We want to enable
+                        // this only when we can also fire the SLPStageChartEvent
+                        onClick: function(event, legendItem) {}
                     },
                     animation: {
                         animateScale: true
