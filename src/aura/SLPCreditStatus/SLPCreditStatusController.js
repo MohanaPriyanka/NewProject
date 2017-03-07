@@ -60,10 +60,25 @@
     },        
 
     updateProductSelection : function(component, event, helper) { 
+        var actionGetProduct = component.get("c.getSelectedProduct"); 
         var source = event.getSource();
         var productId = source.get("v.class"); 
         var productTerm = source.get("v.name");
         var productValue = source.get("v.value");
+
+        actionGetProduct.setParams({productId : productId});
+
+        actionGetProduct.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.product", resp.getReturnValue());
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(actionGetProduct);         
+
+
         if(productValue == true) {
         component.set("v.productId", productId); 
         component.set("v.loanTerm", productTerm); 
@@ -74,13 +89,27 @@
     },       
 
     navigate : function(component, event, helper) {
-        var action = component.get("c.getLeads"); 
-        var source = event.getSource();
-        //var leadId = source.get("v.class");
         var leadId = component.get("v.leadId");
-        var productId = component.get("v.productId");
-        var loanTerm = component.get("v.loanTerm");
-        
+        var productId = component.get("v.product.Id");
+        var loanTerm = component.get("v.product.Loan_Term__c");
+        var productProgram = component.get("v.product.Program__c");
+        var actionGetFormId = component.get("c.getFormAssemblyIds"); 
+        var formType = 'Continue Application';
+
+        actionGetFormId.setParams({productProgram : productProgram, formType : formType});
+
+        actionGetFormId.setCallback(this,function(resp){ 
+            var formId = resp.getReturnValue();
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.formId", resp.getReturnValue());                
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });  
+       
+        $A.enqueueAction(actionGetFormId);          
+        var action = component.get("c.getLeads");         
         action.setParams({leadId : leadId});
         if(loanTerm > 0 && loanTerm != null) {
             action.setCallback(this,function(resp){ 
@@ -89,6 +118,7 @@
                         component.set("v.selectedCustomer", resp.getReturnValue(0));
                         var lead = resp.getReturnValue()[0];
                         var address = lead.LASERCA__Home_Address__c;
+                        var formId = component.get("v.formId");                              
                         var city = lead.LASERCA__Home_City__c;
                         var state = lead.LASERCA__Home_State__c;
                         var zip = lead.LASERCA__Home_Zip__c;
@@ -96,7 +126,8 @@
                         var systemCost = lead.System_Cost__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
-                        var lastName = lead.LastName;                    
+                        var lastName = lead.LastName;     
+
                         if(updateDummy == true){
                             updateDummy = false;
                         }else{
@@ -105,7 +136,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/381587?tfa_1299=' + address 
+                          "url": 'https://forms.bluewaverenewables.com/' + formId + '?tfa_1299=' + address 
                             + '&' + 'tfa_154=' + state 
                             + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1295=' + updateDummy
@@ -139,7 +170,7 @@
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
                           "url": 'https://forms.bluewaverenewables.com/381598?tfa_572=Individually'  
-                            + '&' + 'tfa_154=' + state 
+                            + '&' + 'tfa_154=Massachusetts' +  
                             + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 

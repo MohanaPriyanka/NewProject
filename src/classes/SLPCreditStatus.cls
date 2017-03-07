@@ -65,12 +65,11 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Product2> getCustomerProducts (String leadId) {
     System.debug('Begin the getProducts method');
-    User u = [SELECT Id, Name, Firstname, LastName, Partner_ID__c FROM User WHERE Id = :UserInfo.getUserId()];
     Lead leadRecord = [SELECT Id, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c 
                         FROM Lead
                         WHERE Id = : leadId];
 
-    List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c 
+    List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c   
                                   FROM Product2 
                                   WHERE Product_Type__c = : leadRecord.Product_Line__c
                                   AND Program__c = : leadRecord.Product_Program__c
@@ -79,20 +78,32 @@ public without sharing class SLPCreditStatus {
                                   AND Credit_Maximum__c >= : leadRecord.LASER_Credit_Score__c
                                   AND isActive = true]; 
       return productList;                      
-
-  //  }
-
-  //  else {
-  //    List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
-  //                  Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode,
-  //                  (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
-  //                  FROM Loan__c 
-  //                  WHERE Name LIKE : '%'+searchValue+'%'
-  //                  AND Partner__r.Name = 'BlueWave Customer Care'];
-  //  return loanList;                               
-  //  }
-  //}
 	}
 
+  @AuraEnabled 
+  public static Product2 getSelectedProduct (String productId) {
+    System.debug('Begin the getProducts method');
 
+    List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c 
+                                  FROM Product2 
+                                  WHERE Id = : productId]; 
+      return productList[0];                      
+  }  
+
+  @AuraEnabled 
+  public static String getFormAssemblyIds (String productProgram, String formType) {
+    System.debug('Begin the getFormAssemblyIds method');
+    List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+    Map<String, String> formIdsMap = new Map<String, String>();
+    String formMapKey = productProgram + ' ' + formType;
+    if (systemProperties.size() > 0) {
+      if (systemProperties[0].SLP_Continue_Application_Standard__c != null) {
+          formIdsMap.put('BlueWave Solar Loan Continue Application', systemProperties[0].SLP_Continue_Application_Standard__c);
+      }   
+      if (systemProperties[0].SLP_Continue_Application_MSLP__c != null) {
+          formIdsMap.put('MSLP Continue Application', systemProperties[0].SLP_Continue_Application_MSLP__c);
+      }           
+    }  
+    return formIdsMap.get(formMapKey);    
+  }
 }

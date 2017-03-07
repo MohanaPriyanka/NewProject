@@ -57,7 +57,7 @@
                 if(resp.getState() == "SUCCESS") {
                     var inputForm = component.find("inputForm");
                     var addAnotherCustomer = component.find("addAnotherCustomer");
-                    var mslpButton = component.find("mslpbutton");
+                    var mslpButton = component.find("mslpAppbutton");
                     var applicationNotification = component.find("applicationNotification");
 
                     var bwslButton = component.find("bwslAppButton");
