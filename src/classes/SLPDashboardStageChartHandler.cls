@@ -21,7 +21,7 @@ public without sharing class SLPDashboardStageChartHandler {
 
         AggregateResult[] stageAr = [SELECT Name, count(Id) recordCount 
                                      FROM Partner_Task__c 
-                                     WHERE Partner__r.Id = : SLPUserHelper.getPartnerId();
+                                     WHERE Partner__r.Id = :SLPUserHelper.getPartnerId()
                                      // Just the pending ones, should be one for each customer
                                      AND Status__c = 'Pending'
                                      AND Parent_Task__c = null

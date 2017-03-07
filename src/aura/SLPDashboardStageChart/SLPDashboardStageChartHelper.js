@@ -6,11 +6,11 @@
             var canvas = component.find('chart').getElement();
             var ctx = canvas.getContext('2d'); 
 
-            //if chartobj is not empty, then destory the chart in the view
-            if(chartobj){
+            // if chartobj is not empty, then destory the chart in the view
+            if (chartobj) {
                 chartobj.destroy();
             }
-
+            
             chartobj = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -58,7 +58,7 @@
                 sce.fire();
             }
 
-            //store the chart in the attribute
+            // store the chart in the attribute
             component.set("v.chartobj",chartobj);
         });
         $A.enqueueAction(action);

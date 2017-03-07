@@ -3,7 +3,6 @@ public without sharing class SLPUserHelper {
 
     @AuraEnabled 
     public static String getPartnerId() {
-        System.debug('begin the getPartnerId method');
         if (partnerId == null) {
             // The saved Partner ID isn't set... set it
             User u = [SELECT Id, Partner_Id__c, Contact.Partner_Lookup__c 
@@ -23,11 +22,15 @@ public without sharing class SLPUserHelper {
 
     @AuraEnabled 
         
+    // Get the BlueWave Customer Care Partner Id, or if that doesn't exist, another test Partner to use
     public static String getBWCCId() {
-        Partner__c partnerRecord = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
-        if (partnerRecord == null) {
+        Partner__c partnerRecord;
+        Partner__c[] partnerRecords = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
+        if (partnerRecords.size() > 0) {
+            partnerRecord = partnerRecords[0];
+        } else {
             partnerRecord = [SELECT Id FROM Partner__c 
-                             WHERE Name like 'BlueWave%' or Name like 'Testcase' LIMIT 1];
+                             WHERE Name like 'BlueWave%' or Name like '%Testcase%' LIMIT 1];
         }
         return(String.valueOf(partnerRecord.Id).subString(0,15));
     }
