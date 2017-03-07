@@ -10,7 +10,7 @@
 ** @see LoanTriggerHandler.cls
 */
 
-trigger loanTrigger on loan__c (before insert, before update, after insert, after update) {
+trigger LoanTrigger on loan__c (before insert, before update, after insert, after update) {
     LoanHandler handler2 = new LoanHandler(Trigger.isExecuting, Trigger.size);
     JSONLoanPaymentHandler jsonLoanPaymentHandler = new JSONLoanPaymentHandler();
     
