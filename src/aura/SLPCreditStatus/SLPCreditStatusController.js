@@ -85,37 +85,73 @@
         if(loanTerm > 0 && loanTerm != null) {
             action.setCallback(this,function(resp){ 
                 if(resp.getState() == 'SUCCESS') {
-                    component.set("v.selectedCustomer", resp.getReturnValue(0));
-                    var lead = resp.getReturnValue()[0];
-                    var address = lead.LASERCA__Home_Address__c;
-                    var city = lead.LASERCA__Home_City__c;
-                    var state = lead.LASERCA__Home_State__c;
-                    var zip = lead.LASERCA__Home_Zip__c;
-                    var income = lead.Annual_Income_Currency__c;
-                    var systemCost = lead.System_Cost__c;
-                    var updateDummy = lead.Update_Dummy;
-                    var firstName = lead.FirstName;
-                    var lastName = lead.LastName;                    
-                    if(updateDummy == true){
-                        updateDummy = false;
-                    }else{
-                        updateDummy = true;
+                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == false) {
+                        component.set("v.selectedCustomer", resp.getReturnValue(0));
+                        var lead = resp.getReturnValue()[0];
+                        var address = lead.LASERCA__Home_Address__c;
+                        var city = lead.LASERCA__Home_City__c;
+                        var state = lead.LASERCA__Home_State__c;
+                        var zip = lead.LASERCA__Home_Zip__c;
+                        var income = lead.Annual_Income_Currency__c;
+                        var systemCost = lead.System_Cost__c;
+                        var updateDummy = lead.Update_Dummy;
+                        var firstName = lead.FirstName;
+                        var lastName = lead.LastName;                    
+                        if(updateDummy == true){
+                            updateDummy = false;
+                        }else{
+                            updateDummy = true;
+                        }
+                        var leadId = lead.Id;                         
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                          "url": 'https://forms.bluewaverenewables.com/381587?tfa_1299=' + address 
+                            + '&' + 'tfa_154=' + state 
+                            + '&' + 'tfa_526=' + leadId 
+                            + '&' + 'tfa_1295=' + updateDummy
+                            + '&' + 'tfa_1300=' + city 
+                            + '&' + 'tfa_1302=' + productId 
+                            + '&' + 'tfa_1301=' + zip     
+                            + '&' + 'tfa_1303=' + loanTerm   
+                            + '&' + 'tfa_1304=' + firstName     
+                            + '&' + 'tfa_1305=' + lastName                                         
+                        });
+                        urlEvent.fire();  
                     }
-                    var leadId = lead.Id;                         
-                    var urlEvent = $A.get("e.force:navigateToURL");
-                    urlEvent.setParams({
-                      "url": 'https://forms.bluewaverenewables.com/381599?tfa_1299=' + address 
-                        + '&' + 'tfa_154=' + state 
-                        + '&' + 'tfa_526=' + leadId 
-                        + '&' + 'tfa_1295=' + updateDummy
-                        + '&' + 'tfa_1300=' + city 
-                        + '&' + 'tfa_1302=' + productId 
-                        + '&' + 'tfa_1301=' + zip     
-                        + '&' + 'tfa_1303=' + loanTerm   
-                        + '&' + 'tfa_1304=' + firstName     
-                        + '&' + 'tfa_1305=' + lastName                                         
-                    });
-                    urlEvent.fire();                
+                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == true) {
+                        //component.set("v.selectedCustomer", resp.getReturnValue(0));
+                        var lead = resp.getReturnValue()[0];
+                        var address = lead.LASERCA__Home_Address__c;
+                        var city = lead.LASERCA__Home_City__c;
+                        var state = lead.LASERCA__Home_State__c;
+                        var zip = lead.LASERCA__Home_Zip__c;
+                        var income = lead.Annual_Income_Currency__c;
+                        var systemCost = lead.System_Cost__c;
+                        var updateDummy = lead.Update_Dummy;
+                        var firstName = lead.FirstName;
+                        var lastName = lead.LastName;                    
+                        if(updateDummy == true){
+                            updateDummy = false;
+                        }else{
+                            updateDummy = true;
+                        }
+                        var leadId = lead.Id;                         
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                          "url": 'https://forms.bluewaverenewables.com/381598?tfa_572=Individually'  
+                            + '&' + 'tfa_154=' + state 
+                            + '&' + 'tfa_526=' + leadId 
+                            + '&' + 'tfa_1180=' + updateDummy
+                            + '&' + 'tfa_63=' + city 
+                            + '&' + 'tfa_1179=' + productId 
+                            + '&' + 'tfa_81=' + zip     
+                            + '&' + 'tfa_1303=' + loanTerm   
+                            + '&' + 'tfa_94=' + address 
+                            + '&' + 'tfa_1098=' + income   
+                            + '&' + 'tfa_94=true'  
+                        });
+                        urlEvent.fire();  
+                    }              
                 }
                 else {
                     $A.log("Errors", resp.getError());
