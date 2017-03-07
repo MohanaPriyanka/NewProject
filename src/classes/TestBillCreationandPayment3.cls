@@ -227,7 +227,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
 // Make payment plan balance on 2
         
-        List <System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Total_Due__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c FROM System_Bill__c];
+        List <System_Bill__c> systemBillList = [SELECT Id, Name, Shared_Solar_System__r.Id, Waive_Late_Fees__c, Total_Due__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c FROM System_Bill__c];
         system.debug(systemBillList);
 
         ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
@@ -242,12 +242,12 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                                 ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
                                                                                           ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                                           ChargentOrders__Gateway__c = chGateway.Id,
-                                                                                        //  ChargentOrders__Shipping_Name__c = systemBill.Shared_Solar_System__r.Id,
+                                                                                          ChargentOrders__Shipping_Name__c = systemBill.Shared_Solar_System__r.Id,
                                                                                           ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                           ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                                           ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
                                                                                           ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
-                                                                                          ChargentOrders__Subtotal__c = 100,
+                                                                                          ChargentOrders__Subtotal__c = 50,
                                                                                           ChargentOrders__Payment_Method__c = 'Credit Card',
                                                                                           System_Bill__c = systemBill.Id,
                                                                                           ChargentOrders__Card_Type__c = 'Visa',
@@ -260,7 +260,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
                                 ChargentOrders__Transaction__c transA = new ChargentOrders__Transaction__c(
                                                     ChargentOrders__Order__c = orderA.id,
-                                                    ChargentOrders__Amount__c = 100,
+                                                    ChargentOrders__Amount__c = 50,
                                                     ChargentOrders__Response_Status__c ='Approved',
                                                     ChargentOrders__Gateway_ID__c = chGateway.id,
                                                     ChargentOrders__Gateway__c = chGateway.id,
@@ -273,6 +273,21 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                                 insert transA;
                                 transA.Distributed_Among_System_Bills__c = TRUE;
                                 update transA;
+                                
+                                ChargentOrders__Transaction__c transB = new ChargentOrders__Transaction__c(
+                                                    ChargentOrders__Order__c = orderA.id,
+                                                    ChargentOrders__Amount__c = 50,
+                                                    ChargentOrders__Response_Status__c ='Approved',
+                                                    ChargentOrders__Recurring__c = True,
+                                                    ChargentOrders__Gateway_ID__c = chGateway.id,
+                                                    ChargentOrders__Gateway__c = chGateway.id,
+                                                    Distributed_Among_System_Bills__c = FALSE,
+                                                    ChargentOrders__Response_Message__c = 'OK',
+                                                    ChargentOrders__Type__c = 'Charge',
+                                                    ChargentOrders__Payment_Method__c = 'Credit Card',                                    
+                                                    Activity_Type__c = 'Payment');
+
+                                insert transB;
                     
                                 // Make Payment Plan on Bill 2
                                 systembill.Waive_Late_Fees__c = TRUE;
@@ -352,9 +367,9 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
             // First bill does not have a payment, so no payments that month
             if(sbs.Bill_Number__c == 1){
                 system.debug(sbs.Total_Payments_This_Month__c);
-               // System.assert(sbs.Total_Due__c > 0);
-               // System.assert(sbs.Late_Payments__c > 0);
-                //System.assert(sbs.Total_Payments_This_Month__c == 0);
+                System.assert(sbs.Total_Due__c > 0);
+                System.assert(sbs.Late_Payments__c > 0);
+                System.assert(sbs.Total_Payments_This_Month__c == 0);
             }
 
             // Second bill has a payment, so balance should be zero and Late Fees should be waived
@@ -369,18 +384,18 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
             // Month 2 Payment Plan should run for bill number 3 through 8 and there should be an Adjustment on bill 4
             if(sbs.Bill_Number__c == 3){
                 system.debug(sbs.Payment_Plan_Balance__c);
-            //    System.assert(sbs.Payment_Plan_Balance__c > 0);
-             //   System.assert(sbs.Total_Due__c > 0);
+                System.assert(sbs.Payment_Plan_Balance__c > 0);
+                System.assert(sbs.Total_Due__c > 0);
             }
 
             if(sbs.Bill_Number__c == 4){
                 system.debug(sbs.Total_Due__c);
-              //  System.assert(sbs.Total_Due__c > sbs.Payment_Plan_Balance__c);
+                System.assert(sbs.Total_Due__c > sbs.Payment_Plan_Balance__c);
             }
 
             if(sbs.Bill_Number__c == 8){
                 system.debug(sbs.Payment_Plan_Balance__c);
-             //   System.assert(sbs.Payment_Plan_Balance__c > 0);
+                System.assert(sbs.Payment_Plan_Balance__c > 0);
             }
 
             if(sbs.Bill_Number__c == 9){

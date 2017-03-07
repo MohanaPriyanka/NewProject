@@ -9,15 +9,11 @@
         .proximaNova {
             font-family: proximaNovaFont;    
       		color: #FFFFFF;
-         	font-size:100%;
         }
   </style> 
-	<div class="header gradLeftRight">
-    <a href="/slportal/s/slpdashboard">
-      <img src="{!$Resource.RenewablesWhiteLogo}" class="logo" />
-    </a>
-        <div class="user"><a href="accountinfo"><h2 class="username">{!v.userName}</h2></a>
-            <a href="accountinfo"><img src="{!$Resource.Gear}" class="gearimage"/></a></div>
+	<div class="header">
+        <div class="logo"><a href="home"><img src="/resource/RenewablesWhiteLogo" style=" width: 350px;"/></a></div>
+        <div class="user proximaNova"><a href="accountinfo"><h3 class="username">{!v.userName}</h3></a><a href="accountinfo"><img src="/resource/Gear" class="gearimage"/></a></div>
    	</div>
     <!--<div style="clear:both;dispay:none;" />-->
 </aura:component>

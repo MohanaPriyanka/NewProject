@@ -65,3 +65,7 @@
 .THIS.noDisplayBar {
     display: none;
 }
+
+.THIS.chartCanvas {
+    padding: 10px 10px 10px 200px;
+}

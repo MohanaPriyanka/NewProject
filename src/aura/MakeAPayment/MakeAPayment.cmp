@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">  
   <aura:attribute name="myBill" type="Decimal"  />
+  <aura:attribute name="account" type="Object" />        
   <aura:attribute name="accountId" type="String"  />
   <aura:attribute name="parentAccountId" type="String"  />  
   <aura:attribute name="paymentURL" type="String"  />
@@ -139,6 +140,7 @@
             <div aura:id="autoPaymentFormButton" class="proximaNovaWhite noDisplay notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Enter Payment Details</div>
         </a>           
     </div>
+    <b><h3 aura:id="recurringNotification" class="proximaNova noDisplay"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-SUN-4100 </h3>   </b>          
 	<br></br>
     <br></br>
     <b><h3 class="proximaNova"> My Statements: </h3>   </b> 
