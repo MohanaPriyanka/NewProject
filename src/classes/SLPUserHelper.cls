@@ -38,15 +38,10 @@ public without sharing class SLPUserHelper {
     @AuraEnabled
         public static List<String> getPartnerLogo() {
         Partner__c partner;
-        String logoId;
-        StaticResource logo;
         List<String> logoList = new List<String>();
 
         partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : getPartnerId()];
-        logoId = partner.Logo__c;
-        logo = [SELECT Id, Name FROM StaticResource WHERE Name = : logoId];
-        logoList.add(logoId);
-        logoList.add(logo.Id);
+        logoList.add(partner.Logo__c);
         return logoList;
     }	
 }
