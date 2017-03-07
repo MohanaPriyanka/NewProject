@@ -1,0 +1,11 @@
+.THIS .flex-caption {
+    padding: 0;
+    width: 96%;
+    left: 20px;
+    bottom: 50px;
+    top: auto;
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    font-size:25px;
+}

@@ -15,11 +15,17 @@ Static testMethod void utilityAccountLogConversion()
 
         lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', company = 'BlueWave', status = 'Qualified', Parcel_Zip__c = '02052') ;
         newLead.FirstName = 'Cole';
+        newLead.Product_Line__c = 'Community Solar';
         newLead.LastName = 'Swain';
+        newLead.Unfinished_Lead__c = false;
         newLead.Company = 'BlueWave';
         newLead.Status = 'Qualified';
         newLead.Parcel_Zip__C = '02052';
-        insert newLead;    
+        newLead.Electricity_Provider__c = 'Eversource';
+        insert newLead;   
+
+        newLead.Status = 'Qualified';
+        update newLead; 
          
         utility_account_log__c newUtilityAccount = new utility_account_log__c ( name = '32456', annual_cost_of_electricity__c = 1000, lead__c = newLead.id );
         insert newUtilityAccount;

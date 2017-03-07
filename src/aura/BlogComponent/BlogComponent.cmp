@@ -1,0 +1,34 @@
+<aura:component controller="BlogComponentController" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" >
+    <aura:attribute name="blogs" type="BlueWave_Blog__c[]" />
+    <aura:attribute name="blogType" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <ltng:require scripts="/resource/jQuery,/resource/colorbox/colorbox-master/jquery.colorbox.js" styles="/resource/bxslider/jquery.bxslider.css,/resource/colorbox/colorbox-master/example4/colorbox.css" afterScriptsLoaded="{!c.loadBlog}"/>
+    <aura:handler event="aura:doneRendering" action="{!c.setLinks}"/>
+    
+    <section class="padded latest-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+        <h1 class="centerHeader">BLOG</h1>
+    </div>
+    <aura:iteration items="{!v.blogs}" var="blog">
+    <article class="col-lg-12 spaceEntry">
+        <div class="post-intro">
+            <h3 class="post-title"><a href="{!'#' + blog.Id}" class="inlineBlog">{!blog.Name}</a></h3>
+            <p class="post-date"><ui:outputDate value="{!blog.CreatedDate}" format="MMM dd, yyyy" /></p>
+            <p class="post-excerpt"><aura:unescapedHtml value="{!blog.Short_Description__c}" /></p>
+            <p><a class="btn btn-primary inlineBlog" href="{!'#' + blog.Id}">READ MORE&nbsp;&nbsp;<i class="fa fa-angle-right"></i></a></p>
+        </div>
+    </article>
+    </aura:iteration>
+    <div style="display:none;">
+        <aura:iteration items="{!v.blogs}" var="blog">
+            <div id="{!blog.Id}" style="padding:5px;background:#fff;">
+                <aura:unescapedHtml value="{!blog.Body__c}" />
+            </div>
+        </aura:iteration>
+    </div>
+                </div>
+            </div>
+        </section>
+</aura:component>

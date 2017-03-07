@@ -1,0 +1,95 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<style>
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNova95 {
+        font-family: proximaNovaFont;   
+        font-size:95%;
+        color: #216093;
+    }
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataStream {
+        font-family: proximaNovaFont;   
+    font-size:100%;
+      color: #00b2a9;
+    }
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataMountaintop {
+        font-family: proximaNovaFont;   
+    font-size:100%;
+      color: #7C98AB;
+    }            
+</style>
+<div class="slds-context-bar ">
+  <div class="slds-context-bar__primary slds-context-bar__item--divider-right">
+    <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
+      <div class="slds-context-bar__icon-action">
+        <a href="javascript:void(0);" class="slds-icon-waffle_container slds-context-bar__button">
+          <div class="slds-icon-waffle">
+            <div class="slds-r1"></div>
+            <div class="slds-r2"></div>
+            <div class="slds-r3"></div>
+            <div class="slds-r4"></div>
+            <div class="slds-r5"></div>
+            <div class="slds-r6"></div>
+            <div class="slds-r7"></div>
+            <div class="slds-r8"></div>
+            <div class="slds-r9"></div>
+          </div>
+          <span class="slds-assistive-text"></span>
+        </a>
+      </div>
+      <span class="slds-context-bar__label-action slds-context-bar__app-name ">
+        <a href="/slportal/s/slpaddcustomer" title="Dashboard">          
+        	<span class="slds-truncate proximaNovaDataStream" title="Add A Customer">Add a Customer</span>
+        </a>
+    </span>
+    </div>
+  </div>
+  <nav class="slds-context-bar__secondary " role="navigation">
+    <ul class="slds-grid">
+      <li class="slds-context-bar__item">
+        <a href="/slportal/s/slpdashboard" class="slds-context-bar__label-action" title="Dashboard">
+          <span class="slds-truncate proximaNovaDataMountaintop">Dashboard</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+        <a href="/slportal/s/slpcreditstatus" class="slds-context-bar__label-action" title="Check customer's credit status">
+          <span class="slds-truncate proximaNovaDataMountaintop">Credit Status</span>
+        </a>
+      </li> 
+      <li class="slds-context-bar__item">
+        <a href="/slportal/s/slpcustomer" class="slds-context-bar__label-action" title="Customers">
+          <span class="slds-truncate proximaNovaDataMountaintop">Customers</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+          <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
+          <span class="slds-truncate proximaNovaDataMountaintop">Disbursals</span>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+          <a href="/slportal/s/slpalerts" class="slds-context-bar__label-action" title="Disbursals">
+          <span class="slds-truncate proximaNovaDataMountaintop">Alerts</span>
+        </a>
+      </li>  
+      <li class="slds-context-bar__item">
+          <a href="https://www.useloom.com/share/5c40d3a325844e5ebddea4f98c48abd5" target="_blank" class="slds-context-bar__label-action" title="Guide">
+          <span class="slds-truncate proximaNovaDataMountaintop">Guide</span>
+        </a>
+      </li>                    
+    </ul>
+  </nav>
+           <div class="rightitem image ">
+
+          </div>    
+</div>
+</aura:component>

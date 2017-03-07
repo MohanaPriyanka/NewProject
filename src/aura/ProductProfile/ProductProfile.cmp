@@ -1,0 +1,27 @@
+<aura:component controller="ProductProfileController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="prods" type="Product_Profile__c[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.loadProducts}"/>
+    
+    <section class="padded latest-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+        <h1 class="centerHeader">My Community</h1>
+    </div>
+    <div class="prodContainer">
+    <aura:iteration items="{!v.prods}" var="prod">
+        
+    <article class="col-lg-4" style="display:inline-block;float:none;vertical-align:top;margin-right:50px;margin-left:50px;">
+        <a href="{!'product-profile/' + prod.Id}" style="cursor:pointer"><div class="post-intro">
+            <h2 class="post-title">{!prod.Profile_Type__c}</h2><br />
+            <h3><img src="{!prod.Image_URL__c}" style="width:100px;height:100px;"/></h3>
+            <!--<p class="post-date"><aura:unescapedHtml value="{!prod.Project_View__c}" /></p>-->
+            <p class="post-excerpt"></p>
+            </div></a>
+    </article>
+    </aura:iteration>
+                    </div>
+              </div>
+            </div>
+        </section>
+</aura:component>

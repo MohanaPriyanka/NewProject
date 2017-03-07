@@ -1,0 +1,18 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="UtilityLoginInformationController">
+    <ltng:require scripts="{!join(',', 
+                           $Resource.jQuery, 
+                           $Resource.jQueryUI + '/jquery-ui-1.11.4.custom/jquery-ui.min.js')}" 
+                  afterScriptsLoaded="{!c.loadUtilityPopup}"
+                  styles="{!join(',',
+                          $Resource.jQueryUI + '/jquery-ui-1.11.4.custom/jquery-ui.min.css',
+                          $Resource.jQueryUI + '/jquery-ui-1.11.4.custom/jquery-ui.structure.min.css',
+                          $Resource.jQueryUI + '/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css')}" />
+    <div style="display:none;" id="utility-info-form" title="Please Provide Your Utility Account Login Information">
+        <input type="text" id="username" placeholder="Username:" style="width:400px;margin-top:15px;margin-bottom:15px;"/><br />
+        <input type="password" id="password" placeholder="Password:" style="width:400px;margin-top:15px;margin-bottom:15px;"/><br />
+        <input type="checkbox" id="create" />&nbsp;I would like BlueWave to create an online account for me.
+    </div>
+    <div style="display:none;" id="utility-info-cancel" title="Warning">
+        By proceeding without providing BlueWave this information you understand that BlueWave will not be able to adjust your community solar subscription according to your energy demand.
+    </div>
+</aura:component>

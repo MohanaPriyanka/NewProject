@@ -1,0 +1,77 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+	<aura:attribute name="allCustomers" type="Object"  />   
+	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
+	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <style>
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+     		font-size:100%;
+      		color: #00b2a9;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #266092;
+        }        
+    </style>    
+   <div aura:id = "allCustomers" class="">
+   <div class="slds-form-element slds-lookup" data-select="single">
+   <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
+       <div class="slds-form-element__control">
+          <div class="slds-input-has-icon slds-input-has-icon--right ">
+              <ui:inputText aura:id="customerSearch"
+                     class="slds-lookup__search-input slds-input" 
+                     placeholder="Search Name"
+                     value=""
+                     change="{!c.searchCustomers}"/>       
+         </div>       
+      </div>
+  </div> 
+  <br></br>
+    <div aura:id = "customerTable" class="main2"> 
+		<br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
+			         <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>              
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>           
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.allCustomers}" var="Customer">
+              		<tr>
+                		<th scope="row"> <b>{!Customer.Name}</b> </th>
+                        <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
+                        <aura:if isTrue="{!Customer.Partner_Tasks__r[0] == null}">
+                          <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Acquisition_Status__c}</b> </th>
+                        <aura:set attribute="else">
+                  		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
+                        </aura:set>
+                        </aura:if>
+                        <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>                
+                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>          	                      
+                		<th><ui:button label="View"
+                           class="{!Customer.Id}"
+                           labelClass="label"
+                           press="{!c.openCustomerWindow}"/>   </th>                       
+                    </tr>                    
+            </aura:iteration>          
+          </tbody>
+        </table>
+    </div>
+    </div>
+</div>         
+</aura:component>

@@ -1,0 +1,21 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+    <!--<ltng:require scripts="/resource/Community/assets/libs/fancybox/jquery.fancybox.pack.js,/resource/Community/plugins/8-degree-notification-bar/js/frontend/jquery.bxslider.min.js,/resource/Community/plugins/8-degree-notification-bar/js/frontend/jquery.marquee.min.js,/resource/Community/plugins/8-degree-notification-bar/js/frontend/frontend.js,/resource/Community/assets/js/scripts.js" />-->
+   <footer class="mdl-mini-footer">
+
+				
+					 <div class="mdl-mini-footer__left-section">
+							<div class="mdl-logo">©2015 BlueWave. All Rights Reserved.</div>
+							  
+							 <div class="menu-footer-menu-container"><ul id="menu-footer-menu" class="mdl-mini-footer__link-list"><li id="menu-item-216" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-216"><a href="http://bluewaverenewables.com/privacy-policy/">Privacy Policy</a></li>
+		<li id="menu-item-188" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-188"><a href="http://bluewaverenewables.com/installers/">For Installers</a></li>
+		</ul></div>			 </div>
+					 
+						
+				<!--  Chatter Script  -->
+				<!--<script type="text/javascript">
+		if (!window._laq) { window._laq = []; }
+		window._laq.push(function(){liveagent.showWhenOnline('573j00000004CFc', document.getElementById('liveagent_button_online_573j00000004CFc'));
+		liveagent.showWhenOffline('573j00000004CFc', document.getElementById('liveagent_button_offline_573j00000004CFc'));
+		});</script>-->
+				</footer>
+</aura:component>

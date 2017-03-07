@@ -2,7 +2,7 @@
     <aura:attribute name="loanList" type="Object"  /> 
     <aura:attribute name="customer" type="Object"  />
     <aura:attribute name="customerInformation" type="Object" />
-	<aura:attribute name="customerDates" type="String" />
+	  <aura:attribute name="customerDates" type="String" />
     <aura:attribute name="taskType" type="String" access="global" />
     <aura:attribute name="parentSubTaskButton" type="Boolean"  /> 
     <aura:attribute name="partnerTaskList" type="Object"  />
@@ -11,33 +11,39 @@
     <aura:attribute name="dateToggle" type="Boolean"  />
     <aura:attribute name="customerWindowLoanList" type="Object"  /> 
     <aura:attribute name="customerWindowTaskList" type="Object"  />  
-	<aura:attribute name="taskMap" type="Map"  />      
+	  <aura:attribute name="taskMap" type="Map"  />      
     <aura:attribute name="completeDisbursalList" type="Object"  />
+    <aura:attribute name="incompleteDisbursalList" type="Object"  />    
     <aura:attribute name="taskViewButtonToggle" type="Boolean"  />
-	<aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
+    <aura:attribute name="blueWaveReviewAlert" type="Boolean"  />     
+	  <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
     <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}" />
     <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}" />      
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
- 	<aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
+ 	  <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
     
-    <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
-                    default="{ 'sobjectType' : 'Residential_Equipment__c',
-                                 'Name': 'Cole',
-                             	 'Generator_Nameplate_Capacity__c': '',
-                                 'Type_of_Module__c': '',
-                                 'Number_of_Modules__c': '',
-                                 'Type_of_Inverter__c': '',
-                                 'Number_of_Inverters__c': '',
-                                 'Mechanical_Installation_Date__c': '',
-                                 'Interconnection_Date__c': '',
-                             	 'Mechanically_Installed__c': '',
-                             	 'Interconnected__c':'',
-                             }"/>
+  <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
+    default="{ 'sobjectType' : 'Residential_Equipment__c',
+                 'Name': 'Cole',
+             	   'Generator_Nameplate_Capacity__c': '',
+                 'Type_of_Module__c': '',
+                 'Number_of_Modules__c': '',
+                 'Module_Manufacturer__c': '',
+                 'Module_Model_Number__c':'',
+                 'Type_of_Inverter__c': '',
+                 'Number_of_Inverters__c': '',
+                 'Inverter_Manufacturer__c': '',
+                 'Inverter_Model_Number__c': '',
+                 'Mechanical_Installation_Date__c': '',
+                 'Interconnection_Date__c': '',
+             	   'Mechanically_Installed__c': '',
+             	   'Interconnected__c':'',
+             }"/>
     <aura:attribute name="loanUpdate" type="Loan__c" 
-                    default="{ 'sobjectType' : 'Loan__c',
-                                 'Commencement_Datee__c': '',
-                             	 'System_Costt__c':'',
-                             }"/>      
+    default="{ 'sobjectType' : 'Loan__c',
+                 'Commencement_Datee__c': '',
+             	   'System_Costt__c':'',
+             }"/>      
      
 <!-- main issues inclue the ability to break out subTasks within the task table. The tasks break out for each task with subTasks, filtering them by 
 task type has been proven difficult due to sequence of the attribute's value after the loading of the subTasks and lock up of functionality 
@@ -56,10 +62,56 @@ reloaded by clicking the view button on the dashboard page-->
      		font-size:95%;
       		color: #FFFFFF;
         }
+
+            @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaBrand {
+            font-family: proximaNovaFont;   
+        font-size:32px;
+          color: #236192;
+        }        
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataGreenSmall {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #32CD32;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataStream {
+            font-family: proximaNovaFont;   
+        font-size:100%;
+          color: #00b2a9;
+        }
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue {
+            font-family: proximaNovaFont;   
+        font-size:90%;
+          color: #266092;
+        }                  
     </style>
     <div aura:id = "customerPage" class="noDisplayBar"> 	
-        <div aura:id="customerName" class="main2"> 
-            <div  class="center"><h1> {!v.customer.Name} </h1></div>
+        <div aura:id="customerName" class="main2 proximaNovaBrand"> 
+            <div  class="center proximaNovaBrand"><h1> {!v.customer.Name} </h1></div>
             <hr></hr>  
         </div>
         <br></br>
@@ -126,8 +178,8 @@ reloaded by clicking the view button on the dashboard page-->
         <!--  _________________________________CUSTOMER INFO HEADER ___________________________________ -->                
         <table class="slds-table slds-table--bordered  slds-table--striped box">
           <thead>
-            <tr class="slds-text-heading--label  " >           
-              <th scope="col"><span class="slds-truncate"><b>Agent</b></span></th>
+            <tr class="slds-text-heading--label  proximaNovaDataBlue" >           
+              <th scope="col"><span class="slds-truncate"><b>Partner</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
@@ -135,14 +187,14 @@ reloaded by clicking the view button on the dashboard page-->
           </thead>
           <tbody>
               <tr>
-                <th scope="row"> <b>{!v.customer.Sales_Agent__r.Name}</b> </th>  
+                <th scope="row"> <b>{!v.customer.Partner__r.Name}</b> </th>  
                 <th scope="row"> <b>{!v.customer.Product__r.ProductCode}</b> </th>
                 <th scope="row"> <ui:outputCurrency value="{!v.customer.System_Costt__c}" /></th>    
-                <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
+                <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
               </tr>          
           </tbody>
         </table>  
-        <br></br>
+        <br></br>      
         <!--  _________________________________INFORMATION BUTTONS ___________________________________ -->                
         <div aura:id = "customerInformationButtons" class="main2">        
             <br></br>
@@ -172,23 +224,31 @@ reloaded by clicking the view button on the dashboard page-->
         </div>
         <hr></hr>
         <!--  _________________________________CUSTOMER INFORMATION ___________________________________ -->                
-        <div aura:id = "customerInformation" class="box noDisplay">
-            <fieldset class="slds-form--compound paddingTop1x5">                  
-            	<div class="slds-form-element slds-p-horizontal--small">
-                  <span class="slds-form-element__label" id="file-selector-id">Sales Agreement with Customer</span>
-                  <div class="slds-form-element__control">
-                    <div class="slds-file-selector slds-file-selector--files">
-                      <div class="slds-file-selector__dropzone">
-                        <input aura:id="salesAgreement" class="slds-file-selector__input slds-assistive-text" accept="image/png" type="file" id="file-upload-input-01" aria-describedby="file-selector-id" />
-                        <label class="slds-file-selector__body" for="file-upload-input-01">
-                          <span class="slds-file-selector__button slds-button slds-button--neutral">Upload Files</span>
-                        </label>
-                      </div>
-                    </div>
+        <div aura:id = "customerInformation1" class="box noDisplay"> 
+            <br></br>
+            <fieldset>
+                <div class="clearfix main2"> 
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row"> 
+                      <div class="salesAgreementButtonRight">
+                           <ui:button aura:id="salesAgreementButton"
+                               class=" box slds-align--absolute-center"
+                               labelClass=""
+                               label="Submit Sales Agreement"                  
+                               press="{!c.navigateSalesAgreementDoc}"/>                           
+                      </div>                             
+                      <div class="documentsButtonLeft">
+                           <ui:button aura:id="incomeDocsButton"
+                               class=" box slds-align--absolute-center"
+                               labelClass=""
+                               label="Submit Income Documentation"                  
+                               press="{!c.navigateIncomeDocs}"/>                           
+                      </div>                          
                   </div>
-               </div> 
-                
-            </fieldset>            
+                </div> 
+                </div>
+                <br></br>
+            </fieldset>                 
             <fieldset class="slds-form--compound paddingTop1x5">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -198,7 +258,7 @@ reloaded by clicking the view button on the dashboard page-->
                     </div> 
                   <div class="slds-form-element slds-p-horizontal--small ">
                     <label class="slds-form-element__label" for="input-03">Principal Value</label>
-                    <ui:outputCurrency aura:id="principalValue" class="slds-input" value="{!v.customerInformation.Loan__r.Principall__c}"/>          
+                    <ui:outputCurrency aura:id="principalValue" class="slds-input" value="{!v.customerInformation.Loan__r.Principal__c}"/>          
                     </div>        
                 </div>
                 </div>
@@ -211,7 +271,7 @@ reloaded by clicking the view button on the dashboard page-->
                     <ui:inputNumber aura:id="systemSize" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
                   </div>                    
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
-                    <label class="slds-form-element__label" for="input-03">Commencement Date</label>
+                    <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
                       <ui:inputDate aura:id="commencementDateChanger" 
                           class="slds-input" 
                           displayDatePicker="true"
@@ -225,23 +285,31 @@ reloaded by clicking the view button on the dashboard page-->
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Type of Modules</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Type_of_Module__c}" placeholder="{!v.customerInformation.Type_of_Module__c}"/>          
-                  </div>                  
+                    <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Modules</label>
                     <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
                   </div>                     
                 </div>
-                </div>
+                </div>                 
             </fieldset>
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Type of Inverter</label>
-                    <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Type_of_Inverter__c}" placeholder="{!v.customerInformation.Type_of_Inverter__c}"/>          
-                  </div>                     
+                    <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                        
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
                     <ui:inputNumber aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}" />          
@@ -249,26 +317,19 @@ reloaded by clicking the view button on the dashboard page-->
                 </div>
                 </div>
             </fieldset>
+            <br></br>
+              <div class="slds-align--absolute-center paddingBottom1 ">
+                    <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
+                    </div>   
+            </div>
+            <div aura:id = "customerInformation2" class="box noDisplay">                           
+            <hr></hr>
             <fieldset class="slds-form--compound ">
               <br></br>
                 <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-01">Mechanically Installed</label>
-                    <div class="slds-form-element ">
-                        <label class="slds-checkbox--toggle slds-grid" value="true">
-                            <ui:inputCheckbox name="mechInstallToggle" value="{!v.customerInformation.Mechanically_Installed__c}"/>                
-                            <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-                            <span class="slds-checkbox--faux"></span>
-                            <span class="slds-checkbox--on bwSecondary">Installed</span>
-                            <span class="slds-checkbox--off">Not Installed</span>
-                            </span>
-                        </label>
-                    </div>
-                  </div>
-                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">
-    
-                  </div>
+                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">    
+                  </div>              
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
                     <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
                       <ui:inputDate aura:id="MechInstallDate" 
@@ -276,36 +337,17 @@ reloaded by clicking the view button on the dashboard page-->
                           displayDatePicker="true"
                           value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
                       />       
-                    </div>                      
-                  <div class="slds-form-element slds-p-horizontal--small">
-                      <span class="slds-form-element__label" id="file-selector-id">Documentation of Mechanical Install</span>
-                      <div class="slds-form-element__control">
-                        <div class="slds-file-selector slds-file-selector--files">
-                          <div class="slds-file-selector__dropzone">
-                            <input aura:id="mechInstallFile" class="slds-file-selector__input slds-assistive-text" accept="image/png" type="file" id="file-upload-input-01" aria-describedby="file-selector-id" />
-                            <label class="slds-file-selector__body" for="file-upload-input-01">
-                              <span class="slds-file-selector__button slds-button slds-button--neutral">Upload Files</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                   </div>               
-                    </div>        
-                  <div class="slds-form-element__row">  
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-02">Interconnected</label>
-                    <div class="slds-form-element">
-                        <label class="slds-checkbox--toggle slds-grid">
-                            <ui:inputCheckbox name="interconnectToggle" value="{!v.customerInformation.Interconnected__c}" />
-                            <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
-                            <span class="slds-checkbox--faux"></span>
-                            <span class="slds-checkbox--on bwSecondary">Interconnected </span>
-                            <span class="slds-checkbox--off">Not Interconnected</span>
-                            </span>
-                        </label>
                     </div>
-                  </div>
 
+                      <div class="documentsButtonRight">
+                           <ui:button aura:id="mechInstallDocsButton"
+                               class=" box "
+                               labelClass=""
+                               label="Submit Installation Documentation"                  
+                               press="{!c.navigateInstallationDocs}"/>                           
+                      </div>                                            
+                  </div>                         
+                  <div class="slds-form-element__row">                     
                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
                     <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
                       <ui:inputDate aura:id="interconnectionDateChanger" 
@@ -313,28 +355,28 @@ reloaded by clicking the view button on the dashboard page-->
                           displayDatePicker="true"
                           value="{!v.customerInformation.Interconnection_Date__c}"                         
                       />       
-                    </div>                       
-                    <div class="slds-form-element slds-p-horizontal--small">
-                      <span class="slds-form-element__label" id="file-selector-id">Documentation of Interconnection</span>
-                      <div class="slds-form-element__control">
-                        <div class="slds-file-selector slds-file-selector--files">
-                          <div class="slds-file-selector__dropzone">
-                            <input class="slds-file-selector__input slds-assistive-text" accept="image/png" type="file" id="file-upload-input-01" aria-describedby="file-selector-id" />
-                            <label class="slds-file-selector__body" for="file-upload-input-01">
-                              <span class="slds-file-selector__button slds-button slds-button--neutral">Upload Files</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                  </div>  
+                    </div>  
+
+                      <div class="documentsButtonRight">
+                           <ui:button aura:id="interconnectDocsButton"
+                               class=" box"
+                               labelClass=""
+                               label="Submit Interconnection Documentation"                  
+                               press="{!c.navigateInterconnectionDocs}"/>                           
+                      </div>                                           
                 </div>
                 </div>
-                </fieldset>
-            	<div class="slds-align--absolute-center paddingBottom1">
-                    <ui:button label="Save" class="slds-button slds-button--brand" press="{!c.saveEquipmentInformation}"></ui:button>
+                </fieldset>             
+            	<div class="slds-align--absolute-center paddingBottom1 ">
+                    <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>
 				</div>
-        </div>                
+        </div>            
+            
         <!--  _________________________________TASK TABLE ___________________________________ -->    
+        <aura:if isTrue="{!v.blueWaveReviewAlert}">
+          <h3> In some cases, the review stage may require BlueWave to reach out to borrowers to obtain sensitive information. Please be aware that this may take longer than the other stages. You will be notified when it is completed.</h3>
+          <br></br>
+        </aura:if>
         <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
           <thead>
             <tr class="slds-text-heading--label " >
@@ -345,10 +387,15 @@ reloaded by clicking the view button on the dashboard page-->
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.partnerTaskList}" var="task">
+ 			    <aura:iteration items="{!v.partnerTaskList}" var="task">
                 <tr>
-                    <th scope="row"> <b>{!task.Name}</b> </th>                       
-                    <th scope="row"> <b>{!task.Status__c}</b> </th>
+                    <th scope="row"> <b>{!task.Name}</b> </th> 
+                    <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
+                      <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
+                    <aura:set attribute="else">
+                      <th scope="row"> <b>{!task.Status__c}</b> </th>
+                    </aura:set>                             
+                    </aura:if>   
                     <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
                     <aura:if isTrue="{!task.SubTasks__c}"> 
                         <th>                           
@@ -369,54 +416,14 @@ reloaded by clicking the view button on the dashboard page-->
                             </th>
                         </aura:set>                              
                     </aura:if>
-                </tr>                
-			<!--<aura:if isTrue="{!task.SubTasks__c}">         
-                <aura:iteration items="{!v.parentSubTaskList}" var="parentSubTask">
-                    <aura:if isTrue="{!task.Task_Type__c == !v.taskType}">
-                    <tr>
-                        <th scope="row" class=" bwbluePaddingRight"> <b>{!parentSubTask.Name}</b></th>     allign left slds class needed                   
-                        <th scope="row"> <b>{!parentSubTask.Status__c}</b> </th>
-                        <th scope="row"> <b>{!parentSubTask.Completion_Date__c}</b> </th>
-                        <aura:if isTrue="{!parentSubTask.SubTasks__c}">                        
-                            <th>                           
-                               <ui:button aura:id="viewButtonParentSubTask"
-                                   label="View"           
-                                   class=""
-                                   labelClass="{!parentSubTask.Id}"          
-                                   press="{!c.openSubTasks}"/>
-                               <ui:button aura:id="closeButtonParentSubTask"        
-                                   label="Close"
-                                   class=""
-                                   labelClass="{!parentSubTask.Id}"
-                                   press="{!c.exitSubTasks}"/>
-                            </th>                                                          
-                            <aura:set attribute="else">
-                                <th>
-                                    <ui:button disabled="true" />
-                                </th>
-                            </aura:set> 
-                    	</aura:if> 
-                    </tr>                    
-					<aura:if isTrue="{!parentSubTask.SubTasks__c}">                
-                        <aura:iteration items="{!v.subTaskList}" var="subTask">
-                            <tr>
-                                <th scope="row" class=" bwTeal"> <b>{!subTask.Name}</b></th>        allign left slds class needed               
-                                <th scope="row"> <b>{!subTask.Status__c}</b> </th>
-                                <th scope="row"> <b>{!subTask.Completion_Date__c}</b> </th>
-                                <th scope="row"></th>
-                            </tr>                    
-                        </aura:iteration>                     
-           		 	</aura:if> 
-				</aura:if>                                                                                                                     
-            	</aura:iteration>                     
-            </aura:if>    -->            
+                </tr>                         
             </aura:iteration>             
           </tbody>
         </table>
         <br></br>
         <!--  _________________________________SUB-TASK TABLE ___________________________________ -->                
         <!--<div aura:id="subTaskHeader" class="bwBluePaddingBelow noDisplay"><h3>Sub-Tasks - {!v.parentSubTaskList[0].Parent_Task__r.Name}</h3></div>    -->
-		<table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
+		    <table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
                       <thead>
                         <tr class="slds-text-heading--label " >
                           <th scope="col"><span class="slds-truncate"><b>Sub-Task</b></span></th> 
@@ -467,8 +474,9 @@ reloaded by clicking the view button on the dashboard page-->
         </div>
         <div>
         <br></br>  
-        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->                
-        <table aura:id="disbursalTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
+        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ --> 
+        <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
+        <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
           <thead>
             <tr class="slds-text-heading--label " >
               <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
@@ -486,8 +494,10 @@ reloaded by clicking the view button on the dashboard page-->
                         <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
                   		<td> <div class="slds-form-element">
                     		<label class="slds-checkbox--toggle slds-grid">
-                        		<input name="checkbox" type="checkbox" aria-describedby="toggle-desc" 
-                                        checked="{!disbursal.Partner_Confirmation__c}"/>
+                        		<ui:inputCheckBox aura:id="disbursalCheck" 
+                                                  name="{!disbursal.Id}" 
+                                                  value="{!disbursal.Partner_Confirmation__c}"
+                                                  change="{!c.updateDisbursal}"/>
                         		<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
                                 <span class="slds-checkbox--faux"></span>
                                 <span class="slds-checkbox--on">Confirmed</span>
@@ -499,7 +509,28 @@ reloaded by clicking the view button on the dashboard page-->
                     </tr>                    
             </aura:iteration>          
           </tbody>
-        </table>               
+        </table> 
+        <br></br>    
+        <div aura:id="pendingDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Pending Disbursals</h3></div>                                
+        <table aura:id="disbursalIncompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
+          <thead>
+            <tr class="slds-text-heading--label " >
+              <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>              
+              <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>                        
+              </tr>
+          </thead>
+          <tbody>
+ 			<aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
+              		<tr>
+                		<th scope="row"> <b>{!disbursal.Name}</b> </th>
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                		<th scope="row"> <b>{!disbursal.Status__c}</b> </th>
+                        <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>                          
+                    </tr>                    
+            </aura:iteration>          
+          </tbody>
+        </table>             
    	 </div>        
     	<div>
             <br></br>

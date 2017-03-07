@@ -1,4 +1,4 @@
-public with sharing class LoanHandler{
+public without sharing class LoanHandler{
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
@@ -14,13 +14,16 @@ public with sharing class LoanHandler{
 
     //On After Insertion of Loan Record
     public void onAfterInsert(List<Loan__c> newLoans){
-        System.debug('Activate CreateLoanPartnerTasks');
         createLoanPartnerTasks(newLoans);
+        System.debug('The new loans are ' + newLoans);
     }
     
     //On Before Update of Lead Record
     public void onBeforeLeadUpdate(List<Lead> convertedLeads){
+        //map the loan, equipment and partner tasks to the opporunity upon conversion
         mapLoanToOpportunity(convertedLeads);
+        mapEquipmentToOpportunity(convertedLeads);     
+        mapPartnerTasksToOpportunity(convertedLeads);   
     }
 
     //On After Update of Lead Record
@@ -36,16 +39,21 @@ public with sharing class LoanHandler{
         for (Lead newLead : updatedLeads){
             for (Lead oldLead : oldLeads){
                 if (newLead.Id == oldLead.Id){
-                    if (newLead.Status == 'Qualified' 
-                        && oldLead.Status != 'Qualified' 
-                        && newLead.Product_Line__c == 'Residential Loan'){
+                    if (newLead.Status == 'Pending Information' 
+                        && oldLead.Status != 'Pending Information' 
+                        && newLead.Product_Line__c == 'Residential Loan'
+                        && newLead.DOER_Solar_Loan__c == false){
                         leadsToCreateLoan.add(newLead);                       
                     }
                 }
-                if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c){
+                if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
+                    && newLead.Product_Line__c == 'Residential Loan' 
+                    && newLead.DOER_Solar_Loan__c == false){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
-                if (newLead.isConverted == true && oldLead.isConverted == false){
+                if (newLead.isConverted == true && oldLead.isConverted == false 
+                    && newLead.Product_Line__c == 'Residential Loan' 
+                    && newLead.DOER_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
@@ -97,13 +105,13 @@ public with sharing class LoanHandler{
                 loanTerm = (Integer)l.Product__r.Loan_Term__c / 12 * 365;
                 interestOnlyPeriod = (Integer)l.Product__r.Loan_Interest_Only_Period__c / 12 * 365;
                 if(l.DOER_Solar_Loann__c == false){
-                    l.Origination_Datee__c = Date.today();
-                    l.Commencement_Datee__c = Date.today() + 45;
-                    l.Maturity_Datee__c = (Date.today() + 45) + loanTerm;
+                    //l.Origination_Datee__c = Date.today();
+                    //l.Commencement_Datee__c = Date.today() + 45;
+                    //l.Maturity_Datee__c = (Date.today() + 45) + loanTerm;
                 }else{
-                    l.Origination_Datee__c = Date.today();
-                    l.Commencement_Datee__c = Date.today();
-                    l.Maturity_Datee__c = Date.today() + interestOnlyPeriod + loanTerm;
+                    //l.Origination_Datee__c = Date.today();
+                    //l.Commencement_Datee__c = Date.today();
+                    //l.Maturity_Datee__c = Date.today() + interestOnlyPeriod + loanTerm;
                 }
             }    
             upsert new list<Loan__c>(tranchedLoans) Unique_ID__c;
@@ -144,7 +152,6 @@ public with sharing class LoanHandler{
 
     public void createLoan(List<Lead> newLeadList){
         System.debug('Being createLoan method');
-        System.debug('LeadList Size is ' + newLeadList.size());
         Loan_Traunch__c tranchePending = [SELECT Id, Name 
                                           FROM Loan_Traunch__c 
                                           WHERE Name = 'Tranche Assignment Pending'];
@@ -217,7 +224,51 @@ public with sharing class LoanHandler{
                 }            
                 update loan;
         }
-    }    
+    }  
+
+    public void mapEquipmentToOpportunity(List<Lead> leadsList){
+        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
+        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+
+        for(Lead L : leadsList){
+             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
+                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
+                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+            }
+        }
+
+        if(opportunityMap.size() > 0){
+                 List<Residential_Equipment__c > equipment = [SELECT Lead__c, Opportunity__c 
+                                                               FROM Residential_Equipment__c 
+                                                               WHERE Lead__c IN :feedback2OppId.keySet()];
+                for (Residential_Equipment__c equipmentRecord : equipment){
+                    equipmentRecord.Opportunity__c = feedback2OppId.get(equipmentRecord.Lead__c);
+                }            
+                update equipment;
+        }
+    }  
+
+    public void mapPartnerTasksToOpportunity(List<Lead> leadsList){
+        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
+        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+
+        for(Lead L : leadsList){
+             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
+                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
+                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+            }
+        }
+
+        if(opportunityMap.size() > 0){
+                 List<Partner_Task__c > partnerTasks = [SELECT Lead__c, Opportunity__c 
+                                                       FROM Partner_Task__c 
+                                                       WHERE Lead__c IN :feedback2OppId.keySet()];
+                for (Partner_Task__c task : partnerTasks){
+                    task.Opportunity__c = feedback2OppId.get(task.Lead__c);
+                }            
+                update partnerTasks;
+        }
+    }                 
 
     public List<Loan__c> assignLoanTranche(List<Loan__c> newLoanList){
         System.debug('Begin assignLoanTranche method');
@@ -238,7 +289,7 @@ public with sharing class LoanHandler{
                     }
                 }                
             }
-            for (Loan_Traunch__c trancheRecord : [SELECT Id, Name, State__c, Loan_Data__r.Id, Available_Capital__c FROM Loan_Traunch__c]){
+            for (Loan_Traunch__c trancheRecord : [SELECT Id, Name, State__c, Loan_Data__r.Id, Available_Capital__c, Stage__c FROM Loan_Traunch__c]){
                 if (trancheRecord.Stage__c == 'Open' && trancheRecord.Available_Capital__c > 0 && trancheRecord.Name != 'No Available Capital - Temporary Holding Tranche'){
                     trancheRecordList.add(trancheRecord);
                 }
@@ -392,17 +443,19 @@ public with sharing class LoanHandler{
         Map<String, Partner_Task__c> subParentTaskAssignmentMap = new Map<String, Partner_Task__c>();
         Map<String, Partner_Task__c> taskMap = new Map<String, Partner_Task__c>();       
         String taskUniqueId;
+        String subTaskTypeMapUniqueId;
+        String parentTaskTypeMapUniqueId;
+        String shortenedIdForMapKey;
+
+
         String leadIdSubString;
         RecordType parentPartnerTaskRecordType;
         RecordType childPartnerTaskRecordType;
         Integer partnerSequenceCounter = 1;
 
-        User u = [SELECT Id FROM User WHERE Name = 'BlueWave Customer Care'];
-
         parentPartnerTaskRecordType = [SELECT Id FROM RecordType WHERE Name = 'Parent Partner Task' AND SobjectType = 'Partner_Task__c' LIMIT 1];
         childPartnerTaskRecordType = [SELECT Id FROM RecordType WHERE Name = 'Child Partner Task' AND SobjectType = 'Partner_Task__c' LIMIT 1];
-
-
+        
         for (Loan__c loanRecord : [SELECT Id, Name, System_Costt__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c,
                                    Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
                                    Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c 
@@ -424,7 +477,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(creditTask);
-            parentTaskAssignmentMap.put(creditTask.Task_Type__c, creditTask);
+            parentTaskTypeMapUniqueId = creditTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, creditTask);
             partnerSequenceCounter = partnerSequenceCounter + 1; 
             
             Partner_Task__c allInformationTask = new Partner_Task__c(
@@ -442,7 +496,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(allInformationTask);
-            parentTaskAssignmentMap.put(allInformationTask.Task_Type__c, allInformationTask);
+            parentTaskTypeMapUniqueId = allInformationTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, allInformationTask);
             partnerSequenceCounter = partnerSequenceCounter + 1;                         
             
             Partner_Task__c bwReviewTask = new Partner_Task__c(
@@ -459,7 +514,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(bwReviewTask);
-            parentTaskAssignmentMap.put(bwReviewTask.Task_Type__c, bwReviewTask);
+            parentTaskTypeMapUniqueId = bwReviewTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, bwReviewTask);
             partnerSequenceCounter = partnerSequenceCounter + 1;            
 
             Partner_Task__c contractSignatureTask = new Partner_Task__c(
@@ -476,7 +532,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(contractSignatureTask);
-            parentTaskAssignmentMap.put(contractSignatureTask.Task_Type__c, contractSignatureTask);
+            parentTaskTypeMapUniqueId = contractSignatureTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);
             partnerSequenceCounter = partnerSequenceCounter + 1;  
 
             if (loanRecord.DOER_Solar_Loann__c == false){
@@ -494,6 +551,8 @@ public with sharing class LoanHandler{
                     Loan__c = loanRecord.Id
                 );
                 parentTaskInsertList.add(mechanicalInstallationTask);
+                parentTaskTypeMapUniqueId = mechanicalInstallationTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);                
                 partnerSequenceCounter = partnerSequenceCounter + 1;  
             }       
 
@@ -511,7 +570,9 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             parentTaskInsertList.add(interconnectionTask);
-            partnerSequenceCounter = partnerSequenceCounter + 1;              
+            parentTaskTypeMapUniqueId = interconnectionTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);            
+            partnerSequenceCounter = partnerSequenceCounter + 1;                           
 
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
                 Name = 'Provide Income Documentation',
@@ -529,7 +590,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             subParentTaskInsertList.add(incomeDocumentationTask);
-            subParentTaskAssignmentMap.put(incomeDocumentationTask.Sub_Task_Type__c, incomeDocumentationTask);
+            subTaskTypeMapUniqueId = incomeDocumentationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+            subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, incomeDocumentationTask);
              
             Partner_Task__c systemInformationTask = new Partner_Task__c(
                 Name = 'Provide all System Information',
@@ -546,7 +608,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             subParentTaskInsertList.add(systemInformationTask);
-            subParentTaskAssignmentMap.put(systemInformationTask.Sub_Task_Type__c, systemInformationTask);
+            subTaskTypeMapUniqueId = systemInformationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
+            subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, systemInformationTask);
 
             Partner_Task__c salesAgreementTask = new Partner_Task__c(
                 Name = 'Provide Sales Agreement',
@@ -563,7 +626,8 @@ public with sharing class LoanHandler{
                 Loan__c = loanRecord.Id
             );
             subParentTaskInsertList.add(salesAgreementTask);
-            subParentTaskAssignmentMap.put(salesAgreementTask.Sub_Task_Type__c, salesAgreementTask); 
+            subTaskTypeMapUniqueId = salesAgreementTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
+            subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, salesAgreementTask); 
 
             Partner_Task__c payStubDocumentationTask = new Partner_Task__c(
                 Name = 'Provide PayStub Documentation',
@@ -647,15 +711,17 @@ public with sharing class LoanHandler{
             }
         loanList.add(loanRecord);
         leadIdList.add(loanRecord.Lead__c);   
+        partnerSequenceCounter = 1;
         }
         Upsert parentTaskInsertList Unique_ID__c;
-        System.debug('The parentTaskAssignmentMap is ' + parentTaskAssignmentMap);
         for (Partner_Task__c task : subParentTaskInsertList){
-            task.Parent_Task__c = parentTaskAssignmentMap.get(task.Task_Type__c).Id;
+            shortenedIdForMapKey = task.Task_Type__c + ' ' + task.Unique_ID__c.subString(0,18);
+            task.Parent_Task__c = parentTaskAssignmentMap.get(shortenedIdForMapKey).Id;
         }
         upsert subParentTaskInsertList Unique_ID__c;
-        for (Partner_Task__c task : subTaskInsertList){
-            task.Parent_Task__c = subParentTaskAssignmentMap.get(task.Sub_Task_Type__c).Id;
+        for (Partner_Task__c task : subTaskInsertList){    
+            shortenedIdForMapKey = task.Sub_Task_Type__c + ' ' + task.Unique_ID__c.subString(0,18);            
+            task.Parent_Task__c = subParentTaskAssignmentMap.get(shortenedIdForMapKey).Id;
         }        
 
         taskInsertList.addAll(parentTaskInsertList);
@@ -665,7 +731,6 @@ public with sharing class LoanHandler{
         for (Partner_Task__c taskRecord : taskInsertList){
             taskMap.put(taskRecord.Unique_ID__c, taskRecord);
         }
-        System.debug('TaskInsertList is ' + taskInsertList);
 
         Upsert subTaskInsertList Unique_ID__c;
         List<Lead> leadList = [SELECT Id, Name, Self_Employed__c, Retired__c  FROM Lead WHERE Id IN : leadIdList];
@@ -739,15 +804,14 @@ public with sharing class LoanHandler{
             } 
             customerIncomeTypeMap.put(leadRecord.Id, customerIncomeType);            
         }
-        System.debug('The customerIncomeTypeMap is ' + customerIncomeTypeMap);
-        //System.debug('leadIdList is ' + leadIdList);
-        //System.debug('loanIdList is ' + loanIdList);
 
         for (Attachment incomeAttachment : [SELECT Id, Name, Body, ParentId, Description
                                             FROM Attachment
                                             WHERE Description != null AND ParentId IN : leadIdList]){
             for (String customerIncomeLeadId : customerIncomeTypeMap.keySet()){
+
                 if(customerIncomeLeadId == incomeAttachment.ParentId){
+
                     if(customerIncomeTypeMap.get(customerIncomeLeadId) == 'Standard'){
                         if(incomeAttachment.Description.contains('PayStub')){
                             taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
@@ -791,7 +855,6 @@ public with sharing class LoanHandler{
                 }
             }
         }
-        System.debug('The Compeleted Task List is ' + completedTaskList);
         if(completedTaskList.size()>0){
             return completedTaskList;
         }else{
@@ -901,6 +964,7 @@ public with sharing class LoanHandler{
                 parentTasksToUpdate.add(parentTask);
                 //Add all Parent tasks that have been set to complete to the completedTask list. Do not add it if it is the last task in the sequence
                 if(parentTask.Sub_Task_Type__c == null && parentTask.Parent_Task__c == null){
+                    System.debug('parentTask name ' + parentTask.Name);
                     leadIdList.add(parentTask.Lead__c);
                     completedParentTasksWithNextTask.add(parentTask);
                 }
@@ -909,7 +973,6 @@ public with sharing class LoanHandler{
         }
         //add the tasks that need to be changed to pending to the update list
         parentTasksToUpdate.addAll(updateNextTaskToPending(leadIdList, completedParentTasksWithNextTask));
-        System.debug('The parentTasksToUpdate are ' + parentTasksToUpdate);
         update parentTasksToUpdate;
     }
 
@@ -921,6 +984,7 @@ public with sharing class LoanHandler{
         List<Partner_Task__c> tasksToUpdate = new List<Partner_Task__c>();
         Map<String,Partner_Task__c> parentTaskSequenceMap = new Map<String, Partner_Task__c>();
         Map<String, Integer> parentTaskSizeMap = new Map<String, Integer>();
+        Map<Id, Lead> leadMap = new Map<Id, Lead>();
 
         for (Lead leadRecord : [SELECT Id, Name, 
                                     (SELECT Id, Name, Task_Type__c, Status__c, Parent__c, Task_Sequence__c, 
@@ -928,32 +992,33 @@ public with sharing class LoanHandler{
                                      FROM Partner_Tasks__r)
                                 FROM Lead
                                 WHERE Id IN : leadIdList]){
+            leadMap.put(leadRecord.Id, leadRecord);
             for (Partner_Task__c task : leadRecord.Partner_Tasks__r){
                     taskSequenceKey = leadRecord.Id + ' ' + task.Task_Sequence__c;
                     parentTaskSequenceMap.put(taskSequenceKey, task);
             }
             parentTaskSizeMap.put(leadRecord.Id, leadRecord.Partner_Tasks__r.size());            
         }
-        System.debug('completedtasks' + completedTasks);
         if(completedTasks.size() > 0){
-            System.debug('check');
             for (Partner_Task__c task : completedTasks){
                 //if the partner task is not the last task in the sequence, update the next task to pending
                 if(task.Task_Sequence__c < parentTaskSizeMap.get(task.Lead__r.Id)){
                     nextTask = task.Task_Sequence__c + 1;
-                    System.debug('nextTask' + nextTask);
                     taskSequenceUniqueId = task.Lead__r.Id + ' ' + nextTask;
+                    if (task.Name == 'Provide All Customer Information') {
+                        leadMap.get(task.Lead__c).Status = 'Under BlueWave Review';
+                    }
 
-                    if(parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c == 'Incomplete' && task.Task_Sequence__c < parentTaskSequenceMap.size()){
-                         System.debug('check');
-                         System.debug('tasktoupdate' + parentTaskSequenceMap.get(taskSequenceUniqueId).Name);
-                         parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c = 'Pending';  
+                    if(parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c == 'Incomplete' 
+                        && task.Task_Sequence__c < parentTaskSequenceMap.size()){
+                         parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c = 'Pending';                   
                          parentTaskSequenceMap.get(taskSequenceUniqueId).Start_Date__c = Date.today(); 
                          tasksToUpdate.add(parentTaskSequenceMap.get(taskSequenceUniqueId));
                     }
                 }
             }            
         }
+        update leadMap.values();
         return tasksToUpdate;    
     }
 
@@ -965,6 +1030,7 @@ public with sharing class LoanHandler{
         List<Partner_Task__c> nextTasksToUpdate = new List<Partner_Task__c>();
         List<String> leadIdList = new List<String>();
 
+
         for (Lead leadRecord : leadList){
             taskUniqueId = leadRecord.Id + ' ' + 'Under BlueWave Review';
             taskMap.get(taskUniqueId).Status__c = 'Complete';
@@ -975,7 +1041,6 @@ public with sharing class LoanHandler{
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(leadIdList, taskUpdateList));
         update nextTasksToUpdate;
-
     } 
 
     // update the contract signature partner task when the contract is signed and the oppStage is set to closed.
@@ -1037,11 +1102,10 @@ public with sharing class LoanHandler{
             taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
             taskUpdateList.add(taskMap.get(taskUniqueId));
             equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
-        }
+        }                    
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
-        update nextTasksToUpdate;
-
+        update nextTasksToUpdate;                    
     }      
 
     // updat the interconnection partner task when the equipment is reported as interconnected
@@ -1062,7 +1126,6 @@ public with sharing class LoanHandler{
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
         update nextTasksToUpdate;
-
     }                
 
     public void assignResidentialEquipmentToLoan(List<Loan__c> loanList){
@@ -1072,6 +1135,7 @@ public with sharing class LoanHandler{
         for (Loan__c loan : loanList){
             leadIdList.add(loan.Lead__c);
         }
+        List<Residential_Equipment__c> equipmentRecords = [SELECT Id FROM Residential_Equipment__c];
         for (Residential_Equipment__c equipment : [SELECT Id, Lead__c, Lead__r.Id, Loan__c 
                                                    FROM Residential_Equipment__c
                                                    WHERE Lead__c IN : leadIdList]){
@@ -1094,5 +1158,3 @@ public with sharing class LoanHandler{
 //duplicate key values if more than one lead is updated at once.
 
 //and max out the sequnce number at the last one
-
-

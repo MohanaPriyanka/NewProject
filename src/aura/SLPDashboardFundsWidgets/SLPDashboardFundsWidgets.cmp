@@ -1,0 +1,83 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
+    <aura:attribute name="totalCostandDisbrsals" type="List"  />   
+    <aura:attribute name="partnerAlerts" type="Object" />
+    <aura:attribute name="alertPrompt" type="Boolean" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+    <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />
+    <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
+
+ <style type="text/css">
+
+  </style>      
+    <div aura:id = "disbursalWidgets" class="main2">        
+    <aura:if isTrue="{!v.alertPrompt}" >
+        <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
+            aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
+          <div class="slds-modal__container">
+            <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
+              <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlerts[0].Name}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+              <p>{!v.partnerAlerts[0].Date__c}</p>
+              <br></br>
+              <p>{!v.partnerAlerts[0].Body__c}</p>
+            </div>
+            <div class="slds-modal__footer slds-theme--default">
+            <ui:button aura:id="importantAlertButton"
+               class="slds-button--brand box"
+               labelClass="proximaNova95"
+               label="Okay"                  
+               press="{!c.acknowledgeAlert}"/>            
+            <ui:button aura:id="importantAlertButton"
+               class="slds-button--brand box"
+               labelClass="proximaNova95"
+               label="Remind me later"                  
+               press="{!c.closeAlert}"/>   
+            </div>
+          </div>
+        </div>
+    </aura:if>    
+    <br></br>      
+        <div class="clearfix ">               
+        	<div class="boxAnim">
+                <a href="slpcustomer">
+                    <div class="headertop ">
+                    	<div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                    		<h2>Systems Contracted</h2>
+                      </div>                        
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[0]}" /> 
+                            </div>
+                    </div>
+                </a>        
+		    </div>
+        	<div class="boxAnimCenter">
+                <a href="slpdisbursals">
+                    <div class="headertop ">
+                        <div class="navtext proximaNova text-align: center vertical-align: text-center">
+                    		<h2>Funds Disbursed</h2>
+                         </div>
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[1]}" />                            
+                        	</div>
+                       
+                    </div>
+                </a>        
+		    </div>            
+		    <div class="boxAnimRight">
+                <a href="slpdisbursals">
+                    <div class="headertop ">
+                        <div class="navtext proximaNova text-align: center vertical-align: text-center">
+                    		<h2>Funds Pending</h2>
+                        </div>                        
+                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[2]}" />                            
+                        	</div>                            
+                    </div>
+                </a>        
+		    </div>
+        </div>            
+    </div>
+    <br>
+    </br>
+</aura:component>

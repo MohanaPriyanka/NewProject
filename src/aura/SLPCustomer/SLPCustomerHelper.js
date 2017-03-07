@@ -1,36 +1,13 @@
 ({
-	doInit : function(component, event, helper) {
-	    var closeButton = component.find("closeButton");   
-        $A.util.addClass(closeButton, 'noDisplay');                   
-	},
-    
-    openCustomerWindow : function(component, event, helper) {
-        //remove the noDisplayBar class from the Component - brining the page to display.
-        var customerPage = component.find("customerPage");
-        $A.util.removeClass(customerPage, 'noDisplayBar');        
+getProgressBarData : function(component, event, helper) {     
 
 		//retrieve the loan Id to set the record for the component to display.        
-        var label = event.getParam("customerLoanId"); 
-        var customerLoanRecord = component.get("c.getCustomerLoan");
-        var progressBarData = component.get("c.getProgressBarData");
-		
-        customerLoanRecord.setParams({loanId : label})
-        progressBarData.setParams({loanId : label})
-        
-        //retrieve the customer's loan record to display in the component 
-        customerLoanRecord.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.customer", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });                
-        $A.enqueueAction(customerLoanRecord);   
-        
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+                                 
         //progress bar status - removes/adds classes based on returned value of last completed task.       
-        progressBarData.setCallback(this,function(resp){
-            
+        var progressBarData = component.get("c.getProgressBarData");	      
+        progressBarData.setParams({loanId : loanUpdateIdVar})
+        progressBarData.setCallback(this,function(resp){            
             var creditToggle = component.find("credit");
             var systemInfoToggle = component.find("systemInfo");
             var reviewToggle = component.find("bwReview");
@@ -42,6 +19,7 @@
             
             if(resp.getState() == 'SUCCESS') {
                 if(resp.getReturnValue() == 'Run Credit Check'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                     $A.util.addClass(creditToggle, 'slds-is-active ');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.removeClass(reviewToggle, 'slds-is-active');
@@ -49,13 +27,29 @@
                     $A.util.removeClass(mechInstallToggle, 'slds-is-active');
                     $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit');                     
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
+                    $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }else if(resp.getReturnValue() == 'Provide All Customer Information'){
+                    component.set("v.blueWaveReviewAlert", false);                	
+                    $A.util.addClass(creditToggle, 'slds-is-active');
+                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
+                    $A.util.removeClass(reviewToggle, 'slds-is-active');
+                    $A.util.removeClass(contractToggle, 'slds-is-active');
+                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');
+                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
+                    $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
+                }else if(resp.getReturnValue() == 'Under BlueWave Review'){
+                    component.set("v.blueWaveReviewAlert", true);
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
                     $A.util.addClass(reviewToggle, 'slds-is-active');
@@ -63,16 +57,17 @@
                     $A.util.removeClass(mechInstallToggle, 'slds-is-active');
                     $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
                     $A.util.addClass(progressBarToggle, 'progressBarWidthReview');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else if(resp.getReturnValue() == 'Under BlueWave Review'){
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
+                }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
+                    $A.util.addClass(reviewToggle, 'slds-is-active');                    
                     $A.util.addClass(contractToggle, 'slds-is-active');
                     $A.util.removeClass(mechInstallToggle, 'slds-is-active');
                     $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
@@ -82,12 +77,13 @@
                     $A.util.addClass(progressBarToggle, 'progressBarWidthContract'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
-                }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
+                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
+                }else if(resp.getReturnValue() == 'Mechanical Installation'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
+                    $A.util.addClass(reviewToggle, 'slds-is-active');                    
                     $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
                     $A.util.addClass(mechInstallToggle, 'slds-is-active');
                     $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
@@ -97,13 +93,14 @@
                     $A.util.addClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else if(resp.getReturnValue() == 'Mechanical Installation'){
+                }else if(resp.getReturnValue() == 'Interconnection'){
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
+					$A.util.addClass(reviewToggle, 'slds-is-active');                                        
                     $A.util.addClass(contractToggle, 'slds-is-active');
                     $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active');                    
+                    $A.util.addClass(interconnectionToggle, 'slds-is-active');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
@@ -111,24 +108,27 @@
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.addClass(progressBarToggle, 'progressBarWidthInterconnection');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else if(resp.getReturnValue() == 'Interconnection'){
+                }else{
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.addClass(creditToggle, 'slds-is-active');
                     $A.util.addClass(systemInfoToggle, 'slds-is-active');
+                	$A.util.addClass(reviewToggle, 'slds-is-active');
                     $A.util.addClass(contractToggle, 'slds-is-active');
                     $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active');
-					$A.util.addClass(reviewToggle, 'slds-is-active');                    
+                    $A.util.addClass(interconnectionToggle, 'slds-is-active'); 
+                    $A.util.addClass(completeToggle, 'slds-is-active');                    
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
+                	$A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
                     $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthComplete');
+                    $A.util.addClass(progressBarToggle, 'progressBarWidthComplete');                    
                 }
             }
             else {
                 $A.log("Errors", resp.getError());
+                    component.set("v.blueWaveReviewAlert", false);                  
                 	$A.util.removeClass(creditToggle, 'slds-is-active');
                     $A.util.removeClass(systemInfoToggle, 'slds-is-active');
                 	$A.util.removeClass(reviewToggle, 'slds-is-active');
@@ -148,7 +148,7 @@
         
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : label});       
+        partnerTaskList.setParams({loanId : loanUpdateIdVar});       
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
@@ -158,121 +158,5 @@
             }
         });        
         $A.enqueueAction(partnerTaskList);  
-        
-        var loanDisbursals = component.get("c.getLoanDisbursals");        
-        loanDisbursals.setParams({loanId : label});        
-		loanDisbursals.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.disbursalList", resp.getReturnValue());                                         
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });           
-        $A.enqueueAction(loanDisbursals);             
-    },
-    
-	exitCustomerWindow : function(component, event, helper) {
-        var customerPage = component.find("customerPage");
-        $A.util.addClass(customerPage, 'noDisplayBar');
-        
-        var evtExitCustomerWindow = $A.get("e.c:SLPCustomerEvent");
-        evtExitCustomerWindow.fire(); 	
-        
-        var parentSubTaskToggle = component.find("parentSubTasks");
-        var subTaskTypeToggle = component.find("subTaskType");
-        var exitParentSubTasksButton = component.find("exitParentSubTasksTable");
-
-        $A.util.addClass(parentSubTaskToggle, 'noDisplay');          
-        $A.util.addClass(subTaskTypeToggle, 'noDisplay'); 
-
-        //var evtExitCustomerWindow = $A.get("e.c:SLPCustomer");
-        //evtExitCustomerWindow.setParams({"attributeAssignmentHelper": false});
-        //evtExitCustomerWindow.fire();         
-
 	},
-    
-    openParentSubTasks : function(component, event, helper) {
-        var source = event.getSource();
-        var taskId = source.get("v.labelClass");   
-        var viewButton = component.find("viewButton");    
-        var closeButton = component.find("closeButton");           
-
-        		
-        /*var taskTypeAction = component.get("c.getTaskType");                 
-        taskTypeAction.setParams({taskId : taskId});                
-        taskTypeAction.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.taskType", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(taskTypeAction);  */
-        
-        var parentSubTaskList = component.get("c.getLoanParentSubTasks");  
-        parentSubTaskList.setParams({taskId : taskId});
-        parentSubTaskList.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.taskType", resp.getReturnValue()[0].Task_Type__c);
-                component.set("v.parentSubTaskList", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(parentSubTaskList);   
-        	    
-  
-        
-    },
-    
-    openSubTasks : function(component, event, helper) {
-        var source = event.getSource();
-        var taskId = source.get("v.labelClass");   
-        //var parentSubTaskToggle = component.find("parentSubTasks");
-        //var subTaskTypeToggle = component.find("subTaskType");        
-
-        var subTaskList = component.get("c.getLoanParentSubTasks");  		
-        subTaskList.setParams({taskId : taskId});
-        
-        subTaskList.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.subTaskList", resp.getReturnValue());
-                if(resp.getReturnValue() != null){
-                    //$A.util.removeClass(closeButton, 'noDisplay');
-                    //$A.util.addClass(viewButton, 'noDisplay');                	                    
-                    $A.util.removeClass(parentSubTaskToggle, 'noDisplay'); 
-        			$A.util.removeClass(subTaskTypeToggle, 'noDisplay');
-                }
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(subTaskList);          
-    },     
-         
-    exitParentSubTasks : function(component, event, helper) {   
-        var parentSubTaskToggle = component.find("parentSubTasks");
-        component.set("v.parentSubTaskButton", true);    
-		component.set("v.parentSubTaskList", null);  
-        var subTaskTypeToggle = component.find("subTaskType");
-        var taskTableToggle = component.find("taskTable");
-        var exitParentSubTasksButton = component.find("exitParentSubTasksTable");
-        var viewButton = component.find("viewButton");    
-        var closeButton = component.find("closeButton");           
-        
-        //$A.util.addClass(parentSubTaskToggle, 'noDisplay');          
-        //$A.util.addClass(subTaskTypeToggle, 'noDisplay'); 
-        $A.util.addClass(exitParentSubTasksButton, 'noDisplay'); 
-        //$A.util.addClass(closeButton, 'noDisplay');
-        //$A.util.removeClass(viewButton, 'noDisplay');                          
-    }, 
-    
-    exitSubTasks : function(component, event, helper) {   
-		component.set("v.subTaskList", null);                          
-    },           
-    
 })

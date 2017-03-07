@@ -1,0 +1,19 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="NavHeaderController">
+    <aura:attribute name="userName" type="String"  />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+     <style type="text/css">
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;    
+      		color: #FFFFFF;
+        }
+  </style> 
+	<div class="header">
+        <div class="logo"><a href="home"><img src="/resource/RenewablesWhiteLogo" style=" width: 350px;"/></a></div>
+        <div class="user proximaNova"><a href="accountinfo"><h3 class="username">{!v.userName}</h3></a><a href="accountinfo"><img src="/resource/Gear" class="gearimage"/></a></div>
+   	</div>
+    <!--<div style="clear:both;dispay:none;" />-->
+</aura:component>

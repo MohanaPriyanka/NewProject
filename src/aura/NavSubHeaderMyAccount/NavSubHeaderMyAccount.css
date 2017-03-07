@@ -1,0 +1,16 @@
+.THIS {
+}
+.THIS.header {
+    background-color: #ECECEC;
+    width:100%;
+    height:45px;
+}
+.THIS .leftitem {
+    float:left;
+    margin:10px 0 10px 15px;
+}
+
+.THIS .rightitem {
+    float:right;
+    margin:10px 15px 10px 0;
+}

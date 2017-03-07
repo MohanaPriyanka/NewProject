@@ -1,0 +1,39 @@
+.THIS.panel {
+    text-align:center;
+    margin-left:20%;
+    margin-right:20%;
+}
+
+.THIS.panel1 {
+    float:right;
+    margin-left:20%;
+    margin-right:20%;
+}
+
+.THIS img.logo {
+    width:50%;
+    vertical-align:middle;
+}
+
+.THIS .notification {
+    vertical-align:middle;
+}
+
+.THIS.main2 {
+    float:right;
+    margin-left:0%;
+    margin-right:0%;
+    margin-top:0px;
+}
+
+.THIS .image {
+    vertical-align: middle;
+    -webkit-animation:spin 5s linear ;
+    -moz-animation:spin 5s linear ;
+    animation:spin 5s linear ;
+    animation:slide 20s stop 10px infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(1440deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(1440deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(1440deg); transform:rotate(1440deg); } }
