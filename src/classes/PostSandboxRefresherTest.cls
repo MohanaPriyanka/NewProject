@@ -28,9 +28,11 @@ private class PostSandboxRefresherTest {
     }    
 
 
-    static testMethod void testEmailDisable() {
+    static testMethod void testSandboxRefresh() {
+        Test.startTest();
         PostSandboxRefresher.disableEmails();
         PostSandboxRefresher.deleteScheduledJob(JOBNAME);
+        Test.stopTest();
  
         List<Contact> contactList = [SELECT Id, email
                                      FROM Contact
