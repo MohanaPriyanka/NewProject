@@ -16,6 +16,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
+
+        System.debug(Limits.getDMLRows() + ' of ' + Limits.getLimitDMLRows() + ' used');
+        System.debug(Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
     }
 
     global static void deleteScheduledJob(String jobname) {
@@ -93,7 +96,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 }
                 records.add(record);
             }
-            System.debug('Updating ' + records.size() + ' records');
+            System.debug('Updating ' + records.size() + ' ' + objectName + ' records');
             update records;
         }
     }
