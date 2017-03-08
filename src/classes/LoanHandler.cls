@@ -967,6 +967,7 @@ public without sharing class LoanHandler{
                 && equipment.Number_of_Inverters__c != null
                 && equipment.Generator_Nameplate_Capacity__c != null
                 && equipment.Loan__r.Commencement_Datee__c != null
+                && taskMap.get(taskUniqueId) != null
                 && taskMap.get(taskUniqueId).Status__c != 'Complete'){
                 taskMap.get(taskUniqueId).Status__c = 'Complete';
                 taskMap.get(taskUniqueId).Completion_Date__c = Date.today();

@@ -451,7 +451,7 @@ public class LoanTestRecordWarehouse {
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);
-        Insert new List<Lead>{leadRecordRetired, leadRecordSelfEmployed, leadRecordDOER}; 
+        Insert leadList;
 
         Residential_Equipment__c equipmentRecordRetired = new Residential_Equipment__c(Name = 'equipmentRecordRetired',
                                                                                 Lead__c = leadRecordRetired.Id,
