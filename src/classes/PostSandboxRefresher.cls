@@ -1,9 +1,11 @@
 /*
   Author: Peter Yao
-  
+
   Description: 1. Changes emails in Leads and Contacts so we don't accidentally email them
                   Courtesy of http://www.soliantconsulting.com/blog/2016/03/salesforce-sandboxpostcopy-interface
                2. Deletes the Recurring Billing scheduled job
+
+  Tested By: PostSandboxRefresherTest
                
  */
 global class PostSandboxRefresher implements SandboxPostCopy {
