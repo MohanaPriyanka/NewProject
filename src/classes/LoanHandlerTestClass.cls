@@ -30,13 +30,14 @@ public class LoanHandlerTestClass {
 	    Test.stopTest();
 
 	    for (Lead leadRecordAssertion : [SELECT Id, Name, (SELECT Id FROM Loans__r), 
-	    									(SELECT Id FROM Partner_Tasks__r), 
-	    									(SELECT Id FROM Residential_Equipment__r) 
-	    								 FROM Lead]) {
-		    //Assert that a loan was created when the lead was set to qualified.
-		    System.Assert(leadRecordAssertion.Loans__r.size() == 1);
-		    //Assert that six parent partner tasks were created when the lead was set to qualified. 
-		    System.Assert(leadRecordAssertion.Partner_Tasks__r.size() == 6);	    	
+                                             (SELECT Id FROM Partner_Tasks__r), 
+                                             (SELECT Id FROM Residential_Equipment__r) 
+                                             FROM Lead
+                                             WHERE DOER_Solar_Loan__c = false]) {
+                //Assert that a loan was created when the lead was set to qualified.
+                System.Assert(leadRecordAssertion.Loans__r.size() == 1);
+                //Assert that six parent partner tasks were created when the lead was set to qualified. 
+                System.Assert(leadRecordAssertion.Partner_Tasks__r.size() == 6);	    	
 	    }    
 	    //Assert that the equipment record mapped to the loan on creation
 	    for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
@@ -177,7 +178,7 @@ public class LoanHandlerTestClass {
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity]) {
-            if (oppRecord.DOER_Solar_Loan__c) {
+            if (!oppRecord.DOER_Solar_Loan__c) {
                 //Assert that the Eqiupment carried over to the Opportunity on conversion
                 System.Assert(oppRecord.Residential_Equipment__r.size() == 1);
                 //Assert that the Partner Tasks carried over to the Opportunity on conversion.

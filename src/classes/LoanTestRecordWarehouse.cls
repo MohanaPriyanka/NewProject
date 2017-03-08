@@ -440,16 +440,18 @@ public class LoanTestRecordWarehouse {
                                        Custom_Id__c = 'test',
                                        Unfinished_Lead__c = true, 
                                        Partner_Lookup__c = partner.Id,
-                                       //Personal_Credit_Report__c = creditReportRecord.Id,
                                        Loan_Term__c = 120,
                                        Annual_Income_Currency__c = 150000,
                                        Product__c = null,
                                        Automatic_Product_Assignment__c = true,
-                                       Status = 'Credit not Checked');        
+                                       Status = 'Credit not Checked',
+                                       Technical_Approval_Verified__c = true,
+                                       Income_Verified__c = true,
+                                       Is_there_a_Partner_Record__c = true);
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);
-        Insert new List<Lead>{leadRecordRetired, leadRecordSelfEmployed}; 
+        Insert new List<Lead>{leadRecordRetired, leadRecordSelfEmployed, leadRecordDOER}; 
 
         Residential_Equipment__c equipmentRecordRetired = new Residential_Equipment__c(Name = 'equipmentRecordRetired',
                                                                                 Lead__c = leadRecordRetired.Id,
