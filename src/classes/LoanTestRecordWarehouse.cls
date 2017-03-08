@@ -468,7 +468,14 @@ public class LoanTestRecordWarehouse {
                                                                                 Type_of_Inverter__c = 'Enphase',
                                                                                 Number_of_Inverters__c = 1,
                                                                                 Number_of_Modules__c = 5);        
-        Insert new List<Residential_Equipment__c>{equipmentRecordRetired, equipmentRecordSelfEmployed};  
+        Residential_Equipment__c equipmentRecordDOER = new Residential_Equipment__c(Name = 'equipmentRecordDOER',
+                                                                                Lead__c = leadRecordDOER.Id,
+                                                                                Generator_Nameplate_Capacity__c = 5,
+                                                                                Type_of_Module__c = 'SolarWorld',
+                                                                                Type_of_Inverter__c = 'Enphase',
+                                                                                Number_of_Inverters__c = 1,
+                                                                                Number_of_Modules__c = 5);        
+        Insert new List<Residential_Equipment__c>{equipmentRecordRetired, equipmentRecordSelfEmployed, equipmentRecordDOER};  
         
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
