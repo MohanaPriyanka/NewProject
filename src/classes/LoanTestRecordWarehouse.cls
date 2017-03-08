@@ -426,8 +426,29 @@ public class LoanTestRecordWarehouse {
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check');        
+        Lead leadRecordDOER = new Lead(FirstName = 'DOER',
+                                       LastName = 'Test',
+                                       Loan_Amount__c = 25000,
+                                       Company = 'Cole Swain',
+                                       LASERCA__Social_Security_Number__c = '000000001',
+                                       Retired__c = false,
+                                       Self_Employed__c = true,
+                                       Product_Line__c = 'Residential Loan',
+                                       DOER_Solar_Loan__c = true,
+                                       LASERCA__Home_State__c = 'MA',
+                                       System_Cost__c = 25000,
+                                       Custom_Id__c = 'test',
+                                       Unfinished_Lead__c = true, 
+                                       Partner_Lookup__c = partner.Id,
+                                       //Personal_Credit_Report__c = creditReportRecord.Id,
+                                       Loan_Term__c = 120,
+                                       Annual_Income_Currency__c = 150000,
+                                       Product__c = null,
+                                       Automatic_Product_Assignment__c = true,
+                                       Status = 'Credit not Checked');        
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
+        leadList.add(leadRecordDOER);
         Insert new List<Lead>{leadRecordRetired, leadRecordSelfEmployed}; 
 
         Residential_Equipment__c equipmentRecordRetired = new Residential_Equipment__c(Name = 'equipmentRecordRetired',

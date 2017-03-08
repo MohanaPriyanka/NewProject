@@ -152,7 +152,7 @@ public class LoanHandlerTestClass {
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Test.startTest();
         for (Lead leadRecord : leadList) {
-        	leadRecord.Status = 'Qualified';
+            leadRecord.Status = 'Qualified';
         }
         update leadList;
         for (Lead l :leadList){     
@@ -165,70 +165,72 @@ public class LoanHandlerTestClass {
             Database.LeadConvertResult lcr = Database.convertLead(lc);
             System.assert(lcr.isSuccess());
         }
-	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
-	    	if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
-	    	}		
-	    	if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
-	    	}	    	    	
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+            if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+            }		
+            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
+            }	    	    	
     	}
-    	for (Opportunity oppRecord : [SELECT Id, 
-    									(SELECT Id FROM Residential_Equipment__r), 
-    									(SELECT Id FROM Partner_Tasks__r)
-    								  FROM Opportunity]) {
-    		//Assert that the Eqiupment carried over to the Opportunity on conversion
-    		System.Assert(oppRecord.Residential_Equipment__r.size() == 1);
-    		//Assert that the Partner Tasks carried over to the Opportunity on conversion.
-    		System.Assert(oppRecord.Partner_Tasks__r.size() == 6);
-    		oppRecord.StageName = 'Complete';
-    		oppListToUpdate.add(oppRecord);
+    	for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
+                                      (SELECT Id FROM Residential_Equipment__r), 
+                                      (SELECT Id FROM Partner_Tasks__r)
+                                      FROM Opportunity]) {
+            if (oppRecord.DOER_Solar_Loan__c) {
+                //Assert that the Eqiupment carried over to the Opportunity on conversion
+                System.Assert(oppRecord.Residential_Equipment__r.size() == 1);
+                //Assert that the Partner Tasks carried over to the Opportunity on conversion.
+                System.Assert(oppRecord.Partner_Tasks__r.size() == 6);
+            }
+            oppRecord.StageName = 'Complete';
+            oppListToUpdate.add(oppRecord);
     	}
     	update oppListToUpdate;
 
     	for (Loan__c loanRecord : [SELECT Id, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
-    		System.assert(loanRecord.Disbursals__r.size() == 3);
+            System.assert(loanRecord.Disbursals__r.size() == 3);
     	}
 
-	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
-	    	if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
-	    	}		
-	    	if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
-	    	}	    	    	
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+            }		
+            if(partnerTaskAssertion.Name == 'Mechanical Installation') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
+            }	    	    	
     	}
     	List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c 
-    													FROM Residential_Equipment__c];
+                                                        FROM Residential_Equipment__c];
     	for (Residential_Equipment__c equipment : equipmentList){
-    		equipment.Mechanically_Installed__c = true;
-    		equipmentListToUpdate.add(equipment);
+            equipment.Mechanically_Installed__c = true;
+            equipmentListToUpdate.add(equipment);
     	}
     	update equipmentListToUpdate;
     	equipmentListToUpdate.clear();
 	    
-	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
-	    	if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
-	    	}		
-	    	if(partnerTaskAssertion.Name == 'Interconnection') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
-	    	}	    	    	
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+            if(partnerTaskAssertion.Name == 'Mechanical Installation') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+            }		
+            if(partnerTaskAssertion.Name == 'Interconnection') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
+            }	    	    	
     	}
     	for (Residential_Equipment__c equipment : equipmentList){
-    		equipment.Interconnected__c = true;
-    		equipmentListToUpdate.add(equipment);
+            equipment.Interconnected__c = true;
+            equipmentListToUpdate.add(equipment);
     	}
     	if(equipmentListToUpdate.size() > 0 ) {
-    		update equipmentListToUpdate;    		
+            update equipmentListToUpdate;    		
     	}
 	    
-	    for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
-	    	if(partnerTaskAssertion.Name == 'Interconnection') {
-	    		System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
-	    	}		    	    	
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+            if(partnerTaskAssertion.Name == 'Interconnection') {
+                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+            }		    	    	
     	}      	    	
-	    Test.stopTest();    	
+        Test.stopTest();    	
     }
 
     public static void changeLeadUpdateDummy(List<Lead> leadList) {
