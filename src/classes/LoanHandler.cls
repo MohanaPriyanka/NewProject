@@ -41,16 +41,20 @@ public without sharing class LoanHandler{
                 if (newLead.Id == oldLead.Id){
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
-                        && newLead.Product_Line__c == 'Residential Loan'){
+                        && newLead.Product_Line__c == 'Residential Loan'
+                        && newLead.Doer_Solar_Loan__c == false){
                         leadsToCreateLoan.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
-                if (newLead.isConverted == true && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                if (newLead.isConverted == true 
+                    && oldLead.isConverted == false 
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
