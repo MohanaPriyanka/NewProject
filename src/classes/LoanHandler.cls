@@ -384,7 +384,7 @@ public without sharing class LoanHandler{
                     disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     disbursalNameTruncated = disbursalName.subString(0,80);
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalNameTruncated,
                         Unique_ID__c = loanRecord.Id + ' ' + '30% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
@@ -399,7 +399,7 @@ public without sharing class LoanHandler{
                     disbursalName = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     disbursalNameTruncated = disbursalName.subString(0,80);                    
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalNameTruncated,
                         Unique_ID__c = loanRecord.Id + ' ' + '60% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
@@ -414,7 +414,7 @@ public without sharing class LoanHandler{
                     disbursalName = '10% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     disbursalNameTruncated = disbursalName.subString(0,80);                        
                     Disbursal__c disbursal3 = new Disbursal__c(
-                        Name = '10% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalNameTruncated,
                         Unique_ID__c = loanRecord.Id + ' ' + '10% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 3,
@@ -431,7 +431,7 @@ public without sharing class LoanHandler{
                     disbursalName = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     disbursalNameTruncated = disbursalName.subString(0,80);                      
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalNameTruncated,
                         Unique_ID__c = loanRecord.Id + ' ' + '35% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
@@ -446,7 +446,7 @@ public without sharing class LoanHandler{
                     disbursalName = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     disbursalNameTruncated = disbursalName.subString(0,80);                      
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalNameTruncated,
                         Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
