@@ -363,7 +363,6 @@ public without sharing class LoanHandler{
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
         Decimal systemCost;
         String disbursalName;
-        String disbursalNameTruncated;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
                                     Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c 
                                     FROM Loan__c 
@@ -380,11 +379,14 @@ public without sharing class LoanHandler{
                     systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
-                    System.debug('The partner ID is ' + loanRecord.Partner__r.Id);
+                    
                     disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    disbursalNameTruncated = disbursalName.subString(0,80);
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }
+
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = disbursalNameTruncated,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '30% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
@@ -395,11 +397,14 @@ public without sharing class LoanHandler{
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
                     disbursalName = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    disbursalNameTruncated = disbursalName.subString(0,80);                    
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                            
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = disbursalNameTruncated,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '60% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
@@ -410,11 +415,14 @@ public without sharing class LoanHandler{
                         Type__c = 'Mechanical Installation',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
-                     disbursalInsertList.add(disbursal2);
-                    disbursalName = '10% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    disbursalNameTruncated = disbursalName.subString(0,80);                        
+
+                    disbursalInsertList.add(disbursal2);
+                    disbursalName = '10% Interconnection'  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                               
                     Disbursal__c disbursal3 = new Disbursal__c(
-                        Name = disbursalNameTruncated,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '10% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 3,
@@ -429,9 +437,11 @@ public without sharing class LoanHandler{
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '35% Contract Signature, 65% Interconnection'){
                     disbursalName = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    disbursalNameTruncated = disbursalName.subString(0,80);                      
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                              
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = disbursalNameTruncated,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '35% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
@@ -442,11 +452,14 @@ public without sharing class LoanHandler{
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
-                    disbursalName = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    disbursalNameTruncated = disbursalName.subString(0,80);                      
+                    disbursalName = '65% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                             
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = disbursalNameTruncated,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
