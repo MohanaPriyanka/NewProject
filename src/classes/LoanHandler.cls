@@ -361,8 +361,9 @@ public without sharing class LoanHandler{
 
     public void createDisbursals(List<Loan__c> newLoanList){
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
+        Decimal systemCost;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
-                                    Product__r.Disbursal_Terms__c 
+                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
             // make this code more efficient by creating fields on the product that allow the user to select :
@@ -371,6 +372,11 @@ public without sharing class LoanHandler{
             //      Disbursal_Count__c = 3
             //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
+                if(loanRecord.System_Costt__c != null || loanRecord.System_Costt__c <= 0) {
+                    systemCost = loanRecord.System_Costt__c;
+                }else {
+                    systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
+                }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
                     System.debug('The partner ID is ' + loanRecord.Partner__r.Id);
                     Disbursal__c disbursal1 = new Disbursal__c(
@@ -381,7 +387,7 @@ public without sharing class LoanHandler{
                         Disbursal_Percentage__c = 0.3,
                         Partner__c = loanRecord.Partner__r.Id,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.30,
+                        Amount__c = systemCost * 0.30,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -394,7 +400,7 @@ public without sharing class LoanHandler{
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.6,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.60,
+                        Amount__c = systemCost * 0.60,
                         Type__c = 'Mechanical Installation',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -407,7 +413,7 @@ public without sharing class LoanHandler{
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.1,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.10,
+                        Amount__c = systemCost * 0.10,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -422,7 +428,7 @@ public without sharing class LoanHandler{
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.35,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.35,
+                        Amount__c = systemCost * 0.35,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -435,7 +441,7 @@ public without sharing class LoanHandler{
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.65,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.65,
+                        Amount__c = systemCost * 0.65,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
