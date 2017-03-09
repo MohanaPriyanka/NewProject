@@ -66,7 +66,7 @@ public without sharing class SLPCustomerHandler {
                                                       Interconnected__c, Mechanically_Installed__c, Interconnection_date__c, 
                                                       Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,
                                                       Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, 
-                                                      Inverter_Model_Number__c 
+                                                      Inverter_Model_Number__c, Loan__r.Id 
                                                     FROM Residential_Equipment__c 
                                                     WHERE Loan__c = : loanId 
                                                     LIMIT 1];
