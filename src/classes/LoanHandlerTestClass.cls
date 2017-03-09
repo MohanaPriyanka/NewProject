@@ -90,6 +90,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
+        loanListToUpdate[0].System_Costt__c = null;
         update loanListToUpdate;
         changeLeadUpdateDummy(leadList);
 
