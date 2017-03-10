@@ -361,8 +361,10 @@ public without sharing class LoanHandler{
 
     public void createDisbursals(List<Loan__c> newLoanList){
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
+        Decimal systemCost;
+        String disbursalName;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
-                                    Product__r.Disbursal_Terms__c 
+                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
             // make this code more efficient by creating fields on the product that allow the user to select :
@@ -371,76 +373,106 @@ public without sharing class LoanHandler{
             //      Disbursal_Count__c = 3
             //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
+                if(loanRecord.System_Costt__c != null || loanRecord.System_Costt__c <= 0) {
+                    systemCost = loanRecord.System_Costt__c;
+                }else {
+                    systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
+                }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
-                    System.debug('The partner ID is ' + loanRecord.Partner__r.Id);
+                    
+                    disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }
+
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '30% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
                         Disbursal_Percentage__c = 0.3,
                         Partner__c = loanRecord.Partner__r.Id,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.30,
+                        Amount__c = systemCost * 0.30,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
+                    disbursalName = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                            
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '60% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.6,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.60,
+                        Amount__c = systemCost * 0.60,
                         Type__c = 'Mechanical Installation',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
-                     disbursalInsertList.add(disbursal2);
+
+                    disbursalInsertList.add(disbursal2);
+                    disbursalName = '10% Interconnection'  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                               
                     Disbursal__c disbursal3 = new Disbursal__c(
-                        Name = '10% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '10% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 3,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.1,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.10,
+                        Amount__c = systemCost * 0.10,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
                      disbursalInsertList.add(disbursal3);
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '35% Contract Signature, 65% Interconnection'){
+                    disbursalName = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                              
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '35% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.35,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.35,
+                        Amount__c = systemCost * 0.35,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
+                    disbursalName = '65% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                             
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.65,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.65,
+                        Amount__c = systemCost * 0.65,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
                      disbursalInsertList.add(disbursal2);                
                 }
+                disbursalName = null;
             }
         }  
         upsert disbursalInsertList Unique_ID__c ;
@@ -956,14 +988,17 @@ public without sharing class LoanHandler{
 
         for (Residential_Equipment__c equipment : [SELECT Id, Lead__c, Lead__r.Id, Loan__c, Loan__r.Id, Loan__r.Commencement_Datee__c,
                                                     Lead__r.System_Cost__c, Type_of_Module__c, Type_of_Inverter__c,
-                                                    Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c 
+                                                    Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
+                                                    Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Inverter_Model_Number__c 
                                                    FROM Residential_Equipment__c
                                                    WHERE Lead__c IN : leadIdList]){
             taskUniqueId = equipment.Lead__r.Id + ' ' + 'Provide all System Information';
             if(equipment.Lead__r.System_Cost__c > 0 
-                && equipment.Type_of_Module__c != null
+                && equipment.Module_Manufacturer__c != null
+                && equipment.Module_Model_Number__c != null
                 && equipment.Number_of_Modules__c != null
-                && equipment.Type_of_Inverter__c != null
+                && equipment.Inverter_Manufacturer__c != null
+                && equipment.Inverter_Model_Number__c != null
                 && equipment.Number_of_Inverters__c != null
                 && equipment.Generator_Nameplate_Capacity__c != null
                 && equipment.Loan__r.Commencement_Datee__c != null

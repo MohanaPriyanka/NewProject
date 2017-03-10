@@ -91,6 +91,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
+        loanListToUpdate[0].System_Costt__c = null;
         update loanListToUpdate;
         changeLeadUpdateDummy(leadList);
 
@@ -137,6 +138,7 @@ public class LoanHandlerTestClass {
     	List<Lead> leadList = [SELECT Id FROM Lead];
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
@@ -172,10 +174,13 @@ public class LoanHandlerTestClass {
             oppRecord.StageName = 'Complete';
             oppListToUpdate.add(oppRecord);
     	}
+
     	update oppListToUpdate;
 
-    	for (Loan__c loanRecord : [SELECT Id, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
-            System.assert(loanRecord.Disbursals__r.size() == 3);
+    	for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
+            if (!loanRecord.DOER_Solar_Loann__c){
+                System.assertEquals(loanRecord.Disbursals__r.size(), 3);
+            }
     	}
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
