@@ -70,11 +70,14 @@ insert newPipeLine;
                                     //Personal_Credit_Report__c = creditReportRecord.Id,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
+                                    Pre_Approval_Form__c = true,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check');
         insert newLead;
         newLead.Unfinished_Lead__c = false;
+        update newLead;
+        newLead.Status = 'Pending Information';
         update newLead;
         newLead.Status = 'Qualified';
         update newLead;

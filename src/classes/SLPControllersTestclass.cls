@@ -163,6 +163,7 @@ public without sharing class SLPControllersTestclass {
 		leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            LeadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -228,6 +229,7 @@ public without sharing class SLPControllersTestclass {
         leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -270,6 +272,7 @@ public without sharing class SLPControllersTestclass {
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -313,6 +316,7 @@ public without sharing class SLPControllersTestclass {
 
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -363,6 +367,7 @@ public without sharing class SLPControllersTestclass {
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -373,6 +378,7 @@ public without sharing class SLPControllersTestclass {
 		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -410,6 +416,7 @@ public without sharing class SLPControllersTestclass {
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
@@ -485,6 +492,7 @@ public without sharing class SLPControllersTestclass {
 		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
         }    
         update leadList;
 
