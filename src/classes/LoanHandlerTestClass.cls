@@ -193,6 +193,30 @@ public class LoanHandlerTestClass {
                 System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
             }	    	    	
     	}
+        Test.stopTest();
+    }
+
+    @isTest static void testEquipmentUpdates() {
+    	List<Lead> leadList = [SELECT Id FROM Lead];
+    	List<Opportunity> oppListToUpdate = new List<Opportunity>();
+    	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
+        Test.startTest();
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }
+        update leadList;
+        for (Lead l :leadList){     
+            database.leadConvert lc = new database.leadConvert();
+            lc.setLeadId(l.Id);
+
+            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
+            lc.setConvertedStatus(convertStatus.MasterLabel);
+
+            Database.LeadConvertResult lcr = Database.convertLead(lc);
+            System.assert(lcr.isSuccess());
+        }
+
     	List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c 
                                                         FROM Residential_Equipment__c
                                                         WHERE Loan__r.DOER_Solar_Loann__c = false];
