@@ -177,8 +177,10 @@ public class LoanHandlerTestClass {
 
     	update oppListToUpdate;
 
-    	for (Loan__c loanRecord : [SELECT Id, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
-            System.assert(loanRecord.Disbursals__r.size() == 3);
+    	for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
+            if (!loanRecord.DOER_Solar_Loann__c){
+                System.assertEquals(loanRecord.Disbursals__r.size(), 3);
+            }
     	}
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
