@@ -42,18 +42,19 @@ public without sharing class LoanHandler{
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
                         && newLead.Product_Line__c == 'Residential Loan'
-                        && newLead.DOER_Solar_Loan__c == false){
+                        && newLead.Doer_Solar_Loan__c == false){
                         leadsToCreateLoan.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan' 
-                    && newLead.DOER_Solar_Loan__c == false){
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
-                if (newLead.isConverted == true && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan' 
-                    && newLead.DOER_Solar_Loan__c == false){
+                if (newLead.isConverted == true 
+                    && oldLead.isConverted == false 
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
@@ -119,9 +120,21 @@ public without sharing class LoanHandler{
             for (Opportunity oppRecord : updatedOpportunities) {
                 oppLeadIds.add(oppRecord.Lead_ID__c);
             }
-            //Set the partner task - Obtain Contract Signature to Complete when the Stage is completed.
-            updatePartnerTaskObtainContractSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));        
+            
+            List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
+            if (partnerTaskList.size() > 0) {
+                    //Set the partner task - Obtain Contract Signature to Complete when the Stage is completed.
+                    updatePartnerTaskObtainContractSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));       
+            }
         }    
+    }
+    public List<Partner_Task__c> checkForPartnerTasksOnOpportunity(List<Opportunity> opportunities) {
+        List<String> oppIds = new List<String>();
+        for (Opportunity oppRecord : opportunities) {
+            oppIds.add(oppRecord.Id);
+        }
+        List<Partner_Task__c> partnerTasks = [SELECT Id FROM Partner_Task__c WHERE Opportunity__r.Id IN : oppIds];
+        return partnerTasks;
     }
 
     public void onAfterResidentialEquipmentUpdate(List<Residential_Equipment__c> newEquipment, List<Residential_Equipment__c> oldEquipment){
@@ -352,81 +365,118 @@ public without sharing class LoanHandler{
 
     public void createDisbursals(List<Loan__c> newLoanList){
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
+        Decimal systemCost;
+        String disbursalName;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
-                                    Product__r.Disbursal_Terms__c 
+                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
+            // make this code more efficient by creating fields on the product that allow the user to select :
+            // Number of dibursals - disubrsals percentage intervals. Parse the text by commas.
+            // Example : 
+            //      Disbursal_Count__c = 3
+            //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
+                if(loanRecord.System_Costt__c != null && loanRecord.System_Costt__c > 0) {
+                    systemCost = loanRecord.System_Costt__c;
+                }else {
+                    systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
+                }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
-                    System.debug('The partner ID is ' + loanRecord.Partner__r.Id);
+                    
+                    disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                        disbursalName = disbursalName.subString(0,80);
+                    }
+
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '30% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
                         Disbursal_Percentage__c = 0.3,
                         Partner__c = loanRecord.Partner__r.Id,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.30,
+                        Amount__c = systemCost * 0.30,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
+                    disbursalName = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                            
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '60% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.6,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.60,
+                        Amount__c = systemCost * 0.60,
                         Type__c = 'Mechanical Installation',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
-                     disbursalInsertList.add(disbursal2);
+
+                    disbursalInsertList.add(disbursal2);
+                    disbursalName = '10% Interconnection'  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                               
                     Disbursal__c disbursal3 = new Disbursal__c(
-                        Name = '10% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '10% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 3,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.1,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.10,
+                        Amount__c = systemCost * 0.10,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
                      disbursalInsertList.add(disbursal3);
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '35% Contract Signature, 65% Interconnection'){
+                    disbursalName = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                              
                     Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '35% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.35,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.35,
+                        Amount__c = systemCost * 0.35,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
+
                     disbursalInsertList.add(disbursal1);
+                    disbursalName = '65% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    if(disbursalName.length() >= 80) {
+                    disbursalName = disbursalName.subString(0,80);
+                    }                                                             
                     Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+                        Name = disbursalName,
                         Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
                         Disbursal_Percentage__c = 0.65,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = LoanRecord.System_Costt__c * 0.65,
+                        Amount__c = systemCost * 0.65,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
                      disbursalInsertList.add(disbursal2);                
                 }
+                disbursalName = null;
             }
         }  
         upsert disbursalInsertList Unique_ID__c ;
@@ -461,7 +511,6 @@ public without sharing class LoanHandler{
                                    Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c 
                                    FROM Loan__c 
                                    WHERE Id IN : newLoanList]){
-
             Partner_Task__c creditTask = new Partner_Task__c(
                 Name = 'Run Credit Check',
                 RecordType = parentPartnerTaskRecordType,
@@ -552,27 +601,46 @@ public without sharing class LoanHandler{
                 );
                 parentTaskInsertList.add(mechanicalInstallationTask);
                 parentTaskTypeMapUniqueId = mechanicalInstallationTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);                
-                partnerSequenceCounter = partnerSequenceCounter + 1;  
-            }       
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, mechanicalInstallationTask);                
+                partnerSequenceCounter = partnerSequenceCounter + 1;                     
 
-            Partner_Task__c interconnectionTask = new Partner_Task__c(
-                Name = 'Interconnection',
-                RecordType = parentPartnerTaskRecordType,
-                Lead__c = loanRecord.Lead__r.Id,
-                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
-                Partner__c = loanRecord.Partner__r.Id,
-                Parent__c = true,
-                Task_Sequence__c = partnerSequenceCounter,
-                Status__c = 'Incomplete',
-                Start_Date__c = Date.today(),
-                Task_Type__c = 'Interconnection',
-                Loan__c = loanRecord.Id
-            );
-            parentTaskInsertList.add(interconnectionTask);
-            parentTaskTypeMapUniqueId = interconnectionTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-            parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, contractSignatureTask);            
-            partnerSequenceCounter = partnerSequenceCounter + 1;                           
+                Partner_Task__c interconnectionTask = new Partner_Task__c(
+                    Name = 'Interconnection',
+                    RecordType = parentPartnerTaskRecordType,
+                    Lead__c = loanRecord.Lead__r.Id,
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
+                    Partner__c = loanRecord.Partner__r.Id,
+                    Parent__c = true,
+                    Task_Sequence__c = partnerSequenceCounter,
+                    Status__c = 'Incomplete',
+                    Start_Date__c = Date.today(),
+                    Task_Type__c = 'Interconnection',
+                    Loan__c = loanRecord.Id
+                );
+                parentTaskInsertList.add(interconnectionTask);
+                parentTaskTypeMapUniqueId = interconnectionTask.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, interconnectionTask);            
+                partnerSequenceCounter = partnerSequenceCounter + 1;                           
+            }
+            if (loanRecord.DOER_Solar_Loann__c == true){
+                Partner_Task__c finalCompletion = new Partner_Task__c(
+                    Name = 'Final Completion Acknowledgement',
+                    RecordType = parentPartnerTaskRecordType,
+                    Lead__c = loanRecord.Lead__r.Id,
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Final Completion',          
+                    Partner__c = loanRecord.Partner__r.Id,
+                    Task_Sequence__c = partnerSequenceCounter,
+                    Parent__c = true,
+                    Status__c = 'Incomplete',
+                    Start_Date__c = Date.today(),
+                    Task_Type__c = 'Final Completion',
+                    Loan__c = loanRecord.Id
+                );
+                parentTaskInsertList.add(finalCompletion);
+                parentTaskTypeMapUniqueId = finalCompletion.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, finalCompletion);                
+                partnerSequenceCounter = partnerSequenceCounter + 1;                                               
+            }
 
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
                 Name = 'Provide Income Documentation',
@@ -592,24 +660,44 @@ public without sharing class LoanHandler{
             subParentTaskInsertList.add(incomeDocumentationTask);
             subTaskTypeMapUniqueId = incomeDocumentationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;
             subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, incomeDocumentationTask);
-             
-            Partner_Task__c systemInformationTask = new Partner_Task__c(
-                Name = 'Provide all System Information',
-                RecordType = childPartnerTaskRecordType,
-                //Lead__c = loanRecord.Lead__r.Id,
-                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide all System Information',                
-                Partner__c = loanRecord.Partner__r.Id,
-                Status__c = 'Incomplete',
-                Start_Date__c = Date.today(),
-                Sub_Task_Type__c = 'System Information',
-                Task_Type__c = 'Customer Information',
-                Parent__c = true,
-                Parent_Task__c = allInformationTask.Id,
-                Loan__c = loanRecord.Id
-            );
-            subParentTaskInsertList.add(systemInformationTask);
-            subTaskTypeMapUniqueId = systemInformationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
-            subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, systemInformationTask);
+            
+            if (loanRecord.DOER_Solar_Loann__c == false){ 
+                Partner_Task__c systemInformationTask = new Partner_Task__c(
+                    Name = 'Provide all System Information',
+                    RecordType = childPartnerTaskRecordType,
+                    //Lead__c = loanRecord.Lead__r.Id,
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide all System Information',                
+                    Partner__c = loanRecord.Partner__r.Id,
+                    Status__c = 'Incomplete',
+                    Start_Date__c = Date.today(),
+                    Sub_Task_Type__c = 'System Information',
+                    Task_Type__c = 'Customer Information',
+                    Parent__c = true,
+                    Parent_Task__c = allInformationTask.Id,
+                    Loan__c = loanRecord.Id
+                );            
+                subParentTaskInsertList.add(systemInformationTask);
+                subTaskTypeMapUniqueId = systemInformationTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
+                subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, systemInformationTask);
+            }
+            if (loanRecord.DOER_Solar_Loann__c == true){
+                Partner_Task__c technicalApprovalTask = new Partner_Task__c(
+                    Name = 'Provide Technical Approval Documentation',
+                    //Lead__c = loanRecord.Lead__r.Id,
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Technical Approval Documentation',                
+                    Partner__c = loanRecord.Partner__r.Id,
+                    Status__c = 'Incomplete',
+                    Start_Date__c = Date.today(),
+                    Sub_Task_Type__c = 'Technical Approval',
+                    Task_Type__c = 'Customer Information',
+                    //Parent__c = true,
+                    Parent_Task__c = allInformationTask.Id,
+                    Loan__c = loanRecord.Id
+                );                
+                subParentTaskInsertList.add(technicalApprovalTask);
+                subTaskTypeMapUniqueId = technicalApprovalTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
+                subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, technicalApprovalTask);
+            }
 
             Partner_Task__c salesAgreementTask = new Partner_Task__c(
                 Name = 'Provide Sales Agreement',
@@ -918,6 +1006,7 @@ public without sharing class LoanHandler{
                 && equipment.Number_of_Inverters__c != null
                 && equipment.Generator_Nameplate_Capacity__c != null
                 && equipment.Loan__r.Commencement_Datee__c != null
+                && taskMap.get(taskUniqueId) != null
                 && taskMap.get(taskUniqueId).Status__c != 'Complete'){
                 taskMap.get(taskUniqueId).Status__c = 'Complete';
                 taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
