@@ -34,7 +34,7 @@ public with sharing class PCRApprovalHandler {
             }
       }
 
-      List <Lead> relatedlead  = [ SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status
+      List <Lead> relatedlead  = [ SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Continue_Loan_Application_Link__c, Status
                                     FROM Lead 
                                     WHERE Id  IN : leadlist ];
 
@@ -77,7 +77,7 @@ public with sharing class PCRApprovalHandler {
                 string firstname = newPCR.get(j).First_Name_from_Lead__c;  
                 string lastname = newPCR.get(j).Last_Name_from_Lead__c;
                 string email = newPCR.get(j).Email_from_Lead__c;
-                string link = 'www.bluewavesolar.com';
+                string link = newPCR.get(j).Continue_Loan_Application_Link__c;
                 string referralcode = newPCR.get(j).Related_Partner__c;
 
                 system.debug(code1);
@@ -309,7 +309,7 @@ public with sharing class PCRApprovalHandler {
                         
                     if(firstname != NULL 
                         && lastname != NULL 
-                        && email != NULL){
+                        && email != NULL ){
                                 
                           EmailTemplate et = [SELECT id, HtmlValue, Body 
                                               FROM EmailTemplate 
@@ -317,6 +317,7 @@ public with sharing class PCRApprovalHandler {
 
                           system.debug(et);
                           string htmlbody = et.HtmlValue;
+                          htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', link);
                           htmlBody = htmlBody.replace('{!Lead.Name}', firstname);
                           htmlBody = htmlBody.replace('{!Lead.FirstName}', firstname);
                           htmlBody = htmlBody.replace('{!Lead.LastName}', lastname);
@@ -391,7 +392,7 @@ public with sharing class PCRApprovalHandler {
                                 system.debug(ccAddresses);
                             }
                                                           
-                            string subject = 'Congrats! ' +  firstname + ', you have been prequalified for a BlueWave Mass Solar Loan'; 
+                            string subject = 'Congrats! ' +  firstname + ', you have been prequalified for a BlueWave Solar Loan'; 
                             mail.setSubject(subject);
                             mail.setTargetObjectId(newPCR.get(j).PCR_Lead_ID__c);
                             system.debug(newPCR.get(j).PCR_Lead_ID__c);
