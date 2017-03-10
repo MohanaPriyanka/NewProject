@@ -154,6 +154,7 @@ public without sharing class LoanHandler{
     public void createResidentialEquipment(List<Lead> newLeadList){
         System.debug('Being createResidentialEquipment method');
         Map<String, RecordType> recordTypeMap = new Map<String, RecordType>();
+        for (RecordType recordTypeVar : [SELECT Id, Name FROM RecordType WHERE SobjectType = 'Residential_Equipment__c' AND (Name = 'BlueWave Solar Loan' OR Name ='MSLP')]) {
             recordTypeMap.put(recordtypeVar.Name, recordTypeVar);
         }
         List<Residential_Equipment__c> newEquipmentList = new List<Residential_Equipment__c>();
