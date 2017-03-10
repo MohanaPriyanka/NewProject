@@ -75,6 +75,7 @@ private class JSONLoanPaymentHandlerTest {
                                     Custom_Id__c = 'test',
                                     Loan_Term__c = 120,
                                     Partner_Lookup__c = partner.Id,
+                                    Pre_Approval_Form__c = true,
                                     //Personal_Credit_Report__c = creditReportRecord.Id,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
@@ -83,6 +84,8 @@ private class JSONLoanPaymentHandlerTest {
                                     Status = 'Ready for Credit Check');
         insert newLead;
         newLead.Unfinished_Lead__c = false;
+        update newLead;
+        newLead.Status = 'Pending Information';
         update newLead;
         newLead.Status = 'Qualified';
         update newLead;

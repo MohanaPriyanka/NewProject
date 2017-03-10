@@ -64,10 +64,13 @@ Static testMethod void loanPipeLineConvert ()
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
+                                    Pre_Approval_Form__c = True,
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check');
         insert newLead;
         newLead.Unfinished_Lead__c = false;
+        update newLead;
+        newLead.Status = 'Pending Information';
         update newLead;
         newLead.Status = 'Qualified';
         update newLead;

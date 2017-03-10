@@ -34,7 +34,7 @@ public with sharing class PCRApprovalHandler {
             }
       }
 
-      List <Lead> relatedlead  = [ SELECT Id, DOER_Solar_Loan__c, Status
+      List <Lead> relatedlead  = [ SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status
                                     FROM Lead 
                                     WHERE Id  IN : leadlist ];
 
@@ -238,6 +238,36 @@ public with sharing class PCRApprovalHandler {
 
                 for(Lead ld : relatedlead){
                       if(ld.Id == newPCR.get(j).LASERCA__Lead__c 
+                        && ld.Pre_Approval_Form__c == FALSE  
+                        && ld.DOER_Solar_Loan__c == FALSE
+                        && ld.Status == 'Ready for Credit Check'){ 
+                              if(BW_approval == 'Approved'){
+                                    ld.Status = 'Pending Information';
+                              }
+                              else if(BW_approval == 'Pending Review'){
+                                    ld.Status = 'Pending Credit Review';
+                              }
+                              else if(BW_approval == 'Declined'){
+                                    ld.Status = 'Unqualified';
+                              }
+                      }
+
+                      else if(ld.Id == newPCR.get(j).LASERCA__Lead__c 
+                        && ld.Pre_Approval_Form__c == FALSE  
+                        && ld.DOER_Solar_Loan__c == TRUE
+                        && ld.Status == 'Ready for Credit Check'){ 
+                              if(DOER_approval == 'Approved'){
+                                    ld.Status = 'Pending Information';
+                              }
+                              else if(DOER_approval == 'Pending Review'){
+                                    ld.Status = 'Pending Credit Review';
+                              }
+                              else if(DOER_approval == 'Declined'){
+                                    ld.Status = 'Unqualified';
+                              }
+                      }
+
+                      else if(ld.Id == newPCR.get(j).LASERCA__Lead__c 
                         && ld.DOER_Solar_Loan__c == FALSE  
                         && ld.Status == 'Ready for Credit Check'){ 
                               if(BW_approval == 'Approved'){

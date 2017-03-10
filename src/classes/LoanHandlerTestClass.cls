@@ -9,6 +9,7 @@ public class LoanHandlerTestClass {
         List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
         for (Lead leadRecord : leadList) {
         	leadRecord.Unfinished_Lead__c = false;
+        	LeadRecord.Status = 'Pending Information';
         }
         update leadList;
         //insert leadList;
@@ -28,6 +29,7 @@ public class LoanHandlerTestClass {
         //update leadListUpdate.get(1);
 
 	    Test.stopTest();
+
 
 	    for (Lead leadRecordAssertion : [SELECT Id, Name, (SELECT Id FROM Loans__r), 
 	    									(SELECT Id FROM Partner_Tasks__r), 
