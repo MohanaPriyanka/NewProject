@@ -904,14 +904,17 @@ public without sharing class LoanHandler{
 
         for (Residential_Equipment__c equipment : [SELECT Id, Lead__c, Lead__r.Id, Loan__c, Loan__r.Id, Loan__r.Commencement_Datee__c,
                                                     Lead__r.System_Cost__c, Type_of_Module__c, Type_of_Inverter__c,
-                                                    Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c 
+                                                    Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
+                                                    Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Inverter_Model_Number__c 
                                                    FROM Residential_Equipment__c
                                                    WHERE Lead__c IN : leadIdList]){
             taskUniqueId = equipment.Lead__r.Id + ' ' + 'Provide all System Information';
             if(equipment.Lead__r.System_Cost__c > 0 
-                && equipment.Type_of_Module__c != null
+                && equipment.Module_Manufacturer__c != null
+                && equipment.Module_Model_Number__c != null
                 && equipment.Number_of_Modules__c != null
-                && equipment.Type_of_Inverter__c != null
+                && equipment.Inverter_Manufacturer__c != null
+                && equipment.Inverter_Model_Number__c != null
                 && equipment.Number_of_Inverters__c != null
                 && equipment.Generator_Nameplate_Capacity__c != null
                 && equipment.Loan__r.Commencement_Datee__c != null
