@@ -298,11 +298,6 @@ public with sharing class PCRApprovalHandler {
                 }
 
                 update relatedlead;
-            
-                system.debug(firstname);
-                system.debug(lastname);
-                system.debug(email);
-                system.debug(referralcode);
 
                 // SEND PREAPPROVAL EMAIL 
 
@@ -314,8 +309,7 @@ public with sharing class PCRApprovalHandler {
                         
                     if(firstname != NULL 
                         && lastname != NULL 
-                        && email != NULL 
-                        && referralcode !=NULL){
+                        && email != NULL){
                                 
                           EmailTemplate et = [SELECT id, HtmlValue, Body 
                                               FROM EmailTemplate 
@@ -328,7 +322,6 @@ public with sharing class PCRApprovalHandler {
                           htmlBody = htmlBody.replace('{!Lead.LastName}', lastname);
                           htmlBody = htmlBody.replace('{!Lead.Email}', email);
                           htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',newPCR.get(j).PCR_Lead_ID__c );
-                          htmlBody = htmlBody.replace('{!Lead.Custom_ID__c}', referralcode);
 
                           Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                           mail.setHtmlBody(htmlBody);
