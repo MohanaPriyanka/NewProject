@@ -105,31 +105,31 @@ public class LoanHandlerTestClass {
 
         for (Partner_Task__c partnerTaskAssertion : partnerTaskList) {
             if(partnerTaskAssertion.Name == 'Provide PayStub Documentation') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide SSN/Pension Award Letter or Bank Statement') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Tax Return (Previous Year)') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Tax Return (Two Years Previous)') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Income Documentation') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide all System Information') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide all Customer Information') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Complete');
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                System.AssertEquals(partnerTaskAssertion.Status__c, 'Pending');
+                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);
             }
         }    	    
     }
@@ -183,7 +183,9 @@ public class LoanHandlerTestClass {
             }
     	}
 
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
                 System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
             }		
@@ -192,7 +194,8 @@ public class LoanHandlerTestClass {
             }	    	    	
     	}
     	List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c 
-                                                        FROM Residential_Equipment__c];
+                                                        FROM Residential_Equipment__c
+                                                        WHERE Loan__r.DOER_Solar_Loann__c = false];
     	for (Residential_Equipment__c equipment : equipmentList){
             equipment.Mechanically_Installed__c = true;
             equipmentListToUpdate.add(equipment);
@@ -200,7 +203,9 @@ public class LoanHandlerTestClass {
     	update equipmentListToUpdate;
     	equipmentListToUpdate.clear();
 	    
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
             if(partnerTaskAssertion.Name == 'Mechanical Installation') {
                 System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
             }		
@@ -216,7 +221,9 @@ public class LoanHandlerTestClass {
             update equipmentListToUpdate;    		
     	}
 	    
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c]) {
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
             if(partnerTaskAssertion.Name == 'Interconnection') {
                 System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
             }		    	    	
