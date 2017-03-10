@@ -25,28 +25,29 @@ global class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
     
     global GenericBatchDMLOperation(List<SObject> sobjListPassed,
                                     String dmlOperationPassed) {
-        sobjList = sobjListPassed;  
-        if(possibleDmlOperation.contains(dmlOperationPassed)) 
-            dmlOperation = dmlOperationPassed;        	                            
+        sobjList = sobjListPassed;
+        if (possibleDmlOperation.contains(dmlOperationPassed)) {
+            dmlOperation = dmlOperationPassed;
+        }
 
     }
 
     global List<SObject> start(Database.BatchableContext BC) {
     	aAJ = [ SELECT Id, Status, NumberOfErrors, JobItemsProcessed,TotalJobItems, CreatedBy.Email
                 FROM AsyncApexJob WHERE Id = :BC.getJobId()];
-        return sobjList;    
+        return sobjList;
     }
    
-    global void execute(Database.BatchableContext BC, List<SObject> scope) {
-        if(dmlOperation == 'Insert') {
+    global void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
+        if (dmlOperation == 'Insert') {
             Insert scope;
         } else if(dmlOperation == 'Update') {
             Update scope;    
         }
     }   
     
-    global void finish(Database.BatchableContext BC) {
+    global void finish(Database.BatchableContext batchableContext) {
     	aAJ = [ SELECT Id, Status, NumberOfErrors, JobItemsProcessed,TotalJobItems, CreatedBy.Email
-                FROM AsyncApexJob WHERE Id = :BC.getJobId()];
+                FROM AsyncApexJob WHERE Id = :batchableContext.getJobId()];
     }
 }

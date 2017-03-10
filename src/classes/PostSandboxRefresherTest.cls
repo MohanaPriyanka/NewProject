@@ -1,6 +1,6 @@
 @isTest 
 private class PostSandboxRefresherTest {
-    private static String JOBNAME = 'Test Schedule';
+    private static final String JOBNAME = 'Test Schedule';
 
     @testSetup public static void setupTestData() {
         Account testAcct = new Account(Name='Test');
@@ -24,7 +24,7 @@ private class PostSandboxRefresherTest {
 
         ChargentOrders.sheduledBatchProcessing sbp = new ChargentOrders.sheduledBatchProcessing();
         String sch = '20 30 8 10 2 ?';
-        String jobID = System.schedule(JOBNAME, sch, sbp);
+        System.schedule(JOBNAME, sch, sbp);
     }    
 
 

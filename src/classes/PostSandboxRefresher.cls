@@ -45,15 +45,21 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         for (SObjectType soType: Schema.getGlobalDescribe().values()) {
             DescribeSObjectResult soDescribe = soType.getDescribe();
             // Skip objects we cannot query or update
-            if (!soDescribe.isQueryable() || !soDescribe.isUpdateable() || soDescribe.getName() == 'User') continue;
+            if (!soDescribe.isQueryable() || !soDescribe.isUpdateable() || soDescribe.getName() == 'User') {
+                continue;
+            }
             String objectTypeName = soDescribe.getName();
             // Iterate over all fields found on a given SObject
             for (SObjectField soField: soDescribe.fields.getMap().values()) {
                 DescribeFieldResult field = soField.getDescribe();
                 // Skip non Email type fields
-                if (field.getType() != Schema.DisplayType.EMAIL) continue;
+                if (field.getType() != Schema.DisplayType.EMAIL) {
+                    continue;
+                }
                 // Skip emails that cannot be filtered on
-                if (!field.isFilterable()) continue;
+                if (!field.isFilterable()) {
+                    continue;
+                }
                 // Collect all Email fields found
                 if (soEmailFieldMap.containsKey(objectTypeName)) {
                     soEmailFieldMap.get(objectTypeName).add(field.getName());
@@ -71,7 +77,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         for (String objectName: soEmailFieldMap.keySet()) {
             // Get any specified conditionals
             Map<String, Object> conditionals = new Map<String, Object> ();
-            if (objectConditionals.containsKey(objectName)) conditionals = objectConditionals.get(objectName);
+            if (objectConditionals.containsKey(objectName)) {
+                conditionals = objectConditionals.get(objectName);
+            }
             // Build a list of all fields that need to be queried
             List<String> emailFields = soEmailFieldMap.get(objectName);
             List<String> fieldList = new List<String> ();
@@ -84,11 +92,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             // Iterate over queried SObject records
             for (SObject record: Database.query(soql)) {
                 // Skip records that do not match specified conditons
-                if (!checkConditions(record, conditionals)) continue;
+                if (!checkConditions(record, conditionals)) {
+                    continue;
+                }
                 // Iterate over Email fields found on SObject and invalidate values
                 for (String field: emailFields) {
                     String email = (String) record.get(field);
-                    if (String.isEmpty(email)) continue;
+                    if (String.isEmpty(email)) {
+                        continue;
+                    }
                     record.put(field, email.replaceAll('\\W', '_') + '@disabled.diabled');
                 }
                 records.add(record);
@@ -104,14 +116,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         for (String field: conditionals.keySet()) {
             Object value = record.get(field);
             Object condition = conditionals.get(field);
-            if (value != condition) return false;
+            if (value != condition) {
+                return false;
+            }
         }
         return true;
     }
 
     global static String getSOQL(String objectTypeName, List<String> fieldList) {
         List<String> conditionals = new List<String> ();
-        for (String field: fieldList) conditionals.add(field + ' != null');
+        for (String field: fieldList) {
+            conditionals.add(field + ' != null');
+        }
         String soql = 'SELECT {!fieldList} FROM {!objectTypeName} WHERE {!conditionals}';
         return soql
             .replace('{!fieldList}', String.join(fieldList, ','))
