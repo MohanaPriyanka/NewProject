@@ -9,6 +9,7 @@ public class LoanHandlerTestClass {
         List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
         for (Lead leadRecord : leadList) {
         	leadRecord.Unfinished_Lead__c = false;
+        	LeadRecord.Status = 'Pending Information';
         }
         update leadList;
         //insert leadList;
