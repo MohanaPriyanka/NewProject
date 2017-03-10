@@ -41,16 +41,20 @@ public without sharing class LoanHandler{
                 if (newLead.Id == oldLead.Id){
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
-                        && newLead.Product_Line__c == 'Residential Loan'){
+                        && newLead.Product_Line__c == 'Residential Loan'
+                        && newLead.Doer_Solar_Loan__c == false){
                         leadsToCreateLoan.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
-                if (newLead.isConverted == true && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'){
+                if (newLead.isConverted == true 
+                    && oldLead.isConverted == false 
+                    && newLead.Product_Line__c == 'Residential Loan'
+                    && newLead.Doer_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
@@ -373,7 +377,7 @@ public without sharing class LoanHandler{
             //      Disbursal_Count__c = 3
             //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
-                if(loanRecord.System_Costt__c != null || loanRecord.System_Costt__c <= 0) {
+                if(loanRecord.System_Costt__c != null && loanRecord.System_Costt__c > 0) {
                     systemCost = loanRecord.System_Costt__c;
                 }else {
                     systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
@@ -382,7 +386,7 @@ public without sharing class LoanHandler{
                     
                     disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     if(disbursalName.length() >= 80) {
-                    disbursalName = disbursalName.subString(0,80);
+                        disbursalName = disbursalName.subString(0,80);
                     }
 
                     Disbursal__c disbursal1 = new Disbursal__c(
