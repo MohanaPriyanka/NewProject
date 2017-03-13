@@ -13,10 +13,12 @@
 trigger LoanTrigger on Loan__c (before insert, before update, after insert, after update) {
     LoanHandler handler2 = new LoanHandler(Trigger.isExecuting, Trigger.size);
     JSONLoanPaymentHandler jsonLoanPaymentHandler = new JSONLoanPaymentHandler();
+    LoanServicer servicer = new LoanServicer();
     
     if(Trigger.isInsert && Trigger.isAfter){        
         handler2.OnAfterInsert(Trigger.new);
         jsonLoanPaymentHandler.OnAfterInsert(Trigger.new);
+        servicer.createLoanPayments();
     }
 
     if (Trigger.isUpdate && Trigger.isAfter) {
@@ -25,6 +27,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
 
     if (Trigger.isUpdate && Trigger.isBefore) {
         handler2.mapLateCategory();
+        servicer.validateLoanChange();
     }
 
     if (Trigger.isInsert && Trigger.isBefore) {
