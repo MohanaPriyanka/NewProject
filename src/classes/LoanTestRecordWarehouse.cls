@@ -463,31 +463,6 @@ public class LoanTestRecordWarehouse {
         leadList.add(leadRecordDOER);
         Insert leadList;
 
-        Residential_Equipment__c equipmentRecordRetired = new Residential_Equipment__c(Name = 'equipmentRecordRetired',
-                                                                                Lead__c = leadRecordRetired.Id,
-                                                                                Generator_Nameplate_Capacity__c = 5,
-                                                                                Type_of_Module__c = 'SolarWorld',
-                                                                                Type_of_Inverter__c = 'Enphase',
-                                                                                Number_of_Inverters__c = 1,
-                                                                                Module_Manufacturer__c = 'SolarWorld',
-                                                                                Inverter_Manufacturer__c = 'SolarEdge',
-                                                                                Inverter_Model_Number__c = 'IX500',
-                                                                                Module_Model_Number__c = 'SW300',                                                                                
-                                                                                Number_of_Modules__c = 5);        
-        Residential_Equipment__c equipmentRecordSelfEmployed = new Residential_Equipment__c(Name = 'equipmentRecordSelfEmployed',
-                                                                                Lead__c = leadRecordSelfEmployed.Id,
-                                                                                Generator_Nameplate_Capacity__c = 5,
-                                                                                Type_of_Module__c = 'SolarWorld',
-                                                                                Type_of_Inverter__c = 'Enphase',
-                                                                                Number_of_Inverters__c = 1,
-                                                                                Module_Manufacturer__c = 'SolarWorld',
-                                                                                Inverter_Manufacturer__c = 'SolarEdge',
-                                                                                Inverter_Model_Number__c = 'IX500',
-                                                                                Module_Model_Number__c = 'SW300',        
-                                                                                Number_of_Modules__c = 5);        
-                                                                                 
-        Insert new List<Residential_Equipment__c>{equipmentRecordRetired, equipmentRecordSelfEmployed};  
-
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
                                                                                             LASERCA__Code__c ='001',

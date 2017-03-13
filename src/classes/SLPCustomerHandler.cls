@@ -285,6 +285,7 @@ public without sharing class SLPCustomerHandler {
         System.debug('begin the saveEquipmentInformation method');
         String partnerId = SLPUserHelper.getPartnerId(); 
         Partner__c partnerRecord;
+        String nameVar;
 
         if (partnerId == null || partnerId == '') {
           partnerId = SLPUserHelper.getBWCCId();
@@ -296,6 +297,15 @@ public without sharing class SLPCustomerHandler {
                                                            Mechanically_Installed__c, Interconnected__c,  Module_Manufacturer__c, Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                     FROM Residential_Equipment__c
                                                     WHERE Id = : equipmentId];
+        if(String.isNotBlank(equipment.Module_Manufacturer__c) 
+          && String.isNotBlank(equipment.Inverter_Manufacturer__c)){
+            nameVar = equipmentRecord.Name + ' ' + equipment.Module_Manufacturer__c + '/' + equipment.Inverter_Manufacturer__c;
+            if (nameVar.length() >= 80) {
+              nameVar = nameVar.subString(0,80);
+            }
+            equipmentRecord.Name = nameVar; 
+            nameVar = null;
+        }                                   
         if(equipment.Generator_NamePlate_Capacity__c != null){
           equipmentRecord.Generator_Nameplate_Capacity__c = equipment.Generator_NamePlate_Capacity__c;
         }

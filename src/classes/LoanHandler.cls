@@ -28,7 +28,7 @@ public without sharing class LoanHandler{
 
     //On After Update of Lead Record
     public void onAfterLeadUpdate(List<Lead> updatedLeads, List<Lead> oldLeads){
-        List<Lead> leadsToCreateLoan = new List<Lead>();
+        List<Lead> leadsToCreateLoanAndEquipment = new List<Lead>();
         List<Lead> leadsToValidatePartnerTasks = new List<Lead>();
         List<Lead> leadsToSetBlueWaveReviewToComplete = new List<Lead>();
         List<String> leadIds = new List<String>();
@@ -42,8 +42,8 @@ public without sharing class LoanHandler{
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
                         && newLead.Product_Line__c == 'Residential Loan'
-                        && newLead.Doer_Solar_Loan__c == false){
-                        leadsToCreateLoan.add(newLead);                       
+                        && newLead.DOER_Solar_Loan__c == false){
+                        leadsToCreateLoanAndEquipment.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
@@ -53,14 +53,15 @@ public without sharing class LoanHandler{
                 }
                 if (newLead.isConverted == true 
                     && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'
-                    && newLead.Doer_Solar_Loan__c == false){
+                    && newLead.Product_Line__c == 'Residential Loan' 
+                    && newLead.DOER_Solar_Loan__c == false){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
         }
-        if (leadsToCreateLoan.size() > 0){
-            createLoan(leadsToCreateLoan);
+        if (leadsToCreateLoanAndEquipment.size() > 0){
+            createResidentialEquipment(leadsToCreateLoanAndEquipment);
+            createLoan(leadsToCreateLoanAndEquipment);
         }
 
         if (leadsToValidatePartnerTasks.size() > 0){
@@ -161,6 +162,36 @@ public without sharing class LoanHandler{
         if(equipmentLeadIdListInterconnection.size() > 0 ){
             updatePartnerTaskInterconnection(newEquipment, getPartnerTasks(equipmentLeadIdListInterconnection));
         }        
+    }
+    public void createResidentialEquipment(List<Lead> newLeadList){
+        System.debug('Being createResidentialEquipment method');
+        Map<String, RecordType> recordTypeMap = new Map<String, RecordType>();
+        for (RecordType recordTypeVar : [SELECT Id, Name FROM RecordType WHERE SobjectType = 'Residential_Equipment__c' AND (Name = 'BlueWave Solar Loan' OR Name ='MSLP')]) {
+            recordTypeMap.put(recordtypeVar.Name, recordTypeVar);
+        }
+        List<Residential_Equipment__c> newEquipmentList = new List<Residential_Equipment__c>();
+        integer i;
+        for (i = 0; i < newLeadList.size(); i++){
+            if(newLeadList.get(i).Product_Line__c == 'Residential Loan'){
+                if(newLeadList.get(i).DOER_Solar_Loan__c == false){
+                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
+                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
+                        Lead__c = newLeadList.get(i).Id,
+                        RecordTypeId = recordTypeMap.get('BlueWave Solar Loan').Id);
+                    newEquipmentList.add(equipmentRecord);                
+                }
+                else{
+                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
+                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
+                        Lead__c = newLeadList.get(i).Id,
+                        RecordTypeId = recordTypeMap.get('MSLP').Id);
+                    newEquipmentList.add(equipmentRecord);      
+                }         
+            }
+        }
+        //List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(newLoanList));    
+        //System.debug('The tranchedLoans before update are ' + tranchedLoans);  
+        insert newEquipmentList;
     }
 
     public void createLoan(List<Lead> newLeadList){

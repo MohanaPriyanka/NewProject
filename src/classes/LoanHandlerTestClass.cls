@@ -24,9 +24,9 @@ public class LoanHandlerTestClass {
                                          FROM Lead
                                          WHERE DOER_Solar_Loan__c = false]) {
             //Assert that a loan was created when the lead was set to qualified.
-            System.Assert(leadRecordAssertion.Loans__r.size() == 1);
+            System.AssertEquals(1, leadRecordAssertion.Loans__r.size());
             //Assert that six parent partner tasks were created when the lead was set to qualified. 
-            System.Assert(leadRecordAssertion.Partner_Tasks__r.size() == 6);	    	
+            System.AssertEquals(6, leadRecordAssertion.Partner_Tasks__r.size());	    	
         }    
         //Assert that the equipment record mapped to the loan on creation
         for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
@@ -38,6 +38,7 @@ public class LoanHandlerTestClass {
         Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
         Date myDate = Date.newInstance(2015, 2, 17);
         List<Loan__c> loanListToUpdate = new List<Loan__c>();
+        List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
 
         Test.startTest();    	
     	List<Lead> leadList = [SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name FROM Lead];
@@ -52,7 +53,7 @@ public class LoanHandlerTestClass {
             attachmentPaystub.Description = 'PayStub' + ' ' + leadRecord.Id;
             Insert attachmentPaystub;
 
-            if(leadRecord.Retired__c == true && leadRecord.Self_Employed__c == false) {
+            if(leadRecord.Retired__c && !leadRecord.Self_Employed__c) {
                 //Insert the SSN/Pension Award Letter or Bank Statement subTask 	    		    
                 Attachment attachmentSSNAwardLetter = new Attachment();
                 attachmentSSNAwardLetter.Name =  String.valueOf('test.txt');
@@ -61,7 +62,7 @@ public class LoanHandlerTestClass {
                 attachmentSSNAwardLetter.Description = 'SSN Award Letter' + ' ' + leadRecord.Id;
                 Insert attachmentSSNAwardLetter;
             }
-            if(leadRecord.Retired__c == false && leadRecord.Self_Employed__c == true) {
+            if(!leadRecord.Retired__c&& leadRecord.Self_Employed__c) {
                 //Insert the Tax Return 	    		    
                 Attachment attachmentTaxReturnTwoYears = new Attachment();
                 attachmentTaxReturnTwoYears.Name =  String.valueOf('test.txt');
@@ -93,8 +94,21 @@ public class LoanHandlerTestClass {
         }
         loanListToUpdate[0].System_Costt__c = null;
         update loanListToUpdate;
+        for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
+        												Number_of_Inverters__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,  
+        												Inverter_Manufacturer__c, Inverter_Model_Number__c
+        												FROM Residential_Equipment__c]) {
+        	equipmentRecord.Generator_Nameplate_Capacity__c = 5;
+        	equipmentRecord.Module_Manufacturer__c = 'SolarWorld';
+        	equipmentRecord.Module_Model_Number__c = 'SW400';
+        	equipmentRecord.Number_of_Modules__c = 16;
+        	equipmentRecord.Inverter_Manufacturer__c = 'SolarEdge';
+        	equipmentRecord.Inverter_Model_Number__c = 'SE500';
+        	equipmentRecord.Number_of_Inverters__c = 16;
+        	equipmentListToUpdate.add(equipmentRecord);
+        }
+        update equipmentListToUpdate;
         changeLeadUpdateDummy(leadList);
-
         // DOER Solar Loans have an extra task (Technical Approval Documentation) which isn't yet handled, so
         // we'll only check non-DOER loans
         List<Partner_Task__c> partnerTaskList = [SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id 
@@ -168,9 +182,9 @@ public class LoanHandlerTestClass {
                                       FROM Opportunity
                                       WHERE DOER_Solar_Loan__c = false]) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
-            System.Assert(oppRecord.Residential_Equipment__r.size() == 1);
+            System.AssertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
-            System.Assert(oppRecord.Partner_Tasks__r.size() == 6);
+            System.AssertEquals(6, oppRecord.Partner_Tasks__r.size());
             oppRecord.StageName = 'Complete';
             oppListToUpdate.add(oppRecord);
     	}
@@ -179,7 +193,7 @@ public class LoanHandlerTestClass {
 
     	for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id FROM Disbursals__r) FROM Loan__c]) {
             if (!loanRecord.DOER_Solar_Loann__c){
-                System.assertEquals(loanRecord.Disbursals__r.size(), 3);
+                System.AssertEquals(3, loanRecord.Disbursals__r.size());
             }
     	}
 
@@ -231,10 +245,10 @@ public class LoanHandlerTestClass {
                                                      FROM Partner_Task__c
                                                      WHERE Loan__r.DOER_Solar_Loann__c = false]) {
             if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);	    		
             }		
             if(partnerTaskAssertion.Name == 'Interconnection') {
-                System.Assert(partnerTaskAssertion.Status__c == 'Pending');	    		
+                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);	    		
             }	    	    	
     	}
     	for (Residential_Equipment__c equipment : equipmentList){
@@ -249,7 +263,7 @@ public class LoanHandlerTestClass {
                                                      FROM Partner_Task__c
                                                      WHERE Loan__r.DOER_Solar_Loann__c = false]) {
             if(partnerTaskAssertion.Name == 'Interconnection') {
-                System.Assert(partnerTaskAssertion.Status__c == 'Complete');	    		
+                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);	    		
             }		    	    	
     	}      	    	
         Test.stopTest();
