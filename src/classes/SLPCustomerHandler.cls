@@ -356,12 +356,13 @@ public without sharing class SLPCustomerHandler {
           loanRecord.System_Costt__c   = loan.System_Costt__c;      
         }        
         update loanRecord;
-        Lead leadRecord = [SELECT Id, Update_Dummy__c FROM Lead WHERE Id = : equipmentRecord.Lead__r.Id];
+        Lead leadRecord = [SELECT Id, Update_Dummy__c, System_Cost__c FROM Lead WHERE Id = : equipmentRecord.Lead__r.Id];
         if(leadRecord.Update_Dummy__c == true){
           leadRecord.Update_Dummy__c = false;
         }else{
           leadRecord.Update_Dummy__c = true;
         }
+        leadRecord.System_Cost__c = loan.System_Costt__c;
         update leadRecord;
     }
     
