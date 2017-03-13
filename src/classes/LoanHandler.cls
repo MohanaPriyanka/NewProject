@@ -1270,7 +1270,49 @@ public without sharing class LoanHandler{
             }
         }
         update equipmentUpdateList; 
-    }    
+    }
+
+    // Called from before insert and before update from Loan Trigger
+    // Tested by MapLateCategoryTest
+    public void mapLateCategory() {
+        Set<String> loanMonths = new Set<String>();
+        Set<String> loanYears = new Set<String>();
+        Set<String> loanNames = new Set<String>();
+ 
+        for (Loan__c l : (List<Loan__c>) Trigger.new) {
+            if (l.name != null) {
+                loanNames.add(l.name);
+            }
+            if (l.monthLT__c != null) {
+                loanMonths.add(l.monthLT__c);
+            }
+            if (l.yearLT__c != null) {
+                loanYears.add(l.yearLT__c);
+            }
+        }
+ 
+        if (loanNames.size() > 0 && loanMonths.size() > 0 && loanYears.size() > 0) {
+            Map<String, Loan_Payment__c > loanPayMap = new Map<String, Loan_Payment__c>();
+ 
+            for (Loan_Payment__c loanPayQuery : [SELECT id, name, month__c, year2__c, loan_name__c, late_category__c 
+                                                 FROM Loan_Payment__c 
+                                                 WHERE loan_name__c IN :loanNames 
+                                                 AND month__c IN :loanMonths 
+                                                 AND year2__c IN :loanYears]) {
+                loanPayMap.put(loanPayQuery.Loan_Name__c,loanPayQuery);
+            }
+ 
+            for (Loan__c lf : (List<Loan__c>) Trigger.new) {
+                if ((Trigger.isInsert || Trigger.isUpdate || 
+                     ((Map<Id, Loan__c>) Trigger.oldMap).get(lf.Id).monthLT__c != lf.monthLT__c)
+                    && loanPayMap.containsKey(lf.name)) {
+                    lf.late_category__c = loanPayMap.get(lf.name).late_category__c;
+                } else {
+                    lf.late_category__c = null;
+                }
+            }
+        }
+    }
 }  
 
 
@@ -1280,4 +1322,4 @@ public without sharing class LoanHandler{
 //Need to make the parentTaskSequenceMap not just have a key value of the sequence number, as there will be multiple
 //duplicate key values if more than one lead is updated at once.
 
-//and max out the sequnce number at the last one
+//and max out the sequnce number at the last on

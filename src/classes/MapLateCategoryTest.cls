@@ -1,5 +1,5 @@
 @isTest
-private class loanMapLateCategoryTestClass {
+private class MapLateCategoryTest {
 
 
 
