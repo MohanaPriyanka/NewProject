@@ -104,6 +104,8 @@ public without sharing class SLPCreditStatus {
           formIdsMap.put('MSLP Continue Application', systemProperties[0].SLP_Continue_Application_MSLP__c);
       }           
     }  
+    System.debug('The FormIds are ' + formIdsMap);
+    System.debug('The result is ' + formIdsMap.get(formMapKey));
     return formIdsMap.get(formMapKey);    
   }
 }

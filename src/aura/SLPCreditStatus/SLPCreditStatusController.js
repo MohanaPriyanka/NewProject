@@ -155,6 +155,7 @@
                         var address = lead.LASERCA__Home_Address__c;
                         var city = lead.LASERCA__Home_City__c;
                         var state = lead.LASERCA__Home_State__c;
+                        var formId = component.get("v.formId");   
                         var zip = lead.LASERCA__Home_Zip__c;
                         var income = lead.Annual_Income_Currency__c;
                         var systemCost = lead.System_Cost__c;
@@ -169,17 +170,16 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/381598?tfa_572=Individually'  
-                            + '&' + 'tfa_154=Massachusetts' +  
-                            + '&' + 'tfa_526=' + leadId 
+                          "url": 'https://forms.bluewaverenewables.com/' + formId + '?tfa_572=Individually'  
+                            + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 
                             + '&' + 'tfa_1179=' + productId 
                             + '&' + 'tfa_81=' + zip     
-                            + '&' + 'tfa_1303=' + loanTerm   
+                            + '&' + 'tfa_1287=' + loanTerm   
                             + '&' + 'tfa_94=' + address 
-                            + '&' + 'tfa_1098=' + income   
-                            + '&' + 'tfa_94=true'  
+                            + '&' + 'tfa_390=' + income   
+                            + '&' + 'tfa_1181=true'  
                         });
                         urlEvent.fire();  
                     }              
