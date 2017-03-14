@@ -162,6 +162,8 @@ public class LoanTestRecordWarehouse {
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
         Lead leadMALoanTerm10Rate599 = new lead(FirstName = 'leadMALoanTerm10Rate599',
@@ -178,6 +180,8 @@ public class LoanTestRecordWarehouse {
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');                                                       
         Lead leadMALoanTerm10Rate725 = new lead(FirstName = 'leadMALoanTerm10Rate725',
@@ -194,6 +198,8 @@ public class LoanTestRecordWarehouse {
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
         Lead leadMALoanTerm20Rate699 = new lead(FirstName = 'leadMALoanTerm20Rate699',
@@ -224,6 +230,8 @@ public class LoanTestRecordWarehouse {
                                                 //Personal_Credit_Report__c = pcr20780.Id,
                                                 Loan_Term__c = 20,
                                                 Product_Program__c = 'BlueWave Solar Loan',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Automatic_Product_Assignment__c = true,
@@ -241,6 +249,8 @@ public class LoanTestRecordWarehouse {
                                                 //Personal_Credit_Report__c = pcr20690.Id,
                                                 Loan_Term__c = 20,
                                                 Product_Program__c = 'MSLP',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Automatic_Product_Assignment__c = true,
@@ -426,27 +436,33 @@ public class LoanTestRecordWarehouse {
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check');        
+        Lead leadRecordDOER = new Lead(FirstName = 'DOER',
+                                       LastName = 'Test',
+                                       Loan_Amount__c = 25000,
+                                       Company = 'Cole Swain',
+                                       LASERCA__Social_Security_Number__c = '000000001',
+                                       Retired__c = false,
+                                       Self_Employed__c = true,
+                                       Product_Line__c = 'Residential Loan',
+                                       DOER_Solar_Loan__c = true,
+                                       LASERCA__Home_State__c = 'MA',
+                                       System_Cost__c = 25000,
+                                       Custom_Id__c = 'test',
+                                       Unfinished_Lead__c = true, 
+                                       Partner_Lookup__c = partner.Id,
+                                       Loan_Term__c = 120,
+                                       Annual_Income_Currency__c = 150000,
+                                       Product__c = null,
+                                       Automatic_Product_Assignment__c = true,
+                                       Status = 'Credit not Checked',
+                                       Technical_Approval_Verified__c = true,
+                                       Income_Verified__c = true,
+                                       Is_there_a_Partner_Record__c = true);
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
-        Insert new List<Lead>{leadRecordRetired, leadRecordSelfEmployed}; 
+        leadList.add(leadRecordDOER);
+        Insert leadList;
 
-        Residential_Equipment__c equipmentRecordRetired = new Residential_Equipment__c(Name = 'equipmentRecordRetired',
-                                                                                Lead__c = leadRecordRetired.Id,
-                                                                                Generator_Nameplate_Capacity__c = 5,
-                                                                                Type_of_Module__c = 'SolarWorld',
-                                                                                Type_of_Inverter__c = 'Enphase',
-                                                                                Number_of_Inverters__c = 1,
-                                                                                Number_of_Modules__c = 5);
-        
-        Residential_Equipment__c equipmentRecordSelfEmployed = new Residential_Equipment__c(Name = 'equipmentRecordSelfEmployed',
-                                                                                Lead__c = leadRecordSelfEmployed.Id,
-                                                                                Generator_Nameplate_Capacity__c = 5,
-                                                                                Type_of_Module__c = 'SolarWorld',
-                                                                                Type_of_Inverter__c = 'Enphase',
-                                                                                Number_of_Inverters__c = 1,
-                                                                                Number_of_Modules__c = 5);        
-        Insert new List<Residential_Equipment__c>{equipmentRecordRetired, equipmentRecordSelfEmployed};  
-        
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
                                                                                             LASERCA__Code__c ='001',
