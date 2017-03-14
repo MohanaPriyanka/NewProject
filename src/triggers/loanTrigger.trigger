@@ -11,26 +11,27 @@
 */
 
 trigger LoanTrigger on Loan__c (before insert, before update, after insert, after update) {
-    LoanHandler handler2 = new LoanHandler(Trigger.isExecuting, Trigger.size);
+    LoanHandler loanHandler = new LoanHandler(Trigger.isExecuting, Trigger.size);
     JSONLoanPaymentHandler jsonLoanPaymentHandler = new JSONLoanPaymentHandler();
-    LoanServicer servicer = new LoanServicer();
+    LoanServicer loanServicer = new LoanServicer();
     
     if(Trigger.isInsert && Trigger.isAfter){        
-        handler2.OnAfterInsert(Trigger.new);
+        loanHandler.OnAfterInsert(Trigger.new);
         jsonLoanPaymentHandler.OnAfterInsert(Trigger.new);
-        servicer.createLoanPayments();
+        loanServicer.createNewLoanPayments();
     }
 
     if (Trigger.isUpdate && Trigger.isAfter) {
         jsonLoanPaymentHandler.OnAfterUpdate(Trigger.new, Trigger.oldMap);
+        loanServicer.createNewLoanPayments();
     }
 
     if (Trigger.isUpdate && Trigger.isBefore) {
-        handler2.mapLateCategory();
-        servicer.validateLoanChange();
+        loanHandler.mapLateCategory();
+        loanServicer.validateLoanChange();
     }
 
     if (Trigger.isInsert && Trigger.isBefore) {
-        handler2.mapLateCategory();
+        loanHandler.mapLateCategory();
     }
 }
