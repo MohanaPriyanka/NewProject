@@ -20,7 +20,7 @@ public with sharing class LoanServicer {
     // recreated
     public void validateLoanChange() {
         for (Loan__c loan : (List<Loan__c>) Trigger.new) {
-            if (loanLocked(loan)) {
+            if (loanLocked(loan) && loanParamsUpdated(loan)) {
                 loan.addError('Cannot update Product, Commencement date, or System Cost ' +
                               'for a Loan that is Complete or Contract Pending');
             }
@@ -126,7 +126,7 @@ public with sharing class LoanServicer {
         private Loan_Payment__c createLP(Integer period, Loan__c loan, LoanParams params) {
             Integer monthIndex;
             Integer payFirstDistribution, paySecondDistribution;
-            Boolean isInterestOnly, isLastPeriod;
+            Boolean isInterestOnly = false, isLastPeriod = false;
 
             monthIndex = params.firstDistributionMonth + period;
             if (monthIndex < 0) {
@@ -137,13 +137,9 @@ public with sharing class LoanServicer {
                 isLastPeriod = true;
             }
 
-            if (monthIndex >= params.firstDistributionMonth &&
-                (monthIndex < params.secondDistributionMonth ||
-                 params.firstDistributionMonth == params.secondDistributionMonth)) {
-                payFirstDistribution = 1;
-            } else {
-                payFirstDistribution = 0;
-            }
+            // We always pay the first distribution
+            payFirstDistribution = 1;
+
             if (monthIndex >= params.secondDistributionMonth) {
                 paySecondDistribution = 1;
             } else {
@@ -151,19 +147,26 @@ public with sharing class LoanServicer {
             }
 
             Loan_Payment__c loanPayment = new Loan_Payment__c();
+            loanPayment.Loan__c = loan.Id;
             loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
             loanPayment.Funds_Distributed__c = 
                 (params.loanAmount*params.firstDistribution+params.Fees)*payFirstDistribution+
                 params.loanAmount*params.secondDistribution*paySecondDistribution;
+            loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
-                loanPayment.Interest_Payment__c = -loanPayment.Funds_Distributed__c * params.monthlyRate;
+                Decimal interestPayment = -loanPayment.Funds_Distributed__c * params.monthlyRate;
+                loanPayment.Interest_Payment__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
                 loanPayment.Principal_Payment__c = 0;
             } else {
-                loanPayment.Interest_Payment__c = Excel.ipmt(params.monthlyRate, monthIndex + 1, 
-                                                             params.monthsOfPI, (Double) loanPayment.Funds_Distributed__c);
-                loanPayment.Principal_Payment__c = Excel.ppmt(params.monthlyRate, monthIndex + 1,
-                                                              params.monthsOfPI, (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Interest_Payment__c = Excel.ipmtRounded((Double) params.monthlyRate, 
+                                                                    monthIndex + 1, 
+                                                                    params.monthsOfPI, 
+                                                                    (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Principal_Payment__c = Excel.ppmtRounded((Double) params.monthlyRate, 
+                                                                     monthIndex + 1,
+                                                                     params.monthsOfPI, 
+                                                                     (Double) loanPayment.Funds_Distributed__c);
             }
             return loanPayment;
         }
@@ -240,9 +243,9 @@ public with sharing class LoanServicer {
         public Product2 product;
         public Integer firstDistributionMonth, secondDistributionMonth;
         public Integer monthsOfPI, monthsOfIO, loanTerm;
-        public Double loanAmount, fees, loanAmountPlusFees;
-        public Double annualRate, monthlyRate;
-        public Double firstDistribution, secondDistribution;
+        public Decimal loanAmount, fees, loanAmountPlusFees;
+        public Decimal annualRate, monthlyRate;
+        public Decimal firstDistribution, secondDistribution;
 
         public LoanParams(Loan__c loan, Map<Id, Product2> productMap) {
             product = productMap.get(loan.Product__c);
@@ -277,9 +280,9 @@ public with sharing class LoanServicer {
             }
 
             fees = loan.Financing_Fee__c==null?0:loan.Financing_Fee__c;
-            loanAmount = loan.System_Cost__c - fees;
+            loanAmount = loan.System_Costt__c - fees;
             loanAmountPlusFees = loanAmount + fees;
-            annualRate = product.Loan_Interest_Rate__c==null?0:product.Loan_Interest_Rate__c;
+            annualRate = product.Loan_Interest_Rate__c==null?0:product.Loan_Interest_Rate__c/100;
             monthlyRate = annualRate / 12;
             monthsOfPI = product.Loan_Term__c==null?0:product.Loan_Term__c.intValue();
             monthsOfIO = product.Loan_Interest_Only_Period__c==null?0:product.Loan_Interest_Only_Period__c.intValue();

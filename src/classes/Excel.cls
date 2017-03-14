@@ -83,6 +83,11 @@ public with sharing class Excel {
     static public Double ipmt(Double r, Integer per, Integer nper, Double pv) {
         return ipmt(r, per, nper, pv, 0);
     }
+
+    static public Decimal ipmtRounded(Double r, Integer per, Integer nper, Double pv) {
+        Decimal d = (Decimal) ipmt(r, per, nper, pv, 0);
+        return d.setScale(2, RoundingMode.HALF_UP);
+    }
 	 
     /**
      * Emulates Excel/Calc's PPMT(interest_rate, period, number_payments, PV,
@@ -116,6 +121,11 @@ public with sharing class Excel {
 	
     static public Double ppmt(Double r, Integer per, Integer nper, Double pv) {
         return pmt(r, nper, pv) - ipmt(r, per, nper, pv);
+    }
+
+    static public Decimal ppmtRounded(Double r, Integer per, Integer nper, Double pv) {
+        Decimal d = (Decimal) pmt(r, nper, pv) - ipmt(r, per, nper, pv);
+        return d.setScale(2, RoundingMode.HALF_UP);
     }
 	
     /**
