@@ -244,59 +244,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         }
         //Create the Utility Account Bills
         if(uabSet.size() > 0){
-            upsert new List<Utility_Account_Bill__c>(uabSet) Unique_Id__c;
+            Database.executeBatch(new GenericBatchDMLOperation(new List<Utility_Account_Bill__c>(uabSet), 'Upsert'));
         }
     }                  
 
-    /*
-        
-    public void OnBeforeInsert(Energy_Usage_Update__c[] newEnergyUsageUpdates){
-    }
-    
-    
-    @future public static void OnAfterInsertAsync(Set<Id> newEnergyUsageUpdateIDs){
-    }
-    
-    public void OnBeforeUpdate(Energy_Usage_Update__c[] oldEnergyUsageUpdates, Energy_Usage_Update__c[] updatedEnergyUsageUpdates, Map<ID, Energy_Usage_Update__c> oldEnergyUsageUpdateMap, Map<ID, Energy_Usage_Update__c> newEnergyUsageUpdateMap){
-    }
-    
-    public void OnAfterUpdate(Energy_Usage_Update__c[] oldEnergyUsageUpdates, Energy_Usage_Update__c[] updatedEnergyUsageUpdates, Map<ID, Energy_Usage_Update__c> oldEnergyUsageUpdateMap, Map<ID, Energy_Usage_Update__c> newEnergyUsageUpdateMap){
-        
-    }
-    
-    @future public static void OnAfterUpdateAsync(Set<Id> updatedEnergyUsageUpdateIDs){
-    }
-    
-    public void OnBeforeDelete(Energy_Usage_Update__c[] EnergyUsageUpdatesToDelete, Map<ID, Energy_Usage_Update__c> EnergyUsageUpdateMap){
-        
-    }
-    
-    public void OnAfterDelete(Energy_Usage_Update__c[] deletedEnergyUsageUpdates, Map<ID, Energy_Usage_Update__c> EnergyUsageUpdateMap){
-        
-    }
-    
-    @future public static void OnAfterDeleteAsync(Set<Id> deletedEnergyUsageUpdateIDs){
-        
-    }
-    
-    public void OnUndelete(Energy_Usage_Update__c[] restoredEnergyUsageUpdates){
-        
-    }
-    
-    public boolean IsTriggerContext{
-        get{ return m_isExecuting;}
-    }
-    
-    public boolean IsVisualforcePageContext{
-        get{ return !IsTriggerContext;}
-    }
-    
-    public boolean IsWebServiceContext{
-        get{ return !IsTriggerContext;}
-    }
-    
-    public boolean IsExecuteAnonymousContext{
-        get{ return !IsTriggerContext;}
-    }
-    */
 }

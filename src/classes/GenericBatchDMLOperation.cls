@@ -43,6 +43,12 @@ global class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
             Insert scope;
         } else if(dmlOperation == 'Update') {
             Update scope;    
+        } else if(dmlOperation == 'Upsert') {
+            if (scope.getSObjectType().getDescribe().getName() == 'Utility_Account_Bill__c') {
+                Upsert (List<Utility_Account_Bill__c>) scope Unique_Id__c;
+            } else {
+                Upsert scope;
+            }
         }
     }   
     
