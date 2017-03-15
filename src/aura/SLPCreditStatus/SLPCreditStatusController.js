@@ -92,23 +92,7 @@
         var leadId = component.get("v.leadId");
         var productId = component.get("v.product.Id");
         var loanTerm = component.get("v.product.Loan_Term__c");
-        var productProgram = component.get("v.product.Program__c");
-        var actionGetFormId = component.get("c.getFormAssemblyIds"); 
-        var formType = 'Continue Application';
 
-        actionGetFormId.setParams({productProgram : productProgram, formType : formType});
-
-        actionGetFormId.setCallback(this,function(resp){ 
-            var formId = resp.getReturnValue();
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.formId", resp.getReturnValue());                
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });  
-       
-        $A.enqueueAction(actionGetFormId);          
         var action = component.get("c.getLeads");         
         action.setParams({leadId : leadId});
         if(loanTerm > 0 && loanTerm != null) {
@@ -118,7 +102,6 @@
                         component.set("v.selectedCustomer", resp.getReturnValue(0));
                         var lead = resp.getReturnValue()[0];
                         var address = lead.LASERCA__Home_Address__c;
-                        var formId = component.get("v.formId");                              
                         var city = lead.LASERCA__Home_City__c;
                         var state = lead.LASERCA__Home_State__c;
                         var zip = lead.LASERCA__Home_Zip__c;
@@ -136,7 +119,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + formId + '?tfa_1299=' + address 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381603' + '?tfa_1299=' + address 
                             + '&' + 'tfa_154=' + state 
                             + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1295=' + updateDummy
@@ -170,7 +153,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + formId + '?tfa_572=Individually'  
+                          "url": 'https://forms.bluewaverenewables.com/' + '381605' + '?tfa_572=Individually'  
                             + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 

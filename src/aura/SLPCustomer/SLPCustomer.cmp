@@ -112,66 +112,68 @@ reloaded by clicking the view button on the dashboard page-->
     <div aura:id = "customerPage" class="noDisplayBar"> 	
         <div aura:id="customerName" class="main2 proximaNovaBrand"> 
             <div  class="center proximaNovaBrand"><h1> {!v.customer.Name} </h1></div>
-            <hr></hr>  
+             <hr></hr>  
         </div>
-        <br></br>
+        <br></br> 
           <!--  _________________________________PROGRESS BAR ___________________________________ -->    
-          <div aura:id="taskBar" class="slds-wizard" role="navigation">    
-          <ol class="slds-wizard__list">
-            <li aura:id="credit" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Navigation">Credit</span>
-              </a>
-            </li>          
-            <li aura:id="systemInfo" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Navigation">Information</span>
-              </a>
-            </li>
-            <li aura:id="bwReview" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Actions">Review</span>
-              </a>
-            </li>              
-            <li aura:id="contract" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Actions">Contract</span>
-              </a>
-            </li>
-            <li aura:id="mechInstall" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Compact Layout">Install</span>
-              </a>
-            </li>
-            <li aura:id="interconnection" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Review">Interconnect</span>
-              </a>
-            </li>
-            <li aura:id="complete" class="slds-wizard__item">
-              <a href="javascript:void(0);" class="slds-wizard__link">
-                <span class="slds-wizard__marker"></span>
-                <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                      title="Invite">Complete</span>
-              </a>
-            </li>
-          </ol>
-          <span class="slds-wizard__progress">
-            <span aura:id="progressBar" class="slds-wizard__progress-bar"></span>
-          </span>
-        </div>
+              <div aura:id="taskBar" class="slds-wizard" role="navigation">    
+              <ol class="slds-wizard__list">
+                <li aura:id="credit" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Navigation">Credit</span>
+                  </a>
+                </li>          
+                <li aura:id="systemInfo" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Navigation">Information</span>
+                  </a>
+                </li>
+                <li aura:id="bwReview" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Actions">Review</span>
+                  </a>
+                </li>              
+                <li aura:id="contract" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Actions">Contract</span>
+                  </a>
+                </li>        
+                <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">                                
+                <li aura:id="mechInstall" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Compact Layout">Install</span>
+                  </a>
+                </li> 
+                </aura:if>               
+                <li aura:id="interconnection" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Review">Interconnect</span>
+                  </a>
+                </li>
+                <li aura:id="complete" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                          title="Invite">Complete</span>
+                  </a>
+                </li>
+              </ol>
+              <span class="slds-wizard__progress">
+                <span aura:id="progressBar" class="slds-wizard__progress-bar"></span>
+              </span>
+            </div>
       	<div>
         <br></br>
         <br></br>
@@ -222,8 +224,20 @@ reloaded by clicking the view button on the dashboard page-->
                 </div>
             </div>            
         </div>
-        <hr></hr>
+        <hr></hr> 
+        <aura:if isTrue="{!v.blueWaveReviewAlert}">
+          <h3> In some cases, the review stage may require BlueWave to reach out to borrowers to obtain sensitive information. Please be aware that this may take longer than the other stages. You will be notified when it is completed.</h3>
+          <br></br>
+        </aura:if>
+        <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c}">    
+          <div aura:id="cusomterInformationTextMSLP" class="noDisplay paddingBottom1">
+            <h3>  
+              All relevant customer information has been, or will be provided through the MCEC Technical Application. Please update this customer's income documentation if you have not already done so and submit your sales agreement with the customer 
+            </h3>
+          </div>
+        </aura:if>                                           
         <!--  _________________________________CUSTOMER INFORMATION ___________________________________ -->                
+        
         <div aura:id = "customerInformation1" class="box noDisplay"> 
             <br></br>
             <fieldset>
@@ -248,7 +262,8 @@ reloaded by clicking the view button on the dashboard page-->
                 </div> 
                 </div>
                 <br></br>
-            </fieldset>                 
+            </fieldset>
+            <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">                  
             <fieldset class="slds-form--compound paddingTop1x5">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -262,7 +277,7 @@ reloaded by clicking the view button on the dashboard page-->
                     </div>        
                 </div>
                 </div>
-            </fieldset>
+            </fieldset>          
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -280,7 +295,7 @@ reloaded by clicking the view button on the dashboard page-->
                     </div>                     
                 </div>
                 </div>
-            </fieldset>  
+            </fieldset>              
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -298,7 +313,7 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>                     
                 </div>
                 </div>                 
-            </fieldset>
+            </fieldset>            
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -316,12 +331,14 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>                  
                 </div>
                 </div>
-            </fieldset>
+            </fieldset>           
             <br></br>
               <div class="slds-align--absolute-center paddingBottom1 ">
                     <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
-                    </div>   
+                    </div> 
+            </aura:if>                       
             </div>
+            <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">
             <div aura:id = "customerInformation2" class="box noDisplay">                           
             <hr></hr>
             <fieldset class="slds-form--compound ">
@@ -370,13 +387,11 @@ reloaded by clicking the view button on the dashboard page-->
             	<div class="slds-align--absolute-center paddingBottom1 ">
                     <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>
 				</div>
-        </div>            
+        </div>
+        </aura:if>   
+
             
         <!--  _________________________________TASK TABLE ___________________________________ -->    
-        <aura:if isTrue="{!v.blueWaveReviewAlert}">
-          <h3> In some cases, the review stage may require BlueWave to reach out to borrowers to obtain sensitive information. Please be aware that this may take longer than the other stages. You will be notified when it is completed.</h3>
-          <br></br>
-        </aura:if>
         <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
           <thead>
             <tr class="slds-text-heading--label " >

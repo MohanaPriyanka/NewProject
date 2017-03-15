@@ -92,22 +92,22 @@ public without sharing class SLPCreditStatus {
       return productList[0];                      
   }  
 
-  @AuraEnabled 
-  public static String getFormAssemblyIds (String productProgram, String formType) {
-    System.debug('Begin the getFormAssemblyIds method');
-    List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-    Map<String, String> formIdsMap = new Map<String, String>();
-    String formMapKey = productProgram + ' ' + formType;
-    if (systemProperties.size() > 0) {
-      if (systemProperties[0].SLP_Continue_Application_Standard__c != null) {
-          formIdsMap.put('BlueWave Solar Loan Continue Application', systemProperties[0].SLP_Continue_Application_Standard__c);
-      }   
-      if (systemProperties[0].SLP_Continue_Application_MSLP__c != null) {
-          formIdsMap.put('MSLP Continue Application', systemProperties[0].SLP_Continue_Application_MSLP__c);
-      }           
-    }  
-    System.debug('The FormIds are ' + formIdsMap);
-    System.debug('The result is ' + formIdsMap.get(formMapKey));
-    return formIdsMap.get(formMapKey);    
-  }
+  //@AuraEnabled 
+  //public static String getFormAssemblyIds (String productProgram, String formType) {
+  //  System.debug('Begin the getFormAssemblyIds method');
+  //  List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+  //  Map<String, String> formIdsMap = new Map<String, String>();
+  //  String formMapKey = productProgram + ' ' + formType;
+  //  if (systemProperties.size() > 0) {
+  //    if (systemProperties[0].SLP_Continue_Application_Standard__c != null) {
+  //        formIdsMap.put('BlueWave Solar Loan Continue Application', systemProperties[0].SLP_Continue_Application_Standard__c);
+  //    }   
+  //    if (systemProperties[0].SLP_Continue_Application_MSLP__c != null) {
+  //        formIdsMap.put('MSLP Continue Application', systemProperties[0].SLP_Continue_Application_MSLP__c);
+  //    }           
+  //  }  
+  //  System.debug('The FormIds are ' + formIdsMap);
+  //  System.debug('The result is ' + formIdsMap.get(formMapKey));
+  //  return formIdsMap.get(formMapKey);    
+  //}
 }
