@@ -269,7 +269,7 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small ">
                     <label class="slds-form-element__label" for="input-03">System Cost</label>
-                    <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.customerInformation.Loan__r.System_Costt__c}" placeholder="{!v.customerInformation.Loan__r.System_Costt__c}"/>          
+                    <ui:outputCurrency aura:id="systemCost" class="slds-input" value="{!v.customerInformation.Loan__r.System_Costt__c}"/>          
                     </div> 
                   <div class="slds-form-element slds-p-horizontal--small ">
                     <label class="slds-form-element__label" for="input-03">Principal Value</label>
