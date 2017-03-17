@@ -384,9 +384,27 @@ public class LoanTestRecordWarehouse {
                                                 Loan_Tranche_Type__c = 'Standard',
                                                 Program__c = 'BlueWave Solar Loan',
                                                 isActive = TRUE);
+        Product2 productRecordMSLP = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
+                                                Family = 'Solar Loan',
+                                                Product_Type__c = 'Residential Loan',
+                                                State__c = 'MA',
+                                                Loan_Interest_Rate__c = .0599,
+                                                Loan_Term__c = 120,
+                                                Loan_Interest_Only_Period__c = 12,
+                                                Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
+                                                Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection',
+                                                ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
+                                                Loan_base_rate__c = .0625,
+                                                Loan_Internal_Lender_rate__c = .0499,
+                                                Credit_Maximum__c = '999',
+                                                Credit_Minimum__c = '750',
+                                                Loan_Capital_Pool__c = capitalPool.Id,
+                                                Loan_Tranche_Type__c = 'Standard',
+                                                Program__c = 'MSLP',
+                                                isActive = TRUE);        
 
 
-        return new List<Product2>{productRecord};                                                                                                                                                             
+        return new List<Product2>{productRecord, productRecordMSLP};                                                                                                                                                             
     }
 
     public static List<Lead> getLoanHandlerLeadRecords () {         
@@ -402,10 +420,12 @@ public class LoanTestRecordWarehouse {
                                     Loan_Amount__c = 25000,
                                     Company = 'Cole Swain',
                                     Retired__c = true,
+                                    Self_Employed__c = false,
                                     LASERCA__Social_Security_Number__c = '000000001',
                                     Product_Line__c = 'Residential Loan',
                                     LASERCA__Home_State__c = 'MA',
                                     System_Cost__c = 25000,
+                                    DOER_Solar_Loan__c = false,
                                     Custom_Id__c = 'test',
                                     Loan_Term__c = 120,
                                     Unfinished_Lead__c = true,                                     
@@ -422,6 +442,7 @@ public class LoanTestRecordWarehouse {
                                     Company = 'Cole Swain',
                                     LASERCA__Social_Security_Number__c = '000000001',
                                     Retired__c = false,
+                                    DOER_Solar_Loan__c = false,
                                     Self_Employed__c = true,
                                     Product_Line__c = 'Residential Loan',
                                     LASERCA__Home_State__c = 'MA',
@@ -454,7 +475,8 @@ public class LoanTestRecordWarehouse {
                                        Annual_Income_Currency__c = 150000,
                                        Product__c = null,
                                        Automatic_Product_Assignment__c = true,
-                                       Status = 'Credit not Checked',
+                                       Product_Program__c = 'MSLP',
+                                       Status = 'Ready for Credit Check',
                                        Technical_Approval_Verified__c = true,
                                        Income_Verified__c = true,
                                        Is_there_a_Partner_Record__c = true);
@@ -478,9 +500,17 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_3__c = '001',
                                                                                             LASERCA__Code_4__c = '001',
                                                                                             LASERCA__Credit_Score_TransUnion__c = '790',
-                                                                                            LASERCA__Lead__c = leadRecordSelfEmployed.Id);        
+                                                                                            LASERCA__Lead__c = leadRecordSelfEmployed.Id); 
+        LASERCA__Personal_Credit_Report__c creditReportRecordMSLP = new LASERCA__Personal_Credit_Report__c(
+                                                                                            Name = 'Personal Credit Report 1',
+                                                                                            LASERCA__Code__c ='001',
+                                                                                            LASERCA__Code_2__c ='001',
+                                                                                            LASERCA__Code_3__c = '001',
+                                                                                            LASERCA__Code_4__c = '001',
+                                                                                            LASERCA__Credit_Score_TransUnion__c = '790',
+                                                                                            LASERCA__Lead__c = leadRecordDOER.Id);                                                                                                    
 
-        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed};
+        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP};
 
         LASERCA__Trade_Accounts__c tradeAccountRecordRetired = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 1',
@@ -490,8 +520,11 @@ public class LoanTestRecordWarehouse {
                                                                                 Name = 'Personal Credit Report Trade 1',
                                                                                 LASERCA__Personal_Credit_Report__c = creditReportRecordSelfEmployed.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);        
-
-        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed};                 
+        LASERCA__Trade_Accounts__c tradeAccountRecordMSLP = new LASERCA__Trade_Accounts__c(
+                                                                                Name = 'Personal Credit Report Trade 1',
+                                                                                LASERCA__Personal_Credit_Report__c = creditReportRecordMSLP.Id,
+                                                                                LASERCA__Monthly_Payment__c = 100);   
+        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP};                 
        
         return leadList;
 

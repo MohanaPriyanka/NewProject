@@ -60,10 +60,25 @@
     },        
 
     updateProductSelection : function(component, event, helper) { 
+        var actionGetProduct = component.get("c.getSelectedProduct"); 
         var source = event.getSource();
         var productId = source.get("v.class"); 
         var productTerm = source.get("v.name");
         var productValue = source.get("v.value");
+
+        actionGetProduct.setParams({productId : productId});
+
+        actionGetProduct.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.product", resp.getReturnValue());
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(actionGetProduct);         
+
+
         if(productValue == true) {
         component.set("v.productId", productId); 
         component.set("v.loanTerm", productTerm); 
@@ -74,48 +89,83 @@
     },       
 
     navigate : function(component, event, helper) {
-        var action = component.get("c.getLeads"); 
-        var source = event.getSource();
-        //var leadId = source.get("v.class");
         var leadId = component.get("v.leadId");
-        var productId = component.get("v.productId");
-        var loanTerm = component.get("v.loanTerm");
-        
+        var productId = component.get("v.product.Id");
+        var loanTerm = component.get("v.product.Loan_Term__c");
+
+        var action = component.get("c.getLeads");         
         action.setParams({leadId : leadId});
         if(loanTerm > 0 && loanTerm != null) {
             action.setCallback(this,function(resp){ 
                 if(resp.getState() == 'SUCCESS') {
-                    component.set("v.selectedCustomer", resp.getReturnValue(0));
-                    var lead = resp.getReturnValue()[0];
-                    var address = lead.LASERCA__Home_Address__c;
-                    var city = lead.LASERCA__Home_City__c;
-                    var state = lead.LASERCA__Home_State__c;
-                    var zip = lead.LASERCA__Home_Zip__c;
-                    var income = lead.Annual_Income_Currency__c;
-                    var systemCost = lead.System_Cost__c;
-                    var updateDummy = lead.Update_Dummy;
-                    var firstName = lead.FirstName;
-                    var lastName = lead.LastName;                    
-                    if(updateDummy == true){
-                        updateDummy = false;
-                    }else{
-                        updateDummy = true;
+                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == false) {
+                        component.set("v.selectedCustomer", resp.getReturnValue(0));
+                        var lead = resp.getReturnValue()[0];
+                        var address = lead.LASERCA__Home_Address__c;
+                        var city = lead.LASERCA__Home_City__c;
+                        var state = lead.LASERCA__Home_State__c;
+                        var zip = lead.LASERCA__Home_Zip__c;
+                        var income = lead.Annual_Income_Currency__c;
+                        var systemCost = lead.System_Cost__c;
+                        var updateDummy = lead.Update_Dummy;
+                        var firstName = lead.FirstName;
+                        var lastName = lead.LastName;     
+
+                        if(updateDummy == true){
+                            updateDummy = false;
+                        }else{
+                            updateDummy = true;
+                        }
+                        var leadId = lead.Id;                         
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                          "url": 'https://forms.bluewaverenewables.com/' + '381603' + '?tfa_1299=' + address 
+                            + '&' + 'tfa_154=' + state 
+                            + '&' + 'tfa_526=' + leadId 
+                            + '&' + 'tfa_1295=' + updateDummy
+                            + '&' + 'tfa_1300=' + city 
+                            + '&' + 'tfa_1302=' + productId 
+                            + '&' + 'tfa_1301=' + zip     
+                            + '&' + 'tfa_1303=' + loanTerm   
+                            + '&' + 'tfa_1304=' + firstName     
+                            + '&' + 'tfa_1305=' + lastName                                         
+                        });
+                        urlEvent.fire();  
                     }
-                    var leadId = lead.Id;                         
-                    var urlEvent = $A.get("e.force:navigateToURL");
-                    urlEvent.setParams({
-                      "url": 'https://forms.bluewaverenewables.com/381599?tfa_1299=' + address 
-                        + '&' + 'tfa_154=' + state 
-                        + '&' + 'tfa_526=' + leadId 
-                        + '&' + 'tfa_1295=' + updateDummy
-                        + '&' + 'tfa_1300=' + city 
-                        + '&' + 'tfa_1302=' + productId 
-                        + '&' + 'tfa_1301=' + zip     
-                        + '&' + 'tfa_1303=' + loanTerm   
-                        + '&' + 'tfa_1304=' + firstName     
-                        + '&' + 'tfa_1305=' + lastName                                         
-                    });
-                    urlEvent.fire();                
+                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == true) {
+                        //component.set("v.selectedCustomer", resp.getReturnValue(0));
+                        var lead = resp.getReturnValue()[0];
+                        var address = lead.LASERCA__Home_Address__c;
+                        var city = lead.LASERCA__Home_City__c;
+                        var state = lead.LASERCA__Home_State__c;
+                        var formId = component.get("v.formId");   
+                        var zip = lead.LASERCA__Home_Zip__c;
+                        var income = lead.Annual_Income_Currency__c;
+                        var systemCost = lead.System_Cost__c;
+                        var updateDummy = lead.Update_Dummy;
+                        var firstName = lead.FirstName;
+                        var lastName = lead.LastName;                    
+                        if(updateDummy == true){
+                            updateDummy = false;
+                        }else{
+                            updateDummy = true;
+                        }
+                        var leadId = lead.Id;                         
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                          "url": 'https://forms.bluewaverenewables.com/' + '381604' + '?tfa_572=Individually'  
+                            + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
+                            + '&' + 'tfa_1180=' + updateDummy
+                            + '&' + 'tfa_63=' + city 
+                            + '&' + 'tfa_1179=' + productId 
+                            + '&' + 'tfa_81=' + zip     
+                            + '&' + 'tfa_1287=' + loanTerm   
+                            + '&' + 'tfa_94=' + address 
+                            + '&' + 'tfa_390=' + income   
+                            + '&' + 'tfa_1181=true'  
+                        });
+                        urlEvent.fire();  
+                    }              
                 }
                 else {
                     $A.log("Errors", resp.getError());
