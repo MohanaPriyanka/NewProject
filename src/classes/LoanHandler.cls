@@ -85,6 +85,7 @@ public without sharing class LoanHandler{
                 if (newOpp.Id == oldOpp.Id){
                     if (newOpp.StageName == 'Complete' 
                         && oldOpp.StageName != 'Complete' 
+                        && !newOpp.Comments__c.contains('Skip SLA')  
                         && newOpp.Product_Line__c == 'Residential Loan'){
                         System.debug('newOpp ID is ' + newOpp.Id);
                         opportunityIds.add(newOpp.Id);                       
