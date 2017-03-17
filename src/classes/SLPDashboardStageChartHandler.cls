@@ -31,7 +31,7 @@ public without sharing class SLPDashboardStageChartHandler {
             scr.labels.add(String.valueOf(ar.get('Name')));
             scr.counts.add(Integer.valueOf(ar.get('recordCount')));
         }
-		
+		System.debug('the scr is ' + scr);
         return scr;				
     }
 }

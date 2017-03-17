@@ -11,7 +11,7 @@ public without sharing class SLPCustomerHandler {
     }
 
     List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, 
-                  Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode  , Partner__r.Name
+                  Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode  , Partner__r.Name, DOER_Solar_Loann__c
                   FROM Loan__c 
                   WHERE Id = : loanId];
     System.debug('loanList is ' + loanList);
@@ -60,13 +60,12 @@ public without sharing class SLPCustomerHandler {
 
     List<Residential_Equipment__c> equipmentList = [SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, 
                                                       Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, 
-                                                      Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
-                                                      Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name, 
-                                                      Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, 
-                                                      Interconnected__c, Mechanically_Installed__c, Interconnection_date__c, 
+                                                      Generator_Nameplate_Capacity__c,Number_of_Inverters__c, Number_of_Modules__c, 
+                                                      Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, 
+                                                      Loan__r.Maturity_Datee__c,Interconnected__c, Mechanically_Installed__c,  
                                                       Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,
-                                                      Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, 
-                                                      Inverter_Model_Number__c, Loan__r.Id 
+                                                      Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Loan__r.Product__r.Program__c, 
+                                                      Inverter_Model_Number__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c, Interconnection_date__c 
                                                     FROM Residential_Equipment__c 
                                                     WHERE Loan__c = : loanId 
                                                     LIMIT 1];
@@ -292,14 +291,14 @@ public without sharing class SLPCustomerHandler {
         }
 
         //update the equipment information
-        Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
+        Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Loan__r.Name, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
                                                            Mechanically_Installed__c, Interconnected__c,  Module_Manufacturer__c, Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                     FROM Residential_Equipment__c
                                                     WHERE Id = : equipmentId];
         if(String.isNotBlank(equipment.Module_Manufacturer__c) 
           && String.isNotBlank(equipment.Inverter_Manufacturer__c)){
-            nameVar = equipmentRecord.Name + ' ' + equipment.Module_Manufacturer__c + '/' + equipment.Inverter_Manufacturer__c;
+            nameVar = equipmentRecord.Loan__r.Name + ' ' + equipment.Module_Manufacturer__c + '/' + equipment.Inverter_Manufacturer__c;
             if (nameVar.length() >= 80) {
               nameVar = nameVar.subString(0,80);
             }
@@ -362,8 +361,25 @@ public without sharing class SLPCustomerHandler {
         }else{
           leadRecord.Update_Dummy__c = true;
         }
-        leadRecord.System_Cost__c = loan.System_Costt__c;
         update leadRecord;
     }
-    
+
+  //@AuraEnabled 
+  //public static String getFormAssemblyIds (String productProgram, String formType) {
+  //  System.debug('Begin the getFormAssemblyIds method');
+  //  List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+  //  Map<String, String> formIdsMap = new Map<String, String>();
+  //  String formMapKey = productProgram + ' ' + formType;
+  //  if (systemProperties.size() > 0) {
+  //    if (systemProperties[0].SLP_Continue_Application_Standard__c != null) {
+  //        formIdsMap.put('BlueWave Solar Loan Income Documentation', systemProperties[0].SLP_Continue_Application_Standard__c);
+  //    }   
+  //    if (systemProperties[0].SLP_Continue_Application_MSLP__c != null) {
+  //        formIdsMap.put('MSLP Income Documentation', systemProperties[0].SLP_Income_Documentation_MSLP__c  );
+  //    }           
+  //  }  
+  //  System.debug('The FormIds are ' + formIdsMap);
+  //  System.debug('The result is ' + formIdsMap.get(formMapKey));
+  //  return formIdsMap.get(formMapKey);    
+  //}    
 }

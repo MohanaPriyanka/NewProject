@@ -279,6 +279,32 @@
     width:100%;
 }
 
+
+
+.THIS .progressBarWidthCreditMSLP {
+    width:0%;
+}
+
+.THIS .progressBarWidthSystemInfoMSLP {
+    width:20%;
+}
+
+.THIS .progressBarWidthReviewMSLP {
+    width:40%;
+}
+
+.THIS .progressBarWidthContractMSLP {
+    width:60%;
+}
+
+.THIS .progressBarWidthInterconnectionMSLP {
+    width:80%;
+}
+
+.THIS .progressBarWidthCompleteMSLP {
+    width:100%;
+}
+
 .THIS .center a {
     background-color: #216093  ;
     border-radius:5px;
@@ -289,3 +315,4 @@
     display:inline-block;
     border:2px solid #343434;
 }
+

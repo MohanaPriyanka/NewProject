@@ -3,7 +3,9 @@
   <aura:attribute name="allProducts" type="Object"  />   
   <aura:attribute name="leadId" type="String" />
   <aura:attribute name="productId" type="String" />  
+  <aura:attribute name="product" type="Object" />    
   <aura:attribute name="loanTerm" type="Integer" />    
+  <aura:attribute name="formId" type="String" />    
   <aura:attribute name="selectedCustomer" type="Object"  />   
 	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
@@ -52,8 +54,7 @@
       </div>
   </div> 
   </div>
-  <br></br>
-           
+  <br></br>         
     <div aura:id = "customerTable" class="main2"> 
 		<br></br>
       <div>
