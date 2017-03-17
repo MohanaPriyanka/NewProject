@@ -18,8 +18,6 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
     public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert'};
     public String dmlOperation;
     public List<SObject> sobjList = new List<SObject>();
-    public SObject statusSObject;
-    public String statusSObjectFieldName;
     public String log = '';
     
     public GenericBatchDMLOperation(List<SObject> sobjListPassed,
@@ -72,9 +70,19 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
     }   
     
     public void finish(Database.BatchableContext batchableContext) {
+        String emailErrorsTo;
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        List<String> toAddress = new List<String>();
+        if (systemProperties.size() > 0 &&
+            systemProperties[0].Error_Email__c != null) {
+            emailErrorsTo = systemProperties[0].Error_Email__c;
+        } else {
+            emailErrorsTo = 'product@bluewavesolar.com';
+        }            
+
         if (!String.isEmpty(this.log)) {
             Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-            email.setToAddresses(new List<String> {'pyao@bluewavesolar.com'});
+            email.setToAddresses(new List<String> {emailErrorsTo});
             email.setSubject('Error in Batch DML process!');
             email.setPlainTextBody(this.log);
             MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});

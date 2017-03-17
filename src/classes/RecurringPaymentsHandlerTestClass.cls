@@ -323,12 +323,12 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         insert productionupdateC1;
 
+        Test.StopTest();
+
         List <ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, Unique_ID__c, System_Bill__r.Property_Account_ID__c, ChargentOrders__Payment_Status__c, ChargentOrders__Payment_Stop__c, ChargentOrders__Payment_Frequency__c, ChargentOrders__Charge_Date__c,
                                                                 ChargentOrders__Payment_Start_Date__c, System_Bill__r.Bill_Number__c, ChargentOrders__Payment_End_Date__c, ChargentOrders__Next_Transaction_Date__c, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
         system.debug(orderlist);
-
-        Test.StopTest();
 
         for(ChargentOrders__ChargentOrder__c cho : orderlist){
             // charge date of 25 = sss2 orders

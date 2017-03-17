@@ -1,3 +1,7 @@
+/**
+ * Created By: Peter Yao
+ * Description: Tests actions taken after refreshing a sandbox
+ **/
 @isTest 
 private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
@@ -61,6 +65,24 @@ private class PostSandboxRefresherTest {
         }
 
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
+
+        Test.stopTest();
+
+        System.assertEquals(MessagingService.emailsSent.size(), 1);
+        System.debug(MessagingService.emailsSent);
+    }
+
+    static testMethod void testBatchInsertFailures() {
+        List<Lead> leadList = new List<Lead>();
+        Lead lead = new Lead(Firstname = 'Test',
+                             Lastname = 'Tester');
+        leadList.add(lead);
+
+        System.assertEquals(MessagingService.emailsSent, null);
+
+        Test.startTest();
+
+        Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
 
         Test.stopTest();
 
