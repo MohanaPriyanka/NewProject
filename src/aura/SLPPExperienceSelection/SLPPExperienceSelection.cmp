@@ -1,3 +1,78 @@
-<aura:component >
-	
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
+    <aura:attribute name="totalCostandDisbrsals" type="List"  />   
+    <aura:attribute name="partnerAlerts" type="Object" />
+    <aura:attribute name="alertPrompt" type="Boolean" />
+    <aura:registerEvent name="headerDisplay" type="c:SLPLandingPageEvent"/>     
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+ <style type="text/css">
+       
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNova {
+            font-family: proximaNovaFont;   
+        font-size:150%;
+          color: #FFFFFF;
+          padding-top:1.5%;
+          padding-left:2.5%;
+        }
+        @font-face {
+            font-family: proximaNovaFont;
+            src: url('{!$Resource.ProximaNova}');
+        }
+
+  </style>      
+    <div aura:id = "disbursalWidgets" class="main2">        
+    <aura:if isTrue="{!v.alertPrompt}" >
+        <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
+            aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
+          <div class="slds-modal__container">
+            <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
+              <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlerts[0].Name}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+              <p>{!v.partnerAlerts[0].Date__c}</p>
+              <br></br>
+              <p>{!v.partnerAlerts[0].Body__c}</p>
+            </div>
+            <div class="slds-modal__footer slds-theme--default">
+            <ui:button aura:id="importantAlertButton"
+               class="slds-button--brand box"
+               labelClass="proximaNova95"
+               label="Okay"                  
+               press="{!c.acknowledgeAlert}"/>            
+            <ui:button aura:id="importantAlertButton"
+               class="slds-button--brand box"
+               labelClass="proximaNova95"
+               label="Remind me later"                  
+               press="{!c.closeAlert}"/>   
+            </div>
+          </div>
+        </div>
+    </aura:if>    
+    <br></br>      
+        <div class="clearfix fadeIn">               
+        	<div class="boxAnim">
+                <a href="slpaddcustomer">
+                    <div class="headertop ">                 
+                            <div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                                Add a Customer 
+                            </div>
+                    </div>
+                </a>        
+		    </div>         
+		    <div class="boxAnimRight">
+                <a href="slpdashboard">
+                    <div class="headertop ">  
+                            <div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                              Manage Customers
+                        	</div> 
+                    </div>
+                </a>        
+		    </div>
+        </div>                 
+    </div>
+    <br>
+    </br>
 </aura:component>

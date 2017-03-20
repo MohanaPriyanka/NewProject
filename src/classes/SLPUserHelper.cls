@@ -1,23 +1,23 @@
 public without sharing class SLPUserHelper {
-    private static String partnerId;
+    private static String partnerIdVar;
 
     @AuraEnabled 
     public static String getPartnerId() {
-        if (partnerId == null) {
+        if (partnerIdVar == null) {
             // The saved Partner ID isn't set... set it
             User u = [SELECT Id, Partner_Id__c, Contact.Partner_Lookup__c 
                       FROM User 
                       WHERE Id = :UserInfo.getUserId()];
             if (u.Partner_Id__c == null) {
                 // No Partner ID for this internal user, use the BWCC user's Partner ID instead
-                partnerId = getBWCCId();
+                partnerIdVar = getBWCCId();
             } else {
                 // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
-                partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
+                partnerIdVar = String.valueOf(u.Partner_Id__c).subString(0,15);
             }
         }
 
-        return partnerId;
+        return partnerIdVar;
     }
 
     @AuraEnabled 
@@ -44,4 +44,77 @@ public without sharing class SLPUserHelper {
         logoList.add(partner.Logo__c);
         return logoList;
     }	
+
+    @AuraEnabled
+    public static List<Partner_Alert__c> getPartnerAlerts() {
+        System.debug('Begin the getPartnerAlerts method');
+        List<Partner_Alert__c> partnerAlertList = new List<Partner_Alert__c>();
+        String partnerId = SLPUserHelper.getPartnerId();
+        if (partnerId == null || partnerId == '') {
+          partnerId = SLPUserHelper.getBWCCId();
+        }        
+        Date today = Date.today();
+        for (Partner_Alert__c partnerAlert : [SELECT Id, Name, Body__c, Importance__c, Active__c, Date__c,
+                                                (SELECT Id, Partner__r.Name, Partner__r.Id, Partner_Alert__r.Name
+                                                 FROM Partner_Alert_Filters__r
+                                                 WHERE Acknowledged__c != true
+                                                 AND (Date_of_Reminder__c <= : today 
+                                                 OR Date_of_Reminder__c = null))
+                                               FROM Partner_Alert__c]){
+            if(partnerAlert.Partner_Alert_Filters__r.size() > 0) {
+                for (Partner_Alert_Filter__c partnerFilter : partnerAlert.Partner_Alert_Filters__r) {
+                    if(partnerFilter.Partner__r.Id == partnerId) { //adjust to fit all partners
+                        partnerAlertList.add(partnerAlert);
+                    }
+                }
+            }
+        }
+        return partnerAlertList;
+    }
+
+    @AuraEnabled
+    public static void acknowledgePartnerAlert(String partnerAlertId) {
+        System.debug('Begin the acknowledgePartnerAlert method');
+        List<Partner_Alert_Filter__c> partnerAlertFilterList = new List<Partner_Alert_Filter__c>();   
+        String partnerId = SLPUserHelper.getPartnerId();
+        if (partnerId == null || partnerId == '') {
+          partnerId = SLPUserHelper.getBWCCId();
+        }        
+        for (Partner_Alert__c partnerAlert : [SELECT Id, (SELECT Id, Acknowledged__c, Partner__r.Name FROM Partner_Alert_Filters__r   ) 
+                                         FROM Partner_Alert__c 
+                                         WHERE Id = : partnerAlertId
+                                         ORDER BY Importance__c ASC, createdDate DESC
+                                         LIMIT 1]){
+            for (Partner_Alert_Filter__c partnerAlertFilter : partnerAlert.Partner_Alert_Filters__r ) {
+                if(partnerAlertFilter.Partner__r.Id == partnerId) {
+                    partnerAlertFilter.Acknowledged__c = true;
+                    partnerAlertFilterList.add(partnerAlertFilter);
+                }
+            }
+        }
+        update partnerAlertFilterList;
+    }
+
+    @AuraEnabled
+    public static void partnerAlertRemindLater(String partnerAlertId) {
+        System.debug('Begin the partnerAlertRemindLater method');
+        List<Partner_Alert_Filter__c> partnerAlertFilterList = new List<Partner_Alert_Filter__c>();   
+        String partnerId = SLPUserHelper.getPartnerId();
+        if (partnerId == null || partnerId == '') {
+          partnerId = SLPUserHelper.getBWCCId();
+        }        
+        for (Partner_Alert__c partnerAlert : [SELECT Id, (SELECT Id, Acknowledged__c, Partner__r.Name FROM Partner_Alert_Filters__r   ) 
+                                         FROM Partner_Alert__c 
+                                         WHERE Id = : partnerAlertId
+                                         ORDER BY Importance__c ASC, createdDate DESC
+                                         LIMIT 1]){
+            for (Partner_Alert_Filter__c partnerAlertFilter : partnerAlert.Partner_Alert_Filters__r ) {
+                if(partnerAlertFilter.Partner__r.Id == partnerId) {
+                    partnerAlertFilter.Remind_Later__c = Date.today();
+                    partnerAlertFilterList.add(partnerAlertFilter);
+                }
+            }
+        }
+        update partnerAlertFilterList;
+    }             
 }
