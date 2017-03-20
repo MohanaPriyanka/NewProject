@@ -376,11 +376,16 @@ public without sharing class LoanHandler{
     public void createDisbursalsFromOpportunity(List<Opportunity> updatedOppList, List<Opportunity> oldOppList){
         List<Loan__c> loanList = new List<Loan__c>();    
         List<String> disbursalOppList = new List<String>();
-        for (Opportunity updatedOpp : updatedOppList){
-            for (Opportunity oldOpp : oldOppList){
-                if(updatedOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete' && oldOpp.Product_Line__c == 'Residential Loan'){
-                    disbursalOppList.add(updatedOpp.Id);
-                }
+
+        Map<Id, Opportunity> newOppMap = (Map<Id,Opportunity>) Trigger.newMap;
+        Map<Id, Opportunity> oldOppMap = (Map<Id,Opportunity>) Trigger.oldMap;
+
+        for (Opportunity oppRecord : updatedOppList) {
+            if (newOppMap.get(oppRecord.Id).StageName == 'Complete' 
+                && oldOppMap.get(oppRecord.Id).StageName != ' Complete'
+                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan'
+                && !newOppMap.get(oppRecord.Id).Submitted_to_First_Associates__c) {
+                    disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
             }
         }
         if(disbursalOppList.size() > 0){
