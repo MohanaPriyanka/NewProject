@@ -82,7 +82,7 @@ public without sharing class LoanHandler{
                 if (newOpp.Id == oldOpp.Id){
                     if (newOpp.StageName == 'Complete' 
                         && oldOpp.StageName != 'Complete' 
-                        && !newOpp.Comments__c.contains('Skip SLA')  
+                        && !newOpp.Submitted_to_First_Associates__c
                         && newOpp.Product_Line__c == 'Residential Loan'){
                         System.debug('newOpp ID is ' + newOpp.Id);
                         opportunityIds.add(newOpp.Id);                       
@@ -140,19 +140,18 @@ public without sharing class LoanHandler{
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
 
-        for (Residential_Equipment__c newEquipmentLoopVar : newEquipment) {
-            for (Residential_Equipment__c oldEquipmentLoopVar : oldEquipment) {
-                //if the equipment gets set to mechanically installed update the partner task to be complete.
-                if(newEquipmentLoopVar.Mechanically_Installed__c == true 
-                    && oldEquipmentLoopVar.Mechanically_Installed__c == false) {
-                    equipmentLeadIdListMechInstall.add(newEquipmentLoopVar.Lead__r.Id);                
-                } 
-                //if the equipment gets set to interconnected update the partner task to be complete.
-                if(newEquipmentLoopVar.Interconnected__c == true 
-                    && oldEquipmentLoopVar.Interconnected__c == false) {
-                    equipmentLeadIdListInterconnection.add(newEquipmentLoopVar.Lead__r.Id);                
-                }                 
+        Map<Id, Residential_Equipment__c> newEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.newMap;
+        Map<Id, Residential_Equipment__c> oldEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.oldMap;
+
+        for (Residential_Equipment__c equipment : newEquipment) {
+            if (newEquipmentMap.get(equipment.Id).Mechanically_Installed__c 
+                && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
+                    equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
             }
+            if (newEquipmentMap.get(equipment.Id).Interconnected__c 
+                && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
+                    equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            }            
         }
          //if the equipment gets set to mechanically installed update the partner task to be complete.        
         if(equipmentLeadIdListMechInstall.size() > 0 ){
