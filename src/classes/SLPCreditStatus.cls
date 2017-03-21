@@ -15,7 +15,9 @@ public without sharing class SLPCreditStatus {
                     		WHERE Partner_Lookup__r.Id = : partnerId
                         AND (Status = 'Unfinished' 
                           OR Status = 'Ready for Credit Check' 
-                          OR Status = 'Pre-Qualified')
+                          OR Status = 'Pre-Qualified' 
+                          OR Status = 'Pending Credit Review'
+                          OR Status = 'Unqualified')
                     		ORDER BY Status ASC, createdDate DESC, Name DESC];      
     	return leadList;            	
       }else{
@@ -26,7 +28,9 @@ public without sharing class SLPCreditStatus {
                         AND Partner_Lookup__r.Id = : partnerId                        
                     		AND (Status = 'Unfinished' 
                           OR Status = 'Ready for Credit Check' 
-                          OR Status = 'Pre-Qualified')
+                          OR Status = 'Pre-Qualified' 
+                          OR Status = 'Pending Credit Review'
+                          OR Status = 'Unqualified')
                         ORDER BY Status ASC, createdDate DESC, Name DESC];      
     	return leadList;       	
       }	
@@ -48,7 +52,11 @@ public without sharing class SLPCreditStatus {
                                 LASERCA__Home_Address__c, DOER_Solar_Loan__c
                               FROM Lead 
                               WHERE Partner_Lookup__c = : partnerId
-                              AND (Status = 'Unfinished' OR Status = 'Ready for Credit Check' OR Status = 'Pre-Qualified')
+                              AND (Status = 'Unfinished' 
+                              OR Status = 'Ready for Credit Check' 
+                              OR Status = 'Pre-Qualified' 
+                              OR Status = 'Pending Credit Review'
+                              OR Status = 'Unqualified')
                               ORDER BY Status ASC, createdDate DESC, Name DESC];      
       return leadList;              
       }else{
@@ -59,7 +67,9 @@ public without sharing class SLPCreditStatus {
                                 WHERE Id = : leadId
                                 AND (Status = 'Unfinished' 
                                   OR Status = 'Ready for Credit Check' 
-                                  OR Status = 'Pre-Qualified')];      
+                                  OR Status = 'Pre-Qualified' 
+                                  OR Status = 'Pending Credit Review'                                  
+                                  OR Status = 'Unqualified')];      
       return leadList;         
       }  
   }
