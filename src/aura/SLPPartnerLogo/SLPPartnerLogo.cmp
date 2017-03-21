@@ -2,5 +2,5 @@
     <aura:attribute name="partnerLogo" type="String" />    
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />      
 	<ltng:require styles="/resource/icons/assets/styles/salesforce-lightning-design-system-ltng.css" />  
-    <img  src="{!$Resource.partnerImageFiles + '/PartnerLogos/' + v.partnerLogo[0] + '.png'}" />
+    <img  src="{!$Resource.partnerImageFiles + '/PartnerLogos/' + v.partnerLogo[0] + '.png'}" width="300" height="100" />
 </aura:component>

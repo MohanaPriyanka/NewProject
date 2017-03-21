@@ -1,4 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />         
 <style>
     @font-face {
     font-family: proximaNovaFont;
@@ -28,7 +29,7 @@
       color: #7C98AB;
     }            
 </style>
-<div class="slds-context-bar ">
+<div aura:id="header" class="slds-context-bar ">
   <div class="slds-context-bar__primary slds-context-bar__item--divider-right">
     <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
       <div class="slds-context-bar__icon-action">
