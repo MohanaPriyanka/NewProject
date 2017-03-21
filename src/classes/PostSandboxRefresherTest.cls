@@ -1,3 +1,7 @@
+/**
+ * Created By: Peter Yao
+ * Description: Tests actions taken after refreshing a sandbox
+ **/
 @isTest 
 private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
@@ -27,7 +31,6 @@ private class PostSandboxRefresherTest {
         System.schedule(JOBNAME, sch, sbp);
     }    
 
-
     static testMethod void testSandboxRefresh() {
         Test.startTest();
         PostSandboxRefresher.disableEmails();
@@ -47,5 +50,43 @@ private class PostSandboxRefresherTest {
                                    FROM CronTrigger
                                    WHERE CronJobDetail.Name = :JOBNAME];
         System.assertEquals(crons.size(), 0);
+    }
+
+    static testMethod void testBatchUpdateFailure() {
+        List<Lead> leadList = [SELECT Id, company
+                               FROM Lead
+                               WHERE Email like '%@email.com'];
+
+        System.assertEquals(MessagingService.emailsSent, null);
+
+        Test.startTest();
+        for (Lead lead : leadList) {
+            lead.company = null;
+        }
+
+        Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
+
+        Test.stopTest();
+
+        System.assertEquals(MessagingService.emailsSent.size(), 1);
+        System.debug(MessagingService.emailsSent);
+    }
+
+    static testMethod void testBatchInsertFailures() {
+        List<Lead> leadList = new List<Lead>();
+        Lead lead = new Lead(Firstname = 'Test',
+                             Lastname = 'Tester');
+        leadList.add(lead);
+
+        System.assertEquals(MessagingService.emailsSent, null);
+
+        Test.startTest();
+
+        Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
+
+        Test.stopTest();
+
+        System.assertEquals(MessagingService.emailsSent.size(), 1);
+        System.debug(MessagingService.emailsSent);
     }
 }
