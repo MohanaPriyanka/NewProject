@@ -61,11 +61,9 @@ public without sharing class SLPUserHelper {
                                                  AND (Date_of_Reminder__c <= : today 
                                                  OR Date_of_Reminder__c = null))
                                                FROM Partner_Alert__c]){
-            if(partnerAlert.Partner_Alert_Filters__r.size() > 0) {
-                for (Partner_Alert_Filter__c partnerFilter : partnerAlert.Partner_Alert_Filters__r) {
-                    if(partnerFilter.Partner__r.Id == partnerId) { //adjust to fit all partners
-                        partnerAlertList.add(partnerAlert);
-                    }
+            for (Partner_Alert_Filter__c partnerFilter : partnerAlert.Partner_Alert_Filters__r) {
+                if (partnerFilter.Partner__r.Id == partnerId) { //adjust to fit all partners
+                    partnerAlertList.add(partnerAlert);
                 }
             }
         }
@@ -109,7 +107,7 @@ public without sharing class SLPUserHelper {
                                          ORDER BY Importance__c ASC, createdDate DESC
                                          LIMIT 1]){
             for (Partner_Alert_Filter__c partnerAlertFilter : partnerAlert.Partner_Alert_Filters__r ) {
-                if(partnerAlertFilter.Partner__r.Id == partnerId) {
+                if (partnerAlertFilter.Partner__r.Id == partnerId) {
                     partnerAlertFilter.Remind_Later__c = Date.today();
                     partnerAlertFilterList.add(partnerAlertFilter);
                 }
