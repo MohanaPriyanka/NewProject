@@ -72,12 +72,11 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
     public void finish(Database.BatchableContext batchableContext) {
         String emailErrorsTo;
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-        List<String> toAddress = new List<String>();
-        if (systemProperties.size() > 0 &&
-            systemProperties[0].Error_Email__c != null) {
-            emailErrorsTo = systemProperties[0].Error_Email__c;
-        } else {
+        if (systemProperties.isEmpty() ||
+            systemProperties[0].Error_Email__c == null) {
             emailErrorsTo = 'product@bluewavesolar.com';
+        } else {
+            emailErrorsTo = systemProperties[0].Error_Email__c;
         }            
 
         if (!String.isEmpty(this.log)) {

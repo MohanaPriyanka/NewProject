@@ -10,7 +10,7 @@ public class MessagingService {
 
     public static Messaging.SendEmailResult[] sendEmail(Messaging.Email[] emails) {
         if (Test.isRunningTest()) {
-            emailsSent = emails;
+            emailsSent = emails.clone();
             return null;
         } else {
             return Messaging.sendEmail(emails);
