@@ -82,6 +82,7 @@ public without sharing class LoanHandler{
                 if (newOpp.Id == oldOpp.Id){
                     if (newOpp.StageName == 'Complete' 
                         && oldOpp.StageName != 'Complete' 
+                        && !newOpp.Submitted_to_First_Associates__c
                         && newOpp.Product_Line__c == 'Residential Loan'){
                         System.debug('newOpp ID is ' + newOpp.Id);
                         opportunityIds.add(newOpp.Id);                       
@@ -139,19 +140,18 @@ public without sharing class LoanHandler{
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
 
-        for (Residential_Equipment__c newEquipmentLoopVar : newEquipment) {
-            for (Residential_Equipment__c oldEquipmentLoopVar : oldEquipment) {
-                //if the equipment gets set to mechanically installed update the partner task to be complete.
-                if(newEquipmentLoopVar.Mechanically_Installed__c == true 
-                    && oldEquipmentLoopVar.Mechanically_Installed__c == false) {
-                    equipmentLeadIdListMechInstall.add(newEquipmentLoopVar.Lead__r.Id);                
-                } 
-                //if the equipment gets set to interconnected update the partner task to be complete.
-                if(newEquipmentLoopVar.Interconnected__c == true 
-                    && oldEquipmentLoopVar.Interconnected__c == false) {
-                    equipmentLeadIdListInterconnection.add(newEquipmentLoopVar.Lead__r.Id);                
-                }                 
+        Map<Id, Residential_Equipment__c> newEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.newMap;
+        Map<Id, Residential_Equipment__c> oldEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.oldMap;
+
+        for (Residential_Equipment__c equipment : newEquipment) {
+            if (newEquipmentMap.get(equipment.Id).Mechanically_Installed__c 
+                && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
+                    equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
             }
+            if (newEquipmentMap.get(equipment.Id).Interconnected__c 
+                && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
+                    equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            }            
         }
          //if the equipment gets set to mechanically installed update the partner task to be complete.        
         if(equipmentLeadIdListMechInstall.size() > 0 ){
@@ -376,11 +376,16 @@ public without sharing class LoanHandler{
     public void createDisbursalsFromOpportunity(List<Opportunity> updatedOppList, List<Opportunity> oldOppList){
         List<Loan__c> loanList = new List<Loan__c>();    
         List<String> disbursalOppList = new List<String>();
-        for (Opportunity updatedOpp : updatedOppList){
-            for (Opportunity oldOpp : oldOppList){
-                if(updatedOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete' && oldOpp.Product_Line__c == 'Residential Loan'){
-                    disbursalOppList.add(updatedOpp.Id);
-                }
+
+        Map<Id, Opportunity> newOppMap = (Map<Id,Opportunity>) Trigger.newMap;
+        Map<Id, Opportunity> oldOppMap = (Map<Id,Opportunity>) Trigger.oldMap;
+
+        for (Opportunity oppRecord : updatedOppList) {
+            if (newOppMap.get(oppRecord.Id).StageName == 'Complete' 
+                && oldOppMap.get(oppRecord.Id).StageName != ' Complete'
+                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan'
+                && !newOppMap.get(oppRecord.Id).Submitted_to_First_Associates__c) {
+                    disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
             }
         }
         if(disbursalOppList.size() > 0){
