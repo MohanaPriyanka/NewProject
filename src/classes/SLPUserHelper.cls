@@ -1,13 +1,19 @@
+/*************************************************************************************
+ * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
+ * 
+ * Description: The SLPUserHelper provides the SLP Controller class SOQL queries with the necessary id values for the logged in user. 
+ * It also provides the SLPPartnerLogo class with the id value of the partner's logo and handles the alerts system used by BW operators. 
+ *
+ Tested By: SLPControllerTestclass
+ *************************************************************************************/
+
 public without sharing class SLPUserHelper {
     private static String partnerIdVar;
     
-    private class PartnerProfile {
-       
+    public class PartnerProfile {      
         public String partnerId;
-
        
         public String salesRepId;
-
        
         public String licenseType;
     }
@@ -29,7 +35,6 @@ public without sharing class SLPUserHelper {
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
              partnerProfile.licenseType = u.PortalRole;
         }
-        System.debug('The partnerProfile is ' + partnerProfile);
         return partnerProfile;
     }
 
@@ -48,12 +53,10 @@ public without sharing class SLPUserHelper {
                 partnerIdVar = String.valueOf(u.Partner_Id__c).subString(0,15);
             }
         }
-
         return partnerIdVar;
     }
 
-    @AuraEnabled 
-        
+    @AuraEnabled         
     // Get the BlueWave Customer Care Partner Id, or if that doesn't exist, another test Partner to use
     public static String getBWCCId() {
         Partner__c partnerRecord;
@@ -68,7 +71,7 @@ public without sharing class SLPUserHelper {
     }
 
     @AuraEnabled
-        public static List<String> getPartnerLogo() {
+    public static List<String> getPartnerLogo() {
         Partner__c partner;
         List<String> logoList = new List<String>();
 

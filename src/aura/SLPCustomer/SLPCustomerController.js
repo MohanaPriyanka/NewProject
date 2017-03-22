@@ -11,26 +11,14 @@
 
 		//retrieve the loan Id to set the record for the component to display.        
         var label = event.getParam("customerLoanId"); 
-    
-        //retrieve the customer's loan record to display in the component
-        var customerLoanRecord = component.get("c.getCustomerLoan"); 
-        customerLoanRecord.setParams({loanId : label})
-        customerLoanRecord.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.customer", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });                
-        $A.enqueueAction(customerLoanRecord); 
-        
+            
         //retrieve the customer's full information to display in the component
         var customerInformationAction = component.get("c.getCustomerInformation"); 
         customerInformationAction.setParams({loanId : label})
         customerInformationAction.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
+                component.set("v.customer", resp.getReturnValue());
             }
             else {
                 $A.log("Errors", resp.getError());

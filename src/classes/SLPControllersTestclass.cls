@@ -403,40 +403,6 @@ public without sharing class SLPControllersTestclass {
     	}
     	Test.stopTest();
     }
-    @isTest static void testGetTaskMap() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-		Map<String, List<Partner_Task__c>> taskMap = new Map<String, List<Partner_Task__c>>();
-
-    	List<Lead> leadList = new List<Lead>();
-    	List<Product2> productList = new List<Product2>();    		
-    	
-    	String loanId;
-
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-    	insert productList;
-
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }    
-        update leadList;
-
-		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
-		loanId = String.valueOf(loanList.get(0).Id);    
-
-    	Test.startTest();		
-    	System.runAs(partnerUser) {
-    		taskMap = SLPCustomerHandler.getTaskMap(loanId);
-    		List<Partner_Task__c> partnerTaskList = [SELECT Id FROM Partner_Task__c];		
-    	}
-    	Test.stopTest();
-    }    
 
     @isTest static void testDashboardHandler() {
     	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];

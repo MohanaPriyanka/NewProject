@@ -1,4 +1,22 @@
+/*************************************************************************************
+ * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
+ * 
+ * Description: 
+ * 
+ * Tested By: SLPControllerTestclass
+ *************************************************************************************/
 public without sharing class SLPDashboardHandler {
+    public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
+    static {
+        profile = SLPUserHelper.getPartnerProfile();
+    }    
+    public class dashboardWidgets {      
+        public Decimal totalSystemsContracted;
+       
+        public Decimal totalFundsDisbursed;
+       
+        public Decimal totalFundsPending;
+    }
 
     @AuraEnabled
     public static List<Decimal> getTotalCostandDisbrsals() {    
@@ -6,14 +24,13 @@ public without sharing class SLPDashboardHandler {
         Decimal totalFundsNotDisbursed;
         Decimal totalSystemCost;
         List<Decimal> dashboardFundsList = new List<Decimal>();        
-        String partnerId = SLPUserHelper.getPartnerId();
-        if (partnerId == null || partnerId == '') {
-          partnerId = SLPUserHelper.getBWCCId();
-        }        
-
+        //String partnerId = SLPUserHelper.getPartnerId();
+        //if (partnerId == null || partnerId == '') {
+        //  partnerId = SLPUserHelper.getBWCCId();
+        //}        
         Partner__c partner = [SELECT Id, Name, Total_Funds_Disbursed__c, Total_Funds_Not_Disbursed__c 
-                                FROM Partner__c 
-                                WHERE Id = : partnerId];        
+                              FROM Partner__c 
+                              WHERE Id = : profile.partnerId];        
 
         totalFundsDisbursed = partner.Total_Funds_Disbursed__c;
         totalFundsNotDisbursed = partner.Total_Funds_Not_Disbursed__c;
@@ -46,7 +63,6 @@ public without sharing class SLPDashboardHandler {
                                                 AND Status__c = 'Pending' 
                                                 AND Partner__r.Id = : partnerId];            
             return taskList;
-
         }else{
             List<Partner_Task__c> taskList = [SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, Loan__r.Name, Task_Type__c
                                                 FROM Partner_Task__c 

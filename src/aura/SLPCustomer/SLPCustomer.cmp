@@ -53,9 +53,9 @@ view and canacel button. There is a rendering issue with making them dissapear a
 reloaded by clicking the view button on the dashboard page-->   
     
     <style>
-            @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
         }
         .proximaNova95 {
             font-family: proximaNovaFont;   
@@ -63,15 +63,16 @@ reloaded by clicking the view button on the dashboard page-->
       		color: #FFFFFF;
         }
 
-            @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
         }
         .proximaNovaBrand {
             font-family: proximaNovaFont;   
         font-size:32px;
           color: #236192;
-        }        
+        }   
+
         @font-face {
         font-family: proximaNovaFont;
         src: url('{!$Resource.ProximaNova}');
@@ -81,6 +82,7 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:100%;
           color: #32CD32;
         }
+
         @font-face {
         font-family: proximaNovaFont;
         src: url('{!$Resource.ProximaNova}');
@@ -90,6 +92,7 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:100%;
           color: #32CD32;
         }
+
         @font-face {
         font-family: proximaNovaFont;
         src: url('{!$Resource.ProximaNova}');
@@ -99,6 +102,7 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:100%;
           color: #00b2a9;
         }
+
         @font-face {
         font-family: proximaNovaFont;
         src: url('{!$Resource.ProximaNova}');
@@ -107,11 +111,12 @@ reloaded by clicking the view button on the dashboard page-->
             font-family: proximaNovaFont;   
         font-size:90%;
           color: #266092;
-        }                  
+        }  
+
     </style>
     <div aura:id = "customerPage" class="noDisplayBar"> 	
         <div aura:id="customerName" class="main2 proximaNovaBrand"> 
-            <div  class="center proximaNovaBrand"><h1> {!v.customer.Name} </h1></div>
+            <div  class="center proximaNovaBrand"><h1> {!v.customer.Loan__r.Name} </h1></div>
              <hr></hr>  
         </div>
         <br></br> 
@@ -146,7 +151,7 @@ reloaded by clicking the view button on the dashboard page-->
                           title="Actions">Contract</span>
                   </a>
                 </li>        
-                <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">                                
+                <aura:if isTrue="{!v.customer.Loan__r.Loan__r.DOER_Solar_Loann__c == false}">                                
                 <li aura:id="mechInstall" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
@@ -189,10 +194,10 @@ reloaded by clicking the view button on the dashboard page-->
           </thead>
           <tbody>
               <tr>
-                <th scope="row"> <b>{!v.customer.Partner__r.Name}</b> </th>  
-                <th scope="row"> <b>{!v.customer.Product__r.ProductCode}</b> </th>
-                <th scope="row"> <ui:outputCurrency value="{!v.customer.System_Costt__c}" /></th>    
-                <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Total_Funds_Disbursed__c}" /></th>                
+                <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>  
+                <th scope="row"> <b>{!v.customer.Loan__r.Product__r.ProductCode}</b> </th>
+                <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.System_Costt__c}" /></th>    
+                <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}" /></th>                
               </tr>          
           </tbody>
         </table>  
@@ -229,7 +234,7 @@ reloaded by clicking the view button on the dashboard page-->
           <h3> In some cases, the review stage may require BlueWave to reach out to borrowers to obtain sensitive information. Please be aware that this may take longer than the other stages. You will be notified when it is completed.</h3>
           <br></br>
         </aura:if>
-        <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c}">    
+        <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c}">    
           <div aura:id="cusomterInformationTextMSLP" class="noDisplay paddingBottom1">
             <h3>  
               All relevant customer information has been, or will be provided through the MCEC Technical Application. Please update this customer's income documentation if you have not already done so and submit your sales agreement with the customer 
@@ -263,7 +268,7 @@ reloaded by clicking the view button on the dashboard page-->
                 </div>
                 <br></br>
             </fieldset>
-            <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">                  
+            <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                  
             <fieldset class="slds-form--compound paddingTop1x5">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
@@ -338,7 +343,7 @@ reloaded by clicking the view button on the dashboard page-->
                     </div> 
             </aura:if>                       
             </div>
-            <aura:if isTrue="{!v.customer.DOER_Solar_Loann__c == false}">
+            <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">
             <div aura:id = "customerInformation2" class="box noDisplay">                           
             <hr></hr>
             <fieldset class="slds-form--compound ">

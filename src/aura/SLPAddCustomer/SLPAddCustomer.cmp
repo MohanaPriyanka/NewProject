@@ -1,6 +1,4 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
-    <aura:attribute name="partnerLogo" type="String" />    
-    <aura:attribute name="partnerCustomId" type="String" />
     <aura:attribute name="partnerRecord" type="Object" />
 
 
