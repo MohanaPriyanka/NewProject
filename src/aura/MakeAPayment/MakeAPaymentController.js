@@ -45,7 +45,6 @@
         var source = event.getSource();
         var label = source.get("v.label"); 
        	
-        var actionMenuSelection = component.get("c.getMenuAccountBillItem"); //sets the menu selection to a field on the portal
         var actionMyAccountBill = component.get("c.getMyBill"); //shows the total due for the property account selected
         var actionMyAccountId = component.get("c.getMyParentAccountId");
         var actionMyParentAccountId = component.get("c.getMyParentAccountId")
@@ -53,23 +52,12 @@
 		var actionStatements = component.get("c.getAccountBills"); //loads Account Bills into the tabels for the customer
 		var actionPaymentLogs = component.get("c.getTransactions"); //loads Chargent Transactions into the tabels for the customer 
         
-        actionMenuSelection.setParams({menuInput : label});
         actionMyAccountBill.setParams({propertyAccountId : label});
         actionMyAccountId.setParams({propertyAccountId : label});
         actionMyParentAccountId.setParams({propertyAccountId : "All"});
         actionSystemBills.setParams({propertyAccountId : label});
         actionStatements.setParams({propertyAccountId : label});  
-        actionPaymentLogs.setParams({propertyAccountId : label});
-		        
-        
-        actionMenuSelection.setCallback(this,function(resp){ //sets the menu selection to a field on the portal
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.menuOutputMessage", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });                                        
+        actionPaymentLogs.setParams({propertyAccountId : label});                              
         
         actionMyAccountBill.setCallback(this,function(resp){ //shows the total due for the property account selected
             if(resp.getState() == 'SUCCESS') {
