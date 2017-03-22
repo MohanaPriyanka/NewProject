@@ -45,7 +45,7 @@
             <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
               <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>   
               <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
-			         <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
+			        <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
               <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>              
               <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>           
               </tr>

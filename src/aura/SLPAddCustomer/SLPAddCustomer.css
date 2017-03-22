@@ -21,7 +21,9 @@
 .THIS .marginBottom {
     padding-bottom: 2.5%;
 }
-
+.THIS .marginBottom25 {
+    margin-bottom: 2.5%;
+}
 
 .THIS .boxCenter {
     width:30%;
@@ -52,6 +54,11 @@
 .THIS .box {
     box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
        background-color:#ECECEC    ;
+}
+
+.THIS .boxMSLP {
+    box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
+       background-color:#ffd299    ;
 }
 
 .THIS.main2 {

@@ -335,10 +335,12 @@ public without sharing class SLPControllersTestclass {
 			disbursalList.clear();
 			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(loanId, nullString);
 			disbursalList.clear();
-			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, nullString);
-			disbursalList.clear();			
+			//disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, nullString);
+			//disbursalList.clear();			
 			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, null);
 			disbursalList.clear();
+            disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, 'Test');
+            disbursalList.clear();            
 			disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(nullString, nullString);			
 			disbursalList.clear();
 			disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(loanId, nullString);
