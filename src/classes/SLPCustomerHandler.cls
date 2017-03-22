@@ -1,9 +1,15 @@
 public without sharing class SLPCustomerHandler {    
 
+  public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
+  static {
+    profile = SLPUserHelper.getPartnerProfile();
+  }
+
   @AuraEnabled 
   public static Loan__c getCustomerLoan (String loanId) {
     System.debug('the loanId is ' + loanId);
-    String partnerId = SLPUserHelper.getPartnerId(); 
+    String partnerId = SLPUserHelper.getPartnerId();
+
     Partner__c partnerRecord;
 
     if (partnerId == null || partnerId == '' ) {
@@ -21,7 +27,8 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static List<Loan__c> getAllCustomers (String searchValue) {
     System.debug('Begin the getAllCustomers method');
-    String partnerId = SLPUserHelper.getPartnerId(); 
+    String partnerId = SLPUserHelper.getPartnerId();
+
     Partner__c partnerRecord;
 
     if (partnerId == null || partnerId == '') {
@@ -30,19 +37,21 @@ public without sharing class SLPCustomerHandler {
 
     if(searchValue == null || searchValue == ''){
       List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c,
-                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, 
+                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id,
                     (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending'  LIMIT 1)  
                     FROM Loan__c 
-                    WHERE Partner__r.Id = : partnerId
+                    WHERE Partner__r.Id = : profile.partnerId
+                    AND Sales_Agent__r.Id = : profile.salesRepId
                     ORDER BY createdDate DESC];      
     return loanList;      
     }else {
       List<Loan__c> loanList = [SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c,
-                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name,
+                    Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id,
                     (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1)  
                     FROM Loan__c 
                     WHERE Name LIKE : '%'+searchValue+'%'
-                    AND Partner__r.Id = : partnerId
+                    AND Partner__r.Id = : profile.partnerId
+                    AND Sales_Agent__r.Id = : profile.salesRepId
                     ORDER BY createdDate DESC];
     return loanList;                               
     }
@@ -51,7 +60,8 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
     System.debug('the loanId is ' + loanId);
-    String partnerId = SLPUserHelper.getPartnerId(); 
+    String partnerId = SLPUserHelper.getPartnerId();
+
     Partner__c partnerRecord;
 
     if (partnerId == null || partnerId == '') {
@@ -81,7 +91,8 @@ public without sharing class SLPCustomerHandler {
   public static String getProgressBarData(String loanId) {
     System.debug('the loanId is ' + loanId);
     String returnTaskName;
-    String partnerId = SLPUserHelper.getPartnerId(); 
+    String partnerId = SLPUserHelper.getPartnerId();
+
     Partner__c partnerRecord;
 
     if (partnerId == null || partnerId == '') {
@@ -109,7 +120,8 @@ public without sharing class SLPCustomerHandler {
 
    @AuraEnabled
     public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
-        String partnerId = SLPUserHelper.getPartnerId(); 
+        String partnerId = SLPUserHelper.getPartnerId();
+
         Partner__c partnerRecord;
 
         if (partnerId == null || partnerId == '') {
@@ -130,7 +142,8 @@ public without sharing class SLPCustomerHandler {
 
    @AuraEnabled
     public static List<Partner_Task__c> getLoanParentSubTasks(String taskId) {
-      String partnerId = SLPUserHelper.getPartnerId(); 
+      String partnerId = SLPUserHelper.getPartnerId();
+
       Partner__c partnerRecord;
 
       if (partnerId == null || partnerId == '') {
@@ -152,7 +165,8 @@ public without sharing class SLPCustomerHandler {
     public static List<Disbursal__c> getCompleteLoanDisbursals(String loanId, String searchValue) {
       //change SOQL to one query with parameters in in using database.query and string value concatenated together. see Joey Chan strategy. 
       System.debug('begin the getCompleteLoanDisbursals method');
-      String partnerId = SLPUserHelper.getPartnerId(); 
+      String partnerId = SLPUserHelper.getPartnerId();
+
       Partner__c partnerRecord;
 
       if (partnerId == null || partnerId == '') {
@@ -170,26 +184,29 @@ public without sharing class SLPCustomerHandler {
         return disbursalList;
       }else if(loanId == null && (searchValue == null || searchValue == '')) {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id 
                                     FROM Disbursal__c 
-                                    WHERE Partner__r.Id = : partnerId
+                                    WHERE Partner__r.Id = : profile.partnerId
+                                    AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId
                                     AND Status__c = 'Complete'                                       
                                     ORDER BY Date_of_Disbursal__c, createdDate ASC];                               
         return disbursalList;          
       }else if(loanId == null && searchValue != null) {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                    Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                    Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id  
                                   FROM Disbursal__c 
-                                  WHERE Partner__r.Id = : partnerId 
+                                  WHERE Partner__r.Id = : profile.partnerId
+                                  AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId 
                                   AND Loan__r.Name LIKE : '%'+searchValue+'%'
                                   AND Status__c = 'Complete' 
                                   ORDER BY Date_of_Disbursal__c, createdDate ASC];                               
         return disbursalList;          
       }else {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id  
                                     FROM Disbursal__c 
-                                    WHERE Partner__r.Id = : partnerId
+                                    WHERE Partner__r.Id = : profile.partnerId
+                                    AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId
                                     AND Status__c = 'Complete'                                       
                                     ORDER BY Date_of_Disbursal__c, createdDate ASC];                               
         return disbursalList;          
@@ -200,7 +217,8 @@ public without sharing class SLPCustomerHandler {
     public static List<Disbursal__c> getIncompleteLoanDisbursals(String loanId, String searchValue) {
      //change SOQL to one query with parameters in in using database.query and string value concatenated together. see Joey Chan strategy. 
       System.debug('begin the getIncompleteLoanDisbursals method');
-      String partnerId = SLPUserHelper.getPartnerId(); 
+      String partnerId = SLPUserHelper.getPartnerId();
+
       Partner__c partnerRecord;
 
       if (partnerId == null || partnerId == '') {
@@ -217,26 +235,29 @@ public without sharing class SLPCustomerHandler {
         return disbursalList;
       }else if(loanId == null && (searchValue == null || searchValue == '')) {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id  
                                     FROM Disbursal__c 
-                                    WHERE Partner__r.Id = : partnerId
+                                    WHERE Partner__r.Id = : profile.partnerId
+                                    AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId
                                     AND Status__c = 'Not yet disbursed'                                       
                                     ORDER BY createdDate ASC];                               
         return disbursalList;          
       }else if(loanId == null && searchValue != null) {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                    Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                    Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id  
                                   FROM Disbursal__c 
-                                  WHERE Partner__r.Id = : partnerId 
+                                  WHERE Partner__r.Id = : profile.partnerId
+                                  AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId 
                                   AND Loan__r.Name LIKE : '%'+searchValue+'%'
                                   AND Status__c = 'Not yet disbursed' 
                                   ORDER BY createdDate ASC];                               
         return disbursalList;          
       }else {
         List<Disbursal__c> disbursalList = [SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, 
-                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c 
+                                      Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id  
                                     FROM Disbursal__c 
-                                    WHERE Partner__r.Id = : partnerId
+                                    WHERE Partner__r.Id = : profile.partnerId
+                                    AND Loan__r.Sales_Agent__r.Id = : profile.salesRepId
                                     AND Status__c = 'Not yet disbursed'                                       
                                     ORDER BY createdDate ASC];                               
         return disbursalList;          
@@ -255,7 +276,8 @@ public without sharing class SLPCustomerHandler {
    @AuraEnabled
     public static Map<String, List<Partner_Task__c>> getTaskMap (String loanId) {
         Map<String, List<Partner_Task__c>> taskMap = new Map<String, List<Partner_Task__c>>();
-        String partnerId = SLPUserHelper.getPartnerId(); 
+        String partnerId = SLPUserHelper.getPartnerId();
+
         Partner__c partnerRecord;
 
         if (partnerId == null || partnerId == '') {
@@ -282,7 +304,8 @@ public without sharing class SLPCustomerHandler {
    @AuraEnabled
     public static void saveCustomerInformation(Residential_Equipment__c equipment, String equipmentId, String loanId, Loan__c loan) {
         System.debug('begin the saveEquipmentInformation method');
-        String partnerId = SLPUserHelper.getPartnerId(); 
+        String partnerId = SLPUserHelper.getPartnerId();
+
         Partner__c partnerRecord;
         String nameVar;
 

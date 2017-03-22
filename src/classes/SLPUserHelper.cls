@@ -1,11 +1,43 @@
 public without sharing class SLPUserHelper {
     private static String partnerIdVar;
+    
+    private class PartnerProfile {
+       
+        public String partnerId;
+
+       
+        public String salesRepId;
+
+       
+        public String licenseType;
+    }
+
+    @AuraEnabled 
+    public static PartnerProfile getPartnerProfile() {
+        PartnerProfile partnerProfile = new PartnerProfile();
+
+        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
+                         PortalRole, Profile.Name  
+                  FROM User 
+                  WHERE Id = :UserInfo.getUserId()];
+        if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
+            // No Partner ID for this internal user, use the BWCC user's Partner ID instead
+             partnerProfile.partnerId = getBWCCId();
+        } else {
+            // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
+             partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
+             partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
+             partnerProfile.licenseType = u.PortalRole;
+        }
+        System.debug('The partnerProfile is ' + partnerProfile);
+        return partnerProfile;
+    }
 
     @AuraEnabled 
     public static String getPartnerId() {
         if (partnerIdVar == null) {
             // The saved Partner ID isn't set... set it
-            User u = [SELECT Id, Partner_Id__c, Contact.Partner_Lookup__c 
+            User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c 
                       FROM User 
                       WHERE Id = :UserInfo.getUserId()];
             if (u.Partner_Id__c == null) {
@@ -26,11 +58,11 @@ public without sharing class SLPUserHelper {
     public static String getBWCCId() {
         Partner__c partnerRecord;
         Partner__c[] partnerRecords = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Customer Care'];
-        if (partnerRecords.size() > 0) {
+        if (!partnerRecords.isEmpty()) {
             partnerRecord = partnerRecords[0];
         } else {
             partnerRecord = [SELECT Id FROM Partner__c 
-                             WHERE Name like 'BlueWave%' or Name like '%Testcase%' LIMIT 1];
+                             WHERE Name like '%BlueWave%' or Name like '%Testcase%' LIMIT 1];
         }
         return(String.valueOf(partnerRecord.Id).subString(0,15));
     }
