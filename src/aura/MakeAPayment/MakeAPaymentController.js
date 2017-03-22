@@ -109,7 +109,6 @@
             }
         });
            
-        $A.enqueueAction(actionMenuSelection);
         $A.enqueueAction(actionMyAccountBill);
         $A.enqueueAction(actionMyAccountId);
         $A.enqueueAction(actionMyParentAccountId);
