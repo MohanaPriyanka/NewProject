@@ -323,6 +323,8 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         insert productionupdateC1;
 
+        Test.StopTest();
+
         List <ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, Unique_ID__c, System_Bill__r.Property_Account_ID__c, ChargentOrders__Payment_Status__c, ChargentOrders__Payment_Stop__c, ChargentOrders__Payment_Frequency__c, ChargentOrders__Charge_Date__c,
                                                                 ChargentOrders__Payment_Start_Date__c, System_Bill__r.Bill_Number__c, ChargentOrders__Payment_End_Date__c, ChargentOrders__Next_Transaction_Date__c, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
@@ -337,9 +339,6 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                 system.assert(cho.System_Bill__r.Bill_Number__c == 1);
             }
         }
-
-        
-        Test.StopTest();
 
         List <System_Bill__c> updatedsystemBillList2 = [SELECT Id, Late_Fees__c, Recurring_Payment_ID__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, Shared_Solar_System__c, Property_Account_ID__c FROM System_Bill__c];
         system.debug(updatedsystemBillList2);

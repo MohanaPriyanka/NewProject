@@ -28,7 +28,7 @@ public without sharing class LoanHandler{
 
     //On After Update of Lead Record
     public void onAfterLeadUpdate(List<Lead> updatedLeads, List<Lead> oldLeads){
-        List<Lead> leadsToCreateLoan = new List<Lead>();
+        List<Lead> leadsToCreateLoanAndEquipment = new List<Lead>();
         List<Lead> leadsToValidatePartnerTasks = new List<Lead>();
         List<Lead> leadsToSetBlueWaveReviewToComplete = new List<Lead>();
         List<String> leadIds = new List<String>();
@@ -41,26 +41,24 @@ public without sharing class LoanHandler{
                 if (newLead.Id == oldLead.Id){
                     if (newLead.Status == 'Pending Information' 
                         && oldLead.Status != 'Pending Information' 
-                        && newLead.Product_Line__c == 'Residential Loan'
-                        && newLead.Doer_Solar_Loan__c == false){
-                        leadsToCreateLoan.add(newLead);                       
+                        && newLead.Product_Line__c == 'Residential Loan'){
+                        leadsToCreateLoanAndEquipment.add(newLead);                       
                     }
                 }
                 if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan'
-                    && newLead.Doer_Solar_Loan__c == false){
+                    && newLead.Product_Line__c == 'Residential Loan'){
                     leadsToValidatePartnerTasks.add(newLead);
                 }
                 if (newLead.isConverted == true 
                     && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'
-                    && newLead.Doer_Solar_Loan__c == false){
+                    && newLead.Product_Line__c == 'Residential Loan'){
                     leadsToSetBlueWaveReviewToComplete.add(newLead);
                 }
             }
         }
-        if (leadsToCreateLoan.size() > 0){
-            createLoan(leadsToCreateLoan);
+        if (leadsToCreateLoanAndEquipment.size() > 0){
+            createResidentialEquipment(leadsToCreateLoanAndEquipment);
+            createLoan(leadsToCreateLoanAndEquipment);
         }
 
         if (leadsToValidatePartnerTasks.size() > 0){
@@ -84,6 +82,7 @@ public without sharing class LoanHandler{
                 if (newOpp.Id == oldOpp.Id){
                     if (newOpp.StageName == 'Complete' 
                         && oldOpp.StageName != 'Complete' 
+                        && !newOpp.Submitted_to_First_Associates__c
                         && newOpp.Product_Line__c == 'Residential Loan'){
                         System.debug('newOpp ID is ' + newOpp.Id);
                         opportunityIds.add(newOpp.Id);                       
@@ -141,17 +140,18 @@ public without sharing class LoanHandler{
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
 
-        for (Residential_Equipment__c newEquipmentLoopVar : newEquipment) {
-            for (Residential_Equipment__c oldEquipmentLoopVar : oldEquipment) {
-                //if the equipment gets set to mechanically installed update the partner task to be complete.
-                if(newEquipmentLoopVar.Mechanically_Installed__c == true && oldEquipmentLoopVar.Mechanically_Installed__c == false) {
-                    equipmentLeadIdListMechInstall.add(newEquipmentLoopVar.Lead__r.Id);                
-                } 
-                //if the equipment gets set to interconnected update the partner task to be complete.
-                if(newEquipmentLoopVar.Interconnected__c == true && oldEquipmentLoopVar.Interconnected__c == false) {
-                    equipmentLeadIdListInterconnection.add(newEquipmentLoopVar.Lead__r.Id);                
-                }                 
+        Map<Id, Residential_Equipment__c> newEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.newMap;
+        Map<Id, Residential_Equipment__c> oldEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.oldMap;
+
+        for (Residential_Equipment__c equipment : newEquipment) {
+            if (newEquipmentMap.get(equipment.Id).Mechanically_Installed__c 
+                && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
+                    equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
             }
+            if (newEquipmentMap.get(equipment.Id).Interconnected__c 
+                && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
+                    equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            }            
         }
          //if the equipment gets set to mechanically installed update the partner task to be complete.        
         if(equipmentLeadIdListMechInstall.size() > 0 ){
@@ -161,6 +161,36 @@ public without sharing class LoanHandler{
         if(equipmentLeadIdListInterconnection.size() > 0 ){
             updatePartnerTaskInterconnection(newEquipment, getPartnerTasks(equipmentLeadIdListInterconnection));
         }        
+    }
+    public void createResidentialEquipment(List<Lead> newLeadList){
+        System.debug('Being createResidentialEquipment method');
+        Map<String, RecordType> recordTypeMap = new Map<String, RecordType>();
+        for (RecordType recordTypeVar : [SELECT Id, Name FROM RecordType WHERE SobjectType = 'Residential_Equipment__c' AND (Name = 'BlueWave Solar Loan' OR Name ='MSLP')]) {
+            recordTypeMap.put(recordtypeVar.Name, recordTypeVar);
+        }
+        List<Residential_Equipment__c> newEquipmentList = new List<Residential_Equipment__c>();
+        integer i;
+        for (i = 0; i < newLeadList.size(); i++){
+            if(newLeadList.get(i).Product_Line__c == 'Residential Loan'){
+                if(newLeadList.get(i).DOER_Solar_Loan__c == false){
+                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
+                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
+                        Lead__c = newLeadList.get(i).Id,
+                        RecordTypeId = recordTypeMap.get('BlueWave Solar Loan').Id);
+                    newEquipmentList.add(equipmentRecord);                
+                }
+                else{
+                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
+                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
+                        Lead__c = newLeadList.get(i).Id,
+                        RecordTypeId = recordTypeMap.get('MSLP').Id);
+                    newEquipmentList.add(equipmentRecord);      
+                }         
+            }
+        }
+        //List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(newLoanList));    
+        //System.debug('The tranchedLoans before update are ' + tranchedLoans);  
+        insert newEquipmentList;
     }
 
     public void createLoan(List<Lead> newLeadList){
@@ -346,11 +376,16 @@ public without sharing class LoanHandler{
     public void createDisbursalsFromOpportunity(List<Opportunity> updatedOppList, List<Opportunity> oldOppList){
         List<Loan__c> loanList = new List<Loan__c>();    
         List<String> disbursalOppList = new List<String>();
-        for (Opportunity updatedOpp : updatedOppList){
-            for (Opportunity oldOpp : oldOppList){
-                if(updatedOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete' && oldOpp.Product_Line__c == 'Residential Loan'){
-                    disbursalOppList.add(updatedOpp.Id);
-                }
+
+        Map<Id, Opportunity> newOppMap = (Map<Id,Opportunity>) Trigger.newMap;
+        Map<Id, Opportunity> oldOppMap = (Map<Id,Opportunity>) Trigger.oldMap;
+
+        for (Opportunity oppRecord : updatedOppList) {
+            if (newOppMap.get(oppRecord.Id).StageName == 'Complete' 
+                && oldOppMap.get(oppRecord.Id).StageName != ' Complete'
+                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan'
+                && !newOppMap.get(oppRecord.Id).Submitted_to_First_Associates__c) {
+                    disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
             }
         }
         if(disbursalOppList.size() > 0){
@@ -623,23 +658,23 @@ public without sharing class LoanHandler{
                 partnerSequenceCounter = partnerSequenceCounter + 1;                           
             }
             if (loanRecord.DOER_Solar_Loann__c == true){
-                Partner_Task__c finalCompletion = new Partner_Task__c(
-                    Name = 'Final Completion Acknowledgement',
+                Partner_Task__c interconnectionTaskMSLP = new Partner_Task__c(
+                    Name = 'Report Interconnection to MCEC',
                     RecordType = parentPartnerTaskRecordType,
                     Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Final Completion',          
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
                     Partner__c = loanRecord.Partner__r.Id,
-                    Task_Sequence__c = partnerSequenceCounter,
                     Parent__c = true,
+                    Task_Sequence__c = partnerSequenceCounter,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
-                    Task_Type__c = 'Final Completion',
+                    Task_Type__c = 'Interconnection MSLP',
                     Loan__c = loanRecord.Id
                 );
-                parentTaskInsertList.add(finalCompletion);
-                parentTaskTypeMapUniqueId = finalCompletion.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
-                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, finalCompletion);                
-                partnerSequenceCounter = partnerSequenceCounter + 1;                                               
+                parentTaskInsertList.add(interconnectionTaskMSLP);
+                parentTaskTypeMapUniqueId = interconnectionTaskMSLP.Task_Type__c + ' ' + loanRecord.Lead__r.Id;
+                parentTaskAssignmentMap.put(parentTaskTypeMapUniqueId, interconnectionTaskMSLP);            
+                partnerSequenceCounter = partnerSequenceCounter + 1;                                                                         
             }
 
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
@@ -682,9 +717,9 @@ public without sharing class LoanHandler{
             }
             if (loanRecord.DOER_Solar_Loann__c == true){
                 Partner_Task__c technicalApprovalTask = new Partner_Task__c(
-                    Name = 'Provide Technical Approval Documentation',
+                    Name = 'Provide Technical Confirmation Documentation',
                     //Lead__c = loanRecord.Lead__r.Id,
-                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Technical Approval Documentation',                
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Technical Approval Confirmation',                
                     Partner__c = loanRecord.Partner__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
@@ -716,22 +751,22 @@ public without sharing class LoanHandler{
             subParentTaskInsertList.add(salesAgreementTask);
             subTaskTypeMapUniqueId = salesAgreementTask.Sub_Task_Type__c + ' ' + loanRecord.Lead__r.Id;            
             subParentTaskAssignmentMap.put(subTaskTypeMapUniqueId, salesAgreementTask); 
-
-            Partner_Task__c payStubDocumentationTask = new Partner_Task__c(
-                Name = 'Provide PayStub Documentation',
-                RecordType = childPartnerTaskRecordType,
-                Parent_Task__c = incomeDocumentationTask.Id,
-                Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'PayStub Documentation',              
-                Partner__c = loanRecord.Partner__r.Id,
-                //Task_Sequence__c = partnerSequenceCounter,
-                Status__c = 'Incomplete',
-                Start_Date__c = Date.today(),
-                Sub_Task_Type__c = 'Income Documentation',
-                Task_Type__c = 'Customer Information' 
-                //Loan__c = loanRecord.Id
-            );
-            subTaskInsertList.add(payStubDocumentationTask);        
-
+            if(loanRecord.Lead__r.Self_Employed__c == false && loanRecord.lead__r.Retired__c == false){
+                Partner_Task__c payStubDocumentationTask = new Partner_Task__c(
+                    Name = 'Provide PayStub Documentation',
+                    RecordType = childPartnerTaskRecordType,
+                    Parent_Task__c = incomeDocumentationTask.Id,
+                    Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'PayStub Documentation',              
+                    Partner__c = loanRecord.Partner__r.Id,
+                    //Task_Sequence__c = partnerSequenceCounter,
+                    Status__c = 'Incomplete',
+                    Start_Date__c = Date.today(),
+                    Sub_Task_Type__c = 'Income Documentation',
+                    Task_Type__c = 'Customer Information' 
+                    //Loan__c = loanRecord.Id
+                );
+                subTaskInsertList.add(payStubDocumentationTask);
+            }        
             if(loanRecord.Lead__r.Self_Employed__c == true && loanRecord.lead__r.Retired__c == false){
                 Partner_Task__c selfEmploymentTaxReturnPreviousYearTask = new Partner_Task__c(
                     Name = 'Provide Tax Return (Previous Year)',
@@ -851,6 +886,9 @@ public without sharing class LoanHandler{
 
         List<Partner_Task__c> systemInfoTaskList = new List<Partner_Task__c>(checkSystemInformation(leadList, taskMap));
         validatedTaskList.addAll(systemInfoTaskList);
+        
+        List<Partner_Task__c> technicalApprovalTaskList = new List<Partner_Task__c>(checkTechnicalConfirmationFiles(leadList, taskMap));
+        validatedTaskList.addAll(technicalApprovalTaskList);        
 
         //Load the validatedTaskList into a set to remove duplicates. This is important, if the validation methods return
         //a task in both lists it will send an error. Main cause of this is due to the inocompleteTaskList return statement
@@ -908,12 +946,7 @@ public without sharing class LoanHandler{
                             completedTaskList.add(taskMap.get(taskUniqueId));                           
                         }
                     }else if(customerIncomeTypeMap.get(customerIncomeLeadId) == 'selfEmployed'){
-                        if(incomeAttachment.Description.contains('PayStub')){
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today(); 
-                            completedTaskList.add(taskMap.get(taskUniqueId));                           
-                        }else if(incomeAttachment.Description.contains('Tax Return (Previous Year)')){
+                        if(incomeAttachment.Description.contains('Tax Return (Previous Year)')){
                             taskUniqueId = incomeAttachment.ParentId + ' ' + 'Tax Return (Previous Year)';
                             System.debug('The Task Unique_ID__c is ' + taskUniqueId);                            
                             taskMap.get(taskUniqueId).Status__c = 'Complete';
@@ -926,12 +959,7 @@ public without sharing class LoanHandler{
                             completedTaskList.add(taskMap.get(taskUniqueId));
                         }
                     }else if(customerIncomeTypeMap.get(customerIncomeLeadId) == 'retired'){
-                        if(incomeAttachment.Description.contains('PayStub')){
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today(); 
-                            completedTaskList.add(taskMap.get(taskUniqueId));                           
-                        }else if(incomeAttachment.Description.contains('SSN Award Letter') 
+                        if(incomeAttachment.Description.contains('SSN Award Letter') 
                             || incomeAttachment.Description.contains('Pension Award Letter')
                             || incomeAttachment.Description.contains('Bank Statement (SSN Income)') ){
                             taskUniqueId = incomeAttachment.ParentId + ' ' + 'SSN/Pension Award Letter or Bank Statement';
@@ -1018,7 +1046,38 @@ public without sharing class LoanHandler{
         }else{
             return incompleteTaskList;
         }
-    } 
+    }
+
+    public List<Partner_Task__c> checkTechnicalConfirmationFiles (List<Lead> leadList, Map<String, Partner_Task__c> taskMap){
+        System.debug('Begin checkTechnicalConfirmationFiles Method');
+        String taskUniqueId;
+        List<Id> leadIdList = new List<Id>();
+        List<Partner_Task__c> completedTaskList = new List<Partner_Task__c>();
+        List<Partner_Task__c> incompleteTaskList = new List<Partner_Task__c>(taskMap.values());
+
+        for (Lead leadRecord : leadList){
+            leadIdList.add(leadRecord.Id);                      
+        }
+
+        for (Attachment technicalConfirmAttachment: [SELECT Id, Name, Body, ParentId, Description
+                                                    FROM Attachment
+                                                    WHERE Description != null             
+                                                    AND ParentId IN : leadIdList]){
+            if(technicalConfirmAttachment.Description.contains('MSLP Technical Confirmation')){
+                taskUniqueId = technicalConfirmAttachment.ParentId + ' ' + 'Technical Approval Confirmation';
+                taskMap.get(taskUniqueId).Status__c = 'Complete';
+                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                completedTaskList.add(taskMap.get(taskUniqueId));
+            }
+        }
+        System.debug('The Compeleted Task List is ' + completedTaskList);
+        if(completedTaskList.size()>0){
+            return completedTaskList;
+        }else{
+            return incompleteTaskList;
+        }  
+    }               
+
 
     //If all Partner Sub-Tasks are set to complete, set the parent Partner task to complete.
     public void updatePartnerParentTaskStatus(Map<String, Partner_Task__c> taskMap){
@@ -1189,11 +1248,13 @@ public without sharing class LoanHandler{
         List<String> equipmentLeadIdList = new List<String>();
 
         for (Residential_Equipment__c equipmentLoopVar : equipmentList){
-            taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Mechanical Installation';
-            taskMap.get(taskUniqueId).Status__c = 'Complete';
-            taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-            taskUpdateList.add(taskMap.get(taskUniqueId));
-            equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
+            if(!equipmentLoopVar.DOER_Solar_Loan__c) {
+                taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Mechanical Installation';
+                taskMap.get(taskUniqueId).Status__c = 'Complete';
+                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                taskUpdateList.add(taskMap.get(taskUniqueId));
+                equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
+            }
         }                    
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
