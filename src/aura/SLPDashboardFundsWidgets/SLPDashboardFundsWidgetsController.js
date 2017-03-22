@@ -1,15 +1,16 @@
 ({
 	doInit : function(component, event, helper) {
-		var totalCostandDisbrsals = component.get("c.getTotalCostandDisbrsals");        
-        totalCostandDisbrsals.setCallback(this,function(resp){
+		var actionDashboardWidgets = component.get("c.getDashboardWidgets");        
+        actionDashboardWidgets.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
-                component.set("v.totalCostandDisbrsals", resp.getReturnValue());
+                var widgets = resp.getReturnValue();
+                component.set("v.widgets", resp.getReturnValue());
             }
             else {
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(totalCostandDisbrsals); 
+        $A.enqueueAction(actionDashboardWidgets); 
         
         var actionAlerts = component.get("c.getPartnerAlerts");        
         actionAlerts.setCallback(this,function(resp){
@@ -18,20 +19,6 @@
                 if(resp.getReturnValue().length > 0){
                     component.set("v.partnerAlerts", resp.getReturnValue());
                     component.set("v.alertPrompt", true);
-                    //the code below is to change the color of the header on the alerts pop-up
-                    // if(resp.getReturnValue()[0].Importance__c == 'Urgent') {
-                    //     $A.util.addClass(alertTheme, 'slds-theme--error');  
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--success'); 
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--warning');           
-                    // }else if (resp.getReturnValue()[0].Importance__c == 'Important') {
-                    //     $A.util.addClass(alertTheme, 'slds-theme--warning');  
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--success'); 
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--error');                     
-                    // }else if (resp.getReturnValue()[0].Importance__c == 'Normal'){
-                    //     $A.util.addClass(alertTheme, 'slds-theme--success');  
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--warning'); 
-                    //     $A.util.removeClass(alertTheme, 'slds-theme--error');     
-                    // }
                 }
             }    
             else {

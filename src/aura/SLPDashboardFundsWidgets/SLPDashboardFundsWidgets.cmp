@@ -1,10 +1,13 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
-    <aura:attribute name="totalCostandDisbrsals" type="List"  />   
-    <aura:attribute name="partnerAlerts" type="Object" />
-    <aura:attribute name="alertPrompt" type="Boolean" />
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-    <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />
-    <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
+  <aura:attribute name="widgets" type="Object"  />
+  <aura:attribute name="systemsContracted" type="Decimal"  />   
+  <aura:attribute name="fundsDisbursed" type="Decimal"  />   
+  <aura:attribute name="fundsPending" type="Decimal"  />   
+  <aura:attribute name="partnerAlerts" type="Object" />
+  <aura:attribute name="alertPrompt" type="Boolean" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+  <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />
+  <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
 
  <style type="text/css">
 
@@ -46,7 +49,7 @@
                     		<h2>Systems Contracted</h2>
                       </div>                        
                             <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[0]}" /> 
+                                <ui:outputCurrency value="{!v.widgets.totalSystemsContracted}" /> 
                             </div>
                     </div>
                 </a>        
@@ -58,7 +61,7 @@
                     		<h2>Funds Disbursed</h2>
                          </div>
                             <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[1]}" />                            
+                                <ui:outputCurrency value="{!v.widgets.totalFundsDisbursed}" />                            
                         	</div>
                        
                     </div>
@@ -71,7 +74,7 @@
                     		<h2>Funds Pending</h2>
                         </div>                        
                             <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.totalCostandDisbrsals[2]}" />                            
+                                <ui:outputCurrency value="{!v.widgets.totalFundsPending}" />                            
                         	</div>                            
                     </div>
                 </a>        
