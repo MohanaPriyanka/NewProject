@@ -6,23 +6,37 @@
 
 }
 
-.THIS .boxLeft {
+.THIS .boxLeftExec {
     width:30%;
     float:left;
     
 }
 
-.THIS .boxCenter {
+.THIS .boxCenterExec {
     width:30%;
     float:left;
    	margin-left: 5%;
     margin-right: 5%;
 }
 
-.THIS .boxRight {
+.THIS .boxRightExec {
     width:30%;
     float:right;
 }
+
+.THIS .boxLeftUser {
+    width:30%;
+    float:left;
+    margin-left: 10%;
+    
+}
+
+.THIS .boxRightUser {
+    width:30%;
+    float:right;
+    margin-right: 10%;
+}
+
 
 .THIS .paddingLeft {
     padding-left:15%;

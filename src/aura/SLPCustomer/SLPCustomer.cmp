@@ -214,21 +214,21 @@ reloaded by clicking the view button on the dashboard page-->
             <br></br>
             <aura:if isTrue="{!v.licenseType}">  
             <div class="clearfix">               
-                <div class="boxLeft">
+                <div class="boxLeftExec">
                            <ui:button aura:id="taskInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
                                label="View Task Information"                  
                                press="{!c.openTaskInformation}"/>                           
                 </div>
-                <div class="boxCenter">
+                <div class="boxCenterExec">
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
                                label="View Customer Information"                  
                                press="{!c.openCustomerInformation}"/>                           
                 </div>           
-                <div class="boxRight">
+                <div class="boxRightExec">
                            <ui:button aura:id="disbursalInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
@@ -238,14 +238,14 @@ reloaded by clicking the view button on the dashboard page-->
             </div>
             <aura:set attribute="else">
             <div class="clearfix">               
-                <div class="boxLeft">
+                <div class="boxLeftUser">
                            <ui:button aura:id="taskInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
                                label="View Task Information"                  
                                press="{!c.openTaskInformation}"/>                           
                 </div>
-                <div class="boxRight">
+                <div class="boxRightUser">
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
@@ -537,7 +537,7 @@ reloaded by clicking the view button on the dashboard page-->
  			    <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Name}</b> </th>
-                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
                 		<th scope="row"> <b>{!disbursal.Status__c}</b> </th>
                         <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
                   		<td> <div class="slds-form-element">
@@ -572,7 +572,7 @@ reloaded by clicking the view button on the dashboard page-->
  			    <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Name}</b> </th>
-                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
+                    	<th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
                 		<th scope="row"> <b>{!disbursal.Status__c}</b> </th>
                         <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>                          
                     </tr>                    
