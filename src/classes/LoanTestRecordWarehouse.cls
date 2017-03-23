@@ -157,7 +157,7 @@ public class LoanTestRecordWarehouse {
                                                 System_Cost__c = 35000,
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr10710.Id,
+                                                Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 10,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
@@ -165,25 +165,7 @@ public class LoanTestRecordWarehouse {
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
-        Lead leadMALoanTerm10Rate599 = new lead(FirstName = 'leadMALoanTerm10Rate599',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                System_Cost__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr10780.Id,
-                                                Loan_Term__c = 10,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Pre_Approval_Form__c = true,
-                                                Unfinished_Lead__c = true,
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');                                                       
+                                                Status = 'Ready for Credit Check');                                                  
         Lead leadMALoanTerm10Rate725 = new lead(FirstName = 'leadMALoanTerm10Rate725',
                                                 LastName = 'Test',
                                                 Loan_Amount__c = 35000,
@@ -193,7 +175,7 @@ public class LoanTestRecordWarehouse {
                                                 System_Cost__c = 35000,
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr10690.Id,
+                                                Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 10,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
@@ -211,31 +193,13 @@ public class LoanTestRecordWarehouse {
                                                 System_Cost__c = 35000,
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr20710.Id,
+                                                Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 20,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
-        Lead leadMALoanTerm20Rate599 = new lead(FirstName = 'leadMALoanTerm20Rate599',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                System_Cost__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr20780.Id,
-                                                Loan_Term__c = 20,
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Pre_Approval_Form__c = true,
-                                                Unfinished_Lead__c = true,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');                                                         
+                                                Status = 'Ready for Credit Check');                                                  
         Lead leadMALoanTerm20Rate725 = new lead(FirstName = 'leadMALoanTerm20Rate725',
                                                 LastName = 'Test',
                                                 Loan_Amount__c = 35000,
@@ -246,7 +210,7 @@ public class LoanTestRecordWarehouse {
                                                 System_Cost__c = 35000,
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
-                                                //Personal_Credit_Report__c = pcr20690.Id,
+                                                Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 20,
                                                 Product_Program__c = 'MSLP',
                                                 Pre_Approval_Form__c = true,
@@ -255,8 +219,8 @@ public class LoanTestRecordWarehouse {
                                                 Product__c = null,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check'); 
-        Insert new List<Lead>{leadMALoanTerm10Rate699, /*leadMALoanTerm10Rate599,*/ leadMALoanTerm10Rate725, 
-                                leadMALoanTerm20Rate699, /*leadMALoanTerm20Rate599,*/ leadMALoanTerm20Rate725}; 
+        Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725, 
+                                leadMALoanTerm20Rate699, leadMALoanTerm20Rate725}; 
         //
         LASERCA__Personal_Credit_Report__c pcr10710 = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
@@ -266,14 +230,6 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_4__c = '001',
                                                                                             LASERCA__Credit_Score_TransUnion__c = '710',
                                                                                             LASERCA__Lead__c = leadMALoanTerm10Rate699.Id);
-        LASERCA__Personal_Credit_Report__c pcr10780 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 2',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',                                                                                                                    
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '750',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm10Rate599.Id);
         LASERCA__Personal_Credit_Report__c pcr10690 = new LASERCA__Personal_Credit_Report__c(           
                                                                                             Name = 'Personal Credit Report 3',
                                                                                             LASERCA__Code__c ='001',
@@ -290,14 +246,6 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_4__c = '001',                                                                                                                    
                                                                                             LASERCA__Credit_Score_TransUnion__c = '710',
                                                                                             LASERCA__Lead__c = leadMALoanTerm20Rate699.Id);
-        LASERCA__Personal_Credit_Report__c pcr20780 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 5',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',                                                                                                                    
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '750',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm20Rate599.Id);
         LASERCA__Personal_Credit_Report__c pcr20690 = new LASERCA__Personal_Credit_Report__c(           
                                                                                             Name = 'Personal Credit Report 6',
                                                                                             LASERCA__Code__c ='001',
@@ -306,15 +254,11 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_4__c = '001',                                                                                                                    
                                                                                             LASERCA__Credit_Score_TransUnion__c = '690',
                                                                                             LASERCA__Lead__c = leadMALoanTerm20Rate725.Id);        
-        insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, /*pcr10780,*/ pcr10690, pcr20710, /*pcr20780,*/ pcr20690};
+        insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690};
 
         LASERCA__Trade_Accounts__c pcr10710Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 1',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr10710.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
-        LASERCA__Trade_Accounts__c pcr10780Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 2',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr10780.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcr10690Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 3',
@@ -324,15 +268,11 @@ public class LoanTestRecordWarehouse {
                                                                                 Name = 'Personal Credit Report Trade 4',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr20710.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);
-        LASERCA__Trade_Accounts__c pcr20780Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 5',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr20780.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcr20690Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 6',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr20690.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);
-        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade,/* pcr10780Trade,*/ pcr10690Trade, pcr20710Trade, /*pcr20780Trade, */pcr20690Trade};        
+        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade};        
         //
        
         return leadList;
@@ -429,8 +369,8 @@ public class LoanTestRecordWarehouse {
                                     Custom_Id__c = 'test',
                                     Loan_Term__c = 120,
                                     Unfinished_Lead__c = true,                                     
-                                    Partner_Lookup__c = partner.Id,
-                                    //Personal_Credit_Report__c = creditReportRecord.Id,
+                                    Partner_Lookup__c = partner.Id,  
+                                    Bs_Sales_ID__c = salesRep.Id,                                  
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
@@ -450,7 +390,7 @@ public class LoanTestRecordWarehouse {
                                     Custom_Id__c = 'test',
                                     Unfinished_Lead__c = true, 
                                     Partner_Lookup__c = partner.Id,
-                                    //Personal_Credit_Report__c = creditReportRecord.Id,
+                                    Bs_Sales_ID__c = salesRep.Id,                                     
                                     Loan_Term__c = 120,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
@@ -471,6 +411,7 @@ public class LoanTestRecordWarehouse {
                                        Custom_Id__c = 'test',
                                        Unfinished_Lead__c = true, 
                                        Partner_Lookup__c = partner.Id,
+                                       Bs_Sales_ID__c = salesRep.Id, 
                                        Loan_Term__c = 120,
                                        Annual_Income_Currency__c = 150000,
                                        Product__c = null,
