@@ -23,7 +23,7 @@ public without sharing class SLPUserHelper {
         PartnerProfile partnerProfile = new PartnerProfile();
 
         User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
-                         PortalRole, Profile.Name  
+                         PortalRole, Profile.Name, UserRole.Name  
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
         if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
@@ -33,7 +33,13 @@ public without sharing class SLPUserHelper {
             // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
              partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
-             partnerProfile.licenseType = u.PortalRole;
+             if (u.UserRole.Name.Contains('User')) {
+                 partnerProfile.licenseType = 'User';                
+             } else if (u.UserRole.Name.Contains('Manager')) {
+                partnerProfile.licenseType = 'Manager';
+             } else if (u.UserRole.Name.Contains('Executive')) {
+                partnerProfile.licenseType = 'Executive';
+             }
         }
         return partnerProfile;
     }

@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
   <aura:attribute name="widgets" type="Object"  />
+  <aura:attribute name="licenseType" type="Boolean"  />     
   <aura:attribute name="systemsContracted" type="Decimal"  />   
   <aura:attribute name="fundsDisbursed" type="Decimal"  />   
   <aura:attribute name="fundsPending" type="Decimal"  />   
@@ -10,8 +11,8 @@
   <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
 
  <style type="text/css">
-
-  </style>      
+  </style>    
+  <aura:if isTrue="{!v.licenseType}">
     <div aura:id = "disbursalWidgets" class="main2">        
     <aura:if isTrue="{!v.alertPrompt}" >
         <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
@@ -81,6 +82,7 @@
 		    </div>
         </div>            
     </div>
+  </aura:if>
     <br>
     </br>
 </aura:component>

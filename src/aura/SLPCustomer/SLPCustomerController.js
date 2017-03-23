@@ -1,7 +1,22 @@
 ({
 	doInit : function(component, event, helper) {
 	    var closeButton = component.find("closeButton");   
-        $A.util.addClass(closeButton, 'noDisplay');                   
+        $A.util.addClass(closeButton, 'noDisplay');  
+
+        //The following block of code retrieves the user's license type to determine what to display on the UI
+        var actionLicenseType = component.get("c.getLicenseType");        
+        actionLicenseType.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                if(resp.getReturnValue().length > 0){
+                    if(resp.getReturnValue() == 'Executive')
+                    component.set("v.licenseType", true);
+                }
+            }    
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });    
+        $A.enqueueAction(actionLicenseType);                            
 	},
     
     openCustomerWindow : function(component, event, helper) {
@@ -407,23 +422,7 @@
     },
     
 	exitCustomerWindow : function(component, event, helper) {
-        var customerPage = component.find("customerPage");
-        $A.util.addClass(customerPage, 'noDisplayBar');
-        
-        var evtExitCustomerWindow = $A.get("e.c:SLPCustomerEvent");
-        evtExitCustomerWindow.fire(); 	
-        
-        var parentSubTaskToggle = component.find("parentSubTasks");
-        var subTaskTypeToggle = component.find("subTaskType");
-        var subTaskToggle = component.find("subTaskTable");
-        var exitParentSubTasksButton = component.find("exitParentSubTasksTable");
-
-        $A.util.addClass(parentSubTaskToggle, 'noDisplay');          
-        $A.util.addClass(subTaskTypeToggle, 'noDisplay'); 
-        $A.util.addClass(subTaskToggle, 'noDisplay'); 
-
-        component.set("v.customerInformation", null);
-        component.set("v.parentSubTaskList", null);       
+        $A.get('e.force:refreshView').fire();
     },
 
     
@@ -623,7 +622,12 @@
                      
         $A.enqueueAction(customerInformationAction);     
         
- 		helper.getProgressBarData(component, event, helper);
+        var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
+        if(mslpVar == false) {
+            helper.getProgressBarData(component, event, helper);
+        }else {
+            helper.getProgressBarDataMSLP(component, event, helper);
+        }
     /*    //save the files
         var fileInput = component.find("mechInstallFile").getElement();
     	var file = fileInput.files[0];

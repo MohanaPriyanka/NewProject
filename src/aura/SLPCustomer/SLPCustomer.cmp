@@ -4,7 +4,8 @@
     <aura:attribute name="customerInformation" type="Object" />
 	  <aura:attribute name="customerDates" type="String" />
     <aura:attribute name="taskType" type="String" access="global" />
-    <aura:attribute name="parentSubTaskButton" type="Boolean"  /> 
+    <aura:attribute name="parentSubTaskButton" type="Boolean"  />
+    <aura:attribute name="licenseType" type="Boolean"  />      
     <aura:attribute name="partnerTaskList" type="Object"  />
     <aura:attribute name="parentSubTaskList" type="Object"  /> 
     <aura:attribute name="subTaskList" type="Object"  />
@@ -187,17 +188,23 @@ reloaded by clicking the view button on the dashboard page-->
           <thead>
             <tr class="slds-text-heading--label  proximaNovaDataBlue" >           
               <th scope="col"><span class="slds-truncate"><b>Partner</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Sales Agent</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>
-              <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
+              <aura:if isTrue="{!v.licenseType}">
+                <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
+              </aura:if>
             </tr>
           </thead>
           <tbody>
               <tr>
-                <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>  
+                <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>
+                <th scope="row"> <b>{!v.customer.Loan__r.Sales_Agent__r.Name}</b> </th>    
                 <th scope="row"> <b>{!v.customer.Loan__r.Product__r.ProductCode}</b> </th>
-                <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.System_Costt__c}" /></th>    
-                <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}" /></th>                
+                <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.System_Costt__c}" /></th> 
+                <aura:if isTrue="{!v.licenseType}">   
+                  <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}" /></th>
+                </aura:if>                
               </tr>          
           </tbody>
         </table>  
@@ -205,6 +212,7 @@ reloaded by clicking the view button on the dashboard page-->
         <!--  _________________________________INFORMATION BUTTONS ___________________________________ -->                
         <div aura:id = "customerInformationButtons" class="main2">        
             <br></br>
+            <aura:if isTrue="{!v.licenseType}">  
             <div class="clearfix">               
                 <div class="boxLeft">
                            <ui:button aura:id="taskInformationButton"
@@ -227,7 +235,26 @@ reloaded by clicking the view button on the dashboard page-->
                                label="View Disbursal Information"                  
                                press="{!c.openDisbursalInformation}"/>                           
                 </div>
-            </div>            
+            </div>
+            <aura:set attribute="else">
+            <div class="clearfix">               
+                <div class="boxLeft">
+                           <ui:button aura:id="taskInformationButton"
+                               class="slds-button--brand box slds-align--absolute-center"
+                               labelClass="proximaNova95"
+                               label="View Task Information"                  
+                               press="{!c.openTaskInformation}"/>                           
+                </div>
+                <div class="boxRight">
+                           <ui:button aura:id="customerInformationButton"
+                               class="slds-button--brand box slds-align--absolute-center"
+                               labelClass="proximaNova95"
+                               label="View Customer Information"                  
+                               press="{!c.openCustomerInformation}"/>                           
+                </div>           
+            </div>              
+            </aura:set>  
+            </aura:if>            
         </div>
         <hr></hr> 
         <aura:if isTrue="{!v.blueWaveReviewAlert}">
@@ -492,9 +519,10 @@ reloaded by clicking the view button on the dashboard page-->
             </tbody>
         </table>            
         </div>
+        <aura:if isTrue="{!v.licenseType}">          
         <div>
         <br></br>  
-        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ --> 
+        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->       
         <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
         <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
           <thead>
@@ -506,7 +534,7 @@ reloaded by clicking the view button on the dashboard page-->
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
+ 			    <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Name}</b> </th>
                     	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
@@ -541,7 +569,7 @@ reloaded by clicking the view button on the dashboard page-->
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
+ 			    <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Name}</b> </th>
                     	<th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!disbursal.Amount__c}" /></th>                          
@@ -551,10 +579,11 @@ reloaded by clicking the view button on the dashboard page-->
             </aura:iteration>          
           </tbody>
         </table>             
-   	 </div>        
+   	 </div>
+     </aura:if>        
     	<div>
             <br></br>
             <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
     	</div>        
-    </div>    
+    </div> 
 </aura:component>

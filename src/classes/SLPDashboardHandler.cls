@@ -10,6 +10,7 @@ public without sharing class SLPDashboardHandler {
     static {
         profile = SLPUserHelper.getPartnerProfile();
     }
+
     public class DashboardWidgets {      
         @AuraEnabled
         public Decimal totalSystemsContracted;
@@ -20,11 +21,17 @@ public without sharing class SLPDashboardHandler {
         @AuraEnabled
         public Decimal totalFundsPending;
     }
+
+    @AuraEnabled
+    public static String getLicenseType() {
+        return profile.LicenseType;
+    }
+
     //the getDashboardWidgets method returns the values for the SLP's dashboard widgets.
     @AuraEnabled
     public static DashboardWidgets getDashboardWidgets() { 
         DashboardWidgets widgets = new DashboardWidgets();    
-    
+        
         Partner__c partner = [SELECT Id, Name, Total_Funds_Disbursed__c, Total_Funds_Not_Disbursed__c 
                               FROM Partner__c 
                               WHERE Id = : profile.partnerId];  
@@ -37,34 +44,26 @@ public without sharing class SLPDashboardHandler {
     //the getsTasksByStage method returns the task list to be displayed on the dashboard of the SLP
 	@AuraEnabled
 	public static List<Partner_Task__c> getTasksByStage(String stageName) {    
-		if(stageName != 'All'){
-            List<Partner_Task__c> taskList = [SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, 
-                                                Loan__r.Name, Task_Type__c
-                                              FROM Partner_Task__c 
-                                              WHERE  Name = : stageName 
-                                                AND Parent__c = true
-                                                AND Loan__c != null
-                                                AND Lead__c != null
-                                                AND Sub_Task_Type__c = null
-                                                AND Parent_Task__c = null                                                  
-                                                AND Status__c = 'Pending' 
-                                                AND Partner__r.Id = : profile.partnerId        
-                                                AND Sales_Representative__r.Id = : profile.salesRepId];                        
-            return taskList;
-        }else{
-            List<Partner_Task__c> taskList = [SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, Loan__r.Name, Task_Type__c
-                                              FROM Partner_Task__c 
-                                              WHERE Status__c = 'Pending' 
-                                                AND Parent__c = true
-                                                AND Loan__c != null
-                                                AND Lead__c != null
-                                                AND Sub_Task_Type__c = null
-                                                AND Parent_Task__c = null                                                  
-                                                AND Partner__r.Id = : profile.partnerId        
-                                                AND Sales_Representative__r.Id = : profile.salesRepId];                    
-            return taskList;
-       }
-	}
+        List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
+        String taskQuery = 'SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, Loan__r.Name, Task_Type__c ' ;
+        taskQuery += '      FROM Partner_Task__c' ;
+        taskQuery += '      WHERE Status__c = \'' + 'Pending' + '\' ';
+        taskQuery += '      AND Loan__c != null ';
+        taskQuery += '      AND Lead__c != null ';
+        taskQuery += '      AND Sub_Task_Type__c = null ';
+        taskQuery += '      AND Parent_Task__c = null ';   
+        taskQuery += '      AND Partner__r.Id  =  \'' + profile.partnerId +  '\' '; 
+        if (profile.LicenseType != 'Executive') {
+          taskQuery += '    AND Sales_Representative__r.Id  =  \'' + profile.salesRepId +  '\' ';                  
+        }
+        if (stageName != 'All') {
+            taskQuery += '  AND Name =  \'' + stageName +  '\' ';     
+        }             
+        for(Partner_Task__c taskRecord : Database.query(taskQuery)){
+          taskList.add(taskRecord);
+        }        
+        return taskList;
+    }              
 
     @AuraEnabled
     public static List<Partner_Alert__c> getPartnerAlerts() {
