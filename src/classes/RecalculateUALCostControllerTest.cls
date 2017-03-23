@@ -168,31 +168,37 @@ public class RecalculateUALCostControllerTest {
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss1.Id);
         Opportunity opp2 = new Opportunity(Name = 'Opp2',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss2.Id);
         Opportunity opp3 = new Opportunity(Name = 'Opp3',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss3.Id);
         Opportunity opp4 = new Opportunity(Name = 'Opp4',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss4.Id);
         Opportunity opp5 = new Opportunity(Name = 'Opp5',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss5.Id);
         Opportunity opp6 = new Opportunity(Name = 'Opp6',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss6.Id);
         Opportunity opp7 = new Opportunity(Name = 'Opp7',
                                            StageName = 'Closed won',
@@ -204,18 +210,21 @@ public class RecalculateUALCostControllerTest {
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss9.Id);
         Opportunity opp9 = new Opportunity(Name = 'Opp9',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss9.Id);
         Opportunity opp10 = new Opportunity(Name = 'Opp10',
                                            StageName = 'Closed won',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss10.Id);
         insert new List<Opportunity>{opp1, opp2, opp3, opp4, opp5, opp6, opp7, opp8, opp9, opp10};
 
