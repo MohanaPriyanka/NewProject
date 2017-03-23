@@ -94,7 +94,8 @@ public without sharing class LoanHandler{
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
                                                         Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
                                                         System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
-                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c
+                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
+                                                        Technology_Platform_Fee__c
                                                       FROM Loan__c 
                                                       WHERE Opportunity__r.Id IN : opportunityIds];
             //Assign the Loans to their appropriate Tranche
@@ -213,6 +214,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
@@ -232,6 +234,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
