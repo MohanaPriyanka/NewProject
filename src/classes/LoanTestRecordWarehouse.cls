@@ -1,5 +1,21 @@
 @isTest
 public class LoanTestRecordWarehouse {
+    public static List<String> partnerSetup() {           
+        List<String> partnerSetupList = new List<String>();   
+        Partner__c partner = new Partner__c(Name = 'Bluewave Inside Sales');
+        insert partner;
+        partnerSetupList.add(partner.Id);
+
+        BSST__c salesRep = new BSST__c(Name = 'BlueWave User', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
+        insert salesRep;
+        partnerSetupList.add(salesRep.Id);
+        
+        BSST__c salesRepExec = new BSST__c(Name = 'BlueWave Executive', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'executive@Sales.com');
+        insert salesRepExec;  
+        partnerSetupList.add(salesRepExec.Id);  
+
+        return partnerSetupList;    
+    }
 
     public static List<Product2> getLoanProductsVariableInterestRatesandTerms () { 
 
@@ -347,12 +363,9 @@ public class LoanTestRecordWarehouse {
         return new List<Product2>{productRecord, productRecordMSLP};                                                                                                                                                             
     }
 
-    public static List<Lead> getLoanHandlerLeadRecords () {         
-        Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
-        insert partner;
-
-        BSST__c salesRep = new BSST__c(Name = 'Cole Swain', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
-        insert salesRep;
+    public static List<Lead> getLoanHandlerLeadRecords () { 
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
+        BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
 
         List<Lead> leadList = new List<Lead>();
         Lead leadRecordRetired = new lead(FirstName = 'Retired',
@@ -389,7 +402,7 @@ public class LoanTestRecordWarehouse {
                                     System_Cost__c = 25000,
                                     Custom_Id__c = 'test',
                                     Unfinished_Lead__c = true, 
-                                    Partner_Lookup__c = partner.Id,
+                                    Partner_Lookup__c = partner.Id,  
                                     Bs_Sales_ID__c = salesRep.Id,                                     
                                     Loan_Term__c = 120,
                                     Annual_Income_Currency__c = 150000,
@@ -410,8 +423,8 @@ public class LoanTestRecordWarehouse {
                                        System_Cost__c = 25000,
                                        Custom_Id__c = 'test',
                                        Unfinished_Lead__c = true, 
-                                       Partner_Lookup__c = partner.Id,
-                                       Bs_Sales_ID__c = salesRep.Id, 
+                                       Partner_Lookup__c = partner.Id,  
+                                       Bs_Sales_ID__c = salesRep.Id,   
                                        Loan_Term__c = 120,
                                        Annual_Income_Currency__c = 150000,
                                        Product__c = null,

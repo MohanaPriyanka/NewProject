@@ -48,7 +48,7 @@ public without sharing class SLPCustomerHandler {
     List<Residential_Equipment__c> equipmentList = new List<Residential_Equipment__c>();
     String equipQuery = 'SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c,Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c,Interconnected__c, Mechanically_Installed__c,  Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Loan__r.Product__r.Program__c, Inverter_Model_Number__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c, Interconnection_date__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name ' ;
     equipQuery += '      FROM Residential_Equipment__c' ;
-    equipQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
+    equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
     equipQuery += '      AND Loan__r.Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
     if (profile.LicenseType != 'Executive') {
       equipQuery += '    AND Loan__r.Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';      
