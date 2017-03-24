@@ -5,6 +5,8 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
     //
     // It should also set all related Utility Account Subscription Customer_Subscription_KW_DC_STATIC__c
     // values to Customer_Subscription_KW_DC__C
+    // ** Update 3/23/2017 by Jordan - When dynamic subscription is moved to static, also update the 
+    // Next Schedule Z status. Additions become Enacted, Removals become Cancelled when a new sch. z is enacted
 
     @testSetup static void setupTestData() {
         RecalculateUALCostControllerTest.setupTestData();
@@ -31,7 +33,7 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
 
         List<Utility_Account_Subscription__c> uasList = 
             [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, UAS_Number__c,
-             Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c
+             Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c, Next_Schedule_Z_Status__c
              FROM Utility_Account_Subscription__c
              WHERE Opportunity__c = :opp8.Id];
                                                          
@@ -42,12 +44,15 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
             if (uas.UAS_Number__c == 2) {
                 System.assertEquals(3000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(2.3077, uas.Customer_Subscription_KW_DC__c);
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Not Enacted: Addition');
             } else if (uas.UAS_Number__c == 3) {
                 System.assertEquals(9000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(6.9231, uas.Customer_Subscription_KW_DC__c);
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted: Removed');
             } else {
                 System.assertEquals(10000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(7.6923, uas.Customer_Subscription_KW_DC__c);
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
             }
             answer += uas.Customer_Subscription_KW_DC__C;
         }
@@ -71,11 +76,19 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
 
         uasList = 
             [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c,
-             Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c
+             Customer_Subscription_KW_DC_STATIC__c, Customer_Subscription_KW_DC__c, 
+             Next_Schedule_Z_Status__c, UAS_Number__c
              FROM Utility_Account_Subscription__c
              WHERE Opportunity__c = :opp8.Id];
         for (Utility_Account_Subscription__c uas : uasList) {
             System.assertEquals(uas.Customer_Subscription_KW_DC__c, uas.Customer_Subscription_KW_DC_STATIC__c);
+            if (uas.UAS_Number__c == 2){
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
+            } else if (uas.UAS_Number__c == 3){
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Cancelled');
+            } else if (uas.UAS_Number__c == 1){
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
+            }
         }
     }
 }
