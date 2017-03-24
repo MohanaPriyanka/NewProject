@@ -94,7 +94,8 @@ public without sharing class LoanHandler{
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
                                                         Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
                                                         System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
-                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c
+                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
+                                                        Technology_Platform_Fee__c
                                                       FROM Loan__c 
                                                       WHERE Opportunity__r.Id IN : opportunityIds];
             //Assign the Loans to their appropriate Tranche
@@ -213,6 +214,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
@@ -232,6 +234,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
@@ -1307,7 +1310,49 @@ public without sharing class LoanHandler{
             }
         }
         update equipmentUpdateList; 
-    }    
+    }
+
+    // Called from before insert and before update from Loan Trigger
+    // Tested by MapLateCategoryTest
+    public void mapLateCategory() {
+        Set<String> loanMonths = new Set<String>();
+        Set<String> loanYears = new Set<String>();
+        Set<String> loanNames = new Set<String>();
+ 
+        for (Loan__c l : (List<Loan__c>) Trigger.new) {
+            if (l.name != null) {
+                loanNames.add(l.name);
+            }
+            if (l.monthLT__c != null) {
+                loanMonths.add(l.monthLT__c);
+            }
+            if (l.yearLT__c != null) {
+                loanYears.add(l.yearLT__c);
+            }
+        }
+ 
+        if (loanNames.size() > 0 && loanMonths.size() > 0 && loanYears.size() > 0) {
+            Map<String, Loan_Payment__c > loanPayMap = new Map<String, Loan_Payment__c>();
+ 
+            for (Loan_Payment__c loanPayQuery : [SELECT id, name, month__c, year2__c, loan_name__c, late_category__c 
+                                                 FROM Loan_Payment__c 
+                                                 WHERE loan_name__c IN :loanNames 
+                                                 AND month__c IN :loanMonths 
+                                                 AND year2__c IN :loanYears]) {
+                loanPayMap.put(loanPayQuery.Loan_Name__c,loanPayQuery);
+            }
+ 
+            for (Loan__c lf : (List<Loan__c>) Trigger.new) {
+                if ((Trigger.isInsert || Trigger.isUpdate || 
+                     ((Map<Id, Loan__c>) Trigger.oldMap).get(lf.Id).monthLT__c != lf.monthLT__c)
+                    && loanPayMap.containsKey(lf.name)) {
+                    lf.late_category__c = loanPayMap.get(lf.name).late_category__c;
+                } else {
+                    lf.late_category__c = null;
+                }
+            }
+        }
+    }
 }  
 
 
@@ -1317,4 +1362,4 @@ public without sharing class LoanHandler{
 //Need to make the parentTaskSequenceMap not just have a key value of the sequence number, as there will be multiple
 //duplicate key values if more than one lead is updated at once.
 
-//and max out the sequnce number at the last one
+//and max out the sequnce number at the last on
