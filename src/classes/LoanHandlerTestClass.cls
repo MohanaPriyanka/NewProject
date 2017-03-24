@@ -1,7 +1,9 @@
 @isTest
 public class LoanHandlerTestClass {
     @testSetup public static void setupTestData(){
-
+        List<String> partnerSetUpIds = new List<String>();  
+        partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
+        
         List<Product2> productList = new List<Product2>(LoanTestRecordWarehouse.getLoanHandlerProductRecords());
         insert productList;
         System.debug(productList);
