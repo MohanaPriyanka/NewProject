@@ -337,3 +337,11 @@
     margin-top:3px;
     color: #FFFFFF !important;
 }
+
+.THIS .noDisplay {
+    display: none;
+}
+
+.THIS.noDisplayBar {
+    display: none;
+}

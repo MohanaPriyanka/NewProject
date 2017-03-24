@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="NavHeaderController">
     <aura:attribute name="userName" type="String"  />
+    <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />         
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
 
@@ -14,7 +15,7 @@
          	font-size:100%;
         }
   </style> 
-	<div class="header gradLeftRight ">
+	<div aura:id="header" class="header gradLeftRight ">
     <a href="/slportal/s/slpdashboard">
       <div class="w3-container">
         <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
