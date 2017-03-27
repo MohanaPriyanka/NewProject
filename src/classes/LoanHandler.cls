@@ -506,7 +506,7 @@ public without sharing class LoanHandler{
                     }                                                             
                     Disbursal__c disbursal2 = new Disbursal__c(
                         Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
+                        Unique_ID__c = loanRecord.Id + ' ' + '65% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
