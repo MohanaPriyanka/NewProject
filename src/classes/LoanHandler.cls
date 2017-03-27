@@ -500,7 +500,7 @@ public without sharing class LoanHandler{
                         Date_of_Disbursal__c = null);
 
                     disbursalInsertList.add(disbursal1);
-                    disbursalName = '65% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    disbursalName = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     if(disbursalName.length() >= 80) {
                     disbursalName = disbursalName.subString(0,80);
                     }                                                             
