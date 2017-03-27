@@ -62,6 +62,7 @@ public without sharing class SLPCreditStatus {
       leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' ';
       leadQuery += '  OR Status = \'' + 'Pre-Qualified' + '\' ' ;
       leadQuery += '  OR Status = \'' + 'Pending Credit Review' + '\' ';
+      leadQuery += '  OR Status = \'' + 'Not Interested' + '\' ';
       leadQuery += '  OR Status = \'' + 'Unqualified' + '\' ' ;
       leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' )';
     } else {

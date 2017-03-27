@@ -38,7 +38,6 @@ public without sharing class SLPCustomerHandler {
     for(Loan__c loanRecord : Database.query(loanQuery)){
       loanList.add(loanRecord);
     }    
-    System.debug('The loanList is ' + loanList);
     return loanList;
   }
 
