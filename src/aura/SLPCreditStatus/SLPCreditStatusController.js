@@ -88,7 +88,7 @@
         }              
     },       
 
-    navigate : function(component, event, helper) {
+     navigate : function(component, event, helper) {
         var leadId = component.get("v.leadId");
         var productId = component.get("v.product.Id");
         var loanTerm = component.get("v.product.Loan_Term__c");
@@ -119,16 +119,17 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381603' + '?tfa_1299=' + address 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381610' + '?tfa_1311=' + address 
                             + '&' + 'tfa_154=' + state 
                             + '&' + 'tfa_526=' + leadId 
-                            + '&' + 'tfa_1295=' + updateDummy
-                            + '&' + 'tfa_1300=' + city 
-                            + '&' + 'tfa_1302=' + productId 
-                            + '&' + 'tfa_1301=' + zip     
-                            + '&' + 'tfa_1303=' + loanTerm   
-                            + '&' + 'tfa_1304=' + firstName     
-                            + '&' + 'tfa_1305=' + lastName                                         
+                            + '&' + 'tfa_1180=' + updateDummy
+                            + '&' + 'tfa_390=' + income 
+                            + '&' + 'tfa_1312=' + city 
+                            + '&' + 'tfa_1179=' + productId 
+                            + '&' + 'tfa_1313=' + zip     
+                            + '&' + 'tfa_1287=' + loanTerm     
+                            + '&' + 'tfa_1372=' + firstName     
+                            + '&' + 'tfa_1373=' + lastName                                                                 
                         });
                         urlEvent.fire();  
                     }
