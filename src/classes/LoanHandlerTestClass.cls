@@ -32,7 +32,7 @@ public class LoanHandlerTestClass {
 
             //Assert that Platform Fee got mapped from Lead
             for(Loan__c lond: leadRecordAssertion.Loans__r){
-                system.assert(lond.Technology_Platform_Fee__c == 1750);
+                System.assertEquals(lond.Technology_Platform_Fee__c, 1750);
             }
         }    
         //Assert that the equipment record mapped to the loan on creation

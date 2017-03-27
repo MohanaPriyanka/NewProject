@@ -33,11 +33,12 @@ public without sharing class SLPControllersTestclass {
         Insert contactRecordExec;           
 
  		User userRecord = new User(
+                FirstName = 'User',
+                Lastname ='Testing',                 
  				Alias = 'cswain', 
  				Email = 'tropicole34@aol.com', 
  				Emailencodingkey ='UTF-8',                 
                 PortalRole = 'Manager',
- 				Lastname ='Testing', 
  				Languagelocalekey ='en_US',
                 Localesidkey ='en_US', 
                 Profileid = profileRecord.Id, 
@@ -49,11 +50,12 @@ public without sharing class SLPControllersTestclass {
 		Insert userRecord; 
 
         User executiveRecord = new User(
+                FirstName = 'Executive',     
+                Lastname ='Testing',                          
                 Alias = 'cmswain', 
                 Email = 'colematthewswain@gmail.com', 
                 Emailencodingkey ='UTF-8', 
                 PortalRole = 'Executive',
-                Lastname ='Testing', 
                 Languagelocalekey ='en_US',
                 Localesidkey ='en_US', 
                 Profileid = profileRecord.Id, 
@@ -649,7 +651,6 @@ public without sharing class SLPControllersTestclass {
     	String equipmentId;
     	Residential_Equipment__c equipment;
 
-
     	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
     	insert productList;
 
@@ -668,11 +669,6 @@ public without sharing class SLPControllersTestclass {
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
         }    
         update leadList;
 
@@ -719,11 +715,6 @@ public without sharing class SLPControllersTestclass {
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
         }    
         update leadList;
 
