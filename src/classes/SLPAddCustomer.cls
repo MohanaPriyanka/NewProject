@@ -17,14 +17,25 @@ public without sharing class SLPAddCustomer {
     @AuraEnabled
     public static void addNewLeadRecord (Lead newLead) {
         RecordType leadRecordType;
+        String recordType;
+        String productProgram;
+        if (newLead.DOER_Solar_Loan__c) {
+            recordType = 'BFG - DOER Solar Loan';
+            productProgram = 'MSLP';
+        } else {
+            recordType = 'BlueWave Solar Loan';
+            productProgram = 'BlueWave Solar Loan';
+        }
+
         leadRecordType = [SELECT Id 
                           FROM RecordType 
-                          WHERE Name = 'BlueWave Solar Loan' 
+                          WHERE Name = : recordType
                           AND SobjectType = 'Lead' 
                           LIMIT 1];
 
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
+        newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
         newLead.bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
