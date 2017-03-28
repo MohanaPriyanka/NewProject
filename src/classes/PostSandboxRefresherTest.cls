@@ -78,7 +78,11 @@ private class PostSandboxRefresherTest {
                              Lastname = 'Tester');
         leadList.add(lead);
 
-        System.assertEquals(MessagingService.emailsSent, null);
+        System.assertEquals(null, MessagingService.emailsSent);
+
+        List<Error_Log__c> errorLogs = [SELECT Id from Error_Log__c];
+        System.assertEquals(0, errorLogs.size());
+
 
         Test.startTest();
 
@@ -88,5 +92,8 @@ private class PostSandboxRefresherTest {
 
         System.assertEquals(MessagingService.emailsSent.size(), 1);
         System.debug(MessagingService.emailsSent);
+
+        errorLogs = [SELECT Id from Error_Log__c];
+        System.assertEquals(1, errorLogs.size());
     }
 }
