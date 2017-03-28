@@ -1,17 +1,5 @@
 ({ 
     doInit : function(component, event, helper) {
-
-        var actionLogo = component.get("c.getPartnerLogo");        
-        actionLogo.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.partnerLogo", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionLogo);
-
         var actionPartnerRecord = component.get("c.getPartnerRecord");        
         actionPartnerRecord.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
@@ -22,27 +10,16 @@
             }
         });    
         $A.enqueueAction(actionPartnerRecord);        
-
-        var actionCustomId = component.get("c.getPartnerCustomId");        
-        actionCustomId.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.partnerLogo", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionCustomId);
     },    
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
         if (lead.LASERCA__Home_Address__c != null 
-            && lead.LASERCA__Home_City__c != null
-            && lead.FirstName != null
-            && lead.LastName != null
-            && lead.Email != null
-            && lead.LASERCA__Social_Security_Number__c != null
+            && lead.LASERCA__Home_City__c != ''
+            && lead.FirstName != ''
+            && lead.LastName != ''
+            && lead.Email != ''
+            && lead.LASERCA__Social_Security_Number__c != ''
             && lead.System_Cost__c != null
             && lead.Annual_Income_Currency__c != null
             && lead.Credit_Check_Acknowledged__c == true

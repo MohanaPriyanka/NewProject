@@ -1,11 +1,12 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
 	<aura:attribute name="allCompleteDisbursals" type="Object"  />
-	<aura:attribute name="allIncompleteDisbursals" type="Object"  />  
-    <aura:attribute name="disbursalUpdate" type="Disbursal__c" 
+	<aura:attribute name="allIncompleteDisbursals" type="Object"  />
+  <aura:attribute name="licenseType" type="Boolean"  />         
+  <aura:attribute name="disbursalUpdate" type="Disbursal__c" 
                 default="{ 'sobjectType' : 'Residential_Equipment__c',
                              'Partner_Confirmation__c': '',
                          }"/>
-    <aura:handler name="change" value="{!v.allCompleteDisbursals}" action="{!c.fieldChanges}"/>       
+    <aura:handler name="change" value="{!v.allCompleteDisbursals}" action="{!c.updateDisbursal}"/>       
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <style>
         @font-face {
@@ -46,6 +47,7 @@
           color: #00b2a9;
         }        
     </style>
+  <aura:if isTrue="{!v.licenseType}">
    <div aura:id = "allDisbursals" class="">
    <div class="slds-form-element slds-lookup" data-select="single">
    <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Disbursal Search</b></label>
@@ -105,11 +107,11 @@
             <tr class="slds-text-heading--label proximaNovaDataBlue " >
               <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
               <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
-			  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
+			        <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>                
               </tr>
           </thead>
           <tbody>
- 			<aura:iteration items="{!v.allIncompleteDisbursals}" var="disbursal">
+ 			    <aura:iteration items="{!v.allIncompleteDisbursals}" var="disbursal">
               		<tr>
                 		<th scope="row"> <b>{!disbursal.Loan__r.Name}</b> </th>
                         <th scope="row"> <b>{!disbursal.Type__c}</b> </th>
@@ -120,5 +122,6 @@
         </table>          
     </div>
     </div>
-</div>         
+</div> 
+</aura:if>        
 </aura:component>
