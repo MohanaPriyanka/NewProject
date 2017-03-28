@@ -1,3 +1,12 @@
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * Description: When a Chargent Transaction is created via recurring, or is a one time payment and the 
+ + * "Distributed amoung System Bills" checkbox is checked (signals that all updates from Form Assembly are complete)
+ + * this class distributes the payment amount to all the related system bills. 
+ + * Updates the oldest SBs first (bill number field) that have a balance
+ + * Tested By: TestBillCreationandPayment3
+ + *************************************************************************************/
+
 public with sharing class SystemBillPaymentRollUpHandler {
   private boolean m_isExecuting = false;
   private Integer BatchSize = 0;
@@ -36,7 +45,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
     List <ChargentOrders__Transaction__c> triggeredtransactions = new List <ChargentOrders__Transaction__c> ();
 
     for(ChargentOrders__Transaction__c oldchargentTrans: oldchargentTransactions){
-              oldvalues.put(oldchargentTrans.id, oldchargentTrans);
+          oldvalues.put(oldchargentTrans.id, oldchargentTrans);
     }
 
     for(ChargentOrders__Transaction__c chotran : chargentTransactions){  
@@ -52,20 +61,20 @@ public with sharing class SystemBillPaymentRollUpHandler {
         }
     } 
 
-    Integer b;
+    Integer i;
     String stringPropertyAccount;
     dateTime systemBillCreatedDate; 
     List <id> chargentOrdersId = new List <id>();
     List <id> propertyaccountIds = new List <id>();
     List <string> propertyaccountIdsstring = new List <string>();
-
-    Map <Id,System_Bill__c> systemBillMap = new Map <Id,System_Bill__c>();
     Map <Id,Account> propaccountMap = new Map <Id,Account>();
     List <System_Bill__c> groupedSystemBillsList = new List <System_Bill__c>();
     List <System_Bill__c> groupedSystemBillsToUpdate = new List <System_Bill__c>();
+    list <System_Bill__c> maxbillnumberlist = new List <System_Bill__c>();
+    Map <String, Decimal> paymentsmap = new Map <String,Decimal>();
     
     for(ChargentOrders__Transaction__c trigtran : triggeredtransactions){
-      if(trigtran.System_Bill_ID__c != NULL && trigtran.ChargentOrders__Response_Status__c == 'Approved'){    
+      if(trigtran.Account_Bill_Id__c != NULL && trigtran.ChargentOrders__Response_Status__c == 'Approved'){    
             chargentOrdersId.add(trigtran.ChargentOrders__Order__c);
             propertyaccountIds.add(trigtran.Property_Account_ID__c);
             stringPropertyAccount = string.valueOf(trigtran.Property_Account_ID__c);
@@ -77,7 +86,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
 
       List <System_Bill__c> systemBills = [ SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c, 
                                                   Late_Fee_Payments__c, Balance_Net_Late_Payments__c, 
-                                                  Shared_Solar_System_ID__c,
+                                                  Shared_Solar_System_ID__c, Entity_ID__c, Opportunity_Id__c,
                                                   Bill_Number__c, Property_Account_ID__c, Early_Payments__c, Carry_Forward_Payments__c
                                             FROM System_Bill__c
                                             WHERE Property_Account_ID__c IN : propertyaccountIdsstring ORDER BY Bill_Number__c];
@@ -86,15 +95,18 @@ public with sharing class SystemBillPaymentRollUpHandler {
                                           FROM Account
                                           WHERE Id IN : propertyaccountIdsstring];
 
-      for (b=0; b<propertyaccounts.size();b++){
-          propaccountMap.put(propertyaccounts.get(b).Id, propertyaccounts.get(b));
+      for (Account prop : propertyaccounts){
+          propaccountMap.put(prop.Id, prop);
       }
+    
+      system.debug(triggeredtransactions);
 
       for(ChargentOrders__Transaction__c chTransaction: triggeredtransactions){
-        if(chTransaction.System_Bill_ID__c != NULL && chtransaction.ChargentOrders__Response_Status__c == 'Approved'){
+        if(chTransaction.Account_Bill_ID__c != NULL && chtransaction.ChargentOrders__Response_Status__c == 'Approved'){
             string parentID = chTransaction.Property_Account_ID__c;  
-            string sssId = chTransaction.Shared_Solar_System_ID__c;
-            decimal currentbill = chTransaction.System_Bill_Number__c;
+            string entityId = chTransaction.Entity_ID__c;
+            decimal maxbillnumber = 0;
+           // decimal currentbill = chTransaction.Account_Bill_Number__c;
             decimal payment = chTransaction.ChargentOrders__Amount__c;
             decimal totalpaymentsthismonth = chTransaction.ChargentOrders__Amount__c;
             decimal paymenttwo = 0;
@@ -105,40 +117,70 @@ public with sharing class SystemBillPaymentRollUpHandler {
               systemBillCreatedDate = chTransaction.createdDate;
             }
 
-            for(System_Bill__c sbs : systemBills){
-              systemBillMap.put(sbs.Id, sbs);
-                if (sbs.Property_Account_ID__c == parentID && sbs.Shared_Solar_System_ID__c == sssId){
-                        groupedSystemBillsList.add(sbs);
-                        groupedSystemBillsToUpdate.add(sbs);
+            Date myDate = date.newinstance(systemBillCreatedDate.year(), systemBillCreatedDate.month(), systemBillCreatedDate.day());
+
+            for (i=0; i<systemBills.size(); i++){
+                if (systemBills.get(i).Property_Account_ID__c == parentID && systemBills.get(i).Entity_ID__c == entityId){
+                      groupedSystemBillsList.add(systemBills.get(i));
+                      groupedSystemBillsToUpdate.add(systemBills.get(i));
+
+                      if(i == systemBills.size() - 1){
+                          maxbillnumber = systemBills.get(i).Bill_Number__c;
+                      }
                 }
-            }
+            } 
             
             for(System_Bill__c bills : groupedSystemBillsList){
-                if(bills.Balance_Net_Late_Payments__c > 0 && bills.Bill_Number__c < currentbill){
+                if(bills.Balance_Net_Late_Payments__c > 0 && bills.Bill_Number__c < maxbillnumber){
                       if(payment >= bills.Balance_Net_Late_Payments__c)  {
                               bills.Late_Payments__c = bills.Late_Payments__c + bills.Balance_Net_Late_Payments__c; 
                               payment = payment - bills.Balance_Net_Late_Payments__c;
+                              if (paymentsmap.containsKey(bills.Opportunity_Id__c)){
+                                  paymentsmap.put(bills.Opportunity_Id__c, paymentsmap.get(bills.Opportunity_Id__c) + bills.Balance_Net_Late_Payments__c) ;
+                              } else {
+                                  paymentsmap.put(bills.Opportunity_Id__c, bills.Balance_Net_Late_Payments__c);
+                              }
                       }   else if(payment < bills.Balance_Net_Late_Payments__c) { 
                               bills.Late_Payments__c = bills.Late_Payments__c + payment; 
+                              if (paymentsmap.containsKey(bills.Opportunity_Id__c)){
+                                  paymentsmap.put(bills.Opportunity_Id__c, paymentsmap.get(bills.Opportunity_Id__c) + payment);
+                              } else {
+                                  paymentsmap.put(bills.Opportunity_Id__c, payment);
+                              }
                               payment = 0;
                           } 
                 }
 
-                if(bills.Bill_Number__c == currentbill){
-                    bills.Total_Payments_This_Month__c =  bills.Total_Payments_This_Month__c + totalpaymentsthismonth ;  
+                if(bills.Bill_Number__c == maxbillnumber){
+                  maxbillnumberlist.add(bills);
+                    //bills.Total_Payments_This_Month__c =  bills.Total_Payments_This_Month__c + totalpaymentsthismonth ;  
                     if(payment >= bills.Balance_Net_Late_Payments__c){
                                   bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + bills.Balance_Net_Late_Payments__c;
-                                  paymenttwo = payment - bills.Balance_Net_Late_Payments__c;
-                                  bills.Late_Fee_Payments__c =  bills.Late_Fee_Payments__c + paymenttwo;
-                                  system.debug(paymenttwo);
+                                  if (paymentsmap.containsKey(bills.Opportunity_Id__c)){
+                                      paymentsmap.put(bills.Opportunity_Id__c, paymentsmap.get(bills.Opportunity_Id__c) + bills.Balance_Net_Late_Payments__c) ;
+                                  } else {
+                                      paymentsmap.put(bills.Opportunity_Id__c, bills.Balance_Net_Late_Payments__c);
+                                  }
+                                  payment = payment - bills.Balance_Net_Late_Payments__c;
                     } else if(payment < bills.Balance_Net_Late_Payments__c){
-                                    bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + payment;
+                                  bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + payment;
+                                  if (paymentsmap.containsKey(bills.Opportunity_Id__c)){
+                                      paymentsmap.put(bills.Opportunity_Id__c, paymentsmap.get(bills.Opportunity_Id__c) + payment);
+                                  } else {
+                                      paymentsmap.put(bills.Opportunity_Id__c, payment);
+                                  }
+                                  payment = 0;
                       }
                 } 
             }
 
-          Date myDate = date.newinstance(systemBillCreatedDate.year(), systemBillCreatedDate.month(), systemBillCreatedDate.day());
-          systemBillMap.get(chTransaction.System_Bill_ID__c).Date_of_Last_Payment__c = myDate; 
+            for (System_Bill__c maxbills : maxbillnumberlist){
+                if(paymentsmap.containsKey(maxbills.Opportunity_Id__c)){
+                    maxbills.Total_Payments_This_Month__c = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c);
+                    maxbills.Date_of_Last_Payment__c = myDate; 
+                }
+            }
+
           propaccountMap.get(chTransaction.Property_Account_ID__c).Date_of_Last_Payment__c = myDate; 
           groupedSystemBillsList.clear();
           
@@ -149,7 +191,6 @@ public with sharing class SystemBillPaymentRollUpHandler {
       } // end chargent transaction for loop
 
       update groupedSystemBillsToUpdate;
-      update systemBillMap.values();   
       update propaccountMap.values();   
 
     } 

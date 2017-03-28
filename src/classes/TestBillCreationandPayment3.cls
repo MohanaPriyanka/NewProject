@@ -43,6 +43,9 @@
                                             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
+
+        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        insert entity1;
         
         Shared_Solar_System__c sss1 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
@@ -59,6 +62,7 @@
                                        Expected_Yield_kWh_kW__c = 1300,
                                        Assemblage_Count__c = 1,
                                        Sales_Partners__c = 'All',
+                                       BWC_Project_Entity_Manual__c = entity1.Id,
                                        Maximum_Subscription_Assemblage__c = 25);
 
         Shared_Solar_System__c sss2 = 
@@ -133,7 +137,7 @@
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
 
-        // EnergyUsageUpdateHandler isn't bulkified, so we need two inserts for production updates
+        // EnergyUsageUpdateHandler isn't bulkified, so we need to inserts for production updates
         Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
@@ -162,27 +166,33 @@
              Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
              FROM System_Bill__c];
 
+        List <Account_Bill__c> accountbilllist = 
+            [SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
+             FROM Account_Bill__c];
+
+        system.debug(accountbilllist);
+        system.debug(systembilllist);
+
         ChargentBase__Gateway__c chGateway  = 
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                                          ChargentBase__Merchant_ID__c = '235986',
+                                         Shared_Solar_System__c = sss1.id,
                                          ChargentBase__Active__c = TRUE);
         insert chGateway;
 
         // Query for system bills that were created from the production update
-        for (System_Bill__c systemBill : systemBillList) {
-            if (systembill.Bill_Number__c == 2) {
-                //Pay off balance in month 2
+        for (Account_Bill__c accountbill : accountbilllist) {
+            if(accountbill.Bill_Number__c == 2){
                 ChargentOrders__ChargentOrder__c orderA = 
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
-                                                         ChargentOrders__Gateway__c = chGateway.Id,
-                                                         ChargentOrders__Shipping_Name__c = systemBill.Shared_Solar_System__r.Id,
+                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
+                                                         ChargentOrders__Shipping_Name__c = entity1.Id,
                                                          ChargentOrders__Billing_First_Name__c = 'Cole',
                                                          ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',
                                                          ChargentOrders__Subtotal__c = 50,
                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                         System_Bill__c = systemBill.Id,
+                                                         Account_Bill__c = accountbill.Id,
                                                          ChargentOrders__Card_Type__c = 'Visa',
                                                          ChargentOrders__Card_Number__c = '411111111111',
                                                          ChargentOrders__Card_Security_Code__c = '999',
@@ -221,20 +231,22 @@
                                                        Activity_Type__c = 'Payment');
 
                 insert transB;
-                    
-                // Make Payment Plan on Bill 2
-                systembill.Waive_Late_Fees__c = TRUE;
-                systembill.Distribute_This_Balance_As_Payment_Plan__c = TRUE;
-                //systembill.Payment_Plan_Balance_to_Distribute__c = 300;
-                update systembill;
+            }
+        }
+
+        for (System_Bill__c sbill : systemBillList) {
+            if (sbill.Bill_Number__c == 2){    
+                sbill.Waive_Late_Fees__c = TRUE;
+                sbill.Distribute_This_Balance_As_Payment_Plan__c = TRUE;
+                update sbill;
             }
         }
 
         // insert 8 more months with same property and SSS as other Bills
+        List <System_Bill__c> sbstoupdate = new list <System_Bill__c>();                     
+
         for (System_Bill__c systemBill : systemBillList) {
             if (systembill.Bill_Number__c == 1) {
-                List <System_Bill__c> sbstoupdate = new list <System_Bill__c>();                     
-
                 for (Integer j = 3; j < 10 ; j++) {
                     boolean refund = FALSE;
                     boolean latefee = FALSE;
@@ -273,17 +285,20 @@
                     sbstoupdate.add(billthree);
                 }
 
-                insert sbstoupdate;
             }
         }
+
+        insert sbstoupdate;
 
         List <System_Bill__c> updatedsystemBillList = 
             [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
              Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
              Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
              Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Shared_Solar_System__c, Property_Account_ID__c 
+             Shared_Solar_System__c, Property_Account_ID__c, Adjustments__c
              FROM System_Bill__c];
+
+        system.debug(updatedsystemBillList);
 
         for (System_Bill__c sbs : updatedsystemBillList) {
             // First bill does not have a payment, so no payments that month
@@ -303,6 +318,7 @@
                 System.assert(sbs.Late_Payments__c == 0);
                 System.assert(sbs.Total_Payments_This_Month__c > 0);
             }
+
 
             // Month 2 Payment Plan should run for bill number 3 through 8 and there should be an Adjustment on bill 4
             if (sbs.Bill_Number__c == 3) {

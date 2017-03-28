@@ -1,3 +1,13 @@
+/*************************************************************************************
+ + * Created By: Cole Swain
+ + * 
+ + * JP Update: When a Chargent Order comes in with an entity id in the "Shipping Last Name" field
+ + * update the gateway field to be the gateway that is linked to that entity
+ + *            REQUIRED: Only one gateway in SF per Entity *** 
+ + *  
+ + * Tested By: PaymentGatewayAssignmentHandlerTestclass
+ + *************************************************************************************/
+
 public with sharing class PaymentGatewayAssignmentHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
@@ -15,21 +25,22 @@ public with sharing class PaymentGatewayAssignmentHandler {
         List<ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List<ChargentOrders__ChargentOrder__c>();
         List<ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List<ChargentOrders__ChargentOrder__c>();
         system.debug(chOrderList);
+       
         for(ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList){
            if(chargentOrderVar.ChargentOrders__Shipping_Name__c != null 
            && chargentOrderVar.ChargentOrders__Shipping_Name__c != 'CCfee'){
             chargentOrderIdList.add(chargentOrderVar);
            }
         }
-        for(ChargentOrders__ChargentOrder__c chargentOrder : [SELECT Id, Name, System_Bill__r.Shared_Solar_System__r.Id, ChargentOrders__Shipping_Name__c
+        for(ChargentOrders__ChargentOrder__c chargentOrder : [SELECT Id, Name, ChargentOrders__Shipping_Name__c
                                                               FROM ChargentOrders__ChargentOrder__c 
                                                               WHERE Id IN : chargentOrderIdList]){
             chargentOrderAssignmentList.add(chargentOrder);
         }
-        for(ChargentBase__Gateway__c gatewayVar : [SELECT Id, Name, Shared_Solar_System__r.Id
+        for(ChargentBase__Gateway__c gatewayVar : [SELECT Id, Name, Entity_Id__c
                                                    FROM ChargentBase__Gateway__c 
                                                    WHERE Shared_Solar_System__c != null]){
-            gatewayMap.put(gatewayVar.Shared_Solar_System__r.Id, gatewayVar);
+            gatewayMap.put(gatewayVar.Entity_Id__c, gatewayVar);
             system.debug(gatewayMap);
         }
         system.debug(gatewayMap.size());
@@ -42,7 +53,5 @@ public with sharing class PaymentGatewayAssignmentHandler {
             }
             update chOrderUpdateList;           
         }
-
-
     }
 }

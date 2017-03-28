@@ -1,9 +1,6 @@
 @isTest
 public class paymentGatewayAssignmentHandlerTestclass {
     @isTest static void testPaymentGatewayAssignmentHandler() {
-        //List<Energy_Usage_Update__c> productionUpdateJanList = new List<Energy_Usage_Update__c>(CommunitySolarTestRecordWarehouse.getCommunitySolarRecordsForBillCreation('1'));
-        //insert productionUpdateJanList;
-        //System.debug(productionUpdateJanList);  
         
         Utility_NMC_Tariff__c nmcRateNgridWcmaSizing =  (Utility_NMC_Tariff__c)TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 0.15,
                                                                                                                     Name = 'Nation Grid WCMA Class 2 I',
@@ -19,12 +16,19 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
 
 
-        insert new List<Utility_NMC_Tariff__c>{nmcRateNgridWcmaSizing, nmcRateNgridWcmaBilling};   
+        insert new List<Utility_NMC_Tariff__c>{nmcRateNgridWcmaSizing, nmcRateNgridWcmaBilling};  
 
+        Entity__c entity1 = new Entity__c (Name = 'Oxford Barret St');
+        Entity__c entity2 = new Entity__c (Name = 'Medfield Country Way');
+        Entity__c entity3 = new Entity__c (Name = 'Fairhaven Mill Rd');
+        insert entity1;
+        insert entity2;
+        insert entity3;
 
         Shared_Solar_System__c sharedSolarSystemOxfordBarretSt = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barret St',
                                                                                                                                 Service_Territory__c = 'WCMA',
                                                                                                                                 Open__c = true,
+                                                                                                                                BWC_Project_Entity_Manual__c = entity1.Id,
                                                                                                                                 Schedule_Z_Filed__c = FALSE,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Credit_Score_Requirement__c = 750,
@@ -40,6 +44,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         Shared_Solar_System__c sharedSolarSystemMedfieldCountryWay = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Medfield Country Way',
                                                                                                                                 Service_Territory__c = 'NEMA',
                                                                                                                                 Open__c = true,
+                                                                                                                                BWC_Project_Entity_Manual__c = entity2.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Schedule_Z_Filed__c = FALSE,
                                                                                                                                 Credit_Score_Requirement__c = 750,
@@ -56,6 +61,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         Shared_Solar_System__c sharedSolarSystemFairhavenMillRd = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Fairhaven Mill Rd',
                                                                                                                                 Service_Territory__c = 'NEMA',
                                                                                                                                 Open__c = true,
+                                                                                                                                BWC_Project_Entity_Manual__c = entity3.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Schedule_Z_Filed__c = FALSE,
                                                                                                                                 Credit_Score_Requirement__c = 750,
@@ -133,7 +139,8 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                     Production__c = 80000,
                                                                                                     Date__c = myDateApr ));                                                                                                     
 
- 
+        insert productionUpdateOxfordBarretStFeb;
+
         List<ChargentOrders__ChargentOrder__c> chargentOrderRecurringList = new List<ChargentOrders__ChargentOrder__c>();        
         List<ChargentOrders__Transaction__c> chargentTransRecurringList= new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__ChargentOrder__c> chargentOrderOneTimeList = new List<ChargentOrders__ChargentOrder__c>();        
@@ -144,6 +151,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                     Name = 'Chargent Gateway Oxford Barret St',
                                                                                                     Shared_Solar_System__c = sharedSolarSystemOxfordBarretSt.Id, 
                                                                                                     ChargentBase__Merchant_ID__c = '235986',
+                                                                                                    Entity__c = entity1.Id,
                                                                                                     ChargentBase__Active__c = TRUE));
         insert chGatewayOxfordBarretSt;  
 
@@ -151,6 +159,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                     Name = 'Chargent Gateway Medfield Country Way',
                                                                                                     Shared_Solar_System__c = sharedSolarSystemMedfieldCountryWay.Id, 
                                                                                                     ChargentBase__Merchant_ID__c = '123123',
+                                                                                                    Entity__c = entity2.Id,
                                                                                                     ChargentBase__Active__c = TRUE));
         insert chGatewayMedfieldCountryWay; 
 
@@ -158,15 +167,16 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                     Name = 'Chargent Gateway Fairhaven Mill Rd',
                                                                                                     Shared_Solar_System__c = sharedSolarSystemFairhavenMillRd.Id, 
                                                                                                     ChargentBase__Merchant_ID__c = '43543',
+                                                                                                    Entity__c = entity3.Id,
                                                                                                     ChargentBase__Active__c = TRUE));
         insert chGatewayFairhavenMillRd;                   
 
-        for (System_Bill__c systemBillJan : [SELECT Id, Name, Total_Due__c, Property_Account_ID__c, Recurring_Billing__c, Shared_Solar_System__r.Id FROM System_Bill__c]){
-            if(systemBillJan.Recurring_Billing__c == TRUE){
+        for (System_Bill__c systemBillJan : [SELECT Id, Name, Total_Due__c, Bill_Number__c, Property_Account_ID__c, Recurring_Billing__c, Shared_Solar_System__r.Id FROM System_Bill__c]){
+            if(systemBillJan.Bill_Number__c == 1){
                 ChargentOrders__ChargentOrder__c chOrderRecurring  = (ChargentOrders__ChargentOrder__c)TestFactory.createSObject(new ChargentOrders__ChargentOrder__c(
                                                                                                     ChargentOrders__Account__c = systemBillJan.Property_Account_Id__c,
-                                                                                                    ChargentOrders__Gateway__c = chGatewayMedfieldCountryWay.Id,
-                                                                                                    ChargentOrders__Shipping_Name__c = sharedSolarSystemOxfordBarretSt.Id,
+                                                                                                    ChargentOrders__Gateway__c = chGatewayFairhavenMillRd.Id,
+                                                                                                    ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                                                     ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                                                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -186,7 +196,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
                 ChargentOrders__Transaction__c chTransactionRecurring = new ChargentOrders__Transaction__c(
                                     ChargentOrders__Order__c = chOrderRecurring.id,
-                                    ChargentOrders__Amount__c = 200,
+                                    ChargentOrders__Amount__c = 300,
                                     ChargentOrders__Response_Status__c ='Approved',
                                     ChargentOrders__Gateway_ID__c = chOrderRecurring.ChargentOrders__Gateway__r.Id,
                                     ChargentOrders__Gateway__c = chOrderRecurring.ChargentOrders__Gateway__r.Id,
@@ -203,16 +213,16 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
                 chargentOrderRecurringList.add(chOrderRecurring);
                 chargentTransRecurringList.add(chTransactionRecurring);                
-            }
+           }
             else{
                 ChargentOrders__ChargentOrder__c chOrderOneTime  = (ChargentOrders__ChargentOrder__c)TestFactory.createSObject(new ChargentOrders__ChargentOrder__c(
                                                                                                     ChargentOrders__Account__c = systemBillJan.Property_Account_Id__c,
-                                                                                                    ChargentOrders__Gateway__c = chGatewayMedfieldCountryWay.Id,
-                                                                                                    ChargentOrders__Shipping_Name__c = sharedSolarSystemOxfordBarretSt.Id,
+                                                                                                    ChargentOrders__Gateway__c = chGatewayFairhavenMillRd.Id,
+                                                                                                    ChargentOrders__Shipping_Name__c = entity2.Id,
                                                                                                     ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                                                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                                                                                    ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+                                                                                                    ChargentOrders__Billing_Zip_Postal__c = '02468',                                                                                                    
                                                                                                     ChargentOrders__Subtotal__c = systemBillJan.Total_Due__c,
                                                                                                     ChargentOrders__Payment_Method__c = 'Credit Card',
                                                                                                     System_Bill__c = systemBillJan.Id,
@@ -227,7 +237,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
                 ChargentOrders__Transaction__c chTransactionOneTime = new ChargentOrders__Transaction__c(
                                     ChargentOrders__Order__c = chOrderOneTime.id,
-                                    ChargentOrders__Amount__c = 200,
+                                    ChargentOrders__Amount__c = 100,
                                     ChargentOrders__Response_Status__c ='Approved',
                                     ChargentOrders__Gateway_ID__c = chOrderOneTime.ChargentOrders__Gateway__r.Id,
                                     ChargentOrders__Gateway__c = chOrderOneTime.ChargentOrders__Gateway__r.Id,
@@ -248,63 +258,17 @@ public class paymentGatewayAssignmentHandlerTestclass {
         }
 
         Test.startTest();
-        //Map<Id,ChargentBase__Gateway__c> gatewayMap = new Map<Id,ChargentBase__Gateway__c>();
-        //for (ChargentBase__Gateway__c chGatewayAssert : [SELECT Id, Name, Shared_solar_system__r.Id FROM ChargentBase__Gateway__c]){
-        //  gatewayMap.put(chGatewayAssert.Shared_solar_system__r.Id, chGatewayAssert);
-        //}
-        for (ChargentOrders__ChargentOrder__c chOrderAssert : [SELECT Id, Name, ChargentOrders__Gateway__r.Shared_solar_system__r.Id, ChargentOrders__Shipping_Name__c, System_Bill__r.Shared_Solar_System__r.Id 
-                                                        FROM ChargentOrders__ChargentOrder__c]){
-            System.debug('Gateway is ' + chOrderAssert.ChargentOrders__Gateway__r.Shared_solar_system__c);
-            System.debug('Shipping Name is ' + chOrderAssert.ChargentOrders__Shipping_Name__c);
-            System.assert(chOrderAssert.ChargentOrders__Gateway__r.Shared_solar_system__r.Id == chOrderAssert.System_Bill__r.Shared_Solar_System__r.Id);
+
+        for (ChargentOrders__ChargentOrder__c chOrderAssert : [ SELECT Id, Name, ChargentOrders__Gateway__r.Entity_Id__c, System_Bill__r.Bill_Number__c,
+                                                                ChargentOrders__Shipping_Name__c
+                                                                FROM ChargentOrders__ChargentOrder__c]){
+            if (chOrderAssert.System_Bill__r.Bill_Number__c == 1){
+                System.assert(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c == entity1.Id);
+            } else {
+                System.assert(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c == entity2.Id);
+            }
         }
 
-        //Map<String,System_Bill__c> systemBillMapFeb = new Map<String,System_Bill__c>();
-        //Map<String,System_Bill__c> systemBillMapJan = new Map<String,System_Bill__c>();        
-        //Map<Id,ChargentOrders__ChargentOrder__c> chOrderMap = new Map<Id,ChargentOrders__ChargentOrder__c>();
-        //List<Id> systemBillListIdJan = new List<Id>();
-        //String identifier;
-        //String chargentIdentifier;
-        ////List<Energy_Usage_Update__c> productionUpdateFebList = new List<Energy_Usage_Update__c>(CommunitySolarTestRecordWarehouse.getCommunitySolarRecordsForBillCreation('2'));
-        ////System.debug(productionUpdateFebList);   
-
-        //for (System_Bill__c systemBill : [SELECT Id, Name, Opportunity__r.Id, Shared_Solar_System__r.Name ,Bill_Number__c, Recurring_Billing__c FROM System_Bill__c]){ 
-        //    System.debug('System Bill ID is ' + systemBill.Id);             
-        //    identifier = systemBill.Shared_Solar_System__r.Name + systemBill.Opportunity__r.Id;
-        //    systemBillMapJan.put(identifier, systemBill);
-        //    systemBillListIdJan.add(systemBill.Id);
-        //    System.debug('systemBillMapJan' + systemBillMapJan);                
-        //}
-
-        ////insert productionUpdateFebList;
-        ////insert new List<Energy_Usage_Update__c>{productionUpdateOxfordBarretStFeb, productionUpdateMedfieldCountryWayFeb, productionUpdateFairhavenMillRdFeb};                          
-        //insert productionUpdateOxfordBarretStFeb;
-        //insert productionUpdateMedfieldCountryWayFeb;
-        //insert productionUpdateFairhavenMillRdFeb;
-
-        //for (System_Bill__c systemBill : [SELECT Id, Name, Opportunity__r.Id, Shared_Solar_System__r.Name ,Bill_Number__c, Recurring_Billing__c FROM System_Bill__c WHERE ID NOT IN : systemBillListIdJan]){
-        //    System.debug('System Bill ID is ' + systemBill.Id); 
-        //    identifier = systemBill.Shared_Solar_System__r.Name + systemBill.Opportunity__r.Id;
-        //    systemBillMapFeb.put(identifier, systemBill);
-        //    System.debug('systemBillMapFeb' + systemBillMapFeb);                
-        //}
-
-        //for (ChargentOrders__ChargentOrder__c chargentOrderAssertion : [SELECT Id, Name, System_Bill__r.Id, System_Bill__r.Opportunity__r.Id,
-        //                                                                    System_Bill__r.Shared_Solar_System__r.Name, ChargentOrders__Payment_Status__c, 
-        //                                                                    System_Bill__r.Property_Account__r.Id, System_Bill__r.Name
-        //                                                                 FROM ChargentOrders__ChargentOrder__c]){
-        //    chargentIdentifier = chargentOrderAssertion.System_Bill__r.Shared_Solar_System__r.Name + chargentOrderAssertion.System_Bill__r.Opportunity__r.Id;
-        //    System.debug('The Chargent Identifier is ' + chargentIdentifier);
-        //    if(chargentOrderAssertion.ChargentOrders__Payment_Status__c == 'Recurring'){
-        //        System.debug('The System bill is is ' + chargentOrderAssertion.System_Bill__r.Id);
-        //        System.debug('Recurring Chargent Order System Bill ID Check ' + chargentOrderAssertion.Name + ' ' + chargentOrderAssertion.System_Bill__r.Name + ' ' + systemBillMapFeb.get(chargentIdentifier).Name);
-        //        System.assert(chargentOrderAssertion.System_Bill__r.Id == systemBillMapFeb.get(chargentIdentifier).Id);
-        //    }
-        //    else{                           //Coles Cakes Medfield Country Way February 2016 = Coles Cakes2 Fairhaven Mill Rd March 2016
-        //        System.debug('One Time Chargent Order System Bill ID Check ' + chargentOrderAssertion.Name + ' ' + chargentOrderAssertion.System_Bill__r.Name + ' ' + systemBillMapJan.get(chargentIdentifier).Name);
-        //        System.assert(chargentOrderAssertion.System_Bill__r.Id == systemBillMapJan.get(chargentIdentifier).Id);                
-        //    }
-        //}
         Test.stopTest();
     }
 }
