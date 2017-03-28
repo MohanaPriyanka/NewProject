@@ -81,6 +81,7 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
 
         if (!String.isEmpty(this.log)) {
             System.debug(LoggingLevel.ERROR, 'Batch DML Error: ' + this.log);
+            Logger.log('GenericBatchDMLOperation', 'finish', this.log, System.now());
             Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
             email.setToAddresses(new List<String> {emailErrorsTo});
             email.setSubject('Error in Batch DML process!');
