@@ -15,7 +15,7 @@ public without sharing class SLPAddCustomer {
 
     //the addNewLeadRecord method adds a new SL customer to the database via the SLP
     @AuraEnabled
-    public static void addNewLeadRecord (Lead newLead) {
+    public static Lead addNewLeadRecord (Lead newLead) {
         RecordType leadRecordType;
         String recordType;
         String productProgram;
@@ -40,8 +40,18 @@ public without sharing class SLPAddCustomer {
         newLead.bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
-        newLead.LASERCA__Pull_Credit_Report__c = true;
         insert newLead;
+
+        return newLead;
+    }
+
+    // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
+    // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
+    // or Credit Report Log objects related to the Lead
+    @AuraEnabled
+    public static void pullCreditStatus(Lead lead) {
+        lead.LASERCA__Pull_Credit_Report__c = true;
+        update lead;
     }
 
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's

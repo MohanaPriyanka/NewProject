@@ -16,7 +16,7 @@
         var submitButton = component.find("SubmitButton");
         $A.util.addClass(submitButton, 'noDisplay'); 
 
-        var spinner = component.find("spinner");
+        var spinner = component.find("leadSpinner");
         var evt = spinner.get("e.toggle");
         evt.setParams({ isVisible : true });
         evt.fire();
@@ -38,10 +38,11 @@
             
             Action.setCallback(this, function(resp) {
                     if(resp.getState() == "SUCCESS") {
+                        component.set("v.newLead", resp.getReturnValue());
                         var inputForm = component.find("inputForm");
-                        var addAnotherCustomer = component.find("addAnotherCustomer");
+                        var pullCreditButtons = component.find("pullCreditButtons");
                         var mslpButton = component.find("mslpAppbutton");
-                        var applicationNotification = component.find("applicationNotification");
+                        var addedCustomerConfirmCredit = component.find("addedCustomerConfirmCredit");
                         var bwslButton = component.find("bwslAppButton");
                         var avidiaLogo = component.find("avidiaLogo");
                         var mslpDisclaimer = component.find("mslpDisclaimer");
@@ -51,10 +52,10 @@
                         $A.util.addClass(inputForm, 'noDisplayBar'); 
                         $A.util.addClass(avidiaLogo, 'noDisplayBar');    
                         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
-                        $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
-                        $A.util.removeClass(applicationNotification, 'noDisplayBar');
+                        $A.util.removeClass(pullCreditButtons, 'noDisplayBar');
+                        $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplayBar');
                     } else {
-                        var spinner2 = component.find('spinner');
+                        var spinner2 = component.find('leadSpinner');
                         var evt2 = spinner.get("e.toggle");
                         evt2.setParams({ isVisible : false });
                         evt2.fire();
@@ -75,7 +76,7 @@
             alert("Please acknowledge our privacy policy, give BlueWave permission " +
                   "to access credit history, energy history and fill out all of the fields on this form.");
 
-            var spinner2 = component.find('spinner');
+            var spinner2 = component.find('leadSpinner');
             var evt2 = spinner.get("e.toggle");
             evt2.setParams({ isVisible : false });
             evt2.fire();
@@ -85,6 +86,51 @@
         }
     },
     
+    checkCredit : function(component, event, helper) {
+        var submitButton = component.find("pullCreditButtons");
+        $A.util.addClass(submitButton, 'noDisplay'); 
+
+        var spinner = component.find("creditSpinner");
+        var evt = spinner.get("e.toggle");
+        evt.setParams({ isVisible : true });
+        evt.fire();
+
+        var lead = component.get("v.newLead");
+        if (!$A.util.isUndefinedOrNull(lead.Id)) {
+            alert("calling pullCreditStatus");
+            var action = component.get("c.pullCreditStatus");
+            action.setParams({"lead" : lead});
+            action.setCallback(this, function(resp) {
+                    if(resp.getState() == "SUCCESS") {
+                        alert("checkbox checked");
+                        var addedCustomerConfirmCredit = component.find("addedCustomerConfirmCredit");
+                        var pullCreditButtons = component.find("pullCreditButtons");
+
+                        $A.util.addClass(addedCustomerConfirmCredit, 'noDisplayBar');
+                        $A.util.addClass(pullCreditButtons, 'noDisplayBar');
+                    } else {
+                        var spinner2 = component.find('creditSpinner');
+                        var evt2 = spinner.get("e.toggle");
+                        evt2.setParams({ isVisible : false });
+                        evt2.fire();
+
+                        var submitButton2 = component.find("SubmitButton");
+                        $A.util.removeClass(submitButton2, 'noDisplay'); 
+
+                        var appEvent = $A.get("e.c:ApexCallbackError");
+                        appEvent.setParams({"className" : "SLPAddCustomerController",
+                                            "methodName" : "pullCreditStatus",
+                                            "errors" : resp.getError()});
+                        appEvent.fire();
+                        $A.log("Errors", resp.getError());
+                    }
+                });
+            $A.enqueueAction(action);
+        } else {
+            alert("No Lead ID?!");
+        }
+    },
+
     navigateAddAnotherCustomer : function(component, event, helper) {
 
         var urlEvent = $A.get("e.force:navigateToURL");

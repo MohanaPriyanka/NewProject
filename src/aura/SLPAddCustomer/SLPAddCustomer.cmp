@@ -79,27 +79,87 @@
         </p>            
       <br></br>
       </div>
-      <div aura:id="applicationNotification" class="box noDisplayBar">
-        <p class="marginAround marginTop proximaNovaDataBlue">
-          This customer has been added. Please check the credit status tab in the navigation bar to see their qualification status. It may take a few minutes for the credit report to run. You will receive a notificaation via email when this customer has a response. Thank you for your patience. 
-        </p> 
-        <p class="marginAround proximaNovaDataBlue">
-          If the customer is marked at Pre-Qualified, you may continue with the application by clicking on the button that appears next to the customer's name. If the customer is not qualified, please contact BlueWave to inquire about other possibilities. 
-        </p>
-      <hr></hr>
-      <div aura:id="addAnotherCustomer" class="documentsButtonCenter noDisplayBar">           
-        <ui:button aura:id="addAnotherCustomerButton"
-             class=" box buttonRight"
-             labelClass=""
-             label="Add Another Customer"                  
-             press="{!c.navigateAddAnotherCustomer}"/>                           
-        <ui:button aura:id="creditStatusButton"
-             class=" box buttonLeft"
-             labelClass=""
-             label="View Credit Status"                  
-             press="{!c.navigateCreditStatus}"/>                           
-      </div>                 
-      </div>            
+      <div aura:id="addedCustomerConfirmCredit" class="box noDisplayBar">
+          <p class="marginAround marginTop proximaNovaDataBlue">
+              You've added a new customer! Double check their information before running a credit check:
+
+              <div class="box">
+                  <fieldset class="slds-form--compound paddingTop1x5">
+                      <div class="slds-form-element__group">
+                          <div class="slds-form-element__row">
+                              <div class="slds-form-element slds-p-horizontal--small ">
+                                  <label class="slds-form-element__label">First Name</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.FirstName}"  />
+                              </div> 
+                              <div class="slds-form-element slds-p-horizontal--small ">
+                                  <label class="slds-form-element__label">Last Name</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.LastName}"/>
+                              </div>
+                          </div>
+                          <div class="slds-form-element__row">
+                              <div class="slds-form-element slds-p-horizontal--small">
+                                  <label class="slds-form-element__label">Email</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.Email}" />
+                              </div>
+                              <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
+                                  <label class="slds-form-element__label">Date of Birth</label>
+                                  <ui:outputDate class="slds-outputput" value="{!v.newLead.LASERCA__Birthdate__c}"/>
+                              </div>
+                          </div>
+                          <div class="slds-form-element__row">
+                              <div class="slds-form-element slds-p-horizontal--small">
+                                  <label class="slds-form-element__label">Street Address</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_Address__c}"/>
+                              </div>
+                              <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
+                                  <label class="slds-form-element__label">City</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_City__c}"/>
+                              </div>
+                          </div>
+                          <div class="slds-form-element__row">
+                              <div class="slds-form-element slds-p-horizontal--small paddingTop2">
+                                  <label class="slds-form-element__label">State</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_State__c}"/>
+                              </div>
+                              <div class="slds-form-element slds-p-horizontal--small">
+                                  <label class="slds-form-element__label">Zip Code</label>
+                                  <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_Zip__c}"/>
+                              </div>
+                          </div>
+                          <div class="slds-form-element__row">
+                              <div class="slds-form-element slds-p-horizontal--small">
+                                  <label class="slds-form-element__label">Requested Loan Amount</label>
+                                  <ui:outputCurrency class="slds-output" value="{!v.newLead.System_Cost__c}"/>
+                              </div>
+                              <div class="slds-form-element slds-p-horizontal--small">
+                                  <label class="slds-form-element__label">Estimated Annual Income</label>
+                                  <ui:outputCurrency class="slds-output" value="{!v.newLead.Annual_Income_Currency__c}"/>
+                              </div>
+                          </div>
+                      </div>
+                  </fieldset>
+              </div>
+
+
+          </p> 
+          <hr></hr>
+          <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplayBar">
+              <ui:button aura:id="creditStatusButton"
+                         class=" box buttonLeft"
+                         labelClass=""
+                         label="Pull Credit Status"
+                         press="{!c.checkCredit}"/>
+              <ui:button aura:id="addAnotherCustomerButton"
+                         class=" box buttonRight"
+                         labelClass=""
+                         label="Cancel and Add Another Customer"
+                         press="{!c.navigateAddAnotherCustomer}"/>
+          </div>
+          <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
+              <ui:spinner aura:id="creditSpinner" isVisible="false"/>
+          </div>
+
+      </div>
       <div aura:id = "inputForm" class="box">            
       <div aura:id = "inputFormBox" class="box">
       <img aura:id = "avidiaLogo" class="noDisplay slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaLogo}"/>
@@ -314,7 +374,7 @@
           <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
       <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
-          <ui:spinner aura:id="spinner" isVisible="false"/>
+          <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
   </div>
 </div>
