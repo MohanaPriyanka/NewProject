@@ -46,5 +46,3 @@ public without sharing class SLPDashboardStageChartHandler {
         return scr;				
     }
 }
-
-
