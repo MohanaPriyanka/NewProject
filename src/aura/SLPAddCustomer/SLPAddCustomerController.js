@@ -25,40 +25,39 @@
             && lead.Credit_Check_Acknowledged__c == true
             && lead.Privacy_Policy_Acknowledged__c == true
             && lead.Utility_Bill_Access_Acknowledged__c == true) {
-           var Action = component.get("c.addNewLeadRecord");
-            Action.setParams({
-                "newLead" : lead,          
-            });
+            var Action = component.get("c.addNewLeadRecord");
+            Action.setParams({"newLead" : lead});
             
             Action.setCallback(this, function(resp) {
-                if(resp.getState() == "SUCCESS") {
-                    var inputForm = component.find("inputForm");
-                    var addAnotherCustomer = component.find("addAnotherCustomer");
-                    var mslpButton = component.find("mslpAppbutton");
-                    var applicationNotification = component.find("applicationNotification");
-
-                    var bwslButton = component.find("bwslAppButton");
-                    var avidiaLogo = component.find("avidiaLogo");
-                    var mslpDisclaimer = component.find("mslpDisclaimer");                    
+                    if(resp.getState() == "SUCCESS") {
+                        var inputForm = component.find("inputForm");
+                        var addAnotherCustomer = component.find("addAnotherCustomer");
+                        var mslpButton = component.find("mslpAppbutton");
+                        var applicationNotification = component.find("applicationNotification");
+                        var bwslButton = component.find("bwslAppButton");
+                        var avidiaLogo = component.find("avidiaLogo");
+                        var mslpDisclaimer = component.find("mslpDisclaimer");                    
                     
-                    $A.util.addClass(mslpButton, 'noDisplayBar'); 
-                    $A.util.addClass(bwslButton, 'noDisplayBar');      
-                    $A.util.addClass(inputForm, 'noDisplayBar'); 
-                    $A.util.addClass(avidiaLogo, 'noDisplayBar');    
-                    $A.util.addClass(mslpDisclaimer, 'noDisplayBar');                                                                             
-                    $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
-                    $A.util.removeClass(applicationNotification, 'noDisplayBar');
-
-
-                    //alert("This customer has been added. Please check the credit status tab to see their qualification status. This may take a minute or two.");
-                }else {
-                    $A.log("Errors", resp.getError());                
-                }
-            }); 
-    		$A.enqueueAction(Action);
-        }
-        else {
-            alert("Please acknowledge our privacy policy, give BlueWave permission to access credit history, energy history and fill out all of the fields on this form.");            
+                        $A.util.addClass(mslpButton, 'noDisplayBar'); 
+                        $A.util.addClass(bwslButton, 'noDisplayBar');      
+                        $A.util.addClass(inputForm, 'noDisplayBar'); 
+                        $A.util.addClass(avidiaLogo, 'noDisplayBar');    
+                        $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
+                        $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
+                        $A.util.removeClass(applicationNotification, 'noDisplayBar');
+                    } else {
+                        var appEvent = $A.get("e.c:ApexCallbackError");
+                        appEvent.setParams({"className" : "SLPAddCustomerController",
+                                            "methodName" : "addCustomer",
+                                            "errors" : resp.getError()});
+                        appEvent.fire();
+                        $A.log("Errors", resp.getError());                
+                    }
+                }); 
+            $A.enqueueAction(Action);
+        } else {
+            alert("Please acknowledge our privacy policy, give BlueWave permission " +
+                  "to access credit history, energy history and fill out all of the fields on this form.");
         }
     },
     
