@@ -57,7 +57,7 @@
         actionMyParentAccountId.setParams({propertyAccountId : "All"});
         actionSystemBills.setParams({propertyAccountId : label});
         actionStatements.setParams({propertyAccountId : label});  
-        actionPaymentLogs.setParams({propertyAccountId : label});                              
+        actionPaymentLogs.setParams({propertyAccountId : label});		                                         
         
         actionMyAccountBill.setCallback(this,function(resp){ //shows the total due for the property account selected
             if(resp.getState() == 'SUCCESS') {
