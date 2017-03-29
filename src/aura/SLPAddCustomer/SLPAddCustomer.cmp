@@ -1,6 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
     <aura:attribute name="partnerRecord" type="Object" />
-
+    <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
 
     <style>
         @font-face {
