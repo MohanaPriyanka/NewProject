@@ -13,6 +13,14 @@
     },    
 
     addCustomer : function(component, event, helper) {
+        var submitButton = component.find("SubmitButton");
+        $A.util.addClass(submitButton, 'noDisplay'); 
+
+        var spinner = component.find("spinner");
+        var evt = spinner.get("e.toggle");
+        evt.setParams({ isVisible : true });
+        evt.fire();
+
         var lead = component.get("v.newLead");
         if (lead.LASERCA__Home_Address__c != null 
             && lead.LASERCA__Home_City__c != ''
@@ -36,8 +44,8 @@
                         var applicationNotification = component.find("applicationNotification");
                         var bwslButton = component.find("bwslAppButton");
                         var avidiaLogo = component.find("avidiaLogo");
-                        var mslpDisclaimer = component.find("mslpDisclaimer");                    
-                    
+                        var mslpDisclaimer = component.find("mslpDisclaimer");
+
                         $A.util.addClass(mslpButton, 'noDisplayBar'); 
                         $A.util.addClass(bwslButton, 'noDisplayBar');      
                         $A.util.addClass(inputForm, 'noDisplayBar'); 
@@ -46,18 +54,34 @@
                         $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
                         $A.util.removeClass(applicationNotification, 'noDisplayBar');
                     } else {
+                        var spinner2 = component.find('spinner');
+                        var evt2 = spinner.get("e.toggle");
+                        evt2.setParams({ isVisible : false });
+                        evt2.fire();
+
+                        var submitButton2 = component.find("SubmitButton");
+                        $A.util.removeClass(submitButton2, 'noDisplay'); 
+
                         var appEvent = $A.get("e.c:ApexCallbackError");
                         appEvent.setParams({"className" : "SLPAddCustomerController",
                                             "methodName" : "addCustomer",
                                             "errors" : resp.getError()});
                         appEvent.fire();
-                        $A.log("Errors", resp.getError());                
+                        $A.log("Errors", resp.getError());
                     }
                 }); 
             $A.enqueueAction(Action);
         } else {
             alert("Please acknowledge our privacy policy, give BlueWave permission " +
                   "to access credit history, energy history and fill out all of the fields on this form.");
+
+            var spinner2 = component.find('spinner');
+            var evt2 = spinner.get("e.toggle");
+            evt2.setParams({ isVisible : false });
+            evt2.fire();
+
+            var submitButton2 = component.find("SubmitButton");
+            $A.util.removeClass(submitButton2, 'noDisplay'); 
         }
     },
     

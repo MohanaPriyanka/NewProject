@@ -40,6 +40,7 @@ public without sharing class SLPAddCustomer {
         newLead.bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
+        newLead.LASERCA__Pull_Credit_Report__c = true;
         insert newLead;
     }
 

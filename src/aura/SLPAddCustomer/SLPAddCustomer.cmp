@@ -310,9 +310,12 @@
           </div>             
       </fieldset>        
 
-      	<div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
-              <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
-	</div>
-  </div>
+      <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
+          <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
+      <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
+          <ui:spinner aura:id="spinner" isVisible="false"/>
+      </div>
+  </div>
+</div>
 </aura:component>
