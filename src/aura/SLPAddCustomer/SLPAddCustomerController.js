@@ -87,8 +87,7 @@
     },
     
     checkCredit : function(component, event, helper) {
-        var submitButton = component.find("pullCreditButtons");
-        $A.util.addClass(submitButton, 'noDisplay'); 
+        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
 
         var spinner = component.find("creditSpinner");
         var evt = spinner.get("e.toggle");
@@ -97,17 +96,33 @@
 
         var lead = component.get("v.newLead");
         if (!$A.util.isUndefinedOrNull(lead.Id)) {
-            alert("calling pullCreditStatus");
             var action = component.get("c.pullCreditStatus");
             action.setParams({"lead" : lead});
             action.setCallback(this, function(resp) {
                     if(resp.getState() == "SUCCESS") {
-                        alert("checkbox checked");
-                        var addedCustomerConfirmCredit = component.find("addedCustomerConfirmCredit");
-                        var pullCreditButtons = component.find("pullCreditButtons");
-
-                        $A.util.addClass(addedCustomerConfirmCredit, 'noDisplayBar');
-                        $A.util.addClass(pullCreditButtons, 'noDisplayBar');
+                        // Checkbox checked
+                        window.setTimeout(function() {
+                                component.set("v.creditStatusText", "Sending request to TransUnion");
+                                $A.util.removeClass(component.find("creditStatus"), 'noDisplay');
+                            }, 2000);
+                        window.setTimeout(function() {
+                                component.set("v.creditStatusText", "Waiting for results...");
+                            }, 4000);
+                        window.setTimeout(function() {
+                                component.set("v.creditStatusText", "Waiting for results.....");
+                            }, 6000);
+                        window.setTimeout(function() {
+                                component.set("v.creditStatusText", "Checking for results.......");
+                            }, 8000);
+                        window.setTimeout(function() {
+                                $A.util.addClass(component.find("creditStatus"), 'noDisplay');
+                                var spinner2 = component.find("creditSpinner");
+                                var evt2 = spinner.get("e.toggle");
+                                evt2.setParams({ isVisible : false });
+                                evt2.fire();
+                                
+                                $A.util.removeClass(component.find("creditResult"), 'noDisplay');
+                            }, 10000);
                     } else {
                         var spinner2 = component.find('creditSpinner');
                         var evt2 = spinner.get("e.toggle");
@@ -119,7 +134,7 @@
 
                         var appEvent = $A.get("e.c:ApexCallbackError");
                         appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "pullCreditStatus",
+                                            "methodName" : "checkCredit",
                                             "errors" : resp.getError()});
                         appEvent.fire();
                         $A.log("Errors", resp.getError());
