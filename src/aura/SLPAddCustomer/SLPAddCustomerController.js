@@ -45,6 +45,11 @@
                         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
                         $A.util.removeClass(addAnotherCustomer, 'noDisplayBar');
                         $A.util.removeClass(applicationNotification, 'noDisplayBar');
+                        
+                        var btn = event.getSource();
+                        btn.set("v.disabled",true);
+                        btn.set("v.label",'Application Submitted')    
+
                     } else {
                         var appEvent = $A.get("e.c:ApexCallbackError");
                         appEvent.setParams({"className" : "SLPAddCustomerController",

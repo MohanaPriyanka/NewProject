@@ -21,6 +21,7 @@ public without sharing class SLPCreditStatus {
     String leadQuery = 'SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, DOER_Solar_Loan__c' ;
     leadQuery += ' FROM Lead' ; 
     leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
+    leadQuery += '  AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
     leadQuery += '  AND (Status = \'' + 'Unfinished' + '\' ' ;
     leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' ';
     leadQuery += '  OR Status = \'' + 'Pre-Qualified' + '\' ' ;
@@ -50,6 +51,7 @@ public without sharing class SLPCreditStatus {
     String leadQuery = 'SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c' ;
     leadQuery += ' FROM Lead' ;
     leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
+    leadQuery += ' AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
 
     if (profile.licenseType != 'Executive' ) {
       //if the user is not an executive, only show that user's leads
@@ -97,6 +99,76 @@ public without sharing class SLPCreditStatus {
     List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c 
                                   FROM Product2 
                                   WHERE Id = : productId]; 
-      return productList[0];                      
-  }  
+    return productList[0];                      
+  }
+
+  @AuraEnabled 
+  public static String sendApplication (String leadId, Product2 product, Integer loanTerm) {
+    String continueApplicationUrl;
+    String customerName;
+    Boolean updateDummy;
+    Lead lead = [SELECT Id, Name, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c, LASERCA__Home_Address__c,
+                        LASERCA__Home_City__c, LASERCA__Home_Zip__c, Annual_Income_Currency__c, System_Cost__c, Update_Dummy__c, FirstName,
+                        LastName, Partner_Email__c, Email, Partner_Lookup__r.Name
+                        FROM Lead
+                        WHERE Id = : leadId
+                        LIMIT 1];  
+    customerName = lead.FirstName + ' ' + lead.LastName + ' - ' + lead.Email;                        
+    EmailTemplate template = [SELECT Id, HtmlValue, Body 
+                              FROM EmailTemplate 
+                              WHERE DeveloperName = 'RS_SLP_Customer_Continue_Application'];
+
+    if(lead.Update_Dummy__c == true){
+        updateDummy = false;
+    }else{
+        updateDummy = true;
+    }                     
+    if (product.Program__c == 'BlueWave Solar Loan') {
+      continueApplicationUrl = 'https://forms.bluewaverenewables.com/381610?' + 'tfa_1311=' + lead.LASERCA__Home_Address__c 
+                                + '&' + 'tfa_154=' + lead.LASERCA__Home_State__c
+                                + '&' + 'tfa_526=' + lead.Id 
+                                + '&' + 'tfa_1180=' + updateDummy
+                                + '&' + 'tfa_390=' + lead.Annual_Income_Currency__c 
+                                + '&' + 'tfa_1312=' + lead.LASERCA__Home_City__c 
+                                + '&' + 'tfa_1179=' + product.Id 
+                                + '&' + 'tfa_1313=' + lead.LASERCA__Home_Zip__c     
+                                + '&' + 'tfa_1287=' + loanTerm     
+                                + '&' + 'tfa_1372=' + lead.FirstName     
+                                + '&' + 'tfa_1373=' + lead.LastName;       
+    } else if (product.Program__c == 'MSLP') {
+      continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381604' + '?tfa_572=Individually' 
+                                + '&' + 'tfa_154=Massachusetts&tfa_526=' + lead.Id 
+                                + '&' + 'tfa_1180=' + updateDummy
+                                + '&' + 'tfa_390=' + lead.Annual_Income_Currency__c 
+                                + '&' + 'tfa_63=' + lead.LASERCA__Home_City__c 
+                                + '&' + 'tfa_1179=' + product.Id 
+                                + '&' + 'tfa_81=' + lead.LASERCA__Home_Zip__c     
+                                + '&' + 'tfa_1287=' + loanTerm     
+                                + '&' + 'tfa_1181=true'    
+                                + '&' + 'tfa_94=' + lead.LASERCA__Home_Address__c ;        
+    }        
+    String htmlBody = template.HtmlValue;
+    htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
+    htmlBody = htmlBody.replace('{!continueApplication}', continueApplicationUrl);
+    htmlBody = htmlBody.replace('{!partnerName}', lead.Partner_Lookup__r.Name);
+
+    Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+    mail.setHtmlBody(htmlBody);
+    for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
+                                       FROM OrgWideEmailAddress]) {
+      if(senderEmail.Address.contains('info')){
+          mail.setOrgWideEmailAddressId(senderEmail.Id); 
+      }
+    }
+    if(lead.Partner_Email__c != null){
+      String partnerEmail = lead.Partner_Email__c;
+      String[] copiedEmailAddresses = new String[] {partneremail};
+      mail.setccAddresses(copiedEmailAddresses);
+    }    
+    String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here'; 
+    mail.setSubject(emailSubject);
+    mail.setTargetObjectId(lead.Id);
+    Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
+    return customerName;
+  }
 }

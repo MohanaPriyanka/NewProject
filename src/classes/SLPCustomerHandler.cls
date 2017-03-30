@@ -27,6 +27,7 @@ public without sharing class SLPCustomerHandler {
     String loanQuery = 'SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)  ' ;
     loanQuery += '      FROM Loan__c' ; 
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';   
+    leadQuery += '      AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
     if (profile.LicenseType != 'Executive') {
       loanQuery += '    AND Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';      
     } 
