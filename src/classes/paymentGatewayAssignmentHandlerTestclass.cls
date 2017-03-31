@@ -169,8 +169,8 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                     ChargentBase__Active__c = TRUE));
         insert chGatewayFairhavenMillRd;                   
 
-        for (System_Bill__c systemBillJan : [SELECT Id, Name, Total_Due__c, Bill_Number__c, Property_Account_ID__c, Recurring_Billing__c, Shared_Solar_System__r.Id FROM System_Bill__c]){
-            if(systemBillJan.Bill_Number__c == 1){
+        for (System_Bill__c systemBillJan : [SELECT Id, Name, Total_Due__c, Bill_Number__c, Property_Account_ID__c, Recurring_Billing__c, Shared_Solar_System__r.Id FROM System_Bill__c]) {
+            if(systemBillJan.Bill_Number__c == 1) {
                 ChargentOrders__ChargentOrder__c chOrderRecurring  = (ChargentOrders__ChargentOrder__c)TestFactory.createSObject(new ChargentOrders__ChargentOrder__c(
                                                                                                     ChargentOrders__Account__c = systemBillJan.Property_Account_Id__c,
                                                                                                     ChargentOrders__Gateway__c = chGatewayFairhavenMillRd.Id,
@@ -259,11 +259,11 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
         for (ChargentOrders__ChargentOrder__c chOrderAssert : [ SELECT Id, Name, ChargentOrders__Gateway__r.Entity_Id__c, System_Bill__r.Bill_Number__c,
                                                                 ChargentOrders__Shipping_Name__c
-                                                                FROM ChargentOrders__ChargentOrder__c]){
-            if (chOrderAssert.System_Bill__r.Bill_Number__c == 1){
-                System.assert(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c == entity1.Id);
+                                                                FROM ChargentOrders__ChargentOrder__c]) {
+            if (chOrderAssert.System_Bill__r.Bill_Number__c == 1) {
+                System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c, entity1.Id);
             } else {
-                System.assert(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c == entity2.Id);
+                System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c, entity2.Id);
             }
         }
 

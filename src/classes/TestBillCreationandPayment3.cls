@@ -51,7 +51,6 @@
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                        Service_Territory__c = 'SEMA',
                                        Open__c = true,
-                                       Entity__c = entity1,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,
                                        Total_System_Size_kWh_DC__c = 1445.86,
@@ -70,7 +69,6 @@
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                                        Service_Territory__c = 'SEMA',
                                        Open__c = true,
-                                       Entity__c = entity1,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,
                                        Total_System_Size_kWh_DC__c = 1445.86,
@@ -237,7 +235,7 @@
         }
 
         for (System_Bill__c sbill : systemBillList) {
-            if (sbill.Bill_Number__c == 2){    
+            if (sbill.Bill_Number__c == 2) {    
                 sbill.Waive_Late_Fees__c = TRUE;
                 sbill.Distribute_This_Balance_As_Payment_Plan__c = TRUE;
                 update sbill;
@@ -309,15 +307,15 @@
                 System.debug(sbs.Total_Payments_This_Month__c);
                 System.assert(sbs.Total_Due__c > 0);
                 System.assert(sbs.Late_Payments__c > 0);
-                System.assert(sbs.Total_Payments_This_Month__c == 0);
+                System.assertEquals(sbs.Total_Payments_This_Month__c, 0);
             }
 
             // Second bill has a payment, so balance should be zero and Late Fees should be waived
             if (sbs.Bill_Number__c == 2) {
                 System.debug(sbs.Balance_Net_Late_Payments__c);
                 System.assert(sbs.Total_Due__c > 0);
-                System.assert(sbs.Late_Fees__c == 0);
-                System.assert(sbs.Late_Payments__c == 0);
+                System.assertEquals(sbs.Late_Fees__c, 0);
+                System.assertEquals(sbs.Late_Payments__c, 0);
                 System.assert(sbs.Total_Payments_This_Month__c > 0);
             }
 
