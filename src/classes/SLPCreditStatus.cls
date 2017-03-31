@@ -41,7 +41,7 @@ public without sharing class SLPCreditStatus {
     for(Lead leadRecord : Database.query(leadQuery)){
       leadList.add(leadRecord);
     }
-    return leadList;         	   	      	
+    return leadList;                      
   }
 
   //The getLeads method loads the leads for the credit status page on doInIt and also submits the selected lead into the continue appliation stage.
@@ -83,13 +83,14 @@ public without sharing class SLPCreditStatus {
     Double paymentDenominator;
     Double paymentDenominatorVar1;
     Double paymentDenominatorVar2;
+    Double paymentDenominatorVar3;
     Decimal monthlyPayment;
     Decimal dtiNumerator;
     Decimal dtiDenominator;
     Decimal dtiAfter;
     List<Product2> productList = new List<Product2>();
     Lead leadRecord = [SELECT Id, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c, Loan_Principal__c,
-                              Annual_Income_Currency__c, Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c
+                              Annual_Income_Currency__c, Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Income_Support__c
                         FROM Lead
                         WHERE Id = : leadId];
     for (Product2 product : [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c, Loan_Interest_Rate__c, Debt_To_Income_Maximum__c   
@@ -101,21 +102,29 @@ public without sharing class SLPCreditStatus {
                                   AND Credit_Maximum__c >= : leadRecord.LASER_Credit_Score__c
                                   AND isActive = true]) {
       if (product.Debt_To_Income_Maximum__c != null) {
-        paymentNumerator = (leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12);
-        paymentDenominatorVar1 = (1 - ( 1 + product.Loan_Interest_Rate__c/12));
+        if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
+          paymentNumerator = (leadRecord.Loan_Principal__c * 0.7 * product.Loan_Interest_Rate__c/12);
+        } else if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 2') {
+          paymentNumerator = (leadRecord.Loan_Principal__c * 0.8 * product.Loan_Interest_Rate__c/12);          
+        } else {
+          paymentNumerator = (leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12);          
+        }        
+        paymentDenominatorVar1 = ( 1 + product.Loan_Interest_Rate__c/12);
         paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
-        paymentDenominator = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
+        paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
+        paymentDenominator = 1 - paymentDenominatorVar3;
         monthlyPayment = paymentNumerator/paymentDenominator;
         dtiNumerator = (leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + monthlyPayment);
         dtiDenominator = (leadRecord.Annual_Income_Currency__c /12)*100;
         dtiAfter = dtiNumerator/dtiDenominator;
-        if (dtiAfter <= product.Debt_To_Income_Maximum__c) {
+        if (dtiAfter * 100 <= product.Debt_To_Income_Maximum__c) {
           productList.add(product);
+          System.debug(dtiAfter + ' - ' + product.Debt_To_Income_Maximum__c);
         }
       }
     }                                  
     return productList;                      
-	}
+  }
 
   @AuraEnabled 
   public static Product2 getSelectedProduct (String productId) {
