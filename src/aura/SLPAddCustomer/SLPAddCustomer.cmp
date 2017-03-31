@@ -33,6 +33,7 @@
           color: #7C98AB;
         }              
     </style> 
+<!--
     <aura:attribute name="newLead" type="Lead" 
                     default="{ 'sobjectType' : 'Lead',
                                  'FirstName': '',
@@ -56,6 +57,31 @@
                                  'Utility_Bill_Access_Acknowledged__c':'',
                                  'LASERCA__Birthdate__c':'',
                              }"/>
+-->
+    <aura:attribute name="newLead" type="Lead" 
+                    default="{ 'sobjectType' : 'Lead',
+                                 'FirstName': 'P',
+                             	   'LastName': 'Testcase',
+                                 'LASERCA__Home_Address__c': '1 main',
+                                 'LASERCA__Home_City__c': 'Boston',
+                                 'LASERCA__Home_State__c': 'MA',
+                                 'LASERCA__Home_Zip__c': '02144',
+                                 'Email': 'py@sdf.com',
+                                 'LASERCA__Social_Security_Number__c': '000000001',
+                                 'System_Cost__c':'100',
+                                 'DOER_Solar_Loan__c':'',
+                                 'Annual_Income_Currency__c':'100000',
+                             	   'Credit_Check_Acknowledged__c':true,
+                             	   'Privacy_Policy_Acknowledged__c':true,
+                             	   'Automatic_Product_Assignment__c':'true',
+                              	 'Loan_Term__c':'',
+                             	   'Product_Program__c':'n',
+                              	 'Pre_Approval_Form__c':true,
+                                 'Unfinished_Lead__c':'true',
+                                 'Utility_Bill_Access_Acknowledged__c':'',
+                                 'LASERCA__Birthdate__c':'1/1/1980',
+                             }"/>
+
       <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <div aura:id="mslpAppButton"  class=" paddingBottom1 paddingTop1x5">
@@ -157,27 +183,9 @@
                          label="Cancel and Add Another Customer"
                          press="{!c.navigateAddAnotherCustomer}"/>
           </div>
-
-          <!--
-          <div class="slds-spinner_container noDisplay" aura:id="creditSpinner">
-            <div role="status" class="slds-spinner slds-spinner -medium">
-              <span class="slds-assistive-text">Loading</span>
-              <div class="slds-spinner__dot-a"></div>
-              <div class="slds-spinner__dot-b"></div>
-            </div>
-          </div>
-          -->
-
           <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
               <ui:spinner aura:id="creditSpinner" isVisible="false"/>
           </div>
-
-          <!--
-          <div class="slds-align- absolute-center paddingBottom1 paddingTop1x5 slds-hide">
-              <lightning:spinner aura:id="creditSpinner"/>
-          </div>
-          -->
-
           <div aura:id="creditStatus"
                class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
               <ui:outputText value="{!v.creditStatusText}"/>
@@ -189,7 +197,7 @@
                          class="box"
                          labelClass=""
                          label="Continue Application"
-                         press="{!c.navigateCreditStatus}"/>
+                         press="{!c.getProducts}"/>
           </div>
           <div aura:id="creditResultFail"
                class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
@@ -410,26 +418,47 @@
       <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
           <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
-
-      <!--
-      <div class="slds-spinner_container noDisplay" aura:id="leadSpinner">
-        <div role="status" class="slds-spinner slds-spinner- medium">
-          <span class="slds-assistive-text">Loading</span>
-          <div class="slds-spinner__dot-a"></div>
-          <div class="slds-spinner__dot-b"></div>
-        </div>
-      </div>
-      -->
-
       <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
           <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
-
-      <!--
-      <div class="slds-align- absolute-center paddingBottom1 paddingTop1x5 slds-hide">
-          <lightning:spinner aura:id="leadSpinner"/>
-      </div>
-      -->
+      <div aura:id = "productTable" class="noDisplayBar">
+          <h2> The following products are available for this application. Please select the one you would like to apply for and click continue.</h2>
+          <hr></hr>
+          <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+              <thead>
+                  <tr class="slds-text-heading--label proximaNovaDataBlue " >
+                  </tr>
+              </thead>
+              <tbody>
+                  <aura:iteration items="{!v.allProducts}" var="product">
+                      <tr>
+                          <th scope="row"> <b>{!product.Name}</b> </th>
+                          <th> <div class="slds-form-element">
+                                  <label class="slds-checkbox--toggle slds-grid">
+                                      <ui:inputCheckBox aura:id="productSelect" 
+                                                        class="{!product.Id}"
+                                                        name="{!product.Loan_Term__c}" 
+                                                        value=""
+                                                        change="{!c.updateProductSelection}"/>
+                                      <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+                                          <span class="slds-checkbox--faux"></span>
+                                      </span>
+                                  </label>
+                              </div>
+                          </th>                    
+                      </tr>                    
+                  </aura:iteration>          
+              </tbody>
+          </table>  
+          <br></br> 
+          <div class="floatRight"> 
+              <ui:button label="Continue Application"
+                         class="slds-button--brand"
+                         labelClass="label"
+                         press="{!c.navigate}"/> 
+          </div>  
+      </div>        
   </div>
+
 </div>
 </aura:component>

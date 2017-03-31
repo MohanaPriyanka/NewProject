@@ -150,6 +150,12 @@
         }
     },
 
+    getProducts : function(component, event, helper) { 
+        var leadId = component.get("v.newLead.Id");
+        $A.util.removeClass(component.find("productTable"), 'noDisplayBar');
+        $A.util.addClass(component.find("addedCustomerConfirmCredit"), 'noDisplayBar');
+    },        
+
     navigateAddAnotherCustomer : function(component, event, helper) {
 
         var urlEvent = $A.get("e.force:navigateToURL");
