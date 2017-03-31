@@ -13,9 +13,8 @@
     },    
 
     addCustomer : function(component, event, helper) {
-        var submitButton = component.find("SubmitButton");
-        $A.util.addClass(submitButton, 'noDisplay'); 
-
+        $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
+        // $A.util.removeClass(component.find("leadSpinner"), 'slds-hide');
         var spinner = component.find("leadSpinner");
         var evt = spinner.get("e.toggle");
         evt.setParams({ isVisible : true });
@@ -55,6 +54,7 @@
                         $A.util.removeClass(pullCreditButtons, 'noDisplayBar');
                         $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplayBar');
                     } else {
+                        // $A.util.addClass(component.find("leadSpinner"), 'slds-hide'); 
                         var spinner2 = component.find('leadSpinner');
                         var evt2 = spinner.get("e.toggle");
                         evt2.setParams({ isVisible : false });
@@ -76,6 +76,7 @@
             alert("Please acknowledge our privacy policy, give BlueWave permission " +
                   "to access credit history, energy history and fill out all of the fields on this form.");
 
+            // $A.util.addClass(component.find("leadSpinner"), 'slds-hide'); 
             var spinner2 = component.find('leadSpinner');
             var evt2 = spinner.get("e.toggle");
             evt2.setParams({ isVisible : false });
@@ -88,7 +89,7 @@
     
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
-
+        // $A.util.removeClass(component.find("creditSpinner"), 'slds-hide');
         var spinner = component.find("creditSpinner");
         var evt = spinner.get("e.toggle");
         evt.setParams({ isVisible : true });
@@ -96,34 +97,37 @@
 
         var lead = component.get("v.newLead");
         if (!$A.util.isUndefinedOrNull(lead.Id)) {
+            var self = this;
             var action = component.get("c.pullCreditStatus");
             action.setParams({"lead" : lead});
             action.setCallback(this, function(resp) {
                     if(resp.getState() == "SUCCESS") {
                         // Checkbox checked
                         window.setTimeout(function() {
-                                component.set("v.creditStatusText", "Sending request to TransUnion");
                                 $A.util.removeClass(component.find("creditStatus"), 'noDisplay');
+                                component.set("v.creditStatusText", "Sending request to TransUnion");
                             }, 2000);
                         window.setTimeout(function() {
-                                component.set("v.creditStatusText", "Waiting for results...");
+                                component.set("v.creditStatusText", "Waiting for TransUnion to process...");
                             }, 4000);
                         window.setTimeout(function() {
-                                component.set("v.creditStatusText", "Waiting for results.....");
-                            }, 6000);
+                                component.set("v.creditStatusText", "Checking for results...");
+                            }, 7000);
                         window.setTimeout(function() {
-                                component.set("v.creditStatusText", "Checking for results.......");
-                            }, 8000);
+                                var creditPollerInterval = window.setInterval(helper.checkCreditStatus, 2000, component);
+                                component.set("v.creditStatusPoller", creditPollerInterval);
+                            }, 9000);
+                        // checkCreditStatus should clearInterval if it finds a Credit Report Log or
+                        // a Credit Report on the Lead, but just in case, stop checking after a minute
                         window.setTimeout(function() {
-                                $A.util.addClass(component.find("creditStatus"), 'noDisplay');
-                                var spinner2 = component.find("creditSpinner");
-                                var evt2 = spinner.get("e.toggle");
+                                var evt2 = component.find('creditSpinner').get("e.toggle");
                                 evt2.setParams({ isVisible : false });
                                 evt2.fire();
-                                
-                                $A.util.removeClass(component.find("creditResult"), 'noDisplay');
-                            }, 10000);
+
+                                window.clearInterval(component.get("v.creditStatusPoller"));
+                            }, 60000);
                     } else {
+                        // $A.util.addClass(component.find("creditSpinner"), 'slds-hide');
                         var spinner2 = component.find('creditSpinner');
                         var evt2 = spinner.get("e.toggle");
                         evt2.setParams({ isVisible : false });
