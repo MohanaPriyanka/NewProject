@@ -41,7 +41,7 @@ public without sharing class SLPCreditStatus {
     for(Lead leadRecord : Database.query(leadQuery)){
       leadList.add(leadRecord);
     }
-    return leadList;         	   	      	
+    return leadList;                      
   }
 
   //The getLeads method loads the leads for the credit status page on doInIt and also submits the selected lead into the continue appliation stage.
@@ -83,6 +83,7 @@ public without sharing class SLPCreditStatus {
     Double paymentDenominator;
     Double paymentDenominatorVar1;
     Double paymentDenominatorVar2;
+    Double paymentDenominatorVar3;
     Decimal monthlyPayment;
     Decimal dtiNumerator;
     Decimal dtiDenominator;
@@ -102,20 +103,22 @@ public without sharing class SLPCreditStatus {
                                   AND isActive = true]) {
       if (product.Debt_To_Income_Maximum__c != null) {
         paymentNumerator = (leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12);
-        paymentDenominatorVar1 = (1 - ( 1 + product.Loan_Interest_Rate__c/12));
+        paymentDenominatorVar1 = ( 1 + product.Loan_Interest_Rate__c/12);
         paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
-        paymentDenominator = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
+        paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
+        paymentDenominator = 1 - paymentDenominatorVar3;
         monthlyPayment = paymentNumerator/paymentDenominator;
         dtiNumerator = (leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + monthlyPayment);
         dtiDenominator = (leadRecord.Annual_Income_Currency__c /12)*100;
         dtiAfter = dtiNumerator/dtiDenominator;
-        if (dtiAfter <= product.Debt_To_Income_Maximum__c) {
+        if (dtiAfter * 100 <= product.Debt_To_Income_Maximum__c) {
           productList.add(product);
+          System.debug(dtiAfter + ' - ' + product.Debt_To_Income_Maximum__c);
         }
       }
     }                                  
     return productList;                      
-	}
+  }
 
   @AuraEnabled 
   public static Product2 getSelectedProduct (String productId) {
