@@ -1,5 +1,7 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
     <aura:attribute name="partnerRecord" type="Object" />
+    <aura:attribute name="creditStatusText" type="String" />
+    <aura:attribute name="creditStatusPoller" type="Integer" />
     <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
 
     <style>
@@ -155,8 +157,38 @@
                          label="Cancel and Add Another Customer"
                          press="{!c.navigateAddAnotherCustomer}"/>
           </div>
+
+          <!--
+          <div class="slds-spinner_container noDisplay" aura:id="creditSpinner">
+            <div role="status" class="slds-spinner slds-spinner -medium">
+              <span class="slds-assistive-text">Loading</span>
+              <div class="slds-spinner__dot-a"></div>
+              <div class="slds-spinner__dot-b"></div>
+            </div>
+          </div>
+          -->
+
           <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
               <ui:spinner aura:id="creditSpinner" isVisible="false"/>
+          </div>
+
+          <!--
+          <div class="slds-align- absolute-center paddingBottom1 paddingTop1x5 slds-hide">
+              <lightning:spinner aura:id="creditSpinner"/>
+          </div>
+          -->
+
+          <div aura:id="creditStatus"
+               class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
+              <ui:outputText value="{!v.creditStatusText}"/>
+          </div>
+          <div aura:id="creditResultPass"
+               class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
+            <lightning:icon iconName="action:approval" size="large" alternativeText="You Passed!"/>
+          </div>
+          <div aura:id="creditResultFail"
+               class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
+            <lightning:icon iconName="action:reject" size="large" alternativeText="You Failed..."/>
           </div>
 
       </div>
@@ -373,9 +405,26 @@
       <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
           <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
+
+      <!--
+      <div class="slds-spinner_container noDisplay" aura:id="leadSpinner">
+        <div role="status" class="slds-spinner slds-spinner- medium">
+          <span class="slds-assistive-text">Loading</span>
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+      -->
+
       <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
           <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
+
+      <!--
+      <div class="slds-align- absolute-center paddingBottom1 paddingTop1x5 slds-hide">
+          <lightning:spinner aura:id="leadSpinner"/>
+      </div>
+      -->
   </div>
 </div>
 </aura:component>
