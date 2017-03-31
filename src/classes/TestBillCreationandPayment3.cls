@@ -51,6 +51,7 @@
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                        Service_Territory__c = 'SEMA',
                                        Open__c = true,
+                                       Entity__c = entity1,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,
                                        Total_System_Size_kWh_DC__c = 1445.86,
@@ -69,6 +70,7 @@
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                                        Service_Territory__c = 'SEMA',
                                        Open__c = true,
+                                       Entity__c = entity1,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,
                                        Total_System_Size_kWh_DC__c = 1445.86,
@@ -137,7 +139,6 @@
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
 
-        // EnergyUsageUpdateHandler isn't bulkified, so we need to inserts for production updates
         Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
@@ -177,12 +178,13 @@
         new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                                          ChargentBase__Merchant_ID__c = '235986',
                                          Shared_Solar_System__c = sss1.id,
+                                         Entity__c = entity1.Id,
                                          ChargentBase__Active__c = TRUE);
         insert chGateway;
 
         // Query for system bills that were created from the production update
         for (Account_Bill__c accountbill : accountbilllist) {
-            if(accountbill.Bill_Number__c == 2){
+            if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA = 
                     new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
                                                          ChargentOrders__Shipping_Name__c = entity1.Id,

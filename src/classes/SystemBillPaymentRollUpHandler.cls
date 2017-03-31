@@ -123,10 +123,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
                 if (systemBills.get(i).Property_Account_ID__c == parentID && systemBills.get(i).Entity_ID__c == entityId){
                       groupedSystemBillsList.add(systemBills.get(i));
                       groupedSystemBillsToUpdate.add(systemBills.get(i));
-
-                      if(i == systemBills.size() - 1){
-                          maxbillnumber = systemBills.get(i).Bill_Number__c;
-                      }
+                      maxbillnumber = systemBills.get(i).Bill_Number__c;
                 }
             } 
             

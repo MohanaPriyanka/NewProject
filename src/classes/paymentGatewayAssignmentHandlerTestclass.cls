@@ -21,9 +21,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         Entity__c entity1 = new Entity__c (Name = 'Oxford Barret St');
         Entity__c entity2 = new Entity__c (Name = 'Medfield Country Way');
         Entity__c entity3 = new Entity__c (Name = 'Fairhaven Mill Rd');
-        insert entity1;
-        insert entity2;
-        insert entity3;
+        insert new List <Entity__c>{entity1, entity2, entity3};
 
         Shared_Solar_System__c sharedSolarSystemOxfordBarretSt = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barret St',
                                                                                                                                 Service_Territory__c = 'WCMA',
