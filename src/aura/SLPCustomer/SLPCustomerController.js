@@ -846,17 +846,15 @@
         var urlEvent = $A.get("e.force:navigateToURL");
         if(mslp == false) {
             urlEvent.setParams({
-              "url": 'https://forms.bluewaverenewables.com/381580?tfa_1237=' + leadId 
-                + '&' + 'tfa_1238=' + updateDummy 
-                + '&' + 'tfa_390=' + income  
-                
-
+              "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId 
+                + '&' + 'tfa_1180=' + updateDummy 
+                + '&' + 'tfa_390=' + income                  
             });
         }else {
             urlEvent.setParams({
-              "url": 'https://forms.bluewaverenewables.com/381605?tfa_526=' + leadId 
+              "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId 
                 + '&' + 'tfa_1180=' + updateDummy 
-                + '&' + 'tfa_390=' + income    
+                + '&' + 'tfa_390=' + income   
             });            
         }
         urlEvent.fire();                
