@@ -2,7 +2,7 @@
     loadChart : function(component) {
         var chartobj = component.get("v.chartobj");
         var action = component.get("c.getAll");
-    	action.setCallback(this, function(resp) {
+        action.setCallback(this, function(resp) {
             var canvas = component.find('chart').getElement();
             var ctx = canvas.getContext('2d'); 
 
