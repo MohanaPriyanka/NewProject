@@ -184,11 +184,16 @@
           </div>
           <div aura:id="creditResultPass"
                class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
-            <lightning:icon iconName="action:approval" size="large" alternativeText="You Passed!"/>
+              <lightning:icon iconName="action:approval" size="large" alternativeText="You Passed!"/>
+              <ui:button aura:id="continueApplicationButton"
+                         class="box"
+                         labelClass=""
+                         label="Continue Application"
+                         press="{!c.navigateCreditStatus}"/>
           </div>
           <div aura:id="creditResultFail"
                class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
-            <lightning:icon iconName="action:reject" size="large" alternativeText="You Failed..."/>
+              <lightning:icon iconName="action:reject" size="large" alternativeText="You Failed..."/>
           </div>
 
       </div>
