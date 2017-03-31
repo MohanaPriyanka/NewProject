@@ -91,10 +91,31 @@ public without sharing class SLPControllersTestclass {
     		Unfinished_Lead__c = true,
     		Utility_Bill_Access_Acknowledged__c = true 		
     	);
+        List<Lead> leadList;
     	System.runAs(partnerUser) {
-    		SLPAddCustomer.addNewLeadRecord(newLead);
+            SLPAddCustomer.addNewLeadRecord(newLead);
+
+            leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
+                        FROM Lead
+                        WHERE LastName = 'Swain'];
+            System.assertEquals(leadList.size(), 1);
+            System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+
+            SLPAddCustomer.pullCreditStatus(leadList[0]);
+            
+            // Laser Credit Access trigger should unset the pull credit report checkbox
+            leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
+                                   FROM Lead
+                                   WHERE LastName = 'Swain'];            
+            System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
     	}
     	Test.stopTest();
+
+        // LCA should set pull credit once the future method fires
+        List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
+                                                         FROM LASERCA__Personal_Credit_Report__c
+                                                         WHERE LASERCA__Lead__c = :leadList[0].Id];
+        System.assertEquals(pcrs.size(), 1);
     }
 
     @isTest static void testAlertsHandlerUser() {
