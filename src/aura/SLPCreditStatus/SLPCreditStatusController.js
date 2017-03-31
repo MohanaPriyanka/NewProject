@@ -205,8 +205,8 @@
                     alert('The email to continue this application has been sent to ' + resp.getReturnValue());
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
-                    appEvent.setParams({"className" : "SLPAddCustomerController",
-                                        "methodName" : "addCustomer",
+                    appEvent.setParams({"className" : "SLPCreditStatus",
+                                        "methodName" : "sendApplication",
                                         "errors" : resp.getError()});
                     appEvent.fire();
                     $A.log("Errors", resp.getError());                      
