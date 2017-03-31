@@ -1,17 +1,37 @@
 ({
-	doInit : function(component, event, helper) {
-        var action = component.get("c.getLeads");        
-        action.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.allCustomers", resp.getReturnValue());
+    doInit : function(component, event, helper) {
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
             }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(action);     
+        };
+        var leadId = getUrlParameter('leadId');
+        if ($A.util.isUndefinedOrNull(leadId)) {
+            var action = component.get("c.getLeads");        
+            action.setCallback(this,function(resp){ 
+                    if(resp.getState() == 'SUCCESS') {
+                        component.set("v.allCustomers", resp.getReturnValue());
+                    }
+                    else {
+                        $A.log("Errors", resp.getError());
+                    }
+                });        
+            $A.enqueueAction(action);     
+        } else {
+            component.set("v.leadId", leadId);
+            alert("calling getProducts: " + component.get("v.leadId"));
+            helper.getProductsHelper(component, event, helper);
+        }
               
-	},
+    },
     
     searchCustomers : function(component, event, helper) {            
         var input = component.find("customerSearch");
@@ -32,31 +52,7 @@
     },
 
     getProducts : function(component, event, helper) { 
-        var source = event.getSource();
-        var leadId = source.get("v.class");               
-        var action = component.get("c.getCustomerProducts"); 
-        var customerTable = component.find("customerTable");
-        var productTable = component.find("productTable");
-        var searchBar = component.find("customerSearchBar");
-        var searchButton = component.find("customerSearchButton");
-
-        component.set("v.leadId", leadId);
-
-        action.setParams({leadId : leadId});
-
-        action.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.allProducts", resp.getReturnValue());
-                $A.util.addClass(customerTable, 'noDisplay');
-                $A.util.addClass(searchButton, 'noDisplay');
-                $A.util.addClass(searchBar, 'noDisplay');
-                $A.util.removeClass(productTable, 'noDisplay');
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(action);        
+        getProductsHelper(component, event, helper);
     },        
 
     updateProductSelection : function(component, event, helper) { 

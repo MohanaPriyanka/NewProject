@@ -1,8 +1,8 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
   <aura:attribute name="partnerRecord" type="Object" />
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
-  <aura:attribute name="creditStatusText" type="String" />
-  <aura:attribute name="creditStatusPoller" type="Integer" />
+  <aura:attribute name="creditStatusText" type="String"/>
+  <aura:attribute name="creditStatusPoller" type="Integer"/>
 
   <style>
     @font-face {
@@ -141,9 +141,8 @@
               <ui:inputDate aura:id="dateofBirth" 
                             class="slds-input" 
                             displayDatePicker="true"
-                            value="{!v.newLead.LASERCA__Birthdate__c}"                         
-                            />       
-            </div>   
+                            value="{!v.newLead.LASERCA__Birthdate__c}"/>
+            </div>
           </div>
         </div>
       </fieldset>            
@@ -158,9 +157,8 @@
               <label class="slds-form-element__label" for="input-03">City</label>
               <ui:inputText aura:id="city" 
                             class="slds-input"       
-                            value="{!v.newLead.LASERCA__Home_City__c}"                         
-                            />       
-            </div>                     
+                            value="{!v.newLead.LASERCA__Home_City__c}"/>
+            </div>
           </div>
         </div>
       </fieldset>  
@@ -240,11 +238,11 @@
           <div class="slds-form-element__row">                   
             <div class="slds-form-element slds-p-horizontal--small ">
               <label class="slds-form-element__label" for="input-03">Social Security Number</label>
-              <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__Social_Security_Number__c}" required="true"  />          
+              <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__Social_Security_Number__c}" required="true"/>
             </div>  
             <div class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label" for="creditToggle">I give BlueWave and Avidia Bank permission to access my credit history. </label>
+                <label class="slds-form-element__label" for="creditToggle">I give BlueWave and Avidia Bank permission to access my credit history.</label>
                 <ui:inputCheckbox name="creditToggle" value="{!v.newLead.Credit_Check_Acknowledged__c}" required="true" />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -281,7 +279,7 @@
                 <ui:inputCheckbox name="interconnectToggle" value="{!v.newLead.Privacy_Policy_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
-                  <span class="slds-checkbox--on bwSecondary">I Approve </span>
+                  <span class="slds-checkbox--on bwSecondary">I Approve</span>
                   <span class="slds-checkbox--off"></span>
                 </span>
               </label>
@@ -292,11 +290,11 @@
           <div class="slds-form-element__row">                 
             <div class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label" for="energyAccessToggle">I give BlueWave and its affiliates permission to access my energy billing history.</label>                        
+                <label class="slds-form-element__label" for="energyAccessToggle">I give BlueWave and its affiliates permission to access my energy billing history.</label>
                 <ui:inputCheckbox name="interconnectToggle" value="{!v.newLead.Utility_Bill_Access_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
-                  <span class="slds-checkbox--on bwSecondary">I Approve </span>
+                  <span class="slds-checkbox--on bwSecondary">I Approve</span>
                   <span class="slds-checkbox--off"></span>
                 </span>
               </label>
@@ -313,7 +311,7 @@
                 <ui:inputCheckbox aura:id="mslpToggle" class="" name="mslpToggle" value="{!v.newLead.DOER_Solar_Loan__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux "></span>
-                  <span class="slds-checkbox--on bwSecondary ">I Approve </span>
+                  <span class="slds-checkbox--on bwSecondary ">I Approve</span>
                   <span class="slds-checkbox--off "></span>
                 </span>
               </label>
@@ -321,7 +319,6 @@
           </div>
         </div>             
       </fieldset>        
-
       <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
         <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
@@ -329,7 +326,6 @@
         <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
     </div>
-
   </div>
 
   <div aura:id="addedCustomerConfirmCredit" class="box noDisplayBar">
@@ -415,54 +411,16 @@
     <div aura:id="creditResultPass"
          class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
       <lightning:icon iconName="action:approval" size="large" alternativeText="You Passed!"/>
+      <br></br>
       <ui:button aura:id="continueApplicationButton"
                  class="box"
                  labelClass=""
                  label="Continue Application"
-                 press="{!c.getProducts}"/>
+                 press="{!c.navigateCreditStatus}"/>
     </div>
     <div aura:id="creditResultFail"
          class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
       <lightning:icon iconName="action:reject" size="large" alternativeText="You Failed..."/>
     </div>
   </div>
-
-  <div aura:id = "productTable" class="noDisplay">
-    <h2> The following products are available for this application. Please select the one you would like to apply for and click continue.</h2>
-    <hr></hr>
-    <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
-      <thead>
-        <tr class="slds-text-heading--label proximaNovaDataBlue " >
-        </tr>
-      </thead>
-      <tbody>
-        <aura:iteration items="{!v.allProducts}" var="product">
-          <tr>
-            <th scope="row"> <b>{!product.Name}</b> </th>
-            <th> <div class="slds-form-element">
-                <label class="slds-checkbox--toggle slds-grid">
-                  <ui:inputCheckBox aura:id="productSelect" 
-                                    class="{!product.Id}"
-                                    name="{!product.Loan_Term__c}" 
-                                    value=""
-                                    change="{!c.updateProductSelection}"/>
-                  <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-                    <span class="slds-checkbox--faux"></span>
-                  </span>
-                </label>
-              </div>
-            </th>                    
-          </tr>                    
-        </aura:iteration>          
-      </tbody>
-    </table>  
-    <br></br> 
-    <div class="floatRight"> 
-      <ui:button label="Continue Application"
-                 class="slds-button--brand"
-                 labelClass="label"
-                 press="{!c.navigate}"/> 
-    </div>  
-  </div>        
-
 </aura:component>

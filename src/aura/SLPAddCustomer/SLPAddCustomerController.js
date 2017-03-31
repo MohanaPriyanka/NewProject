@@ -89,9 +89,7 @@
     
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
-        // $A.util.removeClass(component.find("creditSpinner"), 'slds-hide');
-        var spinner = component.find("creditSpinner");
-        var evt = spinner.get("e.toggle");
+        var evt = component.find("creditSpinner").get("e.toggle");
         evt.setParams({ isVisible : true });
         evt.fire();
 
@@ -127,9 +125,7 @@
                                 window.clearInterval(component.get("v.creditStatusPoller"));
                             }, 60000);
                     } else {
-                        // $A.util.addClass(component.find("creditSpinner"), 'slds-hide');
-                        var spinner2 = component.find('creditSpinner');
-                        var evt2 = spinner.get("e.toggle");
+                        var evt2 = component.find('creditSpinner').get("e.toggle");
                         evt2.setParams({ isVisible : false });
                         evt2.fire();
 
@@ -146,18 +142,15 @@
                 });
             $A.enqueueAction(action);
         } else {
-            alert("No Lead ID?!");
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "checkCredit",
+                                "errors" : "No Customer (Lead) ID was found when checking credit: " + lead});
+            appEvent.fire();
         }
     },
 
-    getProducts : function(component, event, helper) { 
-        var leadId = component.get("v.newLead.Id");
-        $A.util.removeClass(component.find("productTable"), 'noDisplayBar');
-        $A.util.addClass(component.find("addedCustomerConfirmCredit"), 'noDisplayBar');
-    },        
-
     navigateAddAnotherCustomer : function(component, event, helper) {
-
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
           "url": '/slpaddcustomer'
@@ -167,11 +160,9 @@
     },
 
     navigateCreditStatus : function(component, event, helper) {
-
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
-          "url": '/slpcreditstatus'
-
+          "url": '/slpcreditstatus?leadId=' + component.get("v.newLead.Id")
         });
         urlEvent.fire();                
     }, 
