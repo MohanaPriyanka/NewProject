@@ -444,9 +444,9 @@
     </div>
     <div aura:id="creditResultError"
          class="slds-align--absolute-center noDisplay">
-      <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText}"/>
+      <ui:outputText class="buttonLeft" value="{!'There was an error: ' + v.creditStatusErrorText}"/>
       <ui:button aura:id="startNewApplication"
-                 class=" box"
+                 class=" box buttonRight"
                  label="Cancel and start a new application"
                  press="{!c.navigateAddAnotherCustomer}"/>
     </div>
