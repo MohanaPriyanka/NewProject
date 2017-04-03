@@ -26,9 +26,11 @@
                 });        
             $A.enqueueAction(action);     
         } else {
+            // Lead ID is set from the AddCustomer Component, so we want to lead
+            // this component with just that lead. We also want to disable the back button
             component.set("v.leadId", leadId);
-            alert("calling getProducts: " + component.get("v.leadId"));
             helper.getProductsHelper(component, event, helper);
+            $A.util.addClass(component.find("creditStatusBackButton"),"noDisplay");
         }
               
     },
@@ -52,7 +54,7 @@
     },
 
     getProducts : function(component, event, helper) { 
-        getProductsHelper(component, event, helper);
+        helper.getProductsHelper(component, event, helper);
     },        
 
     updateProductSelection : function(component, event, helper) { 

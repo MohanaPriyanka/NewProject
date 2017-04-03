@@ -53,43 +53,50 @@
         </a>
       </div>
       <span class="slds-context-bar__label-action slds-context-bar__app-name ">
-        <a href="/slportal/s/slpaddcustomer" title="Dashboard">          
-        	<span class="slds-truncate proximaNovaDataStream" title="Add A Customer">Add a Customer</span>
-        </a>
+        <ui:outputURL class="slds-truncate proximaNovaDataStream" value="/slportal/s/slpaddcustomer" label="Add a Customer"/>
     </span>
     </div>
   </div>
+  <!-- if adding other navigation targets, update SLPNavigationBarRenderer to remove button styling -->
   <nav class="slds-context-bar__secondary " role="navigation">
     <ul class="slds-grid">
       <li class="slds-context-bar__item">
-        <a href="/slportal/s/slpdashboard" class="slds-context-bar__label-action" title="Dashboard">
-          <span class="slds-truncate proximaNovaDataMountaintop">Dashboard</span>
-        </a>
+        <lightning:button aura:id="slpdashboard"
+                          label="Dashboard"
+                          onclick="{!c.navigate}" 
+                          class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li>
       <li class="slds-context-bar__item">
-        <a href="/slportal/s/slpcreditstatus" class="slds-context-bar__label-action" title="Check customer's credit status">
-          <span class="slds-truncate proximaNovaDataMountaintop">Credit Status</span>
-        </a>
+        <lightning:button aura:id="slpcreditstatus"
+                          label="Credit Status" 
+                          onclick="{!c.navigate}" 
+                          class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li> 
       <li class="slds-context-bar__item">
-        <a href="/slportal/s/slpcustomer" class="slds-context-bar__label-action" title="Customers">
-          <span class="slds-truncate proximaNovaDataMountaintop">Customers</span>
-        </a>
+        <lightning:button aura:id="slpcustomer"
+                          label="Customers" 
+                          onclick="{!c.navigate}" 
+                          class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li>
       <aura:if isTrue="{!v.licenseType}">
         <li class="slds-context-bar__item">
-            <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
-            <span class="slds-truncate proximaNovaDataMountaintop">Disbursals</span>
-          </a>
+          <lightning:button aura:id="slpdisbursals"
+                            label="Disbursals" 
+                            onclick="{!c.navigate}" 
+                            class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
         </li>
       </aura:if>
       <li class="slds-context-bar__item">
-          <a href="/slportal/s/slpalerts" class="slds-context-bar__label-action" title="Disbursals">
-          <span class="slds-truncate proximaNovaDataMountaintop">Alerts</span>
-        </a>
+          <lightning:button aura:id="slpalerts"
+                            label="Alerts" 
+                            onclick="{!c.navigate}" 
+                            class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li>  
       <li class="slds-context-bar__item">
-          <a href="https://www.useloom.com/share/96be7809d0b946fd9668f208a6cbbe69" target="_blank" class="slds-context-bar__label-action" title="Guide">
+          <a href="https://www.useloom.com/share/96be7809d0b946fd9668f208a6cbbe69" 
+             target="_blank" 
+             class="slds-context-bar__label-action" 
+             title="Guide">
           <span class="slds-truncate proximaNovaDataMountaintop">Guide</span>
         </a>
       </li>                    

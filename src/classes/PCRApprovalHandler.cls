@@ -69,7 +69,9 @@ public with sharing class PCRApprovalHandler {
                             annualincome = newPCR.get(j).Co_Applicant_Income__c;
                   }
                 decimal monthlypayment = newPCR.get(j).Monthly_Payment_IBLS_From_Lead__c;
-                integer creditscore = integer.valueof(newPCR.get(j).LASERCA__Credit_Score_TransUnion__c);
+                integer creditscore = 
+                    newPCR.get(j).LASERCA__Credit_Score_TransUnion__c==null?0:
+                    integer.valueof(newPCR.get(j).LASERCA__Credit_Score_TransUnion__c);
                 boolean manualapproval = newPCR.get(j).Solar_Loan_Manual_Approval__c;
                 boolean manualdecline = newPCR.get(j).Solar_Loan_Manual_Decline__c;
                 boolean problemcode = FALSE;

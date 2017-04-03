@@ -54,6 +54,28 @@ public without sharing class SLPAddCustomer {
         update lead;
     }
 
+    @AuraEnabled
+    public static String checkCreditStatus(Lead leadToQuery) {
+        Lead lead = [SELECT Id, Status,
+                     (SELECT id, LASERCA__Error_Message__c 
+                      FROM LASERCA__Credit_Report_Logs__r 
+                      ORDER BY CREATEDDATE DESC LIMIT 1),
+                     (SELECT id, Solar_Loan_Approval_Status__c 
+                      FROM LASERCA__Personal_Credit_Reports__r 
+                      ORDER BY CREATEDDATE DESC LIMIT 1)
+                     FROM Lead
+                     WHERE Id = :leadToQuery.Id];
+        if (!lead.LASERCA__Personal_Credit_Reports__r.isEmpty()) {
+            // If a PCR was successfully created, the Status will be updated on the Lead
+            return(lead.Status);
+        } else if (!lead.LASERCA__Credit_Report_Logs__r.isEmpty()) {
+            // If a PCR was successfully created but a Credit Report Log was, return the first line of the error
+            return(lead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Error_Message__c.split('\\n')[0]);
+        } else {
+            return(lead.Status);
+        }
+    }
+
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
     //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled

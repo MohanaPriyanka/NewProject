@@ -1,5 +1,5 @@
 ({
-	doInit : function(component, event, helper) {
+    doInit : function(component, event, helper) {
         //The following block of code retrieves the user's license type to determine what to display on the UI
         var actionLicenseType = component.get("c.getLicenseType");        
         actionLicenseType.setCallback(this,function(resp){
@@ -13,12 +13,17 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionLicenseType);   		
-	},
+        $A.enqueueAction(actionLicenseType);
+        
+    },
 
     hideDisplay : function(component, event, helper) {
         var headerDisplay = component.find("header");
         $A.util.addClass(headerDisplay, 'noDisplayBar');   
     },
+
+    navigate : function(component, event, helper) {
+        window.location.href = "/slportal/s/" + event.getSource().getLocalId();
+    }
 
 })
