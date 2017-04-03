@@ -9,7 +9,17 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionPartnerRecord);        
+        $A.enqueueAction(actionPartnerRecord);
+
+        var actionGetTimeout = component.get("c.getCreditCheckTimeout");
+        actionGetTimeout.setCallback(this,function(resp) {
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.creditStatusTimeout", resp.getReturnValue());
+            } else {
+                component.set("v.creditStatusTimeout", 60000);
+            }
+        });
+        $A.enqueueAction(actionGetTimeout);
     },    
 
     addCustomer : function(component, event, helper) {
@@ -103,7 +113,7 @@
                                               "Credit request timed out, please check the Credit Status tab above");
                                 helper.stopSpinner(component, 'creditSpinner');
                                 window.clearInterval(component.get("v.creditStatusPoller"));
-                            }, 60000);
+                            }, component.get("v.creditStatusTimeout"));
                     } else {
                         helper.stopSpinner(component, 'creditSpinner');
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 

@@ -4,6 +4,7 @@
   <aura:attribute name="creditStatusText" type="String"/>
   <aura:attribute name="creditStatusErrorText" type="String"/>
   <aura:attribute name="creditStatusPoller" type="Integer"/>
+  <aura:attribute name="creditStatusTimeout" type="Integer"/>
 
   <style>
     @font-face {

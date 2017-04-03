@@ -55,6 +55,17 @@ public without sharing class SLPAddCustomer {
     }
 
     @AuraEnabled
+    public static Integer getCreditCheckTimeout() {
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.size() > 0 &&
+            systemProperties[0].Credit_Check_Timeout__c != null) {
+            return(Integer.valueOf(systemProperties[0].Credit_Check_Timeout__c));
+        } else {
+            return(60000);
+        }          
+    }
+
+    @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
         Lead lead = [SELECT Id, Status,
                      (SELECT id, LASERCA__Error_Message__c 
