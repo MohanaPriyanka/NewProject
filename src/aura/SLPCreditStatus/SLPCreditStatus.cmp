@@ -77,7 +77,7 @@
                       </aura:if>                                
                         <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
                     <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                    	                      
-                		<th><ui:button label="Continue Application"
+                		<th><ui:button label="Select Product"
                            class="{!Customer.Id}"
                            labelClass="label"
                            press="{!c.getProducts}"/>   </th> 
@@ -92,7 +92,7 @@
     </div>
     </div>
     <div aura:id = "productTable" class="noDisplay">
-    <h2> The following products are available for this application. Please select the one you would like to apply for and click continue.</h2>
+    <h2> Please select the product you would like to apply for and click one of the options that appear.</h2>
     <hr></hr>
     <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
       <thead>
@@ -121,12 +121,18 @@
       </tbody>
     </table>  
     <br></br> 
-    <div class="floatRight"> 
-    <ui:button label="Continue Application"
+    <div aura:id="incomeFormButton" class="floatRight noDisplay"> 
+    <ui:button label="Submit Income Documentation"
                class="slds-button--brand"
                labelClass="label"
                press="{!c.navigate}"/> 
     </div>  
+    <div aura:id="customerEmailButton" class="floatRightPadding noDisplay"> 
+    <ui:button label="Email Customer Income Documentation Form"
+               class="slds-button--brand"
+               labelClass="label"
+               press="{!c.sendCustomerApplication}"/> 
+    </div>      
     <div class=""> 
     <ui:button label="Back"
                class="slds-button--brand"

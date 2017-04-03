@@ -94,7 +94,8 @@ public without sharing class LoanHandler{
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
                                                         Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
                                                         System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
-                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c
+                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
+                                                        Technology_Platform_Fee__c
                                                       FROM Loan__c 
                                                       WHERE Opportunity__r.Id IN : opportunityIds];
             //Assign the Loans to their appropriate Tranche
@@ -213,6 +214,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
@@ -232,6 +234,7 @@ public without sharing class LoanHandler{
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
+                        Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
                         System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
@@ -403,7 +406,7 @@ public without sharing class LoanHandler{
         Decimal systemCost;
         String disbursalName;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
-                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c 
+                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c, Sales_Agent__r.Id 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
             // make this code more efficient by creating fields on the product that allow the user to select :
@@ -431,6 +434,7 @@ public without sharing class LoanHandler{
                         Disbursal_Sequence__c = 1,
                         Disbursal_Percentage__c = 0.3,
                         Partner__c = loanRecord.Partner__r.Id,
+                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Status__c = 'Not yet disbursed',
                         Amount__c = systemCost * 0.30,
                         Type__c = 'Contract Signature',
@@ -448,6 +452,7 @@ public without sharing class LoanHandler{
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
+                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.6,
                         Status__c = 'Not yet disbursed',
                         Amount__c = systemCost * 0.60,
@@ -466,6 +471,7 @@ public without sharing class LoanHandler{
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 3,
                         Partner__c = loanRecord.Partner__r.Id,
+                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.1,
                         Status__c = 'Not yet disbursed',
                         Amount__c = systemCost * 0.10,
@@ -485,6 +491,7 @@ public without sharing class LoanHandler{
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 1,
                         Partner__c = loanRecord.Partner__r.Id,
+                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.35,
                         Status__c = 'Not yet disbursed',
                         Amount__c = systemCost * 0.35,
@@ -493,16 +500,17 @@ public without sharing class LoanHandler{
                         Date_of_Disbursal__c = null);
 
                     disbursalInsertList.add(disbursal1);
-                    disbursalName = '65% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
+                    disbursalName = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
                     if(disbursalName.length() >= 80) {
                     disbursalName = disbursalName.subString(0,80);
                     }                                                             
                     Disbursal__c disbursal2 = new Disbursal__c(
                         Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '65% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
+                        Unique_ID__c = loanRecord.Id + ' ' + '65% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
                         Loan__c = loanRecord.Id,
                         Disbursal_Sequence__c = 2,
                         Partner__c = loanRecord.Partner__r.Id,
+                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.65,
                         Status__c = 'Not yet disbursed',
                         Amount__c = systemCost * 0.65,
@@ -543,7 +551,8 @@ public without sharing class LoanHandler{
         
         for (Loan__c loanRecord : [SELECT Id, Name, System_Costt__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c,
                                    Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
-                                   Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c 
+                                   Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
+                                   Sales_Agent__r.Id 
                                    FROM Loan__c 
                                    WHERE Id IN : newLoanList]){
             Partner_Task__c creditTask = new Partner_Task__c(
@@ -552,6 +561,7 @@ public without sharing class LoanHandler{
                 Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Run Credit Check',                
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Parent__c = true,
                 Task_Sequence__c = partnerSequenceCounter,
                 Status__c = 'Complete',
@@ -571,6 +581,7 @@ public without sharing class LoanHandler{
                 Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide All Customer Information',              
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Task_Sequence__c = partnerSequenceCounter,
                 Status__c = 'Pending',
                 Start_Date__c = Date.today(),
@@ -590,6 +601,7 @@ public without sharing class LoanHandler{
                 Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Under BlueWave Review',          
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Task_Sequence__c = partnerSequenceCounter,
                 Status__c = 'Incomplete',
                 Start_Date__c = Date.today(),
@@ -608,6 +620,7 @@ public without sharing class LoanHandler{
                 Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Obtain Contract Signature',          
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Task_Sequence__c = partnerSequenceCounter,
                 Status__c = 'Incomplete',
                 Start_Date__c = Date.today(),
@@ -627,6 +640,7 @@ public without sharing class LoanHandler{
                     Lead__c = loanRecord.Lead__r.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Mechanical Installation',          
                     Partner__c = loanRecord.Partner__r.Id,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Task_Sequence__c = partnerSequenceCounter,
                     Parent__c = true,
                     Status__c = 'Incomplete',
@@ -645,6 +659,7 @@ public without sharing class LoanHandler{
                     Lead__c = loanRecord.Lead__r.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
                     Partner__c = loanRecord.Partner__r.Id,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Parent__c = true,
                     Task_Sequence__c = partnerSequenceCounter,
                     Status__c = 'Incomplete',
@@ -664,6 +679,7 @@ public without sharing class LoanHandler{
                     Lead__c = loanRecord.Lead__r.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Interconnection',        
                     Partner__c = loanRecord.Partner__r.Id,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Parent__c = true,
                     Task_Sequence__c = partnerSequenceCounter,
                     Status__c = 'Incomplete',
@@ -680,9 +696,9 @@ public without sharing class LoanHandler{
             Partner_Task__c incomeDocumentationTask = new Partner_Task__c(
                 Name = 'Provide Income Documentation',
                 RecordType = childPartnerTaskRecordType,
-                //Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Income Documentation',              
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Status__c = 'Incomplete',
                 Start_Date__c = Date.today(),
                 Sub_Task_Type__c = 'Income Documentation',
@@ -700,9 +716,9 @@ public without sharing class LoanHandler{
                 Partner_Task__c systemInformationTask = new Partner_Task__c(
                     Name = 'Provide all System Information',
                     RecordType = childPartnerTaskRecordType,
-                    //Lead__c = loanRecord.Lead__r.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Provide all System Information',                
                     Partner__c = loanRecord.Partner__r.Id,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'System Information',
@@ -718,14 +734,13 @@ public without sharing class LoanHandler{
             if (loanRecord.DOER_Solar_Loann__c == true){
                 Partner_Task__c technicalApprovalTask = new Partner_Task__c(
                     Name = 'Provide Technical Confirmation Documentation',
-                    //Lead__c = loanRecord.Lead__r.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Technical Approval Confirmation',                
                     Partner__c = loanRecord.Partner__r.Id,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Technical Approval',
                     Task_Type__c = 'Customer Information',
-                    //Parent__c = true,
                     Parent_Task__c = allInformationTask.Id,
                     Loan__c = loanRecord.Id
                 );                
@@ -737,9 +752,9 @@ public without sharing class LoanHandler{
             Partner_Task__c salesAgreementTask = new Partner_Task__c(
                 Name = 'Provide Sales Agreement',
                 RecordType = childPartnerTaskRecordType,
-                //Lead__c = loanRecord.Lead__r.Id,
                 Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Sales Agreement',             
                 Partner__c = loanRecord.Partner__r.Id,
+                Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                 Status__c = 'Incomplete',
                 Start_Date__c = Date.today(),
                 Sub_Task_Type__c = 'Sales Agreement',
@@ -758,12 +773,11 @@ public without sharing class LoanHandler{
                     Parent_Task__c = incomeDocumentationTask.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'PayStub Documentation',              
                     Partner__c = loanRecord.Partner__r.Id,
-                    //Task_Sequence__c = partnerSequenceCounter,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Income Documentation',
                     Task_Type__c = 'Customer Information' 
-                    //Loan__c = loanRecord.Id
                 );
                 subTaskInsertList.add(payStubDocumentationTask);
             }        
@@ -774,12 +788,11 @@ public without sharing class LoanHandler{
                     Parent_Task__c = incomeDocumentationTask.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Tax Return (Previous Year)',              
                     Partner__c = loanRecord.Partner__r.Id,
-                    //Task_Sequence__c = partnerSequenceCounter,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Income Documentation',
                     Task_Type__c = 'Customer Information'
-                    //Loan__c = loanRecord.Id
                 );
                 subTaskInsertList.add(selfEmploymentTaxReturnPreviousYearTask);
 
@@ -789,12 +802,11 @@ public without sharing class LoanHandler{
                     Parent_Task__c = incomeDocumentationTask.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'Tax Return (Two Years Previous)',              
                     Partner__c = loanRecord.Partner__r.Id,
-                    //Task_Sequence__c = partnerSequenceCounter,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Income Documentation',
                     Task_Type__c = 'Customer Information'
-                    //Loan__c = loanRecord.Id
                 );
                 subTaskInsertList.add(selfEmploymentTaxReturnTwoYearsPreviousTask);                           
 
@@ -806,12 +818,11 @@ public without sharing class LoanHandler{
                     Parent_Task__c = incomeDocumentationTask.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'SSN/Pension Award Letter or Bank Statement',              
                     Partner__c = loanRecord.Partner__r.Id,
-                    //Task_Sequence__c = partnerSequenceCounter,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Income Documentation',
                     Task_Type__c = 'Customer Information'
-                    //Loan__c = loanRecord.Id
                 );
                 subTaskInsertList.add(retirementIncomeDocumentationTask);
 
@@ -823,12 +834,11 @@ public without sharing class LoanHandler{
                     Parent_Task__c = incomeDocumentationTask.Id,
                     Unique_ID__c = loanRecord.Lead__r.Id + ' ' + 'All Income Documentation',              
                     Partner__c = loanRecord.Partner__r.Id,
-                    //Task_Sequence__c = partnerSequenceCounter,
+                    Sales_Representative__c = LoanRecord.Sales_Agent__r.Id,
                     Status__c = 'Incomplete',
                     Start_Date__c = Date.today(),
                     Sub_Task_Type__c = 'Income Documentation',
                     Task_Type__c = 'Customer Information'
-                    //Loan__c = loanRecord.Id
                 );
                 subTaskInsertList.add(allIncomeDocumentationTask);
             }

@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
-	<aura:attribute name="allCustomers" type="Object"  />   
+	<aura:attribute name="allCustomers" type="Object"  /> 
+  <aura:attribute name="licenseType" type="Boolean"  />       
 	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
@@ -43,30 +44,36 @@
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
           <thead>
             <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>   
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>  
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Sales Agent</b></span></th>  
               <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
 			        <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>              
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>           
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>
+              <aura:if isTrue="{!v.licenseType}">
+                <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>
+              </aura:if>             
               </tr>
           </thead>
           <tbody>
  			<aura:iteration items="{!v.allCustomers}" var="Customer">
               		<tr>
                 		<th scope="row"> <b>{!Customer.Name}</b> </th>
-                        <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
-                        <aura:if isTrue="{!Customer.Partner_Tasks__r[0] == null}">
-                          <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Acquisition_Status__c}</b> </th>
-                        <aura:set attribute="else">
-                  		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
-                        </aura:set>
-                        </aura:if>
-                        <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>                
-                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>          	                      
-                		<th><ui:button label="View"
-                           class="{!Customer.Id}"
-                           labelClass="label"
-                           press="{!c.openCustomerWindow}"/>   </th>                       
+                    <th scope="row"> <b>{!Customer.Sales_Agent__r.Name}</b> </th>                    
+                    <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
+                    <aura:if isTrue="{!Customer.Partner_Tasks__r[0] == null}">
+                      <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Acquisition_Status__c}</b> </th>
+                    <aura:set attribute="else">
+              		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
+                    </aura:set>
+                    </aura:if>
+                    <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>
+                    <aura:if isTrue="{!v.licenseType}">           
+                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
+                    </aura:if>          	                      
+            		    <th><ui:button label="View"
+                       class="{!Customer.Id}"
+                       labelClass="label"
+                       press="{!c.openCustomerWindow}"/>   </th>                       
                     </tr>                    
             </aura:iteration>          
           </tbody>

@@ -1,65 +1,54 @@
+/*************************************************************************************
+ * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
+ * 
+ * Description: The SLPAddCustomer class serves as a controller for the SLPAddCustomer Lightning component bundle. It allows the user to 
+ * add new customers to the database.
+ *
+ * Tested By: SLPControllerTestclass
+ *************************************************************************************/
+
 public without sharing class SLPAddCustomer {
- @AuraEnabled
+    public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
+    static {
+        profile = SLPUserHelper.getPartnerProfile();
+    }
+
+    //the addNewLeadRecord method adds a new SL customer to the database via the SLP
+    @AuraEnabled
     public static void addNewLeadRecord (Lead newLead) {
-        System.debug('begin the addCustomer method');
         RecordType leadRecordType;
-        String partnerId = SLPUserHelper.getPartnerId();         
-        String partnerCustomId = getPartnerCustomId();
-        leadRecordType = [SELECT Id FROM RecordType WHERE Name = 'BlueWave Solar Loan' AND SobjectType = 'Lead' LIMIT 1];
+        String recordType;
+        String productProgram;
+        if (newLead.DOER_Solar_Loan__c) {
+            recordType = 'BFG - DOER Solar Loan';
+            productProgram = 'MSLP';
+        } else {
+            recordType = 'BlueWave Solar Loan';
+            productProgram = 'BlueWave Solar Loan';
+        }
+
+        leadRecordType = [SELECT Id 
+                          FROM RecordType 
+                          WHERE Name = : recordType
+                          AND SobjectType = 'Lead' 
+                          LIMIT 1];
 
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
-        newLead.Partner_Lookup__c = partnerCustomId;
+        newLead.Product_Program__c = productProgram;
+        newLead.Partner_Lookup__c = profile.partnerId;
+        newLead.bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
-        System.debug('the record type is' + newLead.RecordType);
         insert newLead;
     }
-    
-    @AuraEnabled
-    public static List<String> getPartnerLogo() {
-        String partnerId = SLPUserHelper.getPartnerId(); 
-        if (partnerId == null || partnerId == '') {
-          partnerId = SLPUserHelper.getBWCCId();
-        }
-        String logoId;
-        StaticResource logo;
-        List<String> logoList = new List<String>();
 
-        List<Partner__c> partnerList = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : partnerId];
-        if(partnerList.size() > 0) {    
-            logoId = partnerList.get(0).Logo__c;
-            logo = [SELECT Id, Name FROM StaticResource WHERE Name = : logoId];
-            logoList.add(logoId);
-            logoList.add(logo.Id);
-        }
-        return logoList;
-    } 
-
+    //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
+    //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled
     public static Partner__c getPartnerRecord() {
-        String partnerId = SLPUserHelper.getPartnerId(); 
-        if (partnerId == null || partnerId == '') {
-          partnerId = SLPUserHelper.getBWCCId();
-        }
-        Partner__c partnerRecord = [SELECT Id, Name, Logo__c, State__c FROM Partner__c WHERE Id = : partnerId LIMIT 1];
-        return partnerRecord;
+        return [SELECT Id, Name, Logo__c, State__c 
+                FROM Partner__c 
+                WHERE Id = : profile.partnerId LIMIT 1];       
     }     
-
-    @AuraEnabled
-    public static String getPartnerCustomId() {
-        String partnerId = SLPUserHelper.getPartnerId(); 
-        System.debug('partner id is ' + partnerId);
-        String customPartnerId;
-
-        if(partnerId == null) {
-            partnerId = SLPUserHelper.getBWCCId();
-        }
-        System.debug('partner id is ' + partnerId);
-        Partner__c partnerRecord = [SELECT Id, (SELECT Custom_ID__c FROM Boston_Solar_Sales_Team__r) FROM Partner__c WHERE Id = : partnerId];
-        //customPartnerId = partnerRecord.Boston_Solar_Sales_Team__r.get(0).Custom_ID__c;
-
-        System.debug(customPartnerId);
-        return partnerRecord.Id;
-    }
 }

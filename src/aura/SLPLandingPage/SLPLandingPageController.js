@@ -1,8 +1,10 @@
 ({
 	doInit : function(component, event, helper) {
+        
         var actionAlerts = component.get("c.getPartnerAlerts");        
         actionAlerts.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
+                var alertTheme = component.find("partnerAlertTheme");                   
                 if(resp.getReturnValue().length > 0){
                     component.set("v.partnerAlerts", resp.getReturnValue());
                     component.set("v.alertPrompt", true);
@@ -12,34 +14,20 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionAlerts);  
-
-        var actionDashboardWidgets = component.get("c.getDashboardWidgets");        
-        actionDashboardWidgets.setCallback(this,function(resp){
+        $A.enqueueAction(actionAlerts);   
+        
+        var actionLogo = component.get("c.getPartnerLogo");        
+        actionLogo.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
-                var widgets = resp.getReturnValue();
-                component.set("v.widgets", resp.getReturnValue());
+                component.set("v.partnerLogo", resp.getReturnValue());
             }
             else {
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionDashboardWidgets);          
+        $A.enqueueAction(actionLogo);
+    }
 
-        //The following block of code retrieves the user's license type to determine what to display on the UI
-        var actionLicenseType = component.get("c.getLicenseType");        
-        actionLicenseType.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if(resp.getReturnValue().length > 0){
-                    if(resp.getReturnValue() == 'Executive')
-                    component.set("v.licenseType", true);
-                }
-            }    
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionLicenseType);                         
         
 	},
 
