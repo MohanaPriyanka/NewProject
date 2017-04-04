@@ -143,7 +143,8 @@
               <label class="slds-form-element__label" for="input-03">Date of Birth</label>
               <ui:inputDate aura:id="dateofBirth" 
                             class="slds-input" 
-                            displayDatePicker="true"
+                            format="MM/DD/YYYY"
+                            displayDatePicker="false"
                             value="{!v.newLead.LASERCA__Birthdate__c}"/>
             </div>
           </div>
@@ -337,7 +338,7 @@
         You've added a new customer and application! 
       </div>
       <div class="paddingBottom1">
-        Please double check their information before pulling credit status by clicking the button below. If you need to modify the application, please contact BlueWave at 844-830-8270.
+        Please double check their information before running a credit report by clicking the button below. If you need to modify the application, please contact BlueWave at 844-830-8270.
       </div>
       <div class="box">
         <fieldset class="slds-form--compound paddingTop1x5">
@@ -401,7 +402,7 @@
       <ui:button aura:id="creditStatusButton"
                  class=" box buttonLeft"
                  labelClass=""
-                 label="Pull Credit Status"
+                 label="Run Credit Report"
                  press="{!c.checkCredit}"/>
       <ui:button aura:id="addAnotherCustomerButton"
                  class=" box buttonRight"
@@ -428,19 +429,12 @@
     <div aura:id="creditResultPendingReview"
          class="slds-align--absolute-center noDisplay">
       <div class="slds-align--absolute-center">
-        <ui:outputText value="Credit status requires additional BlueWave review"/>
-      </div>
-      <br></br>
-      <div class="slds-align--absolute-center">
-        <ui:button aura:id="startNewApplication"
-                   class=" box"
-                   label="Start a new application"
-                   press="{!c.navigateAddAnotherCustomer}"/>
+        <ui:outputText value="Credit status requires additional BlueWave review. Please give us 1-2 business days to review."/>
       </div>
     </div>
     <div aura:id="creditResultUnqualified"
          class="slds-align--absolute-center noDisplay">
-      <ui:outputText value="Credit not qualified"/>
+      <ui:outputText value="This application cannot be pre-qualified."/>
     </div>
     <div aura:id="creditResultError"
          class="slds-align--absolute-center noDisplay">
