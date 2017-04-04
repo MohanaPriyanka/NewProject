@@ -92,6 +92,8 @@ public without sharing class SLPControllersTestclass {
     		Utility_Bill_Access_Acknowledged__c = true 		
     	);
         List<Lead> leadList;
+
+        System.assertEquals(SLPAddCustomer.getCreditCheckTimeout(), 60000);
     	System.runAs(partnerUser) {
             SLPAddCustomer.addNewLeadRecord(newLead);
 
@@ -116,6 +118,8 @@ public without sharing class SLPControllersTestclass {
                                                          FROM LASERCA__Personal_Credit_Report__c
                                                          WHERE LASERCA__Lead__c = :leadList[0].Id];
         System.assertEquals(pcrs.size(), 1);
+
+        System.assertEquals(SLPAddCustomer.checkCreditStatus(leadList[0]), 'Unqualified');
     }
 
     @isTest static void testAlertsHandlerUser() {
