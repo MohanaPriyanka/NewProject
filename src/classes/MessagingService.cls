@@ -9,16 +9,11 @@ public class MessagingService {
     public static Messaging.Email[] emailsSent;
 
     public static Messaging.SendEmailResult[] sendEmail(Messaging.Email[] emails) {
-        if (Test.isRunningTest()) {
-            emailsSent = emails.clone();
-            return null;
-        } else {
-            try {
-                return Messaging.sendEmail(emails);
-            } catch (EmailException ee) {
-                Logger.log('MessagingService', 'sendEmail', ee.getMessage(), System.now());
-                return null;
-            }
-        }
+        Messaging.SendEmailResult[] sendEmailResults;
+        emailsSent = emails.clone();
+        try {
+            sendEmailResults = Messaging.sendEmail(emails);
+        } catch (EmailException ee) {Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());}
+        return sendEmailResults;
     }
 }
