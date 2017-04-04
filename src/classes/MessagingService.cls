@@ -13,7 +13,12 @@ public class MessagingService {
             emailsSent = emails.clone();
             return null;
         } else {
-            return Messaging.sendEmail(emails);
+            try {
+                return Messaging.sendEmail(emails);
+            } catch (EmailException ee) {
+                Logger.log('MessagingService', 'sendEmail', ee.getMessage(), System.now());
+                return null;
+            }
         }
     }
 }
