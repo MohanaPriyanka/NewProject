@@ -65,7 +65,6 @@ public with sharing class SystemBillPaymentRollUpHandler {
     String stringPropertyAccount;
     dateTime systemBillCreatedDate; 
     List <id> chargentOrdersId = new List <id>();
-    List <id> propertyaccountIds = new List <id>();
     List <string> propertyaccountIdsstring = new List <string>();
     Map <Id,Account> propaccountMap = new Map <Id,Account>();
     List <System_Bill__c> groupedSystemBillsList = new List <System_Bill__c>();
@@ -76,7 +75,6 @@ public with sharing class SystemBillPaymentRollUpHandler {
     for(ChargentOrders__Transaction__c trigtran : triggeredtransactions) {
       if(trigtran.Account_Bill_Id__c != NULL && trigtran.ChargentOrders__Response_Status__c == 'Approved') {    
             chargentOrdersId.add(trigtran.ChargentOrders__Order__c);
-            propertyaccountIds.add(trigtran.Property_Account_ID__c);
             stringPropertyAccount = string.valueOf(trigtran.Property_Account_ID__c);
             propertyaccountIdsstring.add(stringPropertyAccount);
       }  
@@ -85,7 +83,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
     if(!chargentOrdersId.isEmpty()) {
 
       List <System_Bill__c> systemBills = [ SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c, 
-                                                  Late_Fee_Payments__c, Balance_Net_Late_Payments__c, 
+                                                  Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c,
                                                   Shared_Solar_System_ID__c, Entity_ID__c, Opportunity_Id__c,
                                                   Bill_Number__c, Property_Account_ID__c, Early_Payments__c, Carry_Forward_Payments__c
                                             FROM System_Bill__c
@@ -110,6 +108,10 @@ public with sharing class SystemBillPaymentRollUpHandler {
             decimal payment = chTransaction.ChargentOrders__Amount__c;
             decimal totalpaymentsthismonth = chTransaction.ChargentOrders__Amount__c;
             decimal paymenttwo = 0;
+            decimal extrapayment = 0;
+            decimal totalpayments = 0;
+            decimal earlypay = 0;
+            decimal latefee = 0;
             
             if(chTransaction.ChargentOrders__Recurring__c) {
               systemBillCreatedDate = system.today();
@@ -122,7 +124,6 @@ public with sharing class SystemBillPaymentRollUpHandler {
             for (System_Bill__c sbill : systemBills) {
                 if (sbill.Property_Account_ID__c == parentID && sbill.Entity_ID__c == entityId) {
                       groupedSystemBillsList.add(sbill);
-                      groupedSystemBillsToUpdate.add(sbill);
                       maxbillnumber = sbill.Bill_Number__c;
                 }
             } 
@@ -131,12 +132,12 @@ public with sharing class SystemBillPaymentRollUpHandler {
                 if(bills.Balance_Net_Late_Payments__c > 0 && bills.Bill_Number__c < maxbillnumber) {
                       if(payment >= bills.Balance_Net_Late_Payments__c)  {
                               bills.Late_Payments__c = bills.Late_Payments__c + bills.Balance_Net_Late_Payments__c; 
-                              payment = payment - bills.Balance_Net_Late_Payments__c;
                               if (paymentsmap.containsKey(bills.Opportunity_Id__c)) {
                                   paymentsmap.put(bills.Opportunity_Id__c, paymentsmap.get(bills.Opportunity_Id__c) + bills.Balance_Net_Late_Payments__c) ;
                               } else {
                                   paymentsmap.put(bills.Opportunity_Id__c, bills.Balance_Net_Late_Payments__c);
                               }
+                              payment = payment - bills.Balance_Net_Late_Payments__c;
                       }   else if(payment < bills.Balance_Net_Late_Payments__c) { 
                               bills.Late_Payments__c = bills.Late_Payments__c + payment; 
                               if (paymentsmap.containsKey(bills.Opportunity_Id__c)) {
@@ -146,11 +147,10 @@ public with sharing class SystemBillPaymentRollUpHandler {
                               }
                               payment = 0;
                           } 
+                  groupedSystemBillstoUpdate.add(bills);
                 }
 
                 if(bills.Bill_Number__c == maxbillnumber) {
-                  maxbillnumberlist.add(bills);
-                    //bills.Total_Payments_This_Month__c =  bills.Total_Payments_This_Month__c + totalpaymentsthismonth ;  
                     if(payment >= bills.Balance_Net_Late_Payments__c) {
                                   bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + bills.Balance_Net_Late_Payments__c;
                                   if (paymentsmap.containsKey(bills.Opportunity_Id__c)) {
@@ -168,19 +168,45 @@ public with sharing class SystemBillPaymentRollUpHandler {
                                   }
                                   payment = 0;
                       }
+                  maxbillnumberlist.add(bills);
+                  groupedSystemBillstoUpdate.add(bills);
                 } 
             }
 
             for (System_Bill__c maxbills : maxbillnumberlist) {
-                if(paymentsmap.containsKey(maxbills.Opportunity_Id__c)) {
-                    maxbills.Total_Payments_This_Month__c = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c);
-                    maxbills.Date_of_Last_Payment__c = myDate; 
-                }
+              extrapayment = 0;
+              totalpayments = 0;
+              earlypay = 0;
+
+              system.debug(payment);
+              if (payment >= maxbillnumberlist.size()){
+                  extrapayment = payment/maxbillnumberlist.size();
+              } else if (payment > 0) {
+                  extrapayment = payment;
+                  payment = 0;
+              }
+
+              if (paymentsmap.containsKey(maxbills.Opportunity_Id__c)) {
+                  totalpayments = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c);
+                  latefee =  maxbills.Total_Due__c - totalpayments;
+                  earlypay = extrapayment - latefee;
+
+                  if (extrapayment > 0 && earlypay > 0 && latefee > 0){
+                    maxbills.Late_Fee_Payments__c = latefee;
+                    maxbills.Carry_Forward_Payments__c = extrapayment - latefee;
+                  } else if (extrapayment > 0 && latefee > 0) {
+                    maxbills.Late_Fee_Payments__c = latefee;
+                  }
+
+                  maxbills.Total_Payments_This_Month__c = totalpayments + extrapayment;
+                  maxbills.Date_of_Last_Payment__c = myDate; 
+              }
             }
 
           propaccountMap.get(chTransaction.Property_Account_ID__c).Date_of_Last_Payment__c = myDate; 
+
           groupedSystemBillsList.clear();
-          
+
           if(!chTransaction.Distributed_Among_System_Bills__c) {
               chTransaction.Distributed_Among_System_Bills__c = TRUE;
           } 

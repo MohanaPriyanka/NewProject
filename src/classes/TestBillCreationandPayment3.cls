@@ -162,7 +162,7 @@
         // Make payment plan balance on 2
         List <System_Bill__c> systemBillList = 
             [SELECT Id, Name, Shared_Solar_System__r.Id, Waive_Late_Fees__c, Total_Due__c, 
-             Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
+             Shared_Solar_System__c, Shared_Solar_System_ID__c, Opportunity__r.Id, Bill_Number__c, Property_Account_ID__c 
              FROM System_Bill__c];
 
         List <Account_Bill__c> accountbilllist = 
@@ -193,6 +193,7 @@
                                                          ChargentOrders__Subtotal__c = 50,
                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
                                                          Account_Bill__c = accountbill.Id,
+                                                         Property_Account__c = AccountA.Id,
                                                          ChargentOrders__Card_Type__c = 'Visa',
                                                          ChargentOrders__Card_Number__c = '411111111111',
                                                          ChargentOrders__Card_Security_Code__c = '999',
@@ -274,6 +275,7 @@
                         new System_Bill__c (Shared_Solar_System__c = systembill.Shared_Solar_System_Id__c,
                                             Shared_Solar_System_ID2__c = systembill.Shared_Solar_System_Id__c,
                                             Bill_Number__c = j,
+                                            Opportunity__c = systembill.Opportunity__r.Id,
                                             Account_Bill__c = accbillthree.id,
                                             Property_Account__c = systemBill.Property_Account_Id__c,
                                             Refund_This_Balance__c = refund,
@@ -301,26 +303,23 @@
         system.debug(updatedsystemBillList);
 
         for (System_Bill__c sbs : updatedsystemBillList) {
-            // First bill does not have a payment, so no payments that month
             System.debug(LoggingLevel.ERROR, 'TestBillCreationandPayment3 sbs: ' + sbs);
             if (sbs.Bill_Number__c == 1) {
                 System.debug(sbs.Total_Payments_This_Month__c);
-                System.assert(sbs.Total_Due__c > 0);
-                System.assert(sbs.Late_Payments__c > 0);
+                System.assertEquals(sbs.Total_Due__c, 258.82);
+                System.assertEquals(sbs.Late_Payments__c, 100);
+                System.assertEquals(sbs.Balance_Net_Late_Payments__c, 158.82);
                 System.assertEquals(sbs.Total_Payments_This_Month__c, 0);
             }
 
-            // Second bill has a payment, so balance should be zero and Late Fees should be waived
             if (sbs.Bill_Number__c == 2) {
                 System.debug(sbs.Balance_Net_Late_Payments__c);
                 System.assert(sbs.Total_Due__c > 0);
                 System.assertEquals(sbs.Late_Fees__c, 0);
                 System.assertEquals(sbs.Late_Payments__c, 0);
-                System.assert(sbs.Total_Payments_This_Month__c > 0);
+                System.assertEquals(sbs.Total_Payments_This_Month__c, 100);
             }
 
-
-            // Month 2 Payment Plan should run for bill number 3 through 8 and there should be an Adjustment on bill 4
             if (sbs.Bill_Number__c == 3) {
                 System.debug(sbs.Payment_Plan_Balance__c);
                 System.assert(sbs.Payment_Plan_Balance__c > 0);
@@ -339,7 +338,7 @@
 
             if (sbs.Bill_Number__c == 9) {
                 System.debug(sbs.Payment_Plan_Balance__c);
-                // System.assert(sbs.Payment_Plan_Balance__c == 0);
+                System.assertEquals(sbs.Payment_Plan_Balance__c, 0);
             }
         }
     }
