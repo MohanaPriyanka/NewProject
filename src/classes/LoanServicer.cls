@@ -156,17 +156,17 @@ public with sharing class LoanServicer {
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
                 Decimal interestPayment = -loanPayment.Funds_Distributed__c * params.monthlyRate;
-                loanPayment.Interest_Payment__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
-                loanPayment.Principal_Payment__c = 0;
+                loanPayment.Interest_Due__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
+                loanPayment.Principal_Due__c = 0;
             } else {
-                loanPayment.Interest_Payment__c = Excel.ipmtRounded((Double) params.monthlyRate, 
-                                                                    monthIndex + 1, 
-                                                                    params.monthsOfPI, 
-                                                                    (Double) loanPayment.Funds_Distributed__c);
-                loanPayment.Principal_Payment__c = Excel.ppmtRounded((Double) params.monthlyRate, 
-                                                                     monthIndex + 1,
-                                                                     params.monthsOfPI, 
-                                                                     (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Interest_Due__c = Excel.ipmtRounded((Double) params.monthlyRate, 
+                                                                monthIndex + 1, 
+                                                                params.monthsOfPI, 
+                                                                (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Principal_Due__c = Excel.ppmtRounded((Double) params.monthlyRate, 
+                                                                 monthIndex + 1,
+                                                                 params.monthsOfPI, 
+                                                                 (Double) loanPayment.Funds_Distributed__c);
             }
             return loanPayment;
         }
