@@ -220,15 +220,6 @@
     },
 
     exitProductSelection : function(component, event, helper) { 
-        var customerTable = component.find("customerTable");
-        var productTable = component.find("productTable");
-        var searchBar = component.find("customerSearchBar");
-        var searchButton = component.find("customerSearchButton");
-
-        $A.util.removeClass(customerTable, 'noDisplay');
-        $A.util.removeClass(searchButton, 'noDisplay');
-        $A.util.removeClass(searchBar, 'noDisplay');
-        $A.util.addClass(productTable, 'noDisplay');      
         $A.get('e.force:refreshView').fire();
     },    
 

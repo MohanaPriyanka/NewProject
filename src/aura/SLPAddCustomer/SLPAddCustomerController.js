@@ -110,7 +110,7 @@
                         // a Credit Report on the Lead, but just in case, stop checking after a minute
                         window.setTimeout(function() {
                                 component.set("v.creditStatusText", 
-                                              "Credit request timed out, please check the Credit Status tab above");
+                                              "Credit request timed out, please check the Pending Customers tab above");
                                 helper.stopSpinner(component, 'creditSpinner');
                                 window.clearInterval(component.get("v.creditStatusPoller"));
                             }, component.get("v.creditStatusTimeout"));

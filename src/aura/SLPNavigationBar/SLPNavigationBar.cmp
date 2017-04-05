@@ -68,7 +68,7 @@
       </li>
       <li class="slds-context-bar__item">
         <lightning:button aura:id="slpcreditstatus"
-                          label="Credit Status" 
+                          label="Pending Customers" 
                           onclick="{!c.navigate}" 
                           class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li> 
