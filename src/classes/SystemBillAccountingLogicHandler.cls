@@ -115,7 +115,7 @@ public with sharing class SystemBillAccountingLogicHandler {
           } 
 
           if ( trigsb.Early_Payments__c ==NULL) {
-              trigsb.Carry_Forward_Payments__c=0;
+              trigsb.Early_Payments__c=0;
           } 
         
           if (currentbill == 1) {
@@ -128,8 +128,8 @@ public with sharing class SystemBillAccountingLogicHandler {
             trigsb.Adjustments__c = 0;                             
             trigsb.Carry_Over_Balance__c = trigsb.Total_Due__c - trigsb.Total_Payments_This_Month__c;
 
-            for(System_Bill__c pastbills : listsystemBills) {
-                if(pastbills.Opportunity_ID__c == parentID 
+            for (System_Bill__c pastbills : listsystemBills) {
+                if (pastbills.Opportunity_ID__c == parentID 
                    && pastbills.Bill_Number__c > currentbill) {
                          morerecentbills = TRUE;
                 }
@@ -137,7 +137,7 @@ public with sharing class SystemBillAccountingLogicHandler {
 
             if (trigsb.Refund_this_Balance__c && trigsb.Amount_to_Add__c > 0) {
                   trigsb.Adjustments__c = trigsb.Amount_to_Add__c;
-            } else if(trigsb.Refund_this_Balance__c && trigsb.Amount_to_Deduct__c > 0) {
+            } else if (trigsb.Refund_this_Balance__c && trigsb.Amount_to_Deduct__c > 0) {
                   trigsb.Adjustments__c = -1 * trigsb.Amount_to_Deduct__c;
             }
 
@@ -155,7 +155,7 @@ public with sharing class SystemBillAccountingLogicHandler {
 
           }
   
-          if (currentbill != 1) {
+          else { 
 
             for (System_Bill__c newerbills : listsystemBills) {
                   if (newerbills.Opportunity_ID__c == parentID 
