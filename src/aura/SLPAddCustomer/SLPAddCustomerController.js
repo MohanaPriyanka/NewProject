@@ -4,6 +4,9 @@
         actionPartnerRecord.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerRecord", resp.getReturnValue());
+                if (resp.getReturnValue().State__c == 'MA') {
+                    component.set("v.newLead.DOER_Solar_Loan__c",true);  
+                }
             }
             else {
                 $A.log("Errors", resp.getError());
