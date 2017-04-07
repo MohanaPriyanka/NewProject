@@ -83,7 +83,7 @@
     </aura:if>
     <div aura:id="applicationNotification" class="box noDisplayBar">
       <p class="marginAround marginTop proximaNovaDataBlue">
-        This customer has been added. Please check the credit status tab in the navigation bar to see their qualification status. It may take a few minutes for the credit report to run. You will receive a notificaation via email when this customer has a response. Thank you for your patience. 
+        This customer has been added. Please check the credit status tab in the navigation bar to see their qualification status. It may take a few minutes for the credit report to run. You will receive a notification via email when this customer has a response. Thank you for your patience. 
       </p> 
       <p class="marginAround proximaNovaDataBlue">
         If the customer is marked at Pre-Qualified, you may continue with the application by clicking on the button that appears next to the customer's name. If the customer is not qualified, please contact BlueWave to inquire about other possibilities. 
@@ -106,7 +106,7 @@
         <div aura:id = "inputFormBox" class="box">
           <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
             <img aura:id = "avidiaLogo" class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaLogo}"/>
-          </aura:if>
+          </aura:if>        
           <fieldset class="slds-form--compound paddingTop1x5">
             <div class="slds-form-element__group">
               <div class="slds-form-element__row">
@@ -132,7 +132,8 @@
                   <label class="slds-form-element__label" for="input-03">Date of Birth</label>
                   <ui:inputDate aura:id="dateofBirth" 
                     class="slds-input" 
-                    displayDatePicker="true"
+                    format="MM/DD/YYYY"
+                    displayDatePicker="false"
                     value="{!v.newLead.LASERCA__Birthdate__c}"                         
                     />       
                   </div>   
@@ -313,7 +314,12 @@
                   </div>
                 </div>             
               </fieldset>        
-
+              <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+                <span aura:id = "avidiaFooter" >
+                  <img class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaFooter}"/>
+                  <p class="slds-align--absolute-center  proximaNovaFont"> 42 Main St. Hudson, MA 01749 </p>
+                </span>
+              </aura:if>                
               <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
                 <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
               </div>
