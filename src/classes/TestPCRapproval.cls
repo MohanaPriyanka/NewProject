@@ -1,6 +1,12 @@
 @isTest
 private class TestPCRapproval {
+    @testSetup public static void setupTestData() {
+        LoanTestRecordWarehouse.partnerSetup();
+        insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+    }
+
     static testMethod void TestPCRapproval() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
         List<Lead> insertleads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
@@ -8,6 +14,8 @@ private class TestPCRapproval {
         Product2 productVar = new Product2( name = 'BlueWave Solar Loan - MA',
                                             State__c = 'MA',
                                             Family = 'Solar Loan',
+                                            Product_Type__c = 'Residential Loan',
+                                            Program__c = 'BlueWave Solar Loan',
                                             IsActive = TRUE,
                                             ProductCode = 'x',
                                             Loan_Term__c = 120,
@@ -18,17 +26,17 @@ private class TestPCRapproval {
                                             Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
         insert productVar;                                      
 
-        Lead lead = getLead(50000, 45000, productVar.Id, true, true);
+        Lead lead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
         insertleads.add(lead);
-        Lead leadA = getLead(20000, 65000, productVar.Id, false, true);
+        Lead leadA = getLead(20000, 65000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadA);
-        Lead leadAA = getLead(1000, 65000, productVar.Id, false, false);
+        Lead leadAA = getLead(1000, 65000, productVar.Id, false, false, partner.Id);
         insertleads.add(leadAA);
-        Lead leadAB = getLead(14000, 15000, productVar.Id, true, false);
+        Lead leadAB = getLead(14000, 15000, productVar.Id, true, false, partner.Id);
         insertleads.add(leadAB);
-        Lead leadAC = getLead(14000, 46000, productVar.Id, true, false);
+        Lead leadAC = getLead(14000, 46000, productVar.Id, true, false, partner.Id);
         insertleads.add(leadAC);
-        Lead leadAD = getLead(90000, 20000, productVar.Id, false, true);
+        Lead leadAD = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAD);
         insert insertleads;
 
@@ -57,6 +65,8 @@ private class TestPCRapproval {
         insertpcrlist.add(pcrAD);
         insert insertpcrlist;
                                                                                         
+        Test.startTest();
+
         LASERCA__Trade_Accounts__c  tradeacctA = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrA.id,
                                                                                 LASERCA__Monthly_Payment__c = 500);
         inserttradeacct.add(tradeacctA);  
@@ -84,59 +94,126 @@ private class TestPCRapproval {
         pcrAA.Solar_Loan_Manual_Approval__c = True;
         update pcrAA;
 
-        Test.startTest();
-
         List<LASERCA__Personal_Credit_Report__c> pcrlist = 
-            [SELECT Id, Solar_Loan_Approval_Status__c, Solar_Loan_Pre_Qualification_Status__c, 
-             LASERCA__Credit_Score_TransUnion__c, DTI__c
+            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c
              FROM LASERCA__Personal_Credit_Report__c];
 
         for (LASERCA__Personal_Credit_Report__c creditreport : pcrlist) {
             if (creditreport.LASERCA__Credit_Score_TransUnion__c == '700') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Pending Review');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Pre-Qualified');
-            }
-
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '401') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Declined');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Unable to Pre-Qualify');
-            }
-
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '402') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Approved');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Pre-Qualified');
-            }
-
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '800') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Declined');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Unable to Pre-Qualify');
-            }
-
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '701') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Declined');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Unable to Pre-Qualify');
-            }
-            
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '801') {
-                System.assertEquals(creditreport.Solar_Loan_Approval_Status__c, 'Approved');
-                System.assertEquals(creditreport.Solar_Loan_Pre_Qualification_Status__c, 'Pre-Qualified');
+                System.assertEquals('Pending Review', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '401') {
+                System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '402') {
+                System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '800') {
+                System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '701') {
+                System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '801') {
+                System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
             }
         }
 
         Test.stopTest();
     }
 
-    private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, Boolean doerLoan, Boolean preApproval) {
+    // This lead should not find any products because additional loan monthly payments puts them over DTI
+    static testMethod void testDTIAfterOverLimit() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Lead lead = getLead(50000, 1000000, null, false, false, partner.Id);
+        insert lead;
+
+        LASERCA__Personal_Credit_Report__c pcr = 
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '700');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 1970);
+        insert tradeacct;
+        update tradeacct;
+
+        pcr = 
+            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c
+             FROM LASERCA__Personal_Credit_Report__c
+             WHERE LASERCA__Lead__c = :lead.Id
+             LIMIT 1];
+        System.assertEquals(PCRApprovalHandler.PENDINGREVIEW, pcr.Solar_Loan_Approval_Status__c);
+    }
+
+    // This lead should not find any DOER products because additional loan monthly payments puts them over DTI
+    static testMethod void testCreditLowDTIAfterOverLimit() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Lead lead = getLead(81000, 10000, null, true, false, partner.Id);
+        insert lead;
+
+        LASERCA__Personal_Credit_Report__c pcr = 
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '700');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 3300);
+        insert tradeacct;
+        update tradeacct;
+
+        pcr = 
+            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c
+             FROM LASERCA__Personal_Credit_Report__c
+             WHERE LASERCA__Lead__c = :lead.Id
+             LIMIT 1];
+        System.assertEquals(PCRApprovalHandler.DECLINED, pcr.Solar_Loan_Approval_Status__c);
+    }
+
+    static testMethod void testProductRepo() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 product = [SELECT Id, Product_Type__c, Program__c, State__c, 
+                            Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
+                            FROM Product2
+                            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
+        Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
+        insert lead;
+        
+        LASERCA__Personal_Credit_Report__c pcr = 
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '700');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 3300);
+        insert tradeacct;
+        update tradeacct;
+
+        lead = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c
+                FROM Lead 
+                WHERE Id = :lead.Id];
+
+        PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
+        System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
+        System.assertEquals(5, productRepo.getApplicableProducts(lead).size(), 5);
+        System.assertEquals(50.53, productRepo.calcDTIAfter(product, lead, 6750).setScale(2).round());
+    }    
+
+    private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, 
+                                Boolean doerLoan, Boolean preApproval, Id partnerId) {
         return(new Lead(LastName = 'Chan',
                         FirstName = 'Joey',
                         Automatic_Product_Assignment__c = false,
                         Email = 'test@email.com',
                         Company = 'Cloud Jedi',
                         Status = 'Ready for Credit Check',
+                        Partner_Lookup__c = partnerId,
                         Annual_Income_Currency__c = annualIncome,
                         Loan_Amount__c = loanAmount,
+                        System_Cost__c = loanAmount,
                         Product__c = productId,
                         DOER_Solar_Loan__c = doerLoan,
+                        Product_Line__c = 'Residential Loan',
+                        Product_Program__c = doerLoan?'MSLP':'BlueWave Solar Loan',
+                        LASERCA__Home_State__c = 'MA',
                         Pre_Approval_Form__c = preApproval));
     }
 }

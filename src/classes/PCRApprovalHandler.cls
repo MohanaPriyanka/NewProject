@@ -31,7 +31,6 @@ public with sharing class PCRApprovalHandler {
                             FROM OrgWideEmailAddress
                             WHERE Address like '%info%'
                             LIMIT 1];
-
     }
 
     public void OnBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
@@ -49,12 +48,17 @@ public with sharing class PCRApprovalHandler {
             }
         }
 
-        List<Lead> relatedlead  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status
-                                   FROM Lead 
-                                   WHERE Id  IN : leadlist];
-        for (Lead lead : relatedLead) {
+        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
+                                    Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                                    Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                                    Income_Support__c
+                                    FROM Lead 
+                                    WHERE Id  IN : leadlist];
+        for (Lead lead : relatedLeads) {
             leadMap.put(lead.Id, lead);
         }
+
+        ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if (pcr.Annual_Income_From_Lead__c != NULL &&
@@ -63,63 +67,28 @@ public with sharing class PCRApprovalHandler {
                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != NULL &&
                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != 0) {
 
-                Decimal DTIbefore, DTIafter;
-                String BW_approval, DOER_approval, DOERPrequal_approval, BWPrequal_approval;
-                String conglomerate = pcr.LASERCA__Code__c +' '+pcr.LASERCA__Code_2__c+' '+pcr.LASERCA__Code_3__c+' '+pcr.LASERCA__Code_4__c;
-                Decimal annualincome = pcr.Annual_Income_From_Lead__c;  
+                String bwApproval, doerApproval;
+                String conglomerate = 
+                    pcr.LASERCA__Code__c + ' ' + pcr.LASERCA__Code_2__c + ' ' +
+                    pcr.LASERCA__Code_3__c + ' ' + pcr.LASERCA__Code_4__c;
+                Decimal monthlyIncome = pcr.Annual_Income_From_Lead__c/12;
                 if (pcr.Co_Applicant__c || pcr.LASERCA__Contact__c != NULL) {
-                    annualincome = pcr.Co_Applicant_Income__c;
+                    monthlyIncome = pcr.Co_Applicant_Income__c/12;
                 }
-                Integer creditscore = 
+                Integer creditScore = 
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
                     Integer.valueof(pcr.LASERCA__Credit_Score_TransUnion__c);
-                Boolean manualapproval = pcr.Solar_Loan_Manual_Approval__c;
-                Boolean manualdecline = pcr.Solar_Loan_Manual_Decline__c;
 
-                if (annualincome != NULL && annualincome != 0) {
-                    DTIbefore = ((pcr.LASERCA__Sum_of_monthly_Personal_Debt__c/(annualincome/12))*100);
-                    DTIafter = (((pcr.LASERCA__Sum_of_monthly_Personal_Debt__c + pcr.Monthly_Payment_IBLS_From_Lead__c)/(annualincome/12))*100); 
-                }
+                // If a lead doesn't have an associated product, we can't calculate the DTI after
+                // the loan is selected, so we'll look through all applicable products for the lead
+                // and see the best we can do.
+                bwApproval = productRepo.bestApprovalStatusForBW(leadMap.get(pcr.LASERCA__Lead__c), 
+                                                                 creditScore, monthlyIncome);
+                doerApproval = productRepo.bestApprovalStatusForDOER(leadMap.get(pcr.LASERCA__Lead__c), 
+                                                                     creditScore, monthlyIncome);
 
-                pcr.DTI_After__c = DTIafter;
-                pcr.DTI_Before__c = DTIbefore;
-
-                if (!manualapproval && !manualdecline && creditScore >= 700 && DTIafter <= 50) {
-                    BW_approval = APPROVED;
-                    DOER_approval = APPROVED;
-                    DOERPrequal_approval = PREQUALIFIED; 
-                    BWPrequal_approval = PREQUALIFIED;
-                } else if (!manualapproval && !manualdecline && creditScore >= 690 && DTIafter <= 45) {
-                    BW_approval = DECLINED;
-                    DOER_approval = APPROVED;
-                    DOERPrequal_approval = PREQUALIFIED;
-                    BWPrequal_approval = UNABLETOPREQUALIFY;
-                } else if (!manualapproval && !manualdecline && creditScore >= 680 && DTIafter <= 40) {
-                    BW_approval = DECLINED;
-                    DOER_approval = APPROVED;
-                    DOERPrequal_approval = PREQUALIFIED;
-                    BWPrequal_approval = UNABLETOPREQUALIFY;
-                } else if (!manualapproval && !manualdecline && creditScore >= 700 && DTIafter > 50) {
-                    BW_approval = PENDINGREVIEW;
-                    DOER_approval = DECLINED;
-                    // DOERPrequal_approval = UNABLETOPREQUALIFY;
-                    // BWPrequal_approval = UNABLETOPREQUALIFY;
-                } else if (!manualapproval && !manualdecline && creditScore<=680 && DTIafter >= 40) {
-                    BW_approval = DECLINED;
-                    DOER_approval = DECLINED;
-                    // DOERPrequal_approval = UNABLETOPREQUALIFY;
-                    // BWPrequal_approval = UNABLETOPREQUALIFY;
-                } else {
-                    BW_approval = DECLINED;
-                    DOER_approval = DECLINED;
-                    // DOERPrequal_approval = UNABLETOPREQUALIFY;
-                    // BWPrequal_approval = UNABLETOPREQUALIFY;
-                } 
-
-                if (BW_approval == APPROVED || 
-                    DOER_approval == APPROVED || 
-                    DOERPrequal_approval == PREQUALIFIED || 
-                    BWPrequal_approval == PREQUALIFIED) {
+                if (bwApproval == APPROVED || 
+                    doerApproval == APPROVED) {
                     if (conglomerate.contains('018') || 
                         conglomerate.contains('020') ||
                         conglomerate.contains('021') ||
@@ -128,54 +97,45 @@ public with sharing class PCRApprovalHandler {
                         conglomerate.contains('034') ||
                         conglomerate.contains('040') ||
                         conglomerate.contains('039')) {
-                        BW_approval = PENDINGREVIEW;
-                        DOER_approval = PENDINGREVIEW;
-                        DOERPrequal_approval = UNABLETOPREQUALIFY;
-                        BWPrequal_approval = UNABLETOPREQUALIFY;
+                        bwApproval = PENDINGREVIEW;
+                        doerApproval = PENDINGREVIEW;
                     }
                 }
 
                 if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved') {
-                    DOERPrequal_approval = PREQUALIFIED;
-                    BWPrequal_approval = PREQUALIFIED;
-                } else if (manualdecline) {
-                    BW_approval = DECLINED;
-                    DOER_approval = DECLINED;
-                    DOERPrequal_approval = UNABLETOPREQUALIFY;
-                    BWPrequal_approval = UNABLETOPREQUALIFY;
-                } else if (manualapproval) {
-                    BW_approval = APPROVED;
-                    DOER_approval = APPROVED;
-                    DOERPrequal_approval = PREQUALIFIED;
-                    BWPrequal_approval = PREQUALIFIED; 
+                    // DOERPrequal_approval = PREQUALIFIED;
+                    // BWPrequal_approval = PREQUALIFIED;
+                } else if (pcr.Solar_Loan_Manual_Decline__c) {
+                    bwApproval = DECLINED;
+                    doerApproval = DECLINED;
+                } else if (pcr.Solar_Loan_Manual_Approval__c) {
+                    bwApproval = APPROVED;
+                    doerApproval = APPROVED;
                 }
 
                 // ** SET THE APPROVAL STATUS ON THE PCR
                 if (pcr.DOER_Application__c) {
-                    pcr.Solar_Loan_Approval_Status__c = DOER_approval;
-                    // pcr.Solar_Loan_Pre_Qualification_Status__c = DOERprequal_approval;
+                    pcr.Solar_Loan_Approval_Status__c = doerApproval;
                 } else {
-                    pcr.Solar_Loan_Approval_Status__c = BW_approval;
-                    // pcr.Solar_Loan_Pre_Qualification_Status__c = BWprequal_approval;
+                    pcr.Solar_Loan_Approval_Status__c = bwApproval;
                 }
 
                 Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
                 if (ld.Status == READYFORCREDITCHECK) {
                     if (!ld.Pre_Approval_Form__c && !ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(BW_approval, ld);
+                        setLeadStatus(bwApproval, ld);
                     } else if (!ld.Pre_Approval_Form__c && ld.DOER_Solar_Loan__c == TRUE) { 
-                        setLeadStatus(DOER_approval, ld);
+                        setLeadStatus(doerApproval, ld);
                     } else if (!ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(BW_approval, ld);
+                        setLeadStatus(bwApproval, ld);
                     } else if (ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(DOER_approval, ld);
+                        setLeadStatus(doerApproval, ld);
                     }
                     leadsToUpdate.add(ld);
                 }
 
                 // SEND PREAPPROVAL EMAIL 
                 if (!pcr.Credit_PreApproval_Email_Sent__c &&
-                    DOERPrequal_approval == PREQUALIFIED &&
                     pcr.PreApproval_Form__c &&
                     pcr.LASERCA__Contact__c == NULL &&
                     pcr.First_Name_from_Lead__c != NULL &&
@@ -237,5 +197,153 @@ public with sharing class PCRApprovalHandler {
         mail.setSubject(subject);
         mail.setTargetObjectId(targetObjectId);
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    }
+
+    @TestVisible
+    private class ProductRepo {
+        private List<Product2> products;
+
+        public ProductRepo(List<Lead> leads) {
+            Set<String> stateSet = new Set<String>();
+            Set<String> programSet = new Set<String>();
+            Set<String> productSet = new Set<String>();
+            List<String> stateList, programList, productList;
+            for (Lead lead : leads) {
+                productSet.add(lead.Product_Line__c);
+                programSet.add(lead.Product_Program__c);
+                stateSet.add(lead.LASERCA__Home_State__c);
+            }
+            productList = new List<String>(productSet);
+            programList = new List<String>(programSet);
+            stateList = new List<String>(stateSet);
+            
+            // This is the superset of all products that might be applicable for the leads being
+            // checked. We'll filter them out for a particular lead later on.
+            products = [SELECT Id, Product_Type__c, Program__c, State__c, 
+                        Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
+                        FROM Product2
+                        WHERE isActive = true
+                        AND Product_Type__c IN :productList
+                        AND Program__c IN :programList
+                        AND State__c IN :stateList];
+        }
+
+        public String bestApprovalStatusForBW(Lead lead, Integer creditScore, Decimal monthlyIncome) {
+            String bestStatus = PCRApprovalHandler.DECLINED;
+            String latestStatus;
+            for (Product2 product : getApplicableProducts(lead)) {
+                latestStatus = checkFICOandDTIForBW(creditScore, calcDTIAfter(product, lead, monthlyIncome));
+                if (betterThan(latestStatus, bestStatus)) {
+                    bestStatus = latestStatus;
+                }
+            }
+            return bestStatus;
+        }
+        public String bestApprovalStatusForDOER(Lead lead, Integer creditScore, Decimal monthlyIncome) {
+            String bestStatus = PCRApprovalHandler.DECLINED;
+            String latestStatus;
+            for (Product2 product : getApplicableProducts(lead)) {
+                latestStatus = checkFICOandDTIForDOER(creditScore, calcDTIAfter(product, lead, monthlyIncome));
+                if (betterThan(latestStatus, bestStatus)) {
+                    bestStatus = latestStatus;
+                }
+            }
+            return bestStatus;
+        }
+
+        private Boolean betterThan(String newStatus, String oldStatus) {
+            if (newStatus == PCRApprovalHandler.DECLINED) {
+                return false;
+            } else if (newStatus == PCRApprovalHandler.PENDINGREVIEW &&
+                       oldStatus == PCRApprovalHandler.DECLINED) {
+                return true;
+            } else if (newStatus == PCRApprovalHandler.APPROVED &&
+                       (oldStatus == PCRApprovalHandler.PENDINGREVIEW ||
+                        oldStatus == PCRApprovalHandler.DECLINED)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private String checkFICOandDTIForBW(Integer creditScore, Decimal DTIafter) {
+            if (creditScore >= 700 && DTIafter <= 50) {
+                return(APPROVED);
+            } else if (creditScore >= 690 && DTIafter <= 45) {
+                return(DECLINED);
+            } else if (creditScore >= 680 && DTIafter <= 40) {
+                return(DECLINED);
+            } else if (creditScore >= 700 && DTIafter > 50) {
+                return(PENDINGREVIEW);
+            } else if (creditScore <=680 && DTIafter >= 40) {
+                return(DECLINED);
+            } else {
+                return(DECLINED);
+            }
+        }
+
+        private String checkFICOandDTIForDOER(Integer creditScore, Decimal DTIafter) {
+            if (creditScore >= 700 && DTIafter <= 50) {
+                return(APPROVED);
+            } else if (creditScore >= 690 && DTIafter <= 45) {
+                return(APPROVED);
+            } else if (creditScore >= 680 && DTIafter <= 40) {
+                return(APPROVED);
+            } else if (creditScore >= 700 && DTIafter > 50) {
+                return(DECLINED);
+            } else if (creditScore <=680 && DTIafter >= 40) {
+                return(DECLINED);
+            } else {
+                return(DECLINED);
+            }
+        }
+
+        @TestVisible
+        private List<Product2> getApplicableProducts(Lead lead) {
+            List<Product2> applicableProducts = new List<Product2>();
+            for (Product2 product : products) {
+                if (product.Product_Type__c == lead.Product_Line__c &&
+                    product.Program__c == lead.Product_Program__c &&
+                    product.State__c == lead.LASERCA__Home_State__c) {
+                    applicableProducts.add(product);
+                }
+            }
+            return applicableProducts;
+        }
+
+        @TestVisible
+        private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome) {
+            System.debug(LoggingLevel.ERROR, 'product: ' + product);
+            System.debug(LoggingLevel.ERROR, 'lead: ' + leadRecord);
+            System.debug(LoggingLevel.ERROR, 'monthlyIncome: ' + monthlyIncome);
+            Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
+            Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
+            if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
+                paymentNumerator = (leadRecord.Loan_Principal__c * 0.7 * product.Loan_Interest_Rate__c/12);
+            } else if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 2') {
+                paymentNumerator = (leadRecord.Loan_Principal__c * 0.8 * product.Loan_Interest_Rate__c/12);
+            } else {
+                paymentNumerator = leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12;
+            }        
+            paymentDenominatorVar1 = ( 1 + product.Loan_Interest_Rate__c/12);
+            paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
+            paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
+            paymentDenominator = 1 - paymentDenominatorVar3;
+            monthlyPayment = paymentNumerator/paymentDenominator;
+            dtiNumerator = leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + monthlyPayment;
+            dtiDenominator = monthlyIncome;
+            dtiAfter = 100*(dtiNumerator/dtiDenominator);
+            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar1: ' + paymentDenominatorVar1);
+            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar2: ' + paymentDenominatorVar2);
+            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar3: ' + paymentDenominatorVar3);
+            System.debug(LoggingLevel.ERROR, 'paymentDenominator: ' + paymentDenominator);
+            System.debug(LoggingLevel.ERROR, 'monthlyPayment: ' + monthlyPayment);
+            System.debug(LoggingLevel.ERROR, 'dtiNumerator: ' + dtiNumerator);
+            System.debug(LoggingLevel.ERROR, 'dtiDenominator: ' + dtiDenominator);
+            System.debug(LoggingLevel.ERROR, 'dtiAfter: ' + dtiAfter);
+
+            return dtiAfter;
+        }
+
     }
 }
