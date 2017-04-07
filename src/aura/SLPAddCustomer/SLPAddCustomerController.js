@@ -107,11 +107,13 @@
         var mslpButton = component.find("mslpAppButton");
         var inputFormBox = component.find("inputFormBox");
         var avidiaLogo = component.find("avidiaLogo");
+        var avidiaFooter = component.find("avidiaFooter");
         var mslpDisclaimer = component.find("mslpDisclaimer");
 
         $A.util.removeClass(bwslButton, 'noDisplayBar');      
         $A.util.addClass(mslpButton, 'noDisplayBar'); 
         $A.util.removeClass(avidiaLogo, 'noDisplay');  
+        $A.util.removeClass(avidiaFooter, 'noDisplay');
         $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');      
 
        // $A.util.addClass(inputFormBox, 'boxMSLP');      
@@ -126,12 +128,14 @@
         var mslpButton = component.find("mslpAppButton");
         var inputFormBox = component.find("inputFormBox");
         var avidiaLogo = component.find("avidiaLogo");
+        var avidiaFooter = component.find("avidiaFooter");
         var mslpDisclaimer = component.find("mslpDisclaimer");
 
 
         $A.util.addClass(bwslButton, 'noDisplayBar');      
         $A.util.removeClass(mslpButton, 'noDisplayBar');
-        $A.util.addClass(avidiaLogo, 'noDisplay');   
+        $A.util.addClass(avidiaLogo, 'noDisplay');  
+        $A.util.addClass(avidiaFooter, 'noDisplay');    
         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');      
 
         //$A.util.removeClass(inputFormBox, 'boxMSLP'); 
