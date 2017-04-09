@@ -22,9 +22,26 @@ private class TestPCRapproval {
                                             Loan_Interest_Rate__c = .0599,
                                             Loan_Interest_Only_Period__c = 12,
                                             Loan_Base_Rate__c = .0625,
+                                            Credit_Minimum__c = '700',
+                                            Credit_Maximum__c = '999',
                                             Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
                                             Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
-        insert productVar;                                      
+        Product2 mslp = new Product2( name = 'BlueWave Solar Loan - MA',
+                                            State__c = 'MA',
+                                            Family = 'Solar Loan',
+                                            Product_Type__c = 'Residential Loan',
+                                            Program__c = 'MSLP',
+                                            IsActive = TRUE,
+                                            ProductCode = 'x',
+                                            Loan_Term__c = 120,
+                                            Loan_Interest_Rate__c = .0599,
+                                            Loan_Interest_Only_Period__c = 12,
+                                            Loan_Base_Rate__c = .0625,
+                                            Credit_Minimum__c = '700',
+                                            Credit_Maximum__c = '999',
+                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                                            Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
+        insert new List<Product2>{productVar, mslp};
 
         Lead lead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
         insertleads.add(lead);
@@ -193,8 +210,9 @@ private class TestPCRapproval {
 
         PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
         System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
-        System.assertEquals(5, productRepo.getApplicableProducts(lead).size(), 5);
-        System.assertEquals(50.53, productRepo.calcDTIAfter(product, lead, 6750).setScale(2).round());
+        System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
+        System.assertEquals(50.53,
+                            productRepo.calcDTIAfter(product, lead, 6750, 3300).setScale(2));
     }    
 
     private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, 

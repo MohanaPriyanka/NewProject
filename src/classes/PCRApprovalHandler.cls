@@ -82,10 +82,11 @@ public with sharing class PCRApprovalHandler {
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
+                System.debug(LoggingLevel.ERROR, '--- ');
                 bwApproval = productRepo.bestApprovalStatusForBW(leadMap.get(pcr.LASERCA__Lead__c), 
-                                                                 creditScore, monthlyIncome);
+                                                                 creditScore, monthlyIncome, pcr.LASERCA__Sum_of_monthly_Personal_Debt__c);
                 doerApproval = productRepo.bestApprovalStatusForDOER(leadMap.get(pcr.LASERCA__Lead__c), 
-                                                                     creditScore, monthlyIncome);
+                                                                     creditScore, monthlyIncome, pcr.LASERCA__Sum_of_monthly_Personal_Debt__c);
 
                 if (bwApproval == APPROVED || 
                     doerApproval == APPROVED) {
@@ -124,7 +125,7 @@ public with sharing class PCRApprovalHandler {
                 if (ld.Status == READYFORCREDITCHECK) {
                     if (!ld.Pre_Approval_Form__c && !ld.DOER_Solar_Loan__c) { 
                         setLeadStatus(bwApproval, ld);
-                    } else if (!ld.Pre_Approval_Form__c && ld.DOER_Solar_Loan__c == TRUE) { 
+                    } else if (!ld.Pre_Approval_Form__c && ld.DOER_Solar_Loan__c) { 
                         setLeadStatus(doerApproval, ld);
                     } else if (!ld.DOER_Solar_Loan__c) { 
                         setLeadStatus(bwApproval, ld);
@@ -228,22 +229,22 @@ public with sharing class PCRApprovalHandler {
                         AND State__c IN :stateList];
         }
 
-        public String bestApprovalStatusForBW(Lead lead, Integer creditScore, Decimal monthlyIncome) {
+        public String bestApprovalStatusForBW(Lead lead, Integer creditScore, Decimal monthlyIncome, Decimal monthlyDebt) {
             String bestStatus = PCRApprovalHandler.DECLINED;
             String latestStatus;
-            for (Product2 product : getApplicableProducts(lead)) {
-                latestStatus = checkFICOandDTIForBW(creditScore, calcDTIAfter(product, lead, monthlyIncome));
+            for (Product2 product : getApplicableProducts(lead, creditScore)) {
+                latestStatus = checkFICOandDTIForBW(creditScore, calcDTIAfter(product, lead, monthlyIncome, monthlyDebt));
                 if (betterThan(latestStatus, bestStatus)) {
                     bestStatus = latestStatus;
                 }
             }
             return bestStatus;
         }
-        public String bestApprovalStatusForDOER(Lead lead, Integer creditScore, Decimal monthlyIncome) {
+        public String bestApprovalStatusForDOER(Lead lead, Integer creditScore, Decimal monthlyIncome, Decimal monthlyDebt) {
             String bestStatus = PCRApprovalHandler.DECLINED;
             String latestStatus;
-            for (Product2 product : getApplicableProducts(lead)) {
-                latestStatus = checkFICOandDTIForDOER(creditScore, calcDTIAfter(product, lead, monthlyIncome));
+            for (Product2 product : getApplicableProducts(lead, creditScore)) {
+                latestStatus = checkFICOandDTIForDOER(creditScore, calcDTIAfter(product, lead, monthlyIncome, monthlyDebt));
                 if (betterThan(latestStatus, bestStatus)) {
                     bestStatus = latestStatus;
                 }
@@ -299,20 +300,23 @@ public with sharing class PCRApprovalHandler {
         }
 
         @TestVisible
-        private List<Product2> getApplicableProducts(Lead lead) {
+        private List<Product2> getApplicableProducts(Lead lead, Integer creditScore) {
             List<Product2> applicableProducts = new List<Product2>();
             for (Product2 product : products) {
                 if (product.Product_Type__c == lead.Product_Line__c &&
                     product.Program__c == lead.Product_Program__c &&
                     product.State__c == lead.LASERCA__Home_State__c) {
-                    applicableProducts.add(product);
+                    if (Integer.valueOf(product.Credit_Minimum__c) <= creditScore &&
+                        Integer.valueOf(product.Credit_Maximum__c) >= creditScore) {
+                        applicableProducts.add(product);
+                    }
                 }
             }
             return applicableProducts;
         }
 
         @TestVisible
-        private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome) {
+        private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome, Decimal monthlyDebt) {
             System.debug(LoggingLevel.ERROR, 'product: ' + product);
             System.debug(LoggingLevel.ERROR, 'lead: ' + leadRecord);
             System.debug(LoggingLevel.ERROR, 'monthlyIncome: ' + monthlyIncome);
@@ -330,7 +334,8 @@ public with sharing class PCRApprovalHandler {
             paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
             paymentDenominator = 1 - paymentDenominatorVar3;
             monthlyPayment = paymentNumerator/paymentDenominator;
-            dtiNumerator = leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + monthlyPayment;
+            dtiNumerator = monthlyDebt + monthlyPayment;
+            System.debug(LoggingLevel.ERROR, 'leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c: ' + leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c);
             dtiDenominator = monthlyIncome;
             dtiAfter = 100*(dtiNumerator/dtiDenominator);
             System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar1: ' + paymentDenominatorVar1);
