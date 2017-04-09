@@ -273,7 +273,7 @@
         </div>
       </fieldset>  
       <hr></hr>
-      <a href="http://bluewaverenewables.com/about-us/privacy-policy/" class="slds-p-horizontal--small"> Click here to view our Privacy Policy</a>
+      <a href="http://bluewavesolar.com/about-us/privacy-policy/" class="slds-p-horizontal--small"> Click here to view our Privacy Policy</a>
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                 
@@ -323,6 +323,12 @@
           </div>
         </div>             
       </fieldset>        
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+        <span aura:id = "avidiaFooter" >
+          <img class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaFooter}"/>
+          <p class="slds-align--absolute-center  proximaNovaFont"> 42 Main St. Hudson, MA 01749 </p>
+        </span>
+      </aura:if>
       <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
         <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>

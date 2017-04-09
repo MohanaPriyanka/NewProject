@@ -2,11 +2,18 @@
     doInit : function(component, event, helper) {
         var actionPartnerRecord = component.get("c.getPartnerRecord");        
         actionPartnerRecord.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerRecord", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
+                if (resp.getReturnValue().State__c == 'MA') {
+                    component.set("v.newLead.DOER_Solar_Loan__c",true);  
+                }
+            } else {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "SLPAddCustomerController",
+                            "methodName" : "doInit",
+                            "errors" : resp.getError()});
+                appEvent.fire();
+
             }
         });    
         $A.enqueueAction(actionPartnerRecord);
@@ -171,11 +178,13 @@
         var mslpButton = component.find("mslpAppButton");
         var inputFormBox = component.find("inputFormBox");
         var avidiaLogo = component.find("avidiaLogo");
+        var avidiaFooter = component.find("avidiaFooter");
         var mslpDisclaimer = component.find("mslpDisclaimer");
 
         $A.util.removeClass(bwslButton, 'noDisplayBar');      
         $A.util.addClass(mslpButton, 'noDisplayBar'); 
         $A.util.removeClass(avidiaLogo, 'noDisplay');  
+        $A.util.removeClass(avidiaFooter, 'noDisplay');
         $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');      
 
        // $A.util.addClass(inputFormBox, 'boxMSLP');      
@@ -190,12 +199,14 @@
         var mslpButton = component.find("mslpAppButton");
         var inputFormBox = component.find("inputFormBox");
         var avidiaLogo = component.find("avidiaLogo");
+        var avidiaFooter = component.find("avidiaFooter");
         var mslpDisclaimer = component.find("mslpDisclaimer");
 
 
         $A.util.addClass(bwslButton, 'noDisplayBar');      
         $A.util.removeClass(mslpButton, 'noDisplayBar');
-        $A.util.addClass(avidiaLogo, 'noDisplay');   
+        $A.util.addClass(avidiaLogo, 'noDisplay');  
+        $A.util.addClass(avidiaFooter, 'noDisplay');    
         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');      
 
         //$A.util.removeClass(inputFormBox, 'boxMSLP'); 
