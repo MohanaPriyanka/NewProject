@@ -109,8 +109,8 @@ public with sharing class PCRApprovalHandler {
                 }
 
                 if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved') {
-                    // DOERPrequal_approval = PREQUALIFIED;
-                    // BWPrequal_approval = PREQUALIFIED;
+                    bwApproval = APPROVED;
+                    doerApproval = APPROVED;
                 } else if (pcr.Solar_Loan_Manual_Decline__c) {
                     bwApproval = DECLINED;
                     doerApproval = DECLINED;
@@ -167,7 +167,7 @@ public with sharing class PCRApprovalHandler {
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
 
-                        sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Mass Solar Loan', 
+                        sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Solar Loan', 
                                   htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                         pcr.Credit_PreApproval_Email_Sent__c = TRUE;
                     }
