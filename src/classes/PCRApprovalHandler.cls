@@ -14,23 +14,29 @@ public with sharing class PCRApprovalHandler {
     public static final String UNQUALIFIED = 'Unqualified';
     public static final String PENDINGINFORMATION = 'Pending Information';
     
-    private EmailTemplate doerEmailTemplate;
-    private EmailTemplate standardEmailTemplate;
-    private OrgWideEmailAddress infoEmailAddress;
+    private static EmailTemplate doerEmailTemplate;
+    private static EmailTemplate standardEmailTemplate;
+    private static OrgWideEmailAddress infoEmailAddress;
 
     public PCRApprovalHandler() {
-        doerEmailTemplate = [SELECT id, HtmlValue, Body 
-                             FROM EmailTemplate 
-                             WHERE DeveloperName = 'RS_DOER_PreQualification_Approval'
-                             LIMIT 1];
-        standardEmailTemplate = [SELECT id, HtmlValue, Body 
+        if (doerEmailTemplate == null) {
+            doerEmailTemplate = [SELECT id, HtmlValue, Body 
                                  FROM EmailTemplate 
-                                 WHERE DeveloperName = 'RS_PreQualification_Approval'
+                                 WHERE DeveloperName = 'RS_DOER_PreQualification_Approval'
                                  LIMIT 1];
-        infoEmailAddress = [SELECT id, Address 
-                            FROM OrgWideEmailAddress
-                            WHERE Address like '%info%'
-                            LIMIT 1];
+        }
+        if (standardEmailTemplate == null) {
+            standardEmailTemplate = [SELECT id, HtmlValue, Body 
+                                     FROM EmailTemplate 
+                                     WHERE DeveloperName = 'RS_PreQualification_Approval'
+                                     LIMIT 1];
+        }
+        if (infoEmailAddress == null) {
+            infoEmailAddress = [SELECT id, Address 
+                                FROM OrgWideEmailAddress
+                                WHERE Address like '%info%'
+                                LIMIT 1];
+        }
     }
 
     public void OnBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
@@ -140,23 +146,23 @@ public with sharing class PCRApprovalHandler {
                     pcr.PreApproval_Form__c &&
                     pcr.LASERCA__Contact__c == NULL &&
                     pcr.First_Name_from_Lead__c != NULL &&
-                    // pcr.Last_Name_from_Lead__c != NULL &&
+                    pcr.Last_Name_from_Lead__c != NULL &&
                     pcr.Email_from_Lead__c != NULL) {
                         
-                    if (pcr.DOER_Application__c) {
+                    if (pcr.DOER_Application__c && doerApproval == APPROVED) {
                         String htmlbody = doerEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', 
                                                     pcr.Continue_Loan_Application_Link__c);
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c); // used?
-                        htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c); // used?
+                        htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
+                        htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
 
                         sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Mass Solar Loan', 
                                   htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                         pcr.Credit_PreApproval_Email_Sent__c = TRUE;
-                    } else {
+                    } else if (bwApproval == APPROVED) {
                         String htmlbody = standardEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
@@ -317,9 +323,6 @@ public with sharing class PCRApprovalHandler {
 
         @TestVisible
         private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome, Decimal monthlyDebt) {
-            System.debug(LoggingLevel.ERROR, 'product: ' + product);
-            System.debug(LoggingLevel.ERROR, 'lead: ' + leadRecord);
-            System.debug(LoggingLevel.ERROR, 'monthlyIncome: ' + monthlyIncome);
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
             if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
@@ -335,18 +338,8 @@ public with sharing class PCRApprovalHandler {
             paymentDenominator = 1 - paymentDenominatorVar3;
             monthlyPayment = paymentNumerator/paymentDenominator;
             dtiNumerator = monthlyDebt + monthlyPayment;
-            System.debug(LoggingLevel.ERROR, 'leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c: ' + leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c);
             dtiDenominator = monthlyIncome;
             dtiAfter = 100*(dtiNumerator/dtiDenominator);
-            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar1: ' + paymentDenominatorVar1);
-            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar2: ' + paymentDenominatorVar2);
-            System.debug(LoggingLevel.ERROR, 'paymentDenominatorVar3: ' + paymentDenominatorVar3);
-            System.debug(LoggingLevel.ERROR, 'paymentDenominator: ' + paymentDenominator);
-            System.debug(LoggingLevel.ERROR, 'monthlyPayment: ' + monthlyPayment);
-            System.debug(LoggingLevel.ERROR, 'dtiNumerator: ' + dtiNumerator);
-            System.debug(LoggingLevel.ERROR, 'dtiDenominator: ' + dtiDenominator);
-            System.debug(LoggingLevel.ERROR, 'dtiAfter: ' + dtiAfter);
-
             return dtiAfter;
         }
 
