@@ -45,12 +45,12 @@ public class LoanTestRecordWarehouse {
             Loan_Data__c = capitalPool.id);
         insert loanTranchePending;                  
 
-        Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', .0599, 10, 7, '750', '999', capitalPool.Id);
-        Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', .0699, 10, 5, '700', '749', capitalPool.Id);
-        Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', .0725, 10, 0, '680', '699', capitalPool.Id);
-        Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', .0599, 20, 7, '750', '999', capitalPool.Id);
-        Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', .0699, 20, 7, '700', '749', capitalPool.Id);
-        Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', .0725, 20, 5, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
+        Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', 6.99, 10, 5, '700', '749', capitalPool.Id);
+        Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
+        Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
+        Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '680', '699', capitalPool.Id);
         productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate725.Program__c = 'MSLP';
@@ -230,7 +230,7 @@ public class LoanTestRecordWarehouse {
                                                 Family = 'Solar Loan',
                                                 Product_Type__c = 'Residential Loan',
                                                 State__c = 'MA',
-                                                Loan_Interest_Rate__c = .0599,
+                                                Loan_Interest_Rate__c = 5.99,
                                                 Loan_Term__c = 120,
                                                 Loan_Interest_Only_Period__c = 12,
                                                 Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
@@ -249,7 +249,7 @@ public class LoanTestRecordWarehouse {
                                                 Family = 'Solar Loan',
                                                 Product_Type__c = 'Residential Loan',
                                                 State__c = 'MA',
-                                                Loan_Interest_Rate__c = .0599,
+                                                Loan_Interest_Rate__c = 5.99,
                                                 Loan_Term__c = 120,
                                                 Loan_Interest_Only_Period__c = 12,
                                                 Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
@@ -392,7 +392,7 @@ public class LoanTestRecordWarehouse {
     
     private static Product2 getDefaultProduct(String state, Decimal interestRate, Integer term, Integer platformFee, 
                                        String creditMin, String creditMax, Id capitalPool) {
-        String interestRateString = (interestRate * 100).stripTrailingZeros() + '%';
+        String interestRateString = interestRate.stripTrailingZeros() + '%';
         return new Product2(Name = 'BlueWave Solar Loan - ' + state + ' - ' + term + ' Year Term - ' + interestRateString,
                             Family = 'Solar Loan',
                             Product_Type__c = 'Residential Loan',

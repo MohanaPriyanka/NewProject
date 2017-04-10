@@ -88,7 +88,6 @@ public with sharing class PCRApprovalHandler {
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
-                System.debug(LoggingLevel.ERROR, '--- ');
                 bwApproval = productRepo.bestApprovalStatusForBW(leadMap.get(pcr.LASERCA__Lead__c), 
                                                                  creditScore, monthlyIncome, pcr.LASERCA__Sum_of_monthly_Personal_Debt__c);
                 doerApproval = productRepo.bestApprovalStatusForDOER(leadMap.get(pcr.LASERCA__Lead__c), 
@@ -325,14 +324,15 @@ public with sharing class PCRApprovalHandler {
         private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome, Decimal monthlyDebt) {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
+            Decimal interestRate = product.Loan_Interest_Rate__c / 100;
             if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
-                paymentNumerator = (leadRecord.Loan_Principal__c * 0.7 * product.Loan_Interest_Rate__c/12);
+                paymentNumerator = leadRecord.Loan_Principal__c * 0.7 * interestRate / 12;
             } else if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 2') {
-                paymentNumerator = (leadRecord.Loan_Principal__c * 0.8 * product.Loan_Interest_Rate__c/12);
+                paymentNumerator = leadRecord.Loan_Principal__c * 0.8 * interestRate / 12;
             } else {
-                paymentNumerator = leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12;
-            }        
-            paymentDenominatorVar1 = ( 1 + product.Loan_Interest_Rate__c/12);
+                paymentNumerator = leadRecord.Loan_Principal__c * interestRate / 12;
+            }
+            paymentDenominatorVar1 = ( 1 + interestRate/12);
             paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
             paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
             paymentDenominator = 1 - paymentDenominatorVar3;
