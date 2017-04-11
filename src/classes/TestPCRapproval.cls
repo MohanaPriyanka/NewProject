@@ -117,7 +117,7 @@ private class TestPCRapproval {
 
         for (LASERCA__Personal_Credit_Report__c creditreport : pcrlist) {
             if (creditreport.LASERCA__Credit_Score_TransUnion__c == '700') {
-                System.assertEquals('Pending Review', creditreport.Solar_Loan_Approval_Status__c);
+                System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '401') {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '402') {
