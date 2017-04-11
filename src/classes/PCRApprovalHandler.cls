@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Description: Personal Credit Check Approval Status
- * Tested By: TestPCRapproval
+ * Tested By: PCRApprovalHandlerTest
  *************************************************************************************/
 
 public with sharing class PCRApprovalHandler {
