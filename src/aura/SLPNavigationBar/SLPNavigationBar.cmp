@@ -1,4 +1,9 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<aura:attribute name="licenseType" type="Boolean"  />     
+<aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />  
+<aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+
+
 <style>
     @font-face {
     font-family: proximaNovaFont;
@@ -28,7 +33,7 @@
       color: #7C98AB;
     }            
 </style>
-<div class="slds-context-bar ">
+<div aura:id="header" class="slds-context-bar ">
   <div class="slds-context-bar__primary slds-context-bar__item--divider-right">
     <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
       <div class="slds-context-bar__icon-action">
@@ -71,18 +76,20 @@
           <span class="slds-truncate proximaNovaDataMountaintop">Customers</span>
         </a>
       </li>
-      <li class="slds-context-bar__item">
-          <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
-          <span class="slds-truncate proximaNovaDataMountaintop">Disbursals</span>
-        </a>
-      </li>
+      <aura:if isTrue="{!v.licenseType}">
+        <li class="slds-context-bar__item">
+            <a href="/slportal/s/slpdisbursals" class="slds-context-bar__label-action" title="Disbursals">
+            <span class="slds-truncate proximaNovaDataMountaintop">Disbursals</span>
+          </a>
+        </li>
+      </aura:if>
       <li class="slds-context-bar__item">
           <a href="/slportal/s/slpalerts" class="slds-context-bar__label-action" title="Disbursals">
           <span class="slds-truncate proximaNovaDataMountaintop">Alerts</span>
         </a>
       </li>  
       <li class="slds-context-bar__item">
-          <a href="https://www.useloom.com/share/5c40d3a325844e5ebddea4f98c48abd5" target="_blank" class="slds-context-bar__label-action" title="Guide">
+          <a href="https://www.useloom.com/share/96be7809d0b946fd9668f208a6cbbe69" target="_blank" class="slds-context-bar__label-action" title="Guide">
           <span class="slds-truncate proximaNovaDataMountaintop">Guide</span>
         </a>
       </li>                    

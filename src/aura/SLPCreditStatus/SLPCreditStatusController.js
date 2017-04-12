@@ -76,16 +76,26 @@
                 $A.log("Errors", resp.getError());
             }
         });        
-        $A.enqueueAction(actionGetProduct);         
+        $A.enqueueAction(actionGetProduct);    
 
+        var customerEmailButton = component.find("customerEmailButton");
+        var incomeFormButton = component.find("incomeFormButton");
 
         if(productValue == true) {
         component.set("v.productId", productId); 
-        component.set("v.loanTerm", productTerm); 
+        component.set("v.loanTerm", productTerm);
+
+        $A.util.removeClass(customerEmailButton, 'noDisplay');
+        $A.util.removeClass(incomeFormButton, 'noDisplay');     
+
         }else {
         component.set("v.productId", null); 
-        component.set("v.loanTerm", 0);             
-        }              
+        component.set("v.loanTerm", 0);   
+
+        $A.util.addClass(customerEmailButton, 'noDisplay');
+        $A.util.addClass(incomeFormButton, 'noDisplay');     
+
+        }                 
     },       
 
     navigate : function(component, event, helper) {
@@ -119,16 +129,17 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381603' + '?tfa_1299=' + address 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381610' + '?tfa_1311=' + address 
                             + '&' + 'tfa_154=' + state 
                             + '&' + 'tfa_526=' + leadId 
-                            + '&' + 'tfa_1295=' + updateDummy
-                            + '&' + 'tfa_1300=' + city 
-                            + '&' + 'tfa_1302=' + productId 
-                            + '&' + 'tfa_1301=' + zip     
-                            + '&' + 'tfa_1303=' + loanTerm   
-                            + '&' + 'tfa_1304=' + firstName     
-                            + '&' + 'tfa_1305=' + lastName                                         
+                            + '&' + 'tfa_1180=' + updateDummy
+                            + '&' + 'tfa_390=' + income 
+                            + '&' + 'tfa_1312=' + city 
+                            + '&' + 'tfa_1179=' + productId 
+                            + '&' + 'tfa_1313=' + zip     
+                            + '&' + 'tfa_1287=' + loanTerm     
+                            + '&' + 'tfa_1372=' + firstName     
+                            + '&' + 'tfa_1373=' + lastName                                                                 
                         });
                         urlEvent.fire();  
                     }
@@ -176,6 +187,38 @@
             alert("Please select a product");
         }        
         //Find the text value of the component with aura:id set to "address"
+    },
+
+     sendCustomerApplication : function(component, event, helper) {
+        var leadId = component.get("v.leadId");
+        var product = component.get("v.product");
+        var loanTerm = component.get("v.product.Loan_Term__c");        
+
+        var actionSendApp = component.get("c.sendApplication"); 
+
+        actionSendApp.setParams({leadId : leadId,
+                          product : product,
+                          loanTerm : loanTerm});        
+        if (loanTerm > 0 ){
+            actionSendApp.setCallback(this,function(resp){ 
+                if (resp.getState() == 'SUCCESS') {
+                    alert('The email to continue this application has been sent to ' + resp.getReturnValue());
+                } else {
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "SLPCreditStatus",
+                                        "methodName" : "sendApplication",
+                                        "errors" : resp.getError()});
+                    appEvent.fire();
+                    $A.log("Errors", resp.getError());                      
+                }
+            });                                                   
+        $A.enqueueAction(actionSendApp); 
+        var btn = event.getSource();
+        btn.set("v.disabled",true);
+        btn.set("v.label",'Email Sent!')            
+        } else {
+            alert('Please select a product');
+        }        
     },
 
     exitProductSelection : function(component, event, helper) { 

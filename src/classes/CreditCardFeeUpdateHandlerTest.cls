@@ -67,11 +67,16 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
         
         system.debug(ngridLZU);
 
+        Entity__c entity1 = new Entity__c (Name = 'Entityone');
+        Entity__c entity2 = new Entity__c (Name = 'Entitytwo');
+
+        Insert new list <Entity__c>{entity1, entity2};
 // Create Shared Solar Systems 
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                                                                                                                 Service_Territory__c = 'SEMA',
                                                                                                                                 Open__c = true,
+                                                                                                                                BWC_Project_Entity_Manual__c = entity1.Id,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,
                                                                                                                                 Total_System_Size_kWh_DC__c = 1445.86,
@@ -90,6 +95,7 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
         Shared_Solar_System__c sss2 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                                                                                                                                 Service_Territory__c = 'SEMA',
                                                                                                                                 Open__c = true,
+                                                                                                                                BWC_Project_Entity_Manual__c = entity2.Id,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,
                                                                                                                                 Total_System_Size_kWh_DC__c = 1445.86,
@@ -209,32 +215,29 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         insert billthree;    
 
-        List <System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Total_Due__c, Due_This_Month__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
-                                                FROM System_Bill__c
-                                                ORDER BY Bill_NUmber__c DESC];
-        system.debug(systemBillList);      
+        List <Account_Bill__c> accountbilllist = [SELECT Id, Name, Total_Due__c, Due_This_Month__c, Bill_Number__c, Property_Account_ID__c 
+                                                    FROM Account_Bill__c
+                                                    ORDER BY Bill_NUmber__c DESC];
 
         ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                                                                            ChargentBase__Merchant_ID__c = '235986',
                                                                            ChargentBase__Active__c = TRUE,
-                                                                           Shared_Solar_System__c = sss1.id);
+                                                                           Entity__c = entity1.Id);
         insert chGateway;
 
-                // Query for system bills that were created from the production update
-                for(System_Bill__c systemBill : systemBillList){
+                for(Account_Bill__c accountbill : accountbillList){
 
-                    if(systembill.Bill_Number__c == 2){
+                    if(accountbill.Bill_Number__c == 2){
                         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
-                                                                                          ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                                           ChargentOrders__Gateway__c = chGateway.Id,
-                                                                                          ChargentOrders__Shipping_Name__c = sss1.Id,
+                                                                                          ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                                           ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                           ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                                           ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
                                                                                           ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
                                                                                           ChargentOrders__Subtotal__c = 603.92,
                                                                                           ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                                                          System_Bill__c = systemBill.Id,
+                                                                                          Account_Bill__c = accountbill.Id,
                                                                                           ChargentOrders__Card_Type__c = 'Visa',
                                                                                           ChargentOrders__Card_Number__c = '411111111111',
                                                                                           ChargentOrders__Card_Security_Code__c = '999',
@@ -267,18 +270,17 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                         update orderA1;
                     }
 
-                    if(systembill.Bill_Number__c == 1){
+                    if(accountbill.Bill_Number__c == 1){
                         ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
-                                                                                          ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                                           ChargentOrders__Gateway__c = chGateway.Id,
-                                                                                          ChargentOrders__Shipping_Name__c = sss1.id,
+                                                                                          ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                                           ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                           ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                                           ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
                                                                                           ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
                                                                                           ChargentOrders__Subtotal__c = 603.92,
                                                                                           ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                                                          System_Bill__c = systemBill.Id,
+                                                                                          Account_Bill__c = accountbill.Id,
                                                                                           ChargentOrders__Card_Type__c = 'Visa',
                                                                                           ChargentOrders__Card_Number__c = '411111111111',
                                                                                           ChargentOrders__Card_Security_Code__c = '999',
@@ -311,9 +313,8 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
                              // SECONDARY CREDIT CARD ORDER (CREATED BY FORM ASSEMBLY) - not assigned to system bill
                             ChargentOrders__ChargentOrder__c orderB  = new ChargentOrders__ChargentOrder__c(
-                                                                            ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                             ChargentOrders__Gateway__c = chGateway.Id,
-                                                                            ChargentOrders__Shipping_Name__c = sss1.id,
+                                                                            ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                             ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                             ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                                             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',

@@ -1,5 +1,20 @@
 ({
 	doInit : function(component, event, helper) {
+        //The following block of code retrieves the user's license type to determine what to display on the UI
+        var actionLicenseType = component.get("c.getLicenseType");        
+        actionLicenseType.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                if(resp.getReturnValue().length > 0){
+                    if(resp.getReturnValue() == 'Executive')
+                    component.set("v.licenseType", true);
+                }
+            }    
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });    
+        $A.enqueueAction(actionLicenseType);  
+                
         var actionIncompleteDisbursals = component.get("c.getIncompleteLoanDisbursals");        
         actionIncompleteDisbursals.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
@@ -20,10 +35,7 @@
                 $A.log("Errors", resp.getError());
             }
         });        
-        $A.enqueueAction(actionCompleteDisbursals);
-        
-      
-              
+        $A.enqueueAction(actionCompleteDisbursals);              
 	},
     
     searchDisbursals : function(component, event, helper) {            

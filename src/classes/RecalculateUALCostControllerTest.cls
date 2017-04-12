@@ -166,66 +166,65 @@ public class RecalculateUALCostControllerTest {
 
         Opportunity opp1 = new Opportunity(Name = 'Opp1',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss1.Id);
         Opportunity opp2 = new Opportunity(Name = 'Opp2',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss2.Id);
         Opportunity opp3 = new Opportunity(Name = 'Opp3',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss3.Id);
         Opportunity opp4 = new Opportunity(Name = 'Opp4',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss4.Id);
         Opportunity opp5 = new Opportunity(Name = 'Opp5',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss5.Id);
         Opportunity opp6 = new Opportunity(Name = 'Opp6',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss6.Id);
         Opportunity opp7 = new Opportunity(Name = 'Opp7',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            Shared_Solar_System__c = sss7.Id);
         Opportunity opp8 = new Opportunity(Name = 'Opp8',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss9.Id);
         Opportunity opp9 = new Opportunity(Name = 'Opp9',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss9.Id);
         Opportunity opp10 = new Opportunity(Name = 'Opp10',
                                            StageName = 'Closed won',
-                                           Product_Line__c = 'Community Solar',
                                            CloseDate = System.today(),
                                            AccountId = propertyAcc.Id,
                                            NMC_Tariff__c = nmcRate.Id,
+                                           Product_Line__c = 'Community Solar',
                                            Shared_Solar_System__c = sss10.Id);
         insert new List<Opportunity>{opp1, opp2, opp3, opp4, opp5, opp6, opp7, opp8, opp9, opp10};
 
@@ -240,48 +239,56 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas1',
                                                 Opportunity__c = opp1.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 5000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 Custom_Deduction_Order__c = 1);
         Utility_Account_Subscription__c uas2 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas2',
                                                 Opportunity__c = opp2.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
+                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
                                                 Custom_Deduction_Order__c = 2);
         Utility_Account_Subscription__c uas3 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas3',
                                                 Opportunity__c = opp3.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
+                                                Next_Schedule_Z_Status__c = 'Enacted',
                                                 Custom_Deduction_Order__c = 3);
         Utility_Account_Subscription__c uas4 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas4',
                                                 Opportunity__c = opp4.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 Custom_Deduction_Order__c = 4);
         Utility_Account_Subscription__c uas5 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas5',
                                                 Opportunity__c = opp5.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 Custom_Deduction_Order__c = 5);
         Utility_Account_Subscription__c uas6 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas6',
                                                 Opportunity__c = opp6.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 Custom_Deduction_Order__c = 6);
         Utility_Account_Subscription__c uas7 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas7',
                                                 Opportunity__c = opp7.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 Custom_Deduction_Order__c = 7);
         Utility_Account_Subscription__c uas8 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas8',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 // Customer_Subscription_KW_DC__c = 3000 / 1 / 1300 =  2.3077
                                                 UAS_Number__c = 2,
                                                 Custom_Deduction_Order__c = 8);
@@ -290,6 +297,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas9',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 9000,
+                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
                                                 // Customer_Subscription_KW_DC__c = 9000 / 1 / 1300 =  6.9230
                                                 UAS_Number__c = 3,
                                                 Custom_Deduction_Order__c = 9);
@@ -298,6 +306,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas10',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
+                                                Next_Schedule_Z_Status__c = 'Enacted',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 10);
@@ -306,6 +315,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas11',
                                                 Opportunity__c = opp9.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 11);
@@ -314,6 +324,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas12',
                                                 Opportunity__c = opp10.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 2000,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 11);

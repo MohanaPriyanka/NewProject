@@ -29,6 +29,11 @@
     float:right;
 }
 
+.THIS .floatRightPadding {
+    float:right;
+    padding-right: 2%;
+}
+
 .THIS.expand {
     width:100px;
   -webkit-transition: width .35s ease-in-out;
