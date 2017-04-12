@@ -133,11 +133,11 @@
                labelClass="label"
                press="{!c.sendCustomerApplication}"/> 
     </div>      
-    <div class=""> 
-    <ui:button label="Back"
-               class="slds-button--brand"
-               labelClass="label"
-               press="{!c.exitProductSelection}"/> 
+    <div aura:id="creditStatusBackButton" class=""> 
+      <ui:button label="Back"
+                 class="slds-button--brand"
+                 labelClass="label"
+                 press="{!c.exitProductSelection}"/> 
     </div>           
     </div>        
 </div>         
