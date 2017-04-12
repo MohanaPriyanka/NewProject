@@ -45,123 +45,21 @@ public class LoanTestRecordWarehouse {
             Loan_Data__c = capitalPool.id);
         insert loanTranchePending;                  
 
-        Product2 productLoanMATerm10Rate599 = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0599,
-                                                            Loan_Term__c = 10,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                            Technology_Platform_Fee__c = 7,
-                                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '999',
-                                                            Credit_Minimum__c = '750',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'BlueWave Solar Loan',
-                                                            isActive = TRUE);
-        Product2 productLoanMATerm10Rate699 = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0699,
-                                                            Loan_Term__c = 10,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                            Technology_Platform_Fee__c = 5,
-                                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '749',
-                                                            Credit_Minimum__c = '700',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'BlueWave Solar Loan',
-                                                            isActive = TRUE);
-        Product2 productLoanMATerm10Rate725 = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 7.25%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0725,
-                                                            Loan_Term__c = 10,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                            Technology_Platform_Fee__c = 0,
-                                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 7.25%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '699',
-                                                            Credit_Minimum__c = '680',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'BlueWave Solar Loan',
-                                                            isActive = TRUE);
-        Product2 productLoanMATerm20Rate599 = new Product2(Name = 'BlueWave Solar Loan - MA - 20 Year Term - 5.99%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0599,
-                                                            Loan_Term__c = 20,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                            Technology_Platform_Fee__c = 7,
-                                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 20 Year Term - 5.99%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '999',
-                                                            Credit_Minimum__c = '750',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'BlueWave Solar Loan',
-                                                            isActive = TRUE);
-        Product2 productLoanMATerm20Rate699 = new Product2(Name = 'BlueWave Solar Loan - MA - 20 Year Term - 6.99%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0699,
-                                                            Loan_Term__c = 20,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'Maximum (7%, $1,250)',
-                                                            Technology_Platform_Fee__c = 7,
-                                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 20 Year Term - 6.99%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '749',
-                                                            Credit_Minimum__c = '700',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'BlueWave Solar Loan',
-                                                            isActive = TRUE);
-        Product2 productLoanMATerm20Rate725 = new Product2(Name = 'BlueWave Solar Loan - MA - 20 Year Term - 7.25%',
-                                                            Family = 'Solar Loan',
-                                                            Product_Type__c = 'Residential Loan',
-                                                            State__c = 'MA',
-                                                            Loan_Interest_Rate__c = .0725,
-                                                            Loan_Term__c = 20,
-                                                            Loan_Interest_Only_Period__c = 12,
-                                                            Loan_Financing_Fee_Terms__c = 'No Financing Fee',
-                                                            Technology_Platform_Fee__c = 5,
-                                                            Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection',
-                                                            ProductCode = 'BlueWave Solar Loan - MA - 20 Year Term - 7.25%',
-                                                            Loan_base_rate__c = .0625,
-                                                            Loan_Internal_Lender_rate__c = .0499,
-                                                            Credit_Maximum__c = '699',
-                                                            Credit_Minimum__c = '680',
-                                                            Loan_Capital_Pool__c = capitalPool.Id,
-                                                            Loan_Tranche_Type__c = 'Standard',
-                                                            Program__c = 'MSLP',
-                                                            IsActive = TRUE);
+        Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
+        Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', 6.99, 10, 5, '700', '749', capitalPool.Id);
+        Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
+        Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
+        Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '680', '699', capitalPool.Id);
+        productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
+        productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productLoanMATerm20Rate725.Program__c = 'MSLP';
 
-        return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699, productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699, productLoanMATerm20Rate725};                                                                                                                                                             
+        return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699, 
+                productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699, 
+                productLoanMATerm20Rate725};
     }
+
     public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {         
         Partner__c partner = new Partner__c(Name = 'Partner');
         insert partner;
@@ -180,7 +78,7 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 10,
+                                                Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -198,7 +96,7 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 10,
+                                                Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -216,7 +114,7 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 20,
+                                                Loan_Term__c = 240,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = null,
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -233,7 +131,7 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 20,
+                                                Loan_Term__c = 240,
                                                 Product_Program__c = 'MSLP',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -332,7 +230,7 @@ public class LoanTestRecordWarehouse {
                                                 Family = 'Solar Loan',
                                                 Product_Type__c = 'Residential Loan',
                                                 State__c = 'MA',
-                                                Loan_Interest_Rate__c = .0599,
+                                                Loan_Interest_Rate__c = 5.99,
                                                 Loan_Term__c = 120,
                                                 Loan_Interest_Only_Period__c = 12,
                                                 Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
@@ -351,7 +249,7 @@ public class LoanTestRecordWarehouse {
                                                 Family = 'Solar Loan',
                                                 Product_Type__c = 'Residential Loan',
                                                 State__c = 'MA',
-                                                Loan_Interest_Rate__c = .0599,
+                                                Loan_Interest_Rate__c = 5.99,
                                                 Loan_Term__c = 120,
                                                 Loan_Interest_Only_Period__c = 12,
                                                 Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
@@ -490,5 +388,29 @@ public class LoanTestRecordWarehouse {
        
         return leadList;
 
-    }    
+    }
+    
+    private static Product2 getDefaultProduct(String state, Decimal interestRate, Integer term, Integer platformFee, 
+                                       String creditMin, String creditMax, Id capitalPool) {
+        String interestRateString = interestRate.stripTrailingZeros() + '%';
+        return new Product2(Name = 'BlueWave Solar Loan - ' + state + ' - ' + term + ' Year Term - ' + interestRateString,
+                            Family = 'Solar Loan',
+                            Product_Type__c = 'Residential Loan',
+                            State__c = state,
+                            Loan_Interest_Rate__c = interestRate,
+                            Loan_Term__c = term*12,
+                            Loan_Interest_Only_Period__c = 12,
+                            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
+                            Technology_Platform_Fee__c = platformFee,
+                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                            ProductCode = 'BlueWave Solar Loan - ' + state + ' - ' + term + ' Year Term - ' + interestRateString,
+                            Loan_base_rate__c = .0625,
+                            Loan_Internal_Lender_rate__c = .0499,
+                            Credit_Maximum__c = creditMax,
+                            Credit_Minimum__c = creditMin,
+                            Loan_Capital_Pool__c = capitalPool,
+                            Loan_Tranche_Type__c = 'Standard',
+                            Program__c = 'BlueWave Solar Loan',
+                            isActive = TRUE);
+    }
 }
