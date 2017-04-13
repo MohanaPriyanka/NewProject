@@ -206,6 +206,43 @@ public with sharing class PCRApprovalHandler {
     }
 
     @TestVisible
+    public class CreditStatusSummary {
+        public String bestStatus;
+        public String incomeSupport;
+        public Decimal monthlyIncome;
+        public Decimal monthlyDebt;
+        public Decimal loanPrincipal;
+        public List<PCRApprovalHandler.CreditStatusResult> resultList;
+
+        public CreditStatusSummary(Lead lead, Decimal monthlyIncome, Decimal monthlyDebt) {
+            incomeSupport = lead.Income_Support__c;
+            loanPrincipal = lead.Loan_Principal;
+            monthlyIncome = monthlyIncome;
+            monthlyDebt = monthlyDebt;
+        }
+
+        public String toString();
+    } 
+
+    @TestVisible
+    public class CreditStatusResult {
+        public String productName;
+        public Id productId;
+        public Decimal loanInterestRate;
+        public Decimal monthlyLoanPayment;
+        public Decimal dtiAfter;
+
+        public CreditStatusResult(Product product) {
+            productName = product.Name;
+            productId = product.Id;
+            loanInterestRate = product.loan_Interest_Rate__c;
+        }
+
+        public String toString() {
+        }
+    }
+
+    @TestVisible
     private class ProductRepo {
         private List<Product2> products;
 
