@@ -203,6 +203,7 @@ private class TestPCRapproval {
 
         lead = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.DTI_After__c, 
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                 Income_Support__c
                 FROM Lead 
@@ -213,6 +214,8 @@ private class TestPCRapproval {
         System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
         System.assertEquals(50.53,
                             productRepo.calcDTIAfter(product, lead, 6750, 3300).setScale(2));
+        System.assertEquals(50.53,
+                            lead.Personal_Credit_Report__r.DTI_After__c);
     }    
 
     private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, 
