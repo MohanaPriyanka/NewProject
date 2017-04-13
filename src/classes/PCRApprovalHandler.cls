@@ -83,18 +83,24 @@ public with sharing class PCRApprovalHandler {
                 }
                 Integer creditScore = 
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
-                    Integer.valueof(pcr.LASERCA__Credit_Score_TransUnion__c);
+                    Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
-                bwApproval = productRepo.bestApprovalStatusForBW(leadMap.get(pcr.LASERCA__Lead__c), 
-                                                                 creditScore, monthlyIncome, pcr.LASERCA__Sum_of_monthly_Personal_Debt__c);
-                doerApproval = productRepo.bestApprovalStatusForDOER(leadMap.get(pcr.LASERCA__Lead__c), 
-                                                                     creditScore, monthlyIncome, pcr.LASERCA__Sum_of_monthly_Personal_Debt__c);
+                PCRApprovalHandler.CreditResultSummary creditSummary = 
+                    productRepo.getCreditSummary(leadMap.get(pcr.LASERCA__Lead__c), 
+                                                 creditScore, monthlyIncome, 
+                                                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                                                 pcr.DOER_Application__c);
 
-                if (bwApproval == APPROVED || 
-                    doerApproval == APPROVED) {
+                pcr.DTI_Before__c = 100 * pcr.LASERCA__Sum_of_monthly_Personal_Debt__c / monthlyIncome;
+                pcr.DTI_After__c = creditSummary.highestDTI;
+                if (pcr.DTI_After_Notes__c == null) {
+                    pcr.DTI_After_Notes__c = creditSummary.toString();
+                }
+
+                if (creditSummary.bestStatus == APPROVED) {
                     if (conglomerate.contains('018') || 
                         conglomerate.contains('020') ||
                         conglomerate.contains('021') ||
@@ -103,40 +109,23 @@ public with sharing class PCRApprovalHandler {
                         conglomerate.contains('034') ||
                         conglomerate.contains('040') ||
                         conglomerate.contains('039')) {
-                        bwApproval = PENDINGREVIEW;
-                        doerApproval = PENDINGREVIEW;
+                        creditSummary.bestStatus = PENDINGREVIEW;
                     }
                 }
 
-                if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved') {
-                    bwApproval = APPROVED;
-                    doerApproval = APPROVED;
-                } else if (pcr.Solar_Loan_Manual_Decline__c) {
-                    bwApproval = DECLINED;
-                    doerApproval = DECLINED;
-                } else if (pcr.Solar_Loan_Manual_Approval__c) {
-                    bwApproval = APPROVED;
-                    doerApproval = APPROVED;
+                if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
+                    pcr.Solar_Loan_Manual_Approval__c) {
+                    creditSummary.bestStatus = APPROVED;
+                } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
+                           pcr.Solar_Loan_Manual_Decline__c) {
+                    creditSummary.bestStatus = DECLINED;
                 }
 
-                // ** SET THE APPROVAL STATUS ON THE PCR
-                if (pcr.DOER_Application__c) {
-                    pcr.Solar_Loan_Approval_Status__c = doerApproval;
-                } else {
-                    pcr.Solar_Loan_Approval_Status__c = bwApproval;
-                }
+                pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
 
                 Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
-                if (ld.Status == READYFORCREDITCHECK) {
-                    if (!ld.Pre_Approval_Form__c && !ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(bwApproval, ld);
-                    } else if (!ld.Pre_Approval_Form__c && ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(doerApproval, ld);
-                    } else if (!ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(bwApproval, ld);
-                    } else if (ld.DOER_Solar_Loan__c) { 
-                        setLeadStatus(doerApproval, ld);
-                    }
+                if (ld.Status == READYFORCREDITCHECK || ld.Status == PENDINGREVIEW) {
+                    setLeadStatus(creditSummary.bestStatus, ld);
                     leadsToUpdate.add(ld);
                 }
 
@@ -146,9 +135,10 @@ public with sharing class PCRApprovalHandler {
                     pcr.LASERCA__Contact__c == NULL &&
                     pcr.First_Name_from_Lead__c != NULL &&
                     pcr.Last_Name_from_Lead__c != NULL &&
-                    pcr.Email_from_Lead__c != NULL) {
+                    pcr.Email_from_Lead__c != NULL &&
+                    creditSummary.bestStatus == APPROVED) {
                         
-                    if (pcr.DOER_Application__c && doerApproval == APPROVED) {
+                    if (pcr.DOER_Application__c) {
                         String htmlbody = doerEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', 
                                                     pcr.Continue_Loan_Application_Link__c);
@@ -161,7 +151,7 @@ public with sharing class PCRApprovalHandler {
                         sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Mass Solar Loan', 
                                   htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                         pcr.Credit_PreApproval_Email_Sent__c = TRUE;
-                    } else if (bwApproval == APPROVED) {
+                    } else {
                         String htmlbody = standardEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
@@ -205,23 +195,88 @@ public with sharing class PCRApprovalHandler {
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
     }
 
+    // 
     @TestVisible
-    public class CreditStatusSummary {
+    public class CreditResultSummary {
         public String bestStatus;
+        public Decimal highestDTI;
         public String incomeSupport;
         public Decimal monthlyIncome;
         public Decimal monthlyDebt;
         public Decimal loanPrincipal;
+        public Integer creditScore;
+        public Boolean doer;
+        public PCRApprovalHandler.ProductRepo repo;
         public List<PCRApprovalHandler.CreditStatusResult> resultList;
 
-        public CreditStatusSummary(Lead lead, Decimal monthlyIncome, Decimal monthlyDebt) {
-            incomeSupport = lead.Income_Support__c;
-            loanPrincipal = lead.Loan_Principal;
-            monthlyIncome = monthlyIncome;
-            monthlyDebt = monthlyDebt;
+        public CreditResultSummary(Lead lead, Integer creditScore, 
+                                   Decimal monthlyIncome, Decimal monthlyDebt, Boolean doer) {
+            this.incomeSupport = lead.Income_Support__c;
+            this.loanPrincipal = lead.Loan_Principal__c;
+            this.monthlyIncome = monthlyIncome.setScale(2);
+            this.monthlyDebt = monthlyDebt.setScale(2);
+            this.creditScore = creditScore;
+            this.doer = doer;
+            this.highestDTI = 0;
+            this.bestStatus = PCRApprovalHandler.DECLINED;
+            this.resultList = new List<PCRApprovalHandler.CreditStatusResult>();
         }
 
-        public String toString();
+        public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result) {
+            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, doer);
+            resultList.add(result);
+            if (betterThan(latestStatus, bestStatus)) {
+                bestStatus = latestStatus;
+            }
+            if (result.dtiAfter > highestDTI) {
+                highestDTI = result.dtiAfter;
+            }
+        }
+
+        public override String toString() {
+            String summary = 'PCRApprovalHandler Summary: ' +
+                'CreditScore: ' + creditScore + ', ' +
+                'DOER: ' + doer + ', ' +
+                'Income Support if DOER: ' + incomeSupport + ', ' +
+                'Monthly Income: ' + monthlyIncome + ', ' +
+                'Monthly Debt Before Loan: ' + monthlyDebt + ', ' +
+                'Loan Principal: ' + loanPrincipal;
+            for (PCRApprovalHandler.CreditStatusResult csr : resultList) {
+                summary = summary + '\n' + csr.toString();
+            }
+            return summary;
+        }
+
+        private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer) {
+            if (creditScore >= 700 && DTIafter <= 50) {
+                return(APPROVED);
+            } else if (creditScore >= 690 && DTIafter <= 45) {
+                return doer?APPROVED:DECLINED;
+            } else if (creditScore >= 680 && DTIafter <= 40) {
+                return doer?APPROVED:DECLINED;
+            } else if (creditScore >= 700 && DTIafter > 50) {
+                return doer?DECLINED:PENDINGREVIEW;
+            } else if (creditScore <=680 && DTIafter >= 40) {
+                return(DECLINED);
+            } else {
+                return(DECLINED);
+            }
+        }
+
+        private Boolean betterThan(String newStatus, String oldStatus) {
+            if (newStatus == PCRApprovalHandler.DECLINED) {
+                return false;
+            } else if (newStatus == PCRApprovalHandler.PENDINGREVIEW &&
+                       oldStatus == PCRApprovalHandler.DECLINED) {
+                return true;
+            } else if (newStatus == PCRApprovalHandler.APPROVED &&
+                       (oldStatus == PCRApprovalHandler.PENDINGREVIEW ||
+                        oldStatus == PCRApprovalHandler.DECLINED)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     } 
 
     @TestVisible
@@ -232,18 +287,24 @@ public with sharing class PCRApprovalHandler {
         public Decimal monthlyLoanPayment;
         public Decimal dtiAfter;
 
-        public CreditStatusResult(Product product) {
-            productName = product.Name;
-            productId = product.Id;
-            loanInterestRate = product.loan_Interest_Rate__c;
+        public CreditStatusResult(Product2 product, Decimal monthlyPayment, Decimal dtiAfter) {
+            this.productName = product.Name;
+            this.productId = product.Id;
+            this.loanInterestRate = product.loan_Interest_Rate__c;
+            this.monthlyLoanPayment = monthlyPayment.setScale(2);
+            this.dtiAfter = dtiAfter.setScale(2);
         }
 
-        public String toString() {
+        public override String toString() {
+            return('For ' + productName + ' (' + productId + '), ' +
+                   'Rate: ' + loanInterestRate + ', ' +
+                   'Loan Payment: ' + monthlyLoanPayment + ', ' +
+                   'DTI After Payments: ' + dtiAfter);
         }
     }
 
     @TestVisible
-    private class ProductRepo {
+    public class ProductRepo {
         private List<Product2> products;
 
         public ProductRepo(List<Lead> leads) {
@@ -262,7 +323,7 @@ public with sharing class PCRApprovalHandler {
             
             // This is the superset of all products that might be applicable for the leads being
             // checked. We'll filter them out for a particular lead later on.
-            products = [SELECT Id, Product_Type__c, Program__c, State__c, 
+            products = [SELECT Id, Name, Product_Type__c, Program__c, State__c, Debt_To_Income_Maximum__c,
                         Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
                         FROM Product2
                         WHERE isActive = true
@@ -271,78 +332,21 @@ public with sharing class PCRApprovalHandler {
                         AND State__c IN :stateList];
         }
 
-        public String bestApprovalStatusForBW(Lead lead, Integer creditScore, Decimal monthlyIncome, Decimal monthlyDebt) {
-            String bestStatus = PCRApprovalHandler.DECLINED;
-            String latestStatus;
+        public PCRApprovalHandler.CreditResultSummary getCreditSummary(Lead lead, Integer creditScore, 
+                                                                       Decimal monthlyIncome, Decimal monthlyDebt,
+                                                                       Boolean doer) {
+            PCRApprovalHandler.CreditResultSummary creditResultSummary = 
+                new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt, doer);
+
             for (Product2 product : getApplicableProducts(lead, creditScore)) {
-                latestStatus = checkFICOandDTIForBW(creditScore, calcDTIAfter(product, lead, monthlyIncome, monthlyDebt));
-                if (betterThan(latestStatus, bestStatus)) {
-                    bestStatus = latestStatus;
-                }
+                PCRApprovalHandler.CreditStatusResult result = calcDTIAfter(product, lead, monthlyIncome, monthlyDebt);
+                creditResultSummary.checkAndAddResult(result);
             }
-            return bestStatus;
-        }
-        public String bestApprovalStatusForDOER(Lead lead, Integer creditScore, Decimal monthlyIncome, Decimal monthlyDebt) {
-            String bestStatus = PCRApprovalHandler.DECLINED;
-            String latestStatus;
-            for (Product2 product : getApplicableProducts(lead, creditScore)) {
-                latestStatus = checkFICOandDTIForDOER(creditScore, calcDTIAfter(product, lead, monthlyIncome, monthlyDebt));
-                if (betterThan(latestStatus, bestStatus)) {
-                    bestStatus = latestStatus;
-                }
-            }
-            return bestStatus;
+            return creditResultSummary;
         }
 
-        private Boolean betterThan(String newStatus, String oldStatus) {
-            if (newStatus == PCRApprovalHandler.DECLINED) {
-                return false;
-            } else if (newStatus == PCRApprovalHandler.PENDINGREVIEW &&
-                       oldStatus == PCRApprovalHandler.DECLINED) {
-                return true;
-            } else if (newStatus == PCRApprovalHandler.APPROVED &&
-                       (oldStatus == PCRApprovalHandler.PENDINGREVIEW ||
-                        oldStatus == PCRApprovalHandler.DECLINED)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
 
-        private String checkFICOandDTIForBW(Integer creditScore, Decimal DTIafter) {
-            if (creditScore >= 700 && DTIafter <= 50) {
-                return(APPROVED);
-            } else if (creditScore >= 690 && DTIafter <= 45) {
-                return(DECLINED);
-            } else if (creditScore >= 680 && DTIafter <= 40) {
-                return(DECLINED);
-            } else if (creditScore >= 700 && DTIafter > 50) {
-                return(PENDINGREVIEW);
-            } else if (creditScore <=680 && DTIafter >= 40) {
-                return(DECLINED);
-            } else {
-                return(DECLINED);
-            }
-        }
-
-        private String checkFICOandDTIForDOER(Integer creditScore, Decimal DTIafter) {
-            if (creditScore >= 700 && DTIafter <= 50) {
-                return(APPROVED);
-            } else if (creditScore >= 690 && DTIafter <= 45) {
-                return(APPROVED);
-            } else if (creditScore >= 680 && DTIafter <= 40) {
-                return(APPROVED);
-            } else if (creditScore >= 700 && DTIafter > 50) {
-                return(DECLINED);
-            } else if (creditScore <=680 && DTIafter >= 40) {
-                return(DECLINED);
-            } else {
-                return(DECLINED);
-            }
-        }
-
-        @TestVisible
-        private List<Product2> getApplicableProducts(Lead lead, Integer creditScore) {
+        public List<Product2> getApplicableProducts(Lead lead, Integer creditScore) {
             List<Product2> applicableProducts = new List<Product2>();
             for (Product2 product : products) {
                 if (product.Product_Type__c == lead.Product_Line__c &&
@@ -357,8 +361,8 @@ public with sharing class PCRApprovalHandler {
             return applicableProducts;
         }
 
-        @TestVisible
-        private Decimal calcDTIAfter(Product2 product, Lead leadRecord, Decimal monthlyIncome, Decimal monthlyDebt) {
+        public PCRApprovalHandler.CreditStatusResult calcDTIAfter(Product2 product, Lead leadRecord, 
+                                                                   Decimal monthlyIncome, Decimal monthlyDebt) {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
             Decimal interestRate = product.Loan_Interest_Rate__c / 100;
@@ -377,7 +381,10 @@ public with sharing class PCRApprovalHandler {
             dtiNumerator = monthlyDebt + monthlyPayment;
             dtiDenominator = monthlyIncome;
             dtiAfter = 100*(dtiNumerator/dtiDenominator);
-            return dtiAfter;
+            dtiAfter.setScale(2);
+            PCRApprovalHandler.CreditStatusResult result = 
+                new PCRApprovalHandler.CreditStatusResult(product, monthlyPayment, dtiAfter);
+            return result;
         }
 
     }

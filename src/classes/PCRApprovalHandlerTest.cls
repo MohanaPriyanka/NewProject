@@ -1,11 +1,11 @@
 @isTest
-private class TestPCRapproval {
+private class PCRApprovalHandlerTest {
     @testSetup public static void setupTestData() {
         LoanTestRecordWarehouse.partnerSetup();
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     }
 
-    static testMethod void TestPCRapproval() {
+    static testMethod void testPCRapproval() {
         Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
         List<Lead> insertleads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
@@ -151,10 +151,12 @@ private class TestPCRapproval {
         update tradeacct;
 
         pcr = 
-            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c
+            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c,
+             DTI_After_Notes__c
              FROM LASERCA__Personal_Credit_Report__c
              WHERE LASERCA__Lead__c = :lead.Id
              LIMIT 1];
+        System.debug(LoggingLevel.ERROR, pcr.DTI_After_Notes__c);
         System.assertEquals(PCRApprovalHandler.PENDINGREVIEW, pcr.Solar_Loan_Approval_Status__c);
     }
 
@@ -184,7 +186,7 @@ private class TestPCRapproval {
 
     static testMethod void testProductRepo() {
         Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 product = [SELECT Id, Product_Type__c, Program__c, State__c, 
+        Product2 product = [SELECT Id, Name, Product_Type__c, Program__c, State__c, 
                             Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
                             FROM Product2
                             WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
@@ -213,8 +215,8 @@ private class TestPCRapproval {
         System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
         System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
         System.assertEquals(50.53,
-                            productRepo.calcDTIAfter(product, lead, 6750, 3300).setScale(2));
-        System.assertEquals(50.53,
+                            productRepo.calcDTIAfter(product, lead, 6750, 3300).dtiAfter);
+        System.assertEquals(50.61,
                             lead.Personal_Credit_Report__r.DTI_After__c);
     }    
 

@@ -109,7 +109,7 @@
                                 component.set("v.creditStatusText", "Checking for results...");
                             }, 9000);
                         window.setTimeout(function() {
-                                var creditPollerInterval = window.setInterval(helper.checkCreditStatus, 2000, component, helper);
+                                var creditPollerInterval = window.setInterval($A.getCallback(helper.checkCreditStatus), 2000, component, helper);
                                 component.set("v.creditStatusPoller", creditPollerInterval);
                             }, 10000);
 
