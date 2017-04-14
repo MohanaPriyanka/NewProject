@@ -1,3 +1,7 @@
+.THIS .paddingTop {
+    padding-top:20%;
+}
+
 .THIS .fadeIn {
 
     -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
