@@ -38,7 +38,7 @@
     searchCustomers : function(component, event, helper) {            
         var input = component.find("customerSearch");
         var customerName = input.get("v.value");           
-        var action = component.get("c.searchleads");     
+        var action = component.get("c.searchLeads");     
         
         action.setParams({searchValue : customerName});
         
