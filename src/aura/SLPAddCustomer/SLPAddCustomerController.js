@@ -30,10 +30,18 @@
     },    
 
     addCustomer : function(component, event, helper) {
+        var lead = component.get("v.newLead");
+        if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "addCustomer",
+                                "errors" : "Please enter a Date of Birth in the format Month/Day/Year. We saw a date of: " + lead.LASERCA__Birthdate__c});
+            appEvent.fire();
+            return;
+        }
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
 
-        var lead = component.get("v.newLead");
         if (lead.LASERCA__Home_Address__c != null 
             && lead.LASERCA__Home_City__c != ''
             && lead.FirstName != ''

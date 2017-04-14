@@ -1,5 +1,10 @@
 /*************************************************************************************
  * Description: Personal Credit Check Approval Status
+ *              For each Credit Report being updated, the handler gets a CreditResultSummary
+ *              which has a list of applicable products for that lead and the associated DTI
+ *              (we can add maximum loan value later on). It can use the max DTI and also see
+ *              if there are any products that meet the DTI threshold, and use that when updating
+ *              the lead status
  * Tested By: PCRApprovalHandlerTest
  *************************************************************************************/
 
@@ -12,7 +17,6 @@ public with sharing class PCRApprovalHandler {
     public static final String READYFORCREDITCHECK = 'Ready for Credit Check';
     public static final String PENDINGCREDITREVIEW = 'Pending Credit Review';
     public static final String UNQUALIFIED = 'Unqualified';
-    public static final String PENDINGINFORMATION = 'Pending Information';
     
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
@@ -96,9 +100,7 @@ public with sharing class PCRApprovalHandler {
 
                 pcr.DTI_Before__c = 100 * pcr.LASERCA__Sum_of_monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_After__c = creditSummary.highestDTI;
-                if (pcr.DTI_After_Notes__c == null) {
-                    pcr.DTI_After_Notes__c = creditSummary.toString();
-                }
+                pcr.DTI_After_Notes__c = creditSummary.toString();
 
                 if (creditSummary.bestStatus == APPROVED) {
                     if (conglomerate.contains('018') || 
@@ -115,17 +117,23 @@ public with sharing class PCRApprovalHandler {
 
                 if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
                     pcr.Solar_Loan_Manual_Approval__c) {
-                    creditSummary.bestStatus = APPROVED;
+                    pcr.Solar_Loan_Approval_Status__c = APPROVED;
                 } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
                            pcr.Solar_Loan_Manual_Decline__c) {
-                    creditSummary.bestStatus = DECLINED;
+                    pcr.Solar_Loan_Approval_Status__c = DECLINED;
+                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
+                    pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+                } else {
+                    pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
                 }
 
-                pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
-
                 Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
-                if (ld.Status == READYFORCREDITCHECK || ld.Status == PENDINGREVIEW) {
-                    setLeadStatus(creditSummary.bestStatus, ld);
+                if (ld.Status == READYFORCREDITCHECK || 
+                    ld.Status == PENDINGCREDITREVIEW || 
+                    ld.Status == UNQUALIFIED ||
+                    ld.Status == PREQUALIFIED ||
+                    pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
+                    setLeadStatus(pcr.Solar_Loan_Approval_Status__c, ld);
                     leadsToUpdate.add(ld);
                 }
 
@@ -136,7 +144,7 @@ public with sharing class PCRApprovalHandler {
                     pcr.First_Name_from_Lead__c != NULL &&
                     pcr.Last_Name_from_Lead__c != NULL &&
                     pcr.Email_from_Lead__c != NULL &&
-                    creditSummary.bestStatus == APPROVED) {
+                    pcr.Solar_Loan_Approval_Status__c == APPROVED) {
                         
                     if (pcr.DOER_Application__c) {
                         String htmlbody = doerEmailTemplate.HtmlValue;

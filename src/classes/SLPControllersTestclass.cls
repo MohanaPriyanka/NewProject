@@ -239,28 +239,11 @@ public without sharing class SLPControllersTestclass {
     	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
     	insert productList;
 
-		leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            LeadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
+        leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }    
-        update leadList;
     	System.runAs(partnerUser) {
-    		partnerId = String.valueOf(partnerRecord.Id);    		
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-    		leadList.clear();
-    		partnerId = null;
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-            leadList.clear();               
-
-    		leadId = String.valueOf(newLead.Id);
-    		productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
-
+            leadId = String.valueOf(leadReturnList[0].Id);
+            productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
     	}
     	Test.stopTest();
     }
@@ -392,7 +375,7 @@ public without sharing class SLPControllersTestclass {
             leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
             leadList.clear();               
 
-            leadId = String.valueOf(newLead.Id);
+            leadId = String.valueOf(leadReturnList[0].Id);
             productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
 
         }
