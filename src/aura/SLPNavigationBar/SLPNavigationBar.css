@@ -4,3 +4,8 @@
 .THIS.noDisplayBar {
     display: none;
 }
+.THIS .pulse {
+  -webkit-animation-duration: .5s;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-iteration-count: 2;
+}

@@ -23,9 +23,9 @@
                 if (resp.getReturnValue() == true) {
                     var pendingCustomersButton = component.find("slpcreditstatus");   
                     pendingCustomersButton.set("v.iconName","utility:record");
-                    $A.util.addClass(pendingCustomersButton, "animated shake");                        
-                    pendingCustomersButton.set("v.iconPosition","right");
+                    $A.util.addClass(pendingCustomersButton, "animated pulse ");   
 
+                    pendingCustomersButton.set("v.iconPosition","right");                 
                 } else {
                     var pendingCustomersButton = component.find("slpcreditstatus");                       
                     pendingCustomersButton.set("v.iconName",null);
