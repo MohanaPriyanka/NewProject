@@ -176,7 +176,7 @@ public without sharing class SLPCreditStatus {
     String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here'; 
     mail.setSubject(emailSubject);
     mail.setTargetObjectId(lead.Id);
-    Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
+    MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
     return customerName;
   }
 }

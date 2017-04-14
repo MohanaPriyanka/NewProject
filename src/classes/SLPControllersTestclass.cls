@@ -236,14 +236,22 @@ public without sharing class SLPControllersTestclass {
     	);
     	insert newLead;
 
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+    	productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     	insert productList;
 
-        leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Lead lead = [SELECT Id, LASER_Credit_Score__c 
+                     FROM Lead 
+                     WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals('710', lead.LASER_Credit_Score__c);
 
     	System.runAs(partnerUser) {
-            leadId = String.valueOf(leadReturnList[0].Id);
-            productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
+            productReturnList = SLPCreditStatus.getCustomerProducts(lead.Id);
+            System.assertEquals(2, productReturnList.size());
+            Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
+            SLPCreditStatus.sendApplication(lead.Id, prod, 12);
+            System.assertEquals(1, MessagingService.emailsSent.size());
+            
     	}
     	Test.stopTest();
     }
