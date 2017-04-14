@@ -8,8 +8,10 @@
                     messageText = errors[0].message;
                 } else if (errors[0] && errors[0].pageErrors) {
                     messageText = errors[0].pageErrors[0].message;
+                } else {
+                    messageText = errors;
                 }
-                alert("Sorry, we encountered an error! Please try again or contact us with this error message:\n\n " +
+                alert("Sorry, we encountered an error! Please try again or contact us with this error message:\n\n" +
                       messageText);
 
                 var action = component.get("c.logNow");
