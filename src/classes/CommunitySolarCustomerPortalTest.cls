@@ -374,18 +374,18 @@ Public without sharing class CommunitySolarCustomerPortalTest {
 
             //test the getSystemBills() method
             List <AggregateResult> systemBillPrAccRespList = new List <AggregateResult>(MyAccountController.getSystemBills(
-            String.valueOf(customerAccountMap.get('Property Account').Id).substring(0,15)));
-            string firstab;
-            string secondab;
-            string firstentity;
-            string secondentity;
+            String.valueOf(customerAccountMap.get('Property Account').Id).subString(0,15)));
+            String firstab;
+            String secondab;
+            String firstentity;
+            String secondentity;
             for (AggregateResult ar : systemBillPrAccRespList) {
               if (ar.get('carryover') == 100) {
-                  firstab = string.valueOf(ar.get('Account_Bill__c'));
-                  firstentity = string.valueOf(ar.get('entity'));
+                  firstab = String.valueOf(ar.get('Account_Bill__c'));
+                  firstentity = String.valueOf(ar.get('entity'));
               } else {
-                  secondab = string.valueOf(ar.get('Account_Bill__c'));
-                  secondentity = string.valueOf(ar.get('entity'));  
+                  secondab = String.valueOf(ar.get('Account_Bill__c'));
+                  secondentity = String.valueOf(ar.get('entity'));  
                 System.assertEquals(ar.get('carryover'), 30);             
               }
             }
@@ -393,17 +393,17 @@ Public without sharing class CommunitySolarCustomerPortalTest {
               System.assertnotEquals(firstentity, secondentity);
 
             List <AggregateResult> systemBillallList = new List <AggregateResult> (MyAccountController.getSystemBills('all'));
-            string firstab2;
-            string secondab2;
-            string firstentity2;
-            string secondentity2;
+            String firstab2;
+            String secondab2;
+            String firstentity2;
+            String secondentity2;
             for (AggregateResult ar : systemBillPrAccRespList) {
               if (ar.get('carryover') == 100) {
-                 firstab2 = string.valueOf(ar.get('Account_Bill__c'));
-                 firstentity2 = string.valueOf(ar.get('entity'));
+                 firstab2 = String.valueOf(ar.get('Account_Bill__c'));
+                 firstentity2 = String.valueOf(ar.get('entity'));
               } else {
-                 secondab2 = string.valueOf(ar.get('Account_Bill__c'));
-                 secondentity2 = string.valueOf(ar.get('entity'));  
+                 secondab2 = String.valueOf(ar.get('Account_Bill__c'));
+                 secondentity2 = String.valueOf(ar.get('entity'));  
                 System.assertEquals(ar.get('carryover'), 30);             
               }
             }

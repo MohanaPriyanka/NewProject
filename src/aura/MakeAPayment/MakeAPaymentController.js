@@ -126,6 +126,7 @@
         var action12 = component.get("c.getSystemBills");
 		var actionPaymentLogs2 = component.get("c.getTransactions"); //loads Chargent Transactions into the tabels for the customer   
    		var actionAutoPay = component.get("c.getMyParentAccount"); 
+        var actionEntity = component.get("c.summSystemBills");
  
         actionAutoPay.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
@@ -141,6 +142,16 @@
         })
         $A.enqueueAction(actionAutoPay);
         
+        actionEntity.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.summSystemBills", resp.getReturnValue());
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        }); 
+        $A.enqueueAction(actionEntity);
+            
         actionPaymentFormToggle.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
 			    var paymentButtonToggle = component.find("paymentButton");  
