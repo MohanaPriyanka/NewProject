@@ -249,7 +249,7 @@ public without sharing class MyAccountController {
       for(ChargentOrders__Transaction__c chargentTransactionsAll : [SELECT ChargentOrders__Type__c, Activity_Type__c, Negative_Amount__c, ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Parent_Account__r.Name, ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                            ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, ChargentOrders__Order__r.System_Bill__r.Shared_Solar_System__r.Name, ChargentOrders__Response_Status__c 
                                                                     FROM ChargentOrders__Transaction__c
-                                                                    WHERE ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
+                                                                    WHERE ChargentOrders__Order__r.Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
                                                                     AND ChargentOrders__Response_Status__c = 'Approved'
                                                                     ORDER BY CreatedDate DESC]) {
         
@@ -262,7 +262,7 @@ public without sharing class MyAccountController {
       for(ChargentOrders__Transaction__c chargentTransactionsProperty : [SELECT ChargentOrders__Type__c, Activity_Type__c,Negative_Amount__c, ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Parent_Account__r.Name, ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                            ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, ChargentOrders__Order__r.System_Bill__r.Shared_Solar_System__r.Name, ChargentOrders__Response_Status__c 
                                                                          FROM ChargentOrders__Transaction__c
-                                                                         WHERE ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
+                                                                         WHERE ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
                                                                          AND ChargentOrders__Response_Status__c = 'Approved'
                                                                          ORDER BY CreatedDate DESC]) {
         chargentTransactionsList.add(chargentTransactionsProperty);
