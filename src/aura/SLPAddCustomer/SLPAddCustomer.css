@@ -1,6 +1,10 @@
 .THIS {
 }
 
+.THIS .floatRight {
+    float:right;
+}
+
 .THIS.main1 {
     padding-top: 5%;
 
@@ -10,6 +14,10 @@
     width:30%;
     float:left;
     
+}
+
+.THIS .blueBackground {
+    background:#266092;    
 }
 
 .THIS .marginAround {
@@ -28,7 +36,7 @@
 .THIS .boxCenter {
     width:30%;
     float:left;
-   	margin-left: 5%;
+    margin-left: 5%;
     margin-right: 5%;
 }
 
@@ -115,7 +123,7 @@
 .THIS .fundsBoxCenter {
     width:22%;
     float:left;
-   	margin-left: 16%;
+    margin-left: 16%;
     margin-right: 16%;
     border:2px solid #7c98ad  ;
     border-radius:5px;
@@ -197,7 +205,7 @@
 .THIS .navsectionCenter {
     width:22%;
     float:left;
-   	margin-left: 16%;
+    margin-left: 16%;
     margin-right: 16%;
     border:2px solid #7c98ad  ;
     border-radius:5px;
@@ -211,7 +219,7 @@
 }
 
 .THIS .buttonRight {
-	float:right;
+    float:right;
     margin-right:20%;
 }
 
@@ -221,34 +229,34 @@
 }
 
 .THIS .paddingBottom1 {
-	padding-bottom:1%;
+    padding-bottom:1%;
 }
 .THIS .paddingBottom5 {
-	padding-bottom:5%;
+    padding-bottom:5%;
 }
 
 .THIS .paddingTop1x5 {
-	padding-top:2%;
+    padding-top:2%;
 }
 
 .THIS .paddingLeft1 {
-	padding-left:1%;
+    padding-left:1%;
 }
 
 .THIS .inputMarginLeft {
-	margin-left: 0.75%;
+    margin-left: 0.75%;
 }
 .THIS .inputMarginRight {
-	margin-right: 0.75%;
+    margin-right: 0.75%;
 }
 .THIS .inputMarginLeft2 {
-	margin-left: 0.75%;
+    margin-left: 0.75%;
 }
 .THIS .inputMarginRight2 {
-	margin-right: 0.75%;
+    margin-right: 0.75%;
 }
 .THIS .inputMarginTop {
-	margin-top: 0.9%;
+    margin-top: 0.9%;
 }
 
 .THIS .center a {

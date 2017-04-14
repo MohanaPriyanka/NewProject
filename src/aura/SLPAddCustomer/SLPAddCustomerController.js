@@ -5,13 +5,14 @@
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerRecord", resp.getReturnValue());
                 if (resp.getReturnValue().State__c == 'MA') {
-                    component.set("v.newLead.DOER_Solar_Loan__c",true);  
-                }
+                    component.set("v.newLead.DOER_Solar_Loan__c",true);                                       
+                    $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');                    
+                }                
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
                 appEvent.setParams({"className" : "SLPAddCustomerController",
-                            "methodName" : "doInit",
-                            "errors" : resp.getError()});
+                    "methodName" : "doInit",
+                    "errors" : resp.getError()});
                 appEvent.fire();
 
             }
@@ -193,11 +194,7 @@
         $A.util.addClass(mslpButton, 'noDisplayBar'); 
         $A.util.removeClass(avidiaLogo, 'noDisplay');  
         $A.util.removeClass(avidiaFooter, 'noDisplay');
-        $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');      
-
-       // $A.util.addClass(inputFormBox, 'boxMSLP');      
-
-                  
+        $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');                        
     }, 
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
@@ -216,13 +213,66 @@
         $A.util.addClass(avidiaLogo, 'noDisplay');  
         $A.util.addClass(avidiaFooter, 'noDisplay');    
         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');      
-
-        //$A.util.removeClass(inputFormBox, 'boxMSLP'); 
-                     
-           
     },         
 
+    openEmailCustomerModal: function(component, event, helper) {
+        var modalBackground = component.find('emailCustomerModalBackground');
+        $A.util.removeClass(modalBackground, 'slds-backdrop--hide');
+        $A.util.addClass(modalBackground, 'slds-backdrop--open');     
+        var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
+        evtCustomerWindow.setParams({"openModal": "openModal"});
+        evtCustomerWindow.fire();                
+    },   
 
+    closeEmailCustomerModal: function(component, event, helper) {
+        var modalToggle = event.getParam("closeModal");    
+        if (modalToggle == "closeModal") {
+            var modalBackground = component.find('emailCustomerModalBackground');
+            $A.util.removeClass(modalBackground, 'slds-backdrop--open');
+            $A.util.addClass(modalBackground, 'slds-backdrop--hide');    
+        }
+    },    
+
+    emailModalSelectMSLP: function(component, event, helper) {
+        $A.util.removeClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
+        $A.util.addClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav');
+        component.set("v.productProgram","mslp");                                        
+    },             
+
+    emailModalSelectBWSL: function(component, event, helper) {
+        $A.util.addClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
+        $A.util.removeClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav'); 
+        component.set("v.productProgram","bwsl");                                                       
+    },                    
+
+    sendCustomerApplication : function(component, event, helper) {
+        $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
+        helper.startSpinner(component, "emailSpinner");
+        var productProgram = component.get("v.productProgram");
+        var customerEmail = component.get("v.customerEmail");
+        var actionSendApp = component.get("c.sendApplication");    
+
+        actionSendApp.setParams({customerEmail : customerEmail,
+          productProgram : productProgram});  
+
+        actionSendApp.setCallback(this,function(resp){ 
+            if (resp.getState() == 'SUCCESS') {
+                helper.stopSpinner(component, "emailSpinner");
+                $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
+                var btn = event.getSource();
+                btn.set("v.disabled",true);
+                btn.set("v.label",'Email Sent!')             
+            } else {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "SLPAddCustomerController",
+                    "methodName" : "sendCustomerApplication",
+                    "errors" : resp.getError()});
+                appEvent.fire();
+                $A.log("Errors", resp.getError());                      
+            }
+        });                                                   
+        $A.enqueueAction(actionSendApp);               
+    },         
 
     
 })
