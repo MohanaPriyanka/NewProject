@@ -1,6 +1,9 @@
 .THIS .marginTop1p5 {
     padding-top: 1.5%;
 }
+.THIS .marginLeft {
+   padding-left: 5%;
+}
 .THIS .blueBackground {
     background:#266092;    
 }
