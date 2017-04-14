@@ -411,6 +411,7 @@ public class LoanTestRecordWarehouse {
                             Loan_Capital_Pool__c = capitalPool,
                             Loan_Tranche_Type__c = 'Standard',
                             Program__c = 'BlueWave Solar Loan',
+                            Debt_To_Income_Maximum__c = 50,
                             isActive = TRUE);
     }
 }
