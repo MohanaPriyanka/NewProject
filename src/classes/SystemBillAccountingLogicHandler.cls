@@ -106,6 +106,10 @@ public with sharing class SystemBillAccountingLogicHandler {
               trigsb.Late_Fees__c=0;
           } 
 
+          if ( trigsb.Adjustments__c ==NULL) {
+              trigsb.Adjustments__c=0;
+          } 
+
           if ( trigsb.Carry_Forward_Adjustments__c ==NULL) {
               trigsb.Carry_Forward_Adjustments__c=0;
           } 
@@ -121,11 +125,11 @@ public with sharing class SystemBillAccountingLogicHandler {
           if (currentbill == 1) {
 
             trigsb.Due_This_Month__c = dueThisMonth;
-            trigsb.Total_Due__c = dueThisMonth; 
+            trigsb.Total_Due__c = dueThisMonth + trigsb.Adjustments__c; 
             trigsb.Previous_Month_Overdue_Balance__c = 0 ;
             trigsb.Late_Fees__c = 0; 
             trigsb.Payment_Plan_Balance__c = 0;
-            trigsb.Adjustments__c = 0;                             
+          //  trigsb.Adjustments__c = 0;                             
             trigsb.Carry_Over_Balance__c = trigsb.Total_Due__c - trigsb.Total_Payments_This_Month__c;
 
             for (System_Bill__c pastbills : listsystemBills) {

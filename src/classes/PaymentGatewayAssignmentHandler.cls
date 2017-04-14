@@ -20,10 +20,10 @@ public with sharing class PaymentGatewayAssignmentHandler {
         assignNewGateway(newChargentOrders);
     }
     private void assignNewGateway(List<ChargentOrders__ChargentOrder__c> chOrderList) {
-        Map<Id,ChargentBase__Gateway__c> gatewayMap = new Map<Id,ChargentBase__Gateway__c>();
-        List<ChargentOrders__ChargentOrder__c> chOrderUpdateList = new List<ChargentOrders__ChargentOrder__c>();
-        List<ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List<ChargentOrders__ChargentOrder__c>();
-        List<ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List<ChargentOrders__ChargentOrder__c>();
+        Map <Id,ChargentBase__Gateway__c> gatewayMap = new Map <Id,ChargentBase__Gateway__c>();
+        List <ChargentOrders__ChargentOrder__c> chOrderUpdateList = new List <ChargentOrders__ChargentOrder__c>();
+        List <ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List <ChargentOrders__ChargentOrder__c>();
+        List <ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List <ChargentOrders__ChargentOrder__c>();
         system.debug(chOrderList);
        
         for (ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList) {
@@ -37,13 +37,13 @@ public with sharing class PaymentGatewayAssignmentHandler {
                                                               WHERE Id IN : chargentOrderIdList]) {
             chargentOrderAssignmentList.add(chargentOrder);
         }
+        
         for (ChargentBase__Gateway__c gatewayVar : [SELECT Id, Name, Entity_Id__c
                                                    FROM ChargentBase__Gateway__c 
-                                                   WHERE Shared_Solar_System__c != null]) {
+                                                   WHERE Entity__c != null]) {
             gatewayMap.put(gatewayVar.Entity_Id__c, gatewayVar);
-            system.debug(gatewayMap);
         }
-        system.debug(gatewayMap.size());
+
         if (gatewayMap.size()>0) {
             for (ChargentOrders__ChargentOrder__c chOrder : chargentOrderAssignmentList) {
                 //Shipping Last name is used because the FormAssembly connectors will only allow fields like these to map SSS ID and System Bill gets updated out of sequence.

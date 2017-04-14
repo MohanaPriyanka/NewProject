@@ -190,14 +190,12 @@ public with sharing class SystemBillPaymentRollUpHandler {
                   totalpayments = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c);
                   latefee =  maxbills.Total_Due__c - totalpayments;
                   earlypay = extrapayment - latefee;
-
-                  if (extrapayment > 0 && earlypay > 0 && latefee > 0){
-                    maxbills.Late_Fee_Payments__c = latefee;
-                    maxbills.Carry_Forward_Payments__c = extrapayment - latefee;
-                  } else if (extrapayment > 0 && latefee > 0) {
+                  if (latefee > 0) {
                     maxbills.Late_Fee_Payments__c = latefee;
                   }
-
+                  if (earlypay > 0) { 
+                    maxbills.Carry_Forward_Payments__c = earlypay;
+                  }
                   maxbills.Total_Payments_This_Month__c = totalpayments + extrapayment;
                   maxbills.Date_of_Last_Payment__c = myDate; 
               }
