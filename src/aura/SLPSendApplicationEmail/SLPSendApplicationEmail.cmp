@@ -47,7 +47,7 @@
   </style>     
       <aura:handler name="init" value="{!this}" action="{!c.doInit}" />         
       <div id="emailCustomerModal" aura:id="emailCustomerModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-hide box">
-        <div class="slds-modal__container">
+        <div aura:id="emailCustomerModal" class="slds-modal__container">
           <div class="slds-modal__header blueBackground">
             <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
               <span class="slds-assistive-text">Send Email</span>

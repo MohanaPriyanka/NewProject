@@ -946,5 +946,27 @@ public without sharing class SLPControllersTestclass {
             SLPAddCustomer.sendApplication('colemswain@gmail.com', 'bwsl');
         }
         Test.stopTest();
-    }                                                 
+    }    
+
+    @isTest static void testViewPreQualifiedRecordsExec() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCreditStatus.viewPreQualifiedRecords();
+        }
+        Test.stopTest();
+    }  
+
+    @isTest static void testViewPreQualifiedRecordsUser() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCreditStatus.viewPreQualifiedRecords();
+        }
+        Test.stopTest();
+    }                                                          
 }
