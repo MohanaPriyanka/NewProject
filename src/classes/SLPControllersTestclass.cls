@@ -236,31 +236,22 @@ public without sharing class SLPControllersTestclass {
     	);
     	insert newLead;
 
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+    	productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     	insert productList;
 
-		leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            LeadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
+        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Lead lead = [SELECT Id, LASER_Credit_Score__c 
+                     FROM Lead 
+                     WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals('710', lead.LASER_Credit_Score__c);
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }    
-        update leadList;
     	System.runAs(partnerUser) {
-    		partnerId = String.valueOf(partnerRecord.Id);    		
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-    		leadList.clear();
-    		partnerId = null;
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-            leadList.clear();               
-
-    		leadId = String.valueOf(newLead.Id);
-    		productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
-
+            productReturnList = SLPCreditStatus.getCustomerProducts(lead.Id);
+            System.assertEquals(2, productReturnList.size());
+            Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
+            SLPCreditStatus.sendApplication(lead.Id, prod, 12);
+            System.assertEquals(1, MessagingService.emailsSent.size());
+            
     	}
     	Test.stopTest();
     }
@@ -392,7 +383,7 @@ public without sharing class SLPControllersTestclass {
             leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
             leadList.clear();               
 
-            leadId = String.valueOf(newLead.Id);
+            leadId = String.valueOf(leadReturnList[0].Id);
             productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
 
         }

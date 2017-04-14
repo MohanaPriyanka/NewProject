@@ -81,7 +81,7 @@
     'Pre_Approval_Form__c':true,
     'Unfinished_Lead__c':true,
     'Utility_Bill_Access_Acknowledged__c':true,
-    'LASERCA__Birthdate__c':'1/1/1980',
+
     }"/>
 -->
 
@@ -174,57 +174,57 @@
               <ui:inputSelect aura:id="state" 
                               class="slds-input" 
                               value="{!v.newLead.LASERCA__Home_State__c}" >
-                <ui:inputSelectOption text="Select"/>                        
-                <ui:inputSelectOption text="AL"/>
-                <ui:inputSelectOption text="AK"/>
-                <ui:inputSelectOption text="AZ"/>
-                <ui:inputSelectOption text="AR"/>
-                <ui:inputSelectOption text="CA"/>
-                <ui:inputSelectOption text="CO"/>
-                <ui:inputSelectOption text="CT"/>
-                <ui:inputSelectOption text="DE"/>
-                <ui:inputSelectOption text="FL"/>
-                <ui:inputSelectOption text="GA"/>
-                <ui:inputSelectOption text="HI"/>
-                <ui:inputSelectOption text="ID"/>
-                <ui:inputSelectOption text="IL"/>
-                <ui:inputSelectOption text="IN"/>
-                <ui:inputSelectOption text="IA"/>
-                <ui:inputSelectOption text="KS"/>
-                <ui:inputSelectOption text="KY"/>
-                <ui:inputSelectOption text="LA"/>
-                <ui:inputSelectOption text="ME"/>
-                <ui:inputSelectOption text="MD"/>
-                <ui:inputSelectOption text="MA"/>
-                <ui:inputSelectOption text="MI"/>
-                <ui:inputSelectOption text="MN"/>
-                <ui:inputSelectOption text="MS"/>
-                <ui:inputSelectOption text="MO"/>
-                <ui:inputSelectOption text="MT"/>
-                <ui:inputSelectOption text="NE"/>
-                <ui:inputSelectOption text="NV"/>
-                <ui:inputSelectOption text="NH"/>
-                <ui:inputSelectOption text="NJ"/>
-                <ui:inputSelectOption text="NM"/>
-                <ui:inputSelectOption text="NY"/>
-                <ui:inputSelectOption text="NC"/>
-                <ui:inputSelectOption text="ND"/>
-                <ui:inputSelectOption text="OH"/>
-                <ui:inputSelectOption text="OK"/>
-                <ui:inputSelectOption text="OR"/>
-                <ui:inputSelectOption text="PA"/>
-                <ui:inputSelectOption text="RI"/>
-                <ui:inputSelectOption text="SC"/>
-                <ui:inputSelectOption text="SD"/>
-                <ui:inputSelectOption text="TN"/>
-                <ui:inputSelectOption text="TX"/>
-                <ui:inputSelectOption text="UT"/>
-                <ui:inputSelectOption text="VT"/>
-                <ui:inputSelectOption text="VA"/>
-                <ui:inputSelectOption text="WA"/>
-                <ui:inputSelectOption text="WV"/>
-                <ui:inputSelectOption text="WI"/>
-                <ui:inputSelectOption text="WY"/>
+                  <ui:inputSelectOption text="Select"/>                        
+                  <ui:inputSelectOption text="AK"/>
+                  <ui:inputSelectOption text="AL"/>
+                  <ui:inputSelectOption text="AR"/>
+                  <ui:inputSelectOption text="AZ"/>
+                  <ui:inputSelectOption text="CA"/>
+                  <ui:inputSelectOption text="CO"/>
+                  <ui:inputSelectOption text="CT"/>
+                  <ui:inputSelectOption text="DE"/>
+                  <ui:inputSelectOption text="FL"/>
+                  <ui:inputSelectOption text="GA"/>
+                  <ui:inputSelectOption text="HI"/>
+                  <ui:inputSelectOption text="IA"/>
+                  <ui:inputSelectOption text="ID"/>
+                  <ui:inputSelectOption text="IL"/>
+                  <ui:inputSelectOption text="IN"/>
+                  <ui:inputSelectOption text="KS"/>
+                  <ui:inputSelectOption text="KY"/>
+                  <ui:inputSelectOption text="LA"/>
+                  <ui:inputSelectOption text="MA"/>
+                  <ui:inputSelectOption text="MD"/>
+                  <ui:inputSelectOption text="ME"/>
+                  <ui:inputSelectOption text="MI"/>
+                  <ui:inputSelectOption text="MN"/>
+                  <ui:inputSelectOption text="MO"/>
+                  <ui:inputSelectOption text="MS"/>
+                  <ui:inputSelectOption text="MT"/>
+                  <ui:inputSelectOption text="NC"/>
+                  <ui:inputSelectOption text="ND"/>
+                  <ui:inputSelectOption text="NE"/>
+                  <ui:inputSelectOption text="NH"/>
+                  <ui:inputSelectOption text="NJ"/>
+                  <ui:inputSelectOption text="NM"/>
+                  <ui:inputSelectOption text="NV"/>
+                  <ui:inputSelectOption text="NY"/>
+                  <ui:inputSelectOption text="OH"/>
+                  <ui:inputSelectOption text="OK"/>
+                  <ui:inputSelectOption text="OR"/>
+                  <ui:inputSelectOption text="PA"/>
+                  <ui:inputSelectOption text="RI"/>
+                  <ui:inputSelectOption text="SC"/>
+                  <ui:inputSelectOption text="SD"/>
+                  <ui:inputSelectOption text="TN"/>
+                  <ui:inputSelectOption text="TX"/>
+                  <ui:inputSelectOption text="UT"/>
+                  <ui:inputSelectOption text="VA"/>
+                  <ui:inputSelectOption text="VT"/>
+                  <ui:inputSelectOption text="WA"/>
+                  <ui:inputSelectOption text="WI"/>
+                  <ui:inputSelectOption text="WV"/>
+                  <ui:inputSelectOption text="WY"/>
               </ui:inputSelect>
             </div>                  
             <div class="slds-form-element slds-p-horizontal--small">

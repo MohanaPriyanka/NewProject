@@ -17,7 +17,6 @@
         this.stopSpinner(component, "creditSpinner");
         window.clearInterval(component.get("v.creditStatusPoller"));
     },
-
     checkCreditStatus : function(component, helper) {
         var action = component.get("c.checkCreditStatus");
         action.setParams({"leadToQuery" : component.get("v.newLead")});
@@ -46,5 +45,18 @@
                 }
             });
         $A.enqueueAction(action);
+    },
+    // For some reason, using this pattern in a lighting:input type=date doesn't work
+    // Assumes dateString comes from ui:inputDate, which uses format yyyy-mm-dd
+    // only validates format xxxx-xx-xx, but we can add checks for numbers, leap years,
+    // etc.
+    // See http://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
+    validDate : function(dateString) {
+        // First check for the pattern
+        if (/^\d{4}\-\d{2}\-\d{2}$/.test(dateString)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 })
