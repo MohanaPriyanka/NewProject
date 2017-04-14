@@ -16,13 +16,15 @@ public without sharing class SLPUserHelper {
         public String salesRepId;
        
         public String licenseType;
+
+        public String partnerName; 
     }
 
     @AuraEnabled 
     public static PartnerProfile getPartnerProfile() {
         PartnerProfile partnerProfile = new PartnerProfile();
 
-        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
+        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, Contact.Partner_Lookup__r.Name,
                          PortalRole, Profile.Name, UserRole.Name  
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
@@ -40,6 +42,7 @@ public without sharing class SLPUserHelper {
              } else if (u.UserRole.Name.Contains('Executive')) {
                 partnerProfile.licenseType = 'Executive';
              }
+             partnerProfile.partnerName = u.Contact.Partner_Lookup__r.Name;             
         }
         return partnerProfile;
     }

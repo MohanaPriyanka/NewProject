@@ -1,5 +1,23 @@
 ({
     doInit : function(component, event, helper) {
+        var actionViewPreQualifiedRecords = component.get("c.viewPreQualifiedRecords");        
+        actionViewPreQualifiedRecords.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {     
+                var evt = $A.get("e.c:SLPNavigationBarAlertEvent");
+                evt.setParams({"pendingCustomersAlert": "false"});
+                evt.fire();                           
+            } else {
+                $A.log("Errors", resp.getError());   
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "SLPCreditStatus",
+                    "methodName" : "viewPreQualifiedRecords",
+                    "errors" : resp.getError()});
+                appEvent.fire();
+                $A.log("Errors", resp.getError());                               
+            }
+        });    
+        $A.enqueueAction(actionViewPreQualifiedRecords);          
+
         var getUrlParameter = function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
             sURLVariables = sPageURL.split('&'),

@@ -24,11 +24,20 @@
     font-family: proximaNovaFont;   
     font-size:100%;
     color: #266092;
-    }        
+    }   
     @font-face {
     font-family: proximaNovaFont;
     src: url('{!$Resource.ProximaNova}');
     }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }           
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }    
     .proximaNovaDataMountaintop {
     font-family: proximaNovaFont;   
     font-size:100%;

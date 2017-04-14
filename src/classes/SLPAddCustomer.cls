@@ -95,4 +95,56 @@ public without sharing class SLPAddCustomer {
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     
-}
+
+    @AuraEnabled 
+    public static String sendApplication (String customerEmail, String productProgram) {
+        System.debug('the productProgram is ' + productProgram);
+        String startApplicationUrl;
+        String customerName;
+        String mslpUrl;
+        String bwslUrl;
+        Boolean updateDummy;  
+        List<String> emailList = new List<String>();
+        Map<String, String> mslpUrlParametersMap = new Map<String, String>();
+        Map<String, String> bwslUrlParametersMap = new Map<String, String>();
+
+        emailList.add(customerEmail);
+        EmailTemplate template = [SELECT Id, HtmlValue, Body 
+                                  FROM EmailTemplate 
+                                  WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];    
+
+        mslpUrlParametersMap.put('648', (String)profile.partnerId);
+        mslpUrlParametersMap.put('649', (String)profile.salesRepId);
+        mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
+
+        bwslUrlParametersMap.put('648', (String)profile.partnerId);
+        bwslUrlParametersMap.put('649', (String)profile.salesRepId);
+        bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
+
+        if (productProgram == 'bwsl') {
+          startApplicationUrl = bwslUrl;       
+        } else if (productProgram == 'mslp') {
+          startApplicationUrl = mslpUrl;       
+        }        
+        String htmlBody = template.HtmlValue;
+        htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
+        htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setHtmlBody(htmlBody);
+        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
+                                           FROM OrgWideEmailAddress
+                                           WHERE Address LIKE '%info%' 
+                                           LIMIT 1]) {
+          mail.setOrgWideEmailAddressId(senderEmail.Id); 
+        }  
+        String emailSubject = 'BlueWave Solar Loan - Start your application here'; 
+        mail.setSubject(emailSubject);
+        mail.setToAddresses(emailList);
+        //mail.setTargetObjectId(lead.Id);
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
+        return customerName;
+      }     
+}    

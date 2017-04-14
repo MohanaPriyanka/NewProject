@@ -942,5 +942,18 @@ public without sharing class SLPControllersTestclass {
             testString = SLPUserHelper.getBWCCId();
         }
         Test.stopTest();
-    }                                            
+    }
+
+    @isTest static void testSLPSendApplicationEmail() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        String emailTest;
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'mslp');
+            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'bwsl');
+        }
+        Test.stopTest();
+    }                                                 
 }
