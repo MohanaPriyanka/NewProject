@@ -91,10 +91,35 @@ public without sharing class SLPControllersTestclass {
     		Unfinished_Lead__c = true,
     		Utility_Bill_Access_Acknowledged__c = true 		
     	);
+        List<Lead> leadList;
+
+        System.assertEquals(SLPAddCustomer.getCreditCheckTimeout(), 60000);
     	System.runAs(partnerUser) {
-    		SLPAddCustomer.addNewLeadRecord(newLead);
+            SLPAddCustomer.addNewLeadRecord(newLead);
+
+            leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
+                        FROM Lead
+                        WHERE LastName = 'Swain'];
+            System.assertEquals(leadList.size(), 1);
+            System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+
+            SLPAddCustomer.pullCreditStatus(leadList[0]);
+            
+            // Laser Credit Access trigger should unset the pull credit report checkbox
+            leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
+                                   FROM Lead
+                                   WHERE LastName = 'Swain'];            
+            System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
     	}
     	Test.stopTest();
+
+        // LCA should set pull credit once the future method fires
+        List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
+                                                         FROM LASERCA__Personal_Credit_Report__c
+                                                         WHERE LASERCA__Lead__c = :leadList[0].Id];
+        System.assertEquals(pcrs.size(), 1);
+
+        System.assertEquals(SLPAddCustomer.checkCreditStatus(leadList[0]), 'Unqualified');
     }
 
     @isTest static void testAlertsHandlerUser() {
@@ -211,31 +236,22 @@ public without sharing class SLPControllersTestclass {
     	);
     	insert newLead;
 
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+    	productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     	insert productList;
 
-		leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            LeadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
+        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Lead lead = [SELECT Id, LASER_Credit_Score__c 
+                     FROM Lead 
+                     WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals('710', lead.LASER_Credit_Score__c);
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }    
-        update leadList;
     	System.runAs(partnerUser) {
-    		partnerId = String.valueOf(partnerRecord.Id);    		
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-    		leadList.clear();
-    		partnerId = null;
-    		leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
-            leadList.clear();               
-
-    		leadId = String.valueOf(newLead.Id);
-    		productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
-
+            productReturnList = SLPCreditStatus.getCustomerProducts(lead.Id);
+            System.assertEquals(2, productReturnList.size());
+            Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
+            SLPCreditStatus.sendApplication(lead.Id, prod, 12);
+            System.assertEquals(1, MessagingService.emailsSent.size());
+            
     	}
     	Test.stopTest();
     }
@@ -367,7 +383,7 @@ public without sharing class SLPControllersTestclass {
             leadList = SLPCreditStatus.getLeads(searchValue, partnerId);
             leadList.clear();               
 
-            leadId = String.valueOf(newLead.Id);
+            leadId = String.valueOf(leadReturnList[0].Id);
             productReturnList = SLPCreditStatus.getCustomerProducts(leadId);
 
         }

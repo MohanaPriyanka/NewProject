@@ -7,11 +7,31 @@
  * Test: LoanServicerTest
  *************************************************************************************/
 
-public with sharing class LoanServicer {
+public with sharing class LoanServicer implements Database.Batchable<sObject>, Database.Stateful {
     private LoanPaymentRepo repo;
+    private List<SObject> loansToService = new List<SObject>();
+    private Boolean handleInsert;
+    private String log = '';
 
     public LoanServicer() {
-        repo = new LoanPaymentRepo();
+        this.repo = new LoanPaymentRepo();
+    }
+
+    public LoanServicer(List<SObject> loans, Boolean handleInsert) {
+        this.repo = new LoanPaymentRepo();
+        this.loansToService = loans;
+        this.handleInsert = handleInsert;
+    }
+
+    public List<SObject> start(Database.BatchableContext BC) {
+        return loansToService;
+    }
+
+    public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
+        createNewLoanPayments((List<Loan__c>) scope, handleInsert);
+    }
+
+    public void finish(Database.BatchableContext batchableContext) {
     }
 
     // Expects to be called before update to prevent loan parameters from being changed
@@ -30,9 +50,18 @@ public with sharing class LoanServicer {
     // Expects to be called after loan insert or update. If a loan isn't locked down,
     // we're safe to delete and re-create loan payments on loan update.
     public void createNewLoanPayments() {
-        for (Loan__c loan : (List<Loan__c>) Trigger.new) {
+        createNewLoanPayments((List<Loan__c>) Trigger.new, Trigger.isInsert);
+    }
+
+    
+    // Expose a method that can be called from Anonymous Apex to make it easier to load
+    // existing loan data. In that case, we can make it look like existing loans are newly 
+    // inserted and not delete any existing loan payments.
+    public void createNewLoanPayments(List<Loan__c> loans, Boolean handleInsert) {
+        repo.init();
+        for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
-                if (Trigger.isInsert) {
+                if (handleInsert) {
                     repo.registerProduct(loan);
                 } else if (!loanLocked(loan) &&
                            loanParamsUpdated(loan)) {
@@ -42,9 +71,9 @@ public with sharing class LoanServicer {
         }
         repo.queryProducts();
 
-        for (Loan__c loan : (List<Loan__c>) Trigger.new) {
+        for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
-                if (Trigger.isInsert) {
+                if (handleInsert) {
                     repo.createLoanPayments(loan);
                 } else if (!loanLocked(loan) &&
                            loanParamsUpdated(loan)) {
@@ -103,6 +132,9 @@ public with sharing class LoanServicer {
         private Map<Id, Product2> productMap;
         
         public LoanPaymentRepo() {
+        }
+
+        public void init() {
             loanIdstoDeleteLPs = new Set<Id>();
             loanPaymentsToCreate = new List<Loan_Payment__c>();
             productIds = new Set<Id>();
@@ -156,17 +188,17 @@ public with sharing class LoanServicer {
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
                 Decimal interestPayment = -loanPayment.Funds_Distributed__c * params.monthlyRate;
-                loanPayment.Interest_Payment__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
-                loanPayment.Principal_Payment__c = 0;
+                loanPayment.Interest_Due__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
+                loanPayment.Principal_Due__c = 0;
             } else {
-                loanPayment.Interest_Payment__c = Excel.ipmtRounded((Double) params.monthlyRate, 
-                                                                    monthIndex + 1, 
-                                                                    params.monthsOfPI, 
-                                                                    (Double) loanPayment.Funds_Distributed__c);
-                loanPayment.Principal_Payment__c = Excel.ppmtRounded((Double) params.monthlyRate, 
-                                                                     monthIndex + 1,
-                                                                     params.monthsOfPI, 
-                                                                     (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Interest_Due__c = Excel.ipmtRounded((Double) params.monthlyRate, 
+                                                                monthIndex + 1, 
+                                                                params.monthsOfPI, 
+                                                                (Double) loanPayment.Funds_Distributed__c);
+                loanPayment.Principal_Due__c = Excel.ppmtRounded((Double) params.monthlyRate, 
+                                                                 monthIndex + 1,
+                                                                 params.monthsOfPI, 
+                                                                 (Double) loanPayment.Funds_Distributed__c);
             }
             return loanPayment;
         }
@@ -187,9 +219,7 @@ public with sharing class LoanServicer {
         }
 
         public void insertLoanPayments() {
-            if (loanPaymentsToCreate.size() > 0) {
-                insert loanPaymentsToCreate;
-            }
+            insert loanPaymentsToCreate;
         }
 
         public void updateLoanPaymentsWithPrior() {

@@ -111,7 +111,7 @@ public with sharing class LoanServicerTest {
         insert loan;
         
         List<Loan_Payment__c> loanPayments = [SELECT Id, Period__c,
-                                              Funds_Distributed__c, Interest_Payment__c, Principal_Payment__c
+                                              Funds_Distributed__c, Interest_Due__c, Principal_Due__c
                                               FROM Loan_Payment__c
                                               WHERE Loan__c = : loan.Id];
         System.assertEquals(132, loanPayments.size());
@@ -121,8 +121,8 @@ public with sharing class LoanServicerTest {
         for (Loan_Payment__c loanPayment : loanPayments) {
             period = loanPayment.Period__c.intValue();
             System.assertEquals(answerMap.get(period).FundsDistributed, loanPayment.Funds_Distributed__c);
-            System.assertEquals(answerMap.get(period).PrincipalDue, loanPayment.Principal_Payment__c);
-            System.assertEquals(answerMap.get(period).InterestDue, loanPayment.Interest_Payment__c);
+            System.assertEquals(answerMap.get(period).PrincipalDue, loanPayment.Principal_Due__c);
+            System.assertEquals(answerMap.get(period).InterestDue, loanPayment.Interest_Due__c);
         }
 
         Product2 mslp20Yr = [SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
@@ -133,7 +133,7 @@ public with sharing class LoanServicerTest {
         update loan;
 
         loanPayments = [SELECT Id, Period__c,
-                        Funds_Distributed__c, Interest_Payment__c, Principal_Payment__c
+                        Funds_Distributed__c, Interest_Due__c, Principal_Due__c
                         FROM Loan_Payment__c
                         WHERE Loan__c = : loan.Id];
         System.assertEquals(232, loanPayments.size());
@@ -142,8 +142,8 @@ public with sharing class LoanServicerTest {
         for (Loan_Payment__c loanPayment : loanPayments) {
             period = loanPayment.Period__c.intValue();
             System.assertEquals(answerMap.get(period).FundsDistributed, loanPayment.Funds_Distributed__c);
-            System.assertEquals(answerMap.get(period).InterestDue, loanPayment.Interest_Payment__c);
-            System.assertEquals(answerMap.get(period).PrincipalDue, loanPayment.Principal_Payment__c);
+            System.assertEquals(answerMap.get(period).InterestDue, loanPayment.Interest_Due__c);
+            System.assertEquals(answerMap.get(period).PrincipalDue, loanPayment.Principal_Due__c);
         }
 
         Test.stopTest();

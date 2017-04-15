@@ -18,12 +18,20 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
     if(Trigger.isInsert && Trigger.isAfter){        
         loanHandler.OnAfterInsert(Trigger.new);
         jsonLoanPaymentHandler.OnAfterInsert(Trigger.new);
-        loanServicer.createNewLoanPayments();
+        if (Trigger.new.size() > 50) {
+            Database.executeBatch(new LoanServicer(Trigger.new, Trigger.IsInsert));
+        } else {
+            loanServicer.createNewLoanPayments();
+        }
     }
 
     if (Trigger.isUpdate && Trigger.isAfter) {
         jsonLoanPaymentHandler.OnAfterUpdate(Trigger.new, Trigger.oldMap);
-        loanServicer.createNewLoanPayments();
+        if (Trigger.new.size() > 50) {
+            Database.executeBatch(new LoanServicer(Trigger.new, Trigger.IsInsert));
+        } else {
+            loanServicer.createNewLoanPayments();
+        }
     }
 
     if (Trigger.isUpdate && Trigger.isBefore) {
