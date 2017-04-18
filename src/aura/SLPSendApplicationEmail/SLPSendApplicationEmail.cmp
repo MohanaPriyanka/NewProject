@@ -47,7 +47,7 @@
   </style>     
       <aura:handler name="init" value="{!this}" action="{!c.doInit}" />         
       <div id="emailCustomerModal" aura:id="emailCustomerModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-hide box">
-        <div aura:id="emailCustomerModal" class="slds-modal__container">
+        <div aura:id="emailCustomerModal2" class="slds-modal__container">
           <div class="slds-modal__header blueBackground">
             <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
               <span class="slds-assistive-text">Send Email</span>
@@ -61,7 +61,6 @@
                   <li aura:id="mslpEmailInput" class="slds-tabs--default__item slds-tabs--scoped__nav" role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="-1" aria-selected="true" onclick="{!c.emailModalSelectMSLP}">MA Solar Loan Program</a></li>
                 </aura:if>
                 <li aura:id="bwslEmailInput" class="slds-tabs--default__item " role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="0" aria-selected="false"  onclick="{!c.emailModalSelectBWSL}">BlueWave Solar Loan</a></li>
-                <lightning:icon aura:id="emailIcon" class="marginTop1p5 marginLeft" iconName="utility:email" size="small"/>
                 </ul>
               <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
                 <div id="mslpEmailInput" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-2__item">

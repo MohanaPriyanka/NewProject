@@ -31,14 +31,14 @@ openEmailCustomerModal: function(component, event, helper) {
             }
         });    
         $A.enqueueAction(actionPartnerRecord);    
-    var modalToggle = event.getParam("openModal");    
-    if (modalToggle == "openModal") {        
-        var modal = component.find('emailCustomerModal');
-        $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");
-        $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");                                    
-        $A.util.removeClass(modal, 'slds-fade-in-hide');
-        $A.util.addClass(modal, 'slds-fade-in-open');     
-    }           
+        var modalToggle = event.getParam("openModal");    
+        if (modalToggle == "openModal") {        
+            var modal = component.find('emailCustomerModal');
+            $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");
+            $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");                                    
+            $A.util.removeClass(modal, 'slds-fade-in-hide');
+            $A.util.addClass(modal, 'slds-fade-in-open');     
+        }           
 },   
 
 closeEmailCustomerModal: function(component, event, helper) {
