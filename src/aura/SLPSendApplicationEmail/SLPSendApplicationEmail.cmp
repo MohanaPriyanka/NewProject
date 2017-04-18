@@ -1,0 +1,90 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
+  <aura:attribute name="partnerRecord" type="Object" />
+  <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>  
+  <aura:attribute name="productProgram" type="String" />
+  <aura:attribute name="customerEmail" type="String" />
+  <ltng:require styles="{!$Resource.animations}" />    
+  <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.openEmailCustomerModal}" />  
+  <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/>     
+    
+  <style>
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataBlue {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #266092;
+    }        
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataMountaintop {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #7C98AB;
+    }         
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaWhite {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+    }           
+  </style>     
+      <aura:handler name="init" value="{!this}" action="{!c.doInit}" />         
+      <div id="emailCustomerModal" aura:id="emailCustomerModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-hide box">
+        <div aura:id="emailCustomerModal2" class="slds-modal__container">
+          <div class="slds-modal__header blueBackground">
+            <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
+              <span class="slds-assistive-text">Send Email</span>
+            </button>
+            <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite "> Send Customer Application</h2>
+          </div>                
+          <div class="slds-modal__content slds-p-around--medium">
+            <div class="slds-tabs--default">
+              <ul class="slds-tabs--default__nav" role="tablist">
+                <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item slds-tabs--scoped__nav" role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="-1" aria-selected="true" onclick="{!c.emailModalSelectMSLP}">MA Solar Loan Program</a></li>
+                </aura:if>
+                <li aura:id="bwslEmailInput" class="slds-tabs--default__item " role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="0" aria-selected="false"  onclick="{!c.emailModalSelectBWSL}">BlueWave Solar Loan</a></li>
+                </ul>
+              <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+                <div id="mslpEmailInput" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-2__item">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label proximaNovaDataStream" >Enter the customer's email address</label>
+                    <ui:inputText aura:id="emailMSLP" class="slds-input" value="{!v.customerEmail}" />          
+                  </div> 
+                </div>
+              </aura:if>              
+              <div id="bwslEmailInput" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+                <div class="slds-form-element slds-p-horizontal--small">
+                  <label class="slds-form-element__label proximaNovaDataStream" >Enter the Customer's email address</label>
+                  <ui:inputText aura:id="emailBWSL" class="slds-input" value="{!v.customerEmail}" />          
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="slds-modal__footer">
+           <div aura:id="sendEmailModalButtons">
+            <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>
+            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.sendCustomerApplication}" label="Send"></lightning:button>
+          </div>
+          <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+        </div>
+      </div>
+    </div>	
+</aura:component>

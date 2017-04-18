@@ -16,7 +16,27 @@
             }
         });    
         $A.enqueueAction(actionLicenseType);
-        
+
+        var actionGetUnseenPreQualRecords = component.get("c.getAnyUnseenLeads");        
+        actionGetUnseenPreQualRecords.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                if (resp.getReturnValue() == true) {
+                    var pendingCustomersButton = component.find("slpcreditstatus");   
+                    pendingCustomersButton.set("v.iconName","utility:record");
+                    $A.util.addClass(pendingCustomersButton, "animated pulse ");   
+
+                    pendingCustomersButton.set("v.iconPosition","right");                 
+                } else {
+                    var pendingCustomersButton = component.find("slpcreditstatus");                       
+                    pendingCustomersButton.set("v.iconName",null);
+                    pendingCustomersButton.set("v.iconPosition",null);                    
+                }
+            }    
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });    
+        $A.enqueueAction(actionGetUnseenPreQualRecords);                  
     },
 
     hideDisplay : function(component, event, helper) {
@@ -26,6 +46,29 @@
 
     navigate : function(component, event, helper) {
         window.location.href = "/slportal/s/" + event.getSource().getLocalId();
-    }
+    },
+    
+    openSendCustomerEmail: function(component, event, helper) {
+        var modalBackground = component.find('emailCustomerModalBackground');
+        $A.util.removeClass(modalBackground, 'slds-backdrop--hide');
+        $A.util.addClass(modalBackground, 'slds-backdrop--open');          
+        var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
+        evtCustomerWindow.setParams({"openModal": "openModal"});
+        evtCustomerWindow.fire();                
+    },
 
+    closeEmailCustomerModal: function(component, event, helper) {
+        var modalToggle = event.getParam("closeModal");    
+        if (modalToggle == "closeModal") {
+            var modalBackground = component.find('emailCustomerModalBackground');
+            $A.util.removeClass(modalBackground, 'slds-backdrop--open');
+            $A.util.addClass(modalBackground, 'slds-backdrop--hide');    
+        }
+    },  
+         
+    setPendingCustomersAlert: function(component, event, helper) {
+        var pendingCustomersButton = component.find("slpcreditstatus");      
+        pendingCustomersButton.set("v.iconName", null);
+        pendingCustomersButton.set("v.iconPosition", null)                 
+    },    
 })

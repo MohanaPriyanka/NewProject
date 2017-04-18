@@ -194,7 +194,7 @@ public without sharing class SLPControllersTestclass {
             partnerAlertRecord = SLPAlertsHandler.getPartnerAlert(alertId);
         }
         Test.stopTest();
-    }    
+    }     
 
     @isTest static void testCreditStatus1() {
     	Test.startTest();
@@ -240,7 +240,7 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        Lead lead = [SELECT Id, LASER_Credit_Score__c 
+        Lead lead = [SELECT Id, LASER_Credit_Score__c, Email
                      FROM Lead 
                      WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
         System.assertEquals('710', lead.LASER_Credit_Score__c);
@@ -693,6 +693,10 @@ public without sharing class SLPControllersTestclass {
                                                            Mechanically_Installed__c, Interconnected__c, Module_Model_Number__c, Module_Manufacturer__c, 
                                                            Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                         FROM Residential_Equipment__c];
+        //Set the equipment name to a value greater than 80 characters for code coverage                                                    
+        equipmentList.get(0).Module_Manufacturer__c = 'SolarEdgeSolarEdgeSolarEdgeSolarEdgeSolarEdge';
+        equipmentList.get(0).Inverter_Manufacturer__c = 'SolarWorldSolarWorldSolarWorld';
+        update equipmentList.get(0);
 
 		loanId = String.valueOf(loanList.get(0).Id);        	
 		equipmentId = String.valueOf(equipmentList.get(0).Id);
@@ -933,5 +937,62 @@ public without sharing class SLPControllersTestclass {
             testString = SLPUserHelper.getBWCCId();
         }
         Test.stopTest();
-    }                                            
+    }
+
+    @isTest static void testSLPSendApplicationEmail() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        String emailTest;
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'mslp');
+            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'bwsl');
+        }
+        Test.stopTest();
+    }    
+
+    @isTest static void testViewPreQualifiedRecordsExec() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCreditStatus.viewPreQualifiedRecords();
+        }
+        Test.stopTest();
+    }  
+
+    @isTest static void testViewPreQualifiedRecordsUser() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCreditStatus.viewPreQualifiedRecords();
+        }
+        Test.stopTest();
+    }         
+
+    @isTest static void testGetAnyUnseenRecordsExec() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCustomerHandler.getAnyUnseenLeads();
+        }
+        Test.stopTest();
+    }  
+
+    @isTest static void testGetAnyUnseenRecordsUser() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCustomerHandler.getAnyUnseenLeads();
+        }
+        Test.stopTest();
+    }                                                         
 }

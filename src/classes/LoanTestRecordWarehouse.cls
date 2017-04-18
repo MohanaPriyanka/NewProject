@@ -70,6 +70,7 @@ public class LoanTestRecordWarehouse {
         List<Lead> leadList = new List<Lead>();
         Lead leadMALoanTerm10Rate699 = new lead(FirstName = 'leadMALoanTerm10Rate699',
                                                 LastName = 'Test',
+                                                Email = 'cole.swain@yahoo.com',
                                                 Loan_Amount__c = 35000,
                                                 Company = 'Cole Swain',
                                                 Product_Line__c = 'Residential Loan',
@@ -294,7 +295,9 @@ public class LoanTestRecordWarehouse {
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
-                                    Status = 'Ready for Credit Check');
+                                    Status = 'Ready for Credit Check',
+                                    Viewed_by_Partner_Admin__c = false,
+                                    Viewed_by_Partner_Agent__c = false);
         Lead leadRecordSelfEmployed = new lead(FirstName = 'SelfEmployed',
                                     LastName = 'Test',
                                     Loan_Amount__c = 25000,
@@ -315,7 +318,9 @@ public class LoanTestRecordWarehouse {
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
-                                    Status = 'Ready for Credit Check');        
+                                    Status = 'Ready for Credit Check',
+                                    Viewed_by_Partner_Admin__c = false,
+                                    Viewed_by_Partner_Agent__c = false);        
         Lead leadRecordDOER = new Lead(FirstName = 'DOER',
                                        LastName = 'Test',
                                        Loan_Amount__c = 25000,
@@ -339,7 +344,9 @@ public class LoanTestRecordWarehouse {
                                        Status = 'Ready for Credit Check',
                                        Technical_Approval_Verified__c = true,
                                        Income_Verified__c = true,
-                                       Is_there_a_Partner_Record__c = true);
+                                       Is_there_a_Partner_Record__c = true,
+                                       Viewed_by_Partner_Admin__c = false,
+                                       Viewed_by_Partner_Agent__c = false);
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);

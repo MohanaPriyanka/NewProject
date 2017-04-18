@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCreditStatus" access="global">
-	<aura:attribute name="allCustomers" type="Object"  />   
+  <ltng:require styles="{!$Resource.animations}" />
+  <aura:attribute name="allCustomers" type="Object"  />   
   <aura:attribute name="allProducts" type="Object"  />   
   <aura:attribute name="leadId" type="String" />
   <aura:attribute name="productId" type="String" />  
@@ -8,8 +9,9 @@
   <aura:attribute name="formId" type="String" />    
   <aura:attribute name="selectedCustomer" type="Object"  />   
 	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
+  <aura:registerEvent name="setNavBarPendingCustomerAlert" type="c:SLPNavigationBarAlertEvent"/>   
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <style>
         @font-face {
         font-family: proximaNovaFont;
