@@ -70,106 +70,53 @@
     <br /><br />
     <b><h3 class="proximaNova"> Current Balance Due: </h3></b>           
     <div><h2 class="myBill proximaNovaBlack "><ui:outputCurrency value="{!v.myBill}" /></h2><br /><br /><br /><br /> </div> 
-    <div><a href="{!'https://forms.bluewaverenewables.com/381491?tfa_10=' + v.myBill + '&amp;' +                      
-                      'tfa_113=' + v.accountId + '&amp;' +
-                  	  'tfa_169=' + v.myBill + '&amp;' +
-                  	  'tfa_229=' + v.parentAccountId + '&amp;' + 
-                      'tfa_115=' + v.SystemBills[0].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_117=' + v.SystemBills[1].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_119=' + v.SystemBills[2].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_121=' + v.SystemBills[3].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_123=' + v.SystemBills[4].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_125=' + v.SystemBills[5].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_127=' + v.SystemBills[6].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_129=' + v.SystemBills[7].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_131=' + v.SystemBills[8].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_133=' + v.SystemBills[9].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_367=' + v.SystemBills[10].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_371=' + v.SystemBills[11].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_376=' + v.SystemBills[12].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_381=' + v.SystemBills[13].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=388' + v.SystemBills[14].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=392' + v.SystemBills[15].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=397' + v.SystemBills[16].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=402' + v.SystemBills[17].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=407' + v.SystemBills[18].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=412' + v.SystemBills[19].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=417' + v.SystemBills[20].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=432' + v.SystemBills[21].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=422' + v.SystemBills[22].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_=427' + v.SystemBills[23].Carry_Over_Balance__c + '&amp;' + 
-                      'tfa_138=' + v.SystemBills[0].Id + '&amp;' + 
-                      'tfa_156=' + v.SystemBills[1].Id + '&amp;' + 
-                      'tfa_142=' + v.SystemBills[2].Id + '&amp;' + 
-                      'tfa_150=' + v.SystemBills[3].Id + '&amp;' + 
-                      'tfa_152=' + v.SystemBills[4].Id + '&amp;' + 
-                      'tfa_148=' + v.SystemBills[5].Id + '&amp;' + 
-                      'tfa_140=' + v.SystemBills[6].Id + '&amp;' + 
-                      'tfa_154=' + v.SystemBills[7].Id + '&amp;' + 
-                      'tfa_144=' + v.SystemBills[8].Id + '&amp;' + 
-                      'tfa_135=' + v.SystemBills[9].Id + '&amp;' +
-					  'tfa_369=' + v.SystemBills[10].Id + '&amp;' + 
-                      'tfa_373=' + v.SystemBills[11].Id + '&amp;' + 
-                      'tfa_378=' + v.SystemBills[12].Id + '&amp;' + 
-                      'tfa_385=' + v.SystemBills[13].Id + '&amp;' + 
-                      'tfa_383=' + v.SystemBills[14].Id + '&amp;' + 
-                      'tfa_394=' + v.SystemBills[15].Id + '&amp;' + 
-                      'tfa_399=' + v.SystemBills[16].Id + '&amp;' + 
-                      'tfa_404=' + v.SystemBills[17].Id + '&amp;' + 
-                      'tfa_409=' + v.SystemBills[18].Id + '&amp;' + 
-                      'tfa_414=' + v.SystemBills[19].Id + '&amp;' +
-                      'tfa_419=' + v.SystemBills[20].Id + '&amp;' + 
-                      'tfa_433=' + v.SystemBills[21].Id + '&amp;' + 
-                      'tfa_424=' + v.SystemBills[22].Id + '&amp;' + 
-                      'tfa_435=' + v.SystemBills[23].Id + '&amp;' +
-                      'tfa_278=' + v.SystemBills[0].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_280=' + v.SystemBills[1].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_282=' + v.SystemBills[2].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_284=' + v.SystemBills[3].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_286=' + v.SystemBills[4].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_288=' + v.SystemBills[5].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_290=' + v.SystemBills[6].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_292=' + v.SystemBills[7].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_294=' + v.SystemBills[8].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_296=' + v.SystemBills[9].Shared_Solar_System__r.Id + '&amp;' +  
-                      'tfa_494=' + v.SystemBills[10].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_496=' + v.SystemBills[11].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_498=' + v.SystemBills[12].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_500=' + v.SystemBills[13].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_502=' + v.SystemBills[14].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_504=' + v.SystemBills[15].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_506=' + v.SystemBills[16].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_508=' + v.SystemBills[17].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_510=' + v.SystemBills[18].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_512=' + v.SystemBills[19].Shared_Solar_System__r.Id + '&amp;' +  
-                      'tfa_514=' + v.SystemBills[20].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_516=' + v.SystemBills[21].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_518=' + v.SystemBills[22].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_520=' + v.SystemBills[23].Shared_Solar_System__r.Id + '&amp;' + 
-                  	  'tfa_198=' + v.SystemBills[0].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_200=' + v.SystemBills[1].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_202=' + v.SystemBills[2].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_204=' + v.SystemBills[3].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_206=' + v.SystemBills[4].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_208=' + v.SystemBills[5].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_210=' + v.SystemBills[6].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_212=' + v.SystemBills[7].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_214=' + v.SystemBills[8].FormAssembly_Order_Helper__c + '&amp;' + 
-                      'tfa_216=' + v.SystemBills[9].FormAssembly_Order_Helper__c + '&amp;' +
-                  	  'tfa_466=' + v.SystemBills[10].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_468=' + v.SystemBills[11].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_470=' + v.SystemBills[12].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_472=' + v.SystemBills[13].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_474=' + v.SystemBills[14].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_476=' + v.SystemBills[15].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_478=' + v.SystemBills[16].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_480=' + v.SystemBills[17].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_482=' + v.SystemBills[18].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_484=' + v.SystemBills[19].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_486=' + v.SystemBills[20].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_488=' + v.SystemBills[21].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_490=' + v.SystemBills[22].FormAssembly_Order_Helper__c + '&amp;' +
-                      'tfa_492=' + v.SystemBills[23].FormAssembly_Order_Helper__c + '&amp;'}"     
+    <div><a href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
+                  	  'tfa_799=' + v.myBill + '&amp;' +
+                  
+                  	  'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
+                  	  'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
+                  	  'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
+                  	  'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
+                  
+                      'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
+                  	  'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
+                      'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
+                  	  'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
+                  
+                  	  'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
+                  	  'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
+                      'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
+                  	  'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
+                                        
+                      'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
+                  	  'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
+                      'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
+                  	  'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
+                  
+                      'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
+                  	  'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
+                      'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
+                  	  'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
+                  
+                      'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
+                  	  'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
+                      'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
+                  	  'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
+                  
+                      'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
+                  	  'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
+                      'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
+                  	  'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
+                  
+                      'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
+                  	  'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
+                      'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
+                  	  'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
+                  
+                  	  'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
+                  	  'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
+                      'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
+                  	  'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}"     
             
                 target="_blank">
         <div aura:id="paymentButton" class="proximaNovaWhite notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Make a payment</div>
