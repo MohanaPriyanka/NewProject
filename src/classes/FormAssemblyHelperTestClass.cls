@@ -1,7 +1,7 @@
 @isTest
 public class FormAssemblyHelperTestClass {
 
-    @isTest static void testAddNewLeadRecord() {    	
+    @isTest static void testFormAssemblyHelper() {    	
         String url;
         String formId;        
         Map<String, String> formTestMap = new Map<String, String>();
