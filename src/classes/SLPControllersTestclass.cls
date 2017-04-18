@@ -194,7 +194,7 @@ public without sharing class SLPControllersTestclass {
             partnerAlertRecord = SLPAlertsHandler.getPartnerAlert(alertId);
         }
         Test.stopTest();
-    }    
+    }     
 
     @isTest static void testCreditStatus1() {
     	Test.startTest();
@@ -693,6 +693,10 @@ public without sharing class SLPControllersTestclass {
                                                            Mechanically_Installed__c, Interconnected__c, Module_Model_Number__c, Module_Manufacturer__c, 
                                                            Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                         FROM Residential_Equipment__c];
+        //Set the equipment name to a value greater than 80 characters for code coverage                                                    
+        equipmentList.get(0).Module_Manufacturer__c = 'SolarEdgeSolarEdgeSolarEdgeSolarEdgeSolarEdge';
+        equipmentList.get(0).Inverter_Manufacturer__c = 'SolarWorldSolarWorldSolarWorld';
+        update equipmentList.get(0);
 
 		loanId = String.valueOf(loanList.get(0).Id);        	
 		equipmentId = String.valueOf(equipmentList.get(0).Id);
@@ -968,5 +972,27 @@ public without sharing class SLPControllersTestclass {
             SLPCreditStatus.viewPreQualifiedRecords();
         }
         Test.stopTest();
-    }                                                          
+    }         
+
+    @isTest static void testGetUnseenRecordsExec() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCustomerHandler.getUnseenLeads();
+        }
+        Test.stopTest();
+    }  
+
+    @isTest static void testGetUnseenRecordsUser() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPCustomerHandler.getUnseenLeads();
+        }
+        Test.stopTest();
+    }                                                         
 }
