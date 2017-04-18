@@ -82,7 +82,6 @@ public without sharing class LoanHandler{
                 if (newOpp.Id == oldOpp.Id){
                     if (newOpp.StageName == 'Complete' 
                         && oldOpp.StageName != 'Complete' 
-                        && !newOpp.Submitted_to_First_Associates__c
                         && newOpp.Product_Line__c == 'Residential Loan'){
                         System.debug('newOpp ID is ' + newOpp.Id);
                         opportunityIds.add(newOpp.Id);                       
@@ -386,8 +385,7 @@ public without sharing class LoanHandler{
         for (Opportunity oppRecord : updatedOppList) {
             if (newOppMap.get(oppRecord.Id).StageName == 'Complete' 
                 && oldOppMap.get(oppRecord.Id).StageName != ' Complete'
-                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan'
-                && !newOppMap.get(oppRecord.Id).Submitted_to_First_Associates__c) {
+                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan') {
                     disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
             }
         }
