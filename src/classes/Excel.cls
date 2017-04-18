@@ -84,11 +84,6 @@ public with sharing class Excel {
         return ipmt(r, per, nper, pv, 0);
     }
 
-    static public Decimal ipmtRounded(Double r, Integer per, Integer nper, Double pv) {
-        Decimal d = (Decimal) ipmt(r, per, nper, pv, 0);
-        return d.setScale(2, RoundingMode.HALF_UP);
-    }
-	 
     /**
      * Emulates Excel/Calc's PPMT(interest_rate, period, number_payments, PV,
      * FV, Type) function, which calculates the portion of the payment at a
@@ -123,11 +118,6 @@ public with sharing class Excel {
         return pmt(r, nper, pv) - ipmt(r, per, nper, pv);
     }
 
-    static public Decimal ppmtRounded(Double r, Integer per, Integer nper, Double pv) {
-        Decimal d = (Decimal) pmt(r, nper, pv) - ipmt(r, per, nper, pv);
-        return d.setScale(2, RoundingMode.HALF_UP);
-    }
-	
     /**
      * Emulates Excel/Calc's FV(interest_rate, number_payments, payment, PV,
      * Type) function, which calculates future value or principal at period N.

@@ -15,7 +15,7 @@
 
 public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Database.Stateful {
     
-    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert'};
+    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete'};
     public String dmlOperation;
     public List<SObject> sobjList = new List<SObject>();
     public String log = '';
@@ -35,11 +35,12 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
     public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
         Database.SaveResult[] srList = new Database.SaveResult[]{};
         Database.UpsertResult[] urList = new Database.UpsertResult[]{};
+        Database.deleteResult[] drLIst = new Database.DeleteResult[]{};
         if (dmlOperation == 'Insert') {
             srList = Database.insert(scope, false);
-        } else if(dmlOperation == 'Update') {
+        } else if (dmlOperation == 'Update') {
             srList = Database.update(scope, false);
-        } else if(dmlOperation == 'Upsert') {
+        } else if (dmlOperation == 'Upsert') {
             // Unfortunately, upsert with a field specification requires a concrete SObject type,
             // so this isn't quite Generic.
             // https://success.salesforce.com/ideaView?id=08730000000aNhVAAU
@@ -50,6 +51,8 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
             } else {
                 urList = Database.upsert(scope, false);
             }
+        } else if (dmlOperation == 'Delete') {
+            drList = Database.delete(scope, false);
         }
         for (Integer i = 0; i < srList.size(); i++) {
             if (!srList[i].isSuccess()) {
@@ -65,6 +68,14 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
                     scope.getSObjectType().getDescribe().getName() + ' and id: ' +
                     scope[i].Id + '. Error msg = ' +
                     urList[i].getErrors()[0].getMessage();
+            }
+        }
+        for (Integer i = 0; i < drList.size(); i++) {
+            if (!drList[i].isSuccess()) {
+                this.log += '\nError in Batch DML ' + dmlOperation + ' Execution for object: ' +
+                    scope.getSObjectType().getDescribe().getName() + ' and id: ' +
+                    scope[i].Id + '. Error msg = ' +
+                    drList[i].getErrors()[0].getMessage();
             }
         }
     }   

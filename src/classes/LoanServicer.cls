@@ -47,6 +47,20 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
         }
     }
 
+    // Since the DML Record limit is 10,000 and LoanServicer can process up to three records
+    // for each Loan Payment (a delete, insert, and update), we want to calculate the biggest
+    // batch size for this list
+    public static Integer getBatchSize(List<Loan__c> loanList) {
+        Decimal maxTerm = 1;
+        for (Loan__c loan : loanList) {
+            if (loan.Term__c > maxterm) {
+                maxTerm = loan.Term__c;
+            }
+        }
+        Decimal dmlRecords = (10000/(maxTerm*3)).setScale(0, System.RoundingMode.FLOOR);
+        return Integer.valueOf(dmlRecords);
+    }
+
     // Expects to be called after loan insert or update. If a loan isn't locked down,
     // we're safe to delete and re-create loan payments on loan update.
     public void createNewLoanPayments() {
@@ -150,12 +164,16 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
         public void createLoanPayments(Loan__c loan) {
             LoanParams params = new LoanParams(loan, productMap);
 
+            Loan_Payment__c priorLP =null;
+            Loan_Payment__c currentLP = null;
             for (Integer period = 0; period < getLoanTermPlusIO(loan.Product__c); period++) {
-                loanPaymentsToCreate.add(createLP(period, loan, params));
+                currentLP = createLP(period, loan, params, priorLP);
+                loanPaymentsToCreate.add(currentLP);
+                priorLP = currentLP;
             }
         }
 
-        private Loan_Payment__c createLP(Integer period, Loan__c loan, LoanParams params) {
+        private Loan_Payment__c createLP(Integer period, Loan__c loan, LoanParams params, Loan_Payment__c priorLP) {
             Integer monthIndex;
             Integer payFirstDistribution, paySecondDistribution;
             Boolean isInterestOnly = false, isLastPeriod = false;
@@ -182,24 +200,31 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             loanPayment.Loan__c = loan.Id;
             loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
+            loanPayment.Payment_Due_Date2__c = 
+                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period);
+
+
             loanPayment.Funds_Distributed__c = 
                 (params.loanAmount*params.firstDistribution+params.Fees)*payFirstDistribution+
                 params.loanAmount*params.secondDistribution*paySecondDistribution;
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
-                Decimal interestPayment = -loanPayment.Funds_Distributed__c * params.monthlyRate;
-                loanPayment.Interest_Due__c = interestPayment.setScale(2, RoundingMode.HALF_UP);
-                loanPayment.Principal_Due__c = 0;
+                loanPayment.Amort_Interest_Due__c = loanPayment.Funds_Distributed__c * params.monthlyRate;
+                loanPayment.Amort_Principal_Due__c = 0;
             } else {
-                loanPayment.Interest_Due__c = Excel.ipmtRounded((Double) params.monthlyRate, 
+                loanPayment.Amort_Interest_Due__c = -Excel.ipmt((Double) params.monthlyRate, 
                                                                 monthIndex + 1, 
                                                                 params.monthsOfPI, 
                                                                 (Double) loanPayment.Funds_Distributed__c);
-                loanPayment.Principal_Due__c = Excel.ppmtRounded((Double) params.monthlyRate, 
+                loanPayment.Amort_Principal_Due__c = -Excel.ppmt((Double) params.monthlyRate, 
                                                                  monthIndex + 1,
                                                                  params.monthsOfPI, 
                                                                  (Double) loanPayment.Funds_Distributed__c);
             }
+            loanPayment.Amort_Cumulative_Principal__c = 
+                priorLP==null?0:(priorLP.Amort_Cumulative_Principal__c + priorLP.Amort_Principal_Due__c);
+            loanPayment.Amort_Starting_Principal__c = 
+                loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
             return loanPayment;
         }
 
@@ -207,11 +232,13 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             loanIdsToDeleteLPs.add(loan.Id);
         }
 
+        // Only delete loan payments that weren't manually created
         public void deleteLoanPayments() {
             if (loanIdsToDeleteLPs.size() > 0) {
                 List<Loan_Payment__c> loanPayments = [SELECT Id
                                                       FROM Loan_Payment__c
-                                                      WHERE Loan__c in :loanIdsToDeleteLPs];
+                                                      WHERE Loan__c in :loanIdsToDeleteLPs
+                                                      AND Period__c != null];
                 if (loanPayments.size() > 0) {
                     delete loanPayments;
                 }
