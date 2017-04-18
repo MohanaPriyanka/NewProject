@@ -17,7 +17,7 @@
         });    
         $A.enqueueAction(actionLicenseType);
 
-        var actionGetUnseenPreQualRecords = component.get("c.getUnseenLeads");        
+        var actionGetUnseenPreQualRecords = component.get("c.getAnyUnseenLeads");        
         actionGetUnseenPreQualRecords.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 if (resp.getReturnValue() == true) {

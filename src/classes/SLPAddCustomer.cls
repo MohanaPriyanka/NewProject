@@ -144,7 +144,7 @@ public without sharing class SLPAddCustomer {
         mail.setSubject(emailSubject);
         mail.setToAddresses(emailList);
         //mail.setTargetObjectId(lead.Id);
-        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
+        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});        
         return customerName;
       }     
 }    

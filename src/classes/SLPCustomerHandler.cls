@@ -275,7 +275,7 @@ public without sharing class SLPCustomerHandler {
   }
   
   @AuraEnabled 
-  public static Boolean getUnseenLeads () {
+  public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();
     List<Lead> leadsNotViewedByAgentList = new List<Lead>();
 

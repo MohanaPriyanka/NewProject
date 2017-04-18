@@ -974,24 +974,24 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();
     }         
 
-    @isTest static void testGetUnseenRecordsExec() {
+    @isTest static void testGetAnyUnseenRecordsExec() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
         Test.startTest();               
 
         System.runAs(partnerUser) {
-            SLPCustomerHandler.getUnseenLeads();
+            SLPCustomerHandler.getAnyUnseenLeads();
         }
         Test.stopTest();
     }  
 
-    @isTest static void testGetUnseenRecordsUser() {
+    @isTest static void testGetAnyUnseenRecordsUser() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
         Test.startTest();               
 
         System.runAs(partnerUser) {
-            SLPCustomerHandler.getUnseenLeads();
+            SLPCustomerHandler.getAnyUnseenLeads();
         }
         Test.stopTest();
     }                                                         
