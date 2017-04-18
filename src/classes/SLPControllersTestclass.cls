@@ -240,7 +240,7 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        Lead lead = [SELECT Id, LASER_Credit_Score__c 
+        Lead lead = [SELECT Id, LASER_Credit_Score__c, Email
                      FROM Lead 
                      WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
         System.assertEquals('710', lead.LASER_Credit_Score__c);
@@ -960,7 +960,7 @@ public without sharing class SLPControllersTestclass {
     }  
 
     @isTest static void testViewPreQualifiedRecordsUser() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com@gmail.com'];
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
         Test.startTest();               
 
