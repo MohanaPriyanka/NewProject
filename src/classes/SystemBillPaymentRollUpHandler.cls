@@ -187,16 +187,21 @@ public with sharing class SystemBillPaymentRollUpHandler {
               }
 
               if (paymentsmap.containsKey(maxbills.Opportunity_Id__c)) {
-                  totalpayments = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c);
-                  latefee =  maxbills.Total_Due__c - totalpayments;
-                  earlypay = extrapayment - latefee;
+                  totalpayments = maxbills.Total_Payments_This_Month__c + paymentsmap.get(maxbills.Opportunity_Id__c)+extrapayment;
+                  earlypay =  totalpayments - maxbills.Total_Due__c;
+
+                  if (earlypay < 0) {
+                      earlypay = 0;
+                  }
+                  latefee = extrapayment - earlypay;
+                  
                   if (latefee > 0) {
                     maxbills.Late_Fee_Payments__c = latefee;
                   }
                   if (earlypay > 0) { 
                     maxbills.Carry_Forward_Payments__c = earlypay;
                   }
-                  maxbills.Total_Payments_This_Month__c = totalpayments + extrapayment;
+                  maxbills.Total_Payments_This_Month__c = totalpayments;
                   maxbills.Date_of_Last_Payment__c = myDate; 
               }
             }
