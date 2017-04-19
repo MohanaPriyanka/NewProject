@@ -7,23 +7,30 @@
  * Test: LoanServicerTest
  *************************************************************************************/
 
-public with sharing class LoanServicer implements Database.Batchable<sObject>, Database.Stateful {
+public without sharing class LoanServicer implements Database.Batchable<sObject>, Database.Stateful {
+    public Boolean anyLoansToService;
     private LoanPaymentRepo repo;
     private List<SObject> loansToService = new List<SObject>();
     private Boolean handleInsert;
     private String log = '';
 
-    public LoanServicer() {
+    public LoanServicer(List<Loan__c> loans, Map<Id, Loan__c> triggerOldMap, Boolean handleInsert) {
         this.repo = new LoanPaymentRepo();
-    }
-
-    public LoanServicer(List<SObject> loans, Boolean handleInsert) {
-        this.repo = new LoanPaymentRepo();
-        this.loansToService = loans;
+        // We want to service all inserts, but only those that have params updated on update
+        if (handleInsert) {
+            this.loansToService = loans;
+        } else {
+            for (Loan__c loan :  loans) {
+                if (loanParamsUpdated(loan, triggerOldMap)) {
+                    this.loansToService.add(loan);
+                }
+            }
+        }
+        anyLoansToService = !loansToService.isEmpty();
         this.handleInsert = handleInsert;
     }
 
-    public List<SObject> start(Database.BatchableContext BC) {
+    public List<SObject> start(Database.BatchableContext bc) {
         return loansToService;
     }
 
@@ -39,8 +46,8 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
     // If the loan change is valid, the existing Loan Payments would be deleted and
     // recreated
     public void validateLoanChange() {
-        for (Loan__c loan : (List<Loan__c>) Trigger.new) {
-            if (loanLocked(loan) && loanParamsUpdated(loan)) {
+        for (Loan__c loan : (List<Loan__c>) loansToService) {
+            if (loanLocked(loan)) {
                 loan.addError('Cannot update Product, Commencement date, or System Cost ' +
                               'for a Loan that is Complete or Contract Pending');
             }
@@ -64,21 +71,18 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
     // Expects to be called after loan insert or update. If a loan isn't locked down,
     // we're safe to delete and re-create loan payments on loan update.
     public void createNewLoanPayments() {
-        createNewLoanPayments((List<Loan__c>) Trigger.new, Trigger.isInsert);
+        createNewLoanPayments(loansToService, handleInsert);
     }
 
     
-    // Expose a method that can be called from Anonymous Apex to make it easier to load
-    // existing loan data. In that case, we can make it look like existing loans are newly 
-    // inserted and not delete any existing loan payments.
+    // Expose a method that can be called from a batch to to process loans
     public void createNewLoanPayments(List<Loan__c> loans, Boolean handleInsert) {
         repo.init();
         for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
                 if (handleInsert) {
                     repo.registerProduct(loan);
-                } else if (!loanLocked(loan) &&
-                           loanParamsUpdated(loan)) {
+                } else if (!loanLocked(loan)) {
                     repo.registerProduct(loan);
                 }
             }
@@ -89,8 +93,7 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             if (populatedForLPCreation(loan)) {
                 if (handleInsert) {
                     repo.createLoanPayments(loan);
-                } else if (!loanLocked(loan) &&
-                           loanParamsUpdated(loan)) {
+                } else if (!loanLocked(loan)) {
                     repo.deleteLoanPaymentsForLoan(loan);
                     repo.createLoanPayments(loan);
                 }
@@ -119,49 +122,40 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
         }
     }
 
-    private Boolean loanParamsUpdated(Loan__c loan) {
-        Map<Id, Loan__c> triggerOldMap = (Map<Id, Loan__c>) Trigger.oldMap;
-        if (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
-            loan.Commencement_Datee__c != triggerOldMap.get(loan.Id).Commencement_Datee__c ||
-            loan.System_Costt__c != triggerOldMap.get(loan.Id).System_Costt__c) {
+    private Boolean loanParamsUpdated(Loan__c loan, Map<Id, Loan__c> triggerOldMap) {
+        if (triggerOldMap != null &&
+            (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
+             loan.Commencement_Datee__c != triggerOldMap.get(loan.Id).Commencement_Datee__c ||
+             loan.System_Costt__c != triggerOldMap.get(loan.Id).System_Costt__c)) {
             return true;
         } else {
             return false;
         }
     } 
 
-    private Boolean requiresLoanPaymentRecalc(Loan__c loan) {
-        if (!loanLocked(loan) &&
-            loanParamsUpdated(loan)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public class LoanPaymentRepo {
+    private class LoanPaymentRepo {
         private Set<Id> loanIdstoDeleteLPs;
         private List<Loan_Payment__c> loanPaymentsToCreate;
         private Set<Id> productIds;
         private Map<Id, Product2> productMap;
         
-        public LoanPaymentRepo() {
+        private LoanPaymentRepo() {
         }
 
-        public void init() {
+        private void init() {
             loanIdstoDeleteLPs = new Set<Id>();
             loanPaymentsToCreate = new List<Loan_Payment__c>();
             productIds = new Set<Id>();
             productMap = new Map<Id, Product2>();
         }
 
-        public void executeDML() {
+        private void executeDML() {
             deleteLoanPayments();
             insertLoanPayments();
             updateLoanPaymentsWithPrior();
         }
 
-        public void createLoanPayments(Loan__c loan) {
+        private void createLoanPayments(Loan__c loan) {
             LoanParams params = new LoanParams(loan, productMap);
 
             Loan_Payment__c priorLP =null;
@@ -228,12 +222,12 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             return loanPayment;
         }
 
-        public void deleteLoanPaymentsForLoan(Loan__c loan) {
+        private void deleteLoanPaymentsForLoan(Loan__c loan) {
             loanIdsToDeleteLPs.add(loan.Id);
         }
 
         // Only delete loan payments that weren't manually created
-        public void deleteLoanPayments() {
+        private void deleteLoanPayments() {
             if (loanIdsToDeleteLPs.size() > 0) {
                 List<Loan_Payment__c> loanPayments = [SELECT Id
                                                       FROM Loan_Payment__c
@@ -245,11 +239,11 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             }
         }
 
-        public void insertLoanPayments() {
+        private void insertLoanPayments() {
             insert loanPaymentsToCreate;
         }
 
-        public void updateLoanPaymentsWithPrior() {
+        private void updateLoanPaymentsWithPrior() {
             List<Loan_Payment__c> lpsWithPrior = new List<Loan_Payment__c>();
             for (Loan_Payment__c loanPayment : loanPaymentsToCreate) {
                 if (loanPayment.Period__c > 0) {
@@ -265,17 +259,17 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             }
         }
 
-        public String getPriorUniqueID(Loan_Payment__c currentLP) {
+        private String getPriorUniqueID(Loan_Payment__c currentLP) {
             // Unique ID is Loan_Number__c|Period
             String loanNumber = currentLP.Unique_Id__c.substringBefore('|');
             return loanNumber + '|' + (currentLP.Period__c - 1);
         }
 
-        public void registerProduct(Loan__c loan) {
+        private void registerProduct(Loan__c loan) {
             productIds.add(loan.Product__c);
         }
 
-        public void queryProducts() {
+        private void queryProducts() {
             List<Product2> products = [SELECT Id, Loan_Interest_Only_Period__c, Loan_Interest_Rate__c, 
                                        Loan_Term__c, Disbursal_Terms__c
                                        FROM Product2
@@ -285,7 +279,7 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
             }
         }
 
-        public Integer getLoanTermPlusIO(Id productId) {
+        private Integer getLoanTermPlusIO(Id productId) {
             Product2 product = productMap.get(productId);
             if (product != null) {
                 return (product.Loan_Interest_Only_Period__c.intValue() +
@@ -296,15 +290,15 @@ public with sharing class LoanServicer implements Database.Batchable<sObject>, D
         }
     }
 
-    public class LoanParams {
-        public Product2 product;
-        public Integer firstDistributionMonth, secondDistributionMonth;
-        public Integer monthsOfPI, monthsOfIO, loanTerm;
-        public Decimal loanAmount, fees, loanAmountPlusFees;
-        public Decimal annualRate, monthlyRate;
-        public Decimal firstDistribution, secondDistribution;
+    private class LoanParams {
+        private Product2 product;
+        private Integer firstDistributionMonth, secondDistributionMonth;
+        private Integer monthsOfPI, monthsOfIO, loanTerm;
+        private Decimal loanAmount, fees, loanAmountPlusFees;
+        private Decimal annualRate, monthlyRate;
+        private Decimal firstDistribution, secondDistribution;
 
-        public LoanParams(Loan__c loan, Map<Id, Product2> productMap) {
+        private LoanParams(Loan__c loan, Map<Id, Product2> productMap) {
             product = productMap.get(loan.Product__c);
             if (product == null) {
                 throw new LoanProductException('No product (' + loan.Product__c + 

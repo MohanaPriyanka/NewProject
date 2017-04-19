@@ -139,13 +139,4 @@ public with sharing class Excel {
         Double fv = -(pv * Math.pow(1 + r, nper) + pmt * (1+r*type) * (Math.pow(1 + r, nper) - 1) / r);
         return fv;
     }
-	
-    /**
-     * Overloaded fv() call omitting type, which defaults to 0.
-     * 
-     * @see #fv(double, int, double, double, int)
-     */
-    static public Double fv(Double r, Integer nper, Double c, Double pv) {
-        return fv(r, nper, c, pv, 0);
-    }
 }
