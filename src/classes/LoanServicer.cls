@@ -331,7 +331,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             }
 
             fees = loan.Financing_Fee__c==null?0:loan.Financing_Fee__c;
-            loanAmount = loan.System_Costt__c - fees;
+            loanAmount = loan.Principal__c - fees;
             loanAmountPlusFees = loanAmount + fees;
             annualRate = product.Loan_Interest_Rate__c==null?0:product.Loan_Interest_Rate__c/100;
             monthlyRate = annualRate / 12;
