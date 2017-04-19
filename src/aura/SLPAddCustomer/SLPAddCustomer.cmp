@@ -1,11 +1,16 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
-  <aura:attribute name="partnerRecord" type="Object" />
+  <ltng:require styles="{!$Resource.animations}" />   
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
+  <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/> 
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+  <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.closeEmailCustomerModal}" />       
+  <aura:attribute name="partnerRecord" type="Object" />
   <aura:attribute name="creditStatusText" type="String"/>
   <aura:attribute name="creditStatusErrorText" type="String"/>
   <aura:attribute name="creditStatusPoller" type="Integer"/>
   <aura:attribute name="creditStatusTimeout" type="Integer"/>
-
+  <aura:attribute name="productProgram" type="String" />
+  <aura:attribute name="customerEmail" type="String" />
   <style>
     @font-face {
     font-family: proximaNovaFont;
@@ -24,16 +29,34 @@
     font-family: proximaNovaFont;   
     font-size:100%;
     color: #266092;
-    }        
+    }   
     @font-face {
     font-family: proximaNovaFont;
     src: url('{!$Resource.ProximaNova}');
     }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }           
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }    
     .proximaNovaDataMountaintop {
     font-family: proximaNovaFont;   
     font-size:100%;
     color: #7C98AB;
-    }              
+    } 
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaWhite {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+    }                   
   </style> 
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
@@ -84,18 +107,22 @@
 
     }"/>
 -->
-
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-  <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-    <div aura:id="mslpAppButton"  class=" paddingBottom1 paddingTop1x5 noDisplayBar">
-      <ui:button label=" Go to MSLP Application" class="slds-button slds-button--brand marginBottom25" press="{!c.changeApplicationToMSLP}">
-      </ui:button>
-    </div>         
-    <div aura:id="bwslAppButton" class="paddingBottom1 paddingTop1x5">
-      <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
-      </ui:button>
-    </div>
-  </aura:if>
+  <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
+      <div aura:id="customerEmailButton"> 
+        <ui:button label="Email Customer Application"
+         class="slds-button slds-button--brand marginBottom25"
+         press="{!c.openEmailCustomerModal}"/> 
+       </div>  
+       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+        <div aura:id="mslpAppButton"  class=" paddingBottom1 paddingTop1x5 noDisplayBar">
+          <ui:button label=" Go to MSLP Application" class="slds-button slds-button--brand marginBottom25" press="{!c.changeApplicationToMSLP}">
+          </ui:button>
+        </div>         
+        <div aura:id="bwslAppButton" class="paddingBottom1 paddingTop1x5">
+          <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
+          </ui:button>
+        </div>
+      </aura:if>
   <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">                      
     <div aura:id="mslpDisclaimer" class="box">
       <p class="marginAround marginTop proximaNovaDataBlue">

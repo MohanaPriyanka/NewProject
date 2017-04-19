@@ -27,7 +27,6 @@ public without sharing class SLPCustomerHandler {
     String loanQuery = 'SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)  ' ;
     loanQuery += '      FROM Loan__c' ; 
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';   
-    leadQuery += '      AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
     if (profile.LicenseType != 'Executive') {
       loanQuery += '    AND Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';      
     } 
@@ -274,4 +273,42 @@ public without sharing class SLPCustomerHandler {
     }
     update leadRecord;
   }
+  
+  @AuraEnabled 
+  public static Boolean getAnyUnseenLeads () {
+    List<Lead> leadsNotViewedByAdminList = new List<Lead>();
+    List<Lead> leadsNotViewedByAgentList = new List<Lead>();
+
+    String leadQuery = 'SELECT Id, Viewed_by_Partner_Admin__c, Viewed_by_Partner_Agent__c' ;
+    leadQuery += '   FROM Lead' ;    
+    leadQuery += '   WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
+    leadQuery += '   AND Product_Line__c = \'' + 'Residential Loan' + '\' ';
+
+    if (profile.LicenseType != 'Executive') {
+      leadQuery += '    AND bs_Sales_ID__r.Id  =  \'' + profile.salesRepId +  '\' ';            
+    }
+    for(Lead leadRecord : Database.query(leadQuery)){
+      if (!leadRecord.Viewed_by_Partner_Admin__c) {
+        leadsNotViewedByAdminList.add(leadRecord);
+      } 
+      if (!leadRecord.Viewed_by_Partner_Agent__c) {
+        leadsNotViewedByAgentList.add(leadRecord);
+      }       
+    } 
+    if (profile.LicenseType == 'Executive') {
+      if (!leadsNotViewedByAdminList.isEmpty()) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (profile.LicenseType == 'User') {
+        if (!leadsNotViewedByAgentList.isEmpty()) {
+          return true;
+        } else {
+          return false;
+        }
+    } else {
+      return false;
+    }              
+  }   
 }
