@@ -106,7 +106,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     private Boolean populatedForLPCreation(Loan__c loan) {
         if (loan.Product__c != null &&
             loan.Commencement_Datee__c != null &&
-            loan.System_Costt__c > 0) {
+            loan.Principal__c > 0) {
             return true;
         } else {
             return false;
@@ -126,7 +126,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         if (triggerOldMap != null &&
             (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
              loan.Commencement_Datee__c != triggerOldMap.get(loan.Id).Commencement_Datee__c ||
-             loan.System_Costt__c != triggerOldMap.get(loan.Id).System_Costt__c)) {
+             loan.Financing_Fee__c != triggerOldMap.get(loan.Id).Financing_Fee__c ||
+             loan.Principal__c != triggerOldMap.get(loan.Id).Principal__c)) {
             return true;
         } else {
             return false;
