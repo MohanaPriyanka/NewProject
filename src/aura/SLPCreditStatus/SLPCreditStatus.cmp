@@ -12,6 +12,8 @@
   <aura:registerEvent name="setNavBarPendingCustomerAlert" type="c:SLPNavigationBarAlertEvent"/>   
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <ltng:require styles="{!$Resource.animations}" />    
+  
     <style>
         @font-face {
         font-family: proximaNovaFont;
