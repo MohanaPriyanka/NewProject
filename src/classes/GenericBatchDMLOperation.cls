@@ -13,7 +13,7 @@
  * Tested By: PostSandboxRefresherTest
  *************************************************************************************/
 
-public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Database.Stateful {
+public without sharing class GenericBatchDMLOperation implements Database.Batchable<sObject>,Database.Stateful {
     
     public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete'};
     public String dmlOperation;
@@ -28,18 +28,16 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
         }
     }
 
-    public List<SObject> start(Database.BatchableContext BC) {
+    public List<SObject> start(Database.BatchableContext bc) {
         return sobjList;
     }
    
     public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
-        Database.SaveResult[] srList = new Database.SaveResult[]{};
-        Database.UpsertResult[] urList = new Database.UpsertResult[]{};
-        Database.deleteResult[] drLIst = new Database.DeleteResult[]{};
+        GenericResult[] resultList;
         if (dmlOperation == 'Insert') {
-            srList = Database.insert(scope, false);
+            resultList = saveResult2GR(Database.insert(scope, false));
         } else if (dmlOperation == 'Update') {
-            srList = Database.update(scope, false);
+            resultList = saveResult2GR(Database.update(scope, false));
         } else if (dmlOperation == 'Upsert') {
             // Unfortunately, upsert with a field specification requires a concrete SObject type,
             // so this isn't quite Generic.
@@ -47,38 +45,22 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
             // Added upsert with externalID for EnergyUsageUpdateTriggerHandler
             if (scope.getSObjectType().getDescribe().getName() == 'Utility_Account_Bill__c') {
                 Schema.SObjectField externalId = Utility_Account_Bill__c.Unique_Id__c;
-                urList = Database.upsert((List<Utility_Account_Bill__c>) scope, externalId, false);
+                resultList = upsertResult2GR(Database.upsert((List<Utility_Account_Bill__c>) scope, externalId, false));
             } else {
-                urList = Database.upsert(scope, false);
+                resultList = upsertResult2GR(Database.upsert(scope, false));
             }
         } else if (dmlOperation == 'Delete') {
-            drList = Database.delete(scope, false);
+            resultList = deleteResult2GR(Database.delete(scope, false));
         }
-        for (Integer i = 0; i < srList.size(); i++) {
-            if (!srList[i].isSuccess()) {
+        for (Integer i = 0; i < resultList.size(); i++) {
+            if (!resultList[i].isSuccess()) {
                 this.log += '\nError in Batch DML ' + dmlOperation + ' Execution for object: ' +
                     scope.getSObjectType().getDescribe().getName() + ' and id: ' +
                     scope[i].Id + '. Error msg = ' +
-                    srList[i].getErrors()[0].getMessage();
+                    resultList[i].getErrors()[0].getMessage();
             }
         }
-        for (Integer i = 0; i < urList.size(); i++) {
-            if (!urList[i].isSuccess()) {
-                this.log += '\nError in Batch DML ' + dmlOperation + ' Execution for object: ' +
-                    scope.getSObjectType().getDescribe().getName() + ' and id: ' +
-                    scope[i].Id + '. Error msg = ' +
-                    urList[i].getErrors()[0].getMessage();
-            }
-        }
-        for (Integer i = 0; i < drList.size(); i++) {
-            if (!drList[i].isSuccess()) {
-                this.log += '\nError in Batch DML ' + dmlOperation + ' Execution for object: ' +
-                    scope.getSObjectType().getDescribe().getName() + ' and id: ' +
-                    scope[i].Id + '. Error msg = ' +
-                    drList[i].getErrors()[0].getMessage();
-            }
-        }
-    }   
+    }
     
     public void finish(Database.BatchableContext batchableContext) {
         String emailErrorsTo;
@@ -98,6 +80,58 @@ public class GenericBatchDMLOperation implements Database.Batchable<sObject>,Dat
             email.setSubject('Error in Batch DML process!');
             email.setPlainTextBody(this.log);
             MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
+        }
+    }
+
+    // https://salesforce.stackexchange.com/questions/125880/do-the-result-objects-in-database-have-a-common-ancestor
+    public List<GenericResult> saveResult2GR(List<Database.SaveResult> resultList) {
+        List<GenericResult> genericResultList = new List<GenericResult>();
+        for (Database.SaveResult result : resultList) {
+            genericResultList.add(new GenericResult(result));
+        }
+        return genericResultList;
+    }
+    public List<GenericResult> upsertResult2GR(List<Database.UpsertResult> resultList) {
+        List<GenericResult> genericResultList = new List<GenericResult>();
+        for (Database.UpsertResult result : resultList) {
+            genericResultList.add(new GenericResult(result));
+        }
+        return genericResultList;
+    }
+    public List<GenericResult> deleteresult2GR(List<Database.DeleteResult> resultList) {
+        List<GenericResult> genericResultList = new List<GenericResult>();
+        for (Database.DeleteResult result : resultList) {
+            genericResultList.add(new GenericResult(result));
+        }
+        return genericResultList;
+    }
+
+    public class GenericResult
+    {
+        final Id recordId;
+        final List<Database.Error> errors;
+        final Boolean isSuccess;
+        public Id getId() { return recordId; }
+        public List<Database.Error> getErrors() { return errors; }
+        public Boolean isSuccess() {return isSuccess; }
+
+        public GenericResult(Id recordId, List<Database.Error> errors, Boolean success)
+        {
+            this.recordId = recordId;
+            this.errors = (errors != null) ? errors : new List<Database.Error>();
+            this.isSuccess = success;
+        }
+        public GenericResult(Database.SaveResult result)
+        {
+            this(result.getId(), result.getErrors(), result.isSuccess());
+        }
+        public GenericResult(Database.UpsertResult result)
+        {
+            this(result.getId(), result.getErrors(), result.isSuccess());
+        }
+        public GenericResult(Database.DeleteResult result)
+        {
+            this(result.getId(), result.getErrors(), result.isSuccess());
         }
     }
 }

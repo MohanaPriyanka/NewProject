@@ -54,7 +54,7 @@
             var progressBarToggle = component.find("progressBar");
             var interconnectionToggle = component.find("interconnection");            
             var completeToggle = component.find("complete");       
-            var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
+            var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
 
             if(resp.getState() == 'SUCCESS') {
                 if(mslpVar == false) {                    
@@ -466,7 +466,7 @@
         });        
         $A.enqueueAction(partnerTaskList);  
         
-        var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
             helper.getProgressBarData(component, event, helper);
         }else {
@@ -513,7 +513,7 @@
         });                
         $A.enqueueAction(customerInformationAction);
         
-        var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
             helper.getProgressBarData(component, event, helper);
         }else {
@@ -575,7 +575,7 @@
                   
         $A.enqueueAction(incompleteLoanDisbursals);    
         
-        var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
             helper.getProgressBarData(component, event, helper);
         }else {
