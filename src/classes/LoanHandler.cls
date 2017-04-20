@@ -906,7 +906,6 @@ public without sharing class LoanHandler{
         List<Partner_Task__c> validatedTaskListDuplicatesRemoved = new List<Partner_Task__c>();
         validatedTaskListDuplicatesRemoved.addAll(validatedTaskSet);
         update validatedTaskListDuplicatesRemoved; //update the subtasks
-
         //run through this method twice because the child tasks have to be updated before the parent tasks in order to qualify for completion.
         updatePartnerParentTaskStatus(taskMap); //update the Parent SubTasks
         updatePartnerParentTaskStatus(taskMap); //update the Parent Tasks
@@ -917,7 +916,6 @@ public without sharing class LoanHandler{
         //System.debug('the taskMap is ' + taskMap);
         String taskUniqueId;
         String customerIncomeType;
-        System.debug('The TaskMap is ' + taskMap);
         List<Id> leadIdList = new List<Id>();
         List<String> loanIdList = new List<String>();
         List<Attachment> payStubList = new List<Attachment>();
@@ -943,11 +941,9 @@ public without sharing class LoanHandler{
                                             FROM Attachment
                                             WHERE Description != null AND ParentId IN : leadIdList]){
             for (String customerIncomeLeadId : customerIncomeTypeMap.keySet()){
-
                 if(customerIncomeLeadId == incomeAttachment.ParentId){
-
                     if(customerIncomeTypeMap.get(customerIncomeLeadId) == 'Standard'){
-                        if(incomeAttachment.Description.contains('PayStub')){
+                        if(incomeAttachment.Description.contains('Paystub')){
                             taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
                             taskMap.get(taskUniqueId).Status__c = 'Complete';
                             taskMap.get(taskUniqueId).Completion_Date__c = Date.today();  
