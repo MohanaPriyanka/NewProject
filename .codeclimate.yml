@@ -77,4 +77,3 @@ exclude_paths:
   - "**.xorghub"
   - "**.globalPicklist"
   - "**.translation"
-  
