@@ -147,6 +147,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private List<Loan_Payment__c> loanPaymentsToCreate;
         private Set<Id> productIds;
         private Map<Id, Product2> productMap;
+        private final Integer startingPeriod = 1;
         
         private LoanPaymentRepo() {
         }
@@ -169,7 +170,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
             Loan_Payment__c priorLP =null;
             Loan_Payment__c currentLP = null;
-            for (Integer period = 0; period < getLoanTermPlusIO(loan.Product__c); period++) {
+            for (Integer period = startingPeriod; period < getLoanTermPlusIO(loan.Product__c) + startingPeriod; period++) {
                 currentLP = createLP(period, loan, params, priorLP);
                 loanPaymentsToCreate.add(currentLP);
                 priorLP = currentLP;
@@ -181,7 +182,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             Integer payFirstDistribution, paySecondDistribution;
             Boolean isInterestOnly = false, isLastPeriod = false;
 
-            monthIndex = params.firstDistributionMonth + period;
+            monthIndex = params.firstDistributionMonth + period - startingPeriod;
             if (monthIndex < 0) {
                 isInterestOnly = true;
             }
@@ -204,7 +205,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
             loanPayment.Payment_Due_Date2__c = 
-                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period);
+                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period - startingPeriod);
 
 
             loanPayment.Funds_Distributed__c = 
@@ -255,7 +256,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private void updateLoanPaymentsWithPrior() {
             List<Loan_Payment__c> lpsWithPrior = new List<Loan_Payment__c>();
             for (Loan_Payment__c loanPayment : loanPaymentsToCreate) {
-                if (loanPayment.Period__c > 0) {
+                if (loanPayment.Period__c > startingPeriod) {
                     Loan_Payment__c lpReference = 
                         new Loan_Payment__c(Unique_Id__c = getPriorUniqueID(loanPayment));
                     loanPayment.Prior_Period_Loan_Payment__r = lpReference;

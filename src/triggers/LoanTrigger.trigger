@@ -7,25 +7,30 @@
 */
 
 trigger LoanTrigger on Loan__c (before insert, before update, after insert, after update) {
-    LoanHandler loanHandler = new LoanHandler(Trigger.isExecuting, Trigger.size);
-    LoanServicer servicer = new LoanServicer(Trigger.new, Trigger.oldMap, Trigger.IsInsert);
+    List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+    if (systemProperties.size() > 0 &&
+        systemProperties[0].Disable_LoanTrigger__c) {
+        // Don't run trigger
+    } else {
+        LoanHandler loanHandler = new LoanHandler(Trigger.isExecuting, Trigger.size);
+        LoanServicer servicer = new LoanServicer(Trigger.new, Trigger.oldMap, Trigger.IsInsert);
     
-    if (Trigger.isInsert && Trigger.isBefore) {
-        loanHandler.mapLateCategory();
-    }
+        if (Trigger.isInsert && Trigger.isBefore) {
+            loanHandler.mapLateCategory();
+        }
 
-    if (Trigger.isInsert && Trigger.isAfter) {
-        loanHandler.OnAfterInsert(Trigger.new);
-        servicer.createNewLoanPayments();
-    }
+        if (Trigger.isInsert && Trigger.isAfter) {
+            loanHandler.OnAfterInsert(Trigger.new);
+            servicer.createNewLoanPayments();
+        }
 
-    if (Trigger.isUpdate && Trigger.isBefore) {
-        loanHandler.mapLateCategory();
-        servicer.validateLoanChange();
-    }
+        if (Trigger.isUpdate && Trigger.isBefore) {
+            loanHandler.mapLateCategory();
+            servicer.validateLoanChange();
+        }
 
-    if (Trigger.isUpdate && Trigger.isAfter) {
-        servicer.createNewLoanPayments();
+        if (Trigger.isUpdate && Trigger.isAfter) {
+            servicer.createNewLoanPayments();
+        }
     }
-
 }
