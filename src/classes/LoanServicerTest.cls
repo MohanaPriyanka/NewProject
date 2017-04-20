@@ -72,7 +72,6 @@ public with sharing class LoanServicerTest {
                          isActive = TRUE);
         products.add(mslp20Yr);
         insert products;
-                                      
     }
 
     static testMethod void testLoanCreationAndUpdate() {
@@ -158,6 +157,66 @@ public with sharing class LoanServicerTest {
 
         Test.stopTest();
     }
+
+    static testMethod void testTranAppUpdateDelete() {
+        Product2 ma10Yr = [SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
+                           FROM Product2
+                           WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
+
+        Loan_Traunch__c loanTraunch = [SELECT Id
+                                       FROM Loan_Traunch__c
+                                       WHERE Name = 'Tranche Assignment Pending'
+                                       LIMIT 1];
+        Lead testLead = [SELECT Id
+                         FROM Lead
+                         WHERE LastName = 'Testerson'
+                         LIMIT 1];
+        Opportunity opp = [SELECT Id
+                           FROM Opportunity
+                           WHERE Name = 'Testerson Loan'
+                           LIMIT 1];
+        Partner__c partner = [SELECT Id
+                              FROM Partner__c
+                              WHERE Name = 'Partner'
+                              LIMIT 1];
+
+        Loan__c loan = new Loan__c(Product__c = ma10Yr.Id,
+                                   Lead__c = testLead.Id,
+                                   Partner__c = partner.Id,
+                                   Opportunity__c = opp.Id,
+                                   Loan_Tranche__c = loanTraunch.Id,
+                                   System_Costt__c = 40316.93,
+                                   Financing_Fee__c = 2015.85,
+                                   Commencement_Datee__c = Date.today());
+        insert loan;
+        
+        List<Loan_Payment__c> loanPayments = [SELECT Id, Period__c,
+                                              Funds_Distributed__c, Amort_Interest_Due__c, Amort_Principal_Due__c,
+                                              Amort_Cumulative_Principal__c, Amort_Starting_Principal__c, Amort_Total_Due__c
+                                              FROM Loan_Payment__c
+                                              WHERE Loan__c = : loan.Id
+                                              LIMIT 1];
+        Transaction_Application__c ta = new Transaction_Application__c(Loan_Payment__c = loanPayments[0].Id);
+        insert ta;
+
+        Test.startTest();
+        Boolean dmxCaught = false;
+        try {
+            update ta;
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains(TransactionApplicationHandler.UPDATE_DELETE_ERROR_MSG));
+            dmxCaught = true;
+        }
+        System.assertEquals(true, dmxCaught);
+        dmxCaught = false;
+        try {
+            delete ta;
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains(TransactionApplicationHandler.UPDATE_DELETE_ERROR_MSG));
+            dmxCaught = true;
+        }
+        System.assertEquals(true, dmxCaught);
+    }    
 
     static Map<Integer, LoanServicerTest.MonthlyPayment> getAnswerMap(String json) {
         Map<Integer, LoanServicerTest.MonthlyPayment> answerMap = 
