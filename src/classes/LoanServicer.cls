@@ -46,10 +46,16 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     // If the loan change is valid, the existing Loan Payments would be deleted and
     // recreated
     public void validateLoanChange() {
-        for (Loan__c loan : (List<Loan__c>) loansToService) {
-            if (loanLocked(loan)) {
-                loan.addError('Cannot update Product, Commencement date, or System Cost ' +
-                              'for a Loan that is Complete or Contract Pending');
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.size() > 0 &&
+            systemProperties[0].Disable_LoanServicer_Validation__c) {
+            // Don't validate
+        } else {
+            for (Loan__c loan : (List<Loan__c>) loansToService) {
+                if (loanLocked(loan)) {
+                    loan.addError('Cannot update Product, Financing Fee ' +
+                                  ' or System Cost for a Loan that is Complete or Contract Pending');
+                }
             }
         }
     }
@@ -71,7 +77,11 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     // Expects to be called after loan insert or update. If a loan isn't locked down,
     // we're safe to delete and re-create loan payments on loan update.
     public void createNewLoanPayments() {
-        createNewLoanPayments(loansToService, handleInsert);
+        if (loansToService.size() > 5 && anyLoansToService) {
+            Database.executeBatch(this, LoanServicer.getBatchSize(loansToService));
+        } else {
+            createNewLoanPayments(loansToService, handleInsert);
+        }
     }
 
     
@@ -105,7 +115,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
     private Boolean populatedForLPCreation(Loan__c loan) {
         if (loan.Product__c != null &&
-            loan.Commencement_Datee__c != null &&
             loan.Principal__c > 0) {
             return true;
         } else {
@@ -125,7 +134,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     private Boolean loanParamsUpdated(Loan__c loan, Map<Id, Loan__c> triggerOldMap) {
         if (triggerOldMap != null &&
             (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
-             loan.Commencement_Datee__c != triggerOldMap.get(loan.Id).Commencement_Datee__c ||
              loan.Financing_Fee__c != triggerOldMap.get(loan.Id).Financing_Fee__c ||
              loan.Principal__c != triggerOldMap.get(loan.Id).Principal__c)) {
             return true;
@@ -331,14 +339,18 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                                                ' is not handled');
             }
 
-            fees = loan.Financing_Fee__c==null?0:loan.Financing_Fee__c;
+            fees = nullToZero(loan.Financing_Fee__c);
             loanAmount = loan.Principal__c - fees;
             loanAmountPlusFees = loanAmount + fees;
-            annualRate = product.Loan_Interest_Rate__c==null?0:product.Loan_Interest_Rate__c/100;
+            annualRate = nullToZero(product.Loan_Interest_Rate__c)/100;
             monthlyRate = annualRate / 12;
-            monthsOfPI = product.Loan_Term__c==null?0:product.Loan_Term__c.intValue();
-            monthsOfIO = product.Loan_Interest_Only_Period__c==null?0:product.Loan_Interest_Only_Period__c.intValue();
+            monthsOfPI = nullToZero(product.Loan_Term__c).intValue();
+            monthsOfIO = nullToZero(product.Loan_Interest_Only_Period__c).intValue();
             loanTerm = monthsOfPI + monthsOfIO;
+        }
+
+        private Decimal nullToZero(Decimal value) {
+            return (value==null?0:value);
         }
     }
 
