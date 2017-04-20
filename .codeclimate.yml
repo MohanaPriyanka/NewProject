@@ -1,9 +1,6 @@
 engines:
   apexmetrics:
     enabled: true
-    checks:
-      ExcessiveParameterList:
-        enabled: false
 ratings:
   paths:
     - "**.cls"
