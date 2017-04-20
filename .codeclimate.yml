@@ -1,13 +1,13 @@
 engines:
   apexmetrics:
     enabled: true
+  checks:
+    ExcessiveParameterList:
+      enabled: false
 ratings:
   paths:
     - "**.cls"
     - "**.trigger"
-checks:
-  ExcessiveParameterList:
-    enabled: false
 exclude_paths:
   - "src/documents/"
   - "**.schema"
