@@ -71,62 +71,57 @@ public without sharing class LoanHandler{
     }
 
     //On After Update of Opportunity Record
-    public void onAfterOpportunityUpdate(List<Opportunity> updatedOpportunities, List<Opportunity> oldOpportunities){
+    public void onAfterOpportunityUpdate(List<Opportunity> updatedOpportunities, List<Opportunity> oldOpportunities, Map<Id, Opportunity> updatedOpportunityMap, Map<Id, Opportunity> oldOpportunityMap){
         List<String> opportunityIds = new List<String>();
         List<String> oppleadIds = new List<String>();
-
         Integer loanTerm;
         Integer interestOnlyPeriod;
-        for (Opportunity newOpp : updatedOpportunities){
-            for (Opportunity oldOpp : oldOpportunities){
-                if (newOpp.Id == oldOpp.Id){
-                    if (newOpp.StageName == 'Complete' 
-                        && oldOpp.StageName != 'Complete' 
-                        && newOpp.Product_Line__c == 'Residential Loan'){
-                        System.debug('newOpp ID is ' + newOpp.Id);
-                        opportunityIds.add(newOpp.Id);                       
-                    }
-                }
+        for (Opportunity newOpp : updatedOpportunities) {
+            if (newOpp.StageName == 'Complete' && oldOpportunityMap.get(newOpp.Id).StageName != 'Complete' && newOpp.Product_Line__c == 'Residential Loan') {
+                opportunityIds.add(newOpp.Id);
             }
-        }
-        if (opportunityIds.size() > 0){
-            List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
-                                                        Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
-                                                        System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
-                                                        Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
-                                                        Technology_Platform_Fee__c
-                                                      FROM Loan__c 
-                                                      WHERE Opportunity__r.Id IN : opportunityIds];
-            //Assign the Loans to their appropriate Tranche
-            List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(completedOpportunityLoans));
-            //Enter the Origination, Commencement and Maturity dates for the loans                 
-            for (Loan__c l : tranchedLoans){
-                l.Contracted__c = true;
-                loanTerm = (Integer)l.Product__r.Loan_Term__c / 12 * 365;
-                interestOnlyPeriod = (Integer)l.Product__r.Loan_Interest_Only_Period__c / 12 * 365;
-                if(l.DOER_Solar_Loann__c == false){
-                    //l.Origination_Datee__c = Date.today();
-                    //l.Commencement_Datee__c = Date.today() + 45;
-                    //l.Maturity_Datee__c = (Date.today() + 45) + loanTerm;
-                }else{
-                    //l.Origination_Datee__c = Date.today();
-                    //l.Commencement_Datee__c = Date.today();
-                    //l.Maturity_Datee__c = Date.today() + interestOnlyPeriod + loanTerm;
+            if (newOpp.Disbursal_1_Contract_Signature_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_1_Contract_Signature_Checkbox__c || 
+                newOpp.Disbursal_Type_Contract__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Contract__c) {
+                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
+                System.debug('check');
+            }
+            if (newOpp.Disbursal_3_Full_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_3_Full_Install_Checkbox__c || 
+                newOpp.Disbursal_Type_Interconnect__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Interconnect__c) {
+                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
+            }
+            if (newOpp.Disbursal_2_Mechanical_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
+                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
+            }                        
+
+            if (opportunityIds.size() > 0){
+                List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
+                                                            Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
+                                                            System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
+                                                            Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
+                                                            Technology_Platform_Fee__c
+                                                           FROM Loan__c 
+                                                           WHERE Opportunity__r.Id IN : opportunityIds];
+                //Assign the Loans to their appropriate Tranche
+                List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(completedOpportunityLoans));
+                //Enter the Origination, Commencement and Maturity dates for the loans                 
+                for (Loan__c l : tranchedLoans){
+                    l.Contracted__c = true;
+                }    
+                upsert new list<Loan__c>(tranchedLoans) Unique_ID__c;
+
+                for (Opportunity oppRecord : updatedOpportunities) {
+                    oppLeadIds.add(oppRecord.Lead_ID__c);
+                }
+                
+                List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
+                if (partnerTaskList.size() > 0) {
+                        //Set the partner task - Obtain Contract Signature to Complete when the Stage is completed.
+                        updatePartnerTaskObtainContractSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));       
                 }
             }    
-            upsert new list<Loan__c>(tranchedLoans) Unique_ID__c;
-
-            for (Opportunity oppRecord : updatedOpportunities) {
-                oppLeadIds.add(oppRecord.Lead_ID__c);
-            }
-            
-            List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
-            if (partnerTaskList.size() > 0) {
-                    //Set the partner task - Obtain Contract Signature to Complete when the Stage is completed.
-                    updatePartnerTaskObtainContractSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));       
-            }
-        }    
+        }
     }
+        
     public List<Partner_Task__c> checkForPartnerTasksOnOpportunity(List<Opportunity> opportunities) {
         List<String> oppIds = new List<String>();
         for (Opportunity oppRecord : opportunities) {
@@ -384,7 +379,7 @@ public without sharing class LoanHandler{
 
         for (Opportunity oppRecord : updatedOppList) {
             if (newOppMap.get(oppRecord.Id).StageName == 'Complete' 
-                && oldOppMap.get(oppRecord.Id).StageName != ' Complete'
+                && oldOppMap.get(oppRecord.Id).StageName != 'Complete'
                 && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan') {
                     disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
             }
@@ -1304,6 +1299,72 @@ public without sharing class LoanHandler{
             }
         }
         update equipmentUpdateList; 
+    }
+
+    public void updateDisbursalRecords (Map<Id, Opportunity> updatedOppMap, Map<Id, Opportunity> oldOppMap){
+        String disbursalMethodContract;
+        String disbursalMethodMechInstall;
+        String disbursalMethodInterconnect;
+        List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();
+        for (Loan__c loan : [SELECT Id, Opportunity__r.Id, (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c FROM Disbursals__r) 
+                             FROM Loan__c
+                             WHERE Opportunity__r.Id IN : updatedOppMap.KeySet()]) {
+            for (Disbursal__c disbursal : loan.Disbursals__r) {
+                System.debug('check');
+                if (updatedOppMap.get(loan.Opportunity__r.Id).DOER_Solar_Loan__c) {
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'ACH Disbursal') {
+                        disbursalMethodContract = 'ACH';
+                    } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'Check Disbursal') {
+                        disbursalMethodContract = 'Check';
+                    } else {
+                        disbursalMethodContract = null;
+                    }
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
+                        disbursalMethodInterconnect = 'ACH';
+                    } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'Check Disbursal') {
+                        disbursalMethodInterconnect = 'Check';
+                    } else {
+                        disbursalMethodInterconnect = null;
+                    }    
+                } else {
+                    System.debug('check');
+                    disbursalMethodContract = 'ACH';
+                    disbursalMethodMechInstall = 'ACH';
+                    disbursalMethodInterconnect = 'ACH';
+                }                           
+                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c || 
+                    updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c) {
+                    System.debug('check');
+                    if (disbursal.Name.Contains('Contract Signature')) {
+                        System.debug('check');
+                        disbursal.Status__c = 'Complete';      
+                        disbursal.Disbursal_Method__c = disbursalMethodContract;
+                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c;
+                        disbursalsToUpdate.add(disbursal);  
+                    }
+                }
+                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c || 
+                    updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c) {
+                    if (disbursal.Name.Contains('Interconnection')) {
+                        disbursal.Status__c = 'Complete';
+                        disbursal.Disbursal_Method__c = disbursalMethodInterconnect;
+                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c;
+                        disbursalsToUpdate.add(disbursal);  
+                    }
+                }
+                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
+                    System.debug('check');
+                    if (disbursal.Name.Contains('Mechanical Installation')) {
+                        System.debug('check');
+                        disbursal.Status__c = 'Complete';
+                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c; 
+                        disbursal.Disbursal_Method__c = disbursalMethodMechInstall;   
+                        disbursalsToUpdate.add(disbursal);                      
+                    }
+                }                               
+            }
+        }
+        update disbursalsToUpdate;
     }
 
     // Called from before insert and before update from Loan Trigger

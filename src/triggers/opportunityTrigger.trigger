@@ -3,7 +3,7 @@ trigger opportunityTrigger on opportunity (before insert, after insert, before u
     ChargentOrderCreationhandler chargentOrderAction = new ChargentOrderCreationhandler(Trigger.isExecuting, Trigger.size);
 
     if(Trigger.isUpdate && Trigger.isAfter){
-        loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old);
+        loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
         loanAction.createDisbursalsFromOpportunity(Trigger.new, Trigger.old);
     }
     if(Trigger.isUpdate && Trigger.isBefore){
