@@ -163,6 +163,7 @@ public class LoanHandlerTestClass {
     }
 
     @isTest static void testAfterLeadConversion() {
+        Date myDate = Date.newInstance(2015, 2, 17);
     	List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
@@ -192,7 +193,7 @@ public class LoanHandlerTestClass {
                 System.AssertEquals('Pending', partnerTaskAssertion.Status__c);	    		
             }	    	    	
     	}
-    	for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
+    	for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c, 
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
@@ -206,7 +207,7 @@ public class LoanHandlerTestClass {
             }else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
                 System.AssertEquals(5, oppRecord.Partner_Tasks__r.size());     
-            }              
+            }                       
 
             oppRecord.StageName = 'Complete';
             oppListToUpdate.add(oppRecord);
@@ -214,7 +215,17 @@ public class LoanHandlerTestClass {
 
     	update oppListToUpdate;
 
-    	for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id FROM Disbursals__r) 
+        for (Opportunity opp : oppListToUpdate) {
+            opp.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
+            opp.Disbursal_2_Mechanical_Install_Checkbox__c = myDate;
+            opp.Disbursal_3_Full_Install_Checkbox__c = myDate;
+            opp.Disbursal_Type_Contract__c = 'ACH Disbursal';
+            opp.Disbursal_Type_Interconnect__c = 'ACH Disbursal';
+        }        
+        
+        update oppListToUpdate;
+
+    	for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id, Date_of_Disbursal__c, Status__c, Disbursal_Method__c FROM Disbursals__r) 
                                   FROM Loan__c 
                                   WHERE DOER_Solar_Loann__c = false]) {
             if (!loanRecord.DOER_Solar_Loann__c){
@@ -222,6 +233,11 @@ public class LoanHandlerTestClass {
             }else {
                 System.AssertEquals(2, loanRecord.Disbursals__r.size());
             }
+            for (Disbursal__c disbursal : loanRecord.Disbursals__r) {
+                System.AssertEquals(disbursal.Date_of_Disbursal__c, myDate);
+                System.AssertEquals(disbursal.Status__c, 'Complete');
+                System.AssertEquals(disbursal.Disbursal_Method__c, 'ACH');
+            }               
     	}
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
@@ -463,6 +479,7 @@ public class LoanHandlerTestClass {
     }
 
     @isTest static void testAfterLeadConversionMSLP() {
+        Date myDate = Date.newInstance(2015, 2, 17);
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = true];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
@@ -490,7 +507,7 @@ public class LoanHandlerTestClass {
                 System.Assert(partnerTaskAssertion.Status__c == 'Pending');             
             }                   
         }
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
@@ -512,13 +529,27 @@ public class LoanHandlerTestClass {
 
         update oppListToUpdate;
 
-        for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id FROM Disbursals__r) 
+        for (Opportunity opp : oppListToUpdate) {
+            opp.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
+            opp.Disbursal_3_Full_Install_Checkbox__c = myDate;
+            opp.Disbursal_Type_Contract__c = 'ACH Disbursal';
+            opp.Disbursal_Type_Interconnect__c = 'ACH Disbursal';
+        }
+
+        update oppListToUpdate;
+
+        for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id,Date_of_Disbursal__c, Status__c, Disbursal_Method__c FROM Disbursals__r) 
                                    FROM Loan__c 
                                    WHERE DOER_Solar_Loann__c = true]) {
             if (!loanRecord.DOER_Solar_Loann__c){
                 System.AssertEquals(3, loanRecord.Disbursals__r.size());
             }else {
                 System.AssertEquals(2, loanRecord.Disbursals__r.size());
+            }
+            for (Disbursal__c disbursal : loanRecord.Disbursals__r) {
+                System.AssertEquals(disbursal.Date_of_Disbursal__c, myDate);
+                System.AssertEquals(disbursal.Status__c, 'Complete');
+                System.AssertEquals(disbursal.Disbursal_Method__c, 'ACH');
             }
         }
 
@@ -629,5 +660,6 @@ public class LoanHandlerTestClass {
             leadListToUpdate.add(leadRecord);
         }
         update leadListToUpdate;
-    }       
+    }    
+
 }
