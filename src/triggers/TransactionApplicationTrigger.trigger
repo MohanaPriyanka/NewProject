@@ -10,11 +10,7 @@ trigger TransactionApplicationTrigger on Transaction_Application__c (after inser
         TransactionApplicationHandler tah = new TransactionApplicationHandler(Trigger.new);
     }
 
-    if (Trigger.isBefore) {
-        if (Trigger.isUpdate) {
-            TransactionApplicationHandler.preventUpdateAndDelete(Trigger.new);
-        } else if (Trigger.isDelete) {
-            TransactionApplicationHandler.preventUpdateAndDelete(Trigger.old);
-        }
+    if (Trigger.isDelete && Trigger.isBefore) {
+        TransactionApplicationHandler.preventDelete(Trigger.old);
     }
 }
