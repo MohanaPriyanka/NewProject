@@ -213,6 +213,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 params.loanAmount*params.secondDistribution*paySecondDistribution;
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
+                loanPayment.Interest_Only_Period__c = true;
                 loanPayment.Amort_Interest_Due__c = loanPayment.Funds_Distributed__c * params.monthlyRate;
                 loanPayment.Amort_Principal_Due__c = 0;
             } else {

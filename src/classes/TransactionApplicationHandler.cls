@@ -39,7 +39,9 @@ public without sharing class TransactionApplicationHandler {
             loanIds.add(lp.Loan__c);
         }
         List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Cumulative_Principal_Payments__c,
-                                                          Interest_Applied__c, Principal_Applied__c
+                                                          Interest_Applied__c, Principal_Applied__c,
+                                                          Forecasted_Cumulative_Principal__c,
+                                                          Forecasted_Principal_Interest_Due__c, Forecasted_Principal_Due__c
                                                           FROM Loan_Payments__r
                                                           WHERE Period__c <> null
                                                           ORDER BY Period__c)
@@ -56,26 +58,39 @@ public without sharing class TransactionApplicationHandler {
     // Assumes that the loanPaymentList is sorted by Period, but don't assume the period is 1
     public List<Loan_Payment__c> calculateCumulativePrincipalApplied(List<Loan_Payment__c> loanPaymentList,
                                                                      Map<Id, Loan_Payment__c> updatedPIMap) {
+        Boolean addLP = false;
         Loan_Payment__c updatedLP;
-        Decimal nextCumulativePrincipal = 0;
-        Set<Loan_Payment__c> loanPaymentSet = new Set<Loan_Payment__c>();
+        Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0;
+        List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
         for (Loan_Payment__c lp : loanPaymentList) {
             updatedLP = updatedPIMap.get(lp.Id);
             if (updatedLP != null) {
                 lp.Interest_Applied__c = updatedLP.Interest_Applied__c;
                 lp.Principal_Applied__c = updatedLP.Principal_Applied__c;
-                loanPaymentSet.add(lp);
+                addLP = true;
             }
             if  (lp.Cumulative_Principal_Payments__c != nextCumulativePrincipal &&
                  nextCumulativePrincipal != 0) {
                 lp.Cumulative_Principal_Payments__c = nextCumulativePrincipal;
-                loanPaymentSet.add(lp);
+                addLP = true;
+            }
+            if (lp.Forecasted_Cumulative_Principal__c != nextForecastedCumulativePrincipal &&
+                 nextForecastedCumulativePrincipal != 0) {
+                lp.Forecasted_Cumulative_Principal__c = nextForecastedCumulativePrincipal;
+                addLP = true;
+            }
+            if (addLP) {
+                loanPaymentsToUpdate.add(lp);
+                addLP = false;
             }
             nextCumulativePrincipal =
                 nullToZero(lp.Cumulative_Principal_Payments__c) +
                 nullToZero(lp.Principal_Applied__c);
+            nextForecastedCumulativePrincipal =
+                nullToZero(lp.Forecasted_Cumulative_Principal__c) +
+                nullToZero(lp.Forecasted_Principal_Due__c);
         }
-        return new List<Loan_Payment__c>(loanPaymentSet);
+        return loanPaymentsToUpdate;
     }
 
     private Decimal nullToZero(Decimal value) {

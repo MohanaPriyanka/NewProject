@@ -200,11 +200,11 @@ public with sharing class LoanServicerTest {
         insert ta;
 
         Test.startTest();
-        dmxCaught = false;
+        Boolean dmxCaught = false;
         try {
             delete ta;
         } catch (DMLException dmx) {
-            System.assert(dmx.getMessage().contains(TransactionApplicationHandler.UPDATE_DELETE_ERROR_MSG));
+            System.assert(dmx.getMessage().contains(TransactionApplicationHandler.DELETE_ERROR_MSG));
             dmxCaught = true;
         }
         System.assertEquals(true, dmxCaught);
