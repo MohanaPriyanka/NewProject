@@ -292,6 +292,7 @@ Public without sharing class CommunitySolarCustomerPortalTest {
 	          ChargentOrders__Subtotal__c = sb.Total_Due__c,
 	          ChargentOrders__Payment_Status__c = 'Recurring',
 	          ChargentOrders__Payment_Method__c = 'Credit Card',
+            Account_Bill__c = ab.Id,
 	          System_Bill__c = sb.Id,
 	          ChargentOrders__Card_Type__c = 'Visa',
 	          ChargentOrders__Card_Number__c = '411111111111',
