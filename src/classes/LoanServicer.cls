@@ -230,6 +230,14 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 priorLP==null?0:(priorLP.Amort_Cumulative_Principal__c + priorLP.Amort_Principal_Due__c);
             loanPayment.Amort_Starting_Principal__c = 
                 loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
+
+            // Calculated forecasted fields, which would be the same as the Amort schedule for new LPs.
+            loanPayment.Forecasted_Loan_Balance__c = loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
+            loanPayment.Forecasted_Interest_Due__c = loanPayment.Amort_Interest_Due__c;
+            loanPayment.Forecasted_Principal_Due__c = loanPayment.Amort_Principal_Due__c;
+            loanPayment.Forecasted_Principal_Interest_Due__c = loanPayment.Amort_Interest_Due__c + loanPayment.Amort_Principal_Due__c;
+            loanPayment.Forecasted_Cumulative_Principal__c = loanPayment.Amort_Cumulative_Principal__c;
+            
             return loanPayment;
         }
 

@@ -38,10 +38,13 @@ public without sharing class TransactionApplicationHandler {
         for (Loan_Payment__c lp : lpsForLoan) {
             loanIds.add(lp.Loan__c);
         }
-        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Cumulative_Principal_Payments__c,
+        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c,
+                                                          Amort_Total_Due__c, Funds_Distributed__c,
+                                                          Cumulative_Principal_Payments__c,
                                                           Interest_Applied__c, Principal_Applied__c,
                                                           Forecasted_Cumulative_Principal__c,
-                                                          Forecasted_Principal_Interest_Due__c, Forecasted_Principal_Due__c
+                                                          Forecasted_Principal_Interest_Due__c, Forecasted_Principal_Due__c,
+                                                          Loan__r.Product__r.Loan_Interest_Rate__c
                                                           FROM Loan_Payments__r
                                                           WHERE Period__c <> null
                                                           ORDER BY Period__c)
@@ -61,36 +64,88 @@ public without sharing class TransactionApplicationHandler {
         Boolean addLP = false;
         Loan_Payment__c updatedLP;
         Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0;
+            
         List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
         for (Loan_Payment__c lp : loanPaymentList) {
-            updatedLP = updatedPIMap.get(lp.Id);
-            if (updatedLP != null) {
-                lp.Interest_Applied__c = updatedLP.Interest_Applied__c;
-                lp.Principal_Applied__c = updatedLP.Principal_Applied__c;
-                addLP = true;
+            if (updatedPIMap != null) {
+                updatedLP = updatedPIMap.get(lp.Id);
+                if (updatedLP != null) {
+                    lp.Interest_Applied__c = updatedLP.Interest_Applied__c;
+                    lp.Principal_Applied__c = updatedLP.Principal_Applied__c;
+                    addLP = true;
+                }
             }
-            if  (lp.Cumulative_Principal_Payments__c != nextCumulativePrincipal &&
-                 nextCumulativePrincipal != 0) {
-                lp.Cumulative_Principal_Payments__c = nextCumulativePrincipal;
-                addLP = true;
+            addLP |= setIfDifferent(lp, 'Cumulative_Principal_Payments__c', nextCumulativePrincipal, true);
+            addLP |= setIfDifferent(lp, 'Forecasted_Cumulative_Principal__c', nextForecastedCumulativePrincipal, true);
+
+            nextCumulativePrincipal =
+                nullToZero(lp.Cumulative_Principal_Payments__c) +
+                nullToZero(lp.Principal_Applied__c);
+
+            // The new Principal_Applied__c value set above isn't yet incorporated into the 
+            // Forecasted_Loan_Balance__c formula, so we need to calculate that and other forecasted fields here
+            Decimal forecastedPrincipalDue = 0, forecastedLoanBalance = 0, 
+                forecastedPrincipalInterestDue = 0, forecastedInterestDue = 0;
+            forecastedLoanBalance = Math.max(lp.Funds_Distributed__c - 
+                                             nullToZero(lp.Cumulative_Principal_Payments__c) - 
+                                             nullToZero(lp.Forecasted_Cumulative_Principal__c),
+                                             0);
+            addLP |= setIfDifferent(lp, 'Forecasted_Loan_Balance__c', forecastedLoanBalance, true);
+
+            if (lp.Loan_Balance__c <= 0) {
+                forecastedInterestDue = 0;
+            } else {
+                forecastedInterestDue = lp.Forecasted_Loan_Balance__c * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
             }
-            if (lp.Forecasted_Cumulative_Principal__c != nextForecastedCumulativePrincipal &&
-                 nextForecastedCumulativePrincipal != 0) {
-                lp.Forecasted_Cumulative_Principal__c = nextForecastedCumulativePrincipal;
-                addLP = true;
+            addLP |= setIfDifferent(lp, 'Forecasted_Interest_Due__c', forecastedInterestDue, true);
+
+            if (lp.Interest_Only_Period__c) {
+                forecastedPrincipalInterestDue = forecastedInterestDue;
+            } else {
+                forecastedPrincipalInterestDue = 
+                    Math.min(forecastedLoanBalance + forecastedLoanBalance * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
+                             lp.Amort_Total_Due__c);
             }
+            addLP |= setIfDifferent(lp, 'Forecasted_Principal_Interest_Due__c', forecastedPrincipalInterestDue, true);
+
+            if (lp.Loan_Balance__c <= 0 || lp.Interest_Only_Period__c) {
+                forecastedPrincipalDue = 0;
+            } else {
+                forecastedPrincipalDue = lp.Forecasted_Principal_Interest_Due__c - lp.Forecasted_Interest_Due__c;
+            }
+            addLP |= setIfDifferent(lp, 'Forecasted_Principal_Due__c', forecastedPrincipalDue, true);
+
+            nextForecastedCumulativePrincipal =
+                nullToZero(lp.Forecasted_Cumulative_Principal__c) +
+                nullToZero(lp.Forecasted_Principal_Due__c);
+
             if (addLP) {
                 loanPaymentsToUpdate.add(lp);
                 addLP = false;
             }
-            nextCumulativePrincipal =
-                nullToZero(lp.Cumulative_Principal_Payments__c) +
-                nullToZero(lp.Principal_Applied__c);
-            nextForecastedCumulativePrincipal =
-                nullToZero(lp.Forecasted_Cumulative_Principal__c) +
-                nullToZero(lp.Forecasted_Principal_Due__c);
+
         }
         return loanPaymentsToUpdate;
+    }
+
+    private Boolean setIfDifferent(Loan_Payment__c lp, String field, Decimal value, Boolean allowZero) {
+        if (lp.get(field) != value) {
+            if (allowZero) {
+                lp.put(field, value);
+                return true;
+            } else {
+                if (value != 0) {
+                    lp.put(field, value);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+                    
+        
     }
 
     private Decimal nullToZero(Decimal value) {
