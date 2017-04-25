@@ -496,13 +496,53 @@ public without sharing class SLPControllersTestclass {
 			loanReturnList.clear();
 			loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
 			equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
-			progressBarString = SLPCustomerHandler.getProgressBarData(loanId);
-			partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
-			partnerTaskList.clear();
-			partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
 		}
         Test.stopTest();        
 	}
+
+    @isTest static void testCustomerHandlerPartTwo() {
+        User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
+
+        List<Lead> leadList = new List<Lead>();
+        List<Loan__c> loanReturnList = new List<Loan__c>();
+        List<Product2> productList = new List<Product2>();
+        List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+
+        String loanId;
+        String progressBarString;
+        String nullString = null;
+
+        Loan__c loanRecord;
+        Residential_Equipment__c equipmentRecord;
+
+        Test.startTest();
+        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+        insert productList;
+
+        leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
+
+        List<Loan__c> loanList = [SELECT Id FROM Loan__c];
+        loanId = String.valueOf(loanList.get(0).Id);
+        update loanList;            
+        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
+        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
+        System.runAs(partnerUser) {
+            partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
+            partnerTaskList.clear();
+            partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
+        }
+        Test.stopTest();        
+    }    
 
     @isTest static void testCustomerHandlerPartOneExec() {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
@@ -545,15 +585,56 @@ public without sharing class SLPControllersTestclass {
             loanReturnList.clear();
             loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
+        }
+        Test.stopTest();        
+    }
+
+    @isTest static void testCustomerHandlerPartTwoExec() {
+        User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
+
+        List<Lead> leadList = new List<Lead>();
+        List<Loan__c> loanReturnList = new List<Loan__c>();
+        List<Product2> productList = new List<Product2>();
+        List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+
+        String loanId;
+        String progressBarString;
+        String nullString = null;
+
+        Loan__c loanRecord;
+        Residential_Equipment__c equipmentRecord;
+
+        Test.startTest();
+        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+        insert productList;
+
+        leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
+        for (Lead leadRecord : leadList) {
+            leadRecord.Unfinished_Lead__c = false;
+            leadRecord.Status = 'Pending Information';
+        }    
+        update leadList;
+
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }    
+        update leadList;
+
+        List<Loan__c> loanList = [SELECT Id FROM Loan__c];
+        loanId = String.valueOf(loanList.get(0).Id);
+        update loanList;            
+        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
+        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
+        System.runAs(partnerUser) {
             progressBarString = SLPCustomerHandler.getProgressBarData(loanId);
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
             partnerTaskList.clear();
             partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
         }
         Test.stopTest();        
-    }
+    }    
 
-	@isTest static void testCustomerHandlerPartTwo() {
+	@isTest static void testCustomerHandlerPartThree() {
     	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];	
     	List<Lead> leadList = new List<Lead>();
     	List<Loan__c> loanReturnList = new List<Loan__c>();
@@ -606,7 +687,7 @@ public without sharing class SLPControllersTestclass {
 		}
     }
 
-    @isTest static void testCustomerHandlerPartTwoExec() {
+    @isTest static void testCustomerHandlerPartThreeExec() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];   
         List<Lead> leadList = new List<Lead>();
         List<Loan__c> loanReturnList = new List<Loan__c>();
@@ -682,11 +763,6 @@ public without sharing class SLPControllersTestclass {
         }    
         update leadList;        
 		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
@@ -732,11 +808,6 @@ public without sharing class SLPControllersTestclass {
         }    
         update leadList;        
         List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }    
-        update leadList;
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
