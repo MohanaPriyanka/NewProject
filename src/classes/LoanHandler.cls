@@ -1131,6 +1131,7 @@ public without sharing class LoanHandler{
         String taskSequenceKey; //key value
         String taskSequenceUniqueId; //accessor value
         Decimal nextTask;
+        Boolean executeLeadUpdate = false;
         List<Partner_Task__c> tasksToUpdate = new List<Partner_Task__c>();
         Map<String,Partner_Task__c> parentTaskSequenceMap = new Map<String, Partner_Task__c>();
         Map<String, Integer> parentTaskSizeMap = new Map<String, Integer>();
@@ -1157,6 +1158,7 @@ public without sharing class LoanHandler{
                     taskSequenceUniqueId = task.Lead__r.Id + ' ' + nextTask;
                     if (task.Name == 'Provide All Customer Information') {
                         leadMap.get(task.Lead__c).Status = 'Under BlueWave Review';
+                        executeLeadUpdate = true;
                     }
 
                     if(parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c == 'Incomplete' 
@@ -1168,7 +1170,9 @@ public without sharing class LoanHandler{
                 }
             }            
         }
-        update leadMap.values();
+        if (executeLeadUpdate) {
+            update leadMap.values();            
+        }
         return tasksToUpdate;    
     }
 
