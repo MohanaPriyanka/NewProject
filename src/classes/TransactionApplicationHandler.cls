@@ -41,9 +41,13 @@ public without sharing class TransactionApplicationHandler {
         List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c,
                                                           Amort_Total_Due__c, Funds_Distributed__c,
                                                           Cumulative_Principal_Payments__c,
-                                                          Interest_Applied__c, Principal_Applied__c,
+                                                          Interest_Applied__c, Principal_Applied__c, 
+                                                          Loan_Balance__c,
+                                                          Forecasted_Loan_Balance__c,
                                                           Forecasted_Cumulative_Principal__c,
-                                                          Forecasted_Principal_Interest_Due__c, Forecasted_Principal_Due__c,
+                                                          Forecasted_Principal_Interest_Due__c, 
+                                                          Forecasted_Interest_Due__c,
+                                                          Forecasted_Principal_Due__c,
                                                           Loan__r.Product__r.Loan_Interest_Rate__c
                                                           FROM Loan_Payments__r
                                                           WHERE Period__c <> null
@@ -75,7 +79,7 @@ public without sharing class TransactionApplicationHandler {
                     addLP = true;
                 }
             }
-            addLP |= setIfDifferent(lp, 'Cumulative_Principal_Payments__c', nextCumulativePrincipal, true);
+            addLP |= setIfDifferent(lp, 'Cumulative_Principal_Payments__c', nextCumulativePrincipal, false);
             addLP |= setIfDifferent(lp, 'Forecasted_Cumulative_Principal__c', nextForecastedCumulativePrincipal, true);
 
             nextCumulativePrincipal =
@@ -95,7 +99,7 @@ public without sharing class TransactionApplicationHandler {
             if (lp.Loan_Balance__c <= 0) {
                 forecastedInterestDue = 0;
             } else {
-                forecastedInterestDue = lp.Forecasted_Loan_Balance__c * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
+                forecastedInterestDue = nullToZero(lp.Forecasted_Loan_Balance__c) * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Interest_Due__c', forecastedInterestDue, true);
 
@@ -111,7 +115,7 @@ public without sharing class TransactionApplicationHandler {
             if (lp.Loan_Balance__c <= 0 || lp.Interest_Only_Period__c) {
                 forecastedPrincipalDue = 0;
             } else {
-                forecastedPrincipalDue = lp.Forecasted_Principal_Interest_Due__c - lp.Forecasted_Interest_Due__c;
+                forecastedPrincipalDue = nullToZero(lp.Forecasted_Principal_Interest_Due__c) - nullToZero(lp.Forecasted_Interest_Due__c);
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Principal_Due__c', forecastedPrincipalDue, true);
 
@@ -128,24 +132,25 @@ public without sharing class TransactionApplicationHandler {
         return loanPaymentsToUpdate;
     }
 
-    private Boolean setIfDifferent(Loan_Payment__c lp, String field, Decimal value, Boolean allowZero) {
-        if (lp.get(field) != value) {
-            if (allowZero) {
+    private Boolean setIfDifferent(Loan_Payment__c lp, String field, Decimal value, Boolean nullIfClosedOrPaid) {
+        if (nullIfClosedOrPaid &&
+            (lp.Bill_Status__c == LoanServicer.CLOSED ||
+             lp.Interest_Applied__c != null ||
+             lp.Principal_Applied__c != null)) {
+            if (lp.get(field) != null) {
+                lp.put(field, null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (lp.get(field) != value) {
                 lp.put(field, value);
                 return true;
             } else {
-                if (value != 0) {
-                    lp.put(field, value);
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
-        } else {
-            return false;
         }
-                    
-        
     }
 
     private Decimal nullToZero(Decimal value) {

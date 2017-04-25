@@ -6,11 +6,15 @@
  *************************************************************************************/
 
 trigger TransactionApplicationTrigger on Transaction_Application__c (after insert, before update, before delete) {
-    if (Trigger.isInsert && Trigger.isAfter) {
+    if (Trigger.isInsert) {
+        if (Trigger.isAfter) {
         TransactionApplicationHandler tah = new TransactionApplicationHandler(Trigger.new);
+        }
     }
 
-    if (Trigger.isDelete && Trigger.isBefore) {
-        TransactionApplicationHandler.preventDelete(Trigger.old);
+    if (Trigger.isDelete) {
+        if (Trigger.isBefore) {
+            TransactionApplicationHandler.preventDelete(Trigger.old);
+        }
     }
 }
