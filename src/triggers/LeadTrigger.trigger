@@ -5,11 +5,11 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
     ProductAssignmentHandler handler5 = new ProductAssignmentHandler (Trigger.isExecuting, Trigger.size);
     MapCapacityAvailableHandler handler7 = new MapCapacityAvailableHandler(Trigger.isExecuting, Trigger.size);
     Referralcodehandler handler8 = new Referralcodehandler(Trigger.isExecuting, Trigger.size);
-    LoanHandler handler9 = new LoanHandler (Trigger.isExecuting, Trigger.size);
+    LoanHandler loanHandler = new LoanHandler (Trigger.isExecuting, Trigger.size);
 
     if(Trigger.isUpdate && Trigger.isAfter){
         handler.OnAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
-        handler9.OnAfterLeadUpdate(Trigger.new, Trigger.old);
+        loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old);
     }
    else if(Trigger.isUpdate && Trigger.isBefore){
         handler2.OnBeforeUpdate(Trigger.new);
@@ -17,7 +17,7 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
         handler5.OnBeforeUpdate(Trigger.new, Trigger.oldMap);
         handler7.OnBeforeUpdate(Trigger.new);
         handler8.OnBeforeUpdate(Trigger.old, Trigger.new);   
-        handler9.OnBeforeLeadUpdate(Trigger.new);
+        loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
     }  
     else if(Trigger.isInsert && Trigger.isBefore){
          handler2.OnBeforeInsert(Trigger.new);   

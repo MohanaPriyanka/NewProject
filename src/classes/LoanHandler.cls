@@ -19,11 +19,12 @@ public without sharing class LoanHandler{
     }
     
     //On Before Update of Lead Record
-    public void onBeforeLeadUpdate(List<Lead> convertedLeads){
+    public void onBeforeLeadUpdate(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
         //map the loan, equipment and partner tasks to the opporunity upon conversion
-        mapLoanToOpportunity(convertedLeads);
-        mapEquipmentToOpportunity(convertedLeads);     
-        mapPartnerTasksToOpportunity(convertedLeads);   
+        mapLoanToOpportunity(updatedLeadMap, oldLeadMap);
+        mapEquipmentToOpportunity(updatedLeadMap, oldLeadMap);     
+        mapPartnerTasksToOpportunity(updatedLeadMap, oldLeadMap);   
+        mapCoApplicantContactToOpportunity(updatedLeadMap, oldLeadMap);
     }
 
     //On After Update of Lead Record
@@ -244,71 +245,97 @@ public without sharing class LoanHandler{
         assignResidentialEquipmentToLoan(newLoanList);
     }
     
-    public void mapLoanToOpportunity(List<Lead> leadsList){
+    public void mapLoanToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
+        List<Loan__c>loanListToUpdate = new List<Loan__c>();         
         Map<Id, Id> feedback2OppId = new Map<Id, Id>();
         Map<Id, Id> opportunityMap = new Map<Id, Id>();
 
-        for(Lead L : leadsList){
-             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
-                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
-                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+        for(Lead leadRecord : updatedLeadMap.values()){
+            if (leadRecord.IsConverted 
+                && !oldLeadMap.get(leadRecord.Id).IsConverted
+                && leadRecord.Product_Line__c == 'Residential Loan'){
+                feedback2OppId.put(leadRecord.Id, leadRecord.ConvertedOpportunityId);
+                opportunityMap.put(leadRecord.ConvertedOpportunityId,leadRecord.ConvertedOpportunityId);
             }
         }
-
-        if(opportunityMap.size() > 0){
-                 List<Loan__c> loan = [SELECT Lead__c, Opportunity__c 
-                                       FROM Loan__c 
-                                       WHERE Lead__c IN :feedback2OppId.keySet()];
-                for (Loan__c l : loan){
-                    l.Opportunity__c = feedback2OppId.get(l.Lead__c);
-                }            
-                update loan;
+        if(!opportunityMap.values().isEmpty()){        
+            for(Loan__c loanRecord : [SELECT Lead__c, Opportunity__c FROM Loan__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                loanRecord.Opportunity__c = feedBack2OppId.get(loanRecord.Lead__c);
+                loanListToUpdate.add(loanRecord);
+            }
+            update loanListToUpdate;
         }
     }  
 
-    public void mapEquipmentToOpportunity(List<Lead> leadsList){
+    public void mapEquipmentToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
+        List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();        
         Map<Id, Id> feedback2OppId = new Map<Id, Id>();
         Map<Id, Id> opportunityMap = new Map<Id, Id>();
 
-        for(Lead L : leadsList){
-             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
-                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
-                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+        for(Lead leadRecord : updatedLeadMap.values()){
+             if (leadRecord.IsConverted 
+                && !oldLeadMap.get(leadRecord.Id).IsConverted
+                && leadRecord.Product_Line__c == 'Residential Loan'){
+                feedback2OppId.put(leadRecord.Id, leadRecord.convertedOpportunityId);
+                opportunityMap.put(leadRecord.convertedOpportunityId,leadRecord.convertedOpportunityId);
             }
         }
-
-        if(opportunityMap.size() > 0){
-                 List<Residential_Equipment__c > equipment = [SELECT Lead__c, Opportunity__c 
-                                                               FROM Residential_Equipment__c 
-                                                               WHERE Lead__c IN :feedback2OppId.keySet()];
-                for (Residential_Equipment__c equipmentRecord : equipment){
-                    equipmentRecord.Opportunity__c = feedback2OppId.get(equipmentRecord.Lead__c);
-                }            
-                update equipment;
+        if(!feedback2OppId.values().isEmpty()){        
+            for(Residential_Equipment__c equipment : [SELECT Lead__c, Opportunity__c FROM Residential_Equipment__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                equipment.Opportunity__c = feedBack2OppId.get(equipment.Lead__c);
+                equipmentListToUpdate.add(equipment);
+            }
+            update equipmentListToUpdate;
         }
     }  
 
-    public void mapPartnerTasksToOpportunity(List<Lead> leadsList){
+    public void mapPartnerTasksToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
+        List<Partner_Task__c> partnerTaskListToUpdate = new List<Partner_Task__c>();                
         Map<Id, Id> feedback2OppId = new Map<Id, Id>();
         Map<Id, Id> opportunityMap = new Map<Id, Id>();
 
-        for(Lead L : leadsList){
-             if (l.isConverted && l.Product_Line__c == 'Residential Loan'){
-                      feedback2OppId.put(l.Id, l.convertedOpportunityId);
-                      opportunityMap.put(l.convertedOpportunityId,l.convertedOpportunityId);
+        for(Lead leadRecord : updatedLeadMap.values()){
+             if (leadRecord.IsConverted 
+                && !oldLeadMap.get(leadRecord.Id).IsConverted
+                && leadRecord.Product_Line__c == 'Residential Loan'){
+                feedback2OppId.put(leadRecord.Id, leadRecord.convertedOpportunityId);
+                opportunityMap.put(leadRecord.convertedOpportunityId,leadRecord.convertedOpportunityId);
             }
         }
-
-        if(opportunityMap.size() > 0){
-                 List<Partner_Task__c > partnerTasks = [SELECT Lead__c, Opportunity__c 
-                                                       FROM Partner_Task__c 
-                                                       WHERE Lead__c IN :feedback2OppId.keySet()];
-                for (Partner_Task__c task : partnerTasks){
-                    task.Opportunity__c = feedback2OppId.get(task.Lead__c);
-                }            
-                update partnerTasks;
+        if(!feedback2OppId.values().isEmpty()) {
+            if(!opportunityMap.values().isEmpty()){        
+                for(Partner_Task__c task : [SELECT Lead__c, Opportunity__c FROM Partner_Task__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                    task.Opportunity__c = feedBack2OppId.get(task.Lead__c);
+                    partnerTaskListToUpdate.add(task);
+                }
+                update partnerTaskListToUpdate;
+            }
         }
-    }                 
+    }   
+
+    public void mapCoApplicantContactToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
+        List<Contact> contactListToUpdate = new List<Contact>();
+        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
+        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+
+        for(Lead leadRecord : updatedLeadMap.values()) {
+            if (leadRecord.IsConverted 
+                && !oldLeadMap.get(leadRecord.Id).IsConverted 
+                && leadRecord.ConvertedOpportunityId != null 
+                && leadRecord.Product_Line__c == 'Residential Loan' 
+                && leadRecord.Application_Type__c == 'Joint') {
+                feedBack2OppId.put(leadRecord.Id, leadRecord.ConvertedOpportunityId);
+                opportunityMap.put(leadRecord.ConvertedOpportunityId, leadRecord.ConvertedOpportunityId);
+            }
+        }
+        if(!feedback2OppId.values().isEmpty()) {
+            for(Contact contactRecord : [SELECT Lead__c, Opportunity__c FROM Contact WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                contactRecord.Opportunity__c = feedBack2OppId.get(contactRecord.Lead__c);
+                contactListToUpdate.add(contactRecord);
+            }
+            update contactListToUpdate;
+        }
+    }
 
     public List<Loan__c> assignLoanTranche(List<Loan__c> newLoanList){
         System.debug('Begin assignLoanTranche method');
@@ -1131,6 +1158,7 @@ public without sharing class LoanHandler{
         String taskSequenceKey; //key value
         String taskSequenceUniqueId; //accessor value
         Decimal nextTask;
+        Boolean executeLeadUpdate = false;
         List<Partner_Task__c> tasksToUpdate = new List<Partner_Task__c>();
         Map<String,Partner_Task__c> parentTaskSequenceMap = new Map<String, Partner_Task__c>();
         Map<String, Integer> parentTaskSizeMap = new Map<String, Integer>();
@@ -1157,6 +1185,7 @@ public without sharing class LoanHandler{
                     taskSequenceUniqueId = task.Lead__r.Id + ' ' + nextTask;
                     if (task.Name == 'Provide All Customer Information') {
                         leadMap.get(task.Lead__c).Status = 'Under BlueWave Review';
+                        executeLeadUpdate = true;
                     }
 
                     if(parentTaskSequenceMap.get(taskSequenceUniqueId).Status__c == 'Incomplete' 
@@ -1168,7 +1197,9 @@ public without sharing class LoanHandler{
                 }
             }            
         }
-        update leadMap.values();
+        if (executeLeadUpdate) {
+            update leadMap.values();            
+        }
         return tasksToUpdate;    
     }
 
@@ -1270,6 +1301,7 @@ public without sharing class LoanHandler{
 
         for (Residential_Equipment__c equipmentLoopVar : equipmentList){
             taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
+            System.debug('error at ' + equipmentLoopVar.Id);
             taskMap.get(taskUniqueId).Status__c = 'Complete';
             taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
             taskUpdateList.add(taskMap.get(taskUniqueId));
