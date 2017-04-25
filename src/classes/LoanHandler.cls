@@ -280,7 +280,7 @@ public without sharing class LoanHandler{
                 opportunityMap.put(leadRecord.convertedOpportunityId,leadRecord.convertedOpportunityId);
             }
         }
-        if(!opportunityMap.values().isEmpty()){        
+        if(!feedback2OppId.values().isEmpty()){        
             for(Residential_Equipment__c equipment : [SELECT Lead__c, Opportunity__c FROM Residential_Equipment__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
                 equipment.Opportunity__c = feedBack2OppId.get(equipment.Lead__c);
                 equipmentListToUpdate.add(equipment);
@@ -302,12 +302,14 @@ public without sharing class LoanHandler{
                 opportunityMap.put(leadRecord.convertedOpportunityId,leadRecord.convertedOpportunityId);
             }
         }
-        if(!opportunityMap.values().isEmpty()){        
-            for(Partner_Task__c task : [SELECT Lead__c, Opportunity__c FROM Partner_Task__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
-                task.Opportunity__c = feedBack2OppId.get(task.Lead__c);
-                partnerTaskListToUpdate.add(task);
+        if(!feedback2OppId.values().isEmpty()) {
+            if(!opportunityMap.values().isEmpty()){        
+                for(Partner_Task__c task : [SELECT Lead__c, Opportunity__c FROM Partner_Task__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                    task.Opportunity__c = feedBack2OppId.get(task.Lead__c);
+                    partnerTaskListToUpdate.add(task);
+                }
+                update partnerTaskListToUpdate;
             }
-            update partnerTaskListToUpdate;
         }
     }   
 
@@ -326,11 +328,13 @@ public without sharing class LoanHandler{
                 opportunityMap.put(leadRecord.ConvertedOpportunityId, leadRecord.ConvertedOpportunityId);
             }
         }
-        for(Contact contactRecord : [SELECT Lead__c, Opportunity__c FROM Contact WHERE Lead__c IN : feedback2OppId.keySet()]) {
-            contactRecord.Opportunity__c = feedBack2OppId.get(contactRecord.Lead__c);
-            contactListToUpdate.add(contactRecord);
+        if(!feedback2OppId.values().isEmpty()) {
+            for(Contact contactRecord : [SELECT Lead__c, Opportunity__c FROM Contact WHERE Lead__c IN : feedback2OppId.keySet()]) {
+                contactRecord.Opportunity__c = feedBack2OppId.get(contactRecord.Lead__c);
+                contactListToUpdate.add(contactRecord);
+            }
+            update contactListToUpdate;
         }
-        update contactListToUpdate;
     }
 
     public List<Loan__c> assignLoanTranche(List<Loan__c> newLoanList){
