@@ -88,8 +88,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     public static Integer getBatchSize(List<Loan__c> loanList) {
         Decimal maxTerm = 1;
         for (Loan__c loan : loanList) {
-            if (loan.Term__c > maxterm) {
-                maxTerm = loan.Term__c;
+            if (loan.Loan_Term__c > maxterm) {
+                maxTerm = loan.Loan_Term__c;
             }
         }
         Decimal dmlRecords = (10000/(maxTerm*3)).setScale(0, System.RoundingMode.FLOOR);
