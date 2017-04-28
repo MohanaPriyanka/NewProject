@@ -39,8 +39,9 @@ public without sharing class TransactionApplicationHandler {
         for (Loan_Payment__c lp : lpsForLoan) {
             loanIds.add(lp.Loan__c);
         }
-        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c,
-                                                          Amort_Total_Due__c, Funds_Distributed__c,
+        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c, Bill_Status__c,
+                                                          Amort_Interest_Due__c, Amort_Principal_Due__c,
+                                                          Funds_Distributed__c,
                                                           Cumulative_Principal_Payments__c,
                                                           Interest_Applied__c, Principal_Applied__c, 
                                                           Loan_Balance__c,
@@ -107,9 +108,12 @@ public without sharing class TransactionApplicationHandler {
             if (lp.Interest_Only_Period__c) {
                 forecastedPrincipalInterestDue = forecastedInterestDue;
             } else {
+                // The Min handles the case were a customer has overpaid principal and we don't want them to pay the normal amort
+                // amount for the last payment.
+                // We can't use Amort_Total_Due__c which is Interest + Principal because that's rounded to 2 decimals
                 forecastedPrincipalInterestDue = 
                     Math.min(forecastedLoanBalance + forecastedLoanBalance * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
-                             lp.Amort_Total_Due__c);
+                             nullToZero(lp.Amort_Interest_Due__c) + nullToZero(lp.Amort_Principal_Due__c));
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Principal_Interest_Due__c', forecastedPrincipalInterestDue, true);
 

@@ -123,10 +123,10 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
                 if (handleInsert) {
-                    repo.createLoanPayments(loan);
+                    repo.createLoanPayments(loan, handleInsert);
                 } else {
                     repo.checkLoanForLPsToDelete(loan);
-                    repo.createLoanPayments(loan);
+                    repo.createLoanPayments(loan, handleInsert);
                     if (ioPeriodUpdated(loan)) {
                         loansNeedingTAReapplication.add(loan);
                     }
@@ -210,21 +210,21 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             deleteLoanPayments();
         }
 
-        private void createLoanPayments(Loan__c loan) {
+        private void createLoanPayments(Loan__c loan, Boolean isInsert) {
             LoanParams params = new LoanParams(loan, productMap);
 
             Loan_Payment__c priorLP =null;
             Loan_Payment__c currentLP = null;
             for (Integer period = LoanServicer.STARTINGPERIOD;
-                 period < getLoanTermPlusIO(loan.Product__c) + LoanServicer.STARTINGPERIOD; 
+                 period < params.loanTerm + LoanServicer.STARTINGPERIOD; 
                  period++) {
-                currentLP = createLP(period, loan, params, priorLP);
+                currentLP = createLP(period, loan, params, priorLP, isInsert);
                 loanPaymentsToCreate.add(currentLP);
                 priorLP = currentLP;
             }
         }
 
-        private Loan_Payment__c createLP(Integer period, Loan__c loan, LoanParams params, Loan_Payment__c priorLP) {
+        private Loan_Payment__c createLP(Integer period, Loan__c loan, LoanParams params, Loan_Payment__c priorLP, Boolean setBillStatus) {
             Integer monthIndex;
             Integer payFirstDistribution, paySecondDistribution;
             Boolean isInterestOnly = false, isLastPeriod = false;
@@ -248,10 +248,12 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             }
 
             Loan_Payment__c loanPayment = new Loan_Payment__c();
-            if (period == LoanServicer.STARTINGPERIOD) {
-                loanPayment.Bill_Status__c = CURRENT;
-            } else {
-                loanPayment.Bill_Status__c = FUTURE;
+            if (setBillStatus) {
+                if (period == LoanServicer.STARTINGPERIOD) {
+                    loanPayment.Bill_Status__c = CURRENT;
+                } else {
+                    loanPayment.Bill_Status__c = FUTURE;
+                }
             }
             loanPayment.Loan__c = loan.Id;
             loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
@@ -268,6 +270,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 loanPayment.Amort_Interest_Due__c = loanPayment.Funds_Distributed__c * params.monthlyRate;
                 loanPayment.Amort_Principal_Due__c = 0;
             } else {
+                loanPayment.Interest_Only_Period__c = false;
                 loanPayment.Amort_Interest_Due__c = -Excel.ipmt((Double) params.monthlyRate, 
                                                                 monthIndex + 1, 
                                                                 params.monthsOfPI, 
@@ -303,6 +306,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             List<Loan_Payment__c> loanPaymentsToDelete = new List<Loan_Payment__c>();
             Map<String, Loan_Payment__c> loanPaymentMap = new Map<String, Loan_Payment__c>();
             for (Loan_Payment__c lp : loanPaymentsToCreate) {
+                System.debug(LoggingLevel.ERROR, 'Adding ' + lp.Unique_Id__c + ' to loanPaymentMap');
                 loanPaymentMap.put(lp.Unique_Id__c, lp);
             }
             if (!loanIdsToDeleteLPs.isEmpty()) {
@@ -311,9 +315,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                                                       WHERE Loan__c in :loanIdsToDeleteLPs
                                                       AND Period__c != null];
                 for (Loan_Payment__c lp : loanPayments) {
-                    if (loanPaymentMap.get(lp.Unique_Id__c) != null) {
-                        // it's in the list to be upserted, don't remove it!
-                    } else {
+                    if (loanPaymentMap.get(lp.Unique_Id__c) == null) {
+                        System.debug(LoggingLevel.ERROR, lp.Unique_Id__c + ' not found, adding to delete');
                         loanPaymentsToDelete.add(lp);
                     }
                 }
@@ -360,16 +363,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                                        WHERE Id in :productIds];
             for (Product2 product : products) {
                 productMap.put(product.Id, product);
-            }
-        }
-
-        private Integer getLoanTermPlusIO(Id productId) {
-            Product2 product = productMap.get(productId);
-            if (product != null) {
-                return (product.Loan_Interest_Only_Period__c.intValue() +
-                        product.Loan_Term__c.intValue());
-            } else {
-                return 0;
             }
         }
     }
