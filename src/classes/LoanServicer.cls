@@ -306,7 +306,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             List<Loan_Payment__c> loanPaymentsToDelete = new List<Loan_Payment__c>();
             Map<String, Loan_Payment__c> loanPaymentMap = new Map<String, Loan_Payment__c>();
             for (Loan_Payment__c lp : loanPaymentsToCreate) {
-                System.debug(LoggingLevel.ERROR, 'Adding ' + lp.Unique_Id__c + ' to loanPaymentMap');
                 loanPaymentMap.put(lp.Unique_Id__c, lp);
             }
             if (!loanIdsToDeleteLPs.isEmpty()) {
@@ -316,7 +315,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                                                       AND Period__c != null];
                 for (Loan_Payment__c lp : loanPayments) {
                     if (loanPaymentMap.get(lp.Unique_Id__c) == null) {
-                        System.debug(LoggingLevel.ERROR, lp.Unique_Id__c + ' not found, adding to delete');
                         loanPaymentsToDelete.add(lp);
                     }
                 }
