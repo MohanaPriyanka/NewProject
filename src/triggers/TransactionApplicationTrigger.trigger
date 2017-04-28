@@ -8,7 +8,8 @@
 trigger TransactionApplicationTrigger on Transaction_Application__c (after insert, before update, before delete) {
     if (Trigger.isInsert) {
         if (Trigger.isAfter) {
-        TransactionApplicationHandler tah = new TransactionApplicationHandler(Trigger.new);
+            TransactionApplicationHandler tah = new TransactionApplicationHandler(Trigger.new);
+            tah.rollupAndCalculate();
         }
     }
 

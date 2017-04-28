@@ -8,12 +8,13 @@
 public without sharing class TransactionApplicationHandler {
     public static final String DELETE_ERROR_MSG =
         'Cannot delete a Transaction Application, instead, create an adjusting record';
+    private List<Transaction_Application__c> transactionApplicationList;
 
     public TransactionApplicationHandler(List<Transaction_Application__c> triggerContext) {
-        rollupAndCalculate(triggerContext);
+        this.transactionApplicationList = triggerContext;
     }
 
-    private void rollupAndCalculate(List<Transaction_Application__c> transactionApplicationList) {
+    public void rollupAndCalculate() {
         LREngine.Context ctx =
             new LREngine.Context(Loan_Payment__c.SobjectType,
                                  Transaction_Application__c.SobjectType,
@@ -38,8 +39,9 @@ public without sharing class TransactionApplicationHandler {
         for (Loan_Payment__c lp : lpsForLoan) {
             loanIds.add(lp.Loan__c);
         }
-        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c,
-                                                          Amort_Total_Due__c, Funds_Distributed__c,
+        List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c, Bill_Status__c,
+                                                          Amort_Interest_Due__c, Amort_Principal_Due__c,
+                                                          Funds_Distributed__c,
                                                           Cumulative_Principal_Payments__c,
                                                           Interest_Applied__c, Principal_Applied__c, 
                                                           Loan_Balance__c,
@@ -57,14 +59,14 @@ public without sharing class TransactionApplicationHandler {
 
         List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
         for (Loan__c loan : allLoansWithPayments) {
-            loanPaymentsToUpdate.addAll(calculateCumulativePrincipalApplied(loan.Loan_Payments__r, updatedPIMap));
+            loanPaymentsToUpdate.addAll(calculateCumulativeAndForecasted(loan.Loan_Payments__r, updatedPIMap));
         }
         update loanPaymentsToUpdate;
     }
 
     // Assumes that the loanPaymentList is sorted by Period, but don't assume the period is 1
-    public List<Loan_Payment__c> calculateCumulativePrincipalApplied(List<Loan_Payment__c> loanPaymentList,
-                                                                     Map<Id, Loan_Payment__c> updatedPIMap) {
+    public List<Loan_Payment__c> calculateCumulativeAndForecasted(List<Loan_Payment__c> loanPaymentList,
+                                                                  Map<Id, Loan_Payment__c> updatedPIMap) {
         Boolean addLP = false;
         Loan_Payment__c updatedLP;
         Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0;
@@ -106,9 +108,12 @@ public without sharing class TransactionApplicationHandler {
             if (lp.Interest_Only_Period__c) {
                 forecastedPrincipalInterestDue = forecastedInterestDue;
             } else {
+                // The Min handles the case were a customer has overpaid principal and we don't want them to pay the normal amort
+                // amount for the last payment.
+                // We can't use Amort_Total_Due__c which is Interest + Principal because that's rounded to 2 decimals
                 forecastedPrincipalInterestDue = 
                     Math.min(forecastedLoanBalance + forecastedLoanBalance * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
-                             lp.Amort_Total_Due__c);
+                             nullToZero(lp.Amort_Interest_Due__c) + nullToZero(lp.Amort_Principal_Due__c));
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Principal_Interest_Due__c', forecastedPrincipalInterestDue, true);
 
