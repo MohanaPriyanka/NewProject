@@ -6,6 +6,8 @@ ratings:
     - "**.cls"
     - "**.trigger"
 exclude_paths:
+  - "src/classes/LREngine.cls"
+  - "src/classes/LREngineTest.cls"
   - "src/documents/"
   - "**.schema"
   - "**.xml"

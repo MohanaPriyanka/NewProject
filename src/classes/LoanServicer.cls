@@ -8,6 +8,12 @@
  *************************************************************************************/
 
 public without sharing class LoanServicer implements Database.Batchable<sObject>, Database.Stateful {
+    public static final Integer STARTINGPERIOD = 1;
+    public static final String FUTURE = 'Future';
+    public static final String CURRENT = 'Current';
+    public static final String CLOSED = 'Closed';
+    public static final String LATE = 'Late';
+
     public Boolean anyLoansToService;
     private LoanPaymentRepo repo;
     private List<SObject> loansToService = new List<SObject>();
@@ -39,6 +45,22 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     }
 
     public void finish(Database.BatchableContext batchableContext) {
+        String emailTo;
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.isEmpty() ||
+            systemProperties[0].Error_Email__c == null) {
+            emailTo = 'product@bluewavesolar.com';
+        } else {
+            emailTo = systemProperties[0].Error_Email__c;
+        }            
+
+        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        email.setToAddresses(new List<String> {emailTo});
+        email.setSubject('LoanServicer Complete');
+        if (loansToService != null) {
+            email.setPlainTextBody(loansToService.size() + ' loans processed');
+        }
+        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
     }
 
     // Expects to be called before update to prevent loan parameters from being changed
@@ -66,8 +88,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     public static Integer getBatchSize(List<Loan__c> loanList) {
         Decimal maxTerm = 1;
         for (Loan__c loan : loanList) {
-            if (loan.Term__c > maxterm) {
-                maxTerm = loan.Term__c;
+            if (loan.Loan_Term__c > maxterm) {
+                maxTerm = loan.Loan_Term__c;
             }
         }
         Decimal dmlRecords = (10000/(maxTerm*3)).setScale(0, System.RoundingMode.FLOOR);
@@ -147,7 +169,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private List<Loan_Payment__c> loanPaymentsToCreate;
         private Set<Id> productIds;
         private Map<Id, Product2> productMap;
-        private final Integer startingPeriod = 1;
         
         private LoanPaymentRepo() {
         }
@@ -170,7 +191,9 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
             Loan_Payment__c priorLP =null;
             Loan_Payment__c currentLP = null;
-            for (Integer period = startingPeriod; period < getLoanTermPlusIO(loan.Product__c) + startingPeriod; period++) {
+            for (Integer period = LoanServicer.STARTINGPERIOD;
+                 period < getLoanTermPlusIO(loan.Product__c) + LoanServicer.STARTINGPERIOD; 
+                 period++) {
                 currentLP = createLP(period, loan, params, priorLP);
                 loanPaymentsToCreate.add(currentLP);
                 priorLP = currentLP;
@@ -182,7 +205,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             Integer payFirstDistribution, paySecondDistribution;
             Boolean isInterestOnly = false, isLastPeriod = false;
 
-            monthIndex = params.firstDistributionMonth + period - startingPeriod;
+            monthIndex = params.firstDistributionMonth + period - LoanServicer.STARTINGPERIOD;
             if (monthIndex < 0) {
                 isInterestOnly = true;
             }
@@ -201,18 +224,23 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             }
 
             Loan_Payment__c loanPayment = new Loan_Payment__c();
+            if (period == LoanServicer.STARTINGPERIOD) {
+                loanPayment.Bill_Status__c = CURRENT;
+            } else {
+                loanPayment.Bill_Status__c = FUTURE;
+            }
             loanPayment.Loan__c = loan.Id;
             loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
             loanPayment.Payment_Due_Date2__c = 
-                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period - startingPeriod);
-
+                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period - LoanServicer.STARTINGPERIOD);
 
             loanPayment.Funds_Distributed__c = 
                 (params.loanAmount*params.firstDistribution+params.Fees)*payFirstDistribution+
                 params.loanAmount*params.secondDistribution*paySecondDistribution;
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             if (isInterestOnly) {
+                loanPayment.Interest_Only_Period__c = true;
                 loanPayment.Amort_Interest_Due__c = loanPayment.Funds_Distributed__c * params.monthlyRate;
                 loanPayment.Amort_Principal_Due__c = 0;
             } else {
@@ -229,6 +257,14 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 priorLP==null?0:(priorLP.Amort_Cumulative_Principal__c + priorLP.Amort_Principal_Due__c);
             loanPayment.Amort_Starting_Principal__c = 
                 loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
+
+            // Calculated forecasted fields, which would be the same as the Amort schedule for new LPs.
+            loanPayment.Forecasted_Loan_Balance__c = loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
+            loanPayment.Forecasted_Interest_Due__c = loanPayment.Amort_Interest_Due__c;
+            loanPayment.Forecasted_Principal_Due__c = loanPayment.Amort_Principal_Due__c;
+            loanPayment.Forecasted_Principal_Interest_Due__c = loanPayment.Amort_Interest_Due__c + loanPayment.Amort_Principal_Due__c;
+            loanPayment.Forecasted_Cumulative_Principal__c = loanPayment.Amort_Cumulative_Principal__c;
+            
             return loanPayment;
         }
 
@@ -256,7 +292,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private void updateLoanPaymentsWithPrior() {
             List<Loan_Payment__c> lpsWithPrior = new List<Loan_Payment__c>();
             for (Loan_Payment__c loanPayment : loanPaymentsToCreate) {
-                if (loanPayment.Period__c > startingPeriod) {
+                if (loanPayment.Period__c > LoanServicer.STARTINGPERIOD) {
                     Loan_Payment__c lpReference = 
                         new Loan_Payment__c(Unique_Id__c = getPriorUniqueID(loanPayment));
                     loanPayment.Prior_Period_Loan_Payment__r = lpReference;
