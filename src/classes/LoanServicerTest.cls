@@ -251,8 +251,92 @@ public with sharing class LoanServicerTest {
             System.assertEquals(answerMap.get(period).Forecasted_Cumulative_Principal, setScale(loanPayment.Forecasted_Cumulative_Principal__c, 3));
             System.assertEquals(answerMap.get(period).Forecasted_Loan_Balance, setScale(loanPayment.Forecasted_Loan_Balance__c, 3));
             System.assertEquals(answerMap.get(period).Forecasted_Interest_Due, setScale(loanPayment.Forecasted_Interest_Due__c, 3));
-            System.assertEquals(answerMap.get(period).Forecasted_Principal_Interest_Due, setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3));
             System.assertEquals(answerMap.get(period).Forecasted_Principal_Due, setScale(loanPayment.Forecasted_Principal_Due__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Principal_Interest_Due, setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3));
+        }
+
+        Test.stopTest();
+    }
+
+    static testMethod void testIOPeriodChange() {
+        Product2 ma10Yr = [SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
+                           FROM Product2
+                           WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
+        Loan_Traunch__c loanTraunch = [SELECT Id
+                                       FROM Loan_Traunch__c
+                                       WHERE Name = 'Tranche Assignment Pending'
+                                       LIMIT 1];
+        Lead testLead = [SELECT Id
+                         FROM Lead
+                         WHERE LastName = 'Testerson'
+                         LIMIT 1];
+        Opportunity opp = [SELECT Id
+                           FROM Opportunity
+                           WHERE Name = 'Testerson Loan'
+                           LIMIT 1];
+        Partner__c partner = [SELECT Id
+                              FROM Partner__c
+                              WHERE Name = 'Partner'
+                              LIMIT 1];
+        Loan__c loan = new Loan__c(Product__c = ma10Yr.Id,
+                                   Lead__c = testLead.Id,
+                                   Partner__c = partner.Id,
+                                   Opportunity__c = opp.Id,
+                                   Loan_Tranche__c = loanTraunch.Id,
+                                   System_Costt__c = 40316.93,
+                                   Financing_Fee__c = 2015.85,
+                                   Commencement_Datee__c = Date.today());
+        insert loan;
+
+        List<Loan_Payment__c> loanPayments = [SELECT Id, Period__c, Bill_Status__c,
+                                              Funds_Distributed__c, Amort_Interest_Due__c, Amort_Principal_Due__c,
+                                              Amort_Cumulative_Principal__c, Amort_Starting_Principal__c, Amort_Total_Due__c,
+                                              Forecasted_Cumulative_Principal__c, Forecasted_Loan_Balance__c, Forecasted_Interest_Due__c,
+                                              Forecasted_Principal_Due__c, Forecasted_Principal_Interest_Due__c
+                                              FROM Loan_Payment__c
+                                              WHERE Loan__c = : loan.Id
+                                              AND Period__c <= 5];
+
+        List<Transaction_Application__c> taList = new List<Transaction_Application__c>();
+        for (Loan_Payment__c loanPayment : loanPayments) {
+            if (loanPayment.Period__c == 5) {
+                loanPayment.Bill_Status__c = LoanServicer.CURRENT;
+            } else {
+                loanPayment.Bill_Status__c = LoanServicer.CLOSED;
+            }
+            Transaction_Application__c ta = new Transaction_Application__c(Loan_Payment__c = loanPayment.Id,
+                                                                           Principal_Applied__c = 1000);
+            taList.add(ta);
+        }
+        update loanPayments;
+
+        Test.startTest();
+        insert taList;
+
+        Map<Integer, LoanServicerTest.MonthlyPayment> answerMap = getAnswerMap(loanWithPayments);
+        Integer period;
+        loanPayments = [SELECT Id, Period__c, Bill_Status__c, Principal_Applied__c,
+                        Funds_Distributed__c, Amort_Interest_Due__c, Amort_Principal_Due__c,
+                        Amort_Cumulative_Principal__c, Amort_Starting_Principal__c, Amort_Total_Due__c,
+                        Forecasted_Cumulative_Principal__c, Forecasted_Loan_Balance__c, Forecasted_Interest_Due__c,
+                        Forecasted_Principal_Due__c, Forecasted_Principal_Interest_Due__c
+                        FROM Loan_Payment__c
+                        WHERE Loan__c = : loan.Id];
+        for (Loan_Payment__c loanPayment : loanPayments) {
+            period = loanPayment.Period__c.intValue();
+            System.assertEquals(answerMap.get(period).Bill_Status, loanPayment.Bill_Status__c);
+            System.assertEquals(answerMap.get(period).Funds_Distributed, loanPayment.Funds_Distributed__c);
+            System.assertEquals(answerMap.get(period).Amort_Principal_Due, setScale(loanPayment.Amort_Principal_Due__c, 3));
+            System.assertEquals(answerMap.get(period).Amort_Interest_Due, setScale(loanPayment.Amort_Interest_Due__c, 3));
+            System.assertEquals(answerMap.get(period).Amort_Cumulative_Principal, setScale(loanPayment.Amort_Cumulative_Principal__c, 3));
+            System.assertEquals(answerMap.get(period).Amort_Starting_Principal, setScale(loanPayment.Amort_Starting_Principal__c, 3));
+            System.assertEquals(answerMap.get(period).Amort_Total_Due, setScale(loanPayment.Amort_Total_Due__c, 2));
+            System.assertEquals(answerMap.get(period).Principal_Applied, setScale(loanPayment.Principal_Applied__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Cumulative_Principal, setScale(loanPayment.Forecasted_Cumulative_Principal__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Loan_Balance, setScale(loanPayment.Forecasted_Loan_Balance__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Interest_Due, setScale(loanPayment.Forecasted_Interest_Due__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Principal_Due, setScale(loanPayment.Forecasted_Principal_Due__c, 3));
+            System.assertEquals(answerMap.get(period).Forecasted_Principal_Interest_Due, setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3));
         }
 
         Test.stopTest();

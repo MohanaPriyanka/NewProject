@@ -8,12 +8,13 @@
 public without sharing class TransactionApplicationHandler {
     public static final String DELETE_ERROR_MSG =
         'Cannot delete a Transaction Application, instead, create an adjusting record';
+    private List<Transaction_Application__c> transactionApplicationList;
 
     public TransactionApplicationHandler(List<Transaction_Application__c> triggerContext) {
-        rollupAndCalculate(triggerContext);
+        this.transactionApplicationList = triggerContext;
     }
 
-    private void rollupAndCalculate(List<Transaction_Application__c> transactionApplicationList) {
+    public void rollupAndCalculate() {
         LREngine.Context ctx =
             new LREngine.Context(Loan_Payment__c.SobjectType,
                                  Transaction_Application__c.SobjectType,
@@ -57,14 +58,14 @@ public without sharing class TransactionApplicationHandler {
 
         List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
         for (Loan__c loan : allLoansWithPayments) {
-            loanPaymentsToUpdate.addAll(calculateCumulativePrincipalApplied(loan.Loan_Payments__r, updatedPIMap));
+            loanPaymentsToUpdate.addAll(calculateCumulativeAndForecasted(loan.Loan_Payments__r, updatedPIMap));
         }
         update loanPaymentsToUpdate;
     }
 
     // Assumes that the loanPaymentList is sorted by Period, but don't assume the period is 1
-    public List<Loan_Payment__c> calculateCumulativePrincipalApplied(List<Loan_Payment__c> loanPaymentList,
-                                                                     Map<Id, Loan_Payment__c> updatedPIMap) {
+    public List<Loan_Payment__c> calculateCumulativeAndForecasted(List<Loan_Payment__c> loanPaymentList,
+                                                                  Map<Id, Loan_Payment__c> updatedPIMap) {
         Boolean addLP = false;
         Loan_Payment__c updatedLP;
         Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0;
