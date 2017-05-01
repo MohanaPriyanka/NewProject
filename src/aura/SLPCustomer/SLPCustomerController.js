@@ -56,327 +56,12 @@
             var completeToggle = component.find("complete");       
             var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
 
-            if(resp.getState() == 'SUCCESS') {
-                if(mslpVar == false) {                    
-                    if(resp.getReturnValue() == 'Run Credit Check'){
-                        component.set("v.blueWaveReviewAlert", false);
-                        $A.util.addClass(creditToggle, 'slds-is-active ');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                        $A.util.removeClass(reviewToggle, 'slds-is-active');
-                        $A.util.removeClass(contractToggle, 'slds-is-active');
-                        $A.util.removeClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.removeClass(interconnectionToggle, 'slds-is-active');   
-                        $A.util.removeClass(completeToggle, 'slds-is-active');                                          
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit');                     
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');   
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                                          
-                    }else if(resp.getReturnValue() == 'Provide All Customer Information'){
-                        component.set("v.blueWaveReviewAlert", false);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                        $A.util.removeClass(reviewToggle, 'slds-is-active');
-                        $A.util.removeClass(contractToggle, 'slds-is-active');
-                        $A.util.removeClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.removeClass(interconnectionToggle, 'slds-is-active');
-                        $A.util.removeClass(completeToggle, 'slds-is-active');                                          
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfo'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                            
-                    }else if(resp.getReturnValue() == 'Under BlueWave Review'){
-                        component.set("v.blueWaveReviewAlert", true);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                        $A.util.addClass(reviewToggle, 'slds-is-active');
-                        $A.util.removeClass(contractToggle, 'slds-is-active');
-                        $A.util.removeClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.removeClass(interconnectionToggle, 'slds-is-active');
-                        $A.util.removeClass(completeToggle, 'slds-is-active');                      
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                                               
-                    }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
-                        component.set("v.blueWaveReviewAlert", false);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                        $A.util.addClass(reviewToggle, 'slds-is-active');                    
-                        $A.util.addClass(contractToggle, 'slds-is-active');
-                        $A.util.removeClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.removeClass(interconnectionToggle, 'slds-is-active');  
-                        $A.util.removeClass(completeToggle, 'slds-is-active');                                          
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                            
-                    }else if(resp.getReturnValue() == 'Mechanical Installation'){
-                        component.set("v.blueWaveReviewAlert", false);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                        $A.util.addClass(reviewToggle, 'slds-is-active');                    
-                        $A.util.addClass(contractToggle, 'slds-is-active');
-                        $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                            
-                    }else if(resp.getReturnValue() == 'Interconnection'){
-                        component.set("v.blueWaveReviewAlert", false);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-    					$A.util.addClass(reviewToggle, 'slds-is-active');                                        
-                        $A.util.addClass(contractToggle, 'slds-is-active');
-                        $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.addClass(interconnectionToggle, 'slds-is-active');
-                        $A.util.removeClass(completeToggle, 'slds-is-active');                                          
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                            
-                    }else{
-                        component.set("v.blueWaveReviewAlert", false);
-                    	$A.util.addClass(creditToggle, 'slds-is-active');
-                        $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    	$A.util.addClass(reviewToggle, 'slds-is-active');
-                        $A.util.addClass(contractToggle, 'slds-is-active');
-                        $A.util.addClass(mechInstallToggle, 'slds-is-active');
-                        $A.util.addClass(interconnectionToggle, 'slds-is-active');  
-                        $A.util.addClass(completeToggle, 'slds-is-active');  
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    	$A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                        $A.util.addClass(progressBarToggle, 'progressBarWidthComplete'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                        $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');                                              
-                    }
-                }else{
-                if(resp.getReturnValue() == 'Run Credit Check'){
-                    component.set("v.blueWaveReviewAlert", false);                  
-                    $A.util.addClass(creditToggle, 'slds-is-active ');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.removeClass(reviewToggle, 'slds-is-active')
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                    ;
-                    $A.util.removeClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                                         
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP');                     
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                                      
-                }else if(resp.getReturnValue() == 'Provide All Customer Information'){
-                    component.set("v.blueWaveReviewAlert", false);                  
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.removeClass(reviewToggle, 'slds-is-active')
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                    ;
-                    $A.util.removeClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                                         
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else if(resp.getReturnValue() == 'Under BlueWave Review'){
-                    component.set("v.blueWaveReviewAlert", true);
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                    
-                    $A.util.removeClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                                         
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
-                }else if(resp.getReturnValue() == 'Obtain Contract Signature'){
-                    component.set("v.blueWaveReviewAlert", false);                  
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');  
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                                      
-                    $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');                    
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                                         
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else if(resp.getReturnValue() == 'Report Interconnection to MCEC'){
-                    component.set("v.blueWaveReviewAlert", false);                  
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');  
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                                                          
-                    $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active');
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                                          
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
-                }else{
-                    component.set("v.blueWaveReviewAlert", false);                  
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
-                    $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');                    
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active'); 
-                    $A.util.addClass(completeToggle, 'slds-is-active');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCreditMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfoMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReviewMSLP');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContractMSLP'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstallMSLP');                    
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnectionMSLP');
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthCompleteMSLP');   
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');                    
-                }                    
-                }
+            if(resp.getState() == 'SUCCESS') {                  
+                helper.getProgressBarDataMethod(component, event, helper);
             }
             else {
                 $A.log("Errors", resp.getError());
-                	$A.util.removeClass(creditToggle, 'slds-is-active');
-                    $A.util.removeClass(systemInfoToggle, 'slds-is-active');
-                	$A.util.removeClass(reviewToggle, 'slds-is-active');
-                    $A.util.removeClass(contractToggle, 'slds-is-active');
-                    $A.util.removeClass(mechInstallToggle, 'slds-is-active');
-                    $A.util.removeClass(interconnectionToggle, 'slds-is-active');   
-                    $A.util.removeClass(completeToggle, 'slds-is-active');                                      
-                    $A.util.addClass(progressBarToggle, 'progressBarWidthCredit'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthSystemInfo');
-                	$A.util.removeClass(progressBarToggle, 'progressBarWidthReview');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthContract'); 
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthMechanicalInstall');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthInterconnection');
-                    $A.util.removeClass(progressBarToggle, 'progressBarWidthComplete');
+                alert("There was an issue loading the progress bar");
             }
         });
 		$A.enqueueAction(progressBarData);  
@@ -468,7 +153,7 @@
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
-            helper.getProgressBarData(component, event, helper);
+            helper.getProgressBarDataMethod(component, event, helper);
         }else {
             helper.getProgressBarDataMSLP(component, event, helper);
         }
@@ -515,13 +200,14 @@
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
-            helper.getProgressBarData(component, event, helper);
+            helper.getProgressBarDataMethod(component, event, helper);
         }else {
             helper.getProgressBarDataMSLP(component, event, helper);
         }
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
+        var loanId = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
         var customerInformationToggle1 = component.find("customerInformation1");
         var customerInformationToggle2 = component.find("customerInformation2");
@@ -549,7 +235,7 @@
         $A.util.addClass(subTaskHeaderToggle, 'noDisplay'); 
         
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");        
-        completeLoanDisbursals.setParams({loanId : label});        
+        completeLoanDisbursals.setParams({loanId : loanId});        
 		completeLoanDisbursals.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());                                         
@@ -561,7 +247,7 @@
         $A.enqueueAction(completeLoanDisbursals);  
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");        
-        incompleteLoanDisbursals.setParams({loanId : label});        
+        incompleteLoanDisbursals.setParams({loanId : loanId});        
 		incompleteLoanDisbursals.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());                                         
@@ -577,15 +263,15 @@
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
-            helper.getProgressBarData(component, event, helper);
+            helper.getProgressBarDataMethod(component, event, helper);
         }else {
             helper.getProgressBarDataMSLP(component, event, helper);
-        }
-
-        
+        }        
 	},
     
     saveEquipmentInformation : function(component, event, helper) {
+        helper.startSpinner(component, "emailSpinner");
+        $A.util.addClass(component.find("saveEquipment"), 'noDisplay');
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
         var loanUpdateVar = component.get("v.loanUpdate");
@@ -601,6 +287,8 @@
         
         saveAction.setCallback(this, function(resp) {
             if(resp.getState() == "SUCCESS") {
+                helper.stopSpinner(component, "emailSpinner");
+                $A.util.removeClass(component.find("saveEquipment"), 'noDisplay');
                 alert("The information has been updated");
             }else {
                 $A.log("Errors", resp.getError());                
@@ -612,6 +300,7 @@
         customerInformationAction.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -622,9 +311,8 @@
                      
         $A.enqueueAction(customerInformationAction);     
         
-        var mslpVar = component.get("v.customer.DOER_Solar_Loann__c");        
         if(mslpVar == false) {
-            helper.getProgressBarData(component, event, helper);
+            helper.getProgressBarDataMethod(component, event, helper);
         }else {
             helper.getProgressBarDataMSLP(component, event, helper);
         }
@@ -861,8 +549,8 @@
     },  
     
     navigateSalesAgreementDoc : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");                        
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var leadId = component.get("v.customerInformation.Loan__r.Opportunity__r.Id");                        
+        var updateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
         if(updateDummy == true){
             updateDummy = false;
         }else{
@@ -871,7 +559,7 @@
         
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
-          "url": 'https://forms.bluewaverenewables.com/381606?tfa_814=' + leadId 
+          "url": 'https://forms.bluewaverenewables.com/381616?tfa_814=' + leadId 
             + '&' + 'tfa_828=' + updateDummy
 
         });

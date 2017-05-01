@@ -98,6 +98,10 @@
     
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
+        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
+        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay'); 
+        $A.util.addClass(component.find("customerEmailButton"), 'noDisplayBar'); 
+
         helper.startSpinner(component, 'creditSpinner');
 
         var lead = component.get("v.newLead");

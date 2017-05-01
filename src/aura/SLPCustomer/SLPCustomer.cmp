@@ -124,55 +124,62 @@ reloaded by clicking the view button on the dashboard page-->
           <!--  _________________________________PROGRESS BAR ___________________________________ -->    
               <div aura:id="taskBar" class="slds-wizard" role="navigation">    
               <ol class="slds-wizard__list">
-                <li aura:id="credit" class="slds-wizard__item">
+                <li aura:id="RunCreditCheckProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Navigation">Credit</span>
                   </a>
                 </li>          
-                <li aura:id="systemInfo" class="slds-wizard__item">
+                <li aura:id="ProvideAllCustomerInformationProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Navigation">Information</span>
                   </a>
                 </li>
-                <li aura:id="bwReview" class="slds-wizard__item">
+                <li aura:id="UnderBlueWaveReviewProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Actions">Review</span>
                   </a>
                 </li>              
-                <li aura:id="contract" class="slds-wizard__item">
+                <li aura:id="ObtainContractSignatureProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Actions">Contract</span>
                   </a>
                 </li>        
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                        
-                <li aura:id="mechInstall" class="slds-wizard__item">
+                <li aura:id="ProvideSalesAgreementProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                          title="Actions">Sales Agreement</span>
+                  </a>
+                </li>     
+                <li aura:id="BlueWaveCounterSignatureProgressBar" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                          title="Actions">Countersign</span>
+                  </a>
+                </li>                               
+                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                        
+                <li aura:id="MechanicalInstallationProgressBar" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Compact Layout">Install</span>
                   </a>
                 </li> 
                 </aura:if>               
-                <li aura:id="interconnection" class="slds-wizard__item">
+                <li aura:id="InterconnectionProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Review">Interconnect</span>
-                  </a>
-                </li>
-                <li aura:id="complete" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Invite">Complete</span>
                   </a>
                 </li>
               </ol>
@@ -366,7 +373,8 @@ reloaded by clicking the view button on the dashboard page-->
             </fieldset>           
             <br></br>
               <div class="slds-align--absolute-center paddingBottom1 ">
-                    <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
+                    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+                    <ui:button aura:id="saveEquipment" label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
                     </div> 
             </aura:if>                       
             </div>
@@ -458,12 +466,58 @@ reloaded by clicking the view button on the dashboard page-->
                                press="{!c.exitParentSubTasks}"/>
                         </th>
                         <aura:set attribute="else">
-                            <th>
-                                <ui:button disabled="true" />
-                            </th>
+                          <th>
+                          </th>
                         </aura:set>                              
-                    </aura:if>
-                </tr>                         
+                    </aura:if>                         
+                    <aura:if isTrue="{!and(task.Name == 'Provide Sales Agreement', task.Status__c != 'Complete')}"> 
+                      <th>                           
+                       <ui:button aura:id="viewButton"
+                         label="Submit"           
+                         class=""
+                         labelClass="{!task.Id}"          
+                         press="{!c.navigateSalesAgreementDoc}"/>
+                       </th>
+                       <aura:set attribute="else">
+                    <aura:if isTrue="{!and(task.Name == 'Mechanical Installation' , task.Status__c != 'Complete')}"> 
+                      <th>                           
+                       <ui:button aura:id="viewButton"
+                         label="Submit"           
+                         class=""
+                         labelClass="{!task.Id}"          
+                         press="{!c.navigateInstallationDocs}"/>
+                       </th>
+                       <aura:set attribute="else">
+                    <aura:if isTrue="{!and(task.Name == 'Interconnection' , task.Status__c != 'Complete')}"> 
+                      <th>                           
+                       <ui:button aura:id="viewButton"
+                         label="Submit"           
+                         class=""
+                         labelClass="{!task.Id}"          
+                         press="{!c.navigateInterconnectionDocs}"/>
+                       </th>
+                       <aura:set attribute="else">
+                    <aura:if isTrue="{!and(task.Name == 'Provide All Customer Information' , task.Status__c != 'Complete')}"> 
+                      <th>                           
+                       <ui:button aura:id="viewButton"
+                         label="Submit"           
+                         class=""
+                         labelClass="{!task.Id}"          
+                         press="{!c.openCustomerInformation}"/>
+                       </th>
+                       <aura:set attribute="else">
+                        <th>
+                          <ui:button disabled="true" />
+                        </th>
+                      </aura:set>                              
+                    </aura:if>    
+                      </aura:set>                              
+                    </aura:if>     
+                      </aura:set>                              
+                    </aura:if>  
+                      </aura:set>                              
+                    </aura:if>                                                                           
+                  </tr>                         
             </aura:iteration>             
           </tbody>
         </table>
