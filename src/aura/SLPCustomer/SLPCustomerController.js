@@ -152,11 +152,7 @@
         $A.enqueueAction(partnerTaskList);  
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
-        if(mslpVar == false) {
-            helper.getProgressBarDataMethod(component, event, helper);
-        }else {
-            helper.getProgressBarDataMSLP(component, event, helper);
-        }
+        helper.getProgressBarDataMethod(component, event, helper);
                 
 	},  
     
@@ -199,11 +195,7 @@
         $A.enqueueAction(customerInformationAction);
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
-        if(mslpVar == false) {
-            helper.getProgressBarDataMethod(component, event, helper);
-        }else {
-            helper.getProgressBarDataMSLP(component, event, helper);
-        }
+        helper.getProgressBarDataMethod(component, event, helper);
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
@@ -260,11 +252,7 @@
         $A.enqueueAction(incompleteLoanDisbursals);    
         
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
-        if(mslpVar == false) {
-            helper.getProgressBarDataMethod(component, event, helper);
-        }else {
-            helper.getProgressBarDataMSLP(component, event, helper);
-        }        
+        helper.getProgressBarDataMethod(component, event, helper);        
 	},
     
     saveEquipmentInformation : function(component, event, helper) {
@@ -308,12 +296,8 @@
 		$A.enqueueAction(saveAction);
                      
         $A.enqueueAction(customerInformationAction);     
-        
-        if(mslpVar == false) {
-            helper.getProgressBarDataMethod(component, event, helper);
-        }else {
-            helper.getProgressBarDataMSLP(component, event, helper);
-        }
+        helper.getProgressBarDataMethod(component, event, helper);
+
     /*    //save the files
         var fileInput = component.find("mechInstallFile").getElement();
     	var file = fileInput.files[0];

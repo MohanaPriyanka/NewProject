@@ -589,9 +589,11 @@ public without sharing class LoanHandler{
             Partner_Task__c bwReviewTask = createPartnerTask(loanRecord, 'GrandParent', 'Under BlueWave Review', 'Under BlueWave Review', partnerSequenceCounter, 'Incomplete', 'Under BlueWave Review', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
             partnerSequenceCounter += 1;
             Partner_Task__c contractSignatureTask = createPartnerTask(loanRecord, 'GrandParent', 'Obtain Contract Signature', 'Obtain Contract Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                
-            partnerSequenceCounter += 1;            
-            Partner_Task__c salesAgreementTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide Sales Agreement', 'Sales Agreement', partnerSequenceCounter, 'Incomplete', 'Sales Agreement', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
-            partnerSequenceCounter += 1;
+            partnerSequenceCounter += 1;  
+            if (!loanRecord.DOER_Solar_Loann__c){                      
+                Partner_Task__c salesAgreementTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide Sales Agreement', 'Sales Agreement', partnerSequenceCounter, 'Incomplete', 'Sales Agreement', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
+                partnerSequenceCounter += 1;
+            }
             Partner_Task__c bwContractSignature = createPartnerTask(loanRecord, 'GrandParent', 'BlueWave Counter Signature', 'BlueWave Counter Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                
             partnerSequenceCounter += 1;            
             if (!loanRecord.DOER_Solar_Loann__c){

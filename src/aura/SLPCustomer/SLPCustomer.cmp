@@ -152,13 +152,15 @@ reloaded by clicking the view button on the dashboard page-->
                           title="Actions">Contract</span>
                   </a>
                 </li>        
+                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                                        
                 <li aura:id="ProvideSalesAgreementProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
                     <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Actions">Sales Agreement</span>
                   </a>
-                </li>     
+                </li> 
+                </aura:if>                                   
                 <li aura:id="BlueWaveCounterSignatureProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
@@ -174,7 +176,8 @@ reloaded by clicking the view button on the dashboard page-->
                           title="Compact Layout">Install</span>
                   </a>
                 </li> 
-                </aura:if>               
+                </aura:if>  
+                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                                                     
                 <li aura:id="InterconnectionProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
                     <span class="slds-wizard__marker"></span>
@@ -182,6 +185,16 @@ reloaded by clicking the view button on the dashboard page-->
                           title="Review">Interconnect</span>
                   </a>
                 </li>
+                </aura:if>  
+                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == true}">                                                     
+                <li aura:id="ReportInterconnectiontoMCECProgressBar" class="slds-wizard__item">
+                  <a href="javascript:void(0);" class="slds-wizard__link">
+                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                          title="Review">Interconnect</span>
+                  </a>
+                </li>
+                </aura:if>                                  
               </ol>
               <span class="slds-wizard__progress">
                 <span aura:id="progressBar" class="slds-wizard__progress-bar"></span>

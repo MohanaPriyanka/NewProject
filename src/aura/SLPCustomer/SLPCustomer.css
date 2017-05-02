@@ -340,21 +340,18 @@
 }
 
 .THIS .UnderBlueWaveReviewProgressBarMSLP {
-    width:28%;
+    width:33%;
 }
 
 .THIS .ObtainContractSignatureProgressBarMSLP {
-    width:43%;
+    width:50%;
 }
 
-.THIS .ProvideSalesAgreementProgressBarMSLP {
-    width:67%;
-}
 .THIS .BlueWaveCounterSignatureProgressBarMSLP {
-    width:83%;
+    width:80%;
 }
 
-.THIS .InterconnectionProgressBarMSLP {
+.THIS .ReportInterconnectiontoMCECProgressBarMSLP {
     width:99%;
 }
 

@@ -180,7 +180,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually'  
+                          "url": 'https://forms.bluewaverenewables.com/' + '381619' + '?tfa_572=Individually'  
                             + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 
