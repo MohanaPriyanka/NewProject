@@ -255,9 +255,7 @@
             else {
                 $A.log("Errors", resp.getError());
             }
-        });         
-        
-     
+        });                      
                   
         $A.enqueueAction(incompleteLoanDisbursals);    
         
@@ -549,7 +547,7 @@
     },  
     
     navigateSalesAgreementDoc : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Loan__r.Opportunity__r.Id");                        
+        var leadId = component.get("v.customerInformation.Opportunity__r.Id");                        
         var updateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
         if(updateDummy == true){
             updateDummy = false;
