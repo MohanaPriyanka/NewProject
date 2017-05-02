@@ -36,7 +36,6 @@
 
                 for (i = 0; i < progressBarCompletedTasks.length; i++) {
                     $A.util.addClass(component.find(progressBarCompletedTasks[i]), 'slds-is-active');
-                     $A.util.addClass(component.find(progressBarCompletedTasks[i]), 'slds-icon-text-warning');
                 }
                 for (i = 0; i < progressBarIncompleteTasks.length; i++) {
                     $A.util.removeClass(component.find(progressBarIncompleteTasks[i]), 'slds-is-active');

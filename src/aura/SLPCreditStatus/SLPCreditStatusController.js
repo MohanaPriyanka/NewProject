@@ -145,7 +145,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381615' + '?tfa_1311=' + address 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381610' + '?tfa_1311=' + address 
                             + '&' + 'tfa_154=' + state 
                             + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
@@ -180,7 +180,7 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381619' + '?tfa_572=Individually'  
+                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually'  
                             + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 
