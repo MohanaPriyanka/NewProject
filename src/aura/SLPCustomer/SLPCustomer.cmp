@@ -115,18 +115,19 @@ reloaded by clicking the view button on the dashboard page-->
         }  
 
     </style>
+    
     <div aura:id = "customerPage" class="noDisplayBar"> 	
         <div aura:id="customerName" class="main2 proximaNovaBrand"> 
             <div  class="center proximaNovaBrand"><h1> {!v.customer.Loan__r.Name} </h1></div>
              <hr></hr>  
         </div>
         <br></br> 
-          <!--  _________________________________PROGRESS BAR ___________________________________ -->    
-              <div aura:id="taskBar" class="slds-wizard" role="navigation">    
-              <ol class="slds-wizard__list">
-                <li aura:id="RunCreditCheckProgressBar" class="slds-wizard__item">
+          <!--  _________________________________PROGRESS BAR ___________________________________ -->   
+        <div aura:id="taskBar" class="slds-wizard" role="navigation">    
+          <ol class="slds-wizard__list">             
+              <li aura:id="RunCreditCheckProgressBar" class="slds-wizard__item">
                   <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
+                    <span class="slds-wizard__marker "></span>
                     <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Navigation">Credit</span>
                   </a>
