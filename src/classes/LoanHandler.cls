@@ -582,44 +582,44 @@ public without sharing class LoanHandler{
                                    Sales_Agent__r.Id 
                                    FROM Loan__c 
                                    WHERE Id IN : newLoanList]){
-            Partner_Task__c creditTask = createPartnerTask(loanRecord, 'GrandParent', 'Run Credit Check', 'Run Credit Check', partnerSequenceCounter, 'Complete', 'Credit Check', null, null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);            
+            Partner_Task__c creditTask = createPartnerTask(loanRecord, 'GrandParent', 'Run Credit Check', 'Run Credit Check', partnerSequenceCounter, 'Complete', 'Credit Check', null, null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Credit');            
             partnerSequenceCounter += 1;
-            Partner_Task__c allInformationTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide All Customer Information', 'Provide All Customer Information', partnerSequenceCounter, 'Pending', 'Customer Information', null, null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
+            Partner_Task__c allInformationTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide All Customer Information', 'Provide All Customer Information', partnerSequenceCounter, 'Pending', 'Customer Information', null, null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Information');
             partnerSequenceCounter += 1;
-            Partner_Task__c bwReviewTask = createPartnerTask(loanRecord, 'GrandParent', 'Under BlueWave Review', 'Under BlueWave Review', partnerSequenceCounter, 'Incomplete', 'Under BlueWave Review', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
+            Partner_Task__c bwReviewTask = createPartnerTask(loanRecord, 'GrandParent', 'Under BlueWave Review', 'Under BlueWave Review', partnerSequenceCounter, 'Incomplete', 'Under BlueWave Review', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Review');
             partnerSequenceCounter += 1;
-            Partner_Task__c contractSignatureTask = createPartnerTask(loanRecord, 'GrandParent', 'Obtain Contract Signature', 'Obtain Contract Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                
+            Partner_Task__c contractSignatureTask = createPartnerTask(loanRecord, 'GrandParent', 'Obtain Contract Signature', 'Obtain Contract Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Contract');                
             partnerSequenceCounter += 1;  
             if (!loanRecord.DOER_Solar_Loann__c){                      
-                Partner_Task__c salesAgreementTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide Sales Agreement', 'Sales Agreement', partnerSequenceCounter, 'Incomplete', 'Sales Agreement', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);
+                Partner_Task__c salesAgreementTask = createPartnerTask(loanRecord, 'GrandParent', 'Provide Sales Agreement', 'Sales Agreement', partnerSequenceCounter, 'Incomplete', 'Sales Agreement', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Sales Agreement');
                 partnerSequenceCounter += 1;
             }
-            Partner_Task__c bwContractSignature = createPartnerTask(loanRecord, 'GrandParent', 'BlueWave Counter Signature', 'BlueWave Counter Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                
+            Partner_Task__c bwContractSignature = createPartnerTask(loanRecord, 'GrandParent', 'BlueWave Counter Signature', 'BlueWave Counter Signature', partnerSequenceCounter, 'Incomplete', 'Contract', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Countersign');                
             partnerSequenceCounter += 1;            
             if (!loanRecord.DOER_Solar_Loann__c){
-                Partner_Task__c mechanicalInstallationTask = createPartnerTask(loanRecord, 'GrandParent', 'Mechanical Installation', 'Mechanical Installation', partnerSequenceCounter, 'Incomplete', 'Mechanical Installation', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                
+                Partner_Task__c mechanicalInstallationTask = createPartnerTask(loanRecord, 'GrandParent', 'Mechanical Installation', 'Mechanical Installation', partnerSequenceCounter, 'Incomplete', 'Mechanical Installation', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Install');                
                 partnerSequenceCounter += 1;
-                Partner_Task__c interconnectionTask = createPartnerTask(loanRecord, 'GrandParent', 'Interconnection', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                            
+                Partner_Task__c interconnectionTask = createPartnerTask(loanRecord, 'GrandParent', 'Interconnection', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Interconnect');                            
                 partnerSequenceCounter += 1;
             } else {
-                Partner_Task__c interconnectionTaskMSLP = createPartnerTask(loanRecord, 'GrandParent', 'Report Interconnection to MCEC', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection MSLP', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null);                                            
+                Partner_Task__c interconnectionTaskMSLP = createPartnerTask(loanRecord, 'GrandParent', 'Report Interconnection to MCEC', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection MSLP', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Interconnect');                                            
                 partnerSequenceCounter += 1;           
             }
-            Partner_Task__c incomeDocumentationTask = createPartnerTask(loanRecord, 'Parent', 'Provide Income Documentation', 'Income Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation',  allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap);                                            
+            Partner_Task__c incomeDocumentationTask = createPartnerTask(loanRecord, 'Parent', 'Provide Income Documentation', 'Income Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation',  allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap, null);                                            
             if (!loanRecord.DOER_Solar_Loann__c){
-                Partner_Task__c systemInformationTask = createPartnerTask(loanRecord, 'Parent', 'Provide all System Information', 'Provide all System Information', null, 'Incomplete', 'Customer Information', 'System Information', allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap);                                            
+                Partner_Task__c systemInformationTask = createPartnerTask(loanRecord, 'Parent', 'Provide all System Information', 'Provide all System Information', null, 'Incomplete', 'Customer Information', 'System Information', allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap, null);                                            
             } else {
-                Partner_Task__c technicalApprovalTask = createPartnerTask(loanRecord, 'Parent', 'Provide Technical Confirmation Documentation', 'Technical Approval Confirmation', null, 'Incomplete', 'Customer Information', 'Technical Approval', allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap);                                                        
+                Partner_Task__c technicalApprovalTask = createPartnerTask(loanRecord, 'Parent', 'Provide Technical Confirmation Documentation', 'Technical Approval Confirmation', null, 'Incomplete', 'Customer Information', 'Technical Approval', allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap, null);                                                        
             }
             if (loanRecord.Lead__r.Self_Employed__c == false && loanRecord.lead__r.Retired__c == false){
-                Partner_Task__c payStubDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide PayStub Documentation', 'PayStub Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null);                                                                        
+                Partner_Task__c payStubDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide PayStub Documentation', 'PayStub Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null);                                                                        
             } else if(loanRecord.Lead__r.Self_Employed__c == true && loanRecord.lead__r.Retired__c == false){
-                Partner_Task__c selfEmploymentTaxReturnPreviousYearTask = createPartnerTask(loanRecord, 'Child', 'Provide Tax Return (Previous Year)', 'Tax Return (Previous Year)', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null);                                                                        
-                Partner_Task__c selfEmploymentTaxReturnTwoYearsPreviousTask = createPartnerTask(loanRecord, 'Child', 'Provide Tax Return (Two Years Previous)', 'Tax Return (Two Years Previous)', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null);                                                                                    
+                Partner_Task__c selfEmploymentTaxReturnPreviousYearTask = createPartnerTask(loanRecord, 'Child', 'Provide Tax Return (Previous Year)', 'Tax Return (Previous Year)', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null);                                                                        
+                Partner_Task__c selfEmploymentTaxReturnTwoYearsPreviousTask = createPartnerTask(loanRecord, 'Child', 'Provide Tax Return (Two Years Previous)', 'Tax Return (Two Years Previous)', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null);                                                                                    
             } else if(loanRecord.Lead__r.Self_Employed__c == false && loanRecord.lead__r.Retired__c == true){
-                Partner_Task__c retirementIncomeDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide SSN/Pension Award Letter or Bank Statement', 'SSN/Pension Award Letter or Bank Statement', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null);                                                                                    
+                Partner_Task__c retirementIncomeDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide SSN/Pension Award Letter or Bank Statement', 'SSN/Pension Award Letter or Bank Statement', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null);                                                                                    
             } else if(loanRecord.Lead__r.Self_Employed__c == true && loanRecord.lead__r.Retired__c == true){
-                Partner_Task__c allIncomeDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide All Income Documentation', 'All Income Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null);                                                                                    
+                Partner_Task__c allIncomeDocumentationTask = createPartnerTask(loanRecord, 'Child', 'Provide All Income Documentation', 'All Income Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null);                                                                                    
             }
 
         loanList.add(loanRecord);
@@ -650,7 +650,7 @@ public without sharing class LoanHandler{
         validateLoanInformationProvidedOnLead(leadList, taskMap);   // add conditional customer type as a parameter to run income check on retirees, etc. 
     }
 
-    public Partner_Task__c createPartnerTask (Loan__c loanRecord, String taskLevel, String name, String uniqueId, Integer partnerSequenceCounter, String status, String taskType, String subTaskType, Partner_Task__c parentTask, RecordType recordType, List<Partner_Task__c> parentTaskInsertList, List<Partner_Task__c> subParentTaskInsertList, List<Partner_Task__c> subTaskInsertList,  Map<String, Partner_Task__c> parentTaskAssignmentMap, Map<String, Partner_Task__c> subParentTaskAssignmentMap){
+    public Partner_Task__c createPartnerTask (Loan__c loanRecord, String taskLevel, String name, String uniqueId, Integer partnerSequenceCounter, String status, String taskType, String subTaskType, Partner_Task__c parentTask, RecordType recordType, List<Partner_Task__c> parentTaskInsertList, List<Partner_Task__c> subParentTaskInsertList, List<Partner_Task__c> subTaskInsertList,  Map<String, Partner_Task__c> parentTaskAssignmentMap, Map<String, Partner_Task__c> subParentTaskAssignmentMap, String progressBarName){
         String parentTaskTypeMapUniqueId;
         String subTaskTypeMapUniqueId;        
         if (taskLevel == 'Grandparent') {
@@ -666,7 +666,8 @@ public without sharing class LoanHandler{
                 Status__c = status,
                 Start_Date__c = Date.today(),                
                 Task_Type__c = taskType,
-                Loan__c = loanRecord.Id
+                Loan__c = loanRecord.Id,
+                Progress_Bar_Name__c = progressBarName 
             );
             if (name == 'Run Credit Check') {
                 task.Completion_Date__c = Date.today();

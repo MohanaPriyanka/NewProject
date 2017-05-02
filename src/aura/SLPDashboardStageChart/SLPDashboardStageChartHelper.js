@@ -18,7 +18,7 @@
                     datasets: [
                         {
                             data: resp.getReturnValue().counts,
-                            backgroundColor: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD'],
+                            backgroundColor: ['#1c5a7d','#00AFA9','#9CB6D3','#BEC6C3','#7D98AA','#6CA6CD', '#40637B', '#E8F2F9'],
                             hoverBorderWidth: [8, 8, 8, 8, 8, 8, 8]
                         }]
                 },

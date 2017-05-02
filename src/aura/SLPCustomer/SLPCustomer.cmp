@@ -429,15 +429,6 @@ reloaded by clicking the view button on the dashboard page-->
                           </th>
                         </aura:set>                              
                     </aura:if>                         
-                    <aura:if isTrue="{!and(task.Name == 'Provide Sales Agreement', task.Status__c != 'Complete')}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.navigateSalesAgreementDoc}"/>
-                       </th>
-                       <aura:set attribute="else">
                     <aura:if isTrue="{!and(task.Name == 'Mechanical Installation' , task.Status__c != 'Complete')}"> 
                       <th>                           
                        <ui:button aura:id="viewButton"
@@ -473,9 +464,7 @@ reloaded by clicking the view button on the dashboard page-->
                       </aura:set>                              
                     </aura:if>     
                       </aura:set>                              
-                    </aura:if>  
-                      </aura:set>                              
-                    </aura:if>                                                                           
+                    </aura:if>                                                                       
                   </tr>                         
             </aura:iteration>             
           </tbody>
