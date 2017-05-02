@@ -227,7 +227,9 @@ public with sharing class LoanServicerTest {
         update loanPayments;
 
         Test.startTest();
+        TransactionApplicationHandler.batchSize = 20;
         insert taList;
+        Test.stopTest();
 
         Map<Integer, LoanServicerTest.MonthlyPayment> answerMap = getAnswerMap(loanWithPayments);
         Integer period;
@@ -255,7 +257,6 @@ public with sharing class LoanServicerTest {
             System.assertEquals(answerMap.get(period).Forecasted_Principal_Interest_Due, setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3));
         }
 
-        Test.stopTest();
     }
 
     static testMethod void testIOPeriodChange() {
@@ -309,9 +310,11 @@ public with sharing class LoanServicerTest {
         }
         update loanPayments;
 
-        insert taList;
-
         Test.startTest();
+        TransactionApplicationHandler.batchSize = 20;
+        insert taList;
+        Test.stopTest();
+
         loan.Interest_Only_Period_DOER__c = 3;
         update Loan;
 
@@ -354,7 +357,6 @@ public with sharing class LoanServicerTest {
                                 'Forecasted_Principal_Interest_Due__c in period ' + period);
         }
 
-        Test.stopTest();
     }
 
     static Decimal setScale(Decimal d, Integer scale) {

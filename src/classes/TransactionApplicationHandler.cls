@@ -5,16 +5,53 @@
  * Test: LoanServicerTest
  *************************************************************************************/
 
-public without sharing class TransactionApplicationHandler {
+public without sharing class TransactionApplicationHandler implements Database.Batchable<sObject>, Database.Stateful {
     public static final String DELETE_ERROR_MSG =
         'Cannot delete a Transaction Application, instead, create an adjusting record';
-    private List<Transaction_Application__c> transactionApplicationList;
+
+    private List<Transaction_Application__c> fullTAList;
 
     public TransactionApplicationHandler(List<Transaction_Application__c> triggerContext) {
-        this.transactionApplicationList = triggerContext;
+        this.fullTAList = triggerContext;
     }
 
+    public List<SObject> start(Database.BatchableContext bc) {
+        return fullTAList;
+    }
+
+    public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
+        rollupAndCalculate(scope);
+    }
+
+    public void finish(Database.BatchableContext batchableContext) {
+        String emailTo;
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.isEmpty() ||
+            systemProperties[0].Error_Email__c == null) {
+            emailTo = 'product@bluewavesolar.com';
+        } else {
+            emailTo = systemProperties[0].Error_Email__c;
+        }            
+
+        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        email.setToAddresses(new List<String> {emailTo});
+        email.setSubject('TransactionApplicationHandler Complete');
+        if (fullTAList != null) {
+            email.setPlainTextBody(fullTAList.size() + ' transaction applications processed');
+        }
+        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
+    }
+
+    // With a batch size larger than 1, we were hitting UNABLE_TO_LOCK_ROW on Loan Payment records
     public void rollupAndCalculate() {
+        if (fullTAList.size() > batchSize) {
+            Database.executeBatch(this, batchSize);
+        } else {
+            rollupAndCalculate(fullTAList);
+        }
+    }
+    
+    public void rollupAndCalculate(List<Transaction_Application__c> transactionApplicationList) {
         LREngine.Context ctx =
             new LREngine.Context(Loan_Payment__c.SobjectType,
                                  Transaction_Application__c.SobjectType,

@@ -13,9 +13,15 @@ trigger TransactionApplicationTrigger on Transaction_Application__c (after inser
         }
     }
 
-    if (Trigger.isDelete) {
-        if (Trigger.isBefore) {
-            TransactionApplicationHandler.preventDelete(Trigger.old);
+    List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+    if (systemProperties.size() > 0 &&
+        systemProperties[0].Disable_TransactionApplication_Check__c) {
+        // Don't prevent delete
+    } else {
+        if (Trigger.isDelete) {
+            if (Trigger.isBefore) {
+                TransactionApplicationHandler.preventDelete(Trigger.old);
+            }
         }
     }
 }
