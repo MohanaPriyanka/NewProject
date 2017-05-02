@@ -1341,59 +1341,61 @@ public without sharing class LoanHandler{
         for (Loan__c loan : [SELECT Id, Opportunity__r.Id, (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c FROM Disbursals__r) 
                              FROM Loan__c
                              WHERE Opportunity__r.Id IN : updatedOppMap.KeySet()]) {
-            for (Disbursal__c disbursal : loan.Disbursals__r) {
-                System.debug('check');
-                if (updatedOppMap.get(loan.Opportunity__r.Id).DOER_Solar_Loan__c) {
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'ACH Disbursal') {
+            if (!loan.Disbursals__r.isEmpty()) {
+                for (Disbursal__c disbursal : loan.Disbursals__r) {
+                    System.debug('check');
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).DOER_Solar_Loan__c) {
+                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'ACH Disbursal') {
+                            disbursalMethodContract = 'ACH';
+                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'Check Disbursal') {
+                            disbursalMethodContract = 'Check';
+                        } else {
+                            disbursalMethodContract = null;
+                        }
+                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
+                            disbursalMethodInterconnect = 'ACH';
+                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'Check Disbursal') {
+                            disbursalMethodInterconnect = 'Check';
+                        } else {
+                            disbursalMethodInterconnect = null;
+                        }    
+                    } else {
+                        System.debug('check');
                         disbursalMethodContract = 'ACH';
-                    } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'Check Disbursal') {
-                        disbursalMethodContract = 'Check';
-                    } else {
-                        disbursalMethodContract = null;
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
+                        disbursalMethodMechInstall = 'ACH';
                         disbursalMethodInterconnect = 'ACH';
-                    } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'Check Disbursal') {
-                        disbursalMethodInterconnect = 'Check';
-                    } else {
-                        disbursalMethodInterconnect = null;
-                    }    
-                } else {
-                    System.debug('check');
-                    disbursalMethodContract = 'ACH';
-                    disbursalMethodMechInstall = 'ACH';
-                    disbursalMethodInterconnect = 'ACH';
-                }                           
-                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c || 
-                    updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c) {
-                    System.debug('check');
-                    if (disbursal.Name.Contains('Contract Signature')) {
+                    }                           
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c || 
+                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c) {
                         System.debug('check');
-                        disbursal.Status__c = 'Complete';      
-                        disbursal.Disbursal_Method__c = disbursalMethodContract;
-                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c;
-                        disbursalsToUpdate.add(disbursal);  
+                        if (disbursal.Name.Contains('Contract Signature')) {
+                            System.debug('check');
+                            disbursal.Status__c = 'Complete';      
+                            disbursal.Disbursal_Method__c = disbursalMethodContract;
+                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c;
+                            disbursalsToUpdate.add(disbursal);  
+                        }
                     }
-                }
-                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c || 
-                    updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c) {
-                    if (disbursal.Name.Contains('Interconnection')) {
-                        disbursal.Status__c = 'Complete';
-                        disbursal.Disbursal_Method__c = disbursalMethodInterconnect;
-                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c;
-                        disbursalsToUpdate.add(disbursal);  
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c || 
+                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c) {
+                        if (disbursal.Name.Contains('Interconnection')) {
+                            disbursal.Status__c = 'Complete';
+                            disbursal.Disbursal_Method__c = disbursalMethodInterconnect;
+                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c;
+                            disbursalsToUpdate.add(disbursal);  
+                        }
                     }
-                }
-                if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
-                    System.debug('check');
-                    if (disbursal.Name.Contains('Mechanical Installation')) {
+                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
                         System.debug('check');
-                        disbursal.Status__c = 'Complete';
-                        disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c; 
-                        disbursal.Disbursal_Method__c = disbursalMethodMechInstall;   
-                        disbursalsToUpdate.add(disbursal);                      
-                    }
-                }                               
+                        if (disbursal.Name.Contains('Mechanical Installation')) {
+                            System.debug('check');
+                            disbursal.Status__c = 'Complete';
+                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c; 
+                            disbursal.Disbursal_Method__c = disbursalMethodMechInstall;   
+                            disbursalsToUpdate.add(disbursal);                      
+                        }
+                    }                               
+                }
             }
         }
         update disbursalsToUpdate;
