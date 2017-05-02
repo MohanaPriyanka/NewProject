@@ -21,7 +21,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
 
         if (Trigger.isInsert && Trigger.isAfter) {
             loanHandler.OnAfterInsert(Trigger.new);
-            servicer.createNewLoanPayments();
+            servicer.upsertLoanPayments();
         }
 
         if (Trigger.isUpdate && Trigger.isBefore) {
@@ -30,7 +30,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
         }
 
         if (Trigger.isUpdate && Trigger.isAfter) {
-            servicer.createNewLoanPayments();
+            servicer.upsertLoanPayments();
         }
     }
 }
