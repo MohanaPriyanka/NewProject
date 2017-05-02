@@ -64,11 +64,7 @@ public without sharing class SLPCustomerHandler {
       @AuraEnabled 
       public String program;      
       @AuraEnabled 
-      public Integer pendingTaskSequence;
-      @AuraEnabled 
-      public List<String> completedTasks = new List<String>();
-      @AuraEnabled 
-      public List<String> incompleteTasks = new List<String>();      
+      public Integer pendingTaskSequence;     
   }
 
   //the getProgressBarData returns the pending task for the SLP's customer window progress bar. It could be replaced with the getLoanCustomerTasks
@@ -104,23 +100,18 @@ public without sharing class SLPCustomerHandler {
           pbData.program = 'MSLP';               
         } else {
           pbData.program = 'BWSL';   
-        }
-        if (taskRecord.Task_Sequence__c <= pbData.PendingTaskSequence) {
-          pbData.completedTasks.add(progressBarTaskName.replace(' ',''));                  
-        } else {
-          pbData.incompleteTasks.add(progressBarTaskName.replace(' ',''));                  
-        }        
+        }      
       }
     }
-    System.debug('the pbData is ' + pbData);
+    System.debug('chck ' + pbData);
     return pbData;  
   }
-  
+
   //the getLoanCustomerTasks returns the list of tasks for the customer window 
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c ' ;
+    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c ' ;
     taskQuery += '      FROM Partner_Task__c' ;
     taskQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
     taskQuery += '      AND Parent__c = true ';

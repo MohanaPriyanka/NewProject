@@ -8,15 +8,10 @@
         progressBarData.setParams({loanId : loanUpdateIdVar})
         progressBarData.setCallback(this,function(resp){                        
             if(resp.getState() == 'SUCCESS') {
-                var progressBarPendingTaskName = resp.getReturnValue().pendingTaskName;
-                var progressBarCompletedTasks = []; 
-                var progressBarIncompleteTasks = [];                
-                for (i = 0; i < resp.getReturnValue().completedTasks.length; i++) {
-                    progressBarCompletedTasks.push(resp.getReturnValue().completedTasks[i]);
-                }
-                for (i = 0; i < resp.getReturnValue().incompleteTasks.length; i++) {
-                    progressBarIncompleteTasks.push(resp.getReturnValue().incompleteTasks[j]);
-                }                          
+                var progressBarPendingTaskName = resp.getReturnValue().pendingTaskName;   
+                if (progressBarPendingTaskName == null) {
+                    var completedLoan = true;
+                }                                                 
                 if (resp.getReturnValue().pendingTaskName == 'Under BlueWave Review') {
                     component.set("v.blueWaveReviewAlert", true);                                                            
                 } else {
@@ -27,19 +22,15 @@
                 } else {
                    progressBarPendingTaskName = progressBarPendingTaskName + 'ProgressBar';                    
                 }               
-                
                 progressBarPendingTaskName = progressBarPendingTaskName.replace(/\s+/g, ''); 
 
                 $A.util.removeClass(progressBarToggle);
-                $A.util.addClass(progressBarToggle, 'slds-wizard__progress-bar');                       
-                $A.util.addClass(progressBarToggle, progressBarPendingTaskName); 
-
-                for (i = 0; i < progressBarCompletedTasks.length; i++) {
-                    $A.util.addClass(component.find(progressBarCompletedTasks[i]), 'slds-is-active');
-                }
-                for (i = 0; i < progressBarIncompleteTasks.length; i++) {
-                    $A.util.removeClass(component.find(progressBarIncompleteTasks[i]), 'slds-is-active');
-                }                                                       
+                $A.util.addClass(progressBarToggle, 'slds-wizard__progress-bar');
+                if (completedLoan) {
+                    $A.util.addClass(progressBarToggle, 'CompleteProgressBar');                                                                          
+                } else {
+                    $A.util.addClass(progressBarToggle, progressBarPendingTaskName);                                                                          
+                }                    
             }
         });
         $A.enqueueAction(progressBarData);  

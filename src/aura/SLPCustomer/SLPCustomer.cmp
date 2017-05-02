@@ -124,78 +124,23 @@ reloaded by clicking the view button on the dashboard page-->
         <br></br> 
           <!--  _________________________________PROGRESS BAR ___________________________________ -->   
         <div aura:id="taskBar" class="slds-wizard" role="navigation">    
-          <ol class="slds-wizard__list">             
-              <li aura:id="RunCreditCheckProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker "></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Navigation">Credit</span>
-                  </a>
-                </li>          
-                <li aura:id="ProvideAllCustomerInformationProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Navigation">Information</span>
-                  </a>
-                </li>
-                <li aura:id="UnderBlueWaveReviewProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Actions">Review</span>
-                  </a>
-                </li>              
-                <li aura:id="ObtainContractSignatureProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Actions">Contract</span>
-                  </a>
-                </li>        
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                                        
-                <li aura:id="ProvideSalesAgreementProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Actions">Sales Agreement</span>
-                  </a>
-                </li> 
-                </aura:if>                                   
-                <li aura:id="BlueWaveCounterSignatureProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Actions">Countersign</span>
-                  </a>
-                </li>                               
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                        
-                <li aura:id="MechanicalInstallationProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Compact Layout">Install</span>
-                  </a>
-                </li> 
-                </aura:if>  
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                                                     
-                <li aura:id="InterconnectionProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Review">Interconnect</span>
-                  </a>
-                </li>
-                </aura:if>  
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == true}">                                                     
-                <li aura:id="ReportInterconnectiontoMCECProgressBar" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
-                          title="Review">Interconnect</span>
-                  </a>
-                </li>
-                </aura:if>                                  
+          <ol class="slds-wizard__list">   
+              <aura:iteration items="{!v.partnerTaskList}" var="task">    
+              <aura:if isTrue="{!or(task.Status__c == 'Complete', task.Status__c == 'Pending')}">                  
+                <li class="slds-wizard__item slds-is-active">
+                      <span class="slds-wizard__marker "></span>
+                      <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                            title="Navigation">{!task.Progress_Bar_Name__c}</span>
+                  </li> 
+                <aura:set attribute="else">      
+                <li class="slds-wizard__item">
+                      <span class="slds-wizard__marker "></span>
+                      <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                            title="Navigation">{!task.Progress_Bar_Name__c}</span>
+                </li>    
+                </aura:set>
+              </aura:if>               
+              </aura:iteration>                                        
               </ol>
               <span class="slds-wizard__progress">
                 <span aura:id="progressBar" class="slds-wizard__progress-bar"></span>
