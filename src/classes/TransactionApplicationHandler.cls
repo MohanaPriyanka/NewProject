@@ -8,6 +8,7 @@
 public without sharing class TransactionApplicationHandler implements Database.Batchable<sObject>, Database.Stateful {
     public static final String DELETE_ERROR_MSG =
         'Cannot delete a Transaction Application, instead, create an adjusting record';
+    public static Integer batchSize = 1;
 
     private List<Transaction_Application__c> fullTAList;
 
