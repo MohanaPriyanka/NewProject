@@ -77,9 +77,9 @@ public without sharing class LoanHandler{
         List<String> completedOppIds = new List<String>();
         List<String> signedCustomerOppIds = new List<String>();        
         List<String> counterSignedCustomerOppIds = new List<String>();        
+        List<String> uploadedSalesAgreementCustomerOppIds = new List<String>();                
         List<String> oppLeadIds = new List<String>();
         List<String> oppLeadIdsList = new List<String>();
-        List<Opportunity> validateSalesAgreementList = new List<Opportunity>();
         Integer loanTerm;
         Integer interestOnlyPeriod;
 
@@ -93,6 +93,9 @@ public without sharing class LoanHandler{
             if (newOpp.BlueWave_Signature_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).BlueWave_Signature_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 counterSignedCustomerOppIds.add(newOpp.Id);
             }               
+            if (newOpp.Partner_Sales_Agreement_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Partner_Sales_Agreement_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
+                uploadedSalesAgreementCustomerOppIds.add(newOpp.Id);
+            }                 
             if (newOpp.Disbursal_1_Contract_Signature_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_1_Contract_Signature_Checkbox__c || 
                 newOpp.Disbursal_Type_Contract__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Contract__c) {
                 updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
@@ -103,11 +106,7 @@ public without sharing class LoanHandler{
             }
             if (newOpp.Disbursal_2_Mechanical_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
                 updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }  
-            if (newOpp.Update_Dummy__c != oldOpportunityMap.get(newOpp.Id).Update_Dummy__c) {
-                validateSalesAgreementList.add(newOpp);
-                oppLeadIdsList.add(newOpp.Lead_Id__c);
-            }                      
+            }                     
         }
         if (!completedOppIds.isEmpty()){
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
@@ -137,10 +136,13 @@ public without sharing class LoanHandler{
             if (partnerTaskList.size() > 0) {
                 updatePartnerTaskBlueWaveCounterSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));       
             }
-        }        
-        if (!validateSalesAgreementList.isEmpty()) {
-            validateLoanInformationProvidedOnOpp(validateSalesAgreementList, getPartnerTasks(oppLeadIdsList));
-        }
+        }       
+        if (!uploadedSalesAgreementCustomerOppIds.isEmpty()) {
+            List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
+            if (partnerTaskList.size() > 0) {
+                updateSalesAgreementPartnerTask(updatedOpportunities, getPartnerTasks(oppLeadIds));       
+            }
+        }          
     }
         
     public List<Partner_Task__c> checkForPartnerTasksOnOpportunity(List<Opportunity> opportunities) {
@@ -760,27 +762,7 @@ public without sharing class LoanHandler{
         //run through this method twice because the child tasks have to be updated before the parent tasks in order to qualify for completion.
         updatePartnerParentTaskStatus(taskMap); //update the Parent SubTasks
         updatePartnerParentTaskStatus(taskMap); //update the Parent Tasks
-    }
-
-    public void validateLoanInformationProvidedOnOpp(List<Opportunity> oppList, Map<String, Partner_Task__c> taskMap){
-        List<Partner_Task__c> validatedTaskList = new List<Partner_Task__c>();
-        if (!oppList.isEmpty()) {
-            List<Partner_Task__c> salesAgreementTaskList = new List<Partner_Task__c>(checkSalesAgreementFiles(oppList, taskMap));
-            validatedTaskList.addAll(salesAgreementTaskList);               
-        }
-   
-        //Load the validatedTaskList into a set to remove duplicates. This is important, if the validation methods return
-        //a task in both lists it will send an error. Main cause of this is due to the inocompleteTaskList return statement
-        //at the bottom of both methods. They're needed however to save the method. 
-        Set<Partner_Task__c> validatedTaskSet = new Set<Partner_Task__c>(validatedTaskList);
-        ////load the set back into a list for update
-        List<Partner_Task__c> validatedTaskListDuplicatesRemoved = new List<Partner_Task__c>();
-        validatedTaskListDuplicatesRemoved.addAll(validatedTaskSet);
-        update validatedTaskListDuplicatesRemoved; //update the subtasks
-        //run through this method twice because the child tasks have to be updated before the parent tasks in order to qualify for completion.
-        updatePartnerParentTaskStatus(taskMap); //update the Parent SubTasks
-        updatePartnerParentTaskStatus(taskMap); //update the Parent Tasks
-    }    
+    } 
 
     public List<Partner_Task__c> checkLoanIncomeFiles(List<Lead> leadList, Map<String, Partner_Task__c> taskMap){
         String taskUniqueId;
@@ -849,43 +831,6 @@ public without sharing class LoanHandler{
             return incompleteTaskList;
         }  
     }
-
-    public List<Partner_Task__c> checkSalesAgreementFiles(List<Opportunity> oppList, Map<String, Partner_Task__c> taskMap){
-        String taskUniqueId;
-        List<Id> oppIdList = new List<Id>();
-        List<String> oppLeadIdList = new List<String>();
-        List<Partner_Task__c> completedTaskList = new List<Partner_Task__c>();
-        List<Partner_Task__c> incompleteTaskList = new List<Partner_Task__c>(taskMap.values());
-        List<Partner_Task__c> nextTasksToUpdate = new List<Partner_Task__c>();        
-        Map<String, String> oppLeadIdMap = new Map<String,String>();
-
-        for (Opportunity opportunityRecord : oppList){
-            oppIdList.add(opportunityRecord.Id); 
-            oppLeadIdList.add(opportunityRecord.Lead_ID__c);
-        }
-        for (Lead leadRecord : [SELECT Id, ConvertedOpportunityId FROM Lead WHERE ConvertedOpportunityId IN : oppIdList]) {
-            oppLeadIdMap.put(leadRecord.ConvertedOpportunityId, leadRecord.Id);
-        }
-
-        for (Attachment salesAgreementAttachment: [SELECT Id, Name, Body, ParentId, Description
-                                                    FROM Attachment
-                                                    WHERE Description != null             
-                                                    AND ParentId IN : oppIdList]){
-            if(salesAgreementAttachment.Description.contains('Sales Agreement')){
-                taskUniqueId = oppLeadIdMap.get(salesAgreementAttachment.ParentId) + ' ' + 'Sales Agreement';
-                taskMap.get(taskUniqueId).Status__c = 'Complete';
-                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                completedTaskList.add(taskMap.get(taskUniqueId));
-            }
-        }
-        nextTasksToUpdate.addAll(updateNextTaskToPending(oppLeadIdList, completedTaskList));
-        update nextTasksToUpdate;                
-        if(completedTaskList.size()>0){
-            return completedTaskList;
-        }else{
-            return incompleteTaskList;
-        }  
-    }               
 
     public List<Partner_Task__c> checkSystemInformation(List<Lead> leadList, Map<String, Partner_Task__c> taskMap){
         String taskUniqueId;
@@ -1114,6 +1059,50 @@ public without sharing class LoanHandler{
     } 
 
     // update the contract signature partner task when the contract is signed and the oppStage is set to closed.
+    public void updateSalesAgreementPartnerTask(List<Opportunity> oppList, Map<String, Partner_Task__c> taskMap){
+        String taskUniqueId;
+        String partnerTaskLeadIdSubString;
+        String partnerTaskLeadIdString;
+        String partnerTaskUniqueIdSubString;
+        Partner_Task__c partnerTask;
+        List<Partner_Task__c> parentPartnerTaskList = new List<Partner_Task__c>();
+        List<Partner_Task__c> taskUpdateList = new List<Partner_Task__c>();
+        List<Partner_Task__c> nextTasksToUpdate = new List<Partner_Task__c>();
+        List<String> OppLeadIdList = new List<String>();
+        Map<String, Partner_Task__c> tempTaskMapLeadId15String = new Map<String, Partner_Task__c>();
+
+        // filter out the child-tasks from the task map
+        for (Partner_Task__c partnerTaskLoopRecord : taskMap.values()) {
+            if(partnerTaskLoopRecord.Parent__c == true && partnerTaskLoopRecord.Lead__c != null) {
+                parentPartnerTaskList.add(partnerTaskLoopRecord);
+            }
+        }
+
+        //create a new map that sets the 15 digit ID to the keyValue
+        for (Partner_Task__c partnerTaskLoopRecord : parentPartnerTaskList) {
+            partnerTaskLeadIdString = String.valueOf(partnerTaskLoopRecord.Lead__r.Id);
+            partnerTaskLeadIdSubString = partnerTaskLeadIdString.subString(0,15);
+            partnerTaskUniqueIdSubString = partnerTaskLeadIdSubString + ' ' + partnerTaskLoopRecord.Name;
+            partnerTask = taskMap.get(partnerTaskLoopRecord.Unique_ID__c);
+            tempTaskMapLeadId15String.put(partnerTaskUniqueIdSubString, partnerTask);
+        }
+
+        //locate the task and set it to complete
+        for (Opportunity oppRecord : oppList){
+            System.debug('The taskMap is ' + tempTaskMapLeadId15String);
+            taskUniqueId = oppRecord.Lead_ID__c + ' ' + 'Provide Sales Agreement';
+            tempTaskMapLeadId15String.get(taskUniqueId).Status__c = 'Complete';
+            tempTaskMapLeadId15String.get(taskUniqueId).Completion_Date__c = Date.today();
+            taskUpdateList.add(tempTaskMapLeadId15String.get(taskUniqueId));
+            OppLeadIdList.add(oppRecord.Lead_ID__c);
+        }
+        //update the task and set the next task to pending
+        update taskUpdateList;
+        nextTasksToUpdate.addAll(updateNextTaskToPending(OppLeadIdList, taskUpdateList));
+        update nextTasksToUpdate;
+    }
+
+    // update the contract signature partner task when the contract is signed and the oppStage is set to closed.
     public void updatePartnerTaskBlueWaveCounterSignature(List<Opportunity> oppList, Map<String, Partner_Task__c> taskMap){
         String taskUniqueId;
         String partnerTaskLeadIdSubString;
@@ -1154,7 +1143,6 @@ public without sharing class LoanHandler{
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(OppLeadIdList, taskUpdateList));
         update nextTasksToUpdate;
-
     }     
 
     //update the mechanical install partner task when the equipment is reported as mechanically installed.
