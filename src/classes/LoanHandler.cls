@@ -1089,7 +1089,6 @@ public without sharing class LoanHandler{
 
         //locate the task and set it to complete
         for (Opportunity oppRecord : oppList){
-            System.debug('The taskMap is ' + tempTaskMapLeadId15String);
             taskUniqueId = oppRecord.Lead_ID__c + ' ' + 'Provide Sales Agreement';
             tempTaskMapLeadId15String.get(taskUniqueId).Status__c = 'Complete';
             tempTaskMapLeadId15String.get(taskUniqueId).Completion_Date__c = Date.today();
