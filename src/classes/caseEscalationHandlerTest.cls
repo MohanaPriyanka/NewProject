@@ -1,31 +1,32 @@
 @isTest
-private class caseEscalationHandlerTest {
-	static testMethod void testcaseinsertfromtask() {
+private class CaseEscalationHandlerTest {
+	static testMethod void testCaseInsertFromTask() {
 
-		Task oldtask = new Task (
+		Task oldTask = new Task (
 		 	Subject = 'This is the Subject',
 		 	Status = 'New',
 		 	Priority = 'High');
 
-		insert oldtask;
+		insert oldTask;
 
-		Case newcase = new Case (
+		Case newCase = new Case (
 			Subject = 'Test Controller Acct Case',
-			Created_From_Task__c = (string.valueof(oldtask.Id)).substring(0,15) );
+			Created_From_Task__c = String.valueOf(oldTask.Id).substring(0,15) );
 
-		insert newcase;
+		insert newCase;
 
-		test.starttest();
+		Test.startTest();
 
-		List <Task> queriedtasks = [SELECT Id, WhatId
+		List <Task> queriedTasks = [SELECT Id, WhatId
 	                                FROM Task];
 
-	    system.assertEquals(queriedtasks.size(),1);
+	    System.AssertEquals(1 , queriedTasks.size());
 	    
-	    for (Task atask : queriedtasks) {
-	    	System.AssertEquals(atask.WhatId,newcase.Id);
+	    for (Task aTask : queriedTasks) {
+	    	System.AssertEquals(aTask.WhatId,newCase.Id);
 	    }
 
-	    test.stoptest();
+
+	    Test.stopTest();
 	}
 }

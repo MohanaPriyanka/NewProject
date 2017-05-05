@@ -9,38 +9,27 @@
  + *************************************************************************************/
 
 public with sharing class CaseEscalationHandler {
-  private boolean m_isExecuting = false;
-  private Integer BatchSize = 0;
-    
-  public CaseEscalationHandler (boolean isExecuting, Integer size) {
-      m_isExecuting = isExecuting;
-      BatchSize = size;
-  }
-
-  public void OnAfterInsert (Case [] newlycreatedcase) {
-      linktasktocase (newlycreatedcase);
-  }
   
-  public static void linktasktocase (List <Case> newlycreatedcase) {
-    List <String> taskidlist = new List <String> ();
-    Map <String, Id> tasktocasemap = new Map <String, Id> ();
-    for (Case newcase : newlycreatedcase) {
-      if (newcase.Created_From_Task__c != null) {
-          taskidlist.add(newcase.Created_From_Task__c);
-          tasktocasemap.put(newcase.Created_From_Task__c, newcase.Id);
+  public static void linkTaskToCase(List<Case> newlyCreatedCase) {
+    List<String> taskIdList = new List<String>();
+    Map<String, Id> taskToCaseMap = new Map<String, Id>();
+    for (Case newCase : newlyCreatedCase) {
+      if (newCase.Created_From_Task__c != null) {
+          taskIdList.add(newCase.Created_From_Task__c);
+          taskToCaseMap.put(newCase.Created_From_Task__c, newCase.Id);
       }
     }
 
-    List <Task> queriedtasks = [SELECT Id, WhatId
+    List <Task> queriedTasks = [SELECT Id, WhatId
                                 FROM Task
-                                WHERE Id IN : taskidlist];
+                                WHERE Id IN : taskIdList];
 
-    for (Task origintask : queriedtasks) {
-      string taskid = (string.valueof(origintask.Id).substring(0,15));
-      if (tasktocasemap.ContainsKey(taskid)) {
-        origintask.WhatId = tasktocasemap.get(taskid);
+    for (Task originTask : queriedTasks) {
+      String taskId = String.valueOf(originTask.Id).substring(0,15);
+      if (taskToCaseMap.ContainsKey(taskId)) {
+        originTask.WhatId = taskToCaseMap.get(taskId);
       }
     }
-    update queriedtasks;
+    update queriedTasks;
   }
 }
