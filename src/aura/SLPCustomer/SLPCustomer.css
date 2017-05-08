@@ -12,6 +12,10 @@
     
 }
 
+.THIS.formCheckboxMarginBelow{
+  padding-bottom: 5%;
+}
+
 .THIS .boxCenterExec {
     width:30%;
     float:left;
@@ -24,11 +28,25 @@
     float:right;
 }
 
+.THIS .blueBackground {
+    background:#266092;    
+}
+
+.THIS .bounceOutRight {
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 0.5s;
+  -webkit-animation-iteration-count: 1;
+}
+
 .THIS .boxLeftUser {
     width:30%;
     float:left;
     margin-left: 10%;
     
+}
+
+.THIS .floatRight {
+    float:right;
 }
 
 .THIS .boxRightUser {
@@ -85,6 +103,11 @@
 .THIS.paddingTop3{
   padding-top: 10%;
 }
+
+.THIS.marginTop{
+  margin-top: 10%;
+}
+
 .THIS.paddingProgressBar{
   margin-bottom: 10%;
 }

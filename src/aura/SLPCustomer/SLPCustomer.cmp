@@ -22,6 +22,8 @@
     <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}" />      
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
  	  <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
+    <ltng:require styles="{!$Resource.animations}" />    
+
     
   <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
     default="{ 'sobjectType' : 'Residential_Equipment__c',
@@ -113,7 +115,15 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:90%;
           color: #266092;
         }  
-
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaWhite {
+        font-family: proximaNovaFont;   
+        font-size:200%;
+        color: #FFFFFF;
+        }       
     </style>
     
     <div aura:id = "customerPage" class="noDisplayBar"> 	
@@ -192,7 +202,7 @@ reloaded by clicking the view button on the dashboard page-->
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
                                label="View Customer Information"                  
-                               press="{!c.openCustomerInformation}"/>                           
+                               press="{!c.openCustomerModal}"/>                           
                 </div>           
                 <div class="boxRightExec">
                            <ui:button aura:id="disbursalInformationButton"
@@ -332,7 +342,6 @@ reloaded by clicking the view button on the dashboard page-->
             </fieldset>           
             <br></br>
               <div class="slds-align--absolute-center paddingBottom1 ">
-                    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
                     <ui:button aura:id="saveEquipment" label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
                     </div> 
             </aura:if>                       
@@ -388,8 +397,490 @@ reloaded by clicking the view button on the dashboard page-->
 				</div>
         </div>
         </aura:if>   
-
-            
+        <!--  _________________________________Customer Information Modals ___________________________________ -->    
+        <div aura:id="generalSystemInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large">
+          <div  class="slds-modal__container ">
+            <div class="slds-modal__header blueBackground">
+              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+              <fieldset class="slds-form--compound paddingTop1x5">
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-p-horizontal--small ">
+                      <label class="slds-form-element__label" for="input-03">System Cost</label>
+                      <ui:outputCurrency aura:id="systemCost" class="slds-input" value="{!v.customerInformation.Loan__r.System_Costt__c}"/>          
+                    </div> 
+                    <div class="slds-form-element slds-p-horizontal--small ">
+                      <label class="slds-form-element__label" for="input-03">Principal Value</label>
+                      <ui:outputCurrency aura:id="principalValue" class="slds-input" value="{!v.customerInformation.Loan__r.Principal__c}"/>          
+                    </div>        
+                  </div>
+                </div>
+              </fieldset>          
+              <fieldset class="slds-form--compound">
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-p-horizontal--small">
+                      <label class="slds-form-element__label" for="input-03">System Size</label>
+                      <ui:inputNumber aura:id="systemSize" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
+                    </div>                    
+                    <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
+                      <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
+                      <ui:inputDate aura:id="commencementDateChanger" 
+                        class="slds-input" 
+                        displayDatePicker="true"
+                        value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"                         
+                        />       
+                      </div>                     
+                    </div>
+                  </div>
+                </fieldset>                  
+                <fieldset class="slds-form--compound">
+                  <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                      </div>  
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
+                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                      </div>                                       
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Number of Modules</label>
+                        <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                      </div>                     
+                    </div>
+                  </div>                 
+                </fieldset>            
+                <fieldset class="slds-form--compound">
+                  <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
+                      </div>  
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
+                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>          
+                      </div>                        
+                      <div class="slds-form-element slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
+                        <ui:inputNumber aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}" />          
+                      </div>                  
+                    </div>
+                  </div>
+                </fieldset>  
+              </div>
+              <div class="slds-modal__footer">
+                <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
+                <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+              </div>
+            </div>
+          </div>
+        <div aura:id="srecInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large">
+          <div  class="slds-modal__container ">
+            <div class="slds-modal__header blueBackground">
+              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+            <div aura:id="SrecInterconnectionPage">            
+            <fieldset>           
+              <legend class="slds-form-element__legend slds-form-element__label">SREC Opt-in Calendar Quarter</legend>
+              <div class="slds-form-element__control">
+                <div class="slds-radio--button-group">
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q17" />
+                    <label class="slds-radio--button__label" for="Q17">
+                      <span class="slds-radio--faux">Q1' 2017</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q27" />
+                    <label class="slds-radio--button__label" for="Q27">
+                      <span class="slds-radio--faux">Q2' 2017</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q37" />
+                    <label class="slds-radio--button__label" for="Q37">
+                      <span class="slds-radio--faux">Q3' 2017</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q47" />
+                    <label class="slds-radio--button__label" for="Q47">
+                      <span class="slds-radio--faux">Q4' 2017</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q18" />
+                    <label class="slds-radio--button__label" for="Q18">
+                      <span class="slds-radio--faux">Q1' 2018</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="Q28" />
+                    <label class="slds-radio--button__label" for="Q28">
+                      <span class="slds-radio--faux">Q2' 2018</span>
+                    </label>
+                  </span>                  
+                </div>
+              </div>
+            </fieldset>  
+            <br></br>
+              <fieldset class="slds-form-element">
+                <legend class="slds-form-element__legend slds-form-element__label">Is this system interconnected and operating?</legend>
+                <div class="slds-form-element__control">
+                  <div class="slds-checkbox--button-group">
+                    <span class="slds-button slds-checkbox--button" for="interconnectedAndOperatingYes">
+                      <input type="checkbox" name="checkbox" id="interconnectedAndOperatingYes" />
+                      <label class="slds-checkbox--button__label" for="interconnectedAndOperatingYes">
+                        <span class="slds-checkbox--faux">Yes</span>
+                      </label>
+                    </span>
+                    <span class="slds-button slds-checkbox--button" for="interconnectedAndOperatingNo">
+                      <input type="checkbox" name="checkbox" id="interconnectedAndOperatingNo" />
+                      <label class="slds-checkbox--button__label" for="interconnectedAndOperatingNo">
+                        <span class="slds-checkbox--faux">No</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+              <br></br> 
+              <fieldset class="slds-form-element">
+                <legend class="slds-form-element__legend slds-form-element__label">Is this loan part of the Mass Solar Loan Program?</legend>
+                <div class="slds-form-element__control">
+                  <div class="slds-checkbox--button-group">
+                    <span class="slds-button slds-checkbox--button" for="partOfMSLPYes">
+                      <input type="checkbox" name="checkbox" id="partOfMSLPYes" />
+                      <label class="slds-checkbox--button__label" for="partOfMSLPYes">
+                        <span class="slds-checkbox--faux">Yes</span>
+                      </label>
+                    </span>
+                    <span class="slds-button slds-checkbox--button" for="partOfMSLPNo">
+                      <input type="checkbox" name="checkbox" id="partOfMSLPNo" />
+                      <label class="slds-checkbox--button__label" for="partOfMSLPNo">
+                        <span class="slds-checkbox--faux">No</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+              <br></br>               
+              <fieldset class="slds-form-element">
+                <legend class="slds-form-element__legend slds-form-element__label">Has the customer applied for funding through the Commonwealth Solar Rebate Program after 01/01/2010?</legend>
+                <div class="slds-form-element__control">
+                  <div class="slds-checkbox--button-group">
+                    <span class="slds-button slds-checkbox--button" for="appliedForFundingYes">
+                      <input type="checkbox" name="checkbox" id="appliedForFundingYes" />
+                      <label class="slds-checkbox--button__label" for="appliedForFundingYes">
+                        <span class="slds-checkbox--faux">Yes</span>
+                      </label>
+                    </span>
+                    <span class="slds-button slds-checkbox--button" for="appliedForFundingNo">
+                      <input type="checkbox" name="checkbox" id="appliedForFundingNo" />
+                      <label class="slds-checkbox--button__label" for="appliedForFundingNo">
+                        <span class="slds-checkbox--faux">No</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+              <br></br>                                        
+            <fieldset aura:id="SrecGeneratorPage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div>
+                <div class="slds-form-element slds-p-horizontal--small">
+                  <label class="slds-form-element__label" for="select-01">MA Facility Sector</label>
+                  <div class="slds-form-element__control">
+                    <div class="slds-select_container">
+                      <select id="select-01" class="slds-select">
+                        <option>Select</option>
+                        <option>Residential</option>
+                        <option>Commercial</option>
+                        <option>Government</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> 
+                <div class="slds-form-element slds-p-horizontal--small">
+                  <label class="slds-form-element__label" for="select-01">MA Facility Type</label>
+                  <div class="slds-form-element__control">
+                    <div class="slds-select_container">
+                      <select id="select-01" class="slds-select">
+                        <option>Select</option>
+                        <option>Agricultural</option>
+                        <option>College/University</option>
+                        <option>Commercial/Office</option>
+                        <option>Community Solar</option>
+                        <option>Hospital/Health Care</option>
+                        <option>Industrial</option>
+                        <option>Mixed Use (commercial and residential)</option>
+                        <option>Religious</option>
+                        <option>Restaurant/Food Service</option>
+                        <option>Retail</option>
+                        <option>School (K-12)</option>
+                        <option>Federal</option>                                                                        
+                        <option>Municipal – K-12 School</option>
+                        <option>Municipal / Government / Public</option>
+                        <option>State</option>                        
+                        <option>State – College / University</option>
+                        <option>Multi-family residential (4 or more dwellings units per building)</option>
+                        <option>Residential (3 or fewer dwelling units per building)</option>                        
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>                                 
+                </div>                 
+            </fieldset>   
+            <fieldset aura:id="SrecModulePage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Type</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Model Number</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div> 
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Power Rating</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Number of Modules</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Array Mounting Type</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div> 
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Array Azimuth</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Array Tilt</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Module Mounting Location</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div>                                                              
+                </div>                 
+            </fieldset> 
+            <fieldset aura:id="SrecInverterPage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Inverter Model Number</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div>                                                                           
+                </div>                 
+            </fieldset>  
+            <fieldset aura:id="SrecRemoteMonitoringPage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">             
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Remote Monitoring System Vendor</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Remote Monitoring System Unique Identifier</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                                            
+                </div>                                                                           
+                </div>                 
+            </fieldset> 
+            <fieldset aura:id="SrecSolarMeterPage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Number of Meters</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div>
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Solar Meter Serial Number</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                       
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div>                     
+                </div>                                                                                            
+                </div>                                
+            </fieldset>  
+            <fieldset aura:id="SrecMiscPage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">CEC Production Tracking System ID Number</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                                           
+                </div>
+                <div class="slds-form-element__row">                
+                 <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Estimated On-Site Behind the Meter Load</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div> 
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>
+                  </div>                                                          
+                </div>                                                                                                                           
+            </fieldset>   
+            <fieldset aura:id="SrecInstallationTimeLinePage" class="slds-form--compound noDisplay">
+              <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                  </div>  
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>                                                           
+                </div>
+                <div class="slds-form-element__row">                
+                 <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                  </div> 
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                  </div>
+                  </div>                                                          
+                </div>                                                                                                                           
+            </fieldset>                                                                                                                       
+              </div>
+              <div class="slds-modal__footer">
+                <div class="slds-align--absolute-center">
+            <fieldset>           
+              <legend class="slds-form-element__legend slds-form-element__label"></legend>
+              <div class="slds-form-element__control">
+                <div class="slds-radio--button-group">
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="srecInterconnectionToggle" />
+                    <label class="slds-radio--button__label" for="srecInterconnectionToggle">
+                      <span class="slds-radio--faux">Interconnection / SREC</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
+                    <label class="slds-radio--button__label" for="srecGeneratorToggle">
+                      <span class="slds-radio--faux">Generator Information</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
+                    <label class="slds-radio--button__label" for="SrecModuleToggle">
+                      <span class="slds-radio--faux">Module Information</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
+                    <label class="slds-radio--button__label" for="SrecInverterToggle">
+                      <span class="slds-radio--faux">Inverter Information</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
+                    <label class="slds-radio--button__label" for="SrecRemoteMonitoringToggle">
+                      <span class="slds-radio--faux">Remote Monitoring Information</span>
+                    </label>
+                  </span>
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
+                    <label class="slds-radio--button__label" for="SrecMeterToggle">
+                      <span class="slds-radio--faux">Solar Meter Information</span>
+                    </label>
+                  </span>  
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
+                    <label class="slds-radio--button__label" for="SrecMiscToggle">
+                      <span class="slds-radio--faux">Miscellaneous Information</span>
+                    </label>
+                  </span> 
+                  <span class="slds-button slds-radio--button">
+                    <input type="radio" name="radio" id="SrecInstallationTimeLineToggle" onClick="{!c.getInstallationTimeLineInformationPage}"/>
+                    <label class="slds-radio--button__label" for="SrecInstallationTimeLineToggle">
+                      <span class="slds-radio--faux">Installation Timeline</span>
+                    </label>
+                  </span>                                                     
+                </div>
+              </div>
+            </fieldset>
+            </div>                                                            
+                <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand floatRight" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+              </div>
+            </div>
+          </div>          
+        <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>            
         <!--  _________________________________TASK TABLE ___________________________________ -->    
         <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
           <thead>
@@ -444,7 +935,7 @@ reloaded by clicking the view button on the dashboard page-->
                          label="Submit"           
                          class=""
                          labelClass="{!task.Id}"          
-                         press="{!c.navigateInterconnectionDocs}"/>
+                         press="{!c.openInterconnectionModal}"/>
                        </th>
                        <aura:set attribute="else">
                     <aura:if isTrue="{!and(task.Name == 'Provide All Customer Information' , task.Status__c != 'Complete')}"> 

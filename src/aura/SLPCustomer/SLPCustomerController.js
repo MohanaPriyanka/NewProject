@@ -52,7 +52,7 @@
             var contractToggle = component.find("contract");
             var mechInstallToggle = component.find("mechInstall");            
             var progressBarToggle = component.find("progressBar");
-            var interconnectionToggle = component.find("interconnection");            
+            var interconnectionToggle = component.find("intemodalrconnection");            
             var completeToggle = component.find("complete");       
             var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
 
@@ -257,7 +257,9 @@
     
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "emailSpinner");
-        $A.util.addClass(component.find("saveEquipment"), 'noDisplay');
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
         var loanUpdateVar = component.get("v.loanUpdate");
@@ -274,7 +276,8 @@
         saveAction.setCallback(this, function(resp) {
             if(resp.getState() == "SUCCESS") {
                 helper.stopSpinner(component, "emailSpinner");
-                $A.util.removeClass(component.find("saveEquipment"), 'noDisplay');
+                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');                
                 alert("The information has been updated");
             }else {
                 $A.log("Errors", resp.getError());                
@@ -296,57 +299,112 @@
 		$A.enqueueAction(saveAction);
                      
         $A.enqueueAction(customerInformationAction);     
-        helper.getProgressBarDataMethod(component, event, helper);
+        helper.getProgressBarDataMethod(component, event, helper);              
+    },    
 
-    /*    //save the files
-        var fileInput = component.find("mechInstallFile").getElement();
-    	var file = fileInput.files[0];
-   
-        if (fileInput.size > this.MAX_FILE_SIZE) {
-            alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-    	          'Selected file size: ' + fileInput.size);
-    	    return;
-        }
+
+
+    openCustomerModal : function(component, event, helper) { 
+        $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
+    },        
+
+    openInterconnectionModal : function(component, event, helper) { 
+        $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');  
+        $A.util.removeClass(component.find('SrecInterconnectionPage'), 'noDisplay'); 
+        $A.util.removeClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');          
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');                 
+    },       
+
+    closeCustomerModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
+    },         
+
+    closeInterconnectionModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
+    },             
     
-        var fr = new FileReader();
-        fr.onloadend = function(e) { 
-        console.log("loaded"); 
-        };         
-        
-        var self = this;
-       	fr.onload = function() {
-            var fileContents = fr.result;
-    	    var base64Mark = 'base64,';
-            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
+    getGeneratorInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                     
+        $A.util.removeClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    },        
 
-            fileContents = fileContents.substring(dataStart);
-        
-    	    self.upload(component, file, fileContents);
-        };
+    getModuleInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.removeClass(component.find('SrecModulePage'), 'noDisplay');  
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');  
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');        
+    },  
 
-        fr.readAsDataURL(file);     */                   
+    getInverterInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
+        $A.util.removeClass(component.find('SrecInverterPage'), 'noDisplay');   
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');    
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    }, 
+
+    getRemoteMonitoringInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
+        $A.util.removeClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    },   
+
+    getSolarMeterInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    },      
+
+    getMiscInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
     },
-    
-  /*  upload: function(component, file, fileContents) {
-        var action = component.get("c.saveTheFile"); 
 
-        action.setParams({
-            parentId: component.get("v.customerInformation.Loan__r.Id"),
-            fileName: file.name,
-            base64Data: encodeURIComponent(fileContents), 
-            contentType: file.type
-        });
-
-        action.setCallback(this, function(a) {
-            attachId = a.getReturnValue();
-            console.log(attachId);
-        });
-            
-        $A.run(function() {
-            $A.enqueueAction(action); 
-        });
-    },*/
-    
+    getInstallationTimeLineInformationPage: function(component, event, helper) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    },       
     updateDisbursal : function(component, event, helper) { 
         var source = event.getSource();
         var disbursalId = source.get("v.name");
