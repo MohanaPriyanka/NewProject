@@ -15,17 +15,19 @@ global class RecurringPaymentsHandler Implements Schedulable {
   
     global void execute(SchedulableContext sc){
        
-        system.debug('entered');
         String uniqueId;
         Decimal newBillNumber; 
         Decimal newchargeamount;
-        String propAccountId;
         String accBillId;
+        String abMapKey;
         String entityIdString;
+        String chargentOrderKey;
         List<String> accountIDList = new List<String>();
+        List<Account_Bill__c> newAcctBillList = new List<Account_Bill__c>();
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
+        Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
 
-        List <ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Amount__c, Account_Bill__c,
+        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Amount__c, Account_Bill__c,
                                                             Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c, Property_Account_ID__c
                                                             FROM ChargentOrders__ChargentOrder__c 
                                                             WHERE ChargentOrders__Payment_Status__c = 'Recurring'];
@@ -34,14 +36,18 @@ global class RecurringPaymentsHandler Implements Schedulable {
             accountIDList.add(recOrders.Property_Account_ID__c);
         }
 
-        List<Account_Bill__c> newAcctBills = [  SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
+        for (Account_Bill__c newAcctBill : [  SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
                                                 FROM Account_Bill__c
                                                 WHERE Property_Account_ID__c IN : accountIDList
-                                                ORDER BY Bill_Number__c];
+                                                ORDER BY Bill_Number__c] ) {
+            newAcctBillList.add(newAcctBill);
+            abMapKey = newAcctBill.Bill_Number__c + '_' + newAcctBill.Property_Account_ID__c;
+            abMap.put(abMapKey, newAcctBill);
+        }                                                                                                    
 
-        for ( AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
+        for (AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
                                             FROM System_Bill__c
-                                            WHERE Account_Bill__c IN : newAcctBills
+                                            WHERE Account_Bill__c IN : newAcctBillList
                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c] ) {
 
             accBillId = String.valueOf(sysBills.get('Account_Bill__c'));
@@ -51,21 +57,18 @@ global class RecurringPaymentsHandler Implements Schedulable {
         }
 
         for (ChargentOrders__ChargentOrder__c recurOrder : ordersList) {
-            if ( recurOrder.Account_Bill__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
+            if (recurOrder.Account_Bill__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
                 newBillNumber = recurOrder.Account_Bill__r.Bill_Number__c + 1;
-                propAccountId = recurOrder.Property_Account_ID__c;
-
-                for (Account_Bill__c abNew : newacctbills) {
-                    if (abNew.Bill_Number__c == newbillnumber && abNew.Property_Account_ID__c == propaccountid) {
-                        recurOrder.Account_Bill__c = abNew.Id;
-                        newchargeamount = aggregateSbMap.get(abNew.Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
+                chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
+                if (abMap.containsKey(chargentOrderKey)){
+                    recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
+                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
+                        newchargeamount = aggregateSbMap.get(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
                         recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount;
                     }
                 }
             }
         }
-
         update ordersList;
-
     }
 }

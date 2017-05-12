@@ -1,7 +1,7 @@
 @isTest
 private class RecurringPaymentsHandlerTestClass{
 
-Static testMethod void RecurringPaymentsHandlerTestClass(){
+Static testMethod void RecurringPaymentsHandlerTestClass() {
 
 // Create NMC Tariffs
 
@@ -37,10 +37,10 @@ Static testMethod void RecurringPaymentsHandlerTestClass(){
                 Sizing_Rate__c = TRUE
                 );
 
-        Insert everbillNMC;
-        Insert eversizeNMC;
-        Insert ngridsizeNMC;
-        Insert ngridbillNMC;
+        insert everbillNMC;
+        insert eversizeNMC;
+        insert ngridsizeNMC;
+        insert ngridbillNMC;
         
 
 // Create Load Zones and Service Territories
@@ -59,8 +59,8 @@ Static testMethod void RecurringPaymentsHandlerTestClass(){
                 Utility__C = 'National Grid', 
                 Town__c= 'Westtown');
 
-        Insert everLZU;
-        Insert ngridLZU;
+        insert everLZU;
+        insert ngridLZU;
         
         system.debug(ngridLZU);
 
@@ -123,16 +123,12 @@ Static testMethod void RecurringPaymentsHandlerTestClass(){
         Account accountA = new Account(name = 'Account A',
             RecordTypeId = '012j00000010Ha3',
             Recurring_Billing__c = True);       
-        Insert accountA;      
-
-        system.debug(accountA);
+        insert accountA;      
 
         Account accountB = new Account(name = 'Account B',
             RecordTypeId = '012j00000010Ha3',
             Recurring_Billing__c = True);       
-        Insert accountB;      
-
-        system.debug(accountB);
+        insert accountB;      
 
         Utility_Account_Log__c ualog = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Name = '0000234',
                                                                                                                  Account__c = accountA.Id,
@@ -208,7 +204,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
     /*    List <Utility_Account_Subscription__c> uaslist = [SELECT Id, Customer_Subscription_KW_DC_STATIC__c, Subscribed_Annual_Cost_of_Electricity__c, Calculated_Annual_Cost_of_Electricity__c, Shared_Solar_System_Name__c FROM Utility_Account_Subscription__c];
 
-        for(Utility_Account_Subscription__c uas : uaslist){
+        for(Utility_Account_Subscription__c uas : uaslist) {
         system.debug(uas.Customer_Subscription_KW_DC_STATIC__c);
         system.debug(uas.Subscribed_Annual_Cost_of_Electricity__c);
         system.debug(uas.Calculated_Annual_Cost_of_Electricity__c);
@@ -240,7 +236,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                 
         insert productionupdateB2;           
   
-        List <System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Account_Bill__c, Total_Due__c, Due_This_Month__c, 
+        List<System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Account_Bill__c, Total_Due__c, Due_This_Month__c, 
                                                 Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
                                                 FROM System_Bill__c
                                                 ORDER BY Bill_NUmber__c DESC];
@@ -260,9 +256,9 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
         insert chGatewaytwo;
 
                 // Query for system bills that were created from the production update
-                for(System_Bill__c systemBill : systemBillList){
+                for (System_Bill__c systemBill : systemBillList) {
 
-                    if(systembill.Shared_Solar_System__c == sss1.id){
+                    if (systembill.Shared_Solar_System__c == sss1.id) {
                         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
                                                                                           ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                                           ChargentOrders__Gateway__c = chGatewayone.Id,
@@ -287,7 +283,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                         insert orderA1;                        
                     }
 
-                    if(systembill.Shared_Solar_System__c == sss2.id){
+                    if (systembill.Shared_Solar_System__c == sss2.id) {
                         ChargentOrders__ChargentOrder__c orderA2  = new ChargentOrders__ChargentOrder__c(
                                                                                           ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                                                                                           ChargentOrders__Gateway__c = chGatewaytwo.Id,
@@ -316,7 +312,7 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                 }
                 
 
-        List <System_Bill__c> updatedsystemBillList = [SELECT Id, Late_Fees__c, Recurring_Payment_ID__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, Shared_Solar_System__c, Property_Account_ID__c FROM System_Bill__c];
+        List<System_Bill__c> updatedsystemBillList = [SELECT Id, Late_Fees__c, Recurring_Payment_ID__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, Shared_Solar_System__c, Property_Account_ID__c FROM System_Bill__c];
 
 
         Energy_Usage_Update__c productionupdateC1 = new Energy_Usage_Update__c (
@@ -348,25 +344,25 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         Test.stopTest();
 
-        List <System_Bill__c> systemBillListtwo = [SELECT Id, Name, Account_Bill__c, Waive_Late_Fees__c, Total_Due__c, Due_This_Month__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
+        List<System_Bill__c> systemBillListtwo = [SELECT Id, Name, Account_Bill__c, Waive_Late_Fees__c, Total_Due__c, Due_This_Month__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
                                                 FROM System_Bill__c
                                                 ORDER BY Bill_Number__c DESC];
 
 
-        List <ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c,
+        List<ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c,
                                                                 Account_Bill__r.Bill_Number__c, Account_Bill__r.Name, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
 
-        for(ChargentOrders__ChargentOrder__c cho : orderlist){
+        for (ChargentOrders__ChargentOrder__c cho : orderlist) {
 
-            if(cho.ChargentOrders__Charge_Date__c == '25'){
-                system.assertEquals(cho.Account_Bill__r.Bill_Number__c, 2);  
-                system.assertEquals(cho.ChargentOrders__Charge_Amount__c, 87.7521); 
+            if (cho.ChargentOrders__Charge_Date__c == '25') {
+                system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);  
+                system.assertEquals(87.7521, cho.ChargentOrders__Charge_Amount__c); 
                 system.debug(cho.ChargentOrders__Charge_Amount__c); 
             }
-            else if(cho.ChargentOrders__Charge_Date__c == '30'){
-                system.assertEquals(cho.Account_Bill__r.Bill_Number__c, 2);
-                system.assertEquals(cho.ChargentOrders__Charge_Amount__c, 437.701);
+            else if (cho.ChargentOrders__Charge_Date__c == '30') {
+                system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+                system.assertEquals(437.701, cho.ChargentOrders__Charge_Amount__c);
             }
         }
 
