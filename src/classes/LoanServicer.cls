@@ -172,7 +172,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
              loan.Financing_Fee__c != triggerOldMap.get(loan.Id).Financing_Fee__c ||
              loan.Principal__c != triggerOldMap.get(loan.Id).Principal__c ||
-             loan.Interest_Only_Period_DOER__c != triggerOldMap.get(loan.Id).Interest_Only_Period_DOER__c)) {
+             loan.Interest_Only_Period_DOER__c != triggerOldMap.get(loan.Id).Interest_Only_Period_DOER__c ||
+             loan.First_Payment_Due_Date_Override__c != triggerOldMap.get(loan.Id).First_Payment_Due_Date_Override__c)) {
             return true;
         } else {
             return false;
@@ -285,7 +286,8 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             loanPayment.Amort_Starting_Principal__c = 
                 loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
 
-            // Calculated forecasted fields, which would be the same as the Amort schedule for new LPs.
+            // Calculate forecasted fields and actual due, which would be the same as the Amort schedule for new LPs.
+            loanPayment.Actual_PI_Due__c = loanPayment.Amort_Interest_Due__c + loanPayment.Amort_Principal_Due__c;
             loanPayment.Forecasted_Loan_Balance__c = loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c;
             loanPayment.Forecasted_Interest_Due__c = loanPayment.Amort_Interest_Due__c;
             loanPayment.Forecasted_Principal_Due__c = loanPayment.Amort_Principal_Due__c;

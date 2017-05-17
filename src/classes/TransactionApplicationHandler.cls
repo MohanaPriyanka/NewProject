@@ -146,7 +146,7 @@ public without sharing class TransactionApplicationHandler implements Database.B
                     actualPIDue = 0;
                 } else {
                     actualPIDue = 
-                        Math.min(lp.Loan_Balance__c + lp.Actual_Interest_Due__c, adjustedAmortTotal);
+                        Math.min(lp.Loan_Balance__c + nullToZero(lp.Actual_Interest_Due__c), adjustedAmortTotal);
                 }
             }
             addLP |= setIfDifferent(lp, 'Actual_PI_Due__c', actualPIDue, false);
