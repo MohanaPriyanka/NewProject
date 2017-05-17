@@ -32,6 +32,14 @@
     background:#266092;    
 }
 
+.THIS .marginRight2 {
+    margin-right:2%;   
+}
+
+.THIS .marginTopp5 {
+    margin-top:0.5%;   
+}
+
 .THIS .bounceOutRight {
   -webkit-animation-duration: 2s;
   -webkit-animation-delay: 0.5s;

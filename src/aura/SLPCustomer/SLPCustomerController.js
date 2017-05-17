@@ -254,9 +254,28 @@
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         helper.getProgressBarDataMethod(component, event, helper);        
 	},
+
+    setSrecOptInCalendarQuarter : function(component, event, helper) {
+        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
+        var srecOptInCQ = event.currentTarget.value;
+        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);            
+    },
+
+    setEquipmentAsInterconnected : function(component, event, helper) {
+        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
+        component.set("v.equipmentUpdate.Interconnected__c", event.currentTarget.value);            
+    },    
+
+    setEquipmentCommonwealthProgram : function(component, event, helper) {
+        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", event.currentTarget.value);            
+    },    
     
     saveEquipmentInformation : function(component, event, helper) {
-        helper.startSpinner(component, "emailSpinner");
+        helper.startSpinner(component, "srecSaveSpinner");
         $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
 
@@ -275,7 +294,7 @@
         
         saveAction.setCallback(this, function(resp) {
             if(resp.getState() == "SUCCESS") {
-                helper.stopSpinner(component, "emailSpinner");
+                helper.stopSpinner(component, "srecSaveSpinner");
                 $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');                
                 alert("The information has been updated");
@@ -302,8 +321,6 @@
         helper.getProgressBarDataMethod(component, event, helper);              
     },    
 
-
-
     openCustomerModal : function(component, event, helper) { 
         $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
@@ -316,8 +333,22 @@
         $A.util.removeClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');         
         $A.util.addClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
         $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');          
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');                 
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');  
+
+        alert(component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c"));
+        var srecQuarterId = component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c");
+        component.find('Q22017').set("v.checked", 'TRUE');
     },       
+
+    closeInterconnectionModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');  
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');         
+        $A.util.removeClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecGeneratorPage'), 'noDisplay');          
+        $A.util.removeClass(component.find('SrecModulePage'), 'noDisplay');  
+    },        
 
     closeCustomerModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
@@ -328,6 +359,17 @@
         $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
     },             
+
+    getSrecInterconnectionPage: function(component, event, helper) { 
+        $A.util.removeClass(component.find('SrecInterconnectionPage'), 'noDisplay');                     
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+    },
     
     getGeneratorInformationPage: function(component, event, helper) { 
         $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                     

@@ -62,10 +62,3 @@
         evt.fire();
     },
 })
-
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
-                    $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active'); 
-                    $A.util.addClass(completeToggle, 'slds-is-active');    
