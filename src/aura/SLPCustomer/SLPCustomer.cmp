@@ -429,43 +429,54 @@ reloaded by clicking the view button on the dashboard page-->
                           </th>
                         </aura:set>                              
                     </aura:if>                         
-                    <aura:if isTrue="{!and(task.Name == 'Mechanical Installation' , task.Status__c != 'Complete')}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.navigateInstallationDocs}"/>
-                       </th>
-                       <aura:set attribute="else">
-                    <aura:if isTrue="{!and(task.Name == 'Interconnection' , task.Status__c != 'Complete')}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.navigateInterconnectionDocs}"/>
-                       </th>
-                       <aura:set attribute="else">
-                    <aura:if isTrue="{!and(task.Name == 'Provide All Customer Information' , task.Status__c != 'Complete')}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.openCustomerInformation}"/>
-                       </th>
-                       <aura:set attribute="else">
-                        <th>
-                          <ui:button disabled="true" />
+                    <aura:if isTrue="{!and(task.Name == 'Provide Sales Agreement', task.Status__c != 'Complete')}"> 
+                       <th>                           
+                        <ui:button aura:id="viewButton"
+                          label="Submit"           
+                          class=""
+                          labelClass="{!task.Id}"          
+                          press="{!c.navigateSalesAgreementDoc}"/>
                         </th>
-                      </aura:set>                              
-                    </aura:if>    
-                      </aura:set>                              
-                    </aura:if>     
-                      </aura:set>                              
-                    </aura:if>                                                                       
-                  </tr>                         
+                        <aura:set attribute="else">
+                     <aura:if isTrue="{!and(task.Name == 'Mechanical Installation' , task.Status__c != 'Complete')}"> 
+                       <th>                           
+                        <ui:button aura:id="viewButton"
+                          label="Submit"           
+                          class=""
+                          labelClass="{!task.Id}"          
+                          press="{!c.navigateInstallationDocs}"/>
+                        </th>
+                        <aura:set attribute="else">
+                     <aura:if isTrue="{!and(task.Name == 'Interconnection' , task.Status__c != 'Complete')}"> 
+                       <th>                           
+                        <ui:button aura:id="viewButton"
+                          label="Submit"           
+                          class=""
+                          labelClass="{!task.Id}"          
+                          press="{!c.navigateInterconnectionDocs}"/>
+                        </th>
+                        <aura:set attribute="else">
+                     <aura:if isTrue="{!and(task.Name == 'Provide All Customer Information' , task.Status__c != 'Complete')}"> 
+                       <th>                           
+                        <ui:button aura:id="viewButton"
+                          label="Submit"           
+                          class=""
+                          labelClass="{!task.Id}"          
+                          press="{!c.openCustomerInformation}"/>
+                        </th>
+                        <aura:set attribute="else">
+                         <th>
+                           <ui:button disabled="true" />
+                         </th>
+                       </aura:set>                              
+                     </aura:if>    
+                       </aura:set>                              
+                     </aura:if>     
+                       </aura:set>                              
+                     </aura:if>  
+                       </aura:set>                              
+                     </aura:if>                                                                           
+                   </tr>                                                                                            
             </aura:iteration>             
           </tbody>
         </table>

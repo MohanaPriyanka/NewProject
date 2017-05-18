@@ -541,7 +541,7 @@
         
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
-          "url": 'https://forms.bluewaverenewables.com/381616?tfa_814=' + leadId 
+          "url": 'https://forms.bluewaverenewables.com/381606?tfa_814=' + leadId 
             + '&' + 'tfa_828=' + updateDummy
 
         });
