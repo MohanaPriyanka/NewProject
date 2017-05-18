@@ -79,8 +79,9 @@ public without sharing class TransactionApplicationHandler implements Database.B
         }
         List<Loan__c> allLoansWithPayments = [SELECT Id, (SELECT Id, Period__c, Interest_Only_Period__c, Bill_Status__c,
                                                           Amort_Interest_Due__c, Amort_Principal_Due__c,
-                                                          Funds_Distributed__c,
+                                                          Funds_Distributed__c, Actual_Interest_Due__c, Actual_PI_Due__c,
                                                           Cumulative_Principal_Payments__c,
+                                                          Cumulative_Principal_During_IO__c,
                                                           Interest_Applied__c, Principal_Applied__c, 
                                                           Loan_Balance__c,
                                                           Forecasted_Loan_Balance__c,
@@ -88,7 +89,8 @@ public without sharing class TransactionApplicationHandler implements Database.B
                                                           Forecasted_Principal_Interest_Due__c, 
                                                           Forecasted_Interest_Due__c,
                                                           Forecasted_Principal_Due__c,
-                                                          Loan__r.Product__r.Loan_Interest_Rate__c
+                                                          Loan__r.Product__r.Loan_Interest_Rate__c,
+                                                          Loan__r.Loan_Term__c
                                                           FROM Loan_Payments__r
                                                           WHERE Period__c <> null
                                                           ORDER BY Period__c)
@@ -102,12 +104,11 @@ public without sharing class TransactionApplicationHandler implements Database.B
         update loanPaymentsToUpdate;
     }
 
-    // Assumes that the loanPaymentList is sorted by Period, but don't assume the period is 1
     public List<Loan_Payment__c> calculateCumulativeAndForecasted(List<Loan_Payment__c> loanPaymentList,
                                                                   Map<Id, Loan_Payment__c> updatedPIMap) {
         Boolean addLP = false;
         Loan_Payment__c updatedLP;
-        Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0;
+        Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0, nextCumulativePrincipalDuringIO = 0;
             
         List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
         for (Loan_Payment__c lp : loanPaymentList) {
@@ -120,11 +121,35 @@ public without sharing class TransactionApplicationHandler implements Database.B
                 }
             }
             addLP |= setIfDifferent(lp, 'Cumulative_Principal_Payments__c', nextCumulativePrincipal, false);
+            addLP |= setIfDifferent(lp, 'Cumulative_Principal_During_IO__c', nextCumulativePrincipalDuringIO, false);
             addLP |= setIfDifferent(lp, 'Forecasted_Cumulative_Principal__c', nextForecastedCumulativePrincipal, true);
 
             nextCumulativePrincipal =
                 nullToZero(lp.Cumulative_Principal_Payments__c) +
                 nullToZero(lp.Principal_Applied__c);
+
+            nextCumulativePrincipalDuringIO =
+                nullToZero(lp.Cumulative_Principal_During_IO__c) +
+                (lp.Interest_Only_Period__c?nullToZero(lp.Principal_Applied__c):0);
+
+            // Same as the Amort Total Due, but this takes Principal buy down in the IO period into account
+            Decimal adjustedAmortTotal = 
+                -Excel.pmt((Double) (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
+                           (Integer) lp.Loan__r.Loan_Term__c,
+                           (Double) (lp.Funds_Distributed__c - lp.Cumulative_Principal_During_IO__c));
+
+            Decimal actualPIDue = 0;
+            if (lp.Interest_Only_Period__c) {
+                actualPIDue = lp.Actual_Interest_Due__c;
+            } else {
+                if (lp.Loan_Balance__c <= 0) {
+                    actualPIDue = 0;
+                } else {
+                    actualPIDue = 
+                        Math.min(lp.Loan_Balance__c + nullToZero(lp.Actual_Interest_Due__c), adjustedAmortTotal);
+                }
+            }
+            addLP |= setIfDifferent(lp, 'Actual_PI_Due__c', actualPIDue, false);
 
             // The new Principal_Applied__c value set above isn't yet incorporated into the 
             // Forecasted_Loan_Balance__c formula, so we need to calculate that and other forecasted fields here
@@ -139,26 +164,30 @@ public without sharing class TransactionApplicationHandler implements Database.B
             if (lp.Loan_Balance__c <= 0) {
                 forecastedInterestDue = 0;
             } else {
-                forecastedInterestDue = nullToZero(lp.Forecasted_Loan_Balance__c) * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
+                forecastedInterestDue = nullToZero(lp.Forecasted_Loan_Balance__c) * 
+                    (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Interest_Due__c', forecastedInterestDue, true);
 
             if (lp.Interest_Only_Period__c) {
                 forecastedPrincipalInterestDue = forecastedInterestDue;
             } else {
-                // The Min handles the case were a customer has overpaid principal and we don't want them to pay the normal amort
-                // amount for the last payment.
+                // The Min handles the case were a customer has overpaid principal and we don't want them to 
+                // pay the normal amort amount for the last payment.
                 // We can't use Amort_Total_Due__c which is Interest + Principal because that's rounded to 2 decimals
+                // and doesn't take principal buy-down during IO period into account
                 forecastedPrincipalInterestDue = 
-                    Math.min(forecastedLoanBalance + forecastedLoanBalance * (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
-                             nullToZero(lp.Amort_Interest_Due__c) + nullToZero(lp.Amort_Principal_Due__c));
+                    Math.min(forecastedLoanBalance + forecastedLoanBalance * 
+                             (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
+                             adjustedAmortTotal);
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Principal_Interest_Due__c', forecastedPrincipalInterestDue, true);
 
             if (lp.Loan_Balance__c <= 0 || lp.Interest_Only_Period__c) {
                 forecastedPrincipalDue = 0;
             } else {
-                forecastedPrincipalDue = nullToZero(lp.Forecasted_Principal_Interest_Due__c) - nullToZero(lp.Forecasted_Interest_Due__c);
+                forecastedPrincipalDue = nullToZero(lp.Forecasted_Principal_Interest_Due__c) - 
+                    nullToZero(lp.Forecasted_Interest_Due__c);
             }
             addLP |= setIfDifferent(lp, 'Forecasted_Principal_Due__c', forecastedPrincipalDue, true);
 
