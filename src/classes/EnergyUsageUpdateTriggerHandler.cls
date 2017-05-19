@@ -46,6 +46,8 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                                                          //AND Opportunity__r.StageName = 'Complete' 
                                                          AND Opportunity__c != null 
                                                          AND Customer_Group__c != 'Anchor'
+                                                         AND Next_Schedule_Z_Status__c != 'Cancelled'
+                                                         AND Next_Schedule_Z_Status__c != 'Not Enacted: Addition'
                                                          AND Opportunity__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
                                                          ORDER BY Name];
 
@@ -77,7 +79,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
 
         //Generate a list of all System Bills                                                  
         List<System_Bill__c> systemBillList =  [ SELECT ID, Shared_Solar_System__c,Shared_Solar_System_ID__c, 
-                                                 Property_Account__r.Id, Opportunity__c, 
+                                                 Property_Account__r.Id, Opportunity__c, Opportunity__r.Id,
                                                  Shared_Solar_System__r.Name, Property_Account__r.Name
                                                  FROM System_Bill__c
                                                  WHERE Id != null];
@@ -138,8 +140,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
             integer sbCounter = 1;
             string systemBillIdentifier;
             for (i=0;i<systemBillList.size();i++) {
-                if (systemBillList.get(i).Shared_Solar_System__r.Id == opp.Shared_Solar_System__r.Id
-                    && systemBilllist.get(i).Property_Account__r.Id == opp.Account.Id) {
+                if (systemBilllist.get(i).Opportunity__r.Id == opp.Id) {
                     sbCounter = sbCounter + 1;
                 }
             } 

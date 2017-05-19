@@ -59,7 +59,9 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                     WHERE Utility_Account_Log__c != null 
                                                     AND Opportunity__c != null 
                                                     AND Customer_Group__c != 'Anchor'
-                                                    AND Opportunity__r.StageName = 'Complete'                                                    
+                                                    AND Opportunity__r.StageName = 'Complete'          
+                                                    AND Next_Schedule_Z_Status__c != 'Not Enacted: Addition'     
+                                                    AND Next_Schedule_Z_Status__c != 'Cancelled'                                      
                                                     AND Utility_Account_Log__c IN : utilityAccountLogIdToUABMap.keySet()
                                                     ORDER BY UAS_Number__c]){
             if(utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
@@ -89,6 +91,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Shared_Solar_System__c = uas.Opportunity__r.Shared_Solar_System__c,
                                             Billing_Period_Start_Date__c = uab.Billing_Period_Start_Date__c,
                                             Billing_Period_End_Date__c = uab.Billing_Period_End_Date__c,
+                                            Bill_Date__c = uab.Bill_Date__c,
+                                            Due_Date__c = uab.Due_Date__c,
                                             Total_System_Size_kW_DC__c = uas.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                             NMC_Rate__c = nmcMap.get(uab.NMC_Rate_ID__c).Value_of_Net_Metering_Credit__c,
                                             Total_System_Production_kWh__c = uab.Production_kWh_DC__c,                                                                                       
