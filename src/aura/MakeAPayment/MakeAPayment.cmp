@@ -13,7 +13,7 @@
   <aura:attribute name="SystemBillsId" type="Id" />
   <aura:attribute name="AccountBills" type="Object" />
   <aura:attribute name="statementId" type="String" />
-  <aura:attribute name="statementIdMap" type="Map" />      
+  <aura:attribute name="statementIdMap" type="Map" />    
   <aura:attribute name="PaymentLogs" type="Object" />     
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <style type="text/css">
@@ -205,7 +205,7 @@
             <tr class="slds-text-heading--label proximaNova" >
               <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>                      
               <th scope="col"><span class="slds-truncate"><b>Transaction Date</b></span></th>
-              <th scope="col"><span class="slds-truncate"><b>Solar System</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Solar Project</b></span></th>   
               <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
               <!--<th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>-->                  
@@ -214,9 +214,9 @@
           <tbody>
             <aura:iteration items="{!v.PaymentLogs}" var="paymentLog">
               <tr>
-                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.System_Bill__r.Account_Bill__r.Parent_Account__r.Name} </th> 
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name} </th> 
                 <th scope="row"> {!paymentLog.Date_of_Transaction__c} </th>                
-                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.System_Bill__r.Shared_Solar_System__r.Name} </th>                   
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name} </th>                   
                 <th scope="row"> {!paymentLog.ChargentOrders__Type__c} </th>
                 <th scope="row"><ui:outputCurrency value="{!paymentLog.Negative_Amount__c}" /></th>
                 <!--<th scope="row"><ui:outputCurrency value="{!paymentLog.System_Bill_Remaining_Balance__c}" /></th>-->                    
