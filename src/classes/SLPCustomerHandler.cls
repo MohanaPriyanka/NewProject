@@ -215,83 +215,26 @@ public without sharing class SLPCustomerHandler {
 
   //the saveCustomerInformation method allows the user to enter in the customer's system information/commencement date to the SLP and save it to SF
   @AuraEnabled
-  public static void saveCustomerInformation(Residential_Equipment__c equipment, String equipmentId, String loanId, Loan__c loan) {        
+  public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan) {        
     String nameVar;
     Integer i;
     String fieldType;
     List<String> equipmentFields = new List<String>();
-    Map<String, Object> equipmentFieldMap = new Map<String,Object>(equipment.getPopulatedFieldsAsMap());
 
     Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Loan__r.Name, Name, Loan__r.Sales_Agent__r.Partner__r.Id, 
                                                     Loan__r.Sales_Agent__r.Id, Loan__r.Sales_Agent__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Annual_Production_kWh_kW__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c       
                                                 FROM Residential_Equipment__c
                                                 WHERE Id = : equipmentId];
-    if(String.isNotBlank(equipment.Module_Manufacturer__c) 
-      && String.isNotBlank(equipment.Inverter_Manufacturer__c)){
-        nameVar = equipmentRecord.Loan__r.Name + ' ' + equipment.Module_Manufacturer__c + '/' + equipment.Inverter_Manufacturer__c;
+    if(String.isNotBlank(equipmentFromComponent.Module_Manufacturer__c) 
+      && String.isNotBlank(equipmentFromComponent.Inverter_Manufacturer__c)){
+        nameVar = equipmentRecord.Loan__r.Name + ' ' + equipmentFromComponent.Module_Manufacturer__c + '/' + equipmentFromComponent.Inverter_Manufacturer__c;
         if (nameVar.length() >= 80) {
           nameVar = nameVar.subString(0,80);
         }
         equipmentRecord.Name = nameVar; 
         nameVar = null;
     }         
-    //the null value approach below is because if the user clicks save on the SLP and a field is blank, it would overwrite
-    //the SF field if it wasn't filtered out by the below if statements                          
-    //if(equipment.Generator_NamePlate_Capacity__c != null){
-    //  equipmentRecord.Generator_Nameplate_Capacity__c = equipment.Generator_NamePlate_Capacity__c;
-    //}
-    Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
-    Schema.SObjectType leadSchema = schemaMap.get('Residential_Equipment__c');
-    Map<String, Schema.SObjectField> fieldMap = leadSchema.getDescribe().fields.getMap();
-
-    for (String fieldName : fieldMap.keySet()) {
-      if (equipmentFieldMap.containsKey(fieldName)) {
-        Schema.DisplayType fieldDataType = fieldMap.get(fieldName).getDescribe().getType();
-        updateEquipmentFieldFromInput(equipment, equipmentRecord, fieldName, fieldDataType);        
-      }
-    }
-
-    if(String.isNotBlank(equipment.Generator_Type__c)){
-      equipmentRecord.Generator_Type__c = equipment.Generator_Type__c;
-    }    
-    if(String.isNotBlank(equipment.Module_Model_Number__c)){
-      equipmentRecord.Module_Model_Number__c = equipment.Module_Model_Number__c;
-    }  
-    if(String.isNotBlank(equipment.Module_Manufacturer__c)){
-      equipmentRecord.Module_Manufacturer__c = equipment.Module_Manufacturer__c;
-    }    
-    if(String.isNotBlank(equipment.Inverter_Manufacturer__c)){
-      equipmentRecord.Inverter_Manufacturer__c = equipment.Inverter_Manufacturer__c;
-    }  
-    if(String.isNotBlank(equipment.Inverter_Model_Number__c)){
-      equipmentRecord.Inverter_Model_Number__c = equipment.Inverter_Model_Number__c;
-    }                                  
-    if(equipment.Number_of_Modules__c != null){
-      equipmentRecord.Number_of_Modules__c = equipment.Number_of_Modules__c;
-    }
-    if(String.isNotBlank(equipment.Type_of_Inverter__c)){
-      equipmentRecord.Type_of_Inverter__c = equipment.Type_of_Inverter__c;
-    }    
-    if(equipment.Number_of_Inverters__c != null){
-      equipmentRecord.Number_of_Inverters__c = equipment.Number_of_Inverters__c;
-    }          
-    if(equipment.Mechanical_Installation_Date__c != null){
-      equipmentRecord.Mechanical_Installation_Date__c = equipment.Mechanical_Installation_Date__c;
-    }     
-    if(equipment.Interconnection_Date__c != null){
-      equipmentRecord.Interconnection_Date__c = equipment.Interconnection_Date__c;
-    }
-    if(equipment.Mechanically_Installed__c != equipmentRecord.Mechanically_Installed__c){
-      equipmentRecord.Mechanically_Installed__c = equipment.Mechanically_Installed__c;
-    }
-    if(equipment.Interconnected__c != equipmentRecord.Interconnected__c){
-      equipmentRecord.Interconnected__c = equipment.Interconnected__c;
-    }                  
-    if(String.isNotBlank(equipment.SREC_Opt_In_Calendar_Quarter__c)){
-      equipmentRecord.SREC_Opt_In_Calendar_Quarter__c = equipment.SREC_Opt_In_Calendar_Quarter__c;
-    }                                                                                       
-
-    update equipmentRecord;
+    updateEquipmentFieldFromInput(equipmentFromComponent, equipmentRecord);        
 
     //update the loan information  
     Loan__c loanRecord = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  
@@ -318,18 +261,24 @@ public without sharing class SLPCustomerHandler {
   }
 
   @AuraEnabled
-  public static void updateEquipmentIntegerFieldFromInput(Residential_Equipment__c equipment, Residential_Equipment__c equipmentToBeUpdated, String field, Schema.DisplayType fieldType) {
-    if (fieldType == 'Integer') {
-      if (equipment.get(field) != null) {
-        equipmentToBeUpdated.put(field, equipment.get(field));
-      }
-    } else if (fieldType == 'String') {
-        if (String.isNotBlank(equipment.get(field))) {
-          equipmentToBeUpdated.put(field, equipment.get(field));
+  public static void updateEquipmentFieldFromInput(Residential_Equipment__c equipmentFromInput, Residential_Equipment__c equipmentToBeUpdated) {
+    Map<String, Object> equipmentFieldMap = new Map<String,Object>(equipmentFromInput.getPopulatedFieldsAsMap());
+    for (String fieldName : equipmentFieldMap.keySet()) {
+      if (equipmentFieldMap.get(fieldName) instanceof Integer || equipmentFieldMap.get(fieldName) instanceof Double) {
+        if (equipmentFieldMap.get(fieldName) != null) {
+          equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));                       
         }
+      } else if (equipmentFieldMap.get(fieldName) instanceof String) {
+          if (String.isNotBlank((String)equipmentFieldMap.get(fieldName))) {
+            equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+          }
+      } else if (equipmentFieldMap.get(fieldName) instanceof Boolean) {
+        equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+      }
     }
-  }    
-  
+    update equipmentToBeUpdated;
+  }  
+
   @AuraEnabled 
   public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();

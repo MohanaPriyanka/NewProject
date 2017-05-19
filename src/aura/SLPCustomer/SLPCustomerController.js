@@ -259,19 +259,26 @@
         //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
         //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
         var srecOptInCQ = event.currentTarget.value;
-        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);            
+        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);   
+        // var source = event.getSource();
+        // component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c",  source.get("v.value"));                  
     },
 
     setEquipmentAsInterconnected : function(component, event, helper) {
         //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
         //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        component.set("v.equipmentUpdate.Interconnected__c", event.currentTarget.value);            
+        //component.set("v.equipmentUpdate.Interconnected__c", event.currentTarget.value);        
+        var source = event.getSource();
+        component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));                       
     },    
 
     setEquipmentCommonwealthProgram : function(component, event, helper) {
         //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
         //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", event.currentTarget.value);            
+        // component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", event.currentTarget.value);            
+
+        var source = event.getSource();
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));             
     },    
     
     saveEquipmentInformation : function(component, event, helper) {
@@ -286,7 +293,7 @@
 	
         var saveAction = component.get("c.saveCustomerInformation");
         saveAction.setParams({
-            "equipment" : equipmentUpdateVar,
+            "equipmentFromComponent" : equipmentUpdateVar,
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
@@ -337,7 +344,8 @@
 
         alert(component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c"));
         var srecQuarterId = component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c");
-        component.find('Q22017').set("v.checked", 'TRUE');
+        alert(component.find('Q22017').get("v.label")); 
+        //component.find("Q22017").set("v.checked", "true");
     },       
 
     closeInterconnectionModal : function(component, event, helper) { 
@@ -483,6 +491,11 @@
         var interconnectChange = component.get("v.customerInformation.Interconnected__c");
         if(interconnectChange != null){
         	component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);            
+        }           
+
+        var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
+        if(interconnectChange != null){
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonwealthSolarRebateProgram);            
         }           
     },
         

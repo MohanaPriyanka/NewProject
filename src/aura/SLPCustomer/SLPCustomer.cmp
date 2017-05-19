@@ -26,22 +26,50 @@
     
   <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
     default="{ 'sobjectType' : 'Residential_Equipment__c',
-                 'Name': 'Cole',
-             	   'Generator_Nameplate_Capacity__c': '',
-                 'Type_of_Module__c': '',
-                 'Number_of_Modules__c': '',
-                 'Module_Manufacturer__c': '',
-                 'Module_Model_Number__c':'',
-                 'Type_of_Inverter__c': '',
-                 'Number_of_Inverters__c': '',
-                 'Inverter_Manufacturer__c': '',
-                 'Inverter_Model_Number__c': '',
-                 'Mechanical_Installation_Date__c': '',
-                 'Interconnection_Date__c': '',
-             	   'Mechanically_Installed__c': '',
-             	   'Interconnected__c':'',
-                 'SREC_Opt_In_Calendar_Quarter__c':'',
-                 'Commonwealth_Solar_Rebate_Program__c': '',                 
+                'Name': '',
+             	  'Generator_Nameplate_Capacity__c': '',
+                'Type_of_Module__c': '',
+                'Number_of_Modules__c': '',
+                'Module_Manufacturer__c': '',
+                'Module_Model_Number__c':'',
+                'Type_of_Inverter__c': '',
+                'Number_of_Inverters__c': '',
+                'Inverter_Manufacturer__c': '',
+                'Inverter_Model_Number__c': '',
+                'Mechanical_Installation_Date__c': '',
+                'Interconnection_Date__c': '',
+             	  'Mechanically_Installed__c': '',
+             	  'Interconnected__c':'',
+                'SREC_Opt_In_Calendar_Quarter__c':'',
+                'Commonwealth_Solar_Rebate_Program__c': '',   
+                'Module_Power_Rating__c' : '',
+                'Number_of_Modules__c' : '',
+                'Module_Array_Mounting_Type__c' : '',
+                'Module_Array_Azimuth__c' : '',
+                'Module_Array_Tilt__c' : '',
+                'Module_Mounting_Location__c' : '',
+                'Inverter_Manufacturer__c' : '',
+                'Number_of_Inverters__c' : '',
+                'Inverter_Model_Number__c' : '',
+                'Remote_Monitoring_System_Vendor__c' : '',
+                'Remote_Monitorin_Systegm_Identifier__c' : '',
+                'Number_of_Meters__c' : '',
+                'Solar_Meter_Manufacturer__c' : '',
+                'Solar_Meter_Model__c' : '',
+                'Solar_Meter_Serial_Number__c' : '',
+                'Initial_Solar_Meter_Reading__c' : '',
+                'Initial_Solar_Meter_Reading_Date__c' : '',
+                'CEC_Production_Tracking_System_ID_Number__c' : '',
+                'PowerClerk_Application_ID__c' : '',
+                'Estimated_On_Site_Behind_the_Meter_Load__c' : '',
+                'Percentage_of_System_Shaded__c' : '',
+                'Contract_Execution_Date__c' : '',
+                'Generator_Installation_Date__c' : '',
+                'Generator_Interconnection_Date__c' : '',
+                'Generator_Energized_Online_Date__c' : '',
+                'Generator_Type__c' : '',
+                'Generator_Nameplate_Capacity__c' : '',
+                'Annual_Production_kWh_kW__c' : ''                               
              }"/>
     <aura:attribute name="loanUpdate" type="Loan__c" 
     default="{ 'sobjectType' : 'Loan__c',
@@ -499,13 +527,13 @@ reloaded by clicking the view button on the dashboard page-->
               <div class="slds-form-element__control">
                 <div class="slds-radio--button-group">
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q1 2017" aura:id="Q1 2017" value="Q1 2017" onclick="{!c.setSrecOptInCalendarQuarter}"/>          
+                    <input type="radio" name="radio" id="Q1 2017" aura:id="Q1 2017" value="Q1 2017"  onclick="{!c.setSrecOptInCalendarQuarter}"/>          
                     <label class="slds-radio--button__label" for="Q1 2017">
                       <span class="slds-radio--faux">Q1' 2017</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q22017" aura:id="Q22017" value="Q2 2017" checked="false" onclick="{!c.setSrecOptInCalendarQuarter}"/>
+                    <input type="radio" name="radio" id="Q22017" label="cole" aura:id="Q22017" value="Q22017" onclick="{!c.setSrecOptInCalendarQuarter}"/>
                     <label class="slds-radio--button__label" for="Q22017">
                       <span class="slds-radio--faux">Q2' 2017</span>
                     </label>
@@ -542,7 +570,10 @@ reloaded by clicking the view button on the dashboard page-->
             <div class="slds-form-element slds-p-horizontal--small">
               <label class="slds-checkbox--toggle slds-grid">
                 <label class="slds-form-element__label" for="SrecInterConnectionToggle">Is this system interconnected and operating?</label>
-                <ui:inputCheckbox name="SrecInterConnectionToggle" value="{!v.customerInformation.Interconnected__c }" change="{!c.setEquipmentAsInterconnected}"/>
+                
+                <ui:inputCheckbox name="SrecInterConnectionToggle" 
+                                  value="{!v.customerInformation.Interconnected__c }" 
+                                  change="{!c.setEquipmentAsInterconnected}"/>
                   <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
                   <span class="slds-checkbox--on">Yes</span>
@@ -551,12 +582,14 @@ reloaded by clicking the view button on the dashboard page-->
               </label>
             </div>   
             </fieldset>
-            <br></br>
             <fieldset class="slds-form-element">
             <div class="slds-form-element slds-p-horizontal--small">
               <label class="slds-checkbox--toggle slds-grid">
                 <label class="slds-form-element__label" for="SrecCommonwealthProgram">Has {!v.customer.Loan__r.Name} applied for funding through the Commonwealth Solar Rebate Program after 01/01/2010?</label>
-                <ui:inputCheckbox name="SrecCommonwealthProgram" value="{!v.customerInformation.Commonwealth_Solar_Rebate_Program__c }" change="{!c.setEquipmentCommonwealthProgram}"/>
+                
+                <ui:inputCheckbox name="SrecCommonwealthProgram" 
+                                  value="{!v.customerInformation.Commonwealth_Solar_Rebate_Program__c }" 
+                                  change="{!c.setEquipmentCommonwealthProgram}"/>
                   <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
                   <span class="slds-checkbox--on">Yes</span>
@@ -564,7 +597,7 @@ reloaded by clicking the view button on the dashboard page-->
                 </span>
               </label>
             </div>   
-            </fieldset>            
+            </fieldset>                
               <br></br>              
               </div>
             <fieldset aura:id="SrecGeneratorPage" class="slds-form--compound noDisplay">
@@ -633,42 +666,38 @@ reloaded by clicking the view button on the dashboard page-->
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
                     <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
-                  </div>  
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Module Type</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
-                  </div>                                       
+                  </div>                                        
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Model Number</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}" />          
                   </div>                     
                 </div> 
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Power Rating</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Power_Rating__c}" placeholder="{!v.customerInformation.Module_Power_Rating__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Modules</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Mounting Type</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Mounting_Type__c}" placeholder="{!v.customerInformation.Module_Array_Mounting_Type__c}" />          
                   </div>                     
                 </div> 
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Azimuth</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Azimuth__c}" placeholder="{!v.customerInformation.Module_Array_Azimuth__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Tilt</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Tilt__c}" placeholder="{!v.customerInformation.Module_Array_Tilt__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Mounting Location</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Mounting_Location__c}" placeholder="{!v.customerInformation.Module_Mounting_Location__c}" />          
                   </div>                     
                 </div>                                                              
                 </div>                 
@@ -678,15 +707,15 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Model Number</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}" />          
                   </div>                     
                 </div>                                                                           
                 </div>                 
@@ -696,11 +725,11 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Remote Monitoring System Vendor</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}" placeholder="{!v.customerInformation.Remote_Monitoring_System_Vendor__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Remote Monitoring System Unique Identifier</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}" placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>          
                   </div>                                                            
                 </div>                                                                           
                 </div>                 
@@ -710,29 +739,29 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Meters</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputNumber aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
                   </div>                     
                 </div>
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Serial Number</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}" placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}" placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}"/>          
                   </div>                     
                 </div>                                                                                            
                 </div>                                
@@ -742,21 +771,21 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">CEC Production Tracking System ID Number</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}" placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}" placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>          
                   </div>                                                           
                 </div>
                 <div class="slds-form-element__row">                
                  <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Estimated On-Site Behind the Meter Load</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}" placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}" />          
                   </div> 
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Percentage_of_System_Shaded__c}" placeholder="{!v.customerInformation.Percentage_of_System_Shaded__c}"/>          
                   </div>
                   </div>                                                          
                 </div>                                                                                                                           
@@ -766,21 +795,21 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" placeholder="{!v.customerInformation.Contract_Execution_Date__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" placeholder="{!v.customerInformation.Generator_Installation_Date__c}"/>          
                   </div>                                                           
                 </div>
                 <div class="slds-form-element__row">                
                  <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
+                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}"/>          
                   </div> 
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
+                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}"/>          
                   </div>
                   </div>                                                          
                 </div>                                                                                                                           
@@ -793,49 +822,49 @@ reloaded by clicking the view button on the dashboard page-->
               <div class="slds-form-element__control">
                 <div class="slds-radio--button-group">
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
+                    <input type="radio" name="srecPageOptions" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
                     <label class="slds-radio--button__label" for="srecInterconnectionToggle">
                       <span class="slds-radio--faux">Interconnection / SREC</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
                     <label class="slds-radio--button__label" for="srecGeneratorToggle">
                       <span class="slds-radio--faux">Generator Information</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
                     <label class="slds-radio--button__label" for="SrecModuleToggle">
                       <span class="slds-radio--faux">Module Information</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
                     <label class="slds-radio--button__label" for="SrecInverterToggle">
                       <span class="slds-radio--faux">Inverter Information</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
                     <label class="slds-radio--button__label" for="SrecRemoteMonitoringToggle">
                       <span class="slds-radio--faux">Remote Monitoring Information</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
                     <label class="slds-radio--button__label" for="SrecMeterToggle">
                       <span class="slds-radio--faux">Solar Meter Information</span>
                     </label>
                   </span>  
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
+                    <input type="radio" name="srecPageOptions" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
                     <label class="slds-radio--button__label" for="SrecMiscToggle">
                       <span class="slds-radio--faux">Miscellaneous Information</span>
                     </label>
                   </span> 
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="SrecInstallationTimeLineToggle" onClick="{!c.getInstallationTimeLineInformationPage}"/>
+                    <input type="radio" name="srecPageOptions" id="SrecInstallationTimeLineToggle" onClick="{!c.getInstallationTimeLineInformationPage}"/>
                     <label class="slds-radio--button__label" for="SrecInstallationTimeLineToggle">
                       <span class="slds-radio--faux">Installation Timeline</span>
                     </label>
@@ -890,7 +919,7 @@ reloaded by clicking the view button on the dashboard page-->
                           </th>
                         </aura:set>                              
                     </aura:if>                         
-                    <aura:if isTrue="{!and(task.Name == 'Mechanical Installation' , task.Status__c != 'Complete')}"> 
+                    <aura:if isTrue="{!task.Name == 'Mechanical Installation'}"> 
                       <th>                           
                        <ui:button aura:id="viewButton"
                          label="Submit"           
@@ -899,7 +928,7 @@ reloaded by clicking the view button on the dashboard page-->
                          press="{!c.navigateInstallationDocs}"/>
                        </th>
                        <aura:set attribute="else">
-                    <aura:if isTrue="{!and(task.Name == 'Interconnection' , task.Status__c != 'Complete')}"> 
+                    <aura:if isTrue="{!task.Name == 'Interconnection'}"> 
                       <th>                           
                        <ui:button aura:id="viewButton"
                          label="Submit"           
@@ -908,7 +937,7 @@ reloaded by clicking the view button on the dashboard page-->
                          press="{!c.openInterconnectionModal}"/>
                        </th>
                        <aura:set attribute="else">
-                    <aura:if isTrue="{!and(task.Name == 'Provide All Customer Information' , task.Status__c != 'Complete')}"> 
+                    <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
                       <th>                           
                        <ui:button aura:id="viewButton"
                          label="Submit"           
