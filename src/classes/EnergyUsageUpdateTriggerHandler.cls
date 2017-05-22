@@ -144,21 +144,23 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
                     sbCounter = sbCounter + 1;
                 }
             } 
-            System_Bill__c sb = new System_Bill__c(Name = opp.Name + ' ' + 
-                                                   opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
-                                                   Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
-                                                   Account_Bill__c = ab.Id,
-                                                   Recurring_Billing__c = opp.Account.Recurring_Billing__c,
-                                                   Date__c =  euu.Date__c,
-                                                   Bill_Number__c = sbCounter,
-                                                   Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
-                                                   Property_Account__c = opp.Account.Id,
-                                                   Opportunity__c = opp.Id);
-            sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
-            systemBillIdentifier = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
-            if (!sbSetCheck.contains(systemBillIdentifier)) {
-                systemBillSet.add(sb);
-                sbSetCheck.add(systemBillIdentifier);
+            if (abKeyToAccountBillMap.containsKey(parentKey)) {
+                System_Bill__c sb = new System_Bill__c(Name = opp.Name + ' ' + 
+                                                       opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+                                                       Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
+                                                       Account_Bill__c = ab.Id,
+                                                       Recurring_Billing__c = opp.Account.Recurring_Billing__c,
+                                                       Date__c =  euu.Date__c,
+                                                       Bill_Number__c = sbCounter,
+                                                       Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
+                                                       Property_Account__c = opp.Account.Id,
+                                                       Opportunity__c = opp.Id);
+                sb.Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
+                systemBillIdentifier = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
+                if (!sbSetCheck.contains(systemBillIdentifier)) {
+                    systemBillSet.add(sb);
+                    sbSetCheck.add(systemBillIdentifier);
+                }
             }
         }
 
