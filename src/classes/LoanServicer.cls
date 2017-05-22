@@ -112,13 +112,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     // Expose a method that can be called from a batch to to process loans
     public void upsertLoanPayments(List<Loan__c> loans, Boolean handleInsert) {
         List<Loan__c> loansNeedingTAReapplication = new List<Loan__c>();
-        repo.init();
-        for (Loan__c loan : loans) {
-            if (populatedForLPCreation(loan)) {
-                repo.registerProduct(loan);
-            }
-        }
-        repo.queryProducts();
+        repo.init(loans);
 
         for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
@@ -149,7 +143,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
     }
 
-    private Boolean populatedForLPCreation(Loan__c loan) {
+    public static Boolean populatedForLPCreation(Loan__c loan) {
         if (loan.Product__c != null &&
             loan.Principal__c > 0) {
             return true;
@@ -189,20 +183,31 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
     }
 
-    private class LoanPaymentRepo {
+    public class LoanPaymentRepo {
         private Set<Id> loanIdstoDeleteLPs;
         private List<Loan_Payment__c> loanPaymentsToCreate;
         private Set<Id> productIds;
         private Map<Id, Product2> productMap;
         
-        private LoanPaymentRepo() {
-        }
-
-        private void init() {
+        public LoanPaymentRepo() {
             loanIdstoDeleteLPs = new Set<Id>();
             loanPaymentsToCreate = new List<Loan_Payment__c>();
             productIds = new Set<Id>();
             productMap = new Map<Id, Product2>();
+        }
+
+        private void init(List<Loan__c> loans) {
+            for (Loan__c loan : loans) {
+                if (populatedForLPCreation(loan)) {
+                    registerProduct(loan);
+                }
+            }
+            queryProducts();
+        }
+
+        public void init(Set<Id> products) {
+            productIds = products;
+            queryProducts();
         }
 
         private void executeDML() {
@@ -355,14 +360,153 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private void registerProduct(Loan__c loan) {
             productIds.add(loan.Product__c);
         }
+        private void registerProduct(Product2 product) {
+            productIds.add(product.Id);
+        }
 
-        private void queryProducts() {
+        public void queryProducts() {
             List<Product2> products = [SELECT Id, Loan_Interest_Only_Period__c, Loan_Interest_Rate__c, 
                                        Loan_Term__c, Disbursal_Terms__c
                                        FROM Product2
                                        WHERE Id in :productIds];
             for (Product2 product : products) {
                 productMap.put(product.Id, product);
+            }
+        }
+
+        public List<Loan_Payment__c> calculateCumulativeAndForecasted(Loan__c loan,
+                                                                      List<Loan_Payment__c> loanPaymentList,
+                                                                      Map<Id, Loan_Payment__c> updatedPIMap) {
+            Boolean addLP = false;
+            Loan_Payment__c updatedLP;
+            Decimal nextCumulativePrincipal = 0, nextForecastedCumulativePrincipal = 0, nextCumulativePrincipalDuringIO = 0,
+                principalPaidForReamort = 0;
+            Integer reamortPeriodAdjustment = 0, monthIndex;
+            
+            LoanParams params = new LoanParams(loan, productMap);
+            
+            List<Loan_Payment__c> loanPaymentsToUpdate = new List<Loan_Payment__c>();
+            for (Loan_Payment__c lp : loanPaymentList) {
+                if (updatedPIMap != null) {
+                    updatedLP = updatedPIMap.get(lp.Id);
+                    if (updatedLP != null) {
+                        lp.Interest_Applied__c = updatedLP.Interest_Applied__c;
+                        lp.Principal_Applied__c = updatedLP.Principal_Applied__c;
+                        lp.Actual_Principal_Paydown__c = updatedLP.Actual_Principal_Paydown__c;
+                        addLP = true;
+                    }
+                }
+                addLP |= setIfDifferent(lp, 'Cumulative_Principal_Payments__c', nextCumulativePrincipal, false);
+                addLP |= setIfDifferent(lp, 'Cumulative_Principal_During_IO__c', nextCumulativePrincipalDuringIO, false);
+                addLP |= setIfDifferent(lp, 'Forecasted_Cumulative_Principal__c', nextForecastedCumulativePrincipal, true);
+
+                if (lp.Actual_Principal_Paydown__c != null && lp.Actual_Principal_Paydown__c > 0) {
+                    monthIndex = params.firstDistributionMonth + (Integer) lp.Period__c - LoanServicer.STARTINGPERIOD;
+                    reamortPeriodAdjustment = monthIndex;
+                    principalPaidForReamort = 
+                        nullToZero(lp.Cumulative_Principal_Payments__c) + 
+                        nullToZero(lp.Actual_Principal_Paydown__c);
+                }
+
+                nextCumulativePrincipal =
+                    nullToZero(lp.Cumulative_Principal_Payments__c) +
+                    nullToZero(lp.Principal_Applied__c);
+
+                nextCumulativePrincipalDuringIO =
+                    nullToZero(lp.Cumulative_Principal_During_IO__c) +
+                    (lp.Interest_Only_Period__c?nullToZero(lp.Principal_Applied__c):0);
+
+                // Same as the Amort Total Due, but this takes Principal buy down in the IO period and Principal Paydowns into account
+                Decimal adjustedAmortTotal = 
+                    -Excel.pmt((Double) (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
+                               (Integer) lp.Loan__r.Loan_Term__c - reamortPeriodAdjustment,
+                               (Double) (lp.Funds_Distributed__c - lp.Cumulative_Principal_During_IO__c - principalPaidForReamort));
+
+                Decimal actualPIDue = 0;
+                if (lp.Interest_Only_Period__c) {
+                    actualPIDue = lp.Actual_Interest_Due__c;
+                } else {
+                    if (lp.Loan_Balance__c <= 0) {
+                        actualPIDue = 0;
+                    } else {
+                        actualPIDue = 
+                            Math.min(lp.Loan_Balance__c + nullToZero(lp.Actual_Interest_Due__c), adjustedAmortTotal);
+                    }
+                }
+                addLP |= setIfDifferent(lp, 'Actual_PI_Due__c', actualPIDue, false);
+
+                // The new Principal_Applied__c value set above isn't yet incorporated into the 
+                // Forecasted_Loan_Balance__c formula, so we need to calculate that and other forecasted fields here
+                Decimal forecastedPrincipalDue = 0, forecastedLoanBalance = 0, 
+                    forecastedPrincipalInterestDue = 0, forecastedInterestDue = 0;
+                forecastedLoanBalance = Math.max(lp.Funds_Distributed__c - 
+                                                 nullToZero(lp.Cumulative_Principal_Payments__c) - 
+                                                 nullToZero(lp.Actual_Principal_Paydown__c) -
+                                                 nullToZero(lp.Forecasted_Cumulative_Principal__c),
+                                                 0);
+                addLP |= setIfDifferent(lp, 'Forecasted_Loan_Balance__c', forecastedLoanBalance, true);
+
+                if (lp.Loan_Balance__c <= 0) {
+                    forecastedInterestDue = 0;
+                } else {
+                    forecastedInterestDue = nullToZero(lp.Forecasted_Loan_Balance__c) * 
+                        (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12;
+                }
+                addLP |= setIfDifferent(lp, 'Forecasted_Interest_Due__c', forecastedInterestDue, true);
+
+                if (lp.Interest_Only_Period__c) {
+                    forecastedPrincipalInterestDue = forecastedInterestDue;
+                } else {
+                    // The Min handles the case were a customer has overpaid principal and we don't want them to 
+                    // pay the normal amort amount for the last payment.
+                    // We can't use Amort_Total_Due__c which is Interest + Principal because that's rounded to 2 decimals
+                    // and doesn't take principal buy-down during IO period into account
+                    forecastedPrincipalInterestDue = 
+                        Math.min(forecastedLoanBalance + forecastedLoanBalance * 
+                                 (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
+                                 adjustedAmortTotal);
+                }
+                addLP |= setIfDifferent(lp, 'Forecasted_Principal_Interest_Due__c', forecastedPrincipalInterestDue, true);
+
+                if (lp.Loan_Balance__c <= 0 || lp.Interest_Only_Period__c) {
+                    forecastedPrincipalDue = 0;
+                } else {
+                    forecastedPrincipalDue = nullToZero(lp.Forecasted_Principal_Interest_Due__c) - 
+                        nullToZero(lp.Forecasted_Interest_Due__c);
+                }
+                addLP |= setIfDifferent(lp, 'Forecasted_Principal_Due__c', forecastedPrincipalDue, true);
+
+                nextForecastedCumulativePrincipal =
+                    nullToZero(lp.Forecasted_Cumulative_Principal__c) +
+                    nullToZero(lp.Forecasted_Principal_Due__c);
+
+                if (addLP) {
+                    loanPaymentsToUpdate.add(lp);
+                    addLP = false;
+                }
+
+            }
+            return loanPaymentsToUpdate;
+        }
+
+        private Boolean setIfDifferent(Loan_Payment__c lp, String field, Decimal value, Boolean nullIfClosedOrPaid) {
+            if (nullIfClosedOrPaid &&
+                (lp.Bill_Status__c == LoanServicer.CLOSED ||
+                 lp.Interest_Applied__c != null ||
+                 lp.Principal_Applied__c != null)) {
+                if (lp.get(field) != null) {
+                    lp.put(field, null);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (lp.get(field) != value) {
+                    lp.put(field, value);
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -426,9 +570,10 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             loanTerm = monthsOfPI + monthsOfIO;
         }
 
-        private Decimal nullToZero(Decimal value) {
-            return (value==null?0:value);
-        }
+    }
+
+    public static Decimal nullToZero(Decimal value) {
+        return (value==null?0:value);
     }
 
     public class LoanProductException extends Exception{}
