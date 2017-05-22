@@ -9,6 +9,7 @@
     <aura:attribute name="partnerTaskList" type="Object"  />
     <aura:attribute name="parentSubTaskList" type="Object"  /> 
     <aura:attribute name="subTaskList" type="Object"  />
+    <aura:attribute name="srecQuarters" type="List"/>
     <aura:attribute name="dateToggle" type="Boolean"  />
     <aura:attribute name="customerWindowLoanList" type="Object"  /> 
     <aura:attribute name="customerWindowTaskList" type="Object"  />  
@@ -69,7 +70,9 @@
                 'Generator_Energized_Online_Date__c' : '',
                 'Generator_Type__c' : '',
                 'Generator_Nameplate_Capacity__c' : '',
-                'Annual_Production_kWh_kW__c' : ''                               
+                'Annual_Production_kWh_kW__c' : '' , 
+                'MA_Facility_Type__c' : '' , 
+                'MA_Facility_Sector__c' : ''  
              }"/>
     <aura:attribute name="loanUpdate" type="Loan__c" 
     default="{ 'sobjectType' : 'Loan__c',
@@ -153,6 +156,15 @@ reloaded by clicking the view button on the dashboard page-->
         font-size:200%;
         color: #FFFFFF;
         }       
+        @font-face {
+        font-family: proximaNovaFont;
+        src: url('{!$Resource.ProximaNova}');
+        }
+        .proximaNovaDataBlue50 {
+            font-family: proximaNovaFont;   
+        font-size:85%;
+          color: #266092;
+        }          
     </style>
     
     <div aura:id = "customerPage" class="noDisplayBar"> 	
@@ -217,15 +229,8 @@ reloaded by clicking the view button on the dashboard page-->
         <!--  _________________________________INFORMATION BUTTONS ___________________________________ -->                
         <div aura:id = "customerInformationButtons" class="main2">        
             <br></br>
-            <aura:if isTrue="{!v.licenseType}">  
+            <aura:if isTrue="{!v.licenseType}">           
             <div class="clearfix">               
-                <div class="boxLeftExec">
-                           <ui:button aura:id="taskInformationButton"
-                               class="slds-button--brand box slds-align--absolute-center"
-                               labelClass="proximaNova95"
-                               label="View Task Information"                  
-                               press="{!c.openTaskInformation}"/>                           
-                </div>
                 <div class="boxCenterExec">
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
@@ -243,13 +248,6 @@ reloaded by clicking the view button on the dashboard page-->
             </div>
             <aura:set attribute="else">
             <div class="clearfix">               
-                <div class="boxLeftUser">
-                           <ui:button aura:id="taskInformationButton"
-                               class="slds-button--brand box slds-align--absolute-center"
-                               labelClass="proximaNova95"
-                               label="View Task Information"                  
-                               press="{!c.openTaskInformation}"/>                           
-                </div>
                 <div class="boxRightUser">
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
@@ -521,47 +519,24 @@ reloaded by clicking the view button on the dashboard page-->
               <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
             </div>
             <div class="slds-modal__content slds-p-around--medium">
-            <div aura:id="SrecInterconnectionPage">            
+            <div aura:id="SrecInterconnectionPage">     
             <fieldset>           
               <legend class="slds-form-element__legend slds-form-element__label">SREC Opt-in Calendar Quarter</legend>
               <div class="slds-form-element__control">
                 <div class="slds-radio--button-group">
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q1 2017" aura:id="Q1 2017" value="Q1 2017"  onclick="{!c.setSrecOptInCalendarQuarter}"/>          
-                    <label class="slds-radio--button__label" for="Q1 2017">
-                      <span class="slds-radio--faux">Q1' 2017</span>
-                    </label>
-                  </span>
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q22017" label="cole" aura:id="Q22017" value="Q22017" onclick="{!c.setSrecOptInCalendarQuarter}"/>
-                    <label class="slds-radio--button__label" for="Q22017">
-                      <span class="slds-radio--faux">Q2' 2017</span>
-                    </label>
-                  </span>
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q3 2017" aura:id="Q3 2017" value="Q3 2017" onclick="{!c.setSrecOptInCalendarQuarter}" />
-                    <label class="slds-radio--button__label" for="Q3 2017">
-                      <span class="slds-radio--faux">Q3' 2017</span>
-                    </label>
-                  </span>
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q4 2017" aura:id="Q4 2017" value="Q4 2017" onclick="{!c.setSrecOptInCalendarQuarter}" />
-                    <label class="slds-radio--button__label" for="Q4 2017">
-                      <span class="slds-radio--faux">Q4' 2017</span>
-                    </label>
-                  </span>
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q1 2018" aura:id="Q1 2018" value="Q1 2018" onclick="{!c.setSrecOptInCalendarQuarter}" />
-                    <label class="slds-radio--button__label" for="Q1 2018">
-                      <span class="slds-radio--faux">Q1' 2018</span>
-                    </label>
-                  </span>
-                  <span class="slds-button slds-radio--button">
-                    <input type="radio" name="radio" id="Q2 2018" aura:id="Q2 2018" value="Q2 2018" onclick="{!c.setSrecOptInCalendarQuarter}" />
-                    <label class="slds-radio--button__label" for="Q2 2018">
-                      <span class="slds-radio--faux">Q2' 2018</span>
-                    </label>
-                  </span>                  
+                  <aura:iteration items="{!v.srecQuarters}" var="srecQuarter">
+                    <span class="slds-button slds-radio--button">
+                      <aura:if isTrue="{!srecQuarter == v.customerInformation.SREC_Opt_In_Calendar_Quarter__c}">
+                        <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" checked="TRUE" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                      <aura:set attribute="else">
+                        <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                      </aura:set>
+                      </aura:if>                      
+                      <label class="slds-radio--button__label" for="{!srecQuarter}">    
+                        <span class="slds-radio--faux">{!srecQuarter}</span>
+                      </label>       
+                    </span>                                     
+                  </aura:iteration>          
                 </div>
               </div>
             </fieldset>  
@@ -617,10 +592,10 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>                     
                 </div>
                 <div class="slds-form-element slds-p-horizontal--small">
-                  <label class="slds-form-element__label" for="select-01">MA Facility Sector</label>
+                  <label class="slds-form-element__label" for="maFacilitySector">MA Facility Sector</label>
                   <div class="slds-form-element__control">
                     <div class="slds-select_container">
-                      <select id="select-01" class="slds-select">
+                      <select id="maFacilitySector" class="slds-select" onchange="{!c.setFacilitySector}" value="{!v.equipmentUpdate.MA_Facility_Sector__c}">
                         <option>Select</option>
                         <option>Residential</option>
                         <option>Commercial</option>
@@ -630,10 +605,10 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>
                 </div> 
                 <div class="slds-form-element slds-p-horizontal--small">
-                  <label class="slds-form-element__label" for="select-01">MA Facility Type</label>
+                  <label class="slds-form-element__label" for="maFacilityType ">MA Facility Type</label>
                   <div class="slds-form-element__control">
                     <div class="slds-select_container">
-                      <select id="select-01" class="slds-select">
+                      <select id="maFacilityType" class="slds-select" onchange="{!c.setFacilityType}" value="{!v.equipmentUpdate.MA_Facility_Type__c}">
                         <option>Select</option>
                         <option>Agricultural</option>
                         <option>College/University</option>
@@ -747,7 +722,7 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
+                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
                   </div>                     
                 </div>
                 <div class="slds-form-element__row">
@@ -761,7 +736,7 @@ reloaded by clicking the view button on the dashboard page-->
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
-                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}"/>          
+                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}" format="MM/DD/YYYY"/>          
                   </div>                     
                 </div>                                                                                            
                 </div>                                
@@ -795,21 +770,21 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" placeholder="{!v.customerInformation.Contract_Execution_Date__c}"/>          
+                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" format="MM/DD/YYYY"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" placeholder="{!v.customerInformation.Generator_Installation_Date__c}"/>          
+                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" format="MM/DD/YYYY"/>          
                   </div>                                                           
                 </div>
                 <div class="slds-form-element__row">                
                  <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
-                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}"/>          
+                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>          
                   </div> 
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
-                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}"/>          
+                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>          
                   </div>
                   </div>                                                          
                 </div>                                                                                                                           
@@ -823,58 +798,58 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-radio--button-group">
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
-                    <label class="slds-radio--button__label" for="srecInterconnectionToggle">
-                      <span class="slds-radio--faux">Interconnection / SREC</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecInterconnectionToggle">
+                      <span class="slds-radio--faux">Interconnection/SREC</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
-                    <label class="slds-radio--button__label" for="srecGeneratorToggle">
-                      <span class="slds-radio--faux">Generator Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecGeneratorToggle">
+                      <span class="slds-radio--faux">Generator Info</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
-                    <label class="slds-radio--button__label" for="SrecModuleToggle">
-                      <span class="slds-radio--faux">Module Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecModuleToggle">
+                      <span class="slds-radio--faux">Module Info</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
-                    <label class="slds-radio--button__label" for="SrecInverterToggle">
-                      <span class="slds-radio--faux">Inverter Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInverterToggle">
+                      <span class="slds-radio--faux">Inverter Info</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
-                    <label class="slds-radio--button__label" for="SrecRemoteMonitoringToggle">
-                      <span class="slds-radio--faux">Remote Monitoring Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecRemoteMonitoringToggle">
+                      <span class="slds-radio--faux">Remote Monitoring Info</span>
                     </label>
                   </span>
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
-                    <label class="slds-radio--button__label" for="SrecMeterToggle">
-                      <span class="slds-radio--faux">Solar Meter Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMeterToggle">
+                      <span class="slds-radio--faux">Solar Meter Info</span>
                     </label>
                   </span>  
                   <span class="slds-button slds-radio--button">
                     <input type="radio" name="srecPageOptions" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
-                    <label class="slds-radio--button__label" for="SrecMiscToggle">
-                      <span class="slds-radio--faux">Miscellaneous Information</span>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMiscToggle">
+                      <span class="slds-radio--faux">Miscellaneous Info</span>
                     </label>
                   </span> 
                   <span class="slds-button slds-radio--button">
-                    <input type="radio" name="srecPageOptions" id="SrecInstallationTimeLineToggle" onClick="{!c.getInstallationTimeLineInformationPage}"/>
-                    <label class="slds-radio--button__label" for="SrecInstallationTimeLineToggle">
-                      <span class="slds-radio--faux">Installation Timeline</span>
+                    <input type="radio" name="srecPageOptions" id="SrecInstallationTimeLineToggle" onclick="{!c.getInstallationTimeLineInformationPage}"/>
+                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInstallationTimeLineToggle">
+                      <span class="slds-radio--faux">Installation Dates</span>
                     </label>
                   </span>                                                     
                 </div>
               </div>
             </fieldset>
-            </div>                                                            
-                <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand floatRight marginTopp5" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                <lightning:button aura:id="cloaseSrecModalButton" class="slds-button slds-button--brand floatRight marginRight2 marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>
+            </div>               
+                <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand marginTopp5" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>
                 <ui:spinner aura:id="srecSaveSpinner" class="floatRight" isVisible="false"/>            
               </div>
             </div>
@@ -1026,6 +1001,15 @@ reloaded by clicking the view button on the dashboard page-->
         <div>
         <br></br>  
         <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->       
+        <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large animated">
+          <div  class="slds-modal__container ">
+            <div class="slds-modal__header blueBackground">
+              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">        
         <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
         <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
           <thead>
@@ -1083,6 +1067,12 @@ reloaded by clicking the view button on the dashboard page-->
           </tbody>
         </table>             
    	 </div>
+     <div class="slds-modal__footer">
+    <lightning:button aura:id="closeDisbursalModal" class="slds-button slds-button--brand floatRight" onclick="{!c.closeDisbursalModal}" label="Close"></lightning:button>
+    </div>
+    </div>
+  </div>
+</div>
      </aura:if>        
     	<div>
             <br></br>

@@ -199,10 +199,10 @@
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
+        $A.util.addClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
+
         var loanId = component.get("v.customerInformation.Loan__r.Id");
-        var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle1 = component.find("customerInformation1");
-        var customerInformationToggle2 = component.find("customerInformation2");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
@@ -210,22 +210,12 @@
         var completedDisbursalsToggle = component.find("completeDisbursals");
 
         component.set("v.blueWaveReviewAlert", false);
-
-        $A.util.addClass(taskTableToggle, 'noDisplay');
-        $A.util.addClass(customerInformationToggle1, 'noDisplay');
-        $A.util.addClass(customerInformationToggle2, 'noDisplay');
-        $A.util.addClass(mslpCustomerInfoTextToggle, 'noDisplay');        
+       
         $A.util.removeClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.removeClass(disbursalIncompleteTableToggle, 'noDisplay');
         $A.util.removeClass(pendingDisbursalsToggle, 'noDisplay');
         $A.util.removeClass(completedDisbursalsToggle, 'noDisplay');        
-        
-
-        var subTaskHeaderToggle = component.find("subTaskHeader");           
-        var subTaskTableToggle = component.find("subTaskTable");
-        $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay'); 
-        
+           
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");        
         completeLoanDisbursals.setParams({loanId : loanId});        
 		completeLoanDisbursals.setCallback(this,function(resp){
@@ -255,6 +245,11 @@
         helper.getProgressBarDataMethod(component, event, helper);        
 	},
 
+    closeDisbursalModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');   
+         $A.util.removeClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
+    },            
+
     setSrecOptInCalendarQuarter : function(component, event, helper) {
         //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
         //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
@@ -280,11 +275,29 @@
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));             
     },    
+
+    setFacilitySector : function(component, event, helper) {
+        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
+        component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);            
+        // var source = event.getSource();
+        // component.set("v.equipmentUpdate.MA_Facility_Sector__c",  source.get("v.value"));         
+    },      
+
+    setFacilityType : function(component, event, helper) {
+        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
+        component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);            
+        // var source = event.getSource();
+        // component.set("v.equipmentUpdate.MA_Facility_Type__c",  source.get("v.value"));         
+    },        
     
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
         $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');        
 
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
@@ -303,7 +316,9 @@
             if(resp.getState() == "SUCCESS") {
                 helper.stopSpinner(component, "srecSaveSpinner");
                 $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');                
+                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');     
+                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');                                   
                 alert("The information has been updated");
             }else {
                 $A.log("Errors", resp.getError());                
@@ -341,11 +356,23 @@
         $A.util.addClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
         $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');          
         $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');  
-
-        alert(component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c"));
-        var srecQuarterId = component.get("v.customerInformation.SREC_Opt_In_Calendar_Quarter__c");
-        alert(component.find('Q22017').get("v.label")); 
-        //component.find("Q22017").set("v.checked", "true");
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');                                
+        
+        var slportalSettings = component.get("c.getSLPortalSettings");        
+        slportalSettings.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                var srecQuarters = resp.getReturnValue().SREC_Opt_In_Quarters__c;
+                var srecQuartersList = srecQuarters .split(",");
+                component.set("v.srecQuarters", srecQuartersList);                                         
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });   
+        $A.enqueueAction(slportalSettings);  
     },       
 
     closeInterconnectionModal : function(component, event, helper) { 
@@ -356,6 +383,10 @@
         $A.util.removeClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
         $A.util.removeClass(component.find('SrecGeneratorPage'), 'noDisplay');          
         $A.util.removeClass(component.find('SrecModulePage'), 'noDisplay');  
+        $A.util.removeClass(component.find('SrecInverterPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.removeClass(component.find('SrecMiscPage'), 'noDisplay');   
     },        
 
     closeCustomerModal : function(component, event, helper) { 
@@ -482,6 +513,31 @@
         if(commencementDate != null){
         	component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);        
         }  
+
+        var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
+        if(solarMeterReadDate != null){
+            component.set("v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c", solarMeterReadDate);        
+        }  
+
+        var contractExecutionDate = component.get("v.customerInformation.Contract_Execution_Date__c");
+        if(contractExecutionDate != null){
+            component.set("v.equipmentUpdate.Contract_Execution_Date__c", contractExecutionDate);        
+        }  
+
+        var generatorInterconnectionDate = component.get("v.customerInformation.Generator_Interconnection_Date__c");
+        if(generatorInterconnectionDate != null){
+            component.set("v.equipmentUpdate.Generator_Interconnection_Date__c", generatorInterconnectionDate);        
+        }  
+
+        var generatorInstallationDate = component.get("v.customerInformation.Generator_Installation_Date__c");
+        if(generatorInstallationDate != null){
+            component.set("v.equipmentUpdate.Generator_Installation_Date__c", generatorInstallationDate);        
+        }  
+
+        var generatorOnlineDate = component.get("v.customerInformation.Generator_Energized_Online_Date__c");
+        if(generatorOnlineDate != null){
+            component.set("v.equipmentUpdate.Generator_Energized_Online_Date__c", generatorOnlineDate);        
+        }                                          
         
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if(mechInstallCheck != null){
@@ -496,7 +552,17 @@
         var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
         if(interconnectChange != null){
             component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonwealthSolarRebateProgram);            
-        }           
+        }        
+
+        var maFacilityType = component.get("v.customerInformation.MA_Facility_Type__c");
+        if(maFacilityType != null){
+            component.set("v.equipmentUpdate.MA_Facility_Type__c", maFacilityType);            
+        } 
+
+        var maFacilitySector = component.get("v.customerInformation.MA_Facility_Sector__c");
+        if(maFacilitySector != null){
+            component.set("v.equipmentUpdate.MA_Facility_Sector__c", maFacilitySector);            
+        }                    
     },
         
     openParentSubTasks : function(component, event, helper) {

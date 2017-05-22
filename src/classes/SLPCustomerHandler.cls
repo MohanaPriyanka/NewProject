@@ -273,11 +273,21 @@ public without sharing class SLPCustomerHandler {
             equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
           }
       } else if (equipmentFieldMap.get(fieldName) instanceof Boolean) {
-        equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
-      }
+          equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+      } else if (equipmentFieldMap.get(fieldName) instanceof Date) {
+          if (equipmentFieldMap.get(fieldName) != null) {
+            equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+          }        
+      }      
     }
     update equipmentToBeUpdated;
   }  
+
+  @AuraEnabled
+  public static SLPortal_Settings__c getSLPortalSettings() {
+    List<SLPortal_Settings__c> slportalSettings = SLPortal_Settings__c.getall().values();
+    return slportalSettings[0];
+  }    
 
   @AuraEnabled 
   public static Boolean getAnyUnseenLeads () {
