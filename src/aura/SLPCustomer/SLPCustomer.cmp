@@ -918,7 +918,16 @@ reloaded by clicking the view button on the dashboard page-->
                           <th>
                           </th>
                         </aura:set>                              
-                    </aura:if>                         
+                    </aura:if>                                 
+                <aura:if isTrue="{!task.Name == 'Provide Sales Agreement'}"> 
+                 <th>                           
+                  <ui:button aura:id="viewButton"
+                    label="Submit"           
+                    class=""
+                    labelClass="{!task.Id}"          
+                    press="{!c.navigateSalesAgreementDoc}"/>
+                  </th>
+                  <aura:set attribute="else">                    
                     <aura:if isTrue="{!task.Name == 'Mechanical Installation'}"> 
                       <th>                           
                        <ui:button aura:id="viewButton"
@@ -928,34 +937,36 @@ reloaded by clicking the view button on the dashboard page-->
                          press="{!c.navigateInstallationDocs}"/>
                        </th>
                        <aura:set attribute="else">
-                    <aura:if isTrue="{!task.Name == 'Interconnection'}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.openInterconnectionModal}"/>
-                       </th>
-                       <aura:set attribute="else">
-                    <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
-                      <th>                           
-                       <ui:button aura:id="viewButton"
-                         label="Submit"           
-                         class=""
-                         labelClass="{!task.Id}"          
-                         press="{!c.openCustomerInformation}"/>
-                       </th>
-                       <aura:set attribute="else">
-                        <th>
-                          <ui:button disabled="true" />
-                        </th>
+                        <aura:if isTrue="{!task.Name == 'Interconnection'}"> 
+                          <th>                           
+                           <ui:button aura:id="viewButton"
+                             label="Submit"           
+                             class=""
+                             labelClass="{!task.Id}"          
+                             press="{!c.openInterconnectionModal}"/>
+                           </th>
+                           <aura:set attribute="else">
+                            <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
+                              <th>                           
+                               <ui:button aura:id="viewButton"
+                                 label="Submit"           
+                                 class=""
+                                 labelClass="{!task.Id}"          
+                                 press="{!c.openCustomerInformation}"/>
+                               </th>
+                               <aura:set attribute="else">
+                                <th>
+                                  <ui:button disabled="true" />
+                                </th>
+                              </aura:set>                              
+                            </aura:if>    
+                          </aura:set>                              
+                        </aura:if>     
                       </aura:set>                              
-                    </aura:if>    
-                      </aura:set>                              
-                    </aura:if>     
-                      </aura:set>                              
-                    </aura:if>                                                                       
-                  </tr>                         
+                    </aura:if>      
+                  </aura:set>
+                </aura:if>                                                                                          
+              </tr>                                                                                            
             </aura:iteration>             
           </tbody>
         </table>
