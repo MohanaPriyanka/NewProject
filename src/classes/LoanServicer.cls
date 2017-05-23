@@ -121,9 +121,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 } else {
                     repo.checkLoanForLPsToDelete(loan);
                     repo.createLoanPayments(loan, handleInsert);
-                    if (ioPeriodUpdated(loan)) {
-                        loansNeedingTAReapplication.add(loan);
-                    }
+                    loansNeedingTAReapplication.add(loan);
                 }
             }
         }
@@ -135,7 +133,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         // We need to do this after the LPs are updated 
         if (!loansNeedingTAReapplication.isEmpty()) {
             List<Transaction_Application__c> taList = [SELECT Id, Loan_Payment__c,
-                                                       Interest_Applied__c, Principal_Applied__c
+                                                       Interest_Applied__c, Principal_Applied__c, Principal_Paydown_Reason__c
                                                        FROM Transaction_Application__c
                                                        WHERE Loan_Payment__r.Loan__r.Id = :loansNeedingTAReapplication];
             TransactionApplicationHandler tah = new TransactionApplicationHandler(taList);
@@ -417,10 +415,13 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                     (lp.Interest_Only_Period__c?nullToZero(lp.Principal_Applied__c):0);
 
                 // Same as the Amort Total Due, but this takes Principal buy down in the IO period and Principal Paydowns into account
+                // We take the max becuase Cumulative Principal During IO includes Principal Paid for Reamort and we don't want
+                // to double count
                 Decimal adjustedAmortTotal = 
                     -Excel.pmt((Double) (lp.Loan__r.Product__r.Loan_Interest_Rate__c/100)/12,
                                (Integer) lp.Loan__r.Loan_Term__c - reamortPeriodAdjustment,
-                               (Double) (lp.Funds_Distributed__c - lp.Cumulative_Principal_During_IO__c - principalPaidForReamort));
+                               (Double) (lp.Funds_Distributed__c - Math.max(lp.Cumulative_Principal_During_IO__c, 
+                                                                            principalPaidForReamort)));
 
                 Decimal actualPIDue = 0;
                 if (lp.Interest_Only_Period__c) {
