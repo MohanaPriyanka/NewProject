@@ -19,13 +19,14 @@
 .THIS .boxCenterExec {
     width:30%;
     float:left;
-   	margin-left: 5%;
+   	margin-left: 15%;
     margin-right: 5%;
 }
 
 .THIS .boxRightExec {
     width:30%;
     float:right;
+    margin-right: 15%;
 }
 
 .THIS .blueBackground {

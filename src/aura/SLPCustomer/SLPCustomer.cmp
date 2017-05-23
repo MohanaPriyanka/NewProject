@@ -235,7 +235,7 @@ reloaded by clicking the view button on the dashboard page-->
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
-                               label="View Customer Information"                  
+                               label="View Loan and System Information"                  
                                press="{!c.openCustomerModal}"/>                           
                 </div>           
                 <div class="boxRightExec">
@@ -248,13 +248,11 @@ reloaded by clicking the view button on the dashboard page-->
             </div>
             <aura:set attribute="else">
             <div class="clearfix">               
-                <div class="boxRightUser">
                            <ui:button aura:id="customerInformationButton"
                                class="slds-button--brand box slds-align--absolute-center"
                                labelClass="proximaNova95"
-                               label="View Customer Information"                  
-                               press="{!c.openCustomerInformation}"/>                           
-                </div>           
+                               label="View Loan and System Information"                  
+                               press="{!c.openCustomerModal}"/>                           
             </div>              
             </aura:set>  
             </aura:if>            
