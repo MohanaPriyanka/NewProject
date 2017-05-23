@@ -250,46 +250,31 @@
          $A.util.removeClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
     },            
 
+    //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+    //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/14718
+
     setSrecOptInCalendarQuarter : function(component, event, helper) {
-        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
-        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
         var srecOptInCQ = event.currentTarget.value;
-        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);   
-        // var source = event.getSource();
-        // component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c",  source.get("v.value"));                  
+        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);                   
     },
 
-    setEquipmentAsInterconnected : function(component, event, helper) {
-        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
-        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        //component.set("v.equipmentUpdate.Interconnected__c", event.currentTarget.value);        
+    setEquipmentAsInterconnected : function(component, event, helper) {    
         var source = event.getSource();
         component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));                       
     },    
 
     setEquipmentCommonwealthProgram : function(component, event, helper) {
-        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
-        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        // component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", event.currentTarget.value);            
 
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));             
     },    
 
     setFacilitySector : function(component, event, helper) {
-        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
-        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);            
-        // var source = event.getSource();
-        // component.set("v.equipmentUpdate.MA_Facility_Sector__c",  source.get("v.value"));         
+        component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);                   
     },      
 
     setFacilityType : function(component, event, helper) {
-        //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
-        //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/147182
-        component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);            
-        // var source = event.getSource();
-        // component.set("v.equipmentUpdate.MA_Facility_Type__c",  source.get("v.value"));         
+        component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);                  
     },        
     
     saveEquipmentInformation : function(component, event, helper) {
@@ -397,95 +382,33 @@
     closeInterconnectionModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
-    },             
+    },       
 
     getSrecInterconnectionPage: function(component, event, helper) { 
-        $A.util.removeClass(component.find('SrecInterconnectionPage'), 'noDisplay');                     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+        helper.getGenericPage('SrecInterconnectionPage', component);
     },
-    
     getGeneratorInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                     
-        $A.util.removeClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
-    },        
-
+        helper.getGenericPage('SrecGeneratorPage', component);
+    },           
     getModuleInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.removeClass(component.find('SrecModulePage'), 'noDisplay');  
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');  
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');        
+        helper.getGenericPage('SrecModulePage', component);      
     },  
-
     getInverterInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
-        $A.util.removeClass(component.find('SrecInverterPage'), 'noDisplay');   
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');    
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+        helper.getGenericPage('SrecInverterPage', component);      
     }, 
-
     getRemoteMonitoringInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
-        $A.util.removeClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+        helper.getGenericPage('SrecRemoteMonitoringPage', component);      
     },   
-
     getSolarMeterInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+        helper.getGenericPage('SrecSolarMeterPage', component);      
     },      
-
     getMiscInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
+        helper.getGenericPage('SrecMiscPage', component);      
+    },
+    getInstallationTimeLineInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecInstallationTimeLinePage', component);      
     },
 
-    getInstallationTimeLineInformationPage: function(component, event, helper) { 
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');     
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');         
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');   
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');      
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
-    },       
     updateDisbursal : function(component, event, helper) { 
         var source = event.getSource();
         var disbursalId = source.get("v.name");

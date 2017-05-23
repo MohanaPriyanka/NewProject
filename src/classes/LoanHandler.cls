@@ -6,8 +6,6 @@ public without sharing class LoanHandler{
     public LoanHandler() {
     }
 
-
-    
     // Constructor to override m_isExecuting and Batch Size
     public LoanHandler(boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
@@ -1134,7 +1132,7 @@ public without sharing class LoanHandler{
 
         // filter out the child-tasks from the task map
         for (Partner_Task__c partnerTaskLoopRecord : taskMap.values()) {
-            if(partnerTaskLoopRecord.Parent__c == true && partnerTaskLoopRecord.Lead__c != null) {
+            if(partnerTaskLoopRecord.Parent__c && partnerTaskLoopRecord.Lead__c != null) {
                 parentPartnerTaskList.add(partnerTaskLoopRecord);
             }
         }
