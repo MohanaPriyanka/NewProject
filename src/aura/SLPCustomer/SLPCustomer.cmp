@@ -465,7 +465,8 @@ reloaded by clicking the view button on the dashboard page-->
                       </div>                     
                     </div>
                   </div>
-                </fieldset>                  
+                </fieldset>           
+                <br></br>       
                 <fieldset class="slds-form--compound">
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
@@ -483,7 +484,8 @@ reloaded by clicking the view button on the dashboard page-->
                       </div>                     
                     </div>
                   </div>                 
-                </fieldset>            
+                </fieldset>   
+                <br></br>                         
                 <fieldset class="slds-form--compound">
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
@@ -502,14 +504,39 @@ reloaded by clicking the view button on the dashboard page-->
                     </div>
                   </div>
                 </fieldset>  
+                <fieldset class="slds-form--compound ">
+                  <br></br>
+                  <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                      <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">    
+                      </div>              
+                      <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center slds-p-horizontal--small">
+                        <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
+                        <ui:inputDate aura:id="MechInstallDate" 
+                          class="slds-input" 
+                          displayDatePicker="true"
+                          value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
+                          />       
+                        </div>                                                                                      
+                        <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center slds-p-horizontal--small">
+                          <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
+                          <ui:inputDate aura:id="interconnectionDateChanger" 
+                            class="slds-input" 
+                            displayDatePicker="true"
+                            value="{!v.customerInformation.Interconnection_Date__c}"                         
+                            />       
+                          </div>                                           
+                        </div>
+                      </div>
+                    </fieldset>                   
+                  </div>
+                  <div class="slds-modal__footer">
+                    <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
+                    <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+                  </div>
+                </div>
               </div>
-              <div class="slds-modal__footer">
-                <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
-                <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
-              </div>
-            </div>
-          </div>
         <div aura:id="srecInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large">
           <div  class="slds-modal__container ">
             <div class="slds-modal__header blueBackground">
@@ -848,8 +875,8 @@ reloaded by clicking the view button on the dashboard page-->
               </div>
             </fieldset>
             </div>               
+                <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>            
                 <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand marginTopp5" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>
                 <ui:spinner aura:id="srecSaveSpinner" class="floatRight" isVisible="false"/>            
               </div>
             </div>
@@ -913,12 +940,21 @@ reloaded by clicking the view button on the dashboard page-->
                        </th>
                        <aura:set attribute="else">
                         <aura:if isTrue="{!task.Name == 'Interconnection'}"> 
-                          <th>                           
+                          <th>   
+                          <aura:if isTrue="{!task.Loan__r.State__c == 'MA'}">                                                  
                            <ui:button aura:id="viewButton"
                              label="Submit"           
                              class=""
                              labelClass="{!task.Id}"          
                              press="{!c.openInterconnectionModal}"/>
+                           <aura:set attribute="else">
+                           <ui:button aura:id="viewButton"
+                             label="Submit"           
+                             class=""
+                             labelClass="{!task.Id}"          
+                             press="{!c.navigateInterconnectionDocs}"/> 
+                           </aura:set>
+                           </aura:if>                           
                            </th>
                            <aura:set attribute="else">
                             <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
@@ -927,7 +963,7 @@ reloaded by clicking the view button on the dashboard page-->
                                  label="Submit"           
                                  class=""
                                  labelClass="{!task.Id}"          
-                                 press="{!c.openCustomerInformation}"/>
+                                 press="{!c.openCustomerModal}"/>
                                </th>
                                <aura:set attribute="else">
                                 <th>
