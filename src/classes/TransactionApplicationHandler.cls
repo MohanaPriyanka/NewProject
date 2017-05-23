@@ -25,22 +25,6 @@ public without sharing class TransactionApplicationHandler implements Database.B
     }
 
     public void finish(Database.BatchableContext batchableContext) {
-        String emailTo;
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-        if (systemProperties.isEmpty() ||
-            systemProperties[0].Error_Email__c == null) {
-            emailTo = 'product@bluewavesolar.com';
-        } else {
-            emailTo = systemProperties[0].Error_Email__c;
-        }            
-
-        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-        email.setToAddresses(new List<String> {emailTo});
-        email.setSubject('TransactionApplicationHandler Complete');
-        if (fullTAList != null) {
-            email.setPlainTextBody(fullTAList.size() + ' transaction applications processed');
-        }
-        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
     }
 
     // With a batch size larger than 1, we were hitting UNABLE_TO_LOCK_ROW on Loan Payment records
