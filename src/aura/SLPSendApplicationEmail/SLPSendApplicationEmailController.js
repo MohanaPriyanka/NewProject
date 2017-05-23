@@ -102,25 +102,13 @@ sendCustomerApplication : function(component, event, helper) {
         if (resp.getState() == 'SUCCESS') {
             helper.stopSpinner(component, "emailSpinner");
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-            var btn = event.getSource();
-            btn.set("v.disabled",true);
-            btn.set("v.label",'Email Sent!') 
-            // $A.util.addClass(component.find("emailIcon"), "animated bounceOutRight");
-            $A.util.addClass(component.find("emailCustomerModal"), "animated bounceOutRight");
             var emailButton = component.find('sendEmailButton');
+            emailButton.set("v.disabled",true);
+            emailButton.set("v.label",'Email Sent!')             
             var customerEmailMSLP = component.find('emailMSLP');
             var customerEmailBWSL = component.find('emailBWSL');
-
-            emailButton.set("v.disabled",false);
-            emailButton.set("v.label","Send");
             customerEmailMSLP.set("v.value", null);
-            customerEmailBWSL.set("v.value", null);    
-            
-            var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
-            evtCustomerWindow.setParams({"closeModal": "closeModal"});
-            evtCustomerWindow.fire();                 
-
-            
+            customerEmailBWSL.set("v.value", null);                  
         } else {
             var appEvent = $A.get("e.c:ApexCallbackError");
             appEvent.setParams({"className" : "SLPAddCustomerController",
