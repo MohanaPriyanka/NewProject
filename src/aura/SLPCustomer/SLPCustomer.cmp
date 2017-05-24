@@ -115,66 +115,32 @@ reloaded by clicking the view button on the dashboard page-->
         }  
 
     </style>
+    
     <div aura:id = "customerPage" class="noDisplayBar"> 	
         <div aura:id="customerName" class="main2 proximaNovaBrand"> 
             <div  class="center proximaNovaBrand"><h1> {!v.customer.Loan__r.Name} </h1></div>
              <hr></hr>  
         </div>
         <br></br> 
-          <!--  _________________________________PROGRESS BAR ___________________________________ -->    
-              <div aura:id="taskBar" class="slds-wizard" role="navigation">    
-              <ol class="slds-wizard__list">
-                <li aura:id="credit" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Navigation">Credit</span>
-                  </a>
-                </li>          
-                <li aura:id="systemInfo" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Navigation">Information</span>
-                  </a>
-                </li>
-                <li aura:id="bwReview" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Actions">Review</span>
-                  </a>
-                </li>              
-                <li aura:id="contract" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Actions">Contract</span>
-                  </a>
-                </li>        
-                <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">                        
-                <li aura:id="mechInstall" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Compact Layout">Install</span>
-                  </a>
-                </li> 
-                </aura:if>               
-                <li aura:id="interconnection" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Review">Interconnect</span>
-                  </a>
-                </li>
-                <li aura:id="complete" class="slds-wizard__item">
-                  <a href="javascript:void(0);" class="slds-wizard__link">
-                    <span class="slds-wizard__marker"></span>
-                    <span class="slds-wizard__label slds-text-title--caps slds-truncate" 
-                          title="Invite">Complete</span>
-                  </a>
-                </li>
+          <!--  _________________________________PROGRESS BAR ___________________________________ -->   
+        <div aura:id="taskBar" class="slds-wizard" role="navigation">    
+          <ol class="slds-wizard__list">   
+              <aura:iteration items="{!v.partnerTaskList}" var="task">    
+              <aura:if isTrue="{!or(task.Status__c == 'Complete', task.Status__c == 'Pending')}">                  
+                <li class="slds-wizard__item slds-is-active">
+                      <span class="slds-wizard__marker "></span>
+                      <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                            title="Navigation">{!task.Progress_Bar_Name__c}</span>
+                  </li> 
+                <aura:set attribute="else">      
+                <li class="slds-wizard__item">
+                      <span class="slds-wizard__marker "></span>
+                      <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
+                            title="Navigation">{!task.Progress_Bar_Name__c}</span>
+                </li>    
+                </aura:set>
+              </aura:if>               
+              </aura:iteration>                                        
               </ol>
               <span class="slds-wizard__progress">
                 <span aura:id="progressBar" class="slds-wizard__progress-bar"></span>
@@ -333,7 +299,7 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleManfuacturer" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
@@ -351,11 +317,11 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>          
+                    <ui:inputText aura:id="interterType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>          
                   </div>                        
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
@@ -366,7 +332,8 @@ reloaded by clicking the view button on the dashboard page-->
             </fieldset>           
             <br></br>
               <div class="slds-align--absolute-center paddingBottom1 ">
-                    <ui:button label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
+                    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+                    <ui:button aura:id="saveEquipment" label="Save" class="slds-button slds-button--brand " press="{!c.saveEquipmentInformation}"></ui:button>   
                     </div> 
             </aura:if>                       
             </div>
@@ -435,35 +402,81 @@ reloaded by clicking the view button on the dashboard page-->
           </thead>
           <tbody>
  			    <aura:iteration items="{!v.partnerTaskList}" var="task">
-                <tr>
-                    <th scope="row"> <b>{!task.Name}</b> </th> 
-                    <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
-                      <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
-                    <aura:set attribute="else">
-                      <th scope="row"> <b>{!task.Status__c}</b> </th>
-                    </aura:set>                             
-                    </aura:if>   
-                    <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
-                    <aura:if isTrue="{!task.SubTasks__c}"> 
-                        <th>                           
+            <tr>
+              <th scope="row"> <b>{!task.Name}</b> </th> 
+              <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
+                <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
+                <aura:set attribute="else">
+                  <th scope="row"> <b>{!task.Status__c}</b> </th>
+                </aura:set>                             
+              </aura:if>   
+              <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
+              <aura:if isTrue="{!task.SubTasks__c}"> 
+                <th>                           
+                 <ui:button aura:id="viewButton"
+                   label="View"           
+                   class=""
+                   labelClass="{!task.Id}"          
+                   press="{!c.openParentSubTasks}"/>
+                   <ui:button aura:id="closeButton"        
+                     label="Close"
+                     class=""
+                     labelClass="{!task.Id}"
+                     press="{!c.exitParentSubTasks}"/>
+                   </th>
+                   <aura:set attribute="else">
+                    <th>
+                    </th>
+                  </aura:set>                              
+                </aura:if>              
+                <aura:if isTrue="{!and(task.Name == 'Provide Sales Agreement', task.Status__c != 'Complete')}"> 
+                 <th>                           
+                  <ui:button aura:id="viewButton"
+                    label="Submit"           
+                    class=""
+                    labelClass="{!task.Id}"          
+                    press="{!c.navigateSalesAgreementDoc}"/>
+                  </th>
+                  <aura:set attribute="else">                    
+                    <aura:if isTrue="{!task.Name == 'Mechanical Installation'}"> 
+                      <th>                           
+                       <ui:button aura:id="viewButton"
+                         label="Submit"           
+                         class=""
+                         labelClass="{!task.Id}"          
+                         press="{!c.navigateInstallationDocs}"/>
+                       </th>
+                       <aura:set attribute="else">
+                        <aura:if isTrue="{!task.Name == 'Interconnection'}"> 
+                          <th>                           
                            <ui:button aura:id="viewButton"
-                               label="View"           
-                               class=""
-                               labelClass="{!task.Id}"          
-                               press="{!c.openParentSubTasks}"/>
-                           <ui:button aura:id="closeButton"        
-                               label="Close"
-                               class=""
-                               labelClass="{!task.Id}"
-                               press="{!c.exitParentSubTasks}"/>
-                        </th>
-                        <aura:set attribute="else">
-                            <th>
-                                <ui:button disabled="true" />
-                            </th>
-                        </aura:set>                              
-                    </aura:if>
-                </tr>                         
+                             label="Submit"           
+                             class=""
+                             labelClass="{!task.Id}"          
+                             press="{!c.openInterconnectionModal}"/>
+                           </th>
+                           <aura:set attribute="else">
+                            <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
+                              <th>                           
+                               <ui:button aura:id="viewButton"
+                                 label="Submit"           
+                                 class=""
+                                 labelClass="{!task.Id}"          
+                                 press="{!c.openCustomerInformation}"/>
+                               </th>
+                               <aura:set attribute="else">
+                                <th>
+                                  <ui:button disabled="true" />
+                                </th>
+                              </aura:set>                              
+                            </aura:if>    
+                          </aura:set>                              
+                        </aura:if>     
+                      </aura:set>                              
+                    </aura:if>      
+                  </aura:set>
+                </aura:if>                                                                                          
+              </tr>                                                                                            
             </aura:iteration>             
           </tbody>
         </table>

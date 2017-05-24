@@ -44,7 +44,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
     List<Residential_Equipment__c> equipmentList = new List<Residential_Equipment__c>();
-    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c,Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c,Interconnected__c, Mechanically_Installed__c,  Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Loan__r.Product__r.Program__c, Inverter_Model_Number__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c, Interconnection_date__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name ' ;
+    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Opportunity__r.Lead_Id__c, Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c,Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c,Interconnected__c, Mechanically_Installed__c,  Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Loan__r.Product__r.Program__c, Inverter_Model_Number__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c, Interconnection_date__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name ' ;
     equipQuery += '      FROM Residential_Equipment__c' ;
     equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
     equipQuery += '      AND Loan__r.Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
@@ -58,11 +58,21 @@ public without sharing class SLPCustomerHandler {
       return equipmentList.get(0);         
   }
 
+  public class ProgressBarData {      
+      @AuraEnabled 
+      public String pendingTaskName;
+      @AuraEnabled 
+      public String program;      
+      @AuraEnabled 
+      public Integer pendingTaskSequence;     
+  }
+
   //the getProgressBarData returns the pending task for the SLP's customer window progress bar. It could be replaced with the getLoanCustomerTasks
   //method if the right logic is applied to the SLPCustomerController component
   @AuraEnabled 
-  public static String getProgressBarData(String loanId) {
-    String returnTaskName;
+  public static ProgressBarData getProgressBarData(String loanId) {
+    ProgressBarData pbData = new ProgressBarData();
+    String progressBarTaskName;
     String pendingQuery = 'SELECT Id, Name, Status__c, Completion_Date__c, Task_Sequence__c, Loan__r.Name ' ;
     pendingQuery += '      FROM Partner_Task__c' ;
     pendingQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
@@ -77,16 +87,31 @@ public without sharing class SLPCustomerHandler {
     pendingQuery += '      ORDER BY Completion_Date__c, Task_Sequence__c DESC'; 
     pendingQuery += '      LIMIT 1 ';
     for(Partner_Task__c taskRecord : Database.query(pendingQuery)){
-      returnTaskName = taskRecord.Name;
-    }        
-    return returnTaskName;
+      pbData.pendingTaskName = taskRecord.Name;
+      pbData.pendingTaskSequence = (Integer)taskRecord.Task_Sequence__c;
+    }
+    String completedTaskQuery = 'SELECT Id, (SELECT Id, Name, Task_Sequence__c, Loan__r.DOER_Solar_Loann__c FROM Partner_Tasks__r WHERE Parent__c = true AND Sub_Task_Type__c = null AND Parent_Task__c = null)'; 
+    completedTaskQuery += '      FROM Loan__c' ;
+    completedTaskQuery += '      WHERE Id  =  \'' + loanId +  '\' ';
+    for(Loan__c loan : Database.query(completedTaskQuery)){
+      for (Partner_Task__c taskRecord : loan.Partner_Tasks__r) {
+        progressBarTaskName = taskRecord.Name + 'ProgressBar';             
+        if (taskRecord.Loan__r.DOER_Solar_Loann__c) {
+          pbData.program = 'MSLP';               
+        } else {
+          pbData.program = 'BWSL';   
+        }      
+      }
+    }
+    System.debug('chck ' + pbData);
+    return pbData;  
   }
-  
+
   //the getLoanCustomerTasks returns the list of tasks for the customer window 
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c ' ;
+    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c ' ;
     taskQuery += '      FROM Partner_Task__c' ;
     taskQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
     taskQuery += '      AND Parent__c = true ';

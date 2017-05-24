@@ -85,7 +85,9 @@
 .THIS.paddingTop3{
   padding-top: 10%;
 }
-
+.THIS.paddingProgressBar{
+  margin-bottom: 10%;
+}
 .THIS .box {
     box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
 }
@@ -266,35 +268,6 @@
 	margin-top: 0.9%;
 }
 
-.THIS .progressBarWidthCredit {
-    width:0%;
-}
-
-.THIS .progressBarWidthSystemInfo {
-    width:17%;
-}
-
-.THIS .progressBarWidthReview {
-    width:33%;
-}
-
-.THIS .progressBarWidthContract {
-    width:50%;
-}
-
-.THIS .progressBarWidthMechanicalInstall {
-    width:67%;
-}
-.THIS .progressBarWidthInterconnection {
-    width:83%;
-}
-
-.THIS .progressBarWidthComplete {
-    width:100%;
-}
-
-
-
 .THIS .progressBarWidthCreditMSLP {
     width:0%;
 }
@@ -329,3 +302,63 @@
     display:inline-block;
     border:2px solid #343434;
 }
+.THIS .CompleteProgressBar {
+    width:99%;
+}
+
+.THIS .RunCreditCheckProgressBar {
+    width:0%;
+}
+
+.THIS .ProvideAllCustomerInformationProgressBar {
+    width:15%;
+}
+
+.THIS .UnderBlueWaveReviewProgressBar {
+    width:28%;
+}
+
+.THIS .ObtainContractSignatureProgressBar {
+    width:43%;
+}
+
+.THIS .ProvideSalesAgreementProgressBar {
+    width:58%;
+}
+.THIS .BlueWaveCounterSignatureProgressBar {
+    width:72%;
+}
+.THIS .MechanicalInstallationProgressBar {
+    width:86%;
+}
+
+.THIS .InterconnectionProgressBar {
+    width:99%;
+}
+
+.THIS .RunCreditCheckProgressBarMSLP {
+    width:0%;
+}
+
+.THIS .ProvideAllCustomerInformationProgressBarMSLP {
+    width:15%;
+}
+
+.THIS .UnderBlueWaveReviewProgressBarMSLP {
+    width:33%;
+}
+
+.THIS .ObtainContractSignatureProgressBarMSLP {
+    width:50%;
+}
+
+.THIS .BlueWaveCounterSignatureProgressBarMSLP {
+    width:80%;
+}
+
+.THIS .ReportInterconnectiontoMCECProgressBarMSLP {
+    width:99%;
+}
+
+
+
