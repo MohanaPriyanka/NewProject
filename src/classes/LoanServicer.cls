@@ -21,6 +21,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     private Boolean handleInsert;
     private String log = '';
 
+    // sets the first Bill Status to be Current and all others to be Future.
     public LoanServicer(List<Loan__c> loans, Map<Id, Loan__c> triggerOldMap, Boolean handleInsert) {
         this.repo = new LoanPaymentRepo();
         this.triggerOldMap = triggerOldMap;
@@ -98,8 +99,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         return Integer.valueOf(dmlRecords);
     }
 
-    // Expects to be called after loan insert or update. If a loan isn't locked down,
-    // we're safe to delete and re-create loan payments on loan update.
+    // Expects to be called after loan insert or update.
     public void upsertLoanPayments() {
         if (loansToService.size() > 5 && anyLoansToService) {
             Database.executeBatch(this, LoanServicer.getBatchSize(loansToService));
