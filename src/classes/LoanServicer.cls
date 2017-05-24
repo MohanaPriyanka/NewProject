@@ -21,6 +21,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     private Boolean handleInsert;
     private String log = '';
 
+    // handleInsert does two things: if true, doesn't check for params being updated to do the upsert, and
     // sets the first Bill Status to be Current and all others to be Future.
     public LoanServicer(List<Loan__c> loans, Map<Id, Loan__c> triggerOldMap, Boolean handleInsert) {
         this.repo = new LoanPaymentRepo();
