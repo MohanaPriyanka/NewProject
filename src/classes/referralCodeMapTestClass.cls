@@ -2,63 +2,64 @@
 private class referralCodeMapTestClass{
 
 Static testMethod void referralCodeMap(){
+    Integer j;
+    List<Lead> newLeadList = new List<Lead>();
+    List<Lead> updatedLeads = new List<Lead>();
 
-integer j;
-account newAccount = new account(name = 'Cole Swain');
-insert newAccount;
+    Account newAccount = new Account(Name = 'Cole Swain');
+    Insert newAccount;
 
-contact newContact = new contact (  firstName = 'Unique', 
-                                    lastName = 'Lastunique', 
-                                    account = newAccount, 
-                                    mailingPostalCode = '02052', 
-                                    email = 'cole.swain@yahoo.com');
-Insert newContact;
+    Contact newContact = new Contact (FirstName = 'Unique', LastName = 'Lastunique', Account = newAccount, MailingPostalCode = '02052', Email = 'cole.swain@yahoo.com');
+    Insert newContact;
 
-partner__c newPartner = new partner__c(name = 'Partner');
-insert newPartner;
+    Partner__c newPartner = new Partner__c(Name = 'Partner');
+    Insert newPartner;
 
-bsst__c newBSST = new BSST__c ( name ='PartnerOne', 
-                                partner__c = newPartner.id,
-                                email__c = 'jpentaleri@bluewave-capital.com', 
-                                custom_id__c = 'Partner1');
-Insert newBSST;
+    Bsst__c newBSST = new BSST__c (Name ='PartnerOne', Partner__c = newPartner.id, Email__c = 'jpentaleri@bluewave-capital.com', Custom_Id__c = 'Partner1');
+    Insert newBSST;
 
-partner__c newPartnerPlaceholde = new partner__c(name = 'Holder');
-insert newPartnerPlaceholde ;
+    Partner__c newPartnerPlaceholde = new Partner__c(Name = 'Holder');
+    Insert newPartnerPlaceholde ;
 
-bsst__c newBSST2 = new BSST__c ( name ='Holder', 
-                                partner__c = newPartnerPlaceholde.id,
-                                email__c = 'holder@bluewave-capital.com', 
-                                custom_id__c = 'holder');
-Insert newBSST2;
+    Bsst__c newBSST2 = new BSST__c ( Name ='Holder', Partner__c = newPartnerPlaceholde.Id, Email__c = 'holder@bluewave-capital.com', Custom_Id__c = 'holder');
+    Insert newBSST2;
 
+    Bsst__c newBSST3 = new BSST__c (Name ='Cole', Partner__c = newPartner.id, Email__c = 'jpentaleri@bluewave-capital.com', Custom_Id__c = 'cole');
+    Insert newBSST3;
 
-System.debug(newContact.custom_id__c);
-System.debug(newContact.Referral_Code__c);
+    Load_U__c newLZU = new Load_U__c ( Name = '02052', Load_zone__c= 'NEMA Eversource', LZ__c = 'NEMA', Utility__C = 'Eversource', Town__c= 'Medfield');
+    Insert newLZU;
 
-string stringID = newContact.id;
-string mailingPostalCodes = newContact.MailingPostalCode;
+    Lead newCommunitySolarLead = new lead(FirstName = 'Cole', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Community Solar', Status = 'contacted', Custom_Id__c = 'bluewaveULastunique', Parcel_zip__c = '02052') ;
+    newLeadList.add(newCommunitySolarLead);
 
-Load_U__c newLZU = new Load_U__c ( name = '02052', Load_zone__c= 'NEMA Eversource', LZ__c = 'NEMA', Utility__C = 'Eversource', town__c= 'Medfield');
-insert newLZU;
+    Lead newLoanLead = new lead(FirstName = 'Cole', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Residential Loan', Status = 'contacted', Custom_Id__c = null, Parcel_zip__c = '02052') ;
+    newLeadList.add(newLoanLead);
 
-lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', company = 'BlueWave', status = 'contacted', custom_id__c = 'bluewaveULastunique', parcel_zip__c = '02052') ;
-insert newLead;
-newLead.custom_id__c = 'Partner1';
-update newLead;
+    Lead newLoanLead2 = new lead(FirstName = 'Matthew', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Residential Loan', Status = 'contacted', Custom_Id__c = 'swain', Parcel_zip__c = '02052') ;
+    newLeadList.add(newLoanLead2);    
 
-test.startTest();
+    Insert newLeadList;
 
-List <Lead> updatedlead = [ SELECT id, referral_email__c, partner_email__c, lastName
-                            FROM Lead
-                            WHERE lastName = 'Swain'];
+    newCommunitySolarLead.Custom_Id__c = 'Partner1';
+    updatedLeads.add(newCommunitySolarLead);
 
-for(j = 0; j < updatedlead.size(); j++){
-system.debug(updatedlead.get(j).partner_email__c);
-system.assert(updatedlead.get(j).partner_email__c == 'jpentaleri@bluewave-capital.com');
-}
+    newLoanLead.Custom_Id__c = 'Partner1';
+    updatedLeads.add(newLoanLead);
 
-test.stopTest();
- 
-}
+    Update updatedLeads;
+
+    Test.startTest();
+        List <Lead> updatedLeadList = [ SELECT Id, Referral_Email__c, Partner_Email__c, FirstName, LastName
+                                    FROM Lead
+                                    WHERE LastName = 'Swain'];
+        for(Lead leadRecord : updatedLeadList){
+            if (leadRecord.FirstName == 'Cole') {
+                System.assert(leadRecord.Partner_email__c == 'jpentaleri@bluewave-capital.com');                
+            } else {
+                System.assert(leadRecord.Partner_email__c == null);
+            }
+        }                                        
+    Test.stopTest();
+    }
 }

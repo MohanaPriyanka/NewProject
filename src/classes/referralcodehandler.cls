@@ -1,201 +1,96 @@
-// replaces referralCodeMap trigger on the lead 
-
 public with sharing class referralcodehandler {
-  private boolean m_isExecuting = false;
-  private Integer BatchSize = 0;
-    
-  public referralcodehandler (boolean isExecuting, Integer size){
-      m_isExecuting = isExecuting;
-      BatchSize = size;
-  }
 
-  public void OnBeforeInsert (Lead[] newLead){
-      referralcodeinsert(newLead);
-  }
+    public void OnBeforeInsert (Lead[] newLead){
+        assignAcquisitionObjectFromCustomId(newLead);
+    }
 
-  public void OnBeforeUpdate(Lead[] newLeads, Lead[] oldLeads){
-      referralcode(newLeads, oldLeads);
-  }
-
-  private void referralcodeinsert(list<Lead> trigLeads){
-        string partnerlookup;
-        string salesid;
-        string email;
-        List <String> leadReferralCodeList = new List<String>();
-        map <string, contact> contactReferralMap = new map <string, contact>();
-        map <string, BSST__c> partnermap = new map <string, BSST__c>();
-
-
-        for(Lead ld : trigLeads){
-            leadReferralCodeList.add('holder');
-            if(ld.Custom_ID__c != null){
-                leadReferralCodeList.add(ld.Custom_Id__c);
+    public void OnBeforeUpdate(Map<Id, Lead> oldLeadMap, Map<Id, Lead> newLeadMap){
+    List<Lead> leadsToUpdate = new List<Lead>();
+        for (Lead leadRecord : newLeadMap.values()) {
+            if (leadRecord.Custom_Id__c != oldLeadMap.get(leadRecord.Id).Custom_Id__c) {
+                leadsToUpdate.add(leadRecord);
             }
         }
-        
+        assignAcquisitionObjectFromCustomId(leadsToUpdate);
+    }
+
+    public void assignAcquisitionObjectFromCustomId(list<Lead> leads){
+        String partnerlookup;
+        String salesid;
+        String email;
+        List <String> leadReferralCodeList = new List<String>();
+        Map <String, Contact> contactReferralMap = new Map <String, Contact>();
+        Map <String, BSST__c> partnerMap = new Map <String, BSST__c>();
+
+        for (Lead leadRecord : leads) {
+            if (leadRecord.Custom_ID__c != null) {
+                leadReferralCodeList.add(leadRecord .Custom_Id__c);
+            }
+        }
+        leadReferralCodeList.add('holder');
         for (BSST__c partner : [SELECT Id, Name, Custom_Id__c, Partner__r.Id, Email__c 
                                 FROM BSST__c 
                                 WHERE Custom_Id__c IN : leadReferralCodeList]){
-                partnerMap.put(partner.Custom_Id__c, partner);
+            partnerMap.put(partner.Custom_Id__c, partner);
+        } 
+        for (Contact contact : [SELECT Id, Custom_Id__c, Email
+                                FROM Contact
+                                WHERE Custom_Id__c IN : leadReferralCodeList]){
+            contactReferralMap.put(contact.Custom_Id__c, contact);
         }
-        System.debug('PartnerMap ' + partnerMap);   
 
-        for (Contact contact : [SELECT Id, Custom_Id__c , email
-                                    FROM Contact
-                                    WHERE Custom_Id__c IN : leadReferralCodeList]){
-                contactReferralMap.put(contact.Custom_Id__c, contact);
-        }
-        System.debug('ContactMap ' + contactReferralMap);  
-
-        for(lead l : trigLeads){
-            if(l.Custom_Id__c == null){
+        for(lead leadRecord : leads){
+            if(leadRecord.Custom_Id__c == null){
                 if(partnerMap.containsKey('holder')){
-                    system.debug(partnerMap.get('holder').Partner__r.Id);
                     partnerlookup = partnerMap.get('holder').Partner__r.Id;
                     salesid = partnerMap.get('holder').Id;
                     email = partnerMap.get('holder').Email__c;
-                }
-                else{
+                } else{
                     partnerlookup = null;
                     salesid = null;
                     email = null;
                 }
-            }
-            if(l.Custom_Id__c != null){
-                if(partnerMap.containsKey(l.Custom_Id__c)){
-                    partnerlookup = partnerMap.get(l.Custom_Id__c).Partner__r.Id;
-                    salesid = partnerMap.get(l.Custom_Id__c).Id;
-                    email = partnerMap.get(l.Custom_Id__c).Email__c;
-                }
-                else if(contactReferralMap.containsKey(l.Custom_Id__c)){
-                    l.customer_referral__c = contactReferralMap.get(l.custom_id__C).id;
-                    l.referral_email__c = contactReferralMap.get(l.custom_id__c).email;
-                }
-                else{
-                    if(partnerMap.containsKey('holder')){
-                        partnerlookup = partnerMap.get('holder').Partner__r.Id;
-                        salesid = partnerMap.get('holder').Id;
-                        email = partnerMap.get('holder').Email__c;
+            } else if(leadRecord.Custom_Id__c != null){
+                if(partnerMap.containsKey(leadRecord.Custom_Id__c) && !contactReferralMap.containsKey(leadRecord.Custom_Id__c)){
+                    partnerlookup = partnerMap.get(leadRecord.Custom_Id__c).Partner__r.Id;
+                    salesid = partnerMap.get(leadRecord.Custom_Id__c).Id;
+                    email = partnerMap.get(leadRecord.Custom_Id__c).Email__c;
+                } else if(contactReferralMap.containsKey(leadRecord.Custom_Id__c) && !partnerMap.containsKey(leadRecord.Custom_Id__c)){
+                    leadRecord.Customer_referral__c = contactReferralMap.get(leadRecord.Custom_Id__c).Id;
+                    leadRecord.Referral_email__c = contactReferralMap.get(leadRecord.Custom_Id__c).Email;
+                } else if (!contactReferralMap.containsKey(leadRecord.Custom_Id__c) && !partnerMap.containsKey(leadRecord.Custom_Id__c)){
+                    if (leadRecord.Product_Line__c == 'Residential Loan') {
+                        return;                   
                     }
+                    if (leadRecord.Product_Line__c == 'Community Solar') {
+                        if(partnerMap.containsKey('holder')){
+                            partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                            salesid = partnerMap.get('holder').Id;
+                            email = partnerMap.get('holder').Email__c;
+                        }
+                    }
+                } else {
+                    if (leadRecord.Product_Line__c == 'Residential Loan') {
+                        return;                   
+                    }
+                    if (leadRecord.Product_Line__c == 'Community Solar') {
+                        if(partnerMap.containsKey('holder')){
+                            partnerlookup = partnerMap.get('holder').Partner__r.Id;
+                            salesid = partnerMap.get('holder').Id;
+                            email = partnerMap.get('holder').Email__c;
+                        }
+                    }                    
                 }
-            }
-            system.debug(partnerlookup);
-            system.debug(salesid);
-            system.debug(email);
-            
+            }        
             if(partnerlookup != null){
-                l.Partner_Lookup__c = partnerlookup;
+                leadRecord.Partner_Lookup__c = partnerlookup;
             }
             if(salesid != null){
-                l.Bs_sales_id__c = salesid;
+                leadRecord.Bs_sales_id__c = salesid;
             }
             if(email != null){
-                l.Partner_Email__c = email;
+                leadRecord.Partner_Email__c = email;
             }
         }   
-
-  }
-
-  private void referralcode(List<Lead> oldLeads, List<Lead> newLeads){
-   
-        system.debug(oldLeads);
-        system.debug(newLeads);
-
-        integer m;
-
-        Map<Id, Lead> oldvalues = new Map<Id, Lead> ();
-        List<Lead> triggeredleads = new list<Lead> ();
-
-        for(Lead oldLead: oldLeads){
-              oldvalues.put(oldLead.id, oldLead);
-        }
-
-        for(m = 0; m < newLeads.size(); m++){  
-              string newvalueID = newLeads.get(m).Id;
-              string newcid = newLeads.get(m).Custom_Id__c;
-              string oldcid = oldvalues.get(newvalueID).Custom_Id__c;
-                  if (newcid != oldcid) { 
-                        triggeredleads.add(newLeads.get(m));
-                  }
-        } 
-
-        system.debug(triggeredleads);
-
-        // begin normal process
-        string partnerlookup;
-        string salesid;
-        string email;
-        List <String> leadReferralCodeList = new List<String>();
-        map <string, contact> contactReferralMap = new map <string, contact>();
-        map <string, BSST__c> partnermap = new map <string, BSST__c>();
-
-        for(Lead ld : triggeredleads){
-            leadReferralCodeList.add('holder');
-            if(ld.Custom_ID__c != null){
-                leadReferralCodeList.add(ld.Custom_Id__c);
-            }
-        }
-        
-        for (BSST__c partner : [SELECT Id, Name, Custom_Id__c, Partner__r.Id, Email__c 
-                                FROM BSST__c 
-                                WHERE Custom_Id__c IN : leadReferralCodeList]){
-                partnerMap.put(partner.Custom_Id__c, partner);
-        }
-        System.debug('PartnerMap ' + partnerMap);   
-
-        for (Contact contact : [SELECT Id, Custom_Id__c , email
-                                    FROM Contact
-                                    WHERE Custom_Id__c IN : leadReferralCodeList]){
-                contactReferralMap.put(contact.Custom_Id__c, contact);
-        }
-        System.debug('ContactMap ' + contactReferralMap);  
-
-        for(lead l : triggeredleads){
-            if(l.Custom_Id__c == null){
-                if(partnerMap.containsKey('holder')){
-                    system.debug(partnerMap.get('holder').Partner__r.Id);
-                    partnerlookup = partnerMap.get('holder').Partner__r.Id;
-                    salesid = partnerMap.get('holder').Id;
-                    email = partnerMap.get('holder').Email__c;
-                }
-                else{
-                    partnerlookup = null;
-                    salesid = null;
-                    email = null;
-                }
-            }
-            if(l.Custom_Id__c != null){
-                if(partnerMap.containsKey(l.Custom_Id__c)){
-                    partnerlookup = partnerMap.get(l.Custom_Id__c).Partner__r.Id;
-                    salesid = partnerMap.get(l.Custom_Id__c).Id;
-                    email = partnerMap.get(l.Custom_Id__c).Email__c;
-                }
-                else if(contactReferralMap.containsKey(l.Custom_Id__c)){
-                    l.customer_referral__c = contactReferralMap.get(l.custom_id__C).id;
-                    l.referral_email__c = contactReferralMap.get(l.custom_id__c).email;
-                }
-                else{
-                    if(partnerMap.containsKey('holder')){
-                        partnerlookup = partnerMap.get('holder').Partner__r.Id;
-                        salesid = partnerMap.get('holder').Id;
-                        email = partnerMap.get('holder').Email__c;
-                    }
-                }
-            }
-            system.debug(partnerlookup);
-            system.debug(salesid);
-            system.debug(email);
-            
-            if(partnerlookup != null){
-                l.Partner_Lookup__c = partnerlookup;
-            }
-            if(salesid != null){
-                l.Bs_sales_id__c = salesid;
-            }
-            if(email != null){
-                l.Partner_Email__c = email;
-            }
-        }
-   }   
-
+    }
 }
