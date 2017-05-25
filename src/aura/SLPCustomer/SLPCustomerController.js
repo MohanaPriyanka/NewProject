@@ -279,6 +279,7 @@
     
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
+        helper.startSpinner(component, "customerInformationSpinner");        
         $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
@@ -300,6 +301,7 @@
         saveAction.setCallback(this, function(resp) {
             if(resp.getState() == "SUCCESS") {
                 helper.stopSpinner(component, "srecSaveSpinner");
+                helper.stopSpinner(component, "customerInformationSpinner");                        
                 $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');     
                 $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');

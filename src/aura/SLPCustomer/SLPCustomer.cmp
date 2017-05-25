@@ -470,12 +470,12 @@ reloaded by clicking the view button on the dashboard page-->
                     <div class="slds-form-element__row">
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
-                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                        <ui:inputText aura:id="moduleManfuacturer" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
                       </div>  
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
                         <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}"/>          
-                      </div>                                       
+                      </div>      
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Number of Modules</label>
                         <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}" />          
@@ -489,11 +489,11 @@ reloaded by clicking the view button on the dashboard page-->
                     <div class="slds-form-element__row">
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
-                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
+                        <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
                       </div>  
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
-                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>          
+                        <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>          
                       </div>                        
                       <div class="slds-form-element slds-p-horizontal--small">
                         <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
@@ -531,7 +531,7 @@ reloaded by clicking the view button on the dashboard page-->
                   <div class="slds-modal__footer">
                     <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
                     <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+                    <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>            
                   </div>
                 </div>
               </div>
@@ -605,15 +605,15 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Type</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
+                    <ui:inputText aura:id="generatorType" class="slds-input" value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
+                    <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
+                    <ui:inputNumber aura:id="annualProduction" class="slds-input" value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
                   </div>                     
                 </div>
                 <div class="slds-form-element slds-p-horizontal--small">
@@ -665,39 +665,39 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="moduleManufacturer" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
                   </div>                                        
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Model Number</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}" />          
+                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}" />          
                   </div>                     
                 </div> 
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Power Rating</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Power_Rating__c}" placeholder="{!v.customerInformation.Module_Power_Rating__c}"/>          
+                    <ui:inputText aura:id="modulePowerRating" class="slds-input" value="{!v.equipmentUpdate.Module_Power_Rating__c}" placeholder="{!v.customerInformation.Module_Power_Rating__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Modules</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}"/>          
+                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Mounting Type</label>
-                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Mounting_Type__c}" placeholder="{!v.customerInformation.Module_Array_Mounting_Type__c}" />          
+                    <ui:inputText aura:id="modualArrayMountingType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Mounting_Type__c}" placeholder="{!v.customerInformation.Module_Array_Mounting_Type__c}" />          
                   </div>                     
                 </div> 
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Azimuth</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Azimuth__c}" placeholder="{!v.customerInformation.Module_Array_Azimuth__c}"/>          
+                    <ui:inputText aura:id="moduleArrayAzimuth" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Azimuth__c}" placeholder="{!v.customerInformation.Module_Array_Azimuth__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Array Tilt</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Tilt__c}" placeholder="{!v.customerInformation.Module_Array_Tilt__c}"/>          
+                    <ui:inputText aura:id="moduleArrayTilt" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Tilt__c}" placeholder="{!v.customerInformation.Module_Array_Tilt__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Module Mounting Location</label>
-                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Module_Mounting_Location__c}" placeholder="{!v.customerInformation.Module_Mounting_Location__c}" />          
+                    <ui:inputText aura:id="moduleMountingLocation" class="slds-input" value="{!v.equipmentUpdate.Module_Mounting_Location__c}" placeholder="{!v.customerInformation.Module_Mounting_Location__c}" />          
                   </div>                     
                 </div>                                                              
                 </div>                 
@@ -707,15 +707,15 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>          
+                    <ui:inputText aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Inverter Model Number</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}" />          
+                    <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}" />          
                   </div>                     
                 </div>                                                                           
                 </div>                 
@@ -725,11 +725,11 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Remote Monitoring System Vendor</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}" placeholder="{!v.customerInformation.Remote_Monitoring_System_Vendor__c}"/>          
+                    <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}" placeholder="{!v.customerInformation.Remote_Monitoring_System_Vendor__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Remote Monitoring System Unique Identifier</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}" placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>          
+                    <ui:inputText aura:id="remoteMonitoringSystemId" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}" placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>          
                   </div>                                                            
                 </div>                                                                           
                 </div>                 
@@ -739,29 +739,29 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Number of Meters</label>
-                    <ui:inputNumber aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
+                    <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
+                    <ui:inputText aura:id="meterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
-                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
+                    <ui:inputText aura:id="meterModel" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
                   </div>                     
                 </div>
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Solar Meter Serial Number</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}" placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>          
+                    <ui:inputText aura:id="meterSerialNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}" placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}" placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>          
+                    <ui:inputText aura:id="meterReadingOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}" placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>          
                   </div>                                       
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
-                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}" format="MM/DD/YYYY"/>          
+                    <ui:inputDate aura:id="meterReadingDateOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}" format="MM/DD/YYYY"/>          
                   </div>                     
                 </div>                                                                                            
                 </div>                                
@@ -771,21 +771,21 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">CEC Production Tracking System ID Number</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}" placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>          
+                    <ui:inputText aura:id="cecTrackingId" class="slds-input" value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}" placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}" placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>          
+                    <ui:inputText aura:id="powerClerkAppId" class="slds-input" value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}" placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>          
                   </div>                                                           
                 </div>
                 <div class="slds-form-element__row">                
                  <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Estimated On-Site Behind the Meter Load</label>
-                    <ui:inputNumber aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}" placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}" />          
+                    <ui:inputNumber aura:id="estMeterLoad" class="slds-input" value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}" placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}" />          
                   </div> 
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
-                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Percentage_of_System_Shaded__c}" placeholder="{!v.customerInformation.Percentage_of_System_Shaded__c}"/>          
+                    <ui:inputText aura:id="percentShaded" class="slds-input" value="{!v.equipmentUpdate.Percentage_of_System_Shaded__c}" placeholder="{!v.customerInformation.Percentage_of_System_Shaded__c}"/>          
                   </div>
                   </div>                                                          
                 </div>                                                                                                                           
@@ -795,21 +795,21 @@ reloaded by clicking the view button on the dashboard page-->
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
-                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" format="MM/DD/YYYY"/>          
+                    <ui:inputDate aura:id="contractDate" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" format="MM/DD/YYYY"/>          
                   </div>  
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
-                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" format="MM/DD/YYYY"/>          
+                    <ui:inputDate aura:id="installDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" format="MM/DD/YYYY"/>          
                   </div>                                                           
                 </div>
                 <div class="slds-form-element__row">                
                  <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
-                    <ui:inputDate aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>          
+                    <ui:inputDate aura:id="interconnectDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>          
                   </div> 
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
-                    <ui:inputDate aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>          
+                    <ui:inputDate aura:id="energizedDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>          
                   </div>
                   </div>                                                          
                 </div>                                                                                                                           
@@ -956,13 +956,15 @@ reloaded by clicking the view button on the dashboard page-->
                            </th>
                            <aura:set attribute="else">
                             <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
-                              <th>                           
+                              <aura:if isTrue="{!task.Loan__r.DOER_Solar_Loann__c != 'TRUE'}">                               
+                              <th>                                                         
                                <ui:button aura:id="viewButton"
                                  label="Submit"           
                                  class=""
                                  labelClass="{!task.Id}"          
                                  press="{!c.openCustomerModal}"/>
                                </th>
+                               </aura:if>
                                <aura:set attribute="else">
                                 <th>
                                   <ui:button disabled="true" />
