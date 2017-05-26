@@ -601,14 +601,10 @@ public without sharing class LoanHandler{
             if (!loanRecord.DOER_Solar_Loann__c){
                 Partner_Task__c mechanicalInstallationTask = createPartnerTask(loanRecord, 'GrandParent', 'Mechanical Installation', 'Mechanical Installation', partnerSequenceCounter, 'Incomplete', 'Mechanical Installation', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Install');                
                 partnerSequenceCounter += 1;
-                Partner_Task__c interconnectionTask = createPartnerTask(loanRecord, 'GrandParent', 'Interconnection', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Interconnect');                            
-                partnerSequenceCounter += 1;
-            } else {
-                Partner_Task__c srecInformation = createPartnerTask(loanRecord, 'GrandParent', 'Provide SREC Information', 'Srec', partnerSequenceCounter, 'Incomplete', 'Srec', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'SREC');                                                            
-                partnerSequenceCounter += 1;  
-                Partner_Task__c interconnectionTaskMSLP = createPartnerTask(loanRecord, 'GrandParent', 'Report Interconnection to MCEC', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection MSLP', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Interconnect');                                            
-                partnerSequenceCounter += 1;           
-            }
+
+            } 
+            Partner_Task__c interconnectionTask = createPartnerTask(loanRecord, 'GrandParent', 'Interconnection', 'Interconnection', partnerSequenceCounter, 'Incomplete', 'Interconnection', null,  null, parentPartnerTaskRecordType, parentTaskInsertList, null, null, parentTaskAssignmentMap, null, 'Interconnect');                            
+            partnerSequenceCounter += 1;            
             Partner_Task__c incomeDocumentationTask = createPartnerTask(loanRecord, 'Parent', 'Provide Income Documentation', 'Income Documentation', null, 'Incomplete', 'Customer Information', 'Income Documentation',  allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap, null);                                            
             if (!loanRecord.DOER_Solar_Loann__c){
                 Partner_Task__c systemInformationTask = createPartnerTask(loanRecord, 'Parent', 'Provide all System Information', 'Provide all System Information', null, 'Incomplete', 'Customer Information', 'System Information', allInformationTask, childPartnerTaskRecordType, null, subParentTaskInsertList, null, null, subParentTaskAssignmentMap, null);                                            

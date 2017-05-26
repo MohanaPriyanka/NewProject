@@ -16,7 +16,8 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionLicenseType);                            
+        $A.enqueueAction(actionLicenseType);    
+        component.set("v.vendorIdLabel", "Unique Identifier");
 	},
     
     openCustomerWindow : function(component, event, helper) {
@@ -327,12 +328,7 @@
             $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
         } else {
             $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                  
-        }
-        if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
-            component.set("v.vendorIdLabel", "Mac Id");              
-        } else {
-            component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
-        }         
+        }      
         $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');                          
     },          
     
@@ -405,7 +401,8 @@
         $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');                                
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');  
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');                                              
         
         var slportalSettings = component.get("c.getSLPortalSettings");        
         slportalSettings.setCallback(this,function(resp){
@@ -427,31 +424,25 @@
             } else {
                 $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                      
             }
-            if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
-                component.set("v.vendorIdLabel", "Mac Id");              
+            if (customerInformation.Remote_Monitoring_System_Vendor__c == null) {
+                component.set("v.vendorIdLabel", "Unique Identifier");                          
+            } else if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+                component.set("v.vendorIdLabel", "Mac Id");                              
             } else {
-                component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
-            }            
+                component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                                          
+            }       
             $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');              
             $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');  
             component.set("v.equipmentUpdate.Interconnected__c  ", customerInformation.Interconnected__c);                          
             component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", customerInformation.Auto_Reporting_to_PTS__c);          
-            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c);              
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c); 
+            component.find("srecInterconnectionToggle").set("v.checked", "true");
         }
     },       
 
     closeInterconnectionModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
-        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');  
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay'); 
-        $A.util.addClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');         
-        $A.util.removeClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecGeneratorPage'), 'noDisplay');          
-        $A.util.removeClass(component.find('SrecModulePage'), 'noDisplay');  
-        $A.util.removeClass(component.find('SrecInverterPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecMiscPage'), 'noDisplay');   
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
     },        
 
     closeCustomerModal : function(component, event, helper) { 

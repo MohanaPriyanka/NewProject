@@ -18,7 +18,7 @@
   <aura:attribute name="incompleteDisbursalList" type="Object"  />    
   <aura:attribute name="taskViewButtonToggle" type="Boolean"  />
   <aura:attribute name="blueWaveReviewAlert" type="Boolean"  />     
-  <aura:attribute name="vendorIdLabel" type="String"  />     
+  <aura:attribute name="vendorIdLabel" type="String"  />  
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}" />
   <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}" />      
@@ -683,6 +683,7 @@
                                               <div class="slds-form-element__control">
                                                 <div class="slds-select_container">
                                                   <select id="maFacilitySector" class="slds-select" onchange="{!c.setFacilitySector}" value="{!v.equipmentUpdate.MA_Facility_Sector__c}">
+                                                    <option>Select</option>
                                                     <option>Residential</option>
                                                     <option>Commercial</option>
                                                     <option>Government</option>
@@ -697,6 +698,7 @@
                                               <div class="slds-form-element__control">
                                                 <div class="slds-select_container">
                                                   <select id="maFacilityType" class="slds-select" onchange="{!c.setFacilityType}" value="{!v.equipmentUpdate.MA_Facility_Type__c}">
+                                                    <option>Select</option>
                                                     <option>Agricultural</option>
                                                     <option>College/University</option>
                                                     <option>Commercial/Office</option>
@@ -836,6 +838,7 @@
                                               <div class="slds-form-element__control">
                                                 <div class="slds-select_container">
                                                   <select id="autoReportingVendor" class="slds-select" onchange="{!c.setAutoReportingVendor}" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}">
+                                                    <option>Select</option>
                                                     <option>PowerDash</option>
                                                     <option>SolarEdge</option>
                                                     <option>SolarLog</option>
@@ -949,49 +952,49 @@
                                     <div class="slds-form-element__control">
                                       <div class="slds-radio--button-group">
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="srecInterconnectionToggle" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecInterconnectionToggle">
                                             <span class="slds-radio--faux">Interconnection/SREC</span>
                                           </label>
                                         </span>
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="srecGeneratorToggle" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecGeneratorToggle">
                                             <span class="slds-radio--faux">Generator Info</span>
                                           </label>
                                         </span>
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecModuleToggle" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecModuleToggle">
                                             <span class="slds-radio--faux">Module Info</span>
                                           </label>
                                         </span>
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecInverterToggle" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInverterToggle">
                                             <span class="slds-radio--faux">Inverter Info</span>
                                           </label>
                                         </span>
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecRemoteMonitoringToggle" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecRemoteMonitoringToggle">
                                             <span class="slds-radio--faux">System Reporting Info</span>
                                           </label>
                                         </span>
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecMeterToggle" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMeterToggle">
                                             <span class="slds-radio--faux">Solar Meter Info</span>
                                           </label>
                                         </span>  
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecMiscToggle" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMiscToggle">
                                             <span class="slds-radio--faux">Miscellaneous Info</span>
                                           </label>
                                         </span> 
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" name="srecPageOptions" id="SrecInstallationTimeLineToggle" onclick="{!c.getInstallationTimeLineInformationPage}"/>
+                                          <input type="radio" name="srecPageOptions" aura:id="SrecInstallationTimeLineToggle" id="SrecInstallationTimeLineToggle" onclick="{!c.getInstallationTimeLineInformationPage}"/>
                                           <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInstallationTimeLineToggle">
                                             <span class="slds-radio--faux">Installation Dates</span>
                                           </label>
@@ -1083,14 +1086,19 @@
                                                  </th>
                                                  <aura:set attribute="else">
                                                   <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
-                                                    <aura:if isTrue="{!task.Loan__r.DOER_Solar_Loann__c != 'TRUE'}">                               
-                                                      <th>                                                         
-                                                       <ui:button aura:id="viewButton"
-                                                         label="Submit"           
-                                                         class=""
-                                                         labelClass="{!task.Id}"          
-                                                         press="{!c.openCustomerModal}"/>
-                                                       </th>
+                                                    <aura:if isTrue="{!task.Loan__r.DOER_Solar_Loann__c}">                               
+                                                      <th>  
+                                                        <ui:button disabled="true" />                                                       
+                                                      </th>
+                                                      <aura:set attribute="else">
+                                                        <th>
+                                                         <ui:button aura:id="viewButton"
+                                                           label="Submit"           
+                                                           class=""
+                                                           labelClass="{!task.Id}"          
+                                                           press="{!c.openCustomerModal}"/>                                                        
+                                                         </th>
+                                                       </aura:set>                                                        
                                                      </aura:if>
                                                      <aura:set attribute="else">
                                                       <th>
