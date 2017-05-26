@@ -78,11 +78,10 @@ public without sharing class LeaseDimensionsImportController {
         
         private ReportLine(String[] inputLine) {
             if (inputLine.size() != 16 ||
-                inputLine[0].equals('Portfolio') ||
+                // Excel saves non-printing characters when saving to csv, so use contains instead of equals
+                inputLine[0].contains('Portfolio') ||
                 inputLine[4].equals('')) {
                 throw new LDImportException('Not processing this line: ' + inputLine);
-            } else {
-                System.debug(LoggingLevel.ERROR, inputLine[0] + ' equals Portfolio: ' + inputLine[0].equals('Portfolio'));
             }
             portfolio = inputLine[0];
             company = inputLine[1];
