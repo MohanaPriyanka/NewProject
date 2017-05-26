@@ -29,12 +29,7 @@ public with sharing class LeaseDimensionsImportControllerTest {
     static testMethod void testFileLoad() {
         Loan__c loan = [SELECT Loan_Number__c from Loan__c LIMIT 1];
         testFile = testFile.replace('GOODLOANINIO', loan.Loan_Number__c.replace('BW',''));
-
-        System.debug(LoggingLevel.ERROR, testFile);
-
         testFile = testFile.replace('GOODLOANINPI', loan.Loan_Number__c);
-
-        System.debug(LoggingLevel.ERROR, testFile);
 
         Test.startTest();
         LeaseDimensionsImportController ldic = new LeaseDimensionsImportController();
@@ -42,7 +37,7 @@ public with sharing class LeaseDimensionsImportControllerTest {
                                      body = Blob.valueOf(testFile));
         ldic.loadCSV();
         System.debug(LoggingLevel.ERROR, ldic.loanNumbers);
-        System.assertEquals(3, ldic.loanNumbers.size());
+        System.assertEquals(2, ldic.loanNumbers.size());
         
         System.assertEquals(1, ldic.loansFound.size());
         Test.stopTest();

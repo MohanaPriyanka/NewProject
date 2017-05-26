@@ -43,7 +43,7 @@ public without sharing class LeaseDimensionsImportController {
                         WHERE Loan_Number__c IN :loanNumbers];
         loadResult = loansFound.size() + ' of ' + loanNumbers.size() + ' found\n';
         if (loansFound.size() != loanNumbers.size()) {
-            // Uh oh, LD has a transaction to a loan we couldn't find. Report which one
+            // LD has a transaction to a loan we couldn't find. Report which one
             Map<String, Loan__c> loanMap = new Map<String, Loan__c>();
             for (Loan__c loan : loansFound) {
                 loanMap.put(loan.Loan_Number__c, loan);
@@ -82,7 +82,7 @@ public without sharing class LeaseDimensionsImportController {
                 inputLine[4].equals('')) {
                 throw new LDImportException('Not processing this line: ' + inputLine);
             } else {
-                System.debug(LoggingLevel.ERROR, inputLine[0].equals('Portfolio'));
+                System.debug(LoggingLevel.ERROR, inputLine[0] + ' equals Portfolio: ' + inputLine[0].equals('Portfolio'));
             }
             portfolio = inputLine[0];
             company = inputLine[1];
