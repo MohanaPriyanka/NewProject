@@ -365,115 +365,72 @@
                                   displayDatePicker="true"
                                   value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
                                   />       
-                                </div>                                                                                                                                
-                              </div>
-                            </div>
-                          </fieldset>                   
-                        </div>
-                        <div class="slds-modal__footer">
-                          <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
-                          <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                          <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>            
-                        </div>
-                      </div>
-                    </div>
-                    <div aura:id="srecInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large">
-                      <div  class="slds-modal__container ">
-                        <div class="slds-modal__header blueBackground">
-                          <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
-                            <span class="slds-assistive-text">Close</span>
-                          </button>
-                          <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
-                        </div>
-                        <div class="slds-modal__content slds-p-around--medium">
-                          <div aura:id="SrecInterconnectionPage">     
-                            <fieldset>      
-                              <div class="slds-size_1-of-2">                                                           
-                                <legend class="slds-form-element__legend slds-form-element__label  slds-p-horizontal--small slds-m-around--x-small">SREC Opt-in Calendar Quarter</legend>
-                                <div class="slds-form-element__control  slds-p-horizontal--small slds-m-around--x-small">
-                                  <div class="slds-radio--button-group">
-                                    <aura:iteration items="{!v.srecQuarters}" var="srecQuarter">
-                                      <span class="slds-button slds-radio--button">
-                                        <aura:if isTrue="{!srecQuarter == v.customerInformation.SREC_Opt_In_Calendar_Quarter__c}">
-                                          <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" checked="TRUE" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
-                                          <aura:set attribute="else">
-                                            <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
-                                          </aura:set>
-                                        </aura:if>                      
-                                        <label class="slds-radio--button__label" for="{!srecQuarter}">    
-                                          <span class="slds-radio--faux">{!srecQuarter}</span>
-                                        </label>       
-                                      </span>                                     
-                                    </aura:iteration>          
-                                  </div>
+                                </div>                                                                                      
+                                <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center slds-p-horizontal--small">
+                                  <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
+                                  <ui:inputDate aura:id="interconnectionDateChanger" 
+                                    class="slds-input" 
+                                    displayDatePicker="true"
+                                    value="{!v.customerInformation.Interconnection_Date__c}"                         
+                                    />       
+                                  </div>                                           
                                 </div>
                               </div>
-                            </fieldset>  
-                            <div class="slds-size_1-of-2">                
-                              <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
-                                <label class="slds-form-element__label" for="autoPts">Is this system interconnected and operating? </label>
-                                <aura:if isTrue="{!v.customerInformation.Interconnected__c}">                                         
-                                  <div class="slds-form-element__control">
+                            </fieldset>                   
+                          </div>
+                          <div class="slds-modal__footer">
+                            <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
+                            <lightning:button aura:id="saveCustomerModalButton" class="slds-button slds-button--brand" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                            <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>            
+                          </div>
+                        </div>
+                      </div>
+                      <div aura:id="srecInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large">
+                        <div  class="slds-modal__container ">
+                          <div class="slds-modal__header blueBackground">
+                            <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                              <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+                          </div>
+                          <div class="slds-modal__content slds-p-around--medium">
+                            <div aura:id="SrecInterconnectionPage">     
+                              <fieldset>      
+                                <div class="slds-size_1-of-2">                                                           
+                                  <legend class="slds-form-element__legend slds-form-element__label  slds-p-horizontal--small slds-m-around--x-small">SREC Opt-in Calendar Quarter</legend>
+                                  <div class="slds-form-element__control  slds-p-horizontal--small slds-m-around--x-small">
                                     <div class="slds-radio--button-group">
-                                      <span class="slds-button slds-radio--button">
-                                        <input type="radio" id="interconnectYes" name="interconnect" checked="true" onclick="{!c.setInterconnectedTrue}"/>
-                                        <label class="slds-radio--button__label" for="interconnectYes">
-                                          <span class="slds-radio_faux">Yes</span>
-                                        </label>
-                                      </span>  
-                                      <span class="slds-button slds-radio--button">
-                                        <input type="radio" id="interconnectNo" name="interconnect" checked="false" onclick="{!c.setInterconnectedFalse}"/>
-                                        <label class="slds-radio--button__label" for="interconnectNo">
-                                          <span class="slds-radio_faux">No</span>
-                                        </label>
-                                      </span> 
-                                    </div>
-                                  </div>                      
-                                  <aura:set attribute="else">
-                                    <div class="slds-form-element__control">
-                                      <div class="slds-radio--button-group">                      
+                                      <aura:iteration items="{!v.srecQuarters}" var="srecQuarter">
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="interconnectYes2" name="interconnect2" checked="false" onclick="{!c.setInterconnectedTrue}"/>
-                                          <label class="slds-radio--button__label" for="interconnectYes2">
-                                            <span class="slds-radio_faux">Yes</span>
-                                          </label>
-                                        </span>  
-                                        <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="interconnectNo2" name="interconnect2" checked="true" onclick="{!c.setInterconnectedFalse}"/>
-                                          <label class="slds-radio--button__label" for="interconnectNo2">
-                                            <span class="slds-radio_faux">No</span>
-                                          </label>
-                                        </span> 
-                                      </div>
+                                          <aura:if isTrue="{!srecQuarter == v.customerInformation.SREC_Opt_In_Calendar_Quarter__c}">
+                                            <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" checked="TRUE" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                                            <aura:set attribute="else">
+                                              <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                                            </aura:set>
+                                          </aura:if>                      
+                                          <label class="slds-radio--button__label" for="{!srecQuarter}">    
+                                            <span class="slds-radio--faux">{!srecQuarter}</span>
+                                          </label>       
+                                        </span>                                     
+                                      </aura:iteration>          
                                     </div>
-                                  </aura:set>
-                                </aura:if>
-                              </div>
-                            </div>                              
-                            <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                  
-                              <label class="slds-form-element__label" for="input-03">When did the system get interconnected?</label>
-                              <div class="slds-size_1-of-6">  
-                                <ui:inputDate aura:id="interconnectionDateChanger" 
-                                  class="slds-input" 
-                                  displayDatePicker="true"
-                                  value="{!v.customerInformation.Interconnection_Date__c}"                         
-                                  />       
-                                </div> 
-                              </div>
+                                  </div>
+                                </div>
+                              </fieldset>  
                               <div class="slds-size_1-of-2">                
                                 <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
-                                  <label class="slds-form-element__label" for="autoPts">Has {!v.customer.Loan__r.Name} applied for funding through the Commonwealth Solar Rebate Program after 01/01/2010?</label>
+                                  <label class="slds-form-element__label" for="autoPts">Is this system interconnected and operating? </label>
                                   <aura:if isTrue="{!v.customerInformation.Interconnected__c}">                                         
                                     <div class="slds-form-element__control">
                                       <div class="slds-radio--button-group">
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="cwProgramYes" name="cwProgram" checked="true" onclick="{!c.setCommonwealthProgramTrue}"/>
+                                          <input type="radio" id="interconnectYes" name="interconnect" checked="true" onclick="{!c.setInterconnectedTrue}"/>
                                           <label class="slds-radio--button__label" for="interconnectYes">
                                             <span class="slds-radio_faux">Yes</span>
                                           </label>
                                         </span>  
                                         <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="cwProgramNo" name="cwProgram" checked="false" onclick="{!c.setCommonwealthProgramFalse}"/>
+                                          <input type="radio" id="interconnectNo" name="interconnect" checked="false" onclick="{!c.setInterconnectedFalse}"/>
                                           <label class="slds-radio--button__label" for="interconnectNo">
                                             <span class="slds-radio_faux">No</span>
                                           </label>
@@ -484,13 +441,13 @@
                                       <div class="slds-form-element__control">
                                         <div class="slds-radio--button-group">                      
                                           <span class="slds-button slds-radio--button">
-                                            <input type="radio" id="cwProgramYes2" name="cwProgram2" checked="false" onclick="{!c.setCommonwealthProgramTrue}"/>
+                                            <input type="radio" id="interconnectYes2" name="interconnect2" checked="false" onclick="{!c.setInterconnectedTrue}"/>
                                             <label class="slds-radio--button__label" for="interconnectYes2">
                                               <span class="slds-radio_faux">Yes</span>
                                             </label>
                                           </span>  
                                           <span class="slds-button slds-radio--button">
-                                            <input type="radio" id="cwProgramNo2" name="cwProgram2" checked="true" onclick="{!c.setCommonwealthProgramFalse}"/>
+                                            <input type="radio" id="interconnectNo2" name="interconnect2" checked="true" onclick="{!c.setInterconnectedFalse}"/>
                                             <label class="slds-radio--button__label" for="interconnectNo2">
                                               <span class="slds-radio_faux">No</span>
                                             </label>
@@ -500,603 +457,654 @@
                                     </aura:set>
                                   </aura:if>
                                 </div>
-                              </div>              
-                              <br></br>              
-                            </div>
-                            <fieldset aura:id="SrecGeneratorPage" class="slds-form--compound noDisplay">
-                              <div class="slds-form-element__group">
-                                <div class="slds-form-element__row">
-                                  <div class="slds-size_1-of-3">                                               
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="input-03">Generator Type</label>
-                                      <ui:inputText aura:id="generatorType" class="slds-input" value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
-                                    </div>  
-                                  </div>
-                                  <div class="slds-size_1-of-3">                                               
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
-                                      <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
-                                    </div>   
-                                  </div>
-                                  <div class="slds-size_1-of-3">                                                                                   
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
-                                      <ui:inputNumber aura:id="annualProduction" class="slds-input" value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
-                                    </div>
-                                  </div>                                                                   
-                                </div>
-                                <div class="slds-form-element__row">                                            
-                                  <div aura:id="maFacilitySector" class="slds-size_1-of-2">                        
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
-                                      <label class="slds-form-element__label" for="maFacilitySector">MA Facility Sector</label>
-                                      <div class="slds-form-element__control">
-                                        <div class="slds-select_container">
-                                          <select id="maFacilitySector" class="slds-select" onchange="{!c.setFacilitySector}" value="{!v.equipmentUpdate.MA_Facility_Sector__c}">
-                                            <option>Select</option>
-                                            <option>Residential</option>
-                                            <option>Commercial</option>
-                                            <option>Government</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                    </div>
+                              </div>                              
+                              <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                  
+                                <label class="slds-form-element__label" for="input-03">When did the system get interconnected?</label>
+                                <div class="slds-size_1-of-6">  
+                                  <ui:inputDate aura:id="interconnectionDateChanger" 
+                                    class="slds-input" 
+                                    displayDatePicker="true"
+                                    value="{!v.customerInformation.Interconnection_Date__c}"                         
+                                    />       
                                   </div> 
-                                  <div aura:id="maFacilityType" class="slds-size_1-of-2">                        
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                           
-                                      <label class="slds-form-element__label" for="maFacilityType ">MA Facility Type</label>
+                                </div>
+                                <div class="slds-size_1-of-2">                
+                                  <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
+                                    <label class="slds-form-element__label" for="autoPts">Has {!v.customer.Loan__r.Name} applied for funding through the Commonwealth Solar Rebate Program after 01/01/2010?</label>
+                                    <aura:if isTrue="{!v.customerInformation.Interconnected__c}">                                         
                                       <div class="slds-form-element__control">
-                                        <div class="slds-select_container">
-                                          <select id="maFacilityType" class="slds-select" onchange="{!c.setFacilityType}" value="{!v.equipmentUpdate.MA_Facility_Type__c}">
-                                            <option>Select</option>
-                                            <option>Agricultural</option>
-                                            <option>College/University</option>
-                                            <option>Commercial/Office</option>
-                                            <option>Community Solar</option>
-                                            <option>Hospital/Health Care</option>
-                                            <option>Industrial</option>
-                                            <option>Mixed Use (commercial and residential)</option>
-                                            <option>Religious</option>
-                                            <option>Restaurant/Food Service</option>
-                                            <option>Retail</option>
-                                            <option>School (K-12)</option>
-                                            <option>Federal</option>                                                                        
-                                            <option>Municipal – K-12 School</option>
-                                            <option>Municipal / Government / Public</option>
-                                            <option>State</option>                        
-                                            <option>State – College / University</option>
-                                            <option>Multi-family residential (4 or more dwellings units per building)</option>
-                                            <option>Residential (3 or fewer dwelling units per building)</option>                        
-                                            <option>Other</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>                              
-                              </div>                 
-                            </fieldset>   
-                            <fieldset aura:id="SrecModulePage" class="slds-form--compound noDisplay">
-                              <div class="slds-form-element__group">
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
-                                    <ui:inputText aura:id="moduleManufacturer" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
-                                  </div>                                        
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Model Number</label>
-                                    <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}" />          
-                                  </div>                     
-                                </div> 
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Power Rating</label>
-                                    <ui:inputText aura:id="modulePowerRating" class="slds-input" value="{!v.equipmentUpdate.Module_Power_Rating__c}" placeholder="{!v.customerInformation.Module_Power_Rating__c}"/>          
-                                  </div>  
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Number of Modules</label>
-                                    <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}"/>          
-                                  </div>                                       
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Array Mounting Type</label>
-                                    <ui:inputText aura:id="modualArrayMountingType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Mounting_Type__c}" placeholder="{!v.customerInformation.Module_Array_Mounting_Type__c}" />          
-                                  </div>                     
-                                </div> 
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Array Azimuth</label>
-                                    <ui:inputText aura:id="moduleArrayAzimuth" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Azimuth__c}" placeholder="{!v.customerInformation.Module_Array_Azimuth__c}"/>          
-                                  </div>  
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Array Tilt</label>
-                                    <ui:inputText aura:id="moduleArrayTilt" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Tilt__c}" placeholder="{!v.customerInformation.Module_Array_Tilt__c}"/>          
-                                  </div>                                       
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Module Mounting Location</label>
-                                    <ui:inputText aura:id="moduleMountingLocation" class="slds-input" value="{!v.equipmentUpdate.Module_Mounting_Location__c}" placeholder="{!v.customerInformation.Module_Mounting_Location__c}" />          
-                                  </div>                     
-                                </div>                                                              
-                              </div>                 
-                            </fieldset> 
-                            <fieldset aura:id="SrecInverterPage" class="slds-form--compound noDisplay">
-                              <div class="slds-form-element__group">
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
-                                    <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
-                                  </div>  
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
-                                    <ui:inputText aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>          
-                                  </div>                                       
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Inverter Model Number</label>
-                                    <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}" />          
-                                  </div>                     
-                                </div>                                                                           
-                              </div>                 
-                            </fieldset>  
-                            <fieldset aura:id="SrecRemoteMonitoringPage" class="slds-form--compound noDisplay">
-                              <div class="proximaNovaDataBlue50">If this system will be auto-reporting using PowerDash, please provide full admin access and privileges to BlueWave in order for us to enter in the system's PTS ID when it is generated after registration approval by the state. If this system will be auto-reporting using SolarEdge, please provide full admin access and privileges to info@solsystemscompany.com in order for us to add the system's PTS ID when it is generated after registration approval by the state.</div>
-                              <br></br>  
-                              <div class="slds-size_1-of-2">                
-                                <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
-                                  <label class="slds-form-element__label" for="autoPts">Will this system be auto-reporting PTS? </label>
-                                  <aura:if isTrue="{!v.customerInformation.Auto_Reporting_to_PTS__c}">                                         
-                                    <div class="slds-form-element__control">
-                                      <div class="slds-radio--button-group">
-                                        <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="yesAutoPTS" name="autoPTS" checked="true" onclick="{!c.setAutoPTSTrue}"/>
-                                          <label class="slds-radio--button__label" for="yesAutoPTS">
-                                            <span class="slds-radio_faux">Yes</span>
-                                          </label>
-                                        </span>  
-                                        <span class="slds-button slds-radio--button">
-                                          <input type="radio" id="noAutoPTS" name="autoPTS" checked="false" onclick="{!c.setAutoPTSFalse}"/>
-                                          <label class="slds-radio--button__label" for="noAutoPTS">
-                                            <span class="slds-radio_faux">No, customer will self-report</span>
-                                          </label>
-                                        </span> 
-                                      </div>
-                                    </div>                      
-                                    <aura:set attribute="else">
-                                      <div class="slds-form-element__control">
-                                        <div class="slds-radio--button-group">                      
+                                        <div class="slds-radio--button-group">
                                           <span class="slds-button slds-radio--button">
-                                            <input type="radio" id="yesAutoPTS2" name="autoPTS2" checked="false" onclick="{!c.setAutoPTSTrue}"/>
-                                            <label class="slds-radio--button__label" for="yesAutoPTS2">
+                                            <input type="radio" id="cwProgramYes" name="cwProgram" checked="true" onclick="{!c.setCommonwealthProgramTrue}"/>
+                                            <label class="slds-radio--button__label" for="interconnectYes">
                                               <span class="slds-radio_faux">Yes</span>
                                             </label>
                                           </span>  
                                           <span class="slds-button slds-radio--button">
-                                            <input type="radio" id="noAutoPTS2" name="autoPTS2" checked="true" onclick="{!c.setAutoPTSFalse}"/>
-                                            <label class="slds-radio--button__label" for="noAutoPTS2">
+                                            <input type="radio" id="cwProgramNo" name="cwProgram" checked="false" onclick="{!c.setCommonwealthProgramFalse}"/>
+                                            <label class="slds-radio--button__label" for="interconnectNo">
+                                              <span class="slds-radio_faux">No</span>
+                                            </label>
+                                          </span> 
+                                        </div>
+                                      </div>                      
+                                      <aura:set attribute="else">
+                                        <div class="slds-form-element__control">
+                                          <div class="slds-radio--button-group">                      
+                                            <span class="slds-button slds-radio--button">
+                                              <input type="radio" id="cwProgramYes2" name="cwProgram2" checked="false" onclick="{!c.setCommonwealthProgramTrue}"/>
+                                              <label class="slds-radio--button__label" for="interconnectYes2">
+                                                <span class="slds-radio_faux">Yes</span>
+                                              </label>
+                                            </span>  
+                                            <span class="slds-button slds-radio--button">
+                                              <input type="radio" id="cwProgramNo2" name="cwProgram2" checked="true" onclick="{!c.setCommonwealthProgramFalse}"/>
+                                              <label class="slds-radio--button__label" for="interconnectNo2">
+                                                <span class="slds-radio_faux">No</span>
+                                              </label>
+                                            </span> 
+                                          </div>
+                                        </div>
+                                      </aura:set>
+                                    </aura:if>
+                                  </div>
+                                </div>              
+                                <br></br>              
+                              </div>
+                              <fieldset aura:id="SrecGeneratorPage" class="slds-form--compound noDisplay">
+                                <div class="slds-form-element__group">
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-3">                                               
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="input-03">Generator Type</label>
+                                        <ui:inputText aura:id="generatorType" class="slds-input" value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
+                                      </div>  
+                                    </div>
+                                    <div class="slds-size_1-of-3">                                               
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
+                                        <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
+                                      </div>   
+                                    </div>
+                                    <div class="slds-size_1-of-3">                                                                                   
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
+                                        <ui:inputNumber aura:id="annualProduction" class="slds-input" value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
+                                      </div>
+                                    </div>                                                                   
+                                  </div>
+                                  <div class="slds-form-element__row">                                            
+                                    <div aura:id="maFacilitySector" class="slds-size_1-of-2">                        
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
+                                        <label class="slds-form-element__label" for="maFacilitySector">MA Facility Sector</label>
+                                        <div class="slds-form-element__control">
+                                          <div class="slds-select_container">
+                                            <select id="maFacilitySector" class="slds-select" onchange="{!c.setFacilitySector}" value="{!v.equipmentUpdate.MA_Facility_Sector__c}">
+                                              <option>Select</option>
+                                              <option>Residential</option>
+                                              <option>Commercial</option>
+                                              <option>Government</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div> 
+                                    <div aura:id="maFacilityType" class="slds-size_1-of-2">                        
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                           
+                                        <label class="slds-form-element__label" for="maFacilityType ">MA Facility Type</label>
+                                        <div class="slds-form-element__control">
+                                          <div class="slds-select_container">
+                                            <select id="maFacilityType" class="slds-select" onchange="{!c.setFacilityType}" value="{!v.equipmentUpdate.MA_Facility_Type__c}">
+                                              <option>Select</option>
+                                              <option>Agricultural</option>
+                                              <option>College/University</option>
+                                              <option>Commercial/Office</option>
+                                              <option>Community Solar</option>
+                                              <option>Hospital/Health Care</option>
+                                              <option>Industrial</option>
+                                              <option>Mixed Use (commercial and residential)</option>
+                                              <option>Religious</option>
+                                              <option>Restaurant/Food Service</option>
+                                              <option>Retail</option>
+                                              <option>School (K-12)</option>
+                                              <option>Federal</option>                                                                        
+                                              <option>Municipal – K-12 School</option>
+                                              <option>Municipal / Government / Public</option>
+                                              <option>State</option>                        
+                                              <option>State – College / University</option>
+                                              <option>Multi-family residential (4 or more dwellings units per building)</option>
+                                              <option>Residential (3 or fewer dwelling units per building)</option>                        
+                                              <option>Other</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>                              
+                                </div>                 
+                              </fieldset>   
+                              <fieldset aura:id="SrecModulePage" class="slds-form--compound noDisplay">
+                                <div class="slds-form-element__group">
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                                      <ui:inputText aura:id="moduleManufacturer" class="slds-input" value="{!v.equipmentUpdate.Module_Manufacturer__c}" placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>          
+                                    </div>                                        
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Model Number</label>
+                                      <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.equipmentUpdate.Module_Model_Number__c}" placeholder="{!v.customerInformation.Module_Model_Number__c}" />          
+                                    </div>                     
+                                  </div> 
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Power Rating</label>
+                                      <ui:inputText aura:id="modulePowerRating" class="slds-input" value="{!v.equipmentUpdate.Module_Power_Rating__c}" placeholder="{!v.customerInformation.Module_Power_Rating__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Number of Modules</label>
+                                      <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Modules__c}" placeholder="{!v.customerInformation.Number_of_Modules__c}"/>          
+                                    </div>                                       
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Array Mounting Type</label>
+                                      <ui:inputText aura:id="modualArrayMountingType" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Mounting_Type__c}" placeholder="{!v.customerInformation.Module_Array_Mounting_Type__c}" />          
+                                    </div>                     
+                                  </div> 
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Array Azimuth</label>
+                                      <ui:inputText aura:id="moduleArrayAzimuth" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Azimuth__c}" placeholder="{!v.customerInformation.Module_Array_Azimuth__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Array Tilt</label>
+                                      <ui:inputText aura:id="moduleArrayTilt" class="slds-input" value="{!v.equipmentUpdate.Module_Array_Tilt__c}" placeholder="{!v.customerInformation.Module_Array_Tilt__c}"/>          
+                                    </div>                                       
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Module Mounting Location</label>
+                                      <ui:inputText aura:id="moduleMountingLocation" class="slds-input" value="{!v.equipmentUpdate.Module_Mounting_Location__c}" placeholder="{!v.customerInformation.Module_Mounting_Location__c}" />          
+                                    </div>                     
+                                  </div>                                                              
+                                </div>                 
+                              </fieldset> 
+                              <fieldset aura:id="SrecInverterPage" class="slds-form--compound noDisplay">
+                                <div class="slds-form-element__group">
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                                      <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Inverter_Manufacturer__c}" placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
+                                      <ui:inputText aura:id="inverterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Inverters__c}" placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>          
+                                    </div>                                       
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Inverter Model Number</label>
+                                      <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.equipmentUpdate.Inverter_Model_Number__c}" placeholder="{!v.customerInformation.Inverter_Model_Number__c}" />          
+                                    </div>                     
+                                  </div>                                                                           
+                                </div>                 
+                              </fieldset>  
+                              <fieldset aura:id="SrecRemoteMonitoringPage" class="slds-form--compound noDisplay">
+                                <div class="proximaNovaDataBlue50">If this system will be auto-reporting using PowerDash, please provide full admin access and privileges to BlueWave in order for us to enter in the system's PTS ID when it is generated after registration approval by the state. If this system will be auto-reporting using SolarEdge, please provide full admin access and privileges to info@solsystemscompany.com in order for us to add the system's PTS ID when it is generated after registration approval by the state.</div>
+                                <br></br>  
+                                <div class="slds-size_1-of-2">                
+                                  <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
+                                    <label class="slds-form-element__label" for="autoPts">Will this system be auto-reporting PTS? </label>
+                                    <aura:if isTrue="{!v.customerInformation.Auto_Reporting_to_PTS__c}">                                         
+                                      <div class="slds-form-element__control">
+                                        <div class="slds-radio--button-group">
+                                          <span class="slds-button slds-radio--button">
+                                            <input type="radio" id="yesAutoPTS" name="autoPTS" checked="true" onclick="{!c.setAutoPTSTrue}"/>
+                                            <label class="slds-radio--button__label" for="yesAutoPTS">
+                                              <span class="slds-radio_faux">Yes</span>
+                                            </label>
+                                          </span>  
+                                          <span class="slds-button slds-radio--button">
+                                            <input type="radio" id="noAutoPTS" name="autoPTS" checked="false" onclick="{!c.setAutoPTSFalse}"/>
+                                            <label class="slds-radio--button__label" for="noAutoPTS">
                                               <span class="slds-radio_faux">No, customer will self-report</span>
                                             </label>
                                           </span> 
                                         </div>
-                                      </div>
-                                    </aura:set>
-                                  </aura:if>
-                                </div>  
-                              </div> 
-                              <div class="slds-form-element__group">             
-                                <div class="slds-form-element__row">              
-                                  <div aura:id="vendorSelection" class="slds-size_1-of-2 noDisplay">
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="autoReportingVendor">Who will be the auto-reporting vendor?</label>
-                                      <div class="slds-form-element__control">
-                                        <div class="slds-select_container">
-                                          <select id="autoReportingVendor" class="slds-select" onchange="{!c.setAutoReportingVendor}" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}">
-                                            <option>Select</option>
-                                            <option>PowerDash</option>
-                                            <option>SolarEdge</option>
-                                            <option>SolarLog</option>
-                                            <option>Locus</option>
-                                            <option>Other</option>
-                                          </select>
+                                      </div>                      
+                                      <aura:set attribute="else">
+                                        <div class="slds-form-element__control">
+                                          <div class="slds-radio--button-group">                      
+                                            <span class="slds-button slds-radio--button">
+                                              <input type="radio" id="yesAutoPTS2" name="autoPTS2" checked="false" onclick="{!c.setAutoPTSTrue}"/>
+                                              <label class="slds-radio--button__label" for="yesAutoPTS2">
+                                                <span class="slds-radio_faux">Yes</span>
+                                              </label>
+                                            </span>  
+                                            <span class="slds-button slds-radio--button">
+                                              <input type="radio" id="noAutoPTS2" name="autoPTS2" checked="true" onclick="{!c.setAutoPTSFalse}"/>
+                                              <label class="slds-radio--button__label" for="noAutoPTS2">
+                                                <span class="slds-radio_faux">No, customer will self-report</span>
+                                              </label>
+                                            </span> 
+                                          </div>
                                         </div>
-                                      </div>
+                                      </aura:set>
+                                    </aura:if>
+                                  </div>  
+                                </div> 
+                                <div class="slds-form-element__group">             
+                                  <div class="slds-form-element__row">              
+                                    <div aura:id="vendorSelection" class="slds-size_1-of-2 noDisplay">
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="autoReportingVendor">Who will be the auto-reporting vendor?</label>
+                                        <div class="slds-form-element__control">
+                                          <div class="slds-select_container">
+                                            <select id="autoReportingVendor" class="slds-select" onchange="{!c.setAutoReportingVendor}" value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}">
+                                              <option>Select</option>
+                                              <option>PowerDash</option>
+                                              <option>SolarEdge</option>
+                                              <option>SolarLog</option>
+                                              <option>Locus</option>
+                                              <option>Other</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div> 
                                     </div> 
+                                    <div aura:id="vendorUniqueId" class="slds-size_1-of-2 noDisplay">                        
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="input-03">{!v.vendorIdLabel}</label>
+                                        <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}" placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>          
+                                      </div>  
+                                    </div>   
+                                    <div aura:id="geSerialNumber" class="slds-size_1-of-2 slds-float_right noDisplay">                       
+                                      <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                        <label class="slds-form-element__label" for="input-03">GE Serial Number</label>
+                                        <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input" value="{!v.equipmentUpdate.GE_Serial_Number__c}" placeholder="{!v.customerInformation.GE_Serial_Number__c}"/>          
+                                      </div>  
+                                    </div>                   
+                                  </div>
+                                </div>                                       
+                              </fieldset> 
+                              <fieldset aura:id="SrecSolarMeterPage" class="slds-form--compound noDisplay">
+                                <div class="slds-form-element__group">
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Number of Meters</label>
+                                      <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
+                                      <ui:inputText aura:id="meterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
+                                    </div>                                       
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
+                                      <ui:inputText aura:id="meterModel" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
+                                    </div>                     
+                                  </div>
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Solar Meter Serial Number</label>
+                                      <ui:inputText aura:id="meterSerialNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}" placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
+                                      <ui:inputText aura:id="meterReadingOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}" placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>          
+                                    </div>                                       
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
+                                      <ui:inputDate aura:id="meterReadingDateOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}" format="MM/DD/YYYY"/>          
+                                    </div>                     
+                                  </div>                                                                                            
+                                </div>                                
+                              </fieldset>  
+                              <fieldset aura:id="SrecMiscPage" class="slds-form--compound noDisplay">
+                                <div class="slds-form-element__group">
+                                  <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">CEC Production Tracking System ID Number</label>
+                                      <ui:inputText aura:id="cecTrackingId" class="slds-input" value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}" placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>          
+                                    </div>  
+                                    <div class="slds-form-element slds-p-horizontal--small">
+                                      <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
+                                      <ui:inputText aura:id="powerClerkAppId" class="slds-input" value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}" placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>          
+                                    </div>                                                           
+                                  </div>
+                                  <div class="slds-form-element__row">                
+                                   <div class="slds-form-element slds-p-horizontal--small">
+                                    <label class="slds-form-element__label" for="input-03">Estimated On-Site Behind the Meter Load</label>
+                                    <ui:inputNumber aura:id="estMeterLoad" class="slds-input" value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}" placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}" />          
                                   </div> 
-                                  <div aura:id="vendorUniqueId" class="slds-size_1-of-2 noDisplay">                        
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="input-03">{!v.vendorIdLabel}</label>
-                                      <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input" value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}" placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>          
-                                    </div>  
-                                  </div>   
-                                  <div aura:id="geSerialNumber" class="slds-size_1-of-2 slds-float_right noDisplay">                       
-                                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                      <label class="slds-form-element__label" for="input-03">GE Serial Number</label>
-                                      <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input" value="{!v.equipmentUpdate.GE_Serial_Number__c}" placeholder="{!v.customerInformation.GE_Serial_Number__c}"/>          
-                                    </div>  
-                                  </div>                   
-                                </div>
-                              </div>                                       
-                            </fieldset> 
-                            <fieldset aura:id="SrecSolarMeterPage" class="slds-form--compound noDisplay">
+                                  <div class="slds-form-element slds-p-horizontal--small">
+                                    <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
+                                    <ui:inputText aura:id="percentShaded" class="slds-input" value="{!v.equipmentUpdate.Percentage_of_System_Shaded__c}" placeholder="{!v.customerInformation.Percentage_of_System_Shaded__c}"/>          
+                                  </div>
+                                </div>                                                          
+                              </div>                                                                                                                           
+                            </fieldset>   
+                            <fieldset aura:id="SrecInstallationTimeLinePage" class="slds-form--compound noDisplay">
                               <div class="slds-form-element__group">
                                 <div class="slds-form-element__row">
                                   <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Number of Meters</label>
-                                    <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
+                                    <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
+                                    <ui:inputDate aura:id="contractDate" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" format="MM/DD/YYYY"/>          
                                   </div>  
                                   <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
-                                    <ui:inputText aura:id="meterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
-                                  </div>                                       
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
-                                    <ui:inputText aura:id="meterModel" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
-                                  </div>                     
-                                </div>
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Solar Meter Serial Number</label>
-                                    <ui:inputText aura:id="meterSerialNumber" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}" placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>          
-                                  </div>  
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
-                                    <ui:inputText aura:id="meterReadingOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}" placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>          
-                                  </div>                                       
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
-                                    <ui:inputDate aura:id="meterReadingDateOne" class="slds-input" value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}" format="MM/DD/YYYY"/>          
-                                  </div>                     
-                                </div>                                                                                            
-                              </div>                                
-                            </fieldset>  
-                            <fieldset aura:id="SrecMiscPage" class="slds-form--compound noDisplay">
-                              <div class="slds-form-element__group">
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">CEC Production Tracking System ID Number</label>
-                                    <ui:inputText aura:id="cecTrackingId" class="slds-input" value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}" placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>          
-                                  </div>  
-                                  <div class="slds-form-element slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
-                                    <ui:inputText aura:id="powerClerkAppId" class="slds-input" value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}" placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>          
+                                    <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
+                                    <ui:inputDate aura:id="installDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" format="MM/DD/YYYY"/>          
                                   </div>                                                           
                                 </div>
                                 <div class="slds-form-element__row">                
                                  <div class="slds-form-element slds-p-horizontal--small">
-                                  <label class="slds-form-element__label" for="input-03">Estimated On-Site Behind the Meter Load</label>
-                                  <ui:inputNumber aura:id="estMeterLoad" class="slds-input" value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}" placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}" />          
+                                  <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
+                                  <ui:inputDate aura:id="interconnectDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>          
                                 </div> 
                                 <div class="slds-form-element slds-p-horizontal--small">
-                                  <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
-                                  <ui:inputText aura:id="percentShaded" class="slds-input" value="{!v.equipmentUpdate.Percentage_of_System_Shaded__c}" placeholder="{!v.customerInformation.Percentage_of_System_Shaded__c}"/>          
+                                  <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
+                                  <ui:inputDate aura:id="energizedDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>          
                                 </div>
                               </div>                                                          
                             </div>                                                                                                                           
-                          </fieldset>   
-                          <fieldset aura:id="SrecInstallationTimeLinePage" class="slds-form--compound noDisplay">
-                            <div class="slds-form-element__group">
-                              <div class="slds-form-element__row">
-                                <div class="slds-form-element slds-p-horizontal--small">
-                                  <label class="slds-form-element__label" for="input-03">Contract Execution Date</label>
-                                  <ui:inputDate aura:id="contractDate" class="slds-input" value="{!v.equipmentUpdate.Contract_Execution_Date__c}" format="MM/DD/YYYY"/>          
-                                </div>  
-                                <div class="slds-form-element slds-p-horizontal--small">
-                                  <label class="slds-form-element__label" for="input-03">Generator Installation Date</label>
-                                  <ui:inputDate aura:id="installDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Installation_Date__c}" format="MM/DD/YYYY"/>          
-                                </div>                                                           
+                          </fieldset>                                                                                                                      
+                        </div>
+                        <div class="slds-modal__footer">
+                          <div class="slds-align--absolute-center">
+                            <fieldset>           
+                              <legend class="slds-form-element__legend slds-form-element__label"></legend>
+                              <div class="slds-form-element__control">
+                                <div class="slds-radio--button-group">
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="srecInterconnectionToggle" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecInterconnectionToggle">
+                                      <span class="slds-radio--faux">Interconnection/SREC</span>
+                                    </label>
+                                  </span>
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="srecGeneratorToggle" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecGeneratorToggle">
+                                      <span class="slds-radio--faux">Generator Info</span>
+                                    </label>
+                                  </span>
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecModuleToggle" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecModuleToggle">
+                                      <span class="slds-radio--faux">Module Info</span>
+                                    </label>
+                                  </span>
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecInverterToggle" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInverterToggle">
+                                      <span class="slds-radio--faux">Inverter Info</span>
+                                    </label>
+                                  </span>
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecRemoteMonitoringToggle" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecRemoteMonitoringToggle">
+                                      <span class="slds-radio--faux">System Reporting Info</span>
+                                    </label>
+                                  </span>
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecMeterToggle" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMeterToggle">
+                                      <span class="slds-radio--faux">Solar Meter Info</span>
+                                    </label>
+                                  </span>  
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecMiscToggle" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMiscToggle">
+                                      <span class="slds-radio--faux">Miscellaneous Info</span>
+                                    </label>
+                                  </span> 
+                                  <span class="slds-button slds-radio--button">
+                                    <input type="radio" name="srecPageOptions" aura:id="SrecInstallationTimeLineToggle" id="SrecInstallationTimeLineToggle" onclick="{!c.getInstallationTimeLineInformationPage}"/>
+                                    <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInstallationTimeLineToggle">
+                                      <span class="slds-radio--faux">Installation Dates</span>
+                                    </label>
+                                  </span>                                                     
+                                </div>
                               </div>
-                              <div class="slds-form-element__row">                
-                               <div class="slds-form-element slds-p-horizontal--small">
-                                <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
-                                <ui:inputDate aura:id="interconnectDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>          
-                              </div> 
-                              <div class="slds-form-element slds-p-horizontal--small">
-                                <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
-                                <ui:inputDate aura:id="energizedDate" class="slds-input" value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>          
-                              </div>
-                            </div>                                                          
-                          </div>                                                                                                                           
-                        </fieldset>                                                                                                                      
+                            </fieldset>
+                          </div>               
+                          <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>            
+                          <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand marginTopp5" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                          <ui:spinner aura:id="srecSaveSpinner" class="floatRight" isVisible="false"/>            
+                        </div>
                       </div>
-                      <div class="slds-modal__footer">
-                        <div class="slds-align--absolute-center">
-                          <fieldset>           
-                            <legend class="slds-form-element__legend slds-form-element__label"></legend>
-                            <div class="slds-form-element__control">
-                              <div class="slds-radio--button-group">
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="srecInterconnectionToggle" id="srecInterconnectionToggle" onclick="{!c.getSrecInterconnectionPage}" checked="true"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecInterconnectionToggle">
-                                    <span class="slds-radio--faux">Interconnection/SREC</span>
-                                  </label>
-                                </span>
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="srecGeneratorToggle" id="srecGeneratorToggle" onclick="{!c.getGeneratorInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="srecGeneratorToggle">
-                                    <span class="slds-radio--faux">Generator Info</span>
-                                  </label>
-                                </span>
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecModuleToggle" id="SrecModuleToggle" onclick="{!c.getModuleInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecModuleToggle">
-                                    <span class="slds-radio--faux">Module Info</span>
-                                  </label>
-                                </span>
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecInverterToggle" id="SrecInverterToggle" onclick="{!c.getInverterInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInverterToggle">
-                                    <span class="slds-radio--faux">Inverter Info</span>
-                                  </label>
-                                </span>
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecRemoteMonitoringToggle" id="SrecRemoteMonitoringToggle" onclick="{!c.getRemoteMonitoringInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecRemoteMonitoringToggle">
-                                    <span class="slds-radio--faux">System Reporting Info</span>
-                                  </label>
-                                </span>
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecMeterToggle" id="SrecMeterToggle" onclick="{!c.getSolarMeterInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMeterToggle">
-                                    <span class="slds-radio--faux">Solar Meter Info</span>
-                                  </label>
-                                </span>  
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecMiscToggle" id="SrecMiscToggle" onclick="{!c.getMiscInformationPage}" />
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecMiscToggle">
-                                    <span class="slds-radio--faux">Miscellaneous Info</span>
-                                  </label>
-                                </span> 
-                                <span class="slds-button slds-radio--button">
-                                  <input type="radio" name="srecPageOptions" aura:id="SrecInstallationTimeLineToggle" id="SrecInstallationTimeLineToggle" onclick="{!c.getInstallationTimeLineInformationPage}"/>
-                                  <label class="slds-radio--button__label proximaNovaDataBlue50" for="SrecInstallationTimeLineToggle">
-                                    <span class="slds-radio--faux">Installation Dates</span>
-                                  </label>
-                                </span>                                                     
-                              </div>
-                            </div>
-                          </fieldset>
-                        </div>               
-                        <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5" onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>            
-                        <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand marginTopp5" onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
-                        <ui:spinner aura:id="srecSaveSpinner" class="floatRight" isVisible="false"/>            
-                      </div>
-                    </div>
-                  </div>          
-                  <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>            
-                  <!--  _________________________________TASK TABLE ___________________________________ -->    
-                  <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
-                    <thead>
-                      <tr class="slds-text-heading--label " >
-                        <th scope="col"><span class="slds-truncate"><b>Task</b></span></th> 
-                        <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>              
-                        <th scope="col"><span class="slds-truncate"><b>Completion Date</b></span></th>              
-                        <th scope="col"><span aura:id = "viewParentSubTasks" class="slds-truncate"><b>Sub-Tasks</b></span></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <aura:iteration items="{!v.partnerTaskList}" var="task">
-                        <tr>
-                          <th scope="row"> <b>{!task.Name}</b> </th> 
-                          <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
-                            <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
-                            <aura:set attribute="else">
-                              <th scope="row"> <b>{!task.Status__c}</b> </th>
-                            </aura:set>                             
-                          </aura:if>   
-                          <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
-                          <aura:if isTrue="{!task.SubTasks__c}"> 
-                            <th>                           
-                             <ui:button aura:id="viewButton"
-                               label="View"           
-                               class=""
-                               labelClass="{!task.Id}"          
-                               press="{!c.openParentSubTasks}"/>
-                               <ui:button aura:id="closeButton"        
-                                 label="Close"
-                                 class=""
-                                 labelClass="{!task.Id}"
-                                 press="{!c.exitParentSubTasks}"/>
-                               </th>
-                               <aura:set attribute="else">
-                                <th>
-                                </th>
-                              </aura:set>                              
-                            </aura:if>                                 
-                            <aura:if isTrue="{!task.Name == 'Provide Sales Agreement'}"> 
-                             <th>                           
-                              <ui:button aura:id="viewButton"
-                                label="Submit"           
-                                class=""
-                                labelClass="{!task.Id}"          
-                                press="{!c.navigateSalesAgreementDoc}"/>
-                              </th>
-                              <aura:set attribute="else">                    
-                                <aura:if isTrue="{!task.Name == 'Mechanical Installation'}"> 
-                                  <th>                           
-                                   <ui:button aura:id="viewButton"
-                                     label="Submit"           
-                                     class=""
-                                     labelClass="{!task.Id}"          
-                                     press="{!c.navigateInstallationDocs}"/>
-                                   </th>
-                                   <aura:set attribute="else">
-                                    <aura:if isTrue="{!or(task.Name == 'Interconnection', task.Name == 'Report Interconnection to MCEC')}"> 
-                                      <th>   
-                                        <aura:if isTrue="{!task.Loan__r.State__c == 'MA'}">                                                  
-                                         <ui:button aura:id="viewButton"
-                                           label="Submit"           
-                                           class=""
-                                           labelClass="{!task.Id}"          
-                                           press="{!c.openInterconnectionModal}"/>
-                                           <aura:set attribute="else">
-                                             <ui:button aura:id="viewButton"
-                                               label="Submit"           
-                                               class=""
-                                               labelClass="{!task.Id}"          
-                                               press="{!c.navigateInterconnectionDocs}"/> 
-                                             </aura:set>
-                                           </aura:if>                           
-                                         </th>
-                                         <aura:set attribute="else">
-                                          <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
-                                            <aura:if isTrue="{!task.Loan__r.DOER_Solar_Loann__c}">                               
-                                              <th>  
-                                                <ui:button disabled="true" />                                                       
-                                              </th>
-                                              <aura:set attribute="else">
-                                                <th>
-                                                 <ui:button aura:id="viewButton"
-                                                   label="Submit"           
-                                                   class=""
-                                                   labelClass="{!task.Id}"          
-                                                   press="{!c.openCustomerModal}"/>                                                        
-                                                 </th>
-                                               </aura:set>                                                        
-                                             </aura:if>
-                                             <aura:set attribute="else">
-                                              <th>
-                                                <ui:button disabled="true" />
-                                              </th>
-                                            </aura:set>                              
-                                          </aura:if>    
-                                        </aura:set>                              
-                                      </aura:if>     
-                                    </aura:set>                              
-                                  </aura:if>      
-                                </aura:set>
-                              </aura:if>                                                                                          
-                            </tr>                                                                                            
-                          </aura:iteration>             
-                        </tbody>
-                      </table>
-                      <br></br>
-                      <!--  _________________________________SUB-TASK TABLE ___________________________________ -->                
-                      <!--<div aura:id="subTaskHeader" class="bwBluePaddingBelow noDisplay"><h3>Sub-Tasks - {!v.parentSubTaskList[0].Parent_Task__r.Name}</h3></div>    -->
-                      <table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
-                        <thead>
-                          <tr class="slds-text-heading--label " >
-                            <th scope="col"><span class="slds-truncate"><b>Sub-Task</b></span></th> 
-                            <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>              
-                            <th scope="col"><span class="slds-truncate"><b>Completion Date</b></span></th>              
-                            <th scope="col"><span aura:id = "viewParentSubTasks" class="slds-truncate"><b>Sub-Tasks</b></span></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                         <aura:iteration items="{!v.parentSubTaskList}" var="parentSubTask">
+                    </div>          
+                    <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>            
+                    <!--  _________________________________TASK TABLE ___________________________________ -->    
+                    <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
+                      <thead>
+                        <tr class="slds-text-heading--label " >
+                          <th scope="col"><span class="slds-truncate"><b>Task</b></span></th> 
+                          <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>              
+                          <th scope="col"><span class="slds-truncate"><b>Completion Date</b></span></th>              
+                          <th scope="col"><span aura:id = "viewParentSubTasks" class="slds-truncate"><b>Sub-Tasks</b></span></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <aura:iteration items="{!v.partnerTaskList}" var="task">
                           <tr>
-                            <th scope="row" class="slds-text-align--left bwBlue"> <b>{!parentSubTask.Name}</b></th>                       
-                            <th scope="row"> <b>{!parentSubTask.Status__c}</b> </th>
-                            <th scope="row"> <b>{!parentSubTask.Completion_Date__c}</b> </th>
-                            <aura:if isTrue="{!parentSubTask.SubTasks__c}">                        
+                            <th scope="row"> <b>{!task.Name}</b> </th> 
+                            <aura:if isTrue="{!task.Status__c == 'Pending'}">                                                                 
+                              <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
+                              <aura:set attribute="else">
+                                <th scope="row"> <b>{!task.Status__c}</b> </th>
+                              </aura:set>                             
+                            </aura:if>   
+                            <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
+                            <aura:if isTrue="{!task.SubTasks__c}"> 
                               <th>                           
-                               <ui:button aura:id="viewButtonParentSubTask"
+                               <ui:button aura:id="viewButton"
                                  label="View"           
                                  class=""
-                                 labelClass="{!parentSubTask.Id}"          
-                                 press="{!c.openSubTasks}"/>
-                                 <ui:button aura:id="closeButtonParentSubTask"        
+                                 labelClass="{!task.Id}"          
+                                 press="{!c.openParentSubTasks}"/>
+                                 <ui:button aura:id="closeButton"        
                                    label="Close"
                                    class=""
-                                   labelClass="{!parentSubTask.Id}"
-                                   press="{!c.exitSubTasks}"/>
-                                 </th>                                                          
+                                   labelClass="{!task.Id}"
+                                   press="{!c.exitParentSubTasks}"/>
+                                 </th>
                                  <aura:set attribute="else">
-                                   <th>
-                                     <ui:button disabled="true" />
-                                   </th>
-                                 </aura:set> 
-                               </aura:if> 
-                             </tr>
-                             <aura:if isTrue="{!parentSubTask.SubTasks__c}">                
-                              <aura:iteration items="{!v.subTaskList}" var="subTask">
-                                <tr>
-                                  <th scope="row" class="slds-text-align--left bwTeal"> <b>{!subTask.Name}</b></th>                       
-                                  <th scope="row"> <b>{!subTask.Status__c}</b> </th>
-                                  <th scope="row"> <b>{!subTask.Completion_Date__c}</b> </th>
-                                  <th scope="row"></th>
-                                </tr>                    
-                              </aura:iteration>                     
-                            </aura:if>                             
-                          </aura:iteration>
-                        </tbody>
-                      </table>            
-                    </div>
-                    <aura:if isTrue="{!v.licenseType}">          
-                      <div>
-                        <br></br>  
-                        <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->       
-                        <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large animated">
-                          <div  class="slds-modal__container ">
-                            <div class="slds-modal__header blueBackground">
-                              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
-                                <span class="slds-assistive-text">Close</span>
-                              </button>
-                              <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
-                            </div>
-                            <div class="slds-modal__content slds-p-around--medium">        
-                              <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
-                              <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
-                                <thead>
-                                  <tr class="slds-text-heading--label " >
-                                    <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
-                                    <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>              
-                                    <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
-                                    <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                         
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
-                                    <tr>
-                                      <th scope="row"> <b>{!disbursal.Name}</b> </th>
-                                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
-                                      <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
-                                      <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
-                                      <td> <div class="slds-form-element">
-                                        <label class="slds-checkbox--toggle slds-grid">
-                                          <ui:inputCheckBox aura:id="disbursalCheck" 
-                                            name="{!disbursal.Id}" 
-                                            value="{!disbursal.Partner_Confirmation__c}"
-                                            change="{!c.updateDisbursal}"/>
-                                            <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-                                              <span class="slds-checkbox--faux"></span>
-                                              <span class="slds-checkbox--on">Confirmed</span>
-                                              <span class="slds-checkbox--off">Unconfirmed</span>
-                                            </span>
-                                          </label>
-                                        </div>
-                                      </td>                        
-                                    </tr>                    
-                                  </aura:iteration>          
-                                </tbody>
-                              </table> 
-                              <br></br>    
-                              <div aura:id="pendingDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Pending Disbursals</h3></div>                                
-                              <table aura:id="disbursalIncompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
-                                <thead>
-                                  <tr class="slds-text-heading--label " >
-                                    <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
-                                    <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>              
-                                    <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>                        
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
-                                    <tr>
-                                      <th scope="row"> <b>{!disbursal.Name}</b> </th>
-                                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
-                                      <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
-                                      <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>                          
-                                    </tr>                    
-                                  </aura:iteration>          
-                                </tbody>
-                              </table>             
-                            </div>
-                            <div class="slds-modal__footer">
-                              <lightning:button aura:id="closeDisbursalModal" class="slds-button slds-button--brand floatRight" onclick="{!c.closeDisbursalModal}" label="Close"></lightning:button>
+                                  <th>
+                                  </th>
+                                </aura:set>                              
+                              </aura:if>                                 
+                              <aura:if isTrue="{!task.Name == 'Provide Sales Agreement'}"> 
+                               <th>                           
+                                <ui:button aura:id="viewButton"
+                                  label="Submit"           
+                                  class=""
+                                  labelClass="{!task.Id}"          
+                                  press="{!c.navigateSalesAgreementDoc}"/>
+                                </th>
+                                <aura:set attribute="else">                    
+                                  <aura:if isTrue="{!task.Name == 'Mechanical Installation'}"> 
+                                    <th>                           
+                                     <ui:button aura:id="viewButton"
+                                       label="Submit"           
+                                       class=""
+                                       labelClass="{!task.Id}"          
+                                       press="{!c.navigateInstallationDocs}"/>
+                                     </th>
+                                     <aura:set attribute="else">
+                                      <aura:if isTrue="{!or(task.Name == 'Interconnection', task.Name == 'Report Interconnection to MCEC')}"> 
+                                        <th>   
+                                          <aura:if isTrue="{!task.Loan__r.State__c == 'MA'}">                                                  
+                                           <ui:button aura:id="viewButton"
+                                             label="Submit"           
+                                             class=""
+                                             labelClass="{!task.Id}"          
+                                             press="{!c.openInterconnectionModal}"/>
+                                             <aura:set attribute="else">
+                                               <ui:button aura:id="viewButton"
+                                                 label="Submit"           
+                                                 class=""
+                                                 labelClass="{!task.Id}"          
+                                                 press="{!c.navigateInterconnectionDocs}"/> 
+                                               </aura:set>
+                                             </aura:if>                           
+                                           </th>
+                                           <aura:set attribute="else">
+                                            <aura:if isTrue="{!task.Name == 'Provide All Customer Information'}"> 
+                                              <aura:if isTrue="{!task.Loan__r.DOER_Solar_Loann__c}">                               
+                                                <th>  
+                                                  <ui:button disabled="true" />                                                       
+                                                </th>
+                                                <aura:set attribute="else">
+                                                  <th>
+                                                   <ui:button aura:id="viewButton"
+                                                     label="Submit"           
+                                                     class=""
+                                                     labelClass="{!task.Id}"          
+                                                     press="{!c.openCustomerModal}"/>                                                        
+                                                   </th>
+                                                 </aura:set>                                                        
+                                               </aura:if>
+                                               <aura:set attribute="else">
+                                                <th>
+                                                  <ui:button disabled="true" />
+                                                </th>
+                                              </aura:set>                              
+                                            </aura:if>    
+                                          </aura:set>                              
+                                        </aura:if>     
+                                      </aura:set>                              
+                                    </aura:if>      
+                                  </aura:set>
+                                </aura:if>                                                                                          
+                              </tr>                                                                                            
+                            </aura:iteration>             
+                          </tbody>
+                        </table>
+                        <br></br>
+                        <!--  _________________________________SUB-TASK TABLE ___________________________________ -->                
+                        <!--<div aura:id="subTaskHeader" class="bwBluePaddingBelow noDisplay"><h3>Sub-Tasks - {!v.parentSubTaskList[0].Parent_Task__r.Name}</h3></div>    -->
+                        <table aura:id="subTaskTable" class="slds-table slds-table--bordered slds-table--striped  box noDisplay">                
+                          <thead>
+                            <tr class="slds-text-heading--label " >
+                              <th scope="col"><span class="slds-truncate"><b>Sub-Task</b></span></th> 
+                              <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>              
+                              <th scope="col"><span class="slds-truncate"><b>Completion Date</b></span></th>              
+                              <th scope="col"><span aura:id = "viewParentSubTasks" class="slds-truncate"><b>Sub-Tasks</b></span></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                           <aura:iteration items="{!v.parentSubTaskList}" var="parentSubTask">
+                            <tr>
+                              <th scope="row" class="slds-text-align--left bwBlue"> <b>{!parentSubTask.Name}</b></th>                       
+                              <th scope="row"> <b>{!parentSubTask.Status__c}</b> </th>
+                              <th scope="row"> <b>{!parentSubTask.Completion_Date__c}</b> </th>
+                              <aura:if isTrue="{!parentSubTask.SubTasks__c}">                        
+                                <th>                           
+                                 <ui:button aura:id="viewButtonParentSubTask"
+                                   label="View"           
+                                   class=""
+                                   labelClass="{!parentSubTask.Id}"          
+                                   press="{!c.openSubTasks}"/>
+                                   <ui:button aura:id="closeButtonParentSubTask"        
+                                     label="Close"
+                                     class=""
+                                     labelClass="{!parentSubTask.Id}"
+                                     press="{!c.exitSubTasks}"/>
+                                   </th>                                                          
+                                   <aura:set attribute="else">
+                                     <th>
+                                       <ui:button disabled="true" />
+                                     </th>
+                                   </aura:set> 
+                                 </aura:if> 
+                               </tr>
+                               <aura:if isTrue="{!parentSubTask.SubTasks__c}">                
+                                <aura:iteration items="{!v.subTaskList}" var="subTask">
+                                  <tr>
+                                    <th scope="row" class="slds-text-align--left bwTeal"> <b>{!subTask.Name}</b></th>                       
+                                    <th scope="row"> <b>{!subTask.Status__c}</b> </th>
+                                    <th scope="row"> <b>{!subTask.Completion_Date__c}</b> </th>
+                                    <th scope="row"></th>
+                                  </tr>                    
+                                </aura:iteration>                     
+                              </aura:if>                             
+                            </aura:iteration>
+                          </tbody>
+                        </table>            
+                      </div>
+                      <aura:if isTrue="{!v.licenseType}">          
+                        <div>
+                          <br></br>  
+                          <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->       
+                          <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large animated">
+                            <div  class="slds-modal__container ">
+                              <div class="slds-modal__header blueBackground">
+                                <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                                  <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+                              </div>
+                              <div class="slds-modal__content slds-p-around--medium">        
+                                <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Completed Disbursals</h3></div>                                               
+                                <table aura:id="disbursalCompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
+                                  <thead>
+                                    <tr class="slds-text-heading--label " >
+                                      <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
+                                      <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>              
+                                      <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
+                                      <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                         
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
+                                      <tr>
+                                        <th scope="row"> <b>{!disbursal.Name}</b> </th>
+                                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
+                                        <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
+                                        <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>    
+                                        <td> <div class="slds-form-element">
+                                          <label class="slds-checkbox--toggle slds-grid">
+                                            <ui:inputCheckBox aura:id="disbursalCheck" 
+                                              name="{!disbursal.Id}" 
+                                              value="{!disbursal.Partner_Confirmation__c}"
+                                              change="{!c.updateDisbursal}"/>
+                                              <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-checkbox--on">Confirmed</span>
+                                                <span class="slds-checkbox--off">Unconfirmed</span>
+                                              </span>
+                                            </label>
+                                          </div>
+                                        </td>                        
+                                      </tr>                    
+                                    </aura:iteration>          
+                                  </tbody>
+                                </table> 
+                                <br></br>    
+                                <div aura:id="pendingDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay"><h3>Pending Disbursals</h3></div>                                
+                                <table aura:id="disbursalIncompleteTable" class="slds-table slds-table--bordered  slds-table--striped box noDisplay">
+                                  <thead>
+                                    <tr class="slds-text-heading--label " >
+                                      <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>   
+                                      <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>              
+                                      <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>                        
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
+                                      <tr>
+                                        <th scope="row"> <b>{!disbursal.Name}</b> </th>
+                                        <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}" /></th>                          
+                                        <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
+                                        <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>                          
+                                      </tr>                    
+                                    </aura:iteration>          
+                                  </tbody>
+                                </table>             
+                              </div>
+                              <div class="slds-modal__footer">
+                                <lightning:button aura:id="closeDisbursalModal" class="slds-button slds-button--brand floatRight" onclick="{!c.closeDisbursalModal}" label="Close"></lightning:button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </aura:if>        
-                    <div>
-                      <br></br>
-                      <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
-                    </div>        
-                  </div> 
-                </aura:component>
+                      </aura:if>        
+                      <div>
+                        <br></br>
+                        <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
+                      </div>        
+                    </div> 
+                  </aura:component>
