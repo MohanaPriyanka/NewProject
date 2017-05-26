@@ -247,7 +247,7 @@
 
     closeDisbursalModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');   
-         $A.util.removeClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
     },            
 
     //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
@@ -269,13 +269,72 @@
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));             
     },    
 
+    setInterconnectedTrue : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Interconnected__c", "true");                   
+    },      
+
+    setInterconnectedFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Interconnected__c", "false");                   
+    },      
+
+    setCwProgramTrue : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "true");                   
+    },      
+
+    setCwProgramFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "false");                   
+    },      
+
     setFacilitySector : function(component, event, helper) {
         component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);                   
     },      
 
     setFacilityType : function(component, event, helper) {
         component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);                  
+    },       
+
+    setAutoPTSFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", "FALSE");     
+        $A.util.addClass(component.find("vendorSelection"), 'noDisplay');
+        $A.util.addClass(component.find("vendorUniqueId"), 'noDisplay');      
+        $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');
+    },      
+
+    setAutoPTSTrue : function(component, event, helper) {
+        var customerInformation = component.get("v.customerInformation");        
+        component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", "TRUE");  
+        $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');
+        if (customerInformation.Remote_Monitoring_System_Vendor__c == "SolarLog") {
+            $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+        }
+        if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+            component.set("v.vendorIdLabel", "Mac Id");              
+        } else {
+            component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
+        }        
+        $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');          
     },        
+
+    setAutoReportingVendor : function(component, event, helper) {
+        var vendor = event.currentTarget.value;        
+        component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", vendor); 
+        if (vendor == "Locus") {
+            component.set("v.vendorIdLabel", "Mac Id");              
+        } else {
+            component.set("v.vendorIdLabel", vendor + " " + "Unique Identifier");                          
+        }
+        if (vendor == "SolarLog") {
+            $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+        } else {
+            $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                  
+        }
+        if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+            component.set("v.vendorIdLabel", "Mac Id");              
+        } else {
+            component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
+        }         
+        $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');                          
+    },          
     
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
@@ -360,6 +419,25 @@
             }
         });   
         $A.enqueueAction(slportalSettings);  
+
+        var customerInformation = component.get("v.customerInformation");        
+        if (customerInformation.Auto_Reporting_to_PTS__c) {
+            if (customerInformation.Remote_Monitoring_System_Vendor__c == "SolarLog") {
+                $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+            } else {
+                $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                      
+            }
+            if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+                component.set("v.vendorIdLabel", "Mac Id");              
+            } else {
+                component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
+            }            
+            $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');              
+            $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');  
+            component.set("v.equipmentUpdate.Interconnected__c  ", customerInformation.Interconnected__c);                          
+            component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", customerInformation.Auto_Reporting_to_PTS__c);          
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c);              
+        }
     },       
 
     closeInterconnectionModal : function(component, event, helper) { 
@@ -487,7 +565,12 @@
         var maFacilitySector = component.get("v.customerInformation.MA_Facility_Sector__c");
         if(maFacilitySector != null){
             component.set("v.equipmentUpdate.MA_Facility_Sector__c", maFacilitySector);            
-        }                    
+        }                  
+
+        var autoReportingVendor = component.get("v.customerInformation.Remote_Monitoring_System_Vendor__c");
+        if(autoReportingVendor != null){
+            component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", autoReportingVendor);            
+        }               
     },
         
     openParentSubTasks : function(component, event, helper) {
