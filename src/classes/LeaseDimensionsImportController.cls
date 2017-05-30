@@ -15,11 +15,11 @@ public without sharing class LeaseDimensionsImportController {
         }
         set;
     }
-    public List<Loan__c> loansFound;
-    public Set<String> loanNumbers;
-    public String loadResult {get;set;}
-    public List<ReportLine> reportLines;
-    public Map<String, Loan__c> loanMap;
+    transient List<Loan__c> loansFound;
+    transient Set<String> loanNumbers;
+    transient String loadResult {get;set;}
+    transient List<ReportLine> reportLines;
+    transient Map<String, Loan__c> loanMap;
     public static Map<String, String> descriptionMap =
         new Map<String, String>{'IBL PMT - INTEREST' => 'Interest',
                                 'IBL PRN PAYDOWN' => 'Principal',
@@ -59,20 +59,19 @@ public without sharing class LeaseDimensionsImportController {
             }
         }
         
-        loansFound = [SELECT Id, Loan_Number__c,
-                      (SELECT Id, Period__c, Payment_Due_Date2__c
-                       FROM Loan_Payments__r
-                       WHERE Period__c <> null
-                       ORDER BY Period__c)
-                      FROM Loan__c
-                      WHERE Loan_Number__c IN :loanNumbers];
         loanMap = new Map<String, Loan__c>();
-        for (Loan__c loan : loansFound) {
+        for (Loan__c loan : [SELECT Id, Loan_Number__c,
+                             (SELECT Id, Period__c, Payment_Due_Date2__c
+                              FROM Loan_Payments__r
+                              WHERE Period__c <> null
+                              ORDER BY Period__c)
+                             FROM Loan__c
+                             WHERE Loan_Number__c IN :loanNumbers]) {
             loanMap.put(loan.Loan_Number__c, loan);
         }
 
-        loadResult = loansFound.size() + ' of ' + loanNumbers.size() + ' found\n';
-        if (loansFound.size() != loanNumbers.size()) {
+        loadResult = loanMap.values().size() + ' of ' + loanNumbers.size() + ' found\n';
+        if (loanMap.values().size() != loanNumbers.size()) {
             // LD has a transaction to a loan we couldn't find. Report which one
             for (String ln : loanNumbers) {
                 if (loanMap.get(ln) == null) {
