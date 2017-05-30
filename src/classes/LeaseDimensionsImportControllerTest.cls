@@ -22,12 +22,20 @@ public with sharing class LeaseDimensionsImportControllerTest {
                                    Loan_Tranche__c = loanTraunch.Id,
                                    System_Costt__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
-                                   Commencement_Datee__c = Date.today());
+                                   Commencement_Datee__c = Date.parse('1/1/2017'),
+                                   First_Payment_Due_Date_Override__c = Date.parse('2/1/2017'));
         insert loan;
     }
 
     static testMethod void testFileLoad() {
-        Loan__c loan = [SELECT Loan_Number__c from Loan__c LIMIT 1];
+        Loan__c loan = [SELECT Loan_Number__c,
+                        (SELECT Id, Period__c, Payment_Due_Date2__c
+                         FROM Loan_Payments__r
+                         WHERE Period__c <> null
+                         ORDER BY Period__c)
+                        FROM Loan__c LIMIT 1];
+        System.assertEquals(120, loan.Loan_Payments__r.size());
+        
         testFile = testFile.replace('GOODLOANINIO', loan.Loan_Number__c.replace('BW',''));
         testFile = testFile.replace('GOODLOANINPI', loan.Loan_Number__c);
 
@@ -35,13 +43,17 @@ public with sharing class LeaseDimensionsImportControllerTest {
         LeaseDimensionsImportController ldic = new LeaseDimensionsImportController();
         ldic.document = new Document(name='foo',
                                      body = Blob.valueOf(testFile));
-        ldic.loadCSV();
+        ldic.processCSV();
         System.debug(LoggingLevel.ERROR, ldic.loanNumbers);
         System.assertEquals(2, ldic.loanNumbers.size());
         
         System.assertEquals(1, ldic.loansFound.size());
+
+        List<Transaction_Application__c> taList =
+            [SELECT Id, Loan_Payment__c
+             FROM Transaction_Application__c];
+        System.assertEquals(3, taList.size());
         Test.stopTest();
-        
     }
 
     public static string testFile = 

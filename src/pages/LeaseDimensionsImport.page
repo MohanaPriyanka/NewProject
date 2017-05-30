@@ -15,7 +15,7 @@
           <apex:pageBlockSectionItem >
             <apex:commandButton id="Process" 
                                 value="Process" 
-                                action="{!loadCSV}"/>
+                                action="{!processCSV}"/>
           </apex:pageBlockSectionItem>
         </apex:pageBlockSection>
       </apex:pageBlock>

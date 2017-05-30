@@ -142,6 +142,17 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
     }
 
+    public static Boolean appliesTo(Date testDate, Loan_Payment__c generatedLP) {
+        Date dueDate = generatedLP.Payment_Due_Date2__c;
+        if (dueDate == null) {
+            return false;
+        }
+        Date dateOpened = dueDate - 20;
+        Date dateClosed = Date.newInstance(dueDate.year(), dueDate.month()+1, dueDate.day()-20);
+
+        return (dateOpened < testDate && testDate <= dateClosed);
+    }
+
     public static Boolean populatedForLPCreation(Loan__c loan) {
         if (loan.Product__c != null &&
             loan.Principal__c > 0) {
