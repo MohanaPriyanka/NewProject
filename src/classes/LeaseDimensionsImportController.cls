@@ -130,10 +130,10 @@ public without sharing class LeaseDimensionsImportController {
             region = inputLine[2];
             office = inputLine[3];
             account = inputLine[4];
-            if (account.startsWith('BW')) {
-                loanNumber = account;
+            if (account.trim().startsWith('BW')) {
+                loanNumber = account.trim();
             } else {
-                loanNumber = 'BW' + account.leftPad(7).replace(' ','0');
+                loanNumber = 'BW' + account.trim().leftPad(7).replace(' ','0');
             }
             customerName = inputLine[5];
             processDate = Date.parse(inputLine[6].trim());

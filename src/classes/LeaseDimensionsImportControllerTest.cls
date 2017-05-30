@@ -36,8 +36,8 @@ public with sharing class LeaseDimensionsImportControllerTest {
                         FROM Loan__c LIMIT 1];
         System.assertEquals(120, loan.Loan_Payments__r.size());
         
-        testFile = testFile.replace('GOODLOANINIO', loan.Loan_Number__c.replace('BW',''));
-        testFile = testFile.replace('GOODLOANINPI', loan.Loan_Number__c);
+        testFile = testFile.replace('GOODLOANINIO', loan.Loan_Number__c.replace('BW','   '));
+        testFile = testFile.replace('GOODLOANINPI', loan.Loan_Number__c + ' ');
 
         Test.startTest();
         LeaseDimensionsImportController ldic = new LeaseDimensionsImportController();
