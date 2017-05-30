@@ -41,14 +41,10 @@ public with sharing class LeaseDimensionsImportControllerTest {
 
         Test.startTest();
         LeaseDimensionsImportController ldic = new LeaseDimensionsImportController();
+        TransactionApplicationHandler.batchSize = 20;
         ldic.document = new Document(name='foo',
                                      body = Blob.valueOf(testFile));
         ldic.processCSV();
-        System.debug(LoggingLevel.ERROR, ldic.loanNumbers);
-        System.assertEquals(2, ldic.loanNumbers.size());
-        
-        System.assertEquals(1, ldic.loansFound.size());
-
         List<Transaction_Application__c> taList =
             [SELECT Id, Loan_Payment__c
              FROM Transaction_Application__c];

@@ -7,7 +7,7 @@
  * Test: LoanServicerTest
  *************************************************************************************/
 
-public without sharing class LoanServicer implements Database.Batchable<sObject>, Database.Stateful {
+public without sharing class LoanServicer implements Database.Batchable<sObject> {
     public static final Integer STARTINGPERIOD = 1;
     public static final String FUTURE = 'Future';
     public static final String CURRENT = 'Current';
@@ -86,9 +86,9 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
     }
 
-    // Since the DML Record limit is 10,000 and LoanServicer can process up to three records
-    // for each Loan Payment (a delete, insert, and update), we want to calculate the biggest
-    // batch size for this list
+    // Calculate the biggest batch size for this list of loans, assuming one DML statement per
+    // loan payment, a 12 month IO period for each loan, and at most 12 loan payments being deleted
+    // off the end of a loan due to an IO period change
     public static Integer getBatchSize(List<Loan__c> loanList) {
         Decimal maxTerm = 1;
         for (Loan__c loan : loanList) {
@@ -96,7 +96,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 maxTerm = loan.Loan_Term__c;
             }
         }
-        Decimal dmlRecords = (10000/(maxTerm*3)).setScale(0, System.RoundingMode.FLOOR);
+        Decimal dmlRecords = (10000/(maxTerm+12+12)).setScale(0, System.RoundingMode.FLOOR);
         return Integer.valueOf(dmlRecords);
     }
 
@@ -114,7 +114,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     public void upsertLoanPayments(List<Loan__c> loans, Boolean handleInsert) {
         List<Loan__c> loansNeedingTAReapplication = new List<Loan__c>();
         repo.init(loans);
-
         for (Loan__c loan : loans) {
             if (populatedForLPCreation(loan)) {
                 if (handleInsert) {
@@ -222,7 +221,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
         private void executeDML() {
             upsertLoanPayments();
-            updateLoanPaymentsWithPrior();
             deleteLoanPayments();
         }
 
@@ -343,28 +341,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
         private void upsertLoanPayments() {
             upsert loanPaymentsToCreate Unique_Id__c;
-        }
-
-        private void updateLoanPaymentsWithPrior() {
-            List<Loan_Payment__c> lpsWithPrior = new List<Loan_Payment__c>();
-            for (Loan_Payment__c loanPayment : loanPaymentsToCreate) {
-                if (loanPayment.Period__c > LoanServicer.STARTINGPERIOD) {
-                    Loan_Payment__c lpReference = 
-                        new Loan_Payment__c(Unique_Id__c = getPriorUniqueID(loanPayment));
-                    loanPayment.Prior_Period_Loan_Payment__r = lpReference;
-                    lpsWithPrior.add(loanPayment);
-                }
-            }
-
-            if (!lpsWithPrior.isEmpty()) {
-                update lpsWithPrior;
-            }
-        }
-
-        private String getPriorUniqueID(Loan_Payment__c currentLP) {
-            // Unique ID is Loan_Number__c|Period
-            String loanNumber = currentLP.Unique_Id__c.substringBefore('|');
-            return loanNumber + '|' + (currentLP.Period__c - 1);
         }
 
         private void registerProduct(Loan__c loan) {
