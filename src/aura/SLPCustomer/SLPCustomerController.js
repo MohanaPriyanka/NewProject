@@ -631,6 +631,11 @@
         if(commonWealthProgram != null){
             component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonWealthProgram);            
         }            
+
+        var autoReport = component.get("v.customerInformation.Auto_Reporting_to_PTS__c");
+        if(autoReport != null){
+            component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", autoReport);            
+        }        
     },
         
     openParentSubTasks : function(component, event, helper) {

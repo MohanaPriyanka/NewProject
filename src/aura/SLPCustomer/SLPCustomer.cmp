@@ -330,7 +330,6 @@
                               </div>
                             </fieldset>     
                             <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">          
-                              <br></br>       
                               <fieldset class="slds-form--compound">
                                 <div class="slds-form-element__group">
                                   <div class="slds-form-element__row">
@@ -349,7 +348,6 @@
                                   </div>
                                 </div>                 
                               </fieldset>
-                              <br></br>                         
                               <fieldset class="slds-form--compound">
                                 <div class="slds-form-element__group">
                                   <div class="slds-form-element__row">
@@ -368,9 +366,9 @@
                                   </div>
                                 </div>
                               </fieldset>  
-                            </aura:if>   
+                            </aura:if> 
+                            <hr></hr>
                             <fieldset class="slds-form--compound ">
-                              <br></br>
                               <div class="slds-form-element__group">
                                 <div class="slds-form-element__row">
                                   <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">    
