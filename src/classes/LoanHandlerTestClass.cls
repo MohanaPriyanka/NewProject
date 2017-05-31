@@ -317,6 +317,7 @@ public class LoanHandlerTestClass {
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
+        Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
@@ -356,6 +357,37 @@ public class LoanHandlerTestClass {
     	}
     	for (Residential_Equipment__c equipment : equipmentList){
             equipment.Interconnected__c = true;
+            equipment.Annual_Production_kWh_kW__c = 1400;
+            equipment.Interconnection_Date__c = mydate;
+            equipment.Estimated_On_Site_Behind_the_Meter_Load__c = 4500;
+            equipment.Percentage_of_System_Shaded__c = 4;
+            equipment.SREC_Opt_In_Calendar_Quarter__c = 'Q1';
+            equipment.Generator_Type__c = 'SolarWorld';
+            equipment.MA_Facility_Sector__c = 'Residential';
+            equipment.MA_Facility_Type__c = 'Residential';
+            equipment.Generator_Nameplate_Capacity__c = 5;
+            equipment.Contract_Execution_Date__c = myDate;
+            equipment.Generator_Interconnection_Date__c = myDate;
+            equipment.Generator_Installation_Date__c = myDate;
+            equipment.Generator_Energized_Online_Date__c = myDate;
+            equipment.Module_Manufacturer__c = 'SolarWorld';
+            equipment.Module_Model_Number__c = 'SW500';
+            equipment.Module_Power_Rating__c = 'A';
+            equipment.Number_of_Modules__c = 5;
+            equipment.Module_Array_Mounting_Type__c = 'SolarWorld';
+            equipment.Module_Array_Azimuth__c = '5';
+            equipment.Module_Array_Tilt__c = 5;
+            equipment.Module_Mounting_Location__c = 'Roof';
+            equipment.Inverter_Manufacturer__c = 'Enphase';
+            equipment.Inverter_Model_Number__c = 'ENPH340';
+            equipment.Remote_Monitoring_System_Vendor__c = 'SolarEdge';
+            equipment.Remote_Monitorin_Systegm_Identifier__c = '302948';
+            equipment.Number_of_Meters__c = 3;
+            equipment.Solar_Meter_Manufacturer__c = 'Eversource';
+            equipment.Solar_Meter_Model__c = 'EV200'; 
+            equipment.Solar_Meter_Serial_Number__c = '2304938';
+            equipment.Initial_Solar_Meter_Reading__c = 45000;
+            equipment.Initial_Solar_Meter_Reading_Date__c = myDate;            
             equipmentListToUpdate.add(equipment);
     	}
     	if(equipmentListToUpdate.size() > 0 ) {
@@ -682,6 +714,7 @@ public class LoanHandlerTestClass {
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
+        Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
@@ -715,12 +748,44 @@ public class LoanHandlerTestClass {
             if(partnerTaskAssertion.Name == 'Mechanical Installation') {
                 System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
             }       
-            if(partnerTaskAssertion.Name == 'Interconnection') {
+            if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
                 System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
             }                   
         }
         for (Residential_Equipment__c equipment : equipmentList){
             equipment.Interconnected__c = true;
+            equipment.Interconnected__c = true;
+            equipment.Annual_Production_kWh_kW__c = 1400;
+            equipment.Interconnection_Date__c = mydate;
+            equipment.Estimated_On_Site_Behind_the_Meter_Load__c = 4500;
+            equipment.Percentage_of_System_Shaded__c = 4;
+            equipment.SREC_Opt_In_Calendar_Quarter__c = 'Q1';
+            equipment.Generator_Type__c = 'SolarWorld';
+            equipment.MA_Facility_Sector__c = 'Residential';
+            equipment.MA_Facility_Type__c = 'Residential';
+            equipment.Generator_Nameplate_Capacity__c = 5;
+            equipment.Contract_Execution_Date__c = myDate;
+            equipment.Generator_Interconnection_Date__c = myDate;
+            equipment.Generator_Installation_Date__c = myDate;
+            equipment.Generator_Energized_Online_Date__c = myDate;
+            equipment.Module_Manufacturer__c = 'SolarWorld';
+            equipment.Module_Model_Number__c = 'SW500';
+            equipment.Module_Power_Rating__c = 'A';
+            equipment.Number_of_Modules__c = 5;
+            equipment.Module_Array_Mounting_Type__c = 'SolarWorld';
+            equipment.Module_Array_Azimuth__c = '5';
+            equipment.Module_Array_Tilt__c = 5;
+            equipment.Module_Mounting_Location__c = 'Roof';
+            equipment.Inverter_Manufacturer__c = 'Enphase';
+            equipment.Inverter_Model_Number__c = 'ENPH340';
+            equipment.Remote_Monitoring_System_Vendor__c = 'SolarEdge';
+            equipment.Remote_Monitorin_Systegm_Identifier__c = '302948';
+            equipment.Number_of_Meters__c = 3;
+            equipment.Solar_Meter_Manufacturer__c = 'Eversource';
+            equipment.Solar_Meter_Model__c = 'EV200'; 
+            equipment.Solar_Meter_Serial_Number__c = '2304938';
+            equipment.Initial_Solar_Meter_Reading__c = 45000;
+            equipment.Initial_Solar_Meter_Reading_Date__c = myDate;             
             equipmentListToUpdate.add(equipment);
         }
         if(equipmentListToUpdate.size() > 0 ) {
