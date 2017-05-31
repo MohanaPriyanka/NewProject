@@ -73,6 +73,13 @@
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -145,6 +152,13 @@
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -361,7 +375,6 @@
                 $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');     
                 $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');                                   
-                alert("The information has been updated");
             }else {
                 $A.log("Errors", resp.getError());                
             }
@@ -447,12 +460,63 @@
 
     closeCustomerModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
-        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');    
+
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");  
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : loanUpdateIdVar});       
+        partnerTaskList.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(partnerTaskList);  
+        
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
+        helper.getProgressBarDataMethod(component, event, helper);          
     },         
 
     closeInterconnectionModal : function(component, event, helper) { 
         $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
-        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');  
+
+        //retrieve the loan Id to set the record for the component to display.        
+        var label = component.get(v.customerInformation.Loan__r.Id);              
+        
+        //progress bar status - removes/adds classes based on returned value of last completed task.       
+        var progressBarData = component.get("c.getProgressBarData");          
+        progressBarData.setParams({loanId : label})
+        progressBarData.setCallback(this,function(resp){            
+            var creditToggle = component.find("credit");
+            var systemInfoToggle = component.find("systemInfo");
+            var reviewToggle = component.find("bwReview");
+            var contractToggle = component.find("contract");
+            var mechInstallToggle = component.find("mechInstall");            
+            var progressBarToggle = component.find("progressBar");
+            var interconnectionToggle = component.find("intemodalrconnection");            
+            var completeToggle = component.find("complete");       
+            var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
+
+            if(resp.getState() == 'SUCCESS') {                  
+                helper.getProgressBarDataMethod(component, event, helper);
+            }
+            else {
+                $A.log("Errors", resp.getError());
+                alert("There was an issue loading the progress bar");
+            }
+        });
+        $A.enqueueAction(progressBarData);  
+          
     },       
 
     getSrecInterconnectionPage: function(component, event, helper) { 
@@ -561,7 +625,12 @@
         var autoReportingVendor = component.get("v.customerInformation.Remote_Monitoring_System_Vendor__c");
         if(autoReportingVendor != null){
             component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", autoReportingVendor);            
-        }               
+        }            
+
+        var commonWealthProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
+        if(commonWealthProgram != null){
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonWealthProgram);            
+        }            
     },
         
     openParentSubTasks : function(component, event, helper) {

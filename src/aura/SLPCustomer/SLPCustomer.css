@@ -343,29 +343,29 @@
 }
 
 .THIS .ProvideAllCustomerInformationProgressBar {
-    width:15%;
+    width:12.5%;
 }
 
 .THIS .UnderBlueWaveReviewProgressBar {
-    width:28%;
+    width:25%;
 }
 
 .THIS .ObtainContractSignatureProgressBar {
-    width:43%;
+    width:37.5%;
 }
 
 .THIS .ProvideSalesAgreementProgressBar {
-    width:58%;
+    width:50%;
 }
 .THIS .BlueWaveCounterSignatureProgressBar {
-    width:72%;
+    width:62.5%;
 }
 .THIS .MechanicalInstallationProgressBar {
-    width:86%;
+    width:75%;
 }
 
 .THIS .InterconnectionProgressBar {
-    width:99%;
+    width:87.5%;
 }
 
 .THIS .RunCreditCheckProgressBarMSLP {
@@ -373,23 +373,23 @@
 }
 
 .THIS .ProvideAllCustomerInformationProgressBarMSLP {
-    width:15%;
+    width:16.66%;
 }
 
 .THIS .UnderBlueWaveReviewProgressBarMSLP {
-    width:39%;
+    width:33.33%;
 }
 
 .THIS .ObtainContractSignatureProgressBarMSLP {
-    width:61%;
+    width:50%;
 }
 
 .THIS .BlueWaveCounterSignatureProgressBarMSLP {
-    width:80%;
+    width:66.67%;
 }
 
-.THIS .ReportInterconnectiontoMCECProgressBarMSLP {
-    width:99%;
+.THIS .InterconnectionProgressBarMSLP {
+    width:83.33%;
 }
 
 
