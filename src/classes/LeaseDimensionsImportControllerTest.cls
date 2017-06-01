@@ -5,6 +5,8 @@
 @isTest
 public with sharing class LeaseDimensionsImportControllerTest {
     @testSetup static void setupTestData() {
+        System_Properties__c sysProp = new System_Properties__c(Name = 'System');
+        insert sysProp;
         LoanServicerTest.setupTestData();
 
         Product2 ma10Yr = [SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
@@ -49,6 +51,8 @@ public with sharing class LeaseDimensionsImportControllerTest {
             [SELECT Id, Loan_Payment__c
              FROM Transaction_Application__c];
         System.assertEquals(3, taList.size());
+        List<Error_Log__c> logs = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(3, logs.size());
         Test.stopTest();
     }
 
@@ -57,6 +61,7 @@ public with sharing class LeaseDimensionsImportControllerTest {
         '2,1,1,4,GOODLOANINIO,Daniel Prince,5/19/2017,5/27/2017,5/27/2017,IBL PMT - INTEREST,2866,5486,125, 131.74 ,,\n' +
         '2,1,2,1,GOODLOANINPI,Michael Woodcock and Lauren Woodcock,5/19/2017,6/6/2017,6/6/2017,IBL PMT - INTEREST,3033,A051817,125, 74.12 ,,\n' +
         '2,1,2,1,GOODLOANINPI,Michael Woodcock and Lauren Woodcock,5/19/2017,6/6/2017,6/6/2017,IBL PMT - PRINCIPAL,3033,A051817,125, 186.18 ,,\n' +
+        '2,1,2,1,GOODLOANINPI,Michael Woodcock and Lauren Woodcock,5/19/2017,6/6/2015,6/6/2015,IBL PMT - PRINCIPAL,3033,A051817,125, 186.18 ,,\n' +
         '2,1,2,1,BW0099999,Kathryn Farrell and Donald Fail,5/19/2017,4/3/2017,,IBL PRN WRITE-DOWN,,BW IBLS PAYDOWN APR 17,130," (6,121.50)",UNDO,\n' +
         ',,,,,,,,,,,,,,,\n';        
 }

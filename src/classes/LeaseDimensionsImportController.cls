@@ -15,6 +15,8 @@ public without sharing class LeaseDimensionsImportController {
         }
         set;
     }
+    public String filename {get;set;}
+    public String lastDocProcessed {get;set;}
     transient List<Loan__c> loansFound;
     transient Set<String> loanNumbers;
     transient String loadResult {get;set;}
@@ -36,11 +38,17 @@ public without sharing class LeaseDimensionsImportController {
                                 'IBL PRN WRITE-DN REV' => 'Principal'};
 
     public LeaseDimensionsImportController() {
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        lastDocProcessed = sysProp.Last_Lease_Dimensions_File_Processed__c;
     }
 
     public void processCSV() {
         loadCSV();
         generateTAs();
+        Logger.flushLogs();
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        sysProp.Last_Lease_Dimensions_File_Processed__c = filename;
+        update sysProp;
     }
 
     private void loadCSV() {
@@ -55,7 +63,7 @@ public without sharing class LeaseDimensionsImportController {
                 reportLines.add(rl);
                 loanNumbers.add(rl.loanNumber);
             } catch (LDImportException ldie) {
-                // Exception is already added to the debug log
+                Logger.logLater('LeaseDimensionsImportController', 'loadCSV', ldie.getMessage());
             }
         }
         
@@ -93,9 +101,11 @@ public without sharing class LeaseDimensionsImportController {
                     taList.add(rl.getTA(loan));
                 }
             } catch (LDImportException ldie) {
-                // Exception prints debug, skip this one and go to next
+                Logger.logLater('LeaseDimensionsImportController', 'generateTAs', ldie.getMessage());
             }
         }
+        Logger.log('LeaseDimensionsImportController', 'generateTAs', 
+                   'Inserting ' + taList.size() + ' transaction applications from ' + filename, System.now());
         insert taList;
     }
 
@@ -200,6 +210,6 @@ public without sharing class LeaseDimensionsImportController {
         }
     }
     
-    public class LDImportException extends Exception{}
+    public class LDImportException extends Exception {}
 
 }
