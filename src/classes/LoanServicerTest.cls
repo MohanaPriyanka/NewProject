@@ -4,7 +4,7 @@
  *************************************************************************************/
 @isTest
 public with sharing class LoanServicerTest {
-    @testSetup static void setupTestData() {
+    @testSetup public static void setupTestData() {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                     Total_Capital__c = 10000000,
                                                     Investor__c = 'The Bank',
