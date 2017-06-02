@@ -19,7 +19,6 @@ public without sharing class LeaseDimensionsImportController {
     public String lastDocProcessed {get;set;}
     transient List<Loan__c> loansFound;
     transient Set<String> loanNumbers;
-    transient String loadResult {get;set;}
     transient List<ReportLine> reportLines;
     transient Map<String, Loan__c> loanMap;
     public static Map<String, String> descriptionMap =
@@ -77,17 +76,6 @@ public without sharing class LeaseDimensionsImportController {
                              WHERE Loan_Number__c IN :loanNumbers]) {
             loanMap.put(loan.Loan_Number__c, loan);
         }
-
-        loadResult = loanMap.values().size() + ' of ' + loanNumbers.size() + ' found\n';
-        if (loanMap.values().size() != loanNumbers.size()) {
-            // LD has a transaction to a loan we couldn't find. Report which one
-            for (String ln : loanNumbers) {
-                if (loanMap.get(ln) == null) {
-                    loadResult += ln + ' not found\n';
-                }
-            }
-        }
-        System.debug(LoggingLevel.ERROR, loadResult);
     }
 
     private void generateTAs() {
@@ -147,7 +135,11 @@ public without sharing class LeaseDimensionsImportController {
             }
             customerName = inputLine[5];
             processDate = Date.parse(inputLine[6].trim());
-            paymentEffectiveDate = Date.parse(inputLine[7].trim());
+            if (!String.isBlank(inputLine[7])) {
+                paymentEffectiveDate = Date.parse(inputLine[7].trim());
+            } else {
+                throw new LDImportException('No effective date on transaction, not processing this line: ' + inputLine);
+            }
             if (!String.isBlank(inputLine[8])) {
                 invoiceDueDate = Date.parse(inputLine[8].trim());
             }

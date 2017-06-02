@@ -9,11 +9,11 @@ public with sharing class CSVReader {
     // the input data
     private String[] buffer;
 	
-    public CSVReader(String data){
+    public CSVReader(String data) {
         this.buffer = data.split('\n'); 
     }
 	
-    public CSVReader(String data, String delim){
+    public CSVReader(String data, String delim) {
         this.buffer = data.split('\n'); 
         this.delim = delim;
     }
@@ -21,18 +21,18 @@ public with sharing class CSVReader {
     /**
      * Read and parse next available line.  Return null if end of stream.
      */
-    public String[] readLine(){
-        if(buffer.size() == 0)
+    public String[] readLine() {
+        if (buffer.size() == 0)
             return null;
         String line = this.buffer.remove(0);
         String[] parts = new String[] {};
-        while(line != ''){
+        while (line != '') {
             Integer next = 0;
-            if(line.startsWith('"')){
+            if (line.startsWith('"')) {
                 line = line.substring(1); // strip initial
                 Integer quoteIndex = findQuote(line, 0);
-                while(quoteIndex == -1){
-                    if(buffer.size() == 0){
+                while (quoteIndex == -1) {
+                    if (buffer.size() == 0) {
                         // EOT!
                         quoteIndex = line.length();
                     } else { 
@@ -47,19 +47,22 @@ public with sharing class CSVReader {
                 parts.add(line.substring(0, quoteIndex).replace('""', '"'));
             } else {
                 next = line.indexOf(this.delim, next);
-                if(next == -1)
+                if (next == -1) {
                     next = line.length();
+                }
                 // NB in Substring, "endindex" is the index of the character AFTER the last index to get
                 parts.add(line.substring(0, next));
             }		
-            if(next == line.length() - 1)
+            if (next == line.length() - 1) {
                 // case of a terminating comma.
                 parts.add('');
+            }
             line = next < line.length() ? line.substring(next+1) : '';
         }
-        if(parts.size() == 0)
+        if (parts.size() == 0) {
             // empty string - we still want to return something...
             parts.add('');
+        }
         return parts;
     }
 	
@@ -67,11 +70,12 @@ public with sharing class CSVReader {
     /**
      * Find next quote in the line
      */
-    private Integer findQuote(String line, Integer skip){
+    private Integer findQuote(String line, Integer skip) {
         Matcher m = quotePattern.matcher(line);
         m.region(skip, m.regionEnd());
-        if(!m.find())
+        if (!m.find()) {
             return -1;
+        }
         return m.start();
     }
 }
