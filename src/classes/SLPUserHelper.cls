@@ -39,8 +39,9 @@ public without sharing class SLPUserHelper {
             // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
              partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
-             partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c).subString(0,15);
-
+             if (String.isNotBlank(u.Sales_Representative_Email__c)) {
+                 partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);                
+             }
              if (u.UserRole.Name.Contains('User')) {
                  partnerProfile.licenseType = 'User';                
              } else if (u.UserRole.Name.Contains('Manager')) {
