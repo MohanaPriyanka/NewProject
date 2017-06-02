@@ -44,7 +44,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
     List<Residential_Equipment__c> equipmentList = new List<Residential_Equipment__c>();
-    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Opportunity__r.Lead_Id__c, Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Generator_Nameplate_Capacity__c,Number_of_Inverters__c, Number_of_Modules__c, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c,Interconnected__c, Mechanically_Installed__c,  Mechanical_Installation_Date__c, Loan__r.Principall__c, Loan__r.Principal__c,Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Loan__r.Product__r.Program__c, Inverter_Model_Number__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c, Interconnection_date__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name ' ;
+    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Loan__r.Opportunity_Stage__c, Loan__r.State__c, Opportunity__r.Lead_Id__c, Auto_Reporting_to_PTS__c, Interconnection_Update_Dummy__c, GE_Serial_Number__c, Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Annual_Production_kWh_kW__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, Loan__r.Principall__c, Loan__r.Principal__c, Loan__r.Product__r.Program__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c        ' ;
     equipQuery += '      FROM Residential_Equipment__c' ;
     equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
     equipQuery += '      AND Loan__r.Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
@@ -111,7 +111,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c ' ;
+    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c, Loan__r.State__c ' ;
     taskQuery += '      FROM Partner_Task__c' ;
     taskQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
     taskQuery += '      AND Parent__c = true ';
@@ -215,64 +215,33 @@ public without sharing class SLPCustomerHandler {
 
   //the saveCustomerInformation method allows the user to enter in the customer's system information/commencement date to the SLP and save it to SF
   @AuraEnabled
-  public static void saveCustomerInformation(Residential_Equipment__c equipment, String equipmentId, String loanId, Loan__c loan) {        
+  public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan) {        
     String nameVar;
+    Integer i;
+    String fieldType;
+    List<String> equipmentFields = new List<String>();
+    Boolean interconnectionUpdateDummy;
 
-    Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Loan__r.Name, Name, Generator_Nameplate_Capacity__c, 
-                                                Number_of_Modules__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
-                                                Mechanically_Installed__c, Interconnected__c,  Module_Manufacturer__c, 
-                                                Inverter_Manufacturer__c, Inverter_Model_Number__c, Loan__r.Sales_Agent__r.Partner__r.Id, 
-                                                Loan__r.Sales_Agent__r.Id, Loan__r.Sales_Agent__r.Name
+    Residential_Equipment__c equipmentRecord = [SELECT Id, Lead__r.Id, Loan__r.Name, Name, Loan__r.Sales_Agent__r.Partner__r.Id, Auto_Reporting_to_PTS__c, GE_Serial_Number__c, Interconnection_Update_Dummy__c, Loan__r.State__c,
+                                                    Loan__r.Sales_Agent__r.Id, Loan__r.Sales_Agent__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Annual_Production_kWh_kW__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c       
                                                 FROM Residential_Equipment__c
                                                 WHERE Id = : equipmentId];
-    if(String.isNotBlank(equipment.Module_Manufacturer__c) 
-      && String.isNotBlank(equipment.Inverter_Manufacturer__c)){
-        nameVar = equipmentRecord.Loan__r.Name + ' ' + equipment.Module_Manufacturer__c + '/' + equipment.Inverter_Manufacturer__c;
+    if(String.isNotBlank(equipmentFromComponent.Module_Manufacturer__c) 
+      && String.isNotBlank(equipmentFromComponent.Inverter_Manufacturer__c)){
+        nameVar = equipmentRecord.Loan__r.Name + ' ' + equipmentFromComponent.Module_Manufacturer__c + '/' + equipmentFromComponent.Inverter_Manufacturer__c;
         if (nameVar.length() >= 80) {
           nameVar = nameVar.subString(0,80);
         }
         equipmentRecord.Name = nameVar; 
         nameVar = null;
     }         
-    //the null value approach below is because if the user clicks save on the SLP and a field is blank, it would overwrite
-    //the SF field if it wasn't filtered out by the below if statements                          
-    if(equipment.Generator_NamePlate_Capacity__c != null){
-      equipmentRecord.Generator_Nameplate_Capacity__c = equipment.Generator_NamePlate_Capacity__c;
+    updateEquipmentFieldFromInput(equipmentFromComponent, equipmentRecord);    
+    if (equipmentRecord.Interconnection_Update_Dummy__c && (equipmentRecord.Interconnected__c || equipmentFromComponent.Interconnected__c)) {
+      interconnectionUpdateDummy = false;
+    } else {
+      interconnectionUpdateDummy = true;
     }
-    if(String.isNotBlank(equipment.Module_Model_Number__c)){
-      equipmentRecord.Module_Model_Number__c = equipment.Module_Model_Number__c;
-    }  
-    if(String.isNotBlank(equipment.Module_Manufacturer__c)){
-      equipmentRecord.Module_Manufacturer__c = equipment.Module_Manufacturer__c;
-    }    
-    if(String.isNotBlank(equipment.Inverter_Manufacturer__c)){
-      equipmentRecord.Inverter_Manufacturer__c = equipment.Inverter_Manufacturer__c;
-    }  
-    if(String.isNotBlank(equipment.Inverter_Model_Number__c)){
-      equipmentRecord.Inverter_Model_Number__c = equipment.Inverter_Model_Number__c;
-    }                                  
-    if(equipment.Number_of_Modules__c != null){
-      equipmentRecord.Number_of_Modules__c = equipment.Number_of_Modules__c;
-    }
-    if(String.isNotBlank(equipment.Type_of_Inverter__c)){
-      equipmentRecord.Type_of_Inverter__c = equipment.Type_of_Inverter__c;
-    }    
-    if(equipment.Number_of_Inverters__c != null){
-      equipmentRecord.Number_of_Inverters__c = equipment.Number_of_Inverters__c;
-    }          
-    if(equipment.Mechanical_Installation_Date__c != null){
-      equipmentRecord.Mechanical_Installation_Date__c = equipment.Mechanical_Installation_Date__c;
-    }     
-    if(equipment.Interconnection_Date__c != null){
-      equipmentRecord.Interconnection_Date__c = equipment.Interconnection_Date__c;
-    }
-    if(equipment.Mechanically_Installed__c != equipmentRecord.Mechanically_Installed__c){
-      equipmentRecord.Mechanically_Installed__c = equipment.Mechanically_Installed__c;
-    }
-    if(equipment.Interconnected__c != equipmentRecord.Interconnected__c){
-      equipmentRecord.Interconnected__c = equipment.Interconnected__c;
-    }                                                                                                    
-
+    equipmentRecord.Interconnection_Update_Dummy__c = interconnectionUpdateDummy;
     update equipmentRecord;
 
     //update the loan information  
@@ -298,7 +267,36 @@ public without sharing class SLPCustomerHandler {
     }
     update leadRecord;
   }
-  
+
+  @AuraEnabled
+  public static void updateEquipmentFieldFromInput(Residential_Equipment__c equipmentFromInput, Residential_Equipment__c equipmentToBeUpdated) {
+    Map<String, Object> equipmentFieldMap = new Map<String,Object>(equipmentFromInput.getPopulatedFieldsAsMap());
+    for (String fieldName : equipmentFieldMap.keySet()) {
+      if (equipmentFieldMap.get(fieldName) instanceof Integer || equipmentFieldMap.get(fieldName) instanceof Double) {
+        if (equipmentFieldMap.get(fieldName) != null) {
+          equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));                       
+        }
+      } else if (equipmentFieldMap.get(fieldName) instanceof String) {
+          if (String.isNotBlank((String)equipmentFieldMap.get(fieldName))) {
+            equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+          }
+      } else if (equipmentFieldMap.get(fieldName) instanceof Boolean) {
+          equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+      } else if (equipmentFieldMap.get(fieldName) instanceof Date) {
+          if (equipmentFieldMap.get(fieldName) != null) {
+            equipmentToBeUpdated.put(fieldName, equipmentFromInput.get(fieldName));
+          }        
+      }      
+    }
+    update equipmentToBeUpdated;
+  }  
+
+  @AuraEnabled
+  public static SLPortal_Settings__c getSLPortalSettings() {
+    List<SLPortal_Settings__c> slportalSettings = SLPortal_Settings__c.getall().values();
+    return slportalSettings[0];
+  }    
+
   @AuraEnabled 
   public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();

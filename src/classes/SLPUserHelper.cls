@@ -87,5 +87,11 @@ public without sharing class SLPUserHelper {
         partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : getPartnerId()];
         logoList.add(partner.Logo__c);
         return logoList;
-    }	           
+    }	    
+
+    @AuraEnabled
+    public static List<String> getSLPortalSettings(String fieldName) {
+        List<SLPortal_Settings__c> slportalSettings = SLPortal_Settings__c.get().values();
+        return slportalSettings[0].fieldName; 
+    }              
 }
