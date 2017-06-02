@@ -18,13 +18,17 @@ public without sharing class SLPUserHelper {
         public String licenseType;
 
         public String partnerName; 
+
+        public string partnerEmail;
+
+        public string salesRepEmail;
     }
 
     @AuraEnabled 
     public static PartnerProfile getPartnerProfile() {
         PartnerProfile partnerProfile = new PartnerProfile();
 
-        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, Contact.Partner_Lookup__r.Name,
+        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
                          PortalRole, Profile.Name, UserRole.Name  
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
@@ -35,6 +39,8 @@ public without sharing class SLPUserHelper {
             // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
              partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
+             partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c).subString(0,15);
+
              if (u.UserRole.Name.Contains('User')) {
                  partnerProfile.licenseType = 'User';                
              } else if (u.UserRole.Name.Contains('Manager')) {
@@ -42,7 +48,8 @@ public without sharing class SLPUserHelper {
              } else if (u.UserRole.Name.Contains('Executive')) {
                 partnerProfile.licenseType = 'Executive';
              }
-             partnerProfile.partnerName = u.Contact.Partner_Lookup__r.Name;             
+             partnerProfile.partnerName = u.Contact.Partner_Lookup__r.Name;     
+             partnerProfile.partnerEmail = u.Contact.Partner_Lookup__r.Email__c;        
         }
         return partnerProfile;
     }

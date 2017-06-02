@@ -40,6 +40,12 @@ public without sharing class SLPAddCustomer {
         newLead.bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
+        if (String.isNotBlank(profile.salesRepEmail)) {
+            newLead.Partner_Email__c = profile.salesRepEmail;
+        } else if (String.isNotBlank(profile.partnerEmail)) {
+            newLead.Partner_Email__c = profile.partnerEmail;
+        }
+
         insert newLead;
 
         return newLead;
