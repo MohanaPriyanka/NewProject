@@ -35,6 +35,7 @@ public without sharing class SLPAddCustomer {
 
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
+        newLead.Email_Re_Enter__c = newLead.Email;
         newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
         newLead.bs_Sales_ID__c = profile.salesRepId;
