@@ -35,12 +35,18 @@ public without sharing class SLPAddCustomer {
 
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
+        newLead.Email_Re_Enter__c = newLead.Email;
+        newLead.Application_Source_Phase_1__c = 'SLPortal Phase 1 Application';
         newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
-        newLead.bs_Sales_ID__c = profile.salesRepId;
+        newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
-        newLead.Application_Source__c = 'SLPortal';
+        if (String.isNotBlank(profile.salesRepEmail)) {
+            newLead.Partner_Email__c = profile.salesRepEmail;
+        } else if (String.isNotBlank(profile.partnerEmail)) {
+            newLead.Partner_Email__c = profile.partnerEmail;
+        }
         insert newLead;
 
         return newLead;
@@ -99,7 +105,6 @@ public without sharing class SLPAddCustomer {
 
     @AuraEnabled 
     public static String sendApplication (String customerEmail, String productProgram) {
-        System.debug('the productProgram is ' + productProgram);
         String startApplicationUrl;
         String customerName;
         String mslpUrl;
@@ -117,11 +122,13 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
         if (productProgram == 'bwsl') {

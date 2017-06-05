@@ -155,7 +155,8 @@
                             + '&' + 'tfa_1313=' + zip     
                             + '&' + 'tfa_1287=' + loanTerm     
                             + '&' + 'tfa_1372=' + firstName     
-                            + '&' + 'tfa_1373=' + lastName                                                                 
+                            + '&' + 'tfa_1373=' + lastName
+                            + '&' + 'tfa_1375=' + 'SLPortal - Phase 2 Application 381610'      
                         });
                         urlEvent.fire();  
                     }
@@ -190,6 +191,8 @@
                             + '&' + 'tfa_94=' + address 
                             + '&' + 'tfa_390=' + income   
                             + '&' + 'tfa_1181=true'  
+                            + '&' + 'tfa_1310=' + 'SLPortal - Phase 2 Application 381607'      
+
                         });
                         urlEvent.fire();  
                     }              

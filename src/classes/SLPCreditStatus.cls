@@ -141,10 +141,11 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1179=' + product.Id 
                                 + '&' + 'tfa_1313=' + lead.LASERCA__Home_Zip__c     
                                 + '&' + 'tfa_1287=' + loanTerm     
+                                + '&' + 'tfa_1375=' + 'SLPortal - Emailed Customer Phase 2 Application 381610'     
                                 + '&' + 'tfa_1372=' + lead.FirstName     
                                 + '&' + 'tfa_1373=' + lead.LastName;       
     } else if (product.Program__c == 'MSLP') {
-      continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381604' + '?tfa_572=Individually' 
+      continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually' 
                                 + '&' + 'tfa_154=Massachusetts&tfa_526=' + lead.Id 
                                 + '&' + 'tfa_1180=' + updateDummy
                                 + '&' + 'tfa_390=' + lead.Annual_Income_Currency__c 
@@ -153,8 +154,9 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_81=' + lead.LASERCA__Home_Zip__c     
                                 + '&' + 'tfa_1287=' + loanTerm     
                                 + '&' + 'tfa_1181=true'    
+                                + '&' + 'tfa_1310=' + 'SLPortal - Emailed Customer Phase 2 Application 381607'                                     
                                 + '&' + 'tfa_94=' + lead.LASERCA__Home_Address__c ;        
-    }        
+    }     
     String htmlBody = template.HtmlValue;
     htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
     htmlBody = htmlBody.replace('{!continueApplication}', continueApplicationUrl);
