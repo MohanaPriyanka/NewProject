@@ -231,7 +231,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                 trigsb.Payment_Plan_Balance__c = twelveppbalance;
             }           
 
-            if (!trigsb.Waive_Late_Fees__c) {
+            if (!trigsb.Waive_Late_Fees__c && overdue > 0) {
                 trigsb.Late_Fees__c = 0.01*overdue;
             } else if (trigsb.Waive_Late_Fees__c) {
                 trigsb.Late_Fees__c = 0;
@@ -251,6 +251,13 @@ public with sharing class SystemBillAccountingLogicHandler {
                 || trigsb.Distribute_This_Balance_12mo__c 
                 && !morerecentbills) {
                     trigsb.Payment_Plan_Balance_to_Distribute__c = trigsb.Carry_Over_Balance__c;
+            }
+
+            if ( newbalance < 0 
+                && trigsb.Late_Fee_Payments__c > (-1 * newbalance )
+                && !morerecentbills) {
+                trigsb.Carry_Forward_Payments__c = -1 * (newbalance);
+                trigsb.Late_Fee_Payments__c = trigsb.Late_Fee_Payments__c - (-1 * newbalance);
             }
             
             trigsb.Balance_Net_Late_Payments__c = dueThisMonth + trigsb.Carry_Forward_Adjustments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c - trigsb.Early_Payments__c; 

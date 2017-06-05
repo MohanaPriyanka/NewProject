@@ -12,16 +12,39 @@
     
 }
 
+.THIS.formCheckboxMarginBelow{
+  padding-bottom: 5%;
+}
+
 .THIS .boxCenterExec {
     width:30%;
     float:left;
-   	margin-left: 5%;
+   	margin-left: 15%;
     margin-right: 5%;
 }
 
 .THIS .boxRightExec {
     width:30%;
     float:right;
+    margin-right: 15%;
+}
+
+.THIS .blueBackground {
+    background:#266092;    
+}
+
+.THIS .marginRight2 {
+    margin-right:2%;   
+}
+
+.THIS .marginTopp5 {
+    margin-top:0.5%;   
+}
+
+.THIS .bounceOutRight {
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 0.5s;
+  -webkit-animation-iteration-count: 1;
 }
 
 .THIS .boxLeftUser {
@@ -29,6 +52,10 @@
     float:left;
     margin-left: 10%;
     
+}
+
+.THIS .floatRight {
+    float:right;
 }
 
 .THIS .boxRightUser {
@@ -85,6 +112,11 @@
 .THIS.paddingTop3{
   padding-top: 10%;
 }
+
+.THIS.marginTop{
+  margin-top: 10%;
+}
+
 .THIS.paddingProgressBar{
   margin-bottom: 10%;
 }
@@ -311,29 +343,29 @@
 }
 
 .THIS .ProvideAllCustomerInformationProgressBar {
-    width:15%;
+    width:12.5%;
 }
 
 .THIS .UnderBlueWaveReviewProgressBar {
-    width:28%;
+    width:25%;
 }
 
 .THIS .ObtainContractSignatureProgressBar {
-    width:43%;
+    width:37.5%;
 }
 
 .THIS .ProvideSalesAgreementProgressBar {
-    width:58%;
+    width:50%;
 }
 .THIS .BlueWaveCounterSignatureProgressBar {
-    width:72%;
+    width:62.5%;
 }
 .THIS .MechanicalInstallationProgressBar {
-    width:86%;
+    width:75%;
 }
 
 .THIS .InterconnectionProgressBar {
-    width:99%;
+    width:87.5%;
 }
 
 .THIS .RunCreditCheckProgressBarMSLP {
@@ -341,11 +373,11 @@
 }
 
 .THIS .ProvideAllCustomerInformationProgressBarMSLP {
-    width:15%;
+    width:16.66%;
 }
 
 .THIS .UnderBlueWaveReviewProgressBarMSLP {
-    width:33%;
+    width:33.33%;
 }
 
 .THIS .ObtainContractSignatureProgressBarMSLP {
@@ -353,11 +385,11 @@
 }
 
 .THIS .BlueWaveCounterSignatureProgressBarMSLP {
-    width:80%;
+    width:66.67%;
 }
 
-.THIS .ReportInterconnectiontoMCECProgressBarMSLP {
-    width:99%;
+.THIS .InterconnectionProgressBarMSLP {
+    width:83.33%;
 }
 
 

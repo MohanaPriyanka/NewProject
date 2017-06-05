@@ -117,6 +117,7 @@
             new Utility_Account_Subscription__c(Name = '0000234',
                                                 Utility_Account_Log__c = ualog.Id,
                                                 Opportunity__c = opportunityone.Id,
+                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
                                                 Calculated_Annual_Cost_of_Electricity__c = 4000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
@@ -124,10 +125,20 @@
             new Utility_Account_Subscription__c(Name = '000-0234',
                                                 Utility_Account_Log__c = ualog.Id,
                                                 Opportunity__c = opportunitytwo.Id,
+                                                Next_Schedule_Z_Status__c = 'Enacted',
                                                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uastwo};
+
+        Utility_Account_Subscription__c uasthree = 
+            new Utility_Account_Subscription__c(Name = '0000237',
+                                                Utility_Account_Log__c = ualog.Id,
+                                                Opportunity__c = opportunityone.Id,
+                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Calculated_Annual_Cost_of_Electricity__c = 8000,
+                                                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+
+        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree};
 
         uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
         uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
@@ -136,11 +147,15 @@
         // Log Production Update - First Month
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
+        Date myDateMar = Date.newInstance(2016, 3, 3);
+
 
         Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 90000,
+                Due_Date__c = myDateJan,
+                Billing_Period_End_Date__c = myDateFeb,
                 Date__c = myDateJan 
                 );
 
@@ -151,6 +166,8 @@
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 120000,
+                Due_Date__c = myDateFeb,
+                Billing_Period_End_Date__c = myDateMar,
                 Date__c = myDateFeb
                 );
                 
@@ -297,27 +314,46 @@
              Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
              Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
              Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Shared_Solar_System__c, Property_Account_ID__c, Adjustments__c
+             Shared_Solar_System__c, Property_Account_ID__c, Adjustments__c, Bill_Date__c, Due_Date__c,
+             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
              FROM System_Bill__c];
 
         system.debug(updatedsystemBillList);
+
+        List <UASB__c> uablist = 
+            [SELECT Id, Name, Bill_Date__c, System_Bill__r.Bill_Number__c, 
+            Due_Date__c, Billing_Period_End_Date__c
+            FROM UASB__c ];
+
+        system.debug(uablist);
+
+        for (UASB__c uabill : uablist) {
+          if (uabill.System_Bill__r.Bill_Number__c == 1){
+              System.assertEquals(myDateJan, uabill.Due_Date__c);
+              System.assertEquals(myDateFeb, uabill.Billing_Period_End_Date__c);
+          }
+          if (uabill.System_Bill__r.Bill_Number__c == 2){
+              System.assertEquals(myDateFeb, uabill.Due_Date__c);
+              System.assertEquals(myDateMar, uabill.Billing_Period_End_Date__c);
+          }
+        }
 
         for (System_Bill__c sbs : updatedsystemBillList) {
             System.debug(LoggingLevel.ERROR, 'TestBillCreationandPayment3 sbs: ' + sbs);
             if (sbs.Bill_Number__c == 1) {
                 System.debug(sbs.Total_Payments_This_Month__c);
-                System.assertEquals(sbs.Total_Due__c, 258.82);
-                System.assertEquals(sbs.Late_Payments__c, 100);
-                System.assertEquals(sbs.Balance_Net_Late_Payments__c, 158.82);
-                System.assertEquals(sbs.Total_Payments_This_Month__c, 0);
+                System.assertEquals( 258.82, sbs.Total_Due__c);
+                System.assertEquals( 100, sbs.Late_Payments__c);
+                System.assertEquals(158.82, sbs.Balance_Net_Late_Payments__c);
+                System.assertEquals(0, sbs.Total_Payments_This_Month__c);
             }
 
             if (sbs.Bill_Number__c == 2) {
                 System.debug(sbs.Balance_Net_Late_Payments__c);
                 System.assert(sbs.Total_Due__c > 0);
-                System.assertEquals(sbs.Late_Fees__c, 0);
-                System.assertEquals(sbs.Late_Payments__c, 0);
-                System.assertEquals(sbs.Total_Payments_This_Month__c, 100);
+                System.assertEquals(0, sbs.Late_Fees__c );
+                System.assertEquals(0, sbs.Late_Payments__c );
+                System.assertEquals(100, sbs.Total_Payments_This_Month__c );
             }
 
             if (sbs.Bill_Number__c == 3) {
@@ -338,7 +374,7 @@
 
             if (sbs.Bill_Number__c == 9) {
                 System.debug(sbs.Payment_Plan_Balance__c);
-                System.assertEquals(sbs.Payment_Plan_Balance__c, 0);
+                System.assertEquals(0, sbs.Payment_Plan_Balance__c);
             }
         }
     }

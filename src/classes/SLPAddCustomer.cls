@@ -47,7 +47,6 @@ public without sharing class SLPAddCustomer {
         } else if (String.isNotBlank(profile.partnerEmail)) {
             newLead.Partner_Email__c = profile.partnerEmail;
         }
-
         insert newLead;
 
         return newLead;

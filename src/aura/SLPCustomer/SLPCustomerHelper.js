@@ -61,11 +61,16 @@
         evt.setParams({ isVisible : false });
         evt.fire();
     },
-})
+    getGenericPage: function(page, component) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                           
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
 
-                    $A.util.addClass(creditToggle, 'slds-is-active');
-                    $A.util.addClass(systemInfoToggle, 'slds-is-active');
-                    $A.util.addClass(reviewToggle, 'slds-is-active');
-                    $A.util.addClass(contractToggle, 'slds-is-active');
-                    $A.util.addClass(interconnectionToggle, 'slds-is-active'); 
-                    $A.util.addClass(completeToggle, 'slds-is-active');    
+        $A.util.removeClass(component.find(page), 'noDisplay');                           
+    },    
+})

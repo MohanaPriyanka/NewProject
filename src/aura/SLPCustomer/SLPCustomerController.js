@@ -16,7 +16,8 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionLicenseType);                            
+        $A.enqueueAction(actionLicenseType);    
+        component.set("v.vendorIdLabel", "Unique Identifier");
 	},
     
     openCustomerWindow : function(component, event, helper) {
@@ -52,7 +53,7 @@
             var contractToggle = component.find("contract");
             var mechInstallToggle = component.find("mechInstall");            
             var progressBarToggle = component.find("progressBar");
-            var interconnectionToggle = component.find("interconnection");            
+            var interconnectionToggle = component.find("intemodalrconnection");            
             var completeToggle = component.find("complete");       
             var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
 
@@ -72,6 +73,13 @@
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -144,6 +152,13 @@
         partnerTaskList.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -199,10 +214,10 @@
 	},      
     
 	openDisbursalInformation : function(component, event, helper) {
+        $A.util.addClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
+
         var loanId = component.get("v.customerInformation.Loan__r.Id");
-        var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle1 = component.find("customerInformation1");
-        var customerInformationToggle2 = component.find("customerInformation2");
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
@@ -210,22 +225,12 @@
         var completedDisbursalsToggle = component.find("completeDisbursals");
 
         component.set("v.blueWaveReviewAlert", false);
-
-        $A.util.addClass(taskTableToggle, 'noDisplay');
-        $A.util.addClass(customerInformationToggle1, 'noDisplay');
-        $A.util.addClass(customerInformationToggle2, 'noDisplay');
-        $A.util.addClass(mslpCustomerInfoTextToggle, 'noDisplay');        
+       
         $A.util.removeClass(disbursalCompleteTableToggle, 'noDisplay');
         $A.util.removeClass(disbursalIncompleteTableToggle, 'noDisplay');
         $A.util.removeClass(pendingDisbursalsToggle, 'noDisplay');
         $A.util.removeClass(completedDisbursalsToggle, 'noDisplay');        
-        
-
-        var subTaskHeaderToggle = component.find("subTaskHeader");           
-        var subTaskTableToggle = component.find("subTaskTable");
-        $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay'); 
-        
+           
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");        
         completeLoanDisbursals.setParams({loanId : loanId});        
 		completeLoanDisbursals.setCallback(this,function(resp){
@@ -254,10 +259,101 @@
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
         helper.getProgressBarDataMethod(component, event, helper);        
 	},
+
+    closeDisbursalModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');   
+        $A.util.removeClass(component.find('disbursalModal'), 'slds-fade-in-open'); 
+    },            
+
+    //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
+    //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/14718
+
+    setSrecOptInCalendarQuarter : function(component, event, helper) {
+        var srecOptInCQ = event.currentTarget.value;
+        component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);                   
+    },
+
+    setEquipmentAsInterconnected : function(component, event, helper) {    
+        var source = event.getSource();
+        component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));                       
+    },    
+
+    setEquipmentCommonwealthProgram : function(component, event, helper) {
+
+        var source = event.getSource();
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));             
+    },    
+
+    setInterconnectedTrue : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Interconnected__c", "true");                   
+    },      
+
+    setInterconnectedFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Interconnected__c", "false");                   
+    },      
+
+    setCwProgramTrue : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "true");                   
+    },      
+
+    setCwProgramFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "false");                   
+    },      
+
+    setFacilitySector : function(component, event, helper) {
+        component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);                   
+    },      
+
+    setFacilityType : function(component, event, helper) {
+        component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);                  
+    },       
+
+    setAutoPTSFalse : function(component, event, helper) {
+        component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", "FALSE");     
+        $A.util.addClass(component.find("vendorSelection"), 'noDisplay');
+        $A.util.addClass(component.find("vendorUniqueId"), 'noDisplay');      
+        $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');
+    },      
+
+    setAutoPTSTrue : function(component, event, helper) {
+        var customerInformation = component.get("v.customerInformation");        
+        component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", "TRUE");  
+        $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');
+        if (customerInformation.Remote_Monitoring_System_Vendor__c == "SolarLog") {
+            $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+        }
+        if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+            component.set("v.vendorIdLabel", "Mac Id");              
+        } else {
+            component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                          
+        }        
+        $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');          
+    },        
+
+    setAutoReportingVendor : function(component, event, helper) {
+        var vendor = event.currentTarget.value;        
+        component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", vendor); 
+        if (vendor == "Locus") {
+            component.set("v.vendorIdLabel", "Mac Id");              
+        } else {
+            component.set("v.vendorIdLabel", vendor + " " + "Unique Identifier");                          
+        }
+        if (vendor == "SolarLog") {
+            $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+        } else {
+            $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                  
+        }      
+        $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');                          
+    },          
     
     saveEquipmentInformation : function(component, event, helper) {
-        helper.startSpinner(component, "emailSpinner");
-        $A.util.addClass(component.find("saveEquipment"), 'noDisplay');
+        helper.startSpinner(component, "srecSaveSpinner");
+        helper.startSpinner(component, "customerInformationSpinner");        
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');        
+
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
         var loanUpdateVar = component.get("v.loanUpdate");
@@ -265,7 +361,7 @@
 	
         var saveAction = component.get("c.saveCustomerInformation");
         saveAction.setParams({
-            "equipment" : equipmentUpdateVar,
+            "equipmentFromComponent" : equipmentUpdateVar,
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
@@ -273,9 +369,12 @@
         
         saveAction.setCallback(this, function(resp) {
             if(resp.getState() == "SUCCESS") {
-                helper.stopSpinner(component, "emailSpinner");
-                $A.util.removeClass(component.find("saveEquipment"), 'noDisplay');
-                alert("The information has been updated");
+                helper.stopSpinner(component, "srecSaveSpinner");
+                helper.stopSpinner(component, "customerInformationSpinner");                        
+                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');     
+                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');                                   
             }else {
                 $A.log("Errors", resp.getError());                
             }
@@ -296,57 +395,168 @@
 		$A.enqueueAction(saveAction);
                      
         $A.enqueueAction(customerInformationAction);     
-        helper.getProgressBarDataMethod(component, event, helper);
+        helper.getProgressBarDataMethod(component, event, helper);              
+    },    
 
-    /*    //save the files
-        var fileInput = component.find("mechInstallFile").getElement();
-    	var file = fileInput.files[0];
-   
-        if (fileInput.size > this.MAX_FILE_SIZE) {
-            alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-    	          'Selected file size: ' + fileInput.size);
-    	    return;
+    openCustomerModal : function(component, event, helper) { 
+        $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
+    },        
+
+    openInterconnectionModal : function(component, event, helper) { 
+        $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');  
+        $A.util.removeClass(component.find('SrecInterconnectionPage'), 'noDisplay'); 
+        $A.util.removeClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');         
+        $A.util.addClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');          
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');  
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');  
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');                                              
+        
+        var slportalSettings = component.get("c.getSLPortalSettings");        
+        slportalSettings.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                var srecQuarters = resp.getReturnValue().SREC_Opt_In_Quarters__c;
+                var srecQuartersList = srecQuarters .split(",");
+                component.set("v.srecQuarters", srecQuartersList);                                         
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });   
+        $A.enqueueAction(slportalSettings);  
+
+        var customerInformation = component.get("v.customerInformation");        
+        if (customerInformation.Auto_Reporting_to_PTS__c) {
+            if (customerInformation.Remote_Monitoring_System_Vendor__c == "SolarLog") {
+                $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');                                      
+            } else {
+                $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');                                                      
+            }
+            if (customerInformation.Remote_Monitoring_System_Vendor__c == null) {
+                component.set("v.vendorIdLabel", "Unique Identifier");                          
+            } else if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
+                component.set("v.vendorIdLabel", "Mac Id");                              
+            } else {
+                component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");                                          
+            }       
+            $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');              
+            $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');  
+            component.set("v.equipmentUpdate.Interconnected__c  ", customerInformation.Interconnected__c);                          
+            component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", customerInformation.Auto_Reporting_to_PTS__c);          
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c); 
+            component.find("srecInterconnectionToggle").set("v.checked", "true");
         }
-    
-        var fr = new FileReader();
-        fr.onloadend = function(e) { 
-        console.log("loaded"); 
-        };         
-        
-        var self = this;
-       	fr.onload = function() {
-            var fileContents = fr.result;
-    	    var base64Mark = 'base64,';
-            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
+    },       
 
-            fileContents = fileContents.substring(dataStart);
-        
-    	    self.upload(component, file, fileContents);
-        };
+    closeInterconnectionModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('srecInformationModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');         
 
-        fr.readAsDataURL(file);     */                   
+        var label = component.get("v.customerInformation.Loan__r.Id"); 
+        
+        //progress bar status - removes/adds classes based on returned value of last completed task.       
+        var progressBarData = component.get("c.getProgressBarData");          
+        progressBarData.setParams({loanId : label})
+        progressBarData.setCallback(this,function(resp){            
+            var creditToggle = component.find("credit");
+            var systemInfoToggle = component.find("systemInfo");
+            var reviewToggle = component.find("bwReview");
+            var contractToggle = component.find("contract");
+            var mechInstallToggle = component.find("mechInstall");            
+            var progressBarToggle = component.find("progressBar");
+            var interconnectionToggle = component.find("intemodalrconnection");            
+            var completeToggle = component.find("complete");       
+            var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
+
+            if(resp.getState() == 'SUCCESS') {                  
+                helper.getProgressBarDataMethod(component, event, helper);
+            }
+            else {
+                $A.log("Errors", resp.getError());
+                alert("There was an issue loading the progress bar");
+            }
+        });
+        $A.enqueueAction(progressBarData);  
+        
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");  
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : label});       
+        partnerTaskList.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(partnerTaskList);          
+    },        
+
+    closeCustomerModal : function(component, event, helper) { 
+        $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');    
+
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");  
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : loanUpdateIdVar});       
+        partnerTaskList.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                    } else {
+                        continue;
+                    }
+                }                
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(partnerTaskList);  
+        
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");        
+        helper.getProgressBarDataMethod(component, event, helper);          
+    },         
+
+    getSrecInterconnectionPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecInterconnectionPage', component);
     },
-    
-  /*  upload: function(component, file, fileContents) {
-        var action = component.get("c.saveTheFile"); 
+    getGeneratorInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecGeneratorPage', component);
+    },           
+    getModuleInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecModulePage', component);      
+    },  
+    getInverterInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecInverterPage', component);      
+    }, 
+    getRemoteMonitoringInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecRemoteMonitoringPage', component);      
+    },   
+    getSolarMeterInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecSolarMeterPage', component);      
+    },      
+    getMiscInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecMiscPage', component);      
+    },
+    getInstallationTimeLineInformationPage: function(component, event, helper) { 
+        helper.getGenericPage('SrecInstallationTimeLinePage', component);      
+    },
 
-        action.setParams({
-            parentId: component.get("v.customerInformation.Loan__r.Id"),
-            fileName: file.name,
-            base64Data: encodeURIComponent(fileContents), 
-            contentType: file.type
-        });
-
-        action.setCallback(this, function(a) {
-            attachId = a.getReturnValue();
-            console.log(attachId);
-        });
-            
-        $A.run(function() {
-            $A.enqueueAction(action); 
-        });
-    },*/
-    
     updateDisbursal : function(component, event, helper) { 
         var source = event.getSource();
         var disbursalId = source.get("v.name");
@@ -374,6 +584,31 @@
         if(commencementDate != null){
         	component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);        
         }  
+
+        var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
+        if(solarMeterReadDate != null){
+            component.set("v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c", solarMeterReadDate);        
+        }  
+
+        var contractExecutionDate = component.get("v.customerInformation.Contract_Execution_Date__c");
+        if(contractExecutionDate != null){
+            component.set("v.equipmentUpdate.Contract_Execution_Date__c", contractExecutionDate);        
+        }  
+
+        var generatorInterconnectionDate = component.get("v.customerInformation.Generator_Interconnection_Date__c");
+        if(generatorInterconnectionDate != null){
+            component.set("v.equipmentUpdate.Generator_Interconnection_Date__c", generatorInterconnectionDate);        
+        }  
+
+        var generatorInstallationDate = component.get("v.customerInformation.Generator_Installation_Date__c");
+        if(generatorInstallationDate != null){
+            component.set("v.equipmentUpdate.Generator_Installation_Date__c", generatorInstallationDate);        
+        }  
+
+        var generatorOnlineDate = component.get("v.customerInformation.Generator_Energized_Online_Date__c");
+        if(generatorOnlineDate != null){
+            component.set("v.equipmentUpdate.Generator_Energized_Online_Date__c", generatorOnlineDate);        
+        }                                          
         
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if(mechInstallCheck != null){
@@ -384,6 +619,36 @@
         if(interconnectChange != null){
         	component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);            
         }           
+
+        var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
+        if(interconnectChange != null){
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonwealthSolarRebateProgram);            
+        }        
+
+        var maFacilityType = component.get("v.customerInformation.MA_Facility_Type__c");
+        if(maFacilityType != null){
+            component.set("v.equipmentUpdate.MA_Facility_Type__c", maFacilityType);            
+        } 
+
+        var maFacilitySector = component.get("v.customerInformation.MA_Facility_Sector__c");
+        if(maFacilitySector != null){
+            component.set("v.equipmentUpdate.MA_Facility_Sector__c", maFacilitySector);            
+        }                  
+
+        var autoReportingVendor = component.get("v.customerInformation.Remote_Monitoring_System_Vendor__c");
+        if(autoReportingVendor != null){
+            component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", autoReportingVendor);            
+        }            
+
+        var commonWealthProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
+        if(commonWealthProgram != null){
+            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonWealthProgram);            
+        }            
+
+        var autoReport = component.get("v.customerInformation.Auto_Reporting_to_PTS__c");
+        if(autoReport != null){
+            component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", autoReport);            
+        }        
     },
         
     openParentSubTasks : function(component, event, helper) {
