@@ -79,51 +79,27 @@ public without sharing class SLPCreditStatus {
 
   @AuraEnabled 
   public static List<Product2> getCustomerProducts (String leadId) {
-    Decimal paymentNumerator;
-    Double paymentDenominator;
-    Double paymentDenominatorVar1;
-    Double paymentDenominatorVar2;
-    Double paymentDenominatorVar3;
-    Decimal monthlyPayment;
-    Decimal dtiNumerator;
-    Decimal dtiDenominator;
-    Decimal dtiAfter;
     List<Product2> productList = new List<Product2>();
-    Lead leadRecord = [SELECT Id, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c, Loan_Principal__c,
-                              Annual_Income_Currency__c, Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Income_Support__c
-                        FROM Lead
-                        WHERE Id = : leadId];
-    for (Product2 product : [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c, Loan_Interest_Rate__c, Debt_To_Income_Maximum__c   
-                                  FROM Product2 
-                                  WHERE Product_Type__c = : leadRecord.Product_Line__c
-                                  AND Program__c = : leadRecord.Product_Program__c
-                                  AND State__c = : leadRecord.LASERCA__Home_State__c
-                                  AND Credit_Minimum__c <= : leadRecord.LASER_Credit_Score__c
-                                  AND Credit_Maximum__c >= : leadRecord.LASER_Credit_Score__c
-                                  AND isActive = true]) {
-      if (product.Debt_To_Income_Maximum__c != null) {
-        if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
-          paymentNumerator = (leadRecord.Loan_Principal__c * 0.7 * product.Loan_Interest_Rate__c/12);
-        } else if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 2') {
-          paymentNumerator = (leadRecord.Loan_Principal__c * 0.8 * product.Loan_Interest_Rate__c/12);          
-        } else {
-          paymentNumerator = (leadRecord.Loan_Principal__c * product.Loan_Interest_Rate__c/12);          
-        }        
-        paymentDenominatorVar1 = ( 1 + product.Loan_Interest_Rate__c/12);
-        paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
-        paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
-        paymentDenominator = 1 - paymentDenominatorVar3;
-        monthlyPayment = paymentNumerator/paymentDenominator;
-        dtiNumerator = (leadRecord.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + monthlyPayment);
-        dtiDenominator = (leadRecord.Annual_Income_Currency__c /12)*100;
-        dtiAfter = dtiNumerator/dtiDenominator;
-        if (dtiAfter * 100 <= product.Debt_To_Income_Maximum__c) {
-          productList.add(product);
-          System.debug(dtiAfter + ' - ' + product.Debt_To_Income_Maximum__c);
+    List<Lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
+                           Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                           LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c,
+                           Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c
+                           FROM Lead
+                           WHERE Id = : leadId];
+    Lead lead = leadList[0];
+
+    PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(leadList);
+    List<Product2> allProducts = 
+        productRepo.getApplicableProducts(lead, Integer.valueOf(lead.LASER_Credit_Score__c));
+    for (Product2 prod : allProducts) {
+        if (productRepo.calcDTIAfter(prod, lead, 
+                                     lead.Annual_Income_Currency__c/12, 
+                                     lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c).dtiAfter <= 
+            prod.Debt_To_Income_Maximum__c) {
+            productList.add(prod);
         }
-      }
-    }                                  
-    return productList;                      
+    }
+    return productList;
   }
 
   @AuraEnabled 
@@ -180,7 +156,7 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1181=true'    
                                 + '&' + 'tfa_1310=' + 'SLPortal - Emailed Customer Phase 2 Application 381607'                                     
                                 + '&' + 'tfa_94=' + lead.LASERCA__Home_Address__c ;        
-    }        
+    }     
     String htmlBody = template.HtmlValue;
     htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
     htmlBody = htmlBody.replace('{!continueApplication}', continueApplicationUrl);
@@ -202,7 +178,7 @@ public without sharing class SLPCreditStatus {
     String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here'; 
     mail.setSubject(emailSubject);
     mail.setTargetObjectId(lead.Id);
-    Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
+    MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});    
     return customerName;
   }
 
