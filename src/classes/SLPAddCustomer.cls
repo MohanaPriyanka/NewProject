@@ -39,7 +39,7 @@ public without sharing class SLPAddCustomer {
         newLead.Application_Source__c = 'SLPortal';
         newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
-        newLead.bs_Sales_ID__c = profile.salesRepId;
+        newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
         if (String.isNotBlank(profile.salesRepEmail)) {
