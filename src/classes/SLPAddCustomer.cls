@@ -36,7 +36,7 @@ public without sharing class SLPAddCustomer {
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Email_Re_Enter__c = newLead.Email;
-        newLead.Application_Source__c = 'SLPortal';
+        newLead.Application_Source_Phase_1__c = 'SLPortal';
         newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
         newLead.Bs_Sales_ID__c = profile.salesRepId;
@@ -123,13 +123,13 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
-        mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Application 381613');
+        mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
-        bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Application 381614');
+        bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
         if (productProgram == 'bwsl') {
