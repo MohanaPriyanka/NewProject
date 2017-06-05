@@ -106,7 +106,6 @@ public without sharing class SLPAddCustomer {
 
     @AuraEnabled 
     public static String sendApplication (String customerEmail, String productProgram) {
-        System.debug('the productProgram is ' + productProgram);
         String startApplicationUrl;
         String customerName;
         String mslpUrl;
@@ -124,11 +123,13 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
         if (productProgram == 'bwsl') {
