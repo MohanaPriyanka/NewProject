@@ -1,3 +1,10 @@
+/*************************************************************************************
+ * Created By:  Cole Swain
+ * Description: Called from LeadTrigger, OpportunityTrigger, LoanTrigger, 
+ *              and ResidentialEquipementTrigger
+ * Test: LoanHandlerTestClass
+ *************************************************************************************/
+
 public without sharing class LoanHandler{
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
@@ -71,7 +78,10 @@ public without sharing class LoanHandler{
     }
 
     //On After Update of Opportunity Record
-    public void onAfterOpportunityUpdate(List<Opportunity> updatedOpportunities, List<Opportunity> oldOpportunities, Map<Id, Opportunity> updatedOpportunityMap, Map<Id, Opportunity> oldOpportunityMap){
+    public void onAfterOpportunityUpdate(List<Opportunity> updatedOpportunities,
+                                         List<Opportunity> oldOpportunities,
+                                         Map<Id, Opportunity> updatedOpportunityMap,
+                                         Map<Id, Opportunity> oldOpportunityMap) {
         List<String> completedOppIds = new List<String>();
         List<String> signedCustomerOppIds = new List<String>();        
         List<String> counterSignedCustomerOppIds = new List<String>();        
@@ -79,12 +89,17 @@ public without sharing class LoanHandler{
         List<Opportunity> validateSalesAgreementList = new List<Opportunity>();                      
         List<String> oppLeadIds = new List<String>();
         List<String> oppLeadIdsList = new List<String>();
+        List<Id> oppsWithSystemCostChange = new List<Id>();
         Integer loanTerm;
         Integer interestOnlyPeriod;
 
         for (Opportunity newOpp : updatedOpportunities) {
             if (newOpp.StageName == 'Complete' && oldOpportunityMap.get(newOpp.Id).StageName != 'Complete' && newOpp.Product_Line__c == 'Residential Loan') {
                 completedOppIds.add(newOpp.Id);
+            }
+            if (newOpp.Loan_Principle__c != null && 
+                newOpp.Loan_Principle__c != oldOpportunityMap.get(newOpp.Id).Loan_Principle__c) {
+                oppsWithSystemCostChange.add(newOpp.Id);
             }
             if (newOpp.Contract_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Contract_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 signedCustomerOppIds.add(newOpp.Id);
@@ -124,6 +139,25 @@ public without sharing class LoanHandler{
                 loanRecord.Contracted__c = true;
             }    
             upsert new list<Loan__c>(tranchedLoans) Unique_ID__c;
+        }
+        // System Cost can change on the Opportunity because of customer downpayments - we pull that
+        // field into DocuSign.
+        if (!oppsWithSystemCostChange.isEmpty()){
+            List<Loan__c> checkSystemCostLoans = [SELECT Id, Opportunity__c, System_Costt__c
+                                                  FROM Loan__c
+                                                  WHERE Opportunity__r.Id IN : oppsWithSystemCostChange];
+            List<Loan__c> systemCostLoansToUpdate = new List<Loan__c>();
+            for (Loan__c systemCostLoan : checkSystemCostLoans) {
+                if (systemCostLoan.System_Costt__c != 
+                    updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c) {
+                    systemCostLoan.System_Costt__c = 
+                        updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c;
+                    systemCostLoansToUpdate.add(systemCostLoan);
+                }
+            }
+            if (!systemCostLoansToUpdate.isEmpty()) {
+                update systemCostLoansToUpdate;
+            }
         }
         for (Opportunity oppRecord : updatedOpportunities) {
             oppLeadIds.add(oppRecord.Lead_ID__c);

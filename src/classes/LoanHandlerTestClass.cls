@@ -166,20 +166,9 @@ public class LoanHandlerTestClass {
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
+        convertLeads(leadlist);
 
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
                                                     FROM Partner_Task__c 
                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
@@ -237,20 +226,9 @@ public class LoanHandlerTestClass {
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
+        convertLeads(leadList);
 
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
                                                     FROM Partner_Task__c 
                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
@@ -319,20 +297,8 @@ public class LoanHandlerTestClass {
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
-
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
+        convertLeads(leadList);
 
     	List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c];
@@ -571,20 +537,9 @@ public class LoanHandlerTestClass {
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
+        convertLeads(leadList);
 
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c WHERE Loan__r.DOER_Solar_Loann__c = true]) {
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
                 System.Assert(partnerTaskAssertion.Status__c == 'Complete');                
@@ -666,20 +621,9 @@ public class LoanHandlerTestClass {
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
+        
+        convertLeads(leadList);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
-
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
         for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
@@ -716,20 +660,8 @@ public class LoanHandlerTestClass {
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
-            lc.setLeadId(l.Id);
 
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-            lc.setConvertedStatus(convertStatus.MasterLabel);
-
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
-            System.assert(lcr.isSuccess());
-        }
+        convertLeads(leadList);
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c];
@@ -805,6 +737,56 @@ public class LoanHandlerTestClass {
             }                   
         }               
         Test.stopTest();
+    }
+
+    @isTest static void testSystemCostChanges() {
+        List<Lead> leadList = [SELECT Id FROM Lead];
+        Test.startTest();
+        
+        convertLeads(leadList);
+
+        List<Opportunity> opps = [SELECT Id, Loan_Principle__c
+                                  FROM Opportunity];
+        System.assertEquals(3, opps.size());
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(opps);
+
+        List<Loan__c> loans = [SELECT Id, System_Costt__c, Opportunity__c
+                               FROM Loan__c];
+        System.assertEquals(3, loans.size());
+        
+        for (Loan__c loan : loans) {
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+        }
+
+        for (Opportunity opp : opps) {
+            opp.Loan_Principle__c = opp.Loan_Principle__c + 10;
+        }
+        update opps;
+        oppMap = new Map<Id, Opportunity>(opps);
+        
+        loans = [SELECT Id, System_Costt__c, Opportunity__c
+                 FROM Loan__c];
+        for (Loan__c loan : loans) {
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+        }
+    }
+
+
+    public static void convertLeads(List<Lead> leadList) {
+        for (Lead leadRecord : leadList) {
+            leadRecord.Status = 'Qualified';
+        }
+        update leadList;
+        for (Lead l :leadList){     
+            database.leadConvert lc = new database.leadConvert();
+            lc.setLeadId(l.Id);
+
+            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
+            lc.setConvertedStatus(convertStatus.MasterLabel);
+
+            Database.LeadConvertResult lcr = Database.convertLead(lc);
+            System.assert(lcr.isSuccess());
+        }
     }
 
     public static void changeLeadUpdateDummy(List<Lead> leadList) {
