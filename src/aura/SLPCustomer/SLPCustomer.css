@@ -1,6 +1,31 @@
 .THIS {
 }
+/* fileUpload2.css is identical */
+.THIS .notUploading {
+    visibility: hidden;
+}
 
+.THIS .uploading {
+    visibility: visible;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.THIS .small-spinner {
+    height: 20px;
+    width: 20px;
+}
+
+.THIS .yesNoButton {
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.THIS .file {
+    margin-bottom: 5px;
+    display: block;
+}
 .THIS.main1 {
     padding-top: 5%;
 
@@ -213,6 +238,14 @@
     border-radius:5px;
     box-shadow: 0 4px 8px 0 #7c98ad  , 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
+}
+
+.THIS .uploadMarginRight {
+    margin-right: 10px;
+}
+
+.THIS .uploadMarginTop{
+    margin-top: 10px;
 }
 
 .THIS .noDisplay {

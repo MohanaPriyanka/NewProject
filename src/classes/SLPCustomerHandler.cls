@@ -67,6 +67,19 @@ public without sharing class SLPCustomerHandler {
       public Integer pendingTaskSequence;     
   }
 
+  @AuraEnabled 
+  public static Attachment getDescribedFile (String parentId, String description) {  
+      System.debug('The description is ' + description);
+      Attachment[] describedFile = SLPFileHandler.getDescribedFile(parentId, description);
+      if (!describedFile.isEmpty()) {
+        System.debug('check');
+        return describedFile.get(0);
+      } else {
+        System.debug('check');
+        return null;
+      }
+  }
+
   //the getProgressBarData returns the pending task for the SLP's customer window progress bar. It could be replaced with the getLoanCustomerTasks
   //method if the right logic is applied to the SLPCustomerController component
   @AuraEnabled 
@@ -297,6 +310,11 @@ public without sharing class SLPCustomerHandler {
     return slportalSettings[0];
   }    
 
+  @AuraEnabled
+  public static void savePTODocumentation(Id parentId, String fileName, String base64Data, String contentType) {
+    String attachmentId = SLPFileHandler.saveTheFile(parentId, fileName, base64Data, contentType, 'PTO Documentation');
+  }   
+
   @AuraEnabled 
   public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();
@@ -333,5 +351,5 @@ public without sharing class SLPCustomerHandler {
     } else {
       return false;
     }              
-  }   
+  }      
 }

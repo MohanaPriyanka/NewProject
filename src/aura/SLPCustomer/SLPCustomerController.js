@@ -393,10 +393,22 @@
         });           
         
 		$A.enqueueAction(saveAction);
+
+        helper.saveFile(component);
                      
         $A.enqueueAction(customerInformationAction);     
         helper.getProgressBarDataMethod(component, event, helper);              
     },    
+
+    // waiting: function(component, event, helper) {
+    //     $A.util.addClass(component.find("uploading").getElement(), "uploading");
+    //     $A.util.removeClass(component.find("uploading").getElement(), "notUploading");
+    // },
+    
+    // doneWaiting: function(component, event, helper) {
+    //     $A.util.removeClass(component.find("uploading").getElement(), "uploading");
+    //     $A.util.addClass(component.find("uploading").getElement(), "notUploading");
+    // },       
 
     openCustomerModal : function(component, event, helper) { 
         $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
@@ -415,7 +427,9 @@
         $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');  
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');                                              
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');    
+
+        helper.getDescribedFile(component, 'PTO Documentation');                                               
         
         var slportalSettings = component.get("c.getSLPortalSettings");        
         slportalSettings.setCallback(this,function(resp){
@@ -811,6 +825,5 @@
 
         });
         urlEvent.fire();                
-    },        
-    
+    },             
 })
