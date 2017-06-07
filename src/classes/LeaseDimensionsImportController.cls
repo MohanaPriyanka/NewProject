@@ -57,12 +57,15 @@ public without sharing class LeaseDimensionsImportController {
         loanNumbers = new Set<String>();
         reportLines = new List<ReportLine>();
         while ((line = csvReader.readLine()) != null) {
-            try {
-                rl = new ReportLine(line);
-                reportLines.add(rl);
-                loanNumbers.add(rl.loanNumber);
-            } catch (LDImportException ldie) {
-                Logger.logLater('LeaseDimensionsImportController', 'loadCSV', ldie.getMessage());
+            if (!isEmpty(line) &&
+                !line[0].contains('Portfolio')) {
+                try {
+                    rl = new ReportLine(line);
+                    reportLines.add(rl);
+                    loanNumbers.add(rl.loanNumber);
+                } catch (LDImportException ldie) {
+                    Logger.logLater('LeaseDimensionsImportController', 'loadCSV', ldie.getMessage());
+                }
             }
         }
         
@@ -89,11 +92,11 @@ public without sharing class LeaseDimensionsImportController {
                     taList.add(rl.getTA(loan));
                 }
             } catch (LDImportException ldie) {
-                Logger.logLater('LeaseDimensionsImportController', 'generateTAs', ldie.getMessage());
+                Logger.logLater('LeaseDimensionsImportController', 'loadCSV', ldie.getMessage());
             }
         }
-        Logger.log('LeaseDimensionsImportController', 'generateTAs', 
-                   'Inserting ' + taList.size() + ' transaction applications from ' + filename, System.now());
+        Logger.logLater('LeaseDimensionsImportController', 'loadCSV', 
+                        'Inserting ' + taList.size() + ' transaction applications from ' + filename);
         insert taList;
     }
 
@@ -137,8 +140,6 @@ public without sharing class LeaseDimensionsImportController {
             processDate = Date.parse(inputLine[6].trim());
             if (!String.isBlank(inputLine[7])) {
                 paymentEffectiveDate = Date.parse(inputLine[7].trim());
-            } else {
-                throw new LDImportException('No effective date on transaction, not processing this line: ' + inputLine);
             }
             if (!String.isBlank(inputLine[8])) {
                 invoiceDueDate = Date.parse(inputLine[8].trim());
@@ -168,18 +169,27 @@ public without sharing class LeaseDimensionsImportController {
                                                Effective_Date__c = paymentEffectiveDate,
                                                Description__c = transactionDescription,
                                                Invoice_Number__c = invoiceNumber,
+                                               Invoice_Due_Date__c = invoiceDueDate,
                                                Check_Number__c = checkNumber,
                                                Cash_Code__c = cashCode,
                                                Comments__c = (String.isBlank(reversalReason)?'':(reversalReason+'\n')) + comments);
             for (Loan_Payment__c lp : loan.Loan_Payments__r) {
-                if  (LoanServicer.appliesTo(paymentEffectiveDate, lp)) {
+                Date applyDate;
+                if (invoiceDueDate != null) {
+                    applyDate = invoiceDueDate;
+                } else if (paymentEffectiveDate != null) {
+                    applyDate = paymentEffectiveDate;
+                } else {
+                    applyDate = processDate;
+                }
+                if (LoanServicer.appliesTo(applyDate, lp)) {
                     ta.Loan_Payment__c = lp.Id;
                     break;
                 }
             }
             if (ta.Loan_Payment__c == null) {
                 throw new LDImportException('Could not find a loan payment to relate to. ' +
-                                            'Loan: ' + account + ' Effective Date: ' + paymentEffectiveDate);
+                                            'Loan: ' + account + ' Invoice Due Date: ' + invoiceDueDate);
             }
             String principalOrInterest;
             if ((principalOrInterest = descriptionMap.get(transactionDescription)) == null) {
@@ -200,6 +210,15 @@ public without sharing class LeaseDimensionsImportController {
             }
             return ta;
         }
+    }
+    
+    public boolean isEmpty(List<String> strings) {
+        for (String s : strings) {
+            if (!String.isEmpty(s.trim())) {
+                return false;
+            }
+        }
+        return true;
     }
     
     public class LDImportException extends Exception {}

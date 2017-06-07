@@ -52,7 +52,7 @@ public with sharing class LeaseDimensionsImportControllerTest {
              FROM Transaction_Application__c];
         System.assertEquals(3, taList.size());
         List<Error_Log__c> logs = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(3, logs.size());
+        System.assertEquals(1, logs.size());
         Test.stopTest();
     }
 
