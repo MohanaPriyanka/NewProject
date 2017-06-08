@@ -100,7 +100,6 @@
     MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
 
     saveFile : function(component, event) {
-        // var fileInput = component.find("file").getElement();
         var fileInput = event.getSource().get("v.files")[0];
 
         var file = fileInput;
@@ -136,11 +135,8 @@
             contentType: file.type
         });
 
-        // action.setCallback(this, function(a) {
-        //     attachId = a.getReturnValue();
-        //     console.log(attachId);
-        // });
-
         $A.enqueueAction(action); 
-    }    
+        component.set("v.ptoFileName", file.name);    
+        component.set("v.ptoFileAttached", true);                 
+    }          
 })

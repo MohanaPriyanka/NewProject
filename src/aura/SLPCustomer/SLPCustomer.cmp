@@ -208,7 +208,7 @@
                       title="Navigation">Complete</span>
                     </li> 
                     <aura:set attribute="else">      
-                      <li class="slds-wizard__item">
+                      <li class="slds-wizard__item ">
                         <span class="slds-wizard__marker "></span>
                         <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Navigation">Complete</span>
@@ -532,7 +532,6 @@
                                       <hr></hr>
                                       <div>
                                         <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                          <label aura:id="ptoFileLabel" class="slds-form-element__label noDisplay" for="file"> You have uploaded <b> {!v.ptoFileName} </b> as PTO Documentation. If this is the incorrect file, please upload the correct file here.</label> 
                                           <aura:if isTrue="{!v.ptoFileAttached}">
                                             <label class="slds-form-element__label" for="file"> You have uploaded <b> {!v.ptoFileName} </b> as PTO Documentation. If this is the incorrect file, please upload the correct file here.</label>  
                                             <aura:set attribute="else">
@@ -550,21 +549,15 @@
                                       <div class="slds-form-element__row">
                                         <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
                                           <label class="slds-form-element__label" for="input-03">Generator Type</label>
-                                          <div class="inputWidth33">
                                             <ui:inputText aura:id="generatorType" class="slds-input " value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
-                                          </div> 
                                         </div>
                                         <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
                                           <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
-                                          <div class="inputWidth33">
                                             <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input " value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>     
-                                          </div>     
                                         </div>
                                         <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
                                           <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
-                                          <div class="inputWidth33">
                                             <ui:inputNumber aura:id="annualProduction" class="slds-input " value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
-                                          </div>
                                         </div>                                                                  
                                       </div>
                                       <div class="slds-form-element__row">                                            
@@ -759,17 +752,17 @@
                                     <div class="slds-form-element__group">
                                       <div class="slds-form-element__row">
                                         <div class="slds-form-element slds-p-horizontal--small">
-                                          <label class="slds-form-element__label" for="input-03">Number of Meters</label>
-                                          <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
-                                        </div>  
-                                        <div class="slds-form-element slds-p-horizontal--small">
                                           <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
                                           <ui:inputText aura:id="meterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
-                                        </div>                                       
+                                        </div>                                                                              
                                         <div class="slds-form-element slds-p-horizontal--small">
                                           <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
                                           <ui:inputText aura:id="meterModel" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
-                                        </div>                     
+                                        </div>   
+                                        <div class="slds-form-element slds-p-horizontal--small">
+                                          <label class="slds-form-element__label" for="input-03">Number of Meters</label>
+                                          <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
+                                        </div>                                                             
                                       </div>
                                       <div class="slds-form-element__row">
                                         <div class="slds-form-element slds-p-horizontal--small">

@@ -315,6 +315,8 @@ public class LoanHandlerTestClass {
     @isTest static void testEquipmentUpdates() {
     	List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
+        List<Attachment> attachList = new List<Attachment>();
+
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
@@ -389,7 +391,18 @@ public class LoanHandlerTestClass {
             equipment.Initial_Solar_Meter_Reading__c = 45000;
             equipment.Initial_Solar_Meter_Reading_Date__c = myDate;            
             equipmentListToUpdate.add(equipment);
-    	}
+
+            Attachment attach=new Attachment();     
+            attach.Name='Unit Test Attachment';
+            Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+            attach.Body=bodyBlob;
+            attach.ParentId=equipment.id;
+            attach.Description = 'PTO Documentation';
+            attachList.add(attach);            
+        }
+        
+        insert attachList;            
+
     	if(equipmentListToUpdate.size() > 0 ) {
             update equipmentListToUpdate;    		
     	}
@@ -712,6 +725,7 @@ public class LoanHandlerTestClass {
     @isTest static void testEquipmentUpdatesMSLP() {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
+        List<Attachment> attachList = new List<Attachment>();        
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
@@ -787,7 +801,18 @@ public class LoanHandlerTestClass {
             equipment.Initial_Solar_Meter_Reading__c = 45000;
             equipment.Initial_Solar_Meter_Reading_Date__c = myDate;             
             equipmentListToUpdate.add(equipment);
+
+            Attachment attach=new Attachment();     
+            attach.Name='Unit Test Attachment';
+            Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+            attach.Body=bodyBlob;
+            attach.ParentId=equipment.id;
+            attach.Description = 'PTO Documentation';
+            attachList.add(attach);            
         }
+        
+        insert attachList; 
+
         if(equipmentListToUpdate.size() > 0 ) {
             update equipmentListToUpdate;           
         }

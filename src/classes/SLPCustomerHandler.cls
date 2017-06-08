@@ -312,7 +312,16 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static void savePTODocumentation(Id parentId, String fileName, String base64Data, String contentType) {
+    Boolean updateDummy;
     String attachmentId = SLPFileHandler.saveTheFile(parentId, fileName, base64Data, contentType, 'PTO Documentation');
+    Residential_Equipment__c equipment = [SELECT Id, Interconnection_Update_Dummy__c FROM Residential_Equipment__c WHERE Id = :parentId];
+    if (equipment.Interconnection_Update_Dummy__c) {
+      updateDummy = false;
+    } else {
+      updateDummy = true;
+    }
+    equipment.Interconnection_Update_Dummy__c = updateDummy;
+    update equipment;
   }   
 
   @AuraEnabled 
