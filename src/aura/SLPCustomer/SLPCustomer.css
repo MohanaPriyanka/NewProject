@@ -240,12 +240,37 @@
     
 }
 
+.THIS .inputWidth25 {
+    width: 25%;
+}
+
+.THIS .inputWidth33 {
+    width: 33.33%;
+}
+
 .THIS .uploadMarginRight {
     margin-right: 10px;
 }
 
 .THIS .uploadMarginTop{
     margin-top: 10px;
+}
+
+.THIS .uploadMarginText{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.THIS .interconnectModalButtonWidth{
+    width: 100px;
+}
+
+.THIS .interconnectModalButtonPTS{
+    width: 210px;
+}
+
+.THIS .alignCenter{
+    text-align:center;
 }
 
 .THIS .noDisplay {

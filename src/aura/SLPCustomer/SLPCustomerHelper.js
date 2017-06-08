@@ -99,9 +99,11 @@
 
     MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
 
-    saveFile : function(component) {
-        var fileInput = component.find("file").getElement();
-        var file = fileInput.files[0];
+    saveFile : function(component, event) {
+        // var fileInput = component.find("file").getElement();
+        var fileInput = event.getSource().get("v.files")[0];
+
+        var file = fileInput;
    
         if (file.size > this.MAX_FILE_SIZE) {
             alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +

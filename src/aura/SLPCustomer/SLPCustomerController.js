@@ -393,12 +393,15 @@
         });           
         
 		$A.enqueueAction(saveAction);
-
-        helper.saveFile(component);
                      
         $A.enqueueAction(customerInformationAction);     
         helper.getProgressBarDataMethod(component, event, helper);              
     },    
+
+    savePtoDoc : function(component, event, helper) {
+        helper.saveFile(component, event);  
+        $A.util.removeClass(component.find("ptoFileLabel"), 'noDisplay');     
+    },
 
     // waiting: function(component, event, helper) {
     //     $A.util.addClass(component.find("uploading").getElement(), "uploading");
