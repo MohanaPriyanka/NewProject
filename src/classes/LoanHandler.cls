@@ -441,7 +441,6 @@ public without sharing class LoanHandler{
             return tranchedLoans;   
         }
         catch(exception e){
-
             return null;
         }
     }
@@ -1218,15 +1217,26 @@ public without sharing class LoanHandler{
     // updat the interconnection partner task when the equipment is reported as interconnected
     public void updatePartnerTaskInterconnection(List<Residential_Equipment__c> equipmentList, Map<String, Partner_Task__c> taskMap){
         String taskUniqueId;
+        Boolean ptoDocumentProvided = false;
         List<Partner_Task__c> taskUpdateList = new List<Partner_Task__c>();
         List<Partner_Task__c> nextTasksToUpdate = new List<Partner_Task__c>();
         List<String> equipmentLeadIdList = new List<String>();
-
+        List<String> equipmentIdList = new List<String>();
+        for (Residential_Equipment__c equipmentLoopVar : equipmentList) {
+            equipmentIdList.add(equipmentLoopVar.Id);
+        }
+        for (Attachment ptoAttachment : [SELECT Id, Name, Body, ParentId, Description
+                                         FROM Attachment
+                                         WHERE Description != null AND ParentId IN : equipmentIdList]){
+            if (ptoAttachment.Description.contains('PTO Documentation')) {
+                ptoDocumentProvided = true;
+            }
+        }
         for (Residential_Equipment__c equipmentLoopVar : equipmentList){
             List<String> fieldNames = new List<String>{'Annual_Production_kWh_kW__c', 'Interconnected__c', 'Interconnection_Date__c',  'Estimated_On_Site_Behind_the_Meter_Load__c',  'Percentage_of_System_Shaded__c',  'SREC_Opt_In_Calendar_Quarter__c',  'Generator_Type__c',  'MA_Facility_Sector__c',  'MA_Facility_Type__c',  'Generator_Nameplate_Capacity__c',  'Contract_Execution_Date__c',  'Generator_Interconnection_Date__c',  'Generator_Installation_Date__c',  'Generator_Energized_Online_Date__c',  'Module_Manufacturer__c',  'Module_Model_Number__c',  'Module_Power_Rating__c',  'Number_of_Modules__c',  'Module_Array_Mounting_Type__c',  'Module_Array_Azimuth__c',  'Module_Array_Tilt__c',  'Module_Mounting_Location__c',  'Inverter_Manufacturer__c',  'Inverter_Model_Number__c',  'Remote_Monitoring_System_Vendor__c',  'Remote_Monitorin_Systegm_Identifier__c',  'Number_of_Meters__c',  'Solar_Meter_Manufacturer__c',  'Solar_Meter_Model__c',    'Solar_Meter_Serial_Number__c',  'Initial_Solar_Meter_Reading__c',  'Initial_Solar_Meter_Reading_Date__c'};
             Boolean nullOrBlankResult = checkNullOrBlankField(equipmentList.get(0), fieldNames);
             if (equipmentLoopVar.State__c == 'MA') {
-                if (nullOrBlankResult == true) {
+                if (nullOrBlankResult && ptoDocumentProvided) {
                     taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
                     taskMap.get(taskUniqueId).Status__c = 'Complete';
                     taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
@@ -1236,17 +1246,21 @@ public without sharing class LoanHandler{
                     return;
                 }
             } else {
-                taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
-                taskMap.get(taskUniqueId).Status__c = 'Complete';
-                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                taskUpdateList.add(taskMap.get(taskUniqueId));
-                equipmentLeadIdList.add(equipmentLoopVar.Lead__c);                
+                if (ptoDocumentProvided) {
+                    taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
+                    taskMap.get(taskUniqueId).Status__c = 'Complete';
+                    taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                    taskUpdateList.add(taskMap.get(taskUniqueId));
+                    equipmentLeadIdList.add(equipmentLoopVar.Lead__c); 
+                } else {
+                        return;
+                }               
             }
         }
-        update taskUpdateList;
-        nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
-        update nextTasksToUpdate;
-    }  
+            update taskUpdateList;
+            nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
+            update nextTasksToUpdate;
+        }  
 
     public static Boolean checkNullOrBlankField(Residential_Equipment__c equipment, List<String> fieldNames) {
         Boolean checkResult = true;

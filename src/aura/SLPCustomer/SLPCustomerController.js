@@ -18,6 +18,8 @@
         });    
         $A.enqueueAction(actionLicenseType);    
         component.set("v.vendorIdLabel", "Unique Identifier");
+
+
 	},
     
     openCustomerWindow : function(component, event, helper) {
@@ -42,7 +44,6 @@
         });                
         $A.enqueueAction(customerInformationAction);
               
-        
         //progress bar status - removes/adds classes based on returned value of last completed task.       
         var progressBarData = component.get("c.getProgressBarData");	      
         progressBarData.setParams({loanId : label})
@@ -66,7 +67,8 @@
             }
         });
 		$A.enqueueAction(progressBarData);  
-        
+        var i;
+        var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : label});       
@@ -75,7 +77,7 @@
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
                     } else {
                         continue;
                     }
@@ -146,6 +148,7 @@
         $A.util.addClass(pendingDisbursalsToggle, 'noDisplay');
         $A.util.addClass(completedDisbursalsToggle, 'noDisplay');         
 
+        var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : loanUpdateIdVar});       
@@ -154,7 +157,7 @@
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
                     } else {
                         continue;
                     }
@@ -398,6 +401,10 @@
         helper.getProgressBarDataMethod(component, event, helper);              
     },    
 
+    savePtoDoc : function(component, event, helper) {
+        helper.saveFile(component, event);  
+    },   
+
     openCustomerModal : function(component, event, helper) { 
         $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');     
@@ -415,7 +422,9 @@
         $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');  
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');                                              
+        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');    
+
+        helper.getDescribedFile(component, 'PTO Documentation');                                               
         
         var slportalSettings = component.get("c.getSLPortalSettings");        
         slportalSettings.setCallback(this,function(resp){
@@ -483,6 +492,7 @@
         });
         $A.enqueueAction(progressBarData);  
         
+        var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : label});       
@@ -491,7 +501,7 @@
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
                     } else {
                         continue;
                     }
@@ -508,6 +518,7 @@
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open'); 
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');    
 
+        var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");  
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : loanUpdateIdVar});       
@@ -516,7 +527,7 @@
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c)
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
                     } else {
                         continue;
                     }
@@ -680,8 +691,6 @@
     openSubTasks : function(component, event, helper) {
         var source = event.getSource();
         var taskId = source.get("v.labelClass");   
-        //var parentSubTaskToggle = component.find("parentSubTasks");
-        //var subTaskTypeToggle = component.find("subTaskType");        
 
         var subTaskList = component.get("c.getLoanParentSubTasks");  		
         subTaskList.setParams({taskId : taskId});
@@ -690,8 +699,6 @@
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.subTaskList", resp.getReturnValue());
                 if(resp.getReturnValue() != null){
-                    //$A.util.removeClass(closeButton, 'noDisplay');
-                    //$A.util.addClass(viewButton, 'noDisplay');                	                    
                     $A.util.removeClass(parentSubTaskToggle, 'noDisplay'); 
         			$A.util.removeClass(subTaskTypeToggle, 'noDisplay');
                 }
@@ -709,18 +716,10 @@
 		component.set("v.parentSubTaskList", null);  
         var subTaskTypeToggle = component.find("subTaskType");
         var taskTableToggle = component.find("taskTable");
-        //var exitParentSubTasksButton = component.find("exitParentSubTasksTable");
-        //var viewButton = component.find("viewButton");    
-        //var closeButton = component.find("closeButton");
         var subTaskHeaderToggle = component.find("subTaskHeader");           
         var subTaskTableToggle = component.find("subTaskTable");
          $A.util.addClass(subTaskTableToggle, 'noDisplay');
          $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
-        //$A.util.addClass(parentSubTaskToggle, 'noDisplay');          
-        //$A.util.addClass(subTaskTypeToggle, 'noDisplay'); 
-        //$A.util.addClass(exitParentSubTasksButton, 'noDisplay'); 
-        //$A.util.addClass(closeButton, 'noDisplay');
-        //$A.util.removeClass(viewButton, 'noDisplay');                          
     }, 
     
     exitSubTasks : function(component, event, helper) {   
@@ -811,6 +810,5 @@
 
         });
         urlEvent.fire();                
-    },        
-    
+    },             
 })

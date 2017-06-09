@@ -1065,5 +1065,33 @@ public without sharing class SLPControllersTestclass {
             SLPCustomerHandler.getAnyUnseenLeads();
         }
         Test.stopTest();
-    }                                                         
+    }       
+
+    @isTest static void testSLPFileHandler() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];  
+
+        Residential_Equipment__c equipment = new Residential_Equipment__c(Name = 'testEquipment', OwnerId = partnerUser.Id);
+        insert equipment;
+
+        Attachment attach=new Attachment();     
+        attach.Name='Unit Test Attachment';
+        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+        attach.Body=bodyBlob;
+        attach.ParentId=equipment.id;
+        attach.Description = 'PTO Documentation';
+        attach.OwnerId = partnerUser.Id;
+        insert attach;
+
+        Test.startTest();               
+
+        System.runAs(partnerUser) {
+            SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
+            Attachment describedFile = SLPCustomerHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
+            System.assertEquals(describedFile.Description, 'PTO Documentation');
+        }
+        Test.stopTest();
+    }                                                        
 }
+
+

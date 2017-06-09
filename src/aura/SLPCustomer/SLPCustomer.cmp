@@ -11,6 +11,8 @@
   <aura:attribute name="subTaskList" type="Object"  />
   <aura:attribute name="srecQuarters" type="List"/>
   <aura:attribute name="dateToggle" type="Boolean"  />
+  <aura:attribute name="ptoFileAttached" type="Boolean"  />  
+  <aura:attribute name="ptoFileName" type="String"  />  
   <aura:attribute name="customerWindowLoanList" type="Object"  /> 
   <aura:attribute name="customerWindowTaskList" type="Object"  />  
   <aura:attribute name="taskMap" type="Map"  />      
@@ -19,14 +21,17 @@
   <aura:attribute name="taskViewButtonToggle" type="Boolean"  />
   <aura:attribute name="blueWaveReviewAlert" type="Boolean"  />     
   <aura:attribute name="vendorIdLabel" type="String"  />  
-  <aura:attribute name="interconnectionTaskStatus" type="String"  />  
+  <aura:attribute name="interconnectionTaskStatus" type="String"  />
+  <aura:attribute name="parentId" type="Id"/>
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>    
+  <!--   <aura:handler event="aura:waiting" action="{!c.waiting}"/>
+  <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>    -->  
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}" />
   <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}" />      
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>    
-  <ltng:require styles="{!$Resource.animations}" />    
-
+  <ltng:require styles="{!$Resource.animations}" />     
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en"/>
   <aura:attribute name="equipmentUpdate" type="Residential_Equipment__c" 
     default="{ 'sobjectType' : 'Residential_Equipment__c',
     'Name': '',
@@ -203,7 +208,7 @@
                       title="Navigation">Complete</span>
                     </li> 
                     <aura:set attribute="else">      
-                      <li class="slds-wizard__item">
+                      <li class="slds-wizard__item ">
                         <span class="slds-wizard__marker "></span>
                         <span class="slds-wizard__label proximaNovaDataBlue slds-truncate" 
                           title="Navigation">Complete</span>
@@ -391,7 +396,7 @@
                                       </div>                                           
                                     </div>
                                   </div>
-                                </fieldset>                   
+                                </fieldset>                                                   
                               </div>
                               <div class="slds-modal__footer">
                                 <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
@@ -410,28 +415,6 @@
                               </div>
                               <div class="slds-modal__content slds-p-around--medium">
                                 <div aura:id="SrecInterconnectionPage">     
-                                  <fieldset>      
-                                    <div class="slds-size_1-of-2">                                                           
-                                      <legend class="slds-form-element__legend slds-form-element__label  slds-p-horizontal--small slds-m-around--x-small">SREC Opt-in Calendar Quarter</legend>
-                                      <div class="slds-form-element__control  slds-p-horizontal--small slds-m-around--x-small">
-                                        <div class="slds-radio--button-group">
-                                          <aura:iteration items="{!v.srecQuarters}" var="srecQuarter">
-                                            <span class="slds-button slds-radio--button">
-                                              <aura:if isTrue="{!srecQuarter == v.customerInformation.SREC_Opt_In_Calendar_Quarter__c}">
-                                                <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" checked="TRUE" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
-                                                <aura:set attribute="else">
-                                                  <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
-                                                </aura:set>
-                                              </aura:if>                      
-                                              <label class="slds-radio--button__label" for="{!srecQuarter}">    
-                                                <span class="slds-radio--faux">{!srecQuarter}</span>
-                                              </label>       
-                                            </span>                                     
-                                          </aura:iteration>          
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </fieldset>  
                                   <div class="slds-size_1-of-2">                
                                     <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
                                       <label class="slds-form-element__label" for="autoPts">Is this system interconnected and operating? </label>
@@ -440,13 +423,13 @@
                                           <div class="slds-radio--button-group">
                                             <span class="slds-button slds-radio--button">
                                               <input type="radio" id="interconnectYes" name="interconnect" checked="true" onclick="{!c.setInterconnectedTrue}"/>
-                                              <label class="slds-radio--button__label" for="interconnectYes">
+                                              <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="interconnectYes">
                                                 <span class="slds-radio_faux">Yes</span>
                                               </label>
                                             </span>  
                                             <span class="slds-button slds-radio--button">
                                               <input type="radio" id="interconnectNo" name="interconnect" checked="false" onclick="{!c.setInterconnectedFalse}"/>
-                                              <label class="slds-radio--button__label" for="interconnectNo">
+                                              <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="interconnectNo">
                                                 <span class="slds-radio_faux">No</span>
                                               </label>
                                             </span> 
@@ -457,13 +440,13 @@
                                             <div class="slds-radio--button-group">                      
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="interconnectYes2" name="interconnect2" checked="false" onclick="{!c.setInterconnectedTrue}"/>
-                                                <label class="slds-radio--button__label" for="interconnectYes2">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="interconnectYes2">
                                                   <span class="slds-radio_faux">Yes</span>
                                                 </label>
                                               </span>  
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="interconnectNo2" name="interconnect2" checked="true" onclick="{!c.setInterconnectedFalse}"/>
-                                                <label class="slds-radio--button__label" for="interconnectNo2">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="interconnectNo2">
                                                   <span class="slds-radio_faux">No</span>
                                                 </label>
                                               </span> 
@@ -473,9 +456,9 @@
                                       </aura:if>
                                     </div>
                                   </div>                              
-                                  <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                  
+                                  <div class="slds-form-element slds-p-horizontal--small slds-m-top--small slds-m-around--x-small">                                  
                                     <label class="slds-form-element__label" for="input-03">When did the system get interconnected?</label>
-                                    <div class="slds-size_1-of-6">  
+                                    <div class="inputWidth25">  
                                       <ui:inputDate aura:id="interconnectionDateChanger" 
                                         class="slds-input" 
                                         displayDatePicker="true"
@@ -483,6 +466,29 @@
                                         />       
                                       </div> 
                                     </div>
+                                    <hr></hr>                                  
+                                    <fieldset>      
+                                      <div class="slds-size_1-of-2">                                                           
+                                        <legend class="slds-form-element__legend slds-form-element__label  slds-p-horizontal--small slds-m-around--x-small">SREC Opt-in Calendar Quarter</legend>
+                                        <div class="slds-form-element__control  slds-p-horizontal--small slds-m-around--x-small">
+                                          <div class="slds-radio--button-group">
+                                            <aura:iteration items="{!v.srecQuarters}" var="srecQuarter">
+                                              <span class="slds-button slds-radio--button">
+                                                <aura:if isTrue="{!srecQuarter == v.customerInformation.SREC_Opt_In_Calendar_Quarter__c}">
+                                                  <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" checked="TRUE" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                                                  <aura:set attribute="else">
+                                                    <input type="radio" name="radio" id="{!srecQuarter}" aura:id="{!srecQuarter}" value="{!srecQuarter}" onclick="{!c.setSrecOptInCalendarQuarter}"/>                          
+                                                  </aura:set>
+                                                </aura:if>                      
+                                                <label class="slds-radio--button__label" for="{!srecQuarter}">    
+                                                  <span class="slds-radio--faux">{!srecQuarter}</span>
+                                                </label>       
+                                              </span>                                     
+                                            </aura:iteration>          
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </fieldset>  
                                     <div class="slds-size_1-of-2">                 
                                       <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
                                         <label class="slds-form-element__label" for="autoPts">Has {!v.customer.Loan__r.Name} applied for funding through the Commonwealth Solar Rebate Program after 01/01/2010?</label>
@@ -491,13 +497,13 @@
                                             <div class="slds-radio--button-group">
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="cwProgramYes" name="cwProgram" checked="true" onclick="{!c.setCwProgramTrue}"/>
-                                                <label class="slds-radio--button__label" for="cwProgramYes">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="cwProgramYes">
                                                   <span class="slds-radio_faux">Yes</span>
                                                 </label>
                                               </span>  
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="cwProgramNo" name="cwProgram" checked="false" onclick="{!c.setCwProgramFalse}"/>
-                                                <label class="slds-radio--button__label" for="cwProgramNo">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="cwProgramNo">
                                                   <span class="slds-radio_faux">No</span>
                                                 </label>
                                               </span> 
@@ -508,13 +514,13 @@
                                               <div class="slds-radio--button-group">                      
                                                 <span class="slds-button slds-radio--button">
                                                   <input type="radio" id="cwProgramYes2" name="cwProgram2" checked="false" onclick="{!c.setCwProgramTrue}"/>
-                                                  <label class="slds-radio--button__label" for="cwProgramYes2">
+                                                  <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="cwProgramYes2">
                                                     <span class="slds-radio_faux">Yes</span>
                                                   </label>
                                                 </span>  
                                                 <span class="slds-button slds-radio--button">
                                                   <input type="radio" id="cwProgramNo2" name="cwProgram2" checked="true" onclick="{!c.setCwProgramFalse}"/>
-                                                  <label class="slds-radio--button__label" for="cwProgramNo2">
+                                                  <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth" for="cwProgramNo2">
                                                     <span class="slds-radio_faux">No</span>
                                                   </label>
                                                 </span> 
@@ -522,6 +528,18 @@
                                             </div>
                                           </aura:set>
                                         </aura:if>
+                                      </div>                                  
+                                      <hr></hr>
+                                      <div>
+                                        <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
+                                          <aura:if isTrue="{!v.ptoFileAttached}">
+                                            <label class="slds-form-element__label" for="file"> You have uploaded <b> {!v.ptoFileName} </b> as PTO Documentation. If this is the incorrect file, please upload the correct file here.</label>  
+                                            <aura:set attribute="else">
+                                              <label class="slds-form-element__label" for="file"> Please upload PTO Documentation here.</label>
+                                            </aura:set>  
+                                          </aura:if>   
+                                          <lightning:input type="file" label=" " name="file" onchange="{!c.savePtoDoc}"/>
+                                        </div>                                        
                                       </div>
                                     </div>              
                                     <br></br>              
@@ -529,27 +547,21 @@
                                   <fieldset aura:id="SrecGeneratorPage" class="slds-form--compound noDisplay">
                                     <div class="slds-form-element__group">
                                       <div class="slds-form-element__row">
-                                        <div class="slds-size_1-of-3">                                               
-                                          <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                            <label class="slds-form-element__label" for="input-03">Generator Type</label>
-                                            <ui:inputText aura:id="generatorType" class="slds-input" value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
-                                          </div>  
+                                        <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
+                                          <label class="slds-form-element__label" for="input-03">Generator Type</label>
+                                            <ui:inputText aura:id="generatorType" class="slds-input " value="{!v.equipmentUpdate.Generator_Type__c}" placeholder="{!v.customerInformation.Generator_Type__c}"/>          
                                         </div>
-                                        <div class="slds-size_1-of-3">                                               
-                                          <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                            <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
-                                            <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input" value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>          
-                                          </div>   
+                                        <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
+                                          <label class="slds-form-element__label" for="input-03">Generator Nameplate Capacity (KW DC)</label>
+                                            <ui:inputText aura:id="generatorNameplateCapacity" class="slds-input " value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}" placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>     
                                         </div>
-                                        <div class="slds-size_1-of-3">                                                                                   
-                                          <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                                            <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
-                                            <ui:inputNumber aura:id="annualProduction" class="slds-input" value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
-                                          </div>
-                                        </div>                                                                   
+                                        <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small ">
+                                          <label class="slds-form-element__label" for="input-03">Annual Production (KWH)</label>
+                                            <ui:inputNumber aura:id="annualProduction" class="slds-input " value="{!v.equipmentUpdate.Annual_Production_kWh_kW__c}" placeholder="{!v.customerInformation.Annual_Production_kWh_kW__c}" />          
+                                        </div>                                                                  
                                       </div>
                                       <div class="slds-form-element__row">                                            
-                                        <div aura:id="maFacilitySector" class="slds-size_1-of-2">                        
+                                        <div aura:id="maFacilitySector" class="inputWidth25">                        
                                           <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                
                                             <label class="slds-form-element__label" for="maFacilitySector">MA Facility Sector</label>
                                             <div class="slds-form-element__control">
@@ -564,7 +576,7 @@
                                             </div>
                                           </div>
                                         </div> 
-                                        <div aura:id="maFacilityType" class="slds-size_1-of-2">                        
+                                        <div aura:id="maFacilityType" class="inputWidth25">                        
                                           <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">                                           
                                             <label class="slds-form-element__label" for="maFacilityType ">MA Facility Type</label>
                                             <div class="slds-form-element__control">
@@ -669,13 +681,13 @@
                                             <div class="slds-radio--button-group">
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="yesAutoPTS" name="autoPTS" checked="true" onclick="{!c.setAutoPTSTrue}"/>
-                                                <label class="slds-radio--button__label" for="yesAutoPTS">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonPTS" for="yesAutoPTS">
                                                   <span class="slds-radio_faux">Yes</span>
                                                 </label>
                                               </span>  
                                               <span class="slds-button slds-radio--button">
                                                 <input type="radio" id="noAutoPTS" name="autoPTS" checked="false" onclick="{!c.setAutoPTSFalse}"/>
-                                                <label class="slds-radio--button__label" for="noAutoPTS">
+                                                <label class="slds-radio--button__label alignCenter interconnectModalButtonPTS" for="noAutoPTS">
                                                   <span class="slds-radio_faux">No, customer will self-report</span>
                                                 </label>
                                               </span> 
@@ -686,13 +698,13 @@
                                               <div class="slds-radio--button-group">                      
                                                 <span class="slds-button slds-radio--button">
                                                   <input type="radio" id="yesAutoPTS2" name="autoPTS2" checked="false" onclick="{!c.setAutoPTSTrue}"/>
-                                                  <label class="slds-radio--button__label" for="yesAutoPTS2">
+                                                  <label class="slds-radio--button__label alignCenter interconnectModalButtonPTS" for="yesAutoPTS2">
                                                     <span class="slds-radio_faux">Yes</span>
                                                   </label>
                                                 </span>  
                                                 <span class="slds-button slds-radio--button">
                                                   <input type="radio" id="noAutoPTS2" name="autoPTS2" checked="true" onclick="{!c.setAutoPTSFalse}"/>
-                                                  <label class="slds-radio--button__label" for="noAutoPTS2">
+                                                  <label class="slds-radio--button__label alignCenter interconnectModalButtonPTS" for="noAutoPTS2">
                                                     <span class="slds-radio_faux">No, customer will self-report</span>
                                                   </label>
                                                 </span> 
@@ -740,17 +752,17 @@
                                     <div class="slds-form-element__group">
                                       <div class="slds-form-element__row">
                                         <div class="slds-form-element slds-p-horizontal--small">
-                                          <label class="slds-form-element__label" for="input-03">Number of Meters</label>
-                                          <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
-                                        </div>  
-                                        <div class="slds-form-element slds-p-horizontal--small">
                                           <label class="slds-form-element__label" for="input-03">Solar Meter Manufacturer</label>
                                           <ui:inputText aura:id="meterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Manufacturer__c}" placeholder="{!v.customerInformation.Solar_Meter_Manufacturer__c}"/>          
-                                        </div>                                       
+                                        </div>                                                                              
                                         <div class="slds-form-element slds-p-horizontal--small">
                                           <label class="slds-form-element__label" for="input-03">Solar Meter Model</label>
                                           <ui:inputText aura:id="meterModel" class="slds-input" value="{!v.equipmentUpdate.Solar_Meter_Model__c}" placeholder="{!v.customerInformation.Solar_Meter_Model__c}" />          
-                                        </div>                     
+                                        </div>   
+                                        <div class="slds-form-element slds-p-horizontal--small">
+                                          <label class="slds-form-element__label" for="input-03">Number of Meters</label>
+                                          <ui:inputNumber aura:id="meterNumber" class="slds-input" value="{!v.equipmentUpdate.Number_of_Meters__c}" placeholder="{!v.customerInformation.Number_of_Meters__c}"/>          
+                                        </div>                                                             
                                       </div>
                                       <div class="slds-form-element__row">
                                         <div class="slds-form-element slds-p-horizontal--small">
