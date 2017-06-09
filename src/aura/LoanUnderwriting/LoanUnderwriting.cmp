@@ -1,0 +1,5 @@
+<aura:component >
+    <aura:attribute name="leadId" type="String"/>
+    Hello World
+    <ui:outputText value="{!v.leadId}"/>
+</aura:component>

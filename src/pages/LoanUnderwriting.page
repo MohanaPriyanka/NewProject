@@ -1,0 +1,12 @@
+<apex:page showHeader="true" sidebar="true">
+    <apex:includeLightning />
+    <div id="lightning" />
+    <script>
+        var leadId = "{!$CurrentPage.parameters.leadId}";
+        $Lightning.use("c:LoanUnderwritingApp", function()
+        {
+            $Lightning.createComponent("c:LoanUnderwriting",
+            {"leadId": leadId}, "lightning", function(cmp){});
+        });
+    </script>        
+</apex:page>
