@@ -48,7 +48,7 @@ public with sharing class Logger {
             new Error_Log__c(User__c = UserInfo.getUserID(),
                              Class__c = className,
                              Method__c = methodName,
-                             Message__c = message,
+                             Message__c = message.left(32768),
                              Timestamp__c = Datetime.newInstance(timestamp.date(),
                                                                  timestamp.time()));
         Database.insert(errorLog, false);
