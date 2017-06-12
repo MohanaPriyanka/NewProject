@@ -1,5 +1,8 @@
-<apex:page showHeader="true" sidebar="true">
+<apex:page showHeader="false" sidebar="false">
     <apex:includeLightning />
+    <style>
+        div {margin: 100px 100px 100px 100px;}
+    </style>
     <div id="lightning" />
     <script>
         var leadId = "{!$CurrentPage.parameters.leadId}";
