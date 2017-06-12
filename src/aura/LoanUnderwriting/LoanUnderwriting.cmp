@@ -1,5 +1,7 @@
-<aura:component >
-    <aura:attribute name="leadId" type="String"/>
-    Hello World
-    <ui:outputText value="{!v.leadId}"/>
+<aura:component controller="LoanUnderwriting">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="loanInfo" type="Object"/>
+  Hello World, 
+  <ui:outputText value="{!v.loanInfo.Firstname}"/>
 </aura:component>
