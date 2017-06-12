@@ -144,7 +144,7 @@ public without sharing class SLPAddCustomer {
         mail.setHtmlBody(htmlBody);
         for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
                                            FROM OrgWideEmailAddress
-                                           WHERE Address LIKE '%info%' 
+                                           WHERE Address = 'customercare@bluewavesolar.com'  
                                            LIMIT 1]) {
           mail.setOrgWideEmailAddressId(senderEmail.Id); 
         }  
