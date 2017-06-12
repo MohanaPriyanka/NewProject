@@ -1,0 +1,26 @@
+.THIS .largerText{
+    font-size : 24px;
+}
+
+.THIS .smallertext{
+    font-size : 10px;
+	width:30%;
+}
+
+.THIS .fontinbox {
+    color: #ffffff
+}
+
+.THIS .noDisplay {
+    display: none;
+}
+
+.THIS .yesDisplay {
+    visibility: visible;
+}
+
+.THIS .bounce {
+  -webkit-animation-duration: 3.0s;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+}
