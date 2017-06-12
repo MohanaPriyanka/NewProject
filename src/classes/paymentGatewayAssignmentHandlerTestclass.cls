@@ -27,7 +27,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                                                 Service_Territory__c = 'WCMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity1.Id,
-                                                                                                                                Schedule_Z_Filed__c = FALSE,
+                                                                                                                                
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Credit_Score_Requirement__c = 750,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
@@ -44,7 +44,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity2.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Schedule_Z_Filed__c = FALSE,
+                                                                                                                                
                                                                                                                                 Credit_Score_Requirement__c = 750,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,
@@ -61,7 +61,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity3.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Schedule_Z_Filed__c = FALSE,
+                                                                                                                              
                                                                                                                                 Credit_Score_Requirement__c = 750,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,

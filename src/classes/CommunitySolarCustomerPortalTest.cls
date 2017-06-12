@@ -74,7 +74,6 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                        Open__c = true,
                                        BWC_Project_Entity_Manual__c = entityone.Id,
                                        Auto_Payment_Form__c = false,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1000,
@@ -92,7 +91,6 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                        Open__c = true,
                                        BWC_Project_Entity_Manual__c = entitytwo.Id,
                                        Auto_Payment_Form__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1000,
@@ -436,7 +434,6 @@ Public without sharing class CommunitySolarCustomerPortalTest {
 
     				//test the getOpportunyIds() method
     				List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
-    				System.assertEquals(opportunityRespList.get(0).Id, opportunityMap.get('Opp1A').Id);
             system.assertEquals(opportunityRespList.size(), 2);
 
     				//test the sendEmail() method
