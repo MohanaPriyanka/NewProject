@@ -1,6 +1,7 @@
 ({
     doInit : function(component, event, helper) {
         var action = component.get("c.getLoanInfo");
+        action.setParams({"leadId" : component.get("v.leadId")});
         action.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.loanInfo", resp.getReturnValue());

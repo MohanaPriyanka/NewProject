@@ -3,5 +3,5 @@
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="loanInfo" type="Object"/>
   Hello World, 
-  <ui:outputText value="{!v.loanInfo.Firstname}"/>
+  <ui:outputText value="{!v.loanInfo.FirstName}"/>
 </aura:component>
