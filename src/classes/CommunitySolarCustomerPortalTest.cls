@@ -1,6 +1,6 @@
 @isTest
-Public without sharing class CommunitySolarCustomerPortalTest {
-    @testSetup static void setupTestData() {
+public without sharing class CommunitySolarCustomerPortalTest {
+    public static void setupTestData() {
         Account parentAccount = new Account(Name = 'Parent Account', 
         									Product_Line__c = 'Community Solar');
         Account parentAccount2 = new Account(Name = 'Parent Account 2', 
@@ -61,7 +61,17 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                       Name = 'Nation Grid WCMA Class 2 - S/F 2016',
                                       Sizing_Rate__c = true,
                                       Date__c = Date.today());
-        insert nmcRate;    
+        Utility_NMC_Tariff__c nmcBillingRate = 
+            new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 0.15,
+                                      Load_Zone__c = 'WCMA',
+                                      Utility__c = 'National Grid',
+                                      Class__c = 'Class 2',
+                                      Name = 'Nation Grid WCMA Class 2',
+                                      Sizing_Rate__c = false,
+                                      Current_Billing_Rate__c = true,
+                                      Date__c = Date.today());            
+        insert nmcRate;   
+        insert nmcBillingRate; 
 
         Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo');  
         Entity__c entitytwo = new Entity__c (Name = 'Two ProjectCo');
@@ -172,20 +182,16 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                                  Date__c = billingDate1,
                                                  Parent_Account__c = propertyAcc.Id,
                                                  Bill_Number__c = 1,
+                                                 Date_Sent__c = billingDate1,
                                                  Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
         Account_Bill__c ab2 = new Account_Bill__c(Name = propertyAcc2.Name,
                                                  Date__c = billingDate1,
+                                                 Date_Sent__c = billingDate1,                                                
                                                  Parent_Account__c = propertyAcc2.Id,
                                                  Bill_Number__c = 1,
                                                  Unique_ID__c = propertyAcc2.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
         insert new List<Account_Bill__c>{ab, ab2};                                                     
 
-        //below used to the getStatement() method; however that is no longer in use due to problems with the code in communities - URL mapping of the parentID doesn't work.
-        //Blob bodyBlob = Blob.valueOf('testStatement');
-        //Attachment attach = new Attachment(Name = 'testStatement',
-        //                                   Body = bodyBlob,
-        //                                   ParentId = ab.Id);
-        //insert attach;
         System_Bill__c sb = new System_Bill__c(Name = opp1.Name + ' ' + sss1.Name + ' ' + billingDate1.Month() + ' ' + billingDate1.Year(),
                                                Shared_Solar_System__c = sss1.Id,
                                                Account_Bill__c = ab.Id,
@@ -255,6 +261,10 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                    Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
                                    CS_Billing_Log__c = uab.Id,
                                    Date__c = billingDate1,
+                                   Size_off_NMCs__c = true,
+                                   Share_of_System__c = 0.01,   
+                                   Total_System_Production_kWh__c = 150000,   
+                                   Total_System_NMCs__c = 150000,                             
                                    Utility_Account_Subscription__c = uas.Id,
                                    Opportunity__c = Opp1.Id,
                                    System_Bill__c = sb.Id,
@@ -266,6 +276,10 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                    Customer_Subscription_KW_DC__c = uas2.Customer_Subscription_KW_DC_STATIC__c,
                                    CS_Billing_Log__c = uab2.Id,
                                    Date__c = billingDate1,
+                                   Size_off_NMCs__c = true,
+                                   Share_of_System__c = 0.01,                                   
+                                   Total_System_Production_kWh__c = 150000, 
+                                   Total_System_NMCs__c = 150000,                                                            
                                    Utility_Account_Subscription__c = uas2.Id,
                                    Opportunity__c = Opp2.Id,
                                    System_Bill__c = sb2.Id,
