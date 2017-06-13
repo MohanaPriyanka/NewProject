@@ -37,7 +37,10 @@
                     title: {
                         display: true,
                         text: 'Community Solar Savings'
-                    },                    
+                    },      
+                    tooltips: {
+                        enabled: false
+                    },                                  
                     scales: {
                         yAxes: [{
                             stacked: true,
@@ -61,7 +64,7 @@
                         onClick: function(event, legendItem) {}
                     },
                     animation: {
-                        animateScale: true
+                        animateScale: false
                     }
                 }
             });
