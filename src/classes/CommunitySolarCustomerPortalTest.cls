@@ -1,20 +1,20 @@
 @isTest
-public without sharing class CommunitySolarCustomerPortalTest {
-    public static void setupTestData() {
+Public without sharing class CommunitySolarCustomerPortalTest {
+    @testSetup static void setupTestData() {
         Account parentAccount = new Account(Name = 'Parent Account', 
-        									Product_Line__c = 'Community Solar');
+                          Product_Line__c = 'Community Solar');
         Account parentAccount2 = new Account(Name = 'Parent Account 2', 
-        									Product_Line__c = 'Community Solar');        
+                          Product_Line__c = 'Community Solar');        
         insert new List<Account>{parentAccount, parentAccount2};        
 
         Contact con = new Contact(FirstName = 'First',
-        						              Email = 'communitiesUserContact@bluewave-capital.com',
+                                  Email = 'communitiesUserContact@bluewave-capital.com',
                                   LastName = 'Last',
                                   AccountId = parentAccount.Id, 
                                   Active_Communities_User__c = true);
         Contact con2 = new Contact(FirstName = 'First',
                                   LastName = 'Last',
-								                  Email = 'communitiesUserContact2@bluewave-capital.com',                                  
+                                  Email = 'communitiesUserContact2@bluewave-capital.com',                                  
                                   AccountId = parentAccount2.Id, 
                                   Active_Communities_User__c = true);        
         insert new List<Contact>{con, con2};
@@ -34,7 +34,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                  LocaleSidKey = 'en_US',
                                  EmailEncodingKey = 'ISO-8859-1',
                                  LanguageLocaleKey = 'en_US');
-		    User communityUser2 = new User (ProfileId = communityProfile.Id,
+        User communityUser2 = new User (ProfileId = communityProfile.Id,
                                  FirstName = 'Test2',
                                  LastName = 'BFG_User2',
                                  Username = 'communityuser2@test.com',
@@ -61,17 +61,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                       Name = 'Nation Grid WCMA Class 2 - S/F 2016',
                                       Sizing_Rate__c = true,
                                       Date__c = Date.today());
-        Utility_NMC_Tariff__c nmcBillingRate = 
-            new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 0.15,
-                                      Load_Zone__c = 'WCMA',
-                                      Utility__c = 'National Grid',
-                                      Class__c = 'Class 2',
-                                      Name = 'Nation Grid WCMA Class 2',
-                                      Sizing_Rate__c = false,
-                                      Current_Billing_Rate__c = true,
-                                      Date__c = Date.today());            
-        insert nmcRate;   
-        insert nmcBillingRate; 
+        insert nmcRate;    
 
         Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo');  
         Entity__c entitytwo = new Entity__c (Name = 'Two ProjectCo');
@@ -84,7 +74,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                        Open__c = true,
                                        BWC_Project_Entity_Manual__c = entityone.Id,
                                        Auto_Payment_Form__c = false,
-                                       ScheduleZ_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1000,
@@ -102,7 +91,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                        Open__c = true,
                                        BWC_Project_Entity_Manual__c = entitytwo.Id,
                                        Auto_Payment_Form__c = true,
-                                       ScheduleZ_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1000,
@@ -137,7 +125,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                            NMC_Tariff__c = nmcRate.id,
                                            Customer_Group__c = 'Residential',
                                            CS_Capacity_Allocated__c = 25); 
-		insert new List<Opportunity>{opp1, opp1A, opp2};                                          
+    insert new List<Opportunity>{opp1, opp1A, opp2};                                          
         
         Utility_Account_Log__c ual = 
             new Utility_Account_Log__c(Name = 'Cole Swain testUal',
@@ -152,12 +140,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
         insert new List<Utility_Account_Log__c>{ual, ual2};             
         
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(Name = 'Cole Swain testUas',
-								                                                  Utility_Account_Log__c = ual.Id,
-								                                                  Opportunity__c = opp1.Id,
-								                                                  Calculated_Annual_Cost_of_Electricity__c = 4225,
-								                                                  Subscribed_Annual_Cost_of_Electricity__c = 4225,
-								                                                  Customer_Subscription_KW_DC_STATIC__c = 25,
-								                                                  Uas_number__c = 1);    
+                                                                  Utility_Account_Log__c = ual.Id,
+                                                                  Opportunity__c = opp1.Id,
+                                                                  Calculated_Annual_Cost_of_Electricity__c = 4225,
+                                                                  Subscribed_Annual_Cost_of_Electricity__c = 4225,
+                                                                  Customer_Subscription_KW_DC_STATIC__c = 25,
+                                                                  Uas_number__c = 1);    
 
         Utility_Account_Subscription__c uas1A = new Utility_Account_Subscription__c(Name = 'Cole Swain testUas',
                                                                   Utility_Account_Log__c = ual.Id,
@@ -168,12 +156,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                                   Uas_number__c = 2);  
 
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(Name = 'Cole Swain testUas 2',
-								                                                  Utility_Account_Log__c = ual2.Id,
-								                                                  Opportunity__c = opp2.Id,
-								                                                  Calculated_Annual_Cost_of_Electricity__c = 4225,
-								                                                  Subscribed_Annual_Cost_of_Electricity__c = 4225,
-								                                                  Customer_Subscription_KW_DC_STATIC__c = 25,
-								                                                  Uas_number__c = 1);                                                 
+                                                                  Utility_Account_Log__c = ual2.Id,
+                                                                  Opportunity__c = opp2.Id,
+                                                                  Calculated_Annual_Cost_of_Electricity__c = 4225,
+                                                                  Subscribed_Annual_Cost_of_Electricity__c = 4225,
+                                                                  Customer_Subscription_KW_DC_STATIC__c = 25,
+                                                                  Uas_number__c = 1);                                                 
         insert new List<Utility_Account_Subscription__c>{uas, uas1A, uas2};
 
         Date billingDate1 = Date.newInstance(2016, 1, 1);
@@ -182,16 +170,20 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                  Date__c = billingDate1,
                                                  Parent_Account__c = propertyAcc.Id,
                                                  Bill_Number__c = 1,
-                                                 Date_Sent__c = billingDate1,
                                                  Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
         Account_Bill__c ab2 = new Account_Bill__c(Name = propertyAcc2.Name,
                                                  Date__c = billingDate1,
-                                                 Date_Sent__c = billingDate1,                                                
                                                  Parent_Account__c = propertyAcc2.Id,
                                                  Bill_Number__c = 1,
                                                  Unique_ID__c = propertyAcc2.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
         insert new List<Account_Bill__c>{ab, ab2};                                                     
 
+        //below used to the getStatement() method; however that is no longer in use due to problems with the code in communities - URL mapping of the parentID doesn't work.
+        //Blob bodyBlob = Blob.valueOf('testStatement');
+        //Attachment attach = new Attachment(Name = 'testStatement',
+        //                                   Body = bodyBlob,
+        //                                   ParentId = ab.Id);
+        //insert attach;
         System_Bill__c sb = new System_Bill__c(Name = opp1.Name + ' ' + sss1.Name + ' ' + billingDate1.Month() + ' ' + billingDate1.Year(),
                                                Shared_Solar_System__c = sss1.Id,
                                                Account_Bill__c = ab.Id,
@@ -261,10 +253,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                    Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
                                    CS_Billing_Log__c = uab.Id,
                                    Date__c = billingDate1,
-                                   Size_off_NMCs__c = true,
-                                   Share_of_System__c = 0.01,   
-                                   Total_System_Production_kWh__c = 150000,   
-                                   Total_System_NMCs__c = 150000,                             
                                    Utility_Account_Subscription__c = uas.Id,
                                    Opportunity__c = Opp1.Id,
                                    System_Bill__c = sb.Id,
@@ -276,10 +264,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                    Customer_Subscription_KW_DC__c = uas2.Customer_Subscription_KW_DC_STATIC__c,
                                    CS_Billing_Log__c = uab2.Id,
                                    Date__c = billingDate1,
-                                   Size_off_NMCs__c = true,
-                                   Share_of_System__c = 0.01,                                   
-                                   Total_System_Production_kWh__c = 150000, 
-                                   Total_System_NMCs__c = 150000,                                                            
                                    Utility_Account_Subscription__c = uas2.Id,
                                    Opportunity__c = Opp2.Id,
                                    System_Bill__c = sb2.Id,
@@ -289,33 +273,33 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                    Unique_ID__c = opp2.Shared_Solar_System__c + ' - ' + uas2.Id + ' - ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
         insert new List<UASB__c>{uasb, uasb2};
     
-	 	ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-						                                                   //Shared_Solar_System__c = sss1.Id 
-						                                                   ChargentBase__Merchant_ID__c = '235986',
-						                                                   ChargentBase__Active__c = TRUE);
-	    insert chGateway;  
+     ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                                                               //Shared_Solar_System__c = sss1.Id 
+                                                               ChargentBase__Merchant_ID__c = '235986',
+                                                               ChargentBase__Active__c = TRUE);
+      insert chGateway;  
 
-	    ChargentOrders__ChargentOrder__c chOrder  = new ChargentOrders__ChargentOrder__c(
-	    	  ChargentOrders__Account__c = propertyAcc.Id,
-	          ChargentOrders__Gateway__c = chGateway.Id,
-	          ChargentOrders__Shipping_Name__c = sss1.Id,
-	          ChargentOrders__Billing_First_Name__c = 'Cole',
-	          ChargentOrders__Billing_Last_Name__c = 'Swain',
-	          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-	          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
-	          ChargentOrders__Subtotal__c = sb.Total_Due__c,
-	          ChargentOrders__Payment_Status__c = 'Recurring',
-	          ChargentOrders__Payment_Method__c = 'Credit Card',
+      ChargentOrders__ChargentOrder__c chOrder  = new ChargentOrders__ChargentOrder__c(
+          ChargentOrders__Account__c = propertyAcc.Id,
+            ChargentOrders__Gateway__c = chGateway.Id,
+            ChargentOrders__Shipping_Name__c = sss1.Id,
+            ChargentOrders__Billing_First_Name__c = 'Cole',
+            ChargentOrders__Billing_Last_Name__c = 'Swain',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+            ChargentOrders__Subtotal__c = sb.Total_Due__c,
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Method__c = 'Credit Card',
             Account_Bill__c = ab.Id,
-	          System_Bill__c = sb.Id,
-	          ChargentOrders__Card_Type__c = 'Visa',
-	          ChargentOrders__Card_Number__c = '411111111111',
-	          ChargentOrders__Card_Security_Code__c = '999',
-	          ChargentOrders__Card_Expiration_Month__c = '02',
-	          ChargentOrders__Card_Expiration_Year__c = '2018',
-	          ChargentOrders__Card_Last_4__c = '1111');  
-	    insert chOrder;
-	   
+            System_Bill__c = sb.Id,
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111');  
+      insert chOrder;
+     
          ChargentOrders__Transaction__c chTransaction = new ChargentOrders__Transaction__c(
                                     ChargentOrders__Order__c = chOrder.id,
                                     ChargentOrders__Amount__c = 200,
@@ -334,7 +318,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         Map<String, User> userMap = new Map<String, User>();
         for (User communityUser : [SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Username 
                               FROM User]){
-        	userMap.put(communityUser.Username, communityUser);
+          userMap.put(communityUser.Username, communityUser);
         }
         
         Map<String, Account> customerAccountMap = new Map<String, Account>();
@@ -351,27 +335,27 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
         Map<String, Contact> contactMap = new Map<String, Contact>();
         for (Contact cont : [SELECT Id, Name, Email,Referral_Code__c 
-        					 FROM Contact]){
-        	contactMap.put(cont.Email, cont);
+                   FROM Contact]){
+          contactMap.put(cont.Email, cont);
         }
 
         Map<String, Account_Bill__c> accountBillMap = new Map<String, Account_Bill__c>();
         for (Account_Bill__c ab : [SELECT Id, Name
-        						   FROM Account_Bill__c]){
-        	accountBillMap.put(ab.Name, ab);
+                       FROM Account_Bill__c]){
+          accountBillMap.put(ab.Name, ab);
         }
         system.debug(accountBillMap);
         
         Map<String, System_Bill__c> systemBillMap = new Map<String, System_Bill__c>();
         for (System_Bill__c sb : [SELECT Id, Total_Due__c, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Shared_Solar_System__r.Id,  
                                         Bill_Number__c, Name, FormAssembly_Order_Helper__c, Form_ID_Helper__c
-        						              FROM System_Bill__c]){
-        	systemBillMap.put(sb.Shared_Solar_System__r.Name, sb);
+                                  FROM System_Bill__c]){
+          systemBillMap.put(sb.Shared_Solar_System__r.Name, sb);
         }    
         system.debug(systemBillMap);
 
         ChargentOrders__Transaction__c chTransaction = [SELECT Id, Name 
-                                      				    FROM ChargentOrders__Transaction__c];                                                                            
+                                                  FROM ChargentOrders__Transaction__c];                                                                            
         Test.startTest();
           System.runAs(userMap.get('communityuser@test.com')){
             //test the getMenuLabeList() method
@@ -428,40 +412,39 @@ public without sharing class CommunitySolarCustomerPortalTest {
             //test the getMyParentAccountId() method
             Id parentAccountId = MyAccountController.getMyParentAccountId(
             String.valueOf(customerAccountMap.get('Parent Account').Id));
-    				System.assertEquals(parentAccountId, String.valueOf(customerAccountMap.get('Parent Account').Id));
+            System.assertEquals(parentAccountId, String.valueOf(customerAccountMap.get('Parent Account').Id));
 
-    				//test the getAccountBills() method
-    				List<Account_Bill__c> accountBillPrAccRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills(
-    				String.valueOf(customerAccountMap.get('Property Account').Id)));
-    				System.assertEquals(accountBillPrAccRespList.get(0).Id, accountBillMap.get('Property Account').Id);
-    				List<Account_Bill__c> accountBillAllRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills('All'));
-    				System.assertEquals(accountBillAllRespList.get(0).Id, accountBillMap.get('Property Account').Id);
+            //test the getAccountBills() method
+            List<Account_Bill__c> accountBillPrAccRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills(
+            String.valueOf(customerAccountMap.get('Property Account').Id)));
+            System.assertEquals(accountBillPrAccRespList.get(0).Id, accountBillMap.get('Property Account').Id);
+            List<Account_Bill__c> accountBillAllRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills('All'));
+            System.assertEquals(accountBillAllRespList.get(0).Id, accountBillMap.get('Property Account').Id);
 
-    				//test the getTransactions() method
-    				List<ChargentOrders__Transaction__c> transactionPrAccRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions(
-    					String.valueOf(customerAccountMap.get('Property Account').Id)));
-    				System.assertEquals(transactionPrAccRespList.get(0).Id, chTransaction.Id);
-    				List<ChargentOrders__Transaction__c> transactionAllRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions('All'));
-    				System.assertEquals(transactionAllRespList.get(0).Id, chTransaction.Id);
+            //test the getTransactions() method
+            List<ChargentOrders__Transaction__c> transactionPrAccRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions(
+              String.valueOf(customerAccountMap.get('Property Account').Id)));
+            System.assertEquals(transactionPrAccRespList.get(0).Id, chTransaction.Id);
+            List<ChargentOrders__Transaction__c> transactionAllRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions('All'));
+            System.assertEquals(transactionAllRespList.get(0).Id, chTransaction.Id);
 
-    				//test the getCode() method
-    				String referralCode = MyAccountController.getCode();
-    				System.assertEquals(referralCode, 'bluewaveFLast');
+            //test the getCode() method
+            String referralCode = MyAccountController.getCode();
+            System.assertEquals(referralCode, 'bluewaveFLast');
 
-    				//test the getOpportunyIds() method
-    				List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
-    				System.assertEquals(opportunityRespList.get(0).Id, opportunityMap.get('Opp1A').Id);
+            //test the getOpportunyIds() method
+            List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
             system.assertEquals(opportunityRespList.size(), 2);
 
-    				//test the sendEmail() method
-    				MyAccountController.sendEmail('test@test.test');
+            //test the sendEmail() method
+            MyAccountController.sendEmail('test@test.test');
 
             //test the getPaymentFormCheck method for User 1
             Boolean paymentFormCheckResp = MyAccountController.getPaymentFormCheck();
             System.assertEquals(paymentFormCheckResp, false);
           }
           System.runAs(userMap.get('communityuser2@test.com')){
-        	//test the getPaymentFormCheck method for User 2
+          //test the getPaymentFormCheck method for User 2
             Boolean paymentFormCheckResp = MyAccountController.getPaymentFormCheck();
             System.assertEquals(paymentFormCheckResp, true);
           }
