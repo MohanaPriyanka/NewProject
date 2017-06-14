@@ -5,7 +5,7 @@ public without sharing class SLPQuickSalesSheetTest{
     insert accountOne;
                             
     Contact con = new Contact(FirstName = 'First',
-                                    Email = 'user@bluewave-capital.com',
+                                    Email = 'bw421356@test.com',
                                     LastName = 'Last',
                                     AccountId = accountOne.Id, 
                                     Active_Communities_User__c = true);
@@ -17,8 +17,8 @@ public without sharing class SLPQuickSalesSheetTest{
     User communityUser = new User ( ProfileId = partnerProfile.Id,
                                    FirstName = 'Test',
                                    LastName = 'BFG_User',
-                                   Username = 'communityuser@test.com',
-                                   Email = 'communityuser@test.com',
+                                   Username = 'bw421356@test.com',
+                                   Email = 'bw421356@test.com',
                                    Alias = 'bfg_usr',
                                    ContactId = con.Id,
                                    CommunityNickname = 'bfg_usr',
@@ -52,25 +52,26 @@ public without sharing class SLPQuickSalesSheetTest{
       // Community User makes the QSS
       System.runAs(communityUser){
         SLPQuickSalesSheetHandler.getActiveProducts();
-        Quick_Sales_Sheet__c qssnew = new Quick_Sales_Sheet__c (Loan_Principal__c = 40000,
+        Quick_Sales_Sheet__c qssnew = new Quick_Sales_Sheet__c (System_Cost__c = 40000,
+                                                                Down_Payment__c = 2000,
                                                                 Product__c = productRecord.Id);
         SLPQuickSalesSheetHandler.addNewQSS(qssnew);
       }
 
       // Conga runs as a System Admin
-      ContentVersion salesDocCV = new ContentVersion (Title ='Quick Sales Sheet',
-                                                      PathOnClient='/Quick Sales Sheet.pdf' );
+      ContentVersion salesDocCV = new ContentVersion (Title ='Loan Summary Sheet.pdf',
+                                                      PathOnClient='/Loan Summary Sheet.pdf' );
       salesDocCV.VersionData = Blob.valueOf('This is the body of the pdf');
       insert salesDocCV;
       ContentVersion testContent = [SELECT ContentDocumentId FROM ContentVersion where Id = :salesDocCV.Id]; 
-      Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Principal__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
+      Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
       ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                               LinkedEntityId = qssInserted.Id,
                                                               ShareType = 'V' );
       insert newLink;
       List<ContentDistribution> distList = [SELECT Name, ContentVersionId
                                             FROM ContentDistribution];
-      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Loan_Principal__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
+      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
       system.AssertNotEquals('notgenerated', qssUpdated.Link_to_File__c);
       system.AssertNotEquals(0, distList.size());
 
