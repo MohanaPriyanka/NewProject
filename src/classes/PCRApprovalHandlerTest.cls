@@ -283,7 +283,7 @@ private class PCRApprovalHandlerTest {
                         Partner_Lookup__c = partnerId,
                         Annual_Income_Currency__c = annualIncome,
                         Loan_Amount__c = loanAmount,
-                        System_Cost__c = loanAmount,
+                        Requested_Loan_Amount__c = loanAmount,
                         Product__c = productId,
                         DOER_Solar_Loan__c = doerLoan,
                         Product_Line__c = 'Residential Loan',

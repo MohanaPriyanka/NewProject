@@ -55,7 +55,7 @@ Static testMethod void loanPipeLineConvert ()
                                     LASERCA__Social_Security_Number__c = '000000001',
                                     Product_Line__c = 'Residential Loan',
                                     LASERCA__Home_State__c = 'MA',
-                                    System_Cost__c = 25000,
+                                    Requested_Loan_Amount__c = 25000,
                                     Unfinished_Lead__c = true,
                                     Custom_Id__c = 'test',
                                     Loan_Term__c = 120,

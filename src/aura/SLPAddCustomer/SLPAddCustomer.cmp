@@ -68,7 +68,7 @@
     'LASERCA__Home_Zip__c': '',
     'Email': '',
     'LASERCA__Social_Security_Number__c': '',
-    'System_Cost__c':'',
+    'Requested_Loan_Amount__c':'',
     'DOER_Solar_Loan__c':'',
     'Annual_Income_Currency__c':'',
     'Credit_Check_Acknowledged__c':'',
@@ -80,6 +80,7 @@
     'Unfinished_Lead__c':'true',
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
+    'System_Cost__c':'',
     }"/>
 <!--
     Enable during development for convenience
@@ -93,7 +94,7 @@
     'LASERCA__Home_Zip__c': '02144',
     'Email': 'py@sdf.com',
     'LASERCA__Social_Security_Number__c': '000000001',
-    'System_Cost__c':'100',
+    'Requested_Loan_Amount__c':'100',
     'DOER_Solar_Loan__c':'',
     'Annual_Income_Currency__c':'10000',
     'Credit_Check_Acknowledged__c':true,
@@ -261,16 +262,35 @@
           </div>
         </div>
       </fieldset>
-      <br></br>
       <hr></hr>
-      <br></br>
+      <fieldset class="slds-form--compound">
+        <div class="slds-form-element__group">
+          <div class="slds-form-element__row">
+            <div class="slds-form-element slds-p-horizontal--small">
+              <label class="slds-form-element__label" for="input-03">Requested Loan Amount</label>
+              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />          
+            </div>                                      
+            <div class="slds-form-element slds-p-horizontal--small">
+              <label class="slds-form-element__label" for="input-03">System Cost</label>
+              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />          
+            </div>             
+          </div>
+        </div>
+      </fieldset>  
+      <hr></hr>      
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                   
             <div class="slds-form-element slds-p-horizontal--small ">
               <label class="slds-form-element__label" for="input-03">Social Security Number</label>
               <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__Social_Security_Number__c}" required="true"/>
-            </div>  
+            </div> 
+            <div class="slds-form-element slds-p-horizontal--small">
+              <label class="slds-form-element__label" for="input-03">Estimated Annual Income</label>
+              <ui:inputCurrency aura:id="income" class="slds-input" value="{!v.newLead.Annual_Income_Currency__c}" required="true"  />  
+            </div> 
+          </div>     
+          <div class="slds-form-element__row">                   
             <div class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
                 <label class="slds-form-element__label" for="creditToggle">I give BlueWave and Avidia Bank permission to access my credit history.</label>
@@ -285,20 +305,6 @@
           </div>
         </div>
       </fieldset>
-      <fieldset class="slds-form--compound">
-        <div class="slds-form-element__group">
-          <div class="slds-form-element__row">
-            <div class="slds-form-element slds-p-horizontal--small">
-              <label class="slds-form-element__label" for="input-03">Requested Loan Amount</label>
-              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />          
-            </div>                     
-            <div class="slds-form-element slds-p-horizontal--small">
-              <label class="slds-form-element__label" for="input-03">Estimated Annual Income</label>
-              <ui:inputCurrency aura:id="income" class="slds-input" value="{!v.newLead.Annual_Income_Currency__c}" required="true"  />  
-            </div>                  
-          </div>
-        </div>
-      </fieldset>  
       <hr></hr>
       <a href="http://bluewavesolar.com/about-us/privacy-policy/" class="slds-p-horizontal--small"> Click here to view our Privacy Policy</a>
       <fieldset class="slds-form--compound">
@@ -419,7 +425,7 @@
             <div class="slds-form-element__row">
               <div class="slds-form-element slds-p-horizontal--small">
                 <label class="slds-form-element__label">Requested Loan Amount</label>
-                <ui:outputCurrency class="slds-output" value="{!v.newLead.System_Cost__c}"/>
+                <ui:outputCurrency class="slds-output" value="{!v.newLead.Requested_Loan_Amount__c}"/>
               </div>
               <div class="slds-form-element slds-p-horizontal--small">
                 <label class="slds-form-element__label">Estimated Annual Income</label>

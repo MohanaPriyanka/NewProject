@@ -267,7 +267,7 @@ public without sharing class LoanHandler{
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
                         Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
-                        System_Costt__c = newLeadList.get(i).System_Cost__c,
+                        System_Costt__c = newLeadList.get(i).Requested_Loan_Amount__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
                         Lead_ID__c = newLeadList.get(i).Id,
@@ -287,7 +287,7 @@ public without sharing class LoanHandler{
                         //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
                         Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
-                        System_Costt__c = newLeadList.get(i).System_Cost__c,
+                        System_Costt__c = newLeadList.get(i).Requested_Loan_Amount__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
                         Lead_ID__c = newLeadList.get(i).Id,
@@ -617,7 +617,7 @@ public without sharing class LoanHandler{
         
         for (Loan__c loanRecord : [SELECT Id, Name, System_Costt__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c, State__c,
                                    Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
-                                   Lead__r.System_Cost__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
+                                   Lead__r.Requested_Loan_Amount__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
                                    Sales_Agent__r.Id 
                                    FROM Loan__c 
                                    WHERE Id IN : newLoanList]){
@@ -935,13 +935,13 @@ public without sharing class LoanHandler{
         }
 
         for (Residential_Equipment__c equipment : [SELECT Id, Lead__c, Lead__r.Id, Loan__c, Loan__r.Id, Loan__r.Commencement_Datee__c,
-                                                    Lead__r.System_Cost__c, Type_of_Module__c, Type_of_Inverter__c,
+                                                    Lead__r.Requested_Loan_Amount__c, Type_of_Module__c, Type_of_Inverter__c,
                                                     Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
                                                     Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Inverter_Model_Number__c 
                                                    FROM Residential_Equipment__c
                                                    WHERE Lead__c IN : leadIdList]){
             taskUniqueId = equipment.Lead__r.Id + ' ' + 'Provide all System Information';
-            if(equipment.Lead__r.System_Cost__c > 0 
+            if(equipment.Lead__r.Requested_Loan_Amount__c > 0 
                 && equipment.Module_Manufacturer__c != null
                 && equipment.Module_Model_Number__c != null
                 && equipment.Number_of_Modules__c != null

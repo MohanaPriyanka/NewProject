@@ -270,7 +270,7 @@ public without sharing class SLPCustomerHandler {
     update loanRecord;
 
     //update the lead record update dummy to run the partner task validation to update the status of the customer's process.
-    Lead leadRecord = [SELECT Id, Update_Dummy__c, System_Cost__c 
+    Lead leadRecord = [SELECT Id, Update_Dummy__c, Requested_Loan_Amount__c 
                        FROM Lead 
                        WHERE Id = : equipmentRecord.Lead__r.Id];
     if(leadRecord.Update_Dummy__c == true){
