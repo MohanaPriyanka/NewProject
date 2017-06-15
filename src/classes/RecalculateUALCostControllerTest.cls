@@ -40,7 +40,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -56,7 +55,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1000,
@@ -68,7 +66,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P3',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -80,7 +77,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P4',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 1200,
@@ -92,7 +88,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P5',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = true,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -103,7 +98,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Closed Schedule Zed P1',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = false,
-                                       Schedule_Z_Filed__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -114,7 +108,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Closed Schedule Zed P2',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = false,
-                                       Schedule_Z_Filed__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -125,7 +118,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Closed Not Zed P1',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = false,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -136,7 +128,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Closed Not Zed P2',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = false,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -151,7 +142,6 @@ public class RecalculateUALCostControllerTest {
             new Shared_Solar_System__c(Name = 'Closed Not Zed P3',
                                        Service_Territory__c = 'WCMA',
                                        Open__c = false,
-                                       Schedule_Z_Filed__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
                                        Total_System_Size_kWh_DC__c = 800,
@@ -163,6 +153,19 @@ public class RecalculateUALCostControllerTest {
                                        Maximum_Subscription_Assemblage__c = 25,
                                        Assignment_order__c = '5');
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5, sss6, sss7, sss8, sss9, sss10};
+
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(Name = 'ScheduleZ1',
+                                            Shared_Solar_System__c = sss6.id, 
+                                            Date_Submitted_to_Utility__c = System.today(),
+                                            Status__c = 'Enacted by Utility');
+        insert scheduleZ1;
+
+        Schedule_Z__c scheduleZ2 = new Schedule_Z__c(Name = 'ScheduleZ2',
+                                            Shared_Solar_System__c = sss7.id,
+                                            Date_Submitted_to_Utility__c = System.today(),
+                                            Status__c = 'Enacted by Utility');
+        insert scheduleZ2;
+
 
         Opportunity opp1 = new Opportunity(Name = 'Opp1',
                                            StageName = 'Closed won',
@@ -344,7 +347,8 @@ public class RecalculateUALCostControllerTest {
         ApexPages.currentPage().getParameters().put('adminMode', '1');
 
         RecalculateUALCostController theController = new RecalculateUALCostController();
-        
+      
+
         Utility_Account_Subscription__c uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8, uas9, uas10, uas11, uas12;
         Id sssToBeOpenedId, sssToKeepAsClosedId, sssToBeClosedId;
         Shared_Solar_System__c sssToBeOpened, sssToKeepAsClosed, sssToBeClosed;
@@ -379,6 +383,7 @@ public class RecalculateUALCostControllerTest {
             } else if (uasAction.uas.Name == 'uas7') {
                 uas7 = uasAction.uas.clone(true,false,false,false);
                 System.assertEquals(uasAction.uas.Custom_Deduction_Order__c, 11);
+                //System.assertEquals(uasAction.uas.Custom_Deduction_Order__c, 6);
             } else if (uasAction.uas.Name == 'uas8') {
                 uas8 = uasAction.uas.clone(true,false,false,false);
                 System.assertEquals(uasAction.uas.Custom_Deduction_Order__c, 7);
@@ -561,7 +566,7 @@ public class RecalculateUALCostControllerTest {
         uasList = [SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Custom_Deduction_Order__c
                    FROM Utility_Account_Subscription__c
                    WHERE Opportunity__r.Shared_Solar_System__r.Open__c = true
-                   AND Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c = false
+                   AND Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c = false
                    AND Utility_Account_Log__c = :ual.Id];
 
         for (Utility_Account_Subscription__c uas : uasList) {

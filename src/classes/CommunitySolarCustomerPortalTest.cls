@@ -412,28 +412,29 @@ Public without sharing class CommunitySolarCustomerPortalTest {
             //test the getMyParentAccountId() method
             Id parentAccountId = MyAccountController.getMyParentAccountId(
             String.valueOf(customerAccountMap.get('Parent Account').Id));
-            System.assertEquals(parentAccountId, String.valueOf(customerAccountMap.get('Parent Account').Id));
 
-            //test the getAccountBills() method
-            List<Account_Bill__c> accountBillPrAccRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills(
-            String.valueOf(customerAccountMap.get('Property Account').Id)));
-            System.assertEquals(accountBillPrAccRespList.get(0).Id, accountBillMap.get('Property Account').Id);
-            List<Account_Bill__c> accountBillAllRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills('All'));
-            System.assertEquals(accountBillAllRespList.get(0).Id, accountBillMap.get('Property Account').Id);
+    				System.assertEquals(parentAccountId, String.valueOf(customerAccountMap.get('Parent Account').Id));
 
-            //test the getTransactions() method
-            List<ChargentOrders__Transaction__c> transactionPrAccRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions(
-              String.valueOf(customerAccountMap.get('Property Account').Id)));
-            System.assertEquals(transactionPrAccRespList.get(0).Id, chTransaction.Id);
-            List<ChargentOrders__Transaction__c> transactionAllRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions('All'));
-            System.assertEquals(transactionAllRespList.get(0).Id, chTransaction.Id);
+    				//test the getAccountBills() method
+    				List<Account_Bill__c> accountBillPrAccRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills(
+    				String.valueOf(customerAccountMap.get('Property Account').Id)));
+    				System.assertEquals(accountBillPrAccRespList.get(0).Id, accountBillMap.get('Property Account').Id);
+    				List<Account_Bill__c> accountBillAllRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills('All'));
+    				System.assertEquals(accountBillAllRespList.get(0).Id, accountBillMap.get('Property Account').Id);
 
-            //test the getCode() method
-            String referralCode = MyAccountController.getCode();
-            System.assertEquals(referralCode, 'bluewaveFLast');
+    				//test the getTransactions() method
+    				List<ChargentOrders__Transaction__c> transactionPrAccRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions(
+    					String.valueOf(customerAccountMap.get('Property Account').Id)));
+    				System.assertEquals(transactionPrAccRespList.get(0).Id, chTransaction.Id);
+    				List<ChargentOrders__Transaction__c> transactionAllRespList = new List<ChargentOrders__Transaction__c>(MyAccountController.getTransactions('All'));
+    				System.assertEquals(transactionAllRespList.get(0).Id, chTransaction.Id);
 
-            //test the getOpportunyIds() method
-            List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
+    				//test the getCode() method
+    				String referralCode = MyAccountController.getCode();
+    				System.assertEquals(referralCode, 'bluewaveFLast');
+
+    				//test the getOpportunyIds() method
+    				List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
             system.assertEquals(opportunityRespList.size(), 2);
 
             //test the sendEmail() method
