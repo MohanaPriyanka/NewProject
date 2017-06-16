@@ -103,7 +103,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
-        loanListToUpdate[0].System_Costt__c = null;
+        loanListToUpdate[0].Requested_Loan_Amount__c = null;
         update loanListToUpdate;
 
         for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
@@ -482,7 +482,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
-        loanListToUpdate[0].System_Costt__c = null;
+        loanListToUpdate[0].Requested_Loan_Amount__c = null;
         update loanListToUpdate;
         for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
                                                         Number_of_Inverters__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,  
@@ -775,12 +775,12 @@ public class LoanHandlerTestClass {
         System.assertEquals(3, opps.size());
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(opps);
 
-        List<Loan__c> loans = [SELECT Id, System_Costt__c, Opportunity__c
+        List<Loan__c> loans = [SELECT Id, Requested_Loan_Amount__c, Opportunity__c
                                FROM Loan__c];
         System.assertEquals(3, loans.size());
         
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.Requested_Loan_Amount__c);
         }
 
         for (Opportunity opp : opps) {
@@ -789,10 +789,10 @@ public class LoanHandlerTestClass {
         update opps;
         oppMap = new Map<Id, Opportunity>(opps);
         
-        loans = [SELECT Id, System_Costt__c, Opportunity__c
+        loans = [SELECT Id, Requested_Loan_Amount__c, Opportunity__c
                  FROM Loan__c];
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.Requested_Loan_Amount__c);
         }
     }
 

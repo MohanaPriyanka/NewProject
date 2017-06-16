@@ -129,7 +129,7 @@ public without sharing class LoanHandler{
         if (!completedOppIds.isEmpty()){
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c, 
                                                         Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c, 
-                                                        System_Costt__c, Partner__c, State__c, Lead_ID__c, Product__c, 
+                                                        Requested_Loan_Amount__c, Partner__c, State__c, Lead_ID__c, Product__c, 
                                                         Product__r.Loan_Term__c, Product__r.Loan_Interest_Only_Period__c,
                                                         Technology_Platform_Fee__c
                                                        FROM Loan__c 
@@ -143,14 +143,14 @@ public without sharing class LoanHandler{
         // System Cost can change on the Opportunity because of customer downpayments - we pull that
         // field into DocuSign.
         if (!oppsWithSystemCostChange.isEmpty()){
-            List<Loan__c> checkSystemCostLoans = [SELECT Id, Opportunity__c, System_Costt__c
+            List<Loan__c> checkSystemCostLoans = [SELECT Id, Opportunity__c, Requested_Loan_Amount__c
                                                   FROM Loan__c
                                                   WHERE Opportunity__r.Id IN : oppsWithSystemCostChange];
             List<Loan__c> systemCostLoansToUpdate = new List<Loan__c>();
             for (Loan__c systemCostLoan : checkSystemCostLoans) {
-                if (systemCostLoan.System_Costt__c != 
+                if (systemCostLoan.Requested_Loan_Amount__c != 
                     updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c) {
-                    systemCostLoan.System_Costt__c = 
+                    systemCostLoan.Requested_Loan_Amount__c = 
                         updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c;
                     systemCostLoansToUpdate.add(systemCostLoan);
                 }
@@ -243,7 +243,6 @@ public without sharing class LoanHandler{
                 }         
             }
         }
-        //List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(newLoanList));    
         insert newEquipmentList;
     }
 
@@ -264,10 +263,10 @@ public without sharing class LoanHandler{
                         Interest_Ratee__c = newLeadLIst.get(i).Product__r.Loan_Interest_rate__c,
                         Unique_ID__c = newLeadList.get(i).id,
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
-                        //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
                         Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
-                        System_Costt__c = newLeadList.get(i).Requested_Loan_Amount__c,
+                        Requested_Loan_Amount__c = newLeadList.get(i).Requested_Loan_Amount__c,
+                        System_Costt__c = newLeadList.get(i).System_Cost__c,
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
                         Lead_ID__c = newLeadList.get(i).Id,
@@ -284,10 +283,10 @@ public without sharing class LoanHandler{
                         Interest_Ratee__c = newLeadLIst.get(i).Product__r.Loan_Interest_rate__c,
                         Unique_ID__c = newLeadList.get(i).id,
                         Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
-                        //Principall__c = newLeadList.get(i).Loan_Principal__c,
                         Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
                         Technology_Platform_Fee__c = newLeadList.get(i).Technology_Platform_Fee__c,
-                        System_Costt__c = newLeadList.get(i).Requested_Loan_Amount__c,
+                        Requested_Loan_Amount__c = newLeadList.get(i).Requested_Loan_Amount__c,
+                        System_Costt__c = newLeadList.get(i).System_Cost__c,                        
                         Partner__c = newLeadList.get(i).Partner_Lookup__c,
                         State__c = newLeadList.get(i).LASERCA__Home_State__c,
                         Lead_ID__c = newLeadList.get(i).Id,
@@ -296,7 +295,6 @@ public without sharing class LoanHandler{
                 }         
             }
         }
-        //List<Loan__c> tranchedLoans = new List<Loan__c> (assignLoanTranche(newLoanList));    
         upsert new list<Loan__c>(newLoanList) Unique_ID__c;
         assignResidentialEquipmentToLoan(newLoanList);
     }
@@ -428,7 +426,7 @@ public without sharing class LoanHandler{
                     if(trancheRecord.State__c == loanRecord.State__c && 
                         trancheRecord.Loan_Data__r.Id == loanProductMap.get(loanRecord.Id).Loan_Capital_Pool__r.Id &&                        
                         trancheRecord.Tranche_Type__c == loanProductMap.get(loanRecord.Id).Loan_Tranche_type__c){   
-                        if(trancheRecord.Available_Capital__c >= loanRecord.System_Costt__c){
+                        if(trancheRecord.Available_Capital__c >= loanRecord.Requested_Loan_Amount__c){
                             loanRecord.Loan_Tranche__c = trancheRecord.Id;
                             tranchedLoans.add(loanRecord);
                         }else{
@@ -473,7 +471,7 @@ public without sharing class LoanHandler{
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
         Decimal systemCost;
         String disbursalName;
-        for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, System_Costt__c, Partner__r.Id, Partner__r.Name, 
+        for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, 
                                     Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c, Sales_Agent__r.Id 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
@@ -483,8 +481,8 @@ public without sharing class LoanHandler{
             //      Disbursal_Count__c = 3
             //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
-                if(loanRecord.System_Costt__c != null && loanRecord.System_Costt__c > 0) {
-                    systemCost = loanRecord.System_Costt__c;
+                if(loanRecord.Requested_Loan_Amount__c != null && loanRecord.Requested_Loan_Amount__c > 0) {
+                    systemCost = loanRecord.Requested_Loan_Amount__c;
                 }else {
                     systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
                 }
@@ -615,7 +613,7 @@ public without sharing class LoanHandler{
         parentPartnerTaskRecordType = [SELECT Id FROM RecordType WHERE Name = 'Parent Partner Task' AND SobjectType = 'Partner_Task__c' LIMIT 1];
         childPartnerTaskRecordType = [SELECT Id FROM RecordType WHERE Name = 'Child Partner Task' AND SobjectType = 'Partner_Task__c' LIMIT 1];
         
-        for (Loan__c loanRecord : [SELECT Id, Name, System_Costt__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c, State__c,
+        for (Loan__c loanRecord : [SELECT Id, Name, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c, State__c,
                                    Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
                                    Lead__r.Requested_Loan_Amount__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
                                    Sales_Agent__r.Id 

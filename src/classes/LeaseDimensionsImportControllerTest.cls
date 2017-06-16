@@ -22,7 +22,7 @@ public with sharing class LeaseDimensionsImportControllerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.parse('1/1/2017'),
                                    First_Payment_Due_Date_Override__c = Date.parse('2/1/2017'));
