@@ -39,7 +39,7 @@
         BSST__c salesIdQuery = [SELECT id FROM Bsst__c WHERE Name = 'Cole Swain'];
 
         Opportunity newOp = new Opportunity(name ='Cole Swain', email__c ='cswain@bluewave-capital.com', 
-                                            commencement_date__c = myDate, account = newAccount, Loan_Principle__c = 25000, 
+                                            commencement_date__c = myDate, account = newAccount, Requested_Loan_Amount__c = 25000, 
                                             stageName = 'new', type = 'New Business', closeDate = myDate, 
                                             loan_traunch__c = loanTranchePending.id ) ;
 

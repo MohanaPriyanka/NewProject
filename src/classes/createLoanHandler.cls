@@ -34,7 +34,8 @@ public with sharing class createLoanHandler {
                         Opportunity__c = newOppList.get(i).Id,
                         Origination_datee__c = newOppList.get(i).Origination_date__c,
                         Principall__c = newOppList.get(i).Loan_Amount_Financed__c,
-                        Requested_Loan_Amount__c = newOppList.get(i).Loan_Principle__c,
+                        Requested_Loan_Amount__c = newOppList.get(i).Requested_Loan_Amount__c,
+                        System_Costt__c = newOppList.get(i).Loan_Principle__c,
                         BlueWave_Capital__c = TRUE,
                         Partner__c = newOppList.get(i).Partner_tag_lookup__c,
                         State__c = newOppList.get(i).State_ab__c);
@@ -54,7 +55,8 @@ public with sharing class createLoanHandler {
                         Partner__c = newOppList.get(i).Partner_tag_lookup__c,
                         Origination_datee__c = newOppList.get(i).Origination_date__c,
                         Principall__c = newOppList.get(i).Loan_Amount_Financed__c,
-                        Requested_Loan_Amount__c = newOppList.get(i).Loan_Principle__c,
+                        Requested_Loan_Amount__c = newOppList.get(i).Requested_Loan_Amount__c,
+                        System_Costt__c = newOppList.get(i).Loan_Principle__c,                        
                         State__c = newOppList.get(i).State_ab__c);
                     
                     newLoanSet.add(loan);

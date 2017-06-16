@@ -770,7 +770,7 @@ public class LoanHandlerTestClass {
         
         convertLeads(leadList);
 
-        List<Opportunity> opps = [SELECT Id, Loan_Principle__c
+        List<Opportunity> opps = [SELECT Id, Requested_Loan_Amount__c
                                   FROM Opportunity];
         System.assertEquals(3, opps.size());
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(opps);
@@ -780,11 +780,11 @@ public class LoanHandlerTestClass {
         System.assertEquals(3, loans.size());
         
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.Requested_Loan_Amount__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Requested_Loan_Amount__c, loan.Requested_Loan_Amount__c);
         }
 
         for (Opportunity opp : opps) {
-            opp.Loan_Principle__c = opp.Loan_Principle__c + 10;
+            opp.Requested_Loan_Amount__c = opp.Requested_Loan_Amount__c + 10;
         }
         update opps;
         oppMap = new Map<Id, Opportunity>(opps);
@@ -792,7 +792,7 @@ public class LoanHandlerTestClass {
         loans = [SELECT Id, Requested_Loan_Amount__c, Opportunity__c
                  FROM Loan__c];
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.Requested_Loan_Amount__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Requested_Loan_Amount__c, loan.Requested_Loan_Amount__c);
         }
     }
 

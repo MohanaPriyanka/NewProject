@@ -97,8 +97,8 @@ public without sharing class LoanHandler{
             if (newOpp.StageName == 'Complete' && oldOpportunityMap.get(newOpp.Id).StageName != 'Complete' && newOpp.Product_Line__c == 'Residential Loan') {
                 completedOppIds.add(newOpp.Id);
             }
-            if (newOpp.Loan_Principle__c != null && 
-                newOpp.Loan_Principle__c != oldOpportunityMap.get(newOpp.Id).Loan_Principle__c) {
+            if (newOpp.Requested_Loan_Amount__c != null && 
+                newOpp.Requested_Loan_Amount__c != oldOpportunityMap.get(newOpp.Id).Requested_Loan_Amount__c) {
                 oppsWithSystemCostChange.add(newOpp.Id);
             }
             if (newOpp.Contract_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Contract_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
@@ -149,9 +149,9 @@ public without sharing class LoanHandler{
             List<Loan__c> systemCostLoansToUpdate = new List<Loan__c>();
             for (Loan__c systemCostLoan : checkSystemCostLoans) {
                 if (systemCostLoan.Requested_Loan_Amount__c != 
-                    updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c) {
+                    updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Requested_Loan_Amount__c) {
                     systemCostLoan.Requested_Loan_Amount__c = 
-                        updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Loan_Principle__c;
+                        updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Requested_Loan_Amount__c;
                     systemCostLoansToUpdate.add(systemCostLoan);
                 }
             }
@@ -472,7 +472,7 @@ public without sharing class LoanHandler{
         Decimal systemCost;
         String disbursalName;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, 
-                                    Product__r.Disbursal_Terms__c, Opportunity__r.Loan_Principle__c, Sales_Agent__r.Id 
+                                    Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id 
                                     FROM Loan__c 
                                     WHERE Id IN : newLoanList]){
             // make this code more efficient by creating fields on the product that allow the user to select :
@@ -484,7 +484,7 @@ public without sharing class LoanHandler{
                 if(loanRecord.Requested_Loan_Amount__c != null && loanRecord.Requested_Loan_Amount__c > 0) {
                     systemCost = loanRecord.Requested_Loan_Amount__c;
                 }else {
-                    systemCost = loanRecord.Opportunity__r.Loan_Principle__c;
+                    systemCost = loanRecord.Opportunity__r.Requested_Loan_Amount__c;
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
                     
