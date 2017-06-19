@@ -327,7 +327,8 @@
                                   <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
                                   <ui:inputDate aura:id="commencementDateChanger" 
                                     class="slds-input" 
-                                    displayDatePicker="true"
+                                    format="MM/DD/YYYY"
+                                    displayDatePicker="false"                                    
                                     value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"                         
                                     />       
                                   </div>                     
@@ -382,7 +383,8 @@
                                     <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
                                     <ui:inputDate aura:id="MechInstallDate" 
                                       class="slds-input" 
-                                      displayDatePicker="true"
+                                      format="MM/DD/YYYY"
+                                      displayDatePicker="false"
                                       value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
                                       />       
                                     </div>                                                                                      
@@ -390,7 +392,8 @@
                                       <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
                                       <ui:inputDate aura:id="interconnectionDateChanger" 
                                         class="slds-input" 
-                                        displayDatePicker="true"
+                                        format="MM/DD/YYYY"
+                                        displayDatePicker="false"                                        
                                         value="{!v.customerInformation.Interconnection_Date__c}"                         
                                         />       
                                       </div>                                           

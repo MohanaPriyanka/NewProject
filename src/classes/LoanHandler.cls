@@ -143,20 +143,20 @@ public without sharing class LoanHandler{
         // System Cost can change on the Opportunity because of customer downpayments - we pull that
         // field into DocuSign.
         if (!oppsWithRequestedLoanAmountChange.isEmpty()){
-            List<Loan__c> checkSystemCostLoans = [SELECT Id, Opportunity__c, Requested_Loan_Amount__c
+            List<Loan__c> checkRequestedLoanAmountLoans = [SELECT Id, Opportunity__c, Requested_Loan_Amount__c
                                                   FROM Loan__c
                                                   WHERE Opportunity__r.Id IN : oppsWithRequestedLoanAmountChange];
-            List<Loan__c> systemCostLoansToUpdate = new List<Loan__c>();
-            for (Loan__c systemCostLoan : checkSystemCostLoans) {
-                if (systemCostLoan.Requested_Loan_Amount__c != 
-                    updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Requested_Loan_Amount__c) {
-                    systemCostLoan.Requested_Loan_Amount__c = 
-                        updatedOpportunityMap.get(systemCostLoan.Opportunity__c).Requested_Loan_Amount__c;
-                    systemCostLoansToUpdate.add(systemCostLoan);
+            List<Loan__c> requestedLoanAmountLoansToUpdate = new List<Loan__c>();
+            for (Loan__c requestedLoanAmountLoan : checkRequestedLoanAmountLoans) {
+                if (requestedLoanAmountLoan.Requested_Loan_Amount__c != 
+                    updatedOpportunityMap.get(requestedLoanAmountLoan.Opportunity__c).Requested_Loan_Amount__c) {
+                    requestedLoanAmountLoan.Requested_Loan_Amount__c = 
+                        updatedOpportunityMap.get(requestedLoanAmountLoan.Opportunity__c).Requested_Loan_Amount__c;
+                    requestedLoanAmountLoansToUpdate.add(requestedLoanAmountLoan);
                 }
             }
-            if (!systemCostLoansToUpdate.isEmpty()) {
-                update systemCostLoansToUpdate;
+            if (!requestedLoanAmountLoansToUpdate.isEmpty()) {
+                update requestedLoanAmountLoansToUpdate;
             }
         }
         for (Opportunity oppRecord : updatedOpportunities) {
@@ -469,7 +469,7 @@ public without sharing class LoanHandler{
 
     public void createDisbursals(List<Loan__c> newLoanList){
         List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
-        Decimal systemCost;
+        Decimal requestedLoanAmount;
         String disbursalName;
         for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, 
                                     Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id 
@@ -482,9 +482,9 @@ public without sharing class LoanHandler{
             //      Disbursal Setup = .30, .60, .10
             if(loanRecord.Opportunity__r.StageName == 'Complete'){
                 if(loanRecord.Requested_Loan_Amount__c != null && loanRecord.Requested_Loan_Amount__c > 0) {
-                    systemCost = loanRecord.Requested_Loan_Amount__c;
+                    requestedLoanAmount = loanRecord.Requested_Loan_Amount__c;
                 }else {
-                    systemCost = loanRecord.Opportunity__r.Requested_Loan_Amount__c;
+                    requestedLoanAmount = loanRecord.Opportunity__r.Requested_Loan_Amount__c;
                 }
                 if(loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection'){
                     
@@ -502,7 +502,7 @@ public without sharing class LoanHandler{
                         Partner__c = loanRecord.Partner__r.Id,
                         Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = systemCost * 0.30,
+                        Amount__c = requestedLoanAmount * 0.30,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -521,7 +521,7 @@ public without sharing class LoanHandler{
                         Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.6,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = systemCost * 0.60,
+                        Amount__c = requestedLoanAmount * 0.60,
                         Type__c = 'Mechanical Installation',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -540,7 +540,7 @@ public without sharing class LoanHandler{
                         Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.1,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = systemCost * 0.10,
+                        Amount__c = requestedLoanAmount * 0.10,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -560,7 +560,7 @@ public without sharing class LoanHandler{
                         Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.35,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = systemCost * 0.35,
+                        Amount__c = requestedLoanAmount * 0.35,
                         Type__c = 'Contract Signature',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
@@ -579,7 +579,7 @@ public without sharing class LoanHandler{
                         Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
                         Disbursal_Percentage__c = 0.65,
                         Status__c = 'Not yet disbursed',
-                        Amount__c = systemCost * 0.65,
+                        Amount__c = requestedLoanAmount * 0.65,
                         Type__c = 'Interconnection',
                         Anticipated_Date__c = null,
                         Date_of_Disbursal__c = null);
