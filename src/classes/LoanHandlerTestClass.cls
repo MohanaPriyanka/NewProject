@@ -164,7 +164,6 @@ public class LoanHandlerTestClass {
     	List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadlist);
@@ -224,7 +223,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadList);
@@ -296,7 +294,6 @@ public class LoanHandlerTestClass {
         List<Attachment> attachList = new List<Attachment>();
 
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
@@ -548,7 +545,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = true];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadList);
@@ -632,7 +628,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = true];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
         
         convertLeads(leadList);
@@ -671,7 +666,6 @@ public class LoanHandlerTestClass {
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Attachment> attachList = new List<Attachment>();        
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
@@ -764,7 +758,7 @@ public class LoanHandlerTestClass {
         Test.stopTest();
     }
 
-    @isTest static void testSystemCostChanges() {
+    @isTest static void testRequestedLoanAmountChanges() {
         List<Lead> leadList = [SELECT Id FROM Lead];
         Test.startTest();
         
