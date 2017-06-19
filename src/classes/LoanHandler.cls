@@ -89,7 +89,7 @@ public without sharing class LoanHandler{
         List<Opportunity> validateSalesAgreementList = new List<Opportunity>();                      
         List<String> oppLeadIds = new List<String>();
         List<String> oppLeadIdsList = new List<String>();
-        List<Id> oppsWithSystemCostChange = new List<Id>();
+        List<Id> oppsWithRequestedLoanAmountChange = new List<Id>();
         Integer loanTerm;
         Integer interestOnlyPeriod;
 
@@ -99,7 +99,7 @@ public without sharing class LoanHandler{
             }
             if (newOpp.Requested_Loan_Amount__c != null && 
                 newOpp.Requested_Loan_Amount__c != oldOpportunityMap.get(newOpp.Id).Requested_Loan_Amount__c) {
-                oppsWithSystemCostChange.add(newOpp.Id);
+                oppsWithRequestedLoanAmountChange.add(newOpp.Id);
             }
             if (newOpp.Contract_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Contract_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 signedCustomerOppIds.add(newOpp.Id);
@@ -142,10 +142,10 @@ public without sharing class LoanHandler{
         }
         // System Cost can change on the Opportunity because of customer downpayments - we pull that
         // field into DocuSign.
-        if (!oppsWithSystemCostChange.isEmpty()){
+        if (!oppsWithRequestedLoanAmountChange.isEmpty()){
             List<Loan__c> checkSystemCostLoans = [SELECT Id, Opportunity__c, Requested_Loan_Amount__c
                                                   FROM Loan__c
-                                                  WHERE Opportunity__r.Id IN : oppsWithSystemCostChange];
+                                                  WHERE Opportunity__r.Id IN : oppsWithRequestedLoanAmountChange];
             List<Loan__c> systemCostLoansToUpdate = new List<Loan__c>();
             for (Loan__c systemCostLoan : checkSystemCostLoans) {
                 if (systemCostLoan.Requested_Loan_Amount__c != 
