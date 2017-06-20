@@ -1,11 +1,15 @@
-<apex:page showHeader="false" sidebar="false">
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
     <apex:includeLightning />
-    <style>
-        div {margin: 100px 100px 100px 100px;}
-    </style>
-    <div id="lightning" />
+    <apex:slds/>
+    <div id="logger"/>
+    <div class="slds-scope" id="lightning"/>
     <script>
         var leadId = "{!$CurrentPage.parameters.leadId}";
+        $Lightning.use("c:LoanUnderwritingApp", function()
+        {
+            $Lightning.createComponent("c:LightningErrorHandler", '', "logger", function(cmp){});
+        });
+
         $Lightning.use("c:LoanUnderwritingApp", function()
         {
             $Lightning.createComponent("c:LoanUnderwriting",
