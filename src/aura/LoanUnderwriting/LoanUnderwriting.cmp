@@ -2,6 +2,8 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="loanInfo" type="Lead"/>
+
+
   <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name"><ui:outputText value="{!v.loanInfo.Name}"/></h1>
   <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small" border="0">
     <tr>
@@ -64,13 +66,25 @@
   </table>
 
 
+<!-- 
+<div class = "slds-grid slds-grid_pull-padded-medium slds-grid_align-center">
+  <div class = "slds-col slds-p-horizonatl_medium">  -->
+
+
   <br></br>
-  <b> Main Applicant:</b>
+  <div class = "slds-box slds-align_absolute-center slds-theme_info">
+    <p> <b> Main Applicant </b></p>
+  </div>
   <br></br>
-  Personal Credit Report
+  <aura:iteration items="{!v.loanInfo.LASERCA__Personal_Credit_Reports__r}" var="pcrs" >
+
   <br></br>
+  <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2">
+       Credit
+     </div>
+  <br></br>
+
   <table border="1">
-    <aura:iteration items="{!v.loanInfo.LASERCA__Personal_Credit_Reports__r}" var="pcrs" >
       <tr>  
         <td colspan="3">
           <ui:outputURL value="{!'/' + pcrs.Id}" label="{!pcrs.Name}" target="_blank"/>
@@ -130,13 +144,9 @@
           <ui:outputText value="{!pcrs.Adverse_Credit_Notice_3__c}"/>
         </td>
       </tr> 
-    </aura:iteration>    
+    <!-- </aura:iteration>     -->
   </table>
 
-  <!-- 
-
-       Add DTI table
-    -->
 
   <br></br>
   <br></br>
@@ -146,27 +156,106 @@
   <br></br>
   <br></br>
 
-  <!-- 
 
-       Add Debt table
-    -->
-
+ <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2">
+       DTI
+     </div>
   <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-
-  <table border="1">
+<table border="1">
       <tr>  
-        <td colspan="2">
-            <div class="slds-align_absolute-center">
-                Income
-            </div>
+        <td>
+            Adjusted DTI:
+        </td>
+        <td>
         </td>
       </tr> 
+      <tr>  
+        <td>
+          DTI After: <ui:outputText value="{!pcrs.DTI_After__c}"/>
+        </td>
+        <td>
+          DTI Before: <ui:outputText value="{!pcrs.DTI_Before__c}"/>
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          DTI After Notes:
+        </td>
+        <td>
+        </td>
+      </tr>
+    <!-- </aura:iteration> -->
+  </table>
+
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+
+ <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2">
+       Debt
+     </div>
+  <br></br>
+<table border="1">
+      <tr>  
+        <td>
+            Monthly Personal Debt:   
+        </td>
+        <td>
+            Adjusted Monthly Personal Debt:
+        </td>
+      </tr> 
+      <tr>  
+        <td> 
+        </td>
+        <td>
+            Adjusted Personal Debt Notes: 
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          Total Debt:
+        </td>
+        <td>
+          Real Estate Payment:
+        </td>
+      </tr>
+      <tr>  
+        <td> 
+          Total High Credit:
+        </td>
+        <td>
+          Revolving Balance:
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+          Installment Balance:
+        </td>
+      </tr>
+    
+
+  </table>
+
+
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+
+ <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2">
+       Income
+     </div>
+  <br></br>
+  <table border="1">
       <tr>  
         <td>
             Annual Income: <ui:outputText value="{!v.loanInfo.Annual_Income_Currency__c}"/>
@@ -183,6 +272,32 @@
             Adjusted Annual Income Notes
         </td>
       </tr> 
+      <tr>  
+        <td>
+            Monthly Income
+        </td>
+        <td>
+            Lived at residence more than 6 months?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Income Type
+        </td>
+        <td>
+            Employed for more than 1 year?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Monthly Income Details
+        </td>
+        <td>
+            Employed for more than 6 months?
+        </td>
+      </tr> 
+
+
   </table>
 
   <br></br>
@@ -193,9 +308,20 @@
         <td>
           <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
         </td>
-      </tr> 
-    </aura:iteration>    
-  </table>
+      </tr>  
+    </aura:iteration> 
+    </table>
+    </aura:iteration>  
+   
+
+
+
+
+
+
+<!-- </div> -->
+
+<!-- </div> -->
   <br></br>
   
 </aura:component>
