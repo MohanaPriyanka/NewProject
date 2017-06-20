@@ -17,11 +17,8 @@ public without sharing class LoanUnderwriting {
                             Annual_Income_Currency__c,
                             Personal_Credit_Report__r.Id,
                             Personal_Credit_Report__r.Name,
-<<<<<<< HEAD
                             Personal_Credit_Report__r.DTI_Before__c,
                             Personal_Credit_Report__r.DTI_After__c,
-=======
->>>>>>> 3e2189d0e896e3292e25fdbd5dbbe414c3414aae
                             Personal_Credit_Report__r.Avidia_Review_Status__c,
                             Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c,
                             Personal_Credit_Report__r.Adverse_Credit_Notice_1__c,
