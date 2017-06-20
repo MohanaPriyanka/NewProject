@@ -9,21 +9,32 @@
 
 
 public without sharing class SLPQuickSalesSheetHandler{
+
+    public static SLPUserHelper.PartnerProfile partnerinfo = new SLPUserHelper.PartnerProfile();
+    static {
+        partnerinfo = SLPUserHelper.getPartnerProfile();
+    }
+
     @AuraEnabled
     public static Quick_Sales_Sheet__c addNewQSS (Quick_Sales_Sheet__c newQSS) {
         newQSS.Generate_Doc__c = TRUE;
+        Partner__c partnerLogo = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : partnerinfo.partnerId];
+        newQSS.Partner_Logo_File_Name__c = partnerLogo.Logo__c;
         insert newQSS;
         return newQSS;
     }
 
     @AuraEnabled
     public static List<Product2> getActiveProducts () {
+        
+        List<String> marketsList = partnerinfo.partnerMarkets.split(';',15);
+
         List<Product2> productList = [SELECT Id, Name 
                                       FROM Product2 
                                       WHERE Product_Type__c = 'Residential Loan'
                                       AND isActive = true
-                                      ORDER BY State__c, Loan_Term__c];    
-                                      
+                                      AND State__c IN : marketsList
+                                      ORDER BY State__c, Loan_Term__c];                                                                       
         return productList;   
     }
 
@@ -35,5 +46,5 @@ public without sharing class SLPQuickSalesSheetHandler{
 
         return qss;
     }
-    
+
 }

@@ -22,6 +22,8 @@ public without sharing class SLPUserHelper {
         public string partnerEmail;
 
         public string salesRepEmail;
+
+        public String partnerMarkets;
     }
 
     @AuraEnabled 
@@ -29,7 +31,7 @@ public without sharing class SLPUserHelper {
         PartnerProfile partnerProfile = new PartnerProfile();
 
         User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
-                         PortalRole, Profile.Name, UserRole.Name  
+                         PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name  
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
         if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
@@ -39,6 +41,7 @@ public without sharing class SLPUserHelper {
             // Needs to be 15 characters since that's what is used in the Partner field on the Contact record?
              partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
+             partnerProfile.partnerMarkets = String.valueof(u.Contact.Account.State_Market__c);
              if (String.isNotBlank(u.Sales_Representative_Email__c)) {
                  partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);                
              }
@@ -95,11 +98,5 @@ public without sharing class SLPUserHelper {
         partner = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : getPartnerId()];
         logoList.add(partner.Logo__c);
         return logoList;
-    }	    
-
-    @AuraEnabled
-    public static List<String> getSLPortalSettings(String fieldName) {
-        List<SLPortal_Settings__c> slportalSettings = SLPortal_Settings__c.get().values();
-        return slportalSettings[0].fieldName; 
-    }              
+    }             
 }
