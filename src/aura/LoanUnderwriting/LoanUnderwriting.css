@@ -1,18 +1,11 @@
-.THIS {
-}
-
 .THIS .tableMarginTop {
     margin-top: 40px;
 }
 
-.THIS .minFico {
-    float: right;
-}
-
-.THIS .maxDti {
-    float: left;
-}
-
 .THIS .header {
     background-color: #7D98AA;
+}
+
+.THIS .noDisplay {
+    display: none
 }

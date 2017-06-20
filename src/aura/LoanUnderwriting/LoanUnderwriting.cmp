@@ -1,70 +1,62 @@
 <aura:component controller="LoanUnderwriting">
+  <ltng:require scripts="{!$Resource.jQuery}"/>
+
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:attribute name="leadId" type="String"/>
-  <aura:attribute name="loanInfo" type="Lead"/>
-
-
-  <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name"><ui:outputText value="{!v.loanInfo.Name}"/></h1>
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:attribute name="pageMessageText" type="String" default="&nbsp;"/>
+  <div aura:id="pageMessage">
+      <ui:outputText value="{!v.pageMessageText}"/>
+  </div>
+  <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name">
+      <ui:outputText value="{!v.lead.Name}"/>
+  </h1>
   <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small" border="0">
     <tr>
       <td width="33%">
         <div class="slds-align_absolute-center">
-          <b>Product: &nbsp; </b> <ui:outputText value="{!v.loanInfo.Product__r.ProductCode}"/>
+          <b>Product: &nbsp; </b> <ui:outputText value="{!v.lead.Product__r.Name}"/>
         </div>
       </td>      
       <td width="33%">
         <div class="slds-align_absolute-center">
-          <b>Min FICO: &nbsp;</b> <ui:outputText value="{!v.loanInfo.Product__r.Credit_Minimum__c}"/>
+          <b>Min FICO: &nbsp;</b> <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>
         </div>
       </td>
       <td width="33%">
         <div class="slds-align_absolute-center">
-          <b> Max DTI: &nbsp;</b> <ui:outputText value="{!v.loanInfo.Product__r.Debt_To_Income_Maximum__c}"/>%
+          <b> Max DTI: &nbsp;</b> <ui:outputText value="{!v.lead.Product__r.Debt_To_Income_Maximum__c}"/>%
         </div>
-      </td>
-    </tr>
-  </table>
-  <b><h3 class="slds-page-header__title slds-m-left_xx-small slds-m-top_x-small slds-align_absolute-center" title="Customer Name">Approval Status</h3></b>
-  <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small " border="0">
-    <tr>
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Approval Status: &nbsp; </b> <ui:outputText value="Qualified"/>
-        </div>
-      </td>      
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Avidia Review Status: &nbsp;</b> <ui:outputText value="Qualified"/>
-        </div>
-      </td>
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Pre-Qual Status: &nbsp;</b> <ui:outputText value="Qualified"/>
-        </div>
-      </td>
-    </tr>
-  </table>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <table border="0">
-    <tr>
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Solar Loan Approval Status: </b> 
-        </div>
-        <ui:outputText value="{!v.loanInfo.Product__r.Credit_Minimum__c}"/>
-      </td>
-      <td width="33%">
-        <b> Max DTI: </b> <ui:outputText value="{!v.loanInfo.Product__r.Debt_To_Income_Maximum__c}"/>%
       </td>
     </tr>
   </table>
 
+  Avidia Review Status:
+  <ui:inputSelect class="dynamic" 
+                  aura:id="AvidiaReviewStatus" 
+                  value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
+                  required="true"
+                  change="{!c.updateReviewStatus}"/>
+
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <table border="1">
+    <tr>
+      <td>
+          Loan Amount Requested: 
+      </td>
+      <td>
+          System Cost:
+      </td>
+    </tr>
+  </table>
 
 <!-- 
 <div class = "slds-grid slds-grid_pull-padded-medium slds-grid_align-center">
@@ -76,23 +68,21 @@
     <p> <b> Main Applicant </b></p>
   </div>
   <br></br>
-  <aura:iteration items="{!v.loanInfo.LASERCA__Personal_Credit_Reports__r}" var="pcrs" >
-
   <br></br>
   <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2">
        Credit
-     </div>
+  </div>
   <br></br>
 
   <table border="1">
       <tr>  
         <td colspan="3">
-          <ui:outputURL value="{!'/' + pcrs.Id}" label="{!pcrs.Name}" target="_blank"/>
+          <ui:outputURL value="{!'/' + pcrs.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
         </td>
       </tr> 
       <tr>  
         <td colspan="3">
-          FICO: <ui:outputText value="{!pcrs.LASERCA__Credit_Score_TransUnion__c}"/>
+          FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
         </td>
       </tr> 
       <tr>  
@@ -113,38 +103,37 @@
       </tr> 
       <tr>  
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Code__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Detail_1__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.Adverse_Credit_Notice_1__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
         </td>
       </tr> 
       <tr>  
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Code_2__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Detail_2__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.Adverse_Credit_Notice_2__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
         </td>
       </tr> 
       <tr>  
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Code_3__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.LASERCA__Detail_3__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
         </td>
         <td>
-          <ui:outputText value="{!pcrs.Adverse_Credit_Notice_3__c}"/>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
         </td>
       </tr> 
-    <!-- </aura:iteration>     -->
   </table>
 
 
@@ -258,7 +247,7 @@
   <table border="1">
       <tr>  
         <td>
-            Annual Income: <ui:outputText value="{!v.loanInfo.Annual_Income_Currency__c}"/>
+            Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
         </td>
         <td>
             Adjusted Annual Income
@@ -303,7 +292,7 @@
   <br></br>
   Income Documentation:
   <table>
-    <aura:iteration items="{!v.loanInfo.Attachments}" var="attachment" >
+    <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
       <tr>  
         <td>
           <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
@@ -311,8 +300,7 @@
       </tr>  
     </aura:iteration> 
     </table>
-    </aura:iteration>  
-   
+ 
 
 
 
