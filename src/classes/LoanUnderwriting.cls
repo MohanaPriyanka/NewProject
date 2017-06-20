@@ -12,6 +12,7 @@ public without sharing class LoanUnderwriting {
     public static Lead getLoanInfo(Id leadId) {
         List<Lead> leads = [SELECT FirstName, LastName, Name, 
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
+                            Annual_Income_Currency__c,
                             (SELECT Id, Name, LASERCA__Credit_Score_TransUnion__c, 
                              Adverse_Credit_Notice_1__c, Adverse_Credit_Notice_2__c, Adverse_Credit_Notice_3__c,
                              LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,

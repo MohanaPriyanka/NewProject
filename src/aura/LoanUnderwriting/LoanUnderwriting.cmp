@@ -138,6 +138,52 @@
        Add DTI table
     -->
 
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+
+  <!-- 
+
+       Add Debt table
+    -->
+
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+  <br></br>
+
+  <table border="1">
+      <tr>  
+        <td colspan="2">
+            <div class="slds-align_absolute-center">
+                Income
+            </div>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Annual Income: <ui:outputText value="{!v.loanInfo.Annual_Income_Currency__c}"/>
+        </td>
+        <td>
+            Adjusted Annual Income
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+
+        </td>
+        <td>
+            Adjusted Annual Income Notes
+        </td>
+      </tr> 
+  </table>
 
   <br></br>
   Income Documentation:
