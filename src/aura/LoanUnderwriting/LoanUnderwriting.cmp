@@ -58,11 +58,6 @@
     </tr>
   </table>
 
-<!-- 
-<div class = "slds-grid slds-grid_pull-padded-medium slds-grid_align-center">
-  <div class = "slds-col slds-p-horizonatl_medium">  -->
-
-
   <br></br>
   <div class = "slds-box slds-align_absolute-center slds-theme_info">
     <p> <b> Main Applicant </b></p>
@@ -77,7 +72,7 @@
   <table border="1">
       <tr>  
         <td colspan="3">
-          <ui:outputURL value="{!'/' + pcrs.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
+          <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
         </td>
       </tr> 
       <tr>  
@@ -160,10 +155,10 @@
       </tr> 
       <tr>  
         <td>
-          DTI After: <ui:outputText value="{!pcrs.DTI_After__c}"/>
+          DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
         </td>
         <td>
-          DTI Before: <ui:outputText value="{!pcrs.DTI_Before__c}"/>
+          DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
         </td>
       </tr> 
       <tr>
