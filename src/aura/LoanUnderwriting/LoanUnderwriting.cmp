@@ -275,275 +275,275 @@
       <div class = "cellDiv">
         <br></br>
         <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-         DTI
-       </div>
-       <br></br>
-       <table border="1">
-        <tr>  
-          <td>
-            Adjusted DTI:
-          </td>
-          <td>
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
-          </td>
-          <td>
-            DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
-          </td>
-        </tr> 
-        <tr>
-          <td> 
-            DTI After Notes:
-          </td>
-          <td>
-          </td>
-        </tr>
-        <!-- </aura:iteration> -->
-      </table>
+          DTI
+        </div>
+        <br></br>
+        <table border="1">
+          <tr>  
+            <td>
+              Adjusted DTI:
+            </td>
+            <td>
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
+            </td>
+            <td>
+              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
+            </td>
+          </tr> 
+          <tr>
+            <td> 
+              DTI After Notes:
+            </td>
+            <td>
+            </td>
+          </tr>
+          <!-- </aura:iteration> -->
+        </table>
+      </div>
     </div>
+
+    <!-- DEBT CELL -->
+    <div class = "rowDiv">
+      <!-- APPLICANT: -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          Debt
+        </div>
+        <br></br>
+        <table border="1">
+          <tr>  
+            <td>
+              Monthly Personal Debt:   
+            </td>
+            <td>
+              Adjusted Monthly Personal Debt:
+            </td>
+          </tr> 
+          <tr>  
+            <td> 
+            </td>
+            <td>
+              Adjusted Personal Debt Notes: 
+            </td>
+          </tr> 
+          <tr>
+            <td> 
+              Total Debt:
+            </td>
+            <td>
+              Real Estate Payment:
+            </td>
+          </tr>
+          <tr>  
+            <td> 
+              Total High Credit:
+            </td>
+            <td>
+              Revolving Balance:
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td>
+              Installment Balance:
+            </td>
+          </tr>
+
+
+        </table>
+
+      </div>
+
+      <!-- CO APPLICANT -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          Debt
+        </div>
+        <br></br>
+        <table border="1">
+          <tr>  
+            <td>
+              Monthly Personal Debt:   
+            </td>
+            <td>
+              Adjusted Monthly Personal Debt:
+            </td>
+          </tr> 
+          <tr>  
+            <td> 
+            </td>
+            <td>
+              Adjusted Personal Debt Notes: 
+            </td>
+          </tr> 
+          <tr>
+            <td> 
+              Total Debt:
+            </td>
+            <td>
+              Real Estate Payment:
+            </td>
+          </tr>
+          <tr>  
+            <td> 
+              Total High Credit:
+            </td>
+            <td>
+              Revolving Balance:
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td>
+              Installment Balance:
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- INCOME CELL -->
+    <div class = "rowDiv">
+      <!-- APPLICANT: -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          Income
+        </div>
+        <br></br>
+        <table border="1">
+          <tr>  
+            <td>
+              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+            </td>
+            <td>
+              Adjusted Annual Income
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+
+            </td>
+            <td>
+              Adjusted Annual Income Notes
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Monthly Income
+            </td>
+            <td>
+              Lived at residence more than 6 months?
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Income Type
+            </td>
+            <td>
+              Employed for more than 1 year?
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Monthly Income Details
+            </td>
+            <td>
+              Employed for more than 6 months?
+            </td>
+          </tr> 
+
+
+        </table>
+
+      </div>
+
+      <!-- CO APPLICANT -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          Income
+        </div>
+        <br></br>
+        <table border="1">
+          <tr>  
+            <td>
+              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+            </td>
+            <td>
+              Adjusted Annual Income
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+
+            </td>
+            <td>
+              Adjusted Annual Income Notes
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Monthly Income
+            </td>
+            <td>
+              Lived at residence more than 6 months?
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Income Type
+            </td>
+            <td>
+              Employed for more than 1 year?
+            </td>
+          </tr> 
+          <tr>  
+            <td>
+              Monthly Income Details
+            </td>
+            <td>
+              Employed for more than 6 months?
+            </td>
+          </tr> 
+
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+
   </div>
 
-  <!-- DEBT CELL -->
-  <div class = "rowDiv">
-    <!-- APPLICANT: -->
-    <div class = "cellDiv">
-      <br></br>
-      <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-        Debt
-      </div>
-      <br></br>
-      <table border="1">
-        <tr>  
-          <td>
-            Monthly Personal Debt:   
-          </td>
-          <td>
-            Adjusted Monthly Personal Debt:
-          </td>
-        </tr> 
-        <tr>  
-          <td> 
-          </td>
-          <td>
-            Adjusted Personal Debt Notes: 
-          </td>
-        </tr> 
-        <tr>
-          <td> 
-            Total Debt:
-          </td>
-          <td>
-            Real Estate Payment:
-          </td>
-        </tr>
-        <tr>  
-          <td> 
-            Total High Credit:
-          </td>
-          <td>
-            Revolving Balance:
-          </td>
-        </tr>
-        <tr>
-          <td>
-          </td>
-          <td>
-            Installment Balance:
-          </td>
-        </tr>
 
-
-      </table>
-
-    </div>
-
-    <!-- CO APPLICANT -->
-    <div class = "cellDiv">
-      <br></br>
-      <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-        Debt
-      </div>
-      <br></br>
-      <table border="1">
-        <tr>  
-          <td>
-            Monthly Personal Debt:   
-          </td>
-          <td>
-            Adjusted Monthly Personal Debt:
-          </td>
-        </tr> 
-        <tr>  
-          <td> 
-          </td>
-          <td>
-            Adjusted Personal Debt Notes: 
-          </td>
-        </tr> 
-        <tr>
-          <td> 
-            Total Debt:
-          </td>
-          <td>
-            Real Estate Payment:
-          </td>
-        </tr>
-        <tr>  
-          <td> 
-            Total High Credit:
-          </td>
-          <td>
-            Revolving Balance:
-          </td>
-        </tr>
-        <tr>
-          <td>
-          </td>
-          <td>
-            Installment Balance:
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-
-  <!-- INCOME CELL -->
-  <div class = "rowDiv">
-    <!-- APPLICANT: -->
-    <div class = "cellDiv">
-      <br></br>
-      <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-        Income
-      </div>
-      <br></br>
-      <table border="1">
-        <tr>  
-          <td>
-            Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-          </td>
-          <td>
-            Adjusted Annual Income
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-
-          </td>
-          <td>
-            Adjusted Annual Income Notes
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Monthly Income
-          </td>
-          <td>
-            Lived at residence more than 6 months?
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Income Type
-          </td>
-          <td>
-            Employed for more than 1 year?
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Monthly Income Details
-          </td>
-          <td>
-            Employed for more than 6 months?
-          </td>
-        </tr> 
-
-
-      </table>
-
-    </div>
-
-    <!-- CO APPLICANT -->
-    <div class = "cellDiv">
-      <br></br>
-      <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-        Income
-      </div>
-      <br></br>
-      <table border="1">
-        <tr>  
-          <td>
-            Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-          </td>
-          <td>
-            Adjusted Annual Income
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-
-          </td>
-          <td>
-            Adjusted Annual Income Notes
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Monthly Income
-          </td>
-          <td>
-            Lived at residence more than 6 months?
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Income Type
-          </td>
-          <td>
-            Employed for more than 1 year?
-          </td>
-        </tr> 
-        <tr>  
-          <td>
-            Monthly Income Details
-          </td>
-          <td>
-            Employed for more than 6 months?
-          </td>
-        </tr> 
-
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-
-</div>
-
-
-<!-- </div> -->
+  <!-- </div> -->
 
 
 
 
-<br></br>
-Income Documentation:
-<table>
-  <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
-    <tr>  
-      <td>
-        <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
-      </td>
-    </tr>  
-  </aura:iteration> 
-</table>
+  <br></br>
+  Income Documentation:
+  <table>
+    <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
+      <tr>  
+        <td>
+          <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
+        </td>
+      </tr>  
+    </aura:iteration> 
+  </table>
 
 
 
@@ -551,9 +551,9 @@ Income Documentation:
 
 
 
-<!-- </div> -->
+  <!-- </div> -->
 
-<!-- </div> -->
-<br></br>
+  <!-- </div> -->
+  <br></br>
 
 </aura:component>

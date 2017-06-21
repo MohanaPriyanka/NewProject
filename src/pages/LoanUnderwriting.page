@@ -1,27 +1,30 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false">
-    <apex:includeLightning />
-    <apex:slds/>
-    <style>  
-      div.padded {  
-        padding-top: 20px;
-        padding-right: 20px;
-        padding-bottom: 20px;
-        padding-left: 20px;
-      }  
-    </style>  
-    <div id="logger"/>
-    <div class="slds-scope padded" id="lightning"/>
-    <script>
-        var leadId = "{!$CurrentPage.parameters.leadId}";
-        $Lightning.use("c:LoanUnderwritingApp", function()
-        {
-            $Lightning.createComponent("c:LightningErrorHandler", '', "logger", function(cmp){});
-        });
+<apex:includeLightning />
+<apex:slds/>
+<style>  
+  div.padded {  
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    background-color: #005fb2;
+}  
+ 
+
+</style>  
+<div id="logger"/>
+<div class="slds-scope padded" id="lightning"/>
+<script>
+    var leadId = "{!$CurrentPage.parameters.leadId}";
+    $Lightning.use("c:LoanUnderwritingApp", function()
+    {
+        $Lightning.createComponent("c:LightningErrorHandler", '', "logger", function(cmp){});
+    });
 
         $Lightning.use("c:LoanUnderwritingApp", function()
         {
             $Lightning.createComponent("c:LoanUnderwriting",
-            {"leadId": leadId}, "lightning", function(cmp){});
-        });
-    </script>        
-</apex:page>
+                {"leadId": leadId}, "lightning", function(cmp){});
+            });
+        </script>        
+    </apex:page>
