@@ -8,11 +8,11 @@
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
   <aura:attribute name="pageMessageText" type="String" default="&nbsp;"/>
   <div aura:id="pageMessage">
-    <ui:outputText value="{!v.pageMessageText}"/>
+      <ui:outputText value="{!v.pageMessageText}"/>
   </div>
 
   <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name">
-    <ui:outputText value="{!v.lead.Name}"/>
+      <ui:outputText value="{!v.lead.Name}"/>
   </h1>
   <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small" border="0">
     <tr>
@@ -37,39 +37,43 @@
   <div class = "containerDiv">
     <div class= "cellDivWhiteHeader">
       <div class = "slds-box">
-        Avidia Review Status:
-        <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/>
+          Avidia Review Status:
+          <ui:inputSelect class="dynamic" 
+                          aura:id="AvidiaReviewStatus" 
+                          value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
+                          required="true"
+                          change="{!c.updateReviewStatus}"/>
       </div>
     </div>
   </div>
   <div class = "containerDiv">
     <div class="rowDiv">
-      <div class="tableCell">
-        Loan Amount Requested: 
-      </div>
-      <div class="tableCell">
-        System Cost:
-      </div>
+        <div class="tableCell">
+            Loan Amount Requested: 
+        </div>
+        <div class="tableCell">
+            System Cost:
+        </div>
     </div>
     <div class="rowDiv">
-      <div class="tableCell">
-        FICO:
-      </div>
-      <div class="tableCell">
-        DTI:
-      </div>
+        <div class="tableCell">
+            FICO:
+        </div>
+        <div class="tableCell">
+          DTI:
+        </div>
     </div>
     <div class="rowDiv">
-      <div class="tableCell"/>
-      <div class="tableCell">
-        Combined Income:
-      </div>
+        <div class="tableCell"/>
+        <div class="tableCell">
+          Combined Income:
+        </div>
     </div>
   </div>
 
   <br></br>
 
-  <div class = "containerDiv">
+<div class = "containerDiv">
     <div class= "cellDivHeader">
       <div class = "slds-box slds-align_absolute-center slds-theme_info">
         <p> <b> Main Applicant </b></p>
@@ -82,447 +86,456 @@
     </div>
 
 
-    <!-- CREDIT ROW -->
+<!-- CREDIT ROW -->
 
-    <div class = "rowDiv">
-      <!-- APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default ">
-          Credit
-        </div>
-
-        <br></br>
-
-        <table border="1">
-          <tr>  
-            <td colspan="3">
-              <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              Adverse Credit Notices:
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <b>Code</b>
-            </td>
-            <td>
-              <b>Detail</b>
-            </td>
-            <td>
-              <b>Adverse Credit Notice</b>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
-            </td>
-          </tr> 
-        </table>
-
-
-
-
-
-      </div>
-      <!-- CO APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          Credit
-        </div>
-        <br></br>
-
-        <table border="1">
-          <tr>  
-            <td colspan="3">
-              <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              Adverse Credit Notices:
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <b>Code</b>
-            </td>
-            <td>
-              <b>Detail</b>
-            </td>
-            <td>
-              <b>Adverse Credit Notice</b>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
-            </td>
-          </tr> 
-        </table>
-
-
-      </div>
-    </div>
-
-
-    <!-- DTI CELL -->
-    <div class = "rowDiv">
-      <!-- APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          DTI
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Adjusted DTI:
-            </td>
-            <td>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
-            </td>
-            <td>
-              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
-            </td>
-          </tr> 
-          <tr>
-            <td> 
-              DTI After Notes:
-            </td>
-            <td>
-            </td>
-          </tr>
-          <!-- </aura:iteration> -->
-        </table>
-      </div>
-
-      <!-- CO APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          DTI
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Adjusted DTI:
-            </td>
-            <td>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
-            </td>
-            <td>
-              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
-            </td>
-          </tr> 
-          <tr>
-            <td> 
-              DTI After Notes:
-            </td>
-            <td>
-            </td>
-          </tr>
-          <!-- </aura:iteration> -->
-        </table>
-      </div>
-    </div>
-
-    <!-- DEBT CELL -->
-    <div class = "rowDiv">
-      <!-- APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          Debt
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Monthly Personal Debt:   
-            </td>
-            <td>
-              Adjusted Monthly Personal Debt:
-            </td>
-          </tr> 
-          <tr>  
-            <td> 
-            </td>
-            <td>
-              Adjusted Personal Debt Notes: 
-            </td>
-          </tr> 
-          <tr>
-            <td> 
-              Total Debt:
-            </td>
-            <td>
-              Real Estate Payment:
-            </td>
-          </tr>
-          <tr>  
-            <td> 
-              Total High Credit:
-            </td>
-            <td>
-              Revolving Balance:
-            </td>
-          </tr>
-          <tr>
-            <td>
-            </td>
-            <td>
-              Installment Balance:
-            </td>
-          </tr>
-
-
-        </table>
-
-      </div>
-
-      <!-- CO APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          Debt
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Monthly Personal Debt:   
-            </td>
-            <td>
-              Adjusted Monthly Personal Debt:
-            </td>
-          </tr> 
-          <tr>  
-            <td> 
-            </td>
-            <td>
-              Adjusted Personal Debt Notes: 
-            </td>
-          </tr> 
-          <tr>
-            <td> 
-              Total Debt:
-            </td>
-            <td>
-              Real Estate Payment:
-            </td>
-          </tr>
-          <tr>  
-            <td> 
-              Total High Credit:
-            </td>
-            <td>
-              Revolving Balance:
-            </td>
-          </tr>
-          <tr>
-            <td>
-            </td>
-            <td>
-              Installment Balance:
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-
-    <!-- INCOME CELL -->
-    <div class = "rowDiv">
-      <!-- APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          Income
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-            </td>
-            <td>
-              Adjusted Annual Income
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-
-            </td>
-            <td>
-              Adjusted Annual Income Notes
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Monthly Income
-            </td>
-            <td>
-              Lived at residence more than 6 months?
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Income Type
-            </td>
-            <td>
-              Employed for more than 1 year?
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Monthly Income Details
-            </td>
-            <td>
-              Employed for more than 6 months?
-            </td>
-          </tr> 
-
-
-        </table>
-
-      </div>
-
-      <!-- CO APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          Income
-        </div>
-        <br></br>
-        <table border="1">
-          <tr>  
-            <td>
-              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-            </td>
-            <td>
-              Adjusted Annual Income
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-
-            </td>
-            <td>
-              Adjusted Annual Income Notes
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Monthly Income
-            </td>
-            <td>
-              Lived at residence more than 6 months?
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Income Type
-            </td>
-            <td>
-              Employed for more than 1 year?
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              Monthly Income Details
-            </td>
-            <td>
-              Employed for more than 6 months?
-            </td>
-          </tr> 
-
-
-        </table>
-
-      </div>
-
-    </div>
+<div class = "rowDiv">
+    <!-- APPLICANT: -->
+    <div class = "cellDiv">
+      <br></br>
+  <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default ">
+       Credit
   </div>
+  <br></br>
+
+  <table border="1">
+      <tr>  
+        <td colspan="3">
+          <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td colspan="3">
+          FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td colspan="3">
+          Adverse Credit Notices:
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <b>Code</b>
+        </td>
+        <td>
+          <b>Detail</b>
+        </td>
+        <td>
+          <b>Adverse Credit Notice</b>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
+        </td>
+      </tr> 
+  </table>
+
+
+
+
+ 
+    </div>
+    <!-- CO APPLICANT: -->
+    <div class = "cellDiv">
+      <br></br>
+  <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       Credit
+  </div>
+  <br></br>
+
+  <table border="1">
+      <tr>  
+        <td colspan="3">
+          <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td colspan="3">
+          FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td colspan="3">
+          Adverse Credit Notices:
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <b>Code</b>
+        </td>
+        <td>
+          <b>Detail</b>
+        </td>
+        <td>
+          <b>Adverse Credit Notice</b>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
+        </td>
+        <td>
+          <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
+        </td>
+      </tr> 
+  </table>
+
+
+    </div>
+</div>
+
+
+<!-- DTI CELL -->
+<div class = "rowDiv">
+  <!-- APPLICANT -->
+  <div class = "cellDiv">
+    <br></br>
+    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       DTI
+     </div>
+  <br></br>
+<table border="1">
+      <tr>  
+        <td>
+            Adjusted DTI:
+        </td>
+        <td>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
+        </td>
+        <td>
+          DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          DTI After Notes:
+        </td>
+        <td>
+        </td>
+      </tr>
+    <!-- </aura:iteration> -->
+  </table>
+  </div>
+
+  <!-- CO APPLICANT -->
+  <div class = "cellDiv">
+<br></br>
+ <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       DTI
+     </div>
+  <br></br>
+<table border="1">
+      <tr>  
+        <td>
+            Adjusted DTI:
+        </td>
+        <td>
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+          DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
+        </td>
+        <td>
+          DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          DTI After Notes:
+        </td>
+        <td>
+        </td>
+      </tr>
+    <!-- </aura:iteration> -->
+  </table>
+  </div>
+</div>
+
+<!-- DEBT CELL -->
+<div class = "rowDiv">
+  <!-- APPLICANT: -->
+  <div class = "cellDiv">
+    <br></br>
+    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       Debt
+     </div>
+  <br></br>
+<table border="1">
+      <tr>  
+        <td>
+            Monthly Personal Debt:   
+        </td>
+        <td>
+            Adjusted Monthly Personal Debt:
+        </td>
+      </tr> 
+      <tr>  
+        <td> 
+        </td>
+        <td>
+            Adjusted Personal Debt Notes: 
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          Total Debt:
+        </td>
+        <td>
+          Real Estate Payment:
+        </td>
+      </tr>
+      <tr>  
+        <td> 
+          Total High Credit:
+        </td>
+        <td>
+          Revolving Balance:
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+          Installment Balance:
+        </td>
+      </tr>
+    
+
+  </table>
+
+  </div>
+
+  <!-- CO APPLICANT -->
+  <div class = "cellDiv">
+    <br></br>
+    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       Debt
+     </div>
+  <br></br>
+<table border="1">
+      <tr>  
+        <td>
+            Monthly Personal Debt:   
+        </td>
+        <td>
+            Adjusted Monthly Personal Debt:
+        </td>
+      </tr> 
+      <tr>  
+        <td> 
+        </td>
+        <td>
+            Adjusted Personal Debt Notes: 
+        </td>
+      </tr> 
+      <tr>
+        <td> 
+          Total Debt:
+        </td>
+        <td>
+          Real Estate Payment:
+        </td>
+      </tr>
+      <tr>  
+        <td> 
+          Total High Credit:
+        </td>
+        <td>
+          Revolving Balance:
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+          Installment Balance:
+        </td>
+      </tr>
+  </table>
+  </div>
+</div>
+
+
+<!-- INCOME CELL -->
+<div class = "rowDiv">
+  <!-- APPLICANT: -->
+  <div class = "cellDiv">
+    <br></br>
+    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       Income
+     </div>
+  <br></br>
+  <table border="1">
+      <tr>  
+        <td>
+            Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+        </td>
+        <td>
+            Adjusted Annual Income
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+
+        </td>
+        <td>
+            Adjusted Annual Income Notes
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Monthly Income
+        </td>
+        <td>
+            Lived at residence more than 6 months?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Income Type
+        </td>
+        <td>
+            Employed for more than 1 year?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Monthly Income Details
+        </td>
+        <td>
+            Employed for more than 6 months?
+        </td>
+      </tr> 
+
+
+  </table>
+
+  </div>
+
+  <!-- CO APPLICANT -->
+  <div class = "cellDiv">
+    <br></br>
+    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+       Income
+     </div>
+  <br></br>
+  <table border="1">
+      <tr>  
+        <td>
+            Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+        </td>
+        <td>
+            Adjusted Annual Income
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+
+        </td>
+        <td>
+            Adjusted Annual Income Notes
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Monthly Income
+        </td>
+        <td>
+            Lived at residence more than 6 months?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Income Type
+        </td>
+        <td>
+            Employed for more than 1 year?
+        </td>
+      </tr> 
+      <tr>  
+        <td>
+            Monthly Income Details
+        </td>
+        <td>
+            Employed for more than 6 months?
+        </td>
+      </tr> 
+
+
+  </table>
+
+  </div>
+
+</div>
+
+
+ 
+</div>
+
+
+<!-- </div> -->
+
+
+  
 
   <br></br>
   Income Documentation:
@@ -534,7 +547,17 @@
         </td>
       </tr>  
     </aura:iteration> 
-  </table>
+    </table>
+ 
 
+
+
+
+
+
+<!-- </div> -->
+
+<!-- </div> -->
   <br></br>
+  
 </aura:component>
