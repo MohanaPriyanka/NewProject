@@ -40,14 +40,6 @@
                   value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
                   required="true"
                   change="{!c.updateReviewStatus}"/>
-
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
   <table border="1">
     <tr>
       <td>
@@ -55,6 +47,27 @@
       </td>
       <td>
           System Cost:
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+          Approval Status:
+      </td>
+    </tr>
+    <tr>
+      <td>
+          FICO:
+      </td>
+      <td>
+          DTI:
+      </td>
+    </tr>
+    <tr>
+      <td>
+
+      </td>
+      <td>
+          Combined Income:
       </td>
     </tr>
   </table>
