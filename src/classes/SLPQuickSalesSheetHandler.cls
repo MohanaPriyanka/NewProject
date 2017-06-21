@@ -16,8 +16,10 @@ public without sharing class SLPQuickSalesSheetHandler{
     }
 
     @AuraEnabled
-    public static Quick_Sales_Sheet__c addNewQSS (Quick_Sales_Sheet__c newQSS) {
-        newQSS.Generate_Doc__c = TRUE;
+    public static Quick_Sales_Sheet__c addNewQSS (Quick_Sales_Sheet__c newQSS, Boolean generateDoc) {
+        if(generateDoc) {
+            newQSS.Generate_Doc__c = TRUE;
+        }
         Partner__c partnerLogo = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : partnerinfo.partnerId];
         newQSS.Partner_Logo_File_Name__c = partnerLogo.Logo__c;
         insert newQSS;
@@ -39,8 +41,18 @@ public without sharing class SLPQuickSalesSheetHandler{
     }
 
     @AuraEnabled
+    public static Quick_Sales_Sheet__c updateQSS (Quick_Sales_Sheet__c updatedQSS) {
+        updatedQSS.Generate_Doc__c = TRUE;
+        update updatedQSS;
+        return updatedQSS;
+    }
+
+
+    @AuraEnabled
     public static Quick_Sales_Sheet__c getQuickSalesSheet (Id newlycreatedQSSid) {
-        Quick_Sales_Sheet__c qss  = [   SELECT Link_to_File__c 
+        Quick_Sales_Sheet__c qss  = [   SELECT Link_to_File__c, Monthly_Payment_After_Buydown__c, Monthly_Payment__c,
+                                        ITC_Estimated__c, Total_Loan_Payments__c, Loan_Payments__c, Loan_Amount__c,
+                                        Interest_Only_Payments__c, Interest_Payment__c
                                         FROM Quick_Sales_Sheet__c 
                                         WHERE Id = : newlycreatedQSSid Limit 1];
 

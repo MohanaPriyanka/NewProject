@@ -8,7 +8,8 @@
                    'System_Cost__c':'$0.00',
              	   'Down_Payment__c':'$0.00',
                    'System_Size__c':'0',
-                   'Product__c':'Select'}"/>    
+                   'Product__c':'Select'}"/>   
+    <aura:attribute name="calculatedQSS" type="Quick_Sales_Sheet__c"/>             
   <aura:attribute name="qssLinkToFile" type="String" default="notgeneratedinportal"/> 
   <aura:attribute name="ProductListAttribute" type="List"/> 
   <div class="slds-page-header" role="banner">
@@ -81,6 +82,80 @@
               </div>
             </div>
             <br></br>
+            <article aura:id="loaninfocard" class="slds-card">
+              <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
+               <thead>
+               	<tr class="slds-text-title_caps bwcolorforcard"> 
+                  <th scope="col">
+                    <div class="slds-truncate" title="Loan Info">Loan Info</div>
+                  </th>
+                  <th scope="col">
+                    <div class="slds-truncate" title="Refresh">
+    					<lightning:buttonIcon name="refreshbutton" class="colorwhite" iconName="utility:refresh" variant="bare" onclick="{!c.clickCreateQSS}" size="large" alternativeText="Refresh" />
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MP">Monthly Payment*
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="MP Value"><ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MPNB">Monthly Payment (no Buydown)
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="MPNB Value"><ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="IO">Monthly Interest Only Payment
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="IO Value"><ui:outputCurrency value="{!v.calculatedQSS.Interest_Payment__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="ITC">Federal Tax Credit+
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="ITC Value"><ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="TLP">Total Loan Payments
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="TLP Value"><ui:outputCurrency value="{!v.calculatedQSS.Total_Loan_Payments__c}"/></div>
+                  </td>
+                </tr>  
+              </tbody>
+             </table>
+             <footer class="slds-card__footer">
+      			<span class="slds-assistive-text">disclaimer</span>
+                <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
+                <div class="smallText">+Estimated</div>
+  			</footer> 
+            <div class="slds-form-element"> 
+              <ui:button aura:id="documentCreatebutton"
+                  label="Create Document"
+                  class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard noDisplay"
+                  press="{!c.clickCreateDocument}"/>
+            </div>
+            </article>  
             <div aura:id="spinnerandtext">
                 <br></br>
                 <div class="slds-form-element">
@@ -113,11 +188,17 @@
               <div class="slds-text-align_center"><b>Download</b></div>
             </div>
             <div class="slds-form-element">
-              <ui:button aura:id="submitQSSbutton"
+              <lightning:button aura:id="submitQSSbutton"
+                  name="submitUpfront"
                   label="Generate Loan Summary Sheet"
-                  class="slds-button slds-button--brand"
-                  press="{!c.clickCreateQSS}"/>
-           	</div>  
+                  class="slds-button slds-button--brand bwcolorforcard"
+                  onclick="{!c.clickCreateQSS}"/>              
+              <lightning:button aura:id="viewLoanData"
+                  name="submitTable"
+                  label="View Loan Data"
+                  class="slds-button slds-button--brand bwcolorforcard"
+                  onclick="{!c.clickCreateQSS}"/>
+           	</div>      
           </form>
       </fieldset>
     </div>      
