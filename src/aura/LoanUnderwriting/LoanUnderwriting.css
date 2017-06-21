@@ -3,50 +3,41 @@
 }
 
 .THIS .header {
-    background-color: #c23934
-;
+    background-color: #c23934;
 }
 
 .THIS .noDisplay {
     display: none
 }
 
-
 .THIS .containerDiv {
-  border: 1px solid #3697f6;
-  background-color:  #005fb2;
-
-  width: 100%; display:table
+    border: 1px solid #3697f6;
+    background-color:  #005fb2;
+    width: 100%; 
+    display:table;
 }    
 
-.THIS .rowDivHeader {
-      border: 1px solid #668db6;
-      background-color: #336799;
-      color: white;
-      font-weight: bold; display:table-row
-    }
-
-    .THIS .rowDivHeader2 {
-      border: 1px solid #668db6;
-      background-color:#c23934;
-      color: white;
-      font-weight: bold; display:table-row
-    }
- 
-
 .THIS .rowDiv {
-      border: 1px solid #668db6;
-      background-color: #cee6fe;
-      display:table-row
-    }
+    border: 1px solid #668db6;
+    background-color: #cee6fe;
+    display: table-row;
+}
 
 .THIS .cellDivHeader {
-  border-right: 1px solid white;
-  background-color: #005fb2;
-  display: table-cell;
-  width:12%;
-  padding: 1px;
-  text-align: center;
+    border-right: 1px solid white;
+    background-color: #005fb2;
+    display: table-cell;
+    width:12%;
+    padding: 1px;
+    text-align: center;
+}
+
+.THIS .cellDivWhiteHeader {
+    border-right: 1px solid white;
+    display: table-cell;
+    width:12%;
+    padding: 1px;
+    text-align: center;
 }
 
 .THIS .cellDiv {
@@ -61,10 +52,9 @@
   border-bottom: none;
 }
 
-.THIS .table {
-	width: 90%;
-	
-	background-color: solid white;
-	border: 2px black;
-
+.THIS .tableCell {
+    display: table-cell;
+    width:10%;
+    padding-right: 4px;
+    border-bottom: none;
 }

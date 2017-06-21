@@ -34,30 +34,42 @@
     </tr>
   </table>
 
-  Avidia Review Status:
-  <ui:inputSelect class="dynamic" 
-                  aura:id="AvidiaReviewStatus" 
-                  value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
-                  required="true"
-                  change="{!c.updateReviewStatus}"/>
-
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <br></br>
-  <table border="1">
-    <tr>
-      <td>
-          Loan Amount Requested: 
-      </td>
-      <td>
-          System Cost:
-      </td>
-    </tr>
-  </table>
+  <div class = "containerDiv">
+    <div class= "cellDivWhiteHeader">
+      <div class = "slds-box">
+          Avidia Review Status:
+          <ui:inputSelect class="dynamic" 
+                          aura:id="AvidiaReviewStatus" 
+                          value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
+                          required="true"
+                          change="{!c.updateReviewStatus}"/>
+      </div>
+    </div>
+  </div>
+  <div class = "containerDiv">
+    <div class="rowDiv">
+        <div class="tableCell">
+            Loan Amount Requested: 
+        </div>
+        <div class="tableCell">
+            System Cost:
+        </div>
+    </div>
+    <div class="rowDiv">
+        <div class="tableCell">
+            FICO:
+        </div>
+        <div class="tableCell">
+          DTI:
+        </div>
+    </div>
+    <div class="rowDiv">
+        <div class="tableCell"/>
+        <div class="tableCell">
+          Combined Income:
+        </div>
+    </div>
+  </div>
 
   <br></br>
 
