@@ -1,60 +1,95 @@
 .THIS .tableMarginTop {
-    margin-top: 40px;
+	margin-top: 40px;
 }
 
-.THIS .header {
-    background-color: #c23934;
+.THIS .tableheader {
+	display: ;
+	
+
 }
 
 .THIS .noDisplay {
-    display: none
+	display: none;
+
 }
 
 .THIS .containerDiv {
-    border: 1px solid #3697f6;
-    background-color:  #005fb2;
-    width: 100%; 
-    display:table;
+	width: 100%; 
+	display:table;
 }    
 
 .THIS .rowDiv {
-    border: 1px solid #668db6;
-    background-color: #cee6fe;
-    display: table-row;
+	border: 1px solid #668db6;
+	/*background-color:#c23934;*/
+	display: table-row;
 }
 
 .THIS .cellDivHeader {
-    border-right: 1px solid white;
-    background-color: #005fb2;
-    display: table-cell;
-    width:12%;
-    padding: 1px;
-    text-align: center;
+	border-right: .5px solid gray;
+	border-left: .5px solid gray;
+	/* background-color: #c23934;*/
+	display: table-cell;
+	width:12%;
+	padding: 20px;
+	text-align: center;
 }
 
 .THIS .cellDivWhiteHeader {
-    border-right: 1px solid white;
-    display: table-cell;
-    width:12%;
-    padding: 1px;
-    text-align: center;
+	/*border-right: 1px solid gray;*/
+	display: table-cell;
+	width:12%;
+	padding: 1px;
+	text-align: center;
 }
 
 .THIS .cellDiv {
-  border-right: 2px solid white;
-  display: table-cell;
-  width:10%;
-  padding-right: 4px;
-  padding-left: 4px;
-  padding-bottom:4px;
-  padding-top: 4px;
-  text-align: center;
-  border-bottom: none;
+	border: .5px solid gray;
+	border-top: none;
+	border-bottom: none;
+	/*border-right: 1px solid white;
+	border-left: 1px solid white;*/
+	display: table-cell;
+	width:10%;
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-bottom:4px;
+	padding-top: 4px;
+	text-align: center;
+	/*border-bottom: 1px solid white;*/
+	/*background-color: #c23934; */
+}
+
+
+.THIS .table{
+	display: table;
+	width: 100%;
+	/*padding-right: 20px;*/
+
+	/*background-color: #c23934 ;*/
+	border: 1px solid gray;
+	
+}
+
+.THIS .tableRowEven{
+	display: table-row;
+	background-color: #d8dde6;
+}
+
+.THIS .tableRowOdd{
+	display:table-row;
+	background-color: #f7f9fb;
 }
 
 .THIS .tableCell {
-    display: table-cell;
-    width:10%;
-    padding-right: 4px;
-    border-bottom: none;
+	display: table-cell;
+	width:10%;
+	text-align: left;
+	padding-left: 4px;
+	height: 40px;
+	vertical-align: middle;
+	border: 1px solid gray;
+	border-top: none;
+	border-bottom: none;
+	/*background-color: #04844b;*/
+
 }

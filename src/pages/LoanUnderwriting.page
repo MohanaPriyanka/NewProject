@@ -4,9 +4,9 @@
 <style>  
   div.padded {  
     padding-top: 20px;
-    padding-right: 20px;
+    padding-right: 10px;
     padding-bottom: 20px;
-    padding-left: 20px;
+    padding-left: 10px;
     background-color: #005fb2;
 }  
  
