@@ -7,6 +7,9 @@
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
   <aura:attribute name="pageMessageText" type="String" default="&nbsp;"/>
+  <aura:attribute name="bestFICO" type="Integer"/>
+  <aura:attribute name="bestDTI" type="Decimal"/>
+  <aura:attribute name="combinedIncome" type="Decimal"/>
   <div aura:id="pageMessage">
     <ui:outputText value="{!v.pageMessageText}"/>
   </div>
@@ -53,16 +56,22 @@
     </div>
     <div class="rowDiv">
       <div class="tableCell">
-        FICO:
+        Approval Status:
+        <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
+      </div>
+    </div>
+    <div class="rowDiv">
+      <div class="tableCell">
+        FICO: <ui:outputText value="{!v.bestFICO}"/>
       </div>
       <div class="tableCell">
-        DTI:
+        DTI: <ui:outputText value="{!v.bestDTI}"/>
       </div>
     </div>
     <div class="rowDiv">
       <div class="tableCell"/>
       <div class="tableCell">
-        Combined Income:
+        Combined Income: <ui:outputText value="{!v.combinedIncome}"/>
       </div>
     </div>
   </div>
