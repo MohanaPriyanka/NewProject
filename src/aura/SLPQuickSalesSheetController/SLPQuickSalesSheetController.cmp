@@ -36,7 +36,7 @@
                                     value="{!v.quicksalessheet.Product__c}" >
                       <ui:inputSelectOption label="Select" text=""/>
                       <aura:iteration items="{!v.ProductListAttribute}" var="product">
-                        <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
+                        <ui:inputSelectOption label="{!product.ProductCode}" text="{!product.Id}"/>
                       </aura:iteration>
                     </ui:inputSelect>
                 </div>                  

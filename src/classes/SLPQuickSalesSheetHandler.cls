@@ -20,8 +20,8 @@ public without sharing class SLPQuickSalesSheetHandler{
         if(generateDoc) {
             newQSS.Generate_Doc__c = TRUE;
         }
-        Partner__c partnerLogo = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Id = : partnerinfo.partnerId];
-        newQSS.Partner_Logo_File_Name__c = partnerLogo.Logo__c;
+        List<String> partnerlogotwo = SLPUserHelper.getPartnerLogo();
+        newQSS.Partner_Logo_File_Name__c = partnerlogotwo.get(0);
         insert newQSS;
         return newQSS;
     }
@@ -31,7 +31,7 @@ public without sharing class SLPQuickSalesSheetHandler{
         
         List<String> marketsList = partnerinfo.partnerMarkets.split(';',15);
 
-        List<Product2> productList = [SELECT Id, Name 
+        List<Product2> productList = [SELECT Id, Name, ProductCode
                                       FROM Product2 
                                       WHERE Product_Type__c = 'Residential Loan'
                                       AND isActive = true
