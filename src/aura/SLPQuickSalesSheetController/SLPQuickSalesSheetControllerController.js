@@ -48,10 +48,8 @@
  			else if(resp.getState() == "SUCCESS" && !genDoc) { 
                 $A.util.addClass(component.find("submitQSSbutton"), 'noDisplay');
                 $A.util.addClass(component.find("viewLoanData"), 'noDisplay');
-                $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
                 var qssIdVar = resp.getReturnValue().Id;
                 helper.getQSS(component,qssIdVar);
-               	$A.util.addClass(component.find("spinnerandtext"), 'noDisplay');
                 $A.util.removeClass(component.find("loaninfocard"), 'noDisplay');
                 $A.util.removeClass(component.find("documentCreatebutton"), 'noDisplay');
             }
