@@ -1,13 +1,26 @@
 @isTest
 public without sharing class SLPQuickSalesSheetTest{
   @isTest static void createQssAndLink() {
-    Account accountOne = new Account(Name = 'Account One');
+    Partner__c partnerOne = new Partner__c(Name = 'Account One',
+                                          Logo__c = 'PartnerFile');
+    insert partnerOne;  
+
+    BSST__c salesRep = new BSST__c(Name = 'Salesguy', 
+                                    Partner__c = partnerOne.Id, 
+                                    Custom_ID__c = 'test', 
+                                    Email__c = 'salesguy@Sales.com');
+    insert salesRep;                           
+
+    Account accountOne = new Account(Name = 'Account One',
+                                    State_Market__c = 'NC;SC');
     insert accountOne;
                             
     Contact con = new Contact(FirstName = 'First',
                                     Email = 'bw421356@test.com',
                                     LastName = 'Last',
                                     AccountId = accountOne.Id, 
+                                    Partner_Lookup__c = partnerOne.id,
+                                    Sales_Representative__c = salesRep.id,
                                     Active_Communities_User__c = true);
     insert con;
       
@@ -31,7 +44,7 @@ public without sharing class SLPQuickSalesSheetTest{
     Product2 productRecord = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
                                                   Family = 'Solar Loan',
                                                   Product_Type__c = 'Residential Loan',
-                                                  State__c = 'MA',
+                                                  State__c = 'NC',
                                                   Loan_Interest_Rate__c = 5.99,
                                                   Loan_Term__c = 120,
                                                   Loan_Interest_Only_Period__c = 12,
@@ -71,9 +84,10 @@ public without sharing class SLPQuickSalesSheetTest{
       insert newLink;
       List<ContentDistribution> distList = [SELECT Name, ContentVersionId
                                             FROM ContentDistribution];
-      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
+      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Partner_Logo_File_Name__c, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
       system.AssertNotEquals('notgenerated', qssUpdated.Link_to_File__c);
       system.AssertNotEquals(0, distList.size());
+      system.AssertEquals('PartnerFile', qssUpdated.Partner_Logo_File_Name__c);
 
       // Community User finds the link
       System.runAs(communityUser){
