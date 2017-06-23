@@ -133,6 +133,17 @@
                     <div class="slds-truncate" title="ITC Value"><ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/></div>
                   </td>
                 </tr>
+                <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}">                      
+                  <tr class="slds-hint-parent">
+                    <th scope="row">
+                      <div class="slds-truncate" title="ITC">State Tax Credit+
+                      </div>
+                    </th>
+                    <td>
+                      <div class="slds-truncate" title="ITC Value"><ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/></div>
+                    </td>
+                  </tr>
+                </aura:if>
                 <tr class="slds-hint-parent">
                   <th scope="row">
                     <div class="slds-truncate" title="TLP">Total Loan Payments

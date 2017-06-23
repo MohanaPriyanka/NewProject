@@ -52,7 +52,8 @@ public without sharing class SLPQuickSalesSheetHandler{
     public static Quick_Sales_Sheet__c getQuickSalesSheet (Id newlycreatedQSSid) {
         Quick_Sales_Sheet__c qss  = [   SELECT Link_to_File__c, Monthly_Payment_After_Buydown__c, Monthly_Payment__c,
                                         ITC_Estimated__c, Total_Loan_Payments__c, Loan_Payments__c, Loan_Amount__c,
-                                        Interest_Only_Payments__c, Interest_Payment__c
+                                        Interest_Only_Payments__c, Interest_Payment__c, State_Tax_Incentive_Bool__c,
+                                        State_Tax_Incentive__c
                                         FROM Quick_Sales_Sheet__c 
                                         WHERE Id = : newlycreatedQSSid Limit 1];
 
