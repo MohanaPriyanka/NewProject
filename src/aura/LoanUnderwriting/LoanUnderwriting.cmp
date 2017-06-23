@@ -37,15 +37,55 @@
     </tr>
   </table>
 
-  <div class = "containerDiv">
-    <div class= "cellDivWhiteHeader">
-      <div class = "slds-box">
-        Avidia Review Status:
-        <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/>
+  <!-- <div class = "containerDiv"> -->
+  <div class= "cellDivWhiteHeader">
+    <div class = "slds-box slds-text-heading_small">
+      <strong>  Avidia Review Status:
+        <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/></strong>
       </div>
     </div>
-  </div>
-  <div class = "containerDiv">
+    <!-- </div> -->
+
+
+    <!-- <div class = "rowDiv"> -->
+    <div class = "cellDiv">
+      <div class = "table">
+        <div class = "tableRowEven">
+          <div class = "tableCell">
+            Loan Amount Requested: 
+          </div>
+          <div class = "tableCell">
+            System Cost:
+          </div>
+        </div>
+        <div class = "tableRowOdd">
+          <div class = "tableCell">
+            Approval Status: <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
+          </div>
+          <div class = "tableCell">
+          </div>
+        </div>
+        <div class = "tableRowEven">
+          <div class = "tableCell">
+            FICO:<ui:outputText value="{!v.bestFICO}"/>
+          </div>
+          <div class = "tableCell">
+            DTI: <ui:outputText value="{!v.bestDTI}"/>
+          </div>
+        </div>
+        <div class = "tableRowOdd">
+          <div class = "tableCell">
+          </div>
+          <div class = "tableCell">
+            Combined Income:  <ui:outputText value="{!v.combinedIncome}"/>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+
+    </div>  
+
+  <!-- <div class = "containerDiv">
     <div class="rowDiv">
       <div class="tableCell">
         Loan Amount Requested: 
@@ -74,7 +114,7 @@
         Combined Income: <ui:outputText value="{!v.combinedIncome}"/>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <br></br>
 
@@ -102,75 +142,62 @@
         </div>
         <br></br>
 
-
-
-        <table border="1">
-          <tr>  
-            <td colspan="3">
-              <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
+        <div class = "table">
+          <div class = "tableRowEven">
+            <div class = "tableCellLong">
+              Link to Personal Credit Report:<ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
+            </div>
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
               FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              Adverse Credit Notices:
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <b>Code</b>
-            </td>
-            <td>
-              <b>Detail</b>
-            </td>
-            <td>
-              <b>Adverse Credit Notice</b>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
-            </td>
-          </tr> 
-        </table>
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Adverse Credit Notices
+            </div>
+          </div>
+        </div>  
 
-
-
-
-
+        <div class = "table">
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Code 1:
+            </div> 
+            <div class = "tableCell">
+              Detail 1:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 1:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Code 2:
+            </div> 
+            <div class = "tableCell">
+              Detail 2:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 2:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Code 3:
+            </div> 
+            <div class = "tableCell">
+              Detail 3:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 3:
+            </div> 
+          </div>
+        </div>
       </div>
+
+
       <!-- CO APPLICANT: -->
       <div class = "cellDiv">
         <br></br>
@@ -179,67 +206,59 @@
         </div>
         <br></br>
 
-        <table border="1">
-          <tr>  
-            <td colspan="3">
-              <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td colspan="3">
-              Adverse Credit Notices:
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <b>Code</b>
-            </td>
-            <td>
-              <b>Detail</b>
-            </td>
-            <td>
-              <b>Adverse Credit Notice</b>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
-            </td>
-          </tr> 
-          <tr>  
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
-            </td>
-            <td>
-              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
-            </td>
-          </tr> 
-        </table>
+        <div class = "table">
+          <div class = "tableRowEven">
+            <div class = "tableCellLong">
+              Link to Personal Credit Report:<ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report_Co_Applicant__r.Id}" label="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Name}" target="_blank"/>
+            </div>
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Adverse Credit Notices
+            </div>
+          </div>
+        </div>  
+
+        <div class = "table">
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Code 1:
+            </div> 
+            <div class = "tableCell">
+              Detail 1:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 1:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Code 2:
+            </div> 
+            <div class = "tableCell">
+              Detail 2:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 2:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Code 3:
+            </div> 
+            <div class = "tableCell">
+              Detail 3:
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice 3:
+            </div> 
+          </div>
+        </div>
 
 
       </div>
@@ -371,7 +390,7 @@
       </div>
     </div>
   </div>
-  
+
 
 
 
@@ -382,46 +401,47 @@
       <b>Debt</b>
     </div>
     <br></br>
-    <table border="1">
-      <tr>  
-        <td>
-          Monthly Personal Debt:   
-        </td>
-        <td>
+
+    <div class ="table">
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Monthly Personal Debt: 
+        </div>
+        <div class = "tableCell">
           Adjusted Monthly Personal Debt:
-        </td>
-      </tr> 
-      <tr>  
-        <td> 
-        </td>
-        <td>
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+        </div> 
+        <div class = "tableCell">
           Adjusted Personal Debt Notes: 
-        </td>
-      </tr> 
-      <tr>
-        <td> 
+        </div> 
+      </div>
+      <div class = "tableRowEven">  
+        <div class = "tableCell">
           Total Debt:
-        </td>
-        <td>
+        </div> 
+        <div class = "tableCell">
           Real Estate Payment:
-        </td>
-      </tr>
-      <tr>  
-        <td> 
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
           Total High Credit:
-        </td>
-        <td>
+        </div> 
+        <div class = "tableCell">
           Revolving Balance:
-        </td>
-      </tr>
-      <tr>
-        <td>
-        </td>
-        <td>
+        </div> 
+      </div>
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+        </div>
+        <div class = "tableCell">
           Installment Balance:
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -436,50 +456,48 @@
       <b>Income</b>
     </div>
     <br></br>
-    <table border="1">
-      <tr>  
-        <td>
+
+    <div class ="table">
+      <div class = "tableRowEven">
+        <div class = "tableCell">
           Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-        </td>
-        <td>
-          Adjusted Annual Income
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-
-        </td>
-        <td>
-          Adjusted Annual Income Notes
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Monthly Income
-        </td>
-        <td>
-          Lived at residence more than 6 months?
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Income Type
-        </td>
-        <td>
-          Employed for more than 1 year?
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Monthly Income Details
-        </td>
-        <td>
+        </div>
+        <div class = "tableCell">
+          Adjusted Annual Income:
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+        </div> 
+        <div class = "tableCell">
+          Adjusted Annual Income Notes:
+        </div> 
+      </div>
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Monthly Income:
+        </div>
+        <div class = "tableCell">
+          Lived at residence more than 6 months? 
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+          Income Type:
+        </div> 
+        <div class = "tableCell">
+          Employed for more than 1 year? 
+        </div> 
+      </div>
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Monthly Income Details:
+        </div>
+        <div class = "tableCell">
           Employed for more than 6 months?
-        </td>
-      </tr> 
-
-
-    </table>
+        </div> 
+      </div>
+    </div>
 
   </div>
 
@@ -490,50 +508,47 @@
       <b>Income</b>
     </div>
     <br></br>
-    <table border="1">
-      <tr>  
-        <td>
-          Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-        </td>
-        <td>
-          Adjusted Annual Income
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-
-        </td>
-        <td>
-          Adjusted Annual Income Notes
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Monthly Income
-        </td>
-        <td>
+    <div class ="table">
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Annual Income:
+        </div>
+        <div class = "tableCell">
+          Adjusted Annual Income:
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+        </div> 
+        <div class = "tableCell">
+          Adjusted Annual Income Notes:
+        </div> 
+      </div>
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Monthly Income:
+        </div>
+        <div class = "tableCell">
           Lived at residence more than 6 months?
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Income Type
-        </td>
-        <td>
+        </div> 
+      </div>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+          Income Type:
+        </div> 
+        <div class = "tableCell">
           Employed for more than 1 year?
-        </td>
-      </tr> 
-      <tr>  
-        <td>
-          Monthly Income Details
-        </td>
-        <td>
-          Employed for more than 6 months?
-        </td>
-      </tr> 
-
-
-    </table>
+        </div> 
+      </div>
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Monthly Income Details:
+        </div>
+        <div class = "tableCell">
+          Employed for more than 6 months? 
+        </div> 
+      </div>
+    </div>
 
   </div>
 
