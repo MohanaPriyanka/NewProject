@@ -34,7 +34,7 @@ public without sharing class LoanHandler{
     }
 
     //On After Update of Lead Record
-    public void onAfterLeadUpdate(List<Lead> updatedLeads, List<Lead> oldLeads){
+    public void onAfterLeadUpdate(List<Lead> updatedLeads, List<Lead> oldLeads, Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap){
         List<Lead> leadsToCreateLoanAndEquipment = new List<Lead>();
         List<Lead> leadsToValidatePartnerTasks = new List<Lead>();
         List<Lead> leadsToSetBlueWaveReviewToComplete = new List<Lead>();
@@ -44,23 +44,19 @@ public without sharing class LoanHandler{
             leadIds.add(leadRecord.Id);
         }
         for (Lead newLead : updatedLeads){
-            for (Lead oldLead : oldLeads){
-                if (newLead.Id == oldLead.Id){
-                    if (newLead.Status == 'Pending Information' 
-                        && oldLead.Status != 'Pending Information' 
-                        && newLead.Product_Line__c == 'Residential Loan'){
-                        leadsToCreateLoanAndEquipment.add(newLead);                       
-                    }
-                }
-                if (newLead.Update_Dummy__c != oldLead.Update_Dummy__c 
-                    && newLead.Product_Line__c == 'Residential Loan'){
-                    leadsToValidatePartnerTasks.add(newLead);
-                }
-                if (newLead.isConverted == true 
-                    && oldLead.isConverted == false 
-                    && newLead.Product_Line__c == 'Residential Loan'){
-                    leadsToSetBlueWaveReviewToComplete.add(newLead);
-                }
+            if (newLead.Status == 'Pending Information' 
+                && oldLeadMap.get(newLead.Id).Status != 'Pending Information' 
+                && newLead.Product_Line__c == 'Residential Loan'){
+                leadsToCreateLoanAndEquipment.add(newLead);                       
+            }
+            if (newLead.Update_Dummy__c != oldLeadMap.get(newLead.Id).Update_Dummy__c 
+                && newLead.Product_Line__c == 'Residential Loan'){
+                leadsToValidatePartnerTasks.add(newLead);
+            }
+            if (newLead.isConverted == true 
+                && oldLeadMap.get(newLead.Id).isConverted == false 
+                && newLead.Product_Line__c == 'Residential Loan'){
+                leadsToSetBlueWaveReviewToComplete.add(newLead);
             }
         }
         if (leadsToCreateLoanAndEquipment.size() > 0){
