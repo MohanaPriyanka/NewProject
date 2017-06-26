@@ -6,17 +6,54 @@
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
-  <aura:attribute name="pageMessageText" type="String" default="&nbsp;"/>
   <aura:attribute name="bestFICO" type="Integer"/>
   <aura:attribute name="bestDTI" type="Decimal"/>
   <aura:attribute name="combinedIncome" type="Decimal"/>
-  <div aura:id="pageMessage">
-    <ui:outputText value="{!v.pageMessageText}"/>
-  </div>
+  <aura:attribute name="isOpen" type="Boolean" default="false"/>
+  <aura:attribute name="adverseField" type="String"/>
+
+  <aura:if isTrue="{!v.isOpen}">
+    <!--###### MODAL BOX Start From Here ######--> 
+    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModel}">
+            X
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="header99" class="slds-text-heading--medium">About Sfdcmonkey.com</h2>
+        </div>
+        <div class="slds-modal__content slds-p-around--medium">
+          <p><b>The goal of this blog is to provide tips and tricks/workarounds for salesforce developer and admins.
+              Many of us face the same issues and have the same questions when using and implementing Salesforce.
+              As a community of users and developers, it is important for us to share our experiences.
+              I try to reach out to other users and help the Salesforce community in general.
+              Much of this blog will focus on Lightning(code &amp; config.) but I will also
+              cover some of the more basic topics in salesforce.
+            </b>
+          </p>
+        </div>
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button--neutral" onclick="{!c.closeModel}" >Cancel</button>
+          <button class="slds-button slds-button--brand" onclick="{!c.likenClose}">Like and Close</button>
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
 
   <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name">
     <ui:outputText value="{!v.lead.Name}"/>
   </h1>
+
+  <div class="slds-align_absolute-center slds-border_bottom">
+    <lightning:buttonGroup>
+      <lightning:button label="Save Changes" />
+      <lightning:button label="Send Main Applicant Credit Decline" onclick="{!c.emailCreditDecline}" disabled="{!v.lead.Manual_Credit_Decline__c}"/>
+      <lightning:button label="Send Co-App Credit Decline" onclick="{!c.emailCoAppCreditDecline}" disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+    </lightning:buttonGroup>
+  </div>
+  
   <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small" border="0">
     <tr>
       <td width="33%">
@@ -37,84 +74,47 @@
     </tr>
   </table>
 
-  <!-- <div class = "containerDiv"> -->
   <div class= "cellDivWhiteHeader">
     <div class = "slds-box slds-text-heading_small">
-      <strong>  Avidia Review Status:
+      <strong>Avidia Review Status:
         <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/></strong>
-      </div>
     </div>
-    <!-- </div> -->
+  </div>
 
-
-    <!-- <div class = "rowDiv"> -->
-    <div class = "cellDiv">
-      <div class = "table">
-        <div class = "tableRowEven">
-          <div class = "tableCell">
-            Loan Amount Requested: 
-          </div>
-          <div class = "tableCell">
-            System Cost:
-          </div>
+  <div class = "cellDiv">
+    <div class = "table">
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          Loan Amount Requested: 
         </div>
-        <div class = "tableRowOdd">
-          <div class = "tableCell">
-            Approval Status: <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
-          </div>
-          <div class = "tableCell">
-          </div>
-        </div>
-        <div class = "tableRowEven">
-          <div class = "tableCell">
-            FICO:<ui:outputText value="{!v.bestFICO}"/>
-          </div>
-          <div class = "tableCell">
-            DTI: <ui:outputText value="{!v.bestDTI}"/>
-          </div>
-        </div>
-        <div class = "tableRowOdd">
-          <div class = "tableCell">
-          </div>
-          <div class = "tableCell">
-            Combined Income:  <ui:outputText value="{!v.combinedIncome}"/>
-          </div>
+        <div class = "tableCell">
+          System Cost:
         </div>
       </div>
-      <!-- </div> -->
-
-    </div>  
-
-  <!-- <div class = "containerDiv">
-    <div class="rowDiv">
-      <div class="tableCell">
-        Loan Amount Requested: 
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+          Approval Status: <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
+        </div>
+        <div class = "tableCell">
+        </div>
       </div>
-      <div class="tableCell">
-        System Cost:
+      <div class = "tableRowEven">
+        <div class = "tableCell">
+          FICO:<ui:outputText value="{!v.bestFICO}"/>
+        </div>
+        <div class = "tableCell">
+          DTI: <ui:outputText value="{!v.bestDTI}"/>
+        </div>
       </div>
-    </div>
-    <div class="rowDiv">
-      <div class="tableCell">
-        Approval Status:
-        <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
-      </div>
-    </div>
-    <div class="rowDiv">
-      <div class="tableCell">
-        FICO: <ui:outputText value="{!v.bestFICO}"/>
-      </div>
-      <div class="tableCell">
-        DTI: <ui:outputText value="{!v.bestDTI}"/>
+      <div class = "tableRowOdd">
+        <div class = "tableCell">
+        </div>
+        <div class = "tableCell">
+          Combined Income:  <ui:outputText value="{!v.combinedIncome}"/>
+        </div>
       </div>
     </div>
-    <div class="rowDiv">
-      <div class="tableCell"/>
-      <div class="tableCell">
-        Combined Income: <ui:outputText value="{!v.combinedIncome}"/>
-      </div>
-    </div>
-  </div> -->
+  </div>  
 
   <br></br>
 
@@ -132,7 +132,6 @@
 
 
     <!-- CREDIT ROW -->
-
     <div class = "rowDiv">
       <!-- APPLICANT: -->
       <div class = "cellDiv">
@@ -155,43 +154,70 @@
           </div>
           <div class = "tableRowEven">
             <div class = "tableCell">
-              Adverse Credit Notices
+              <lightning:input type="checkbox" disabled="true" label="Adverse Credit Notice Sent" name="AdverseCreditCheckbox" checked="{!v.lead.Manual_Credit_Decline__c}"/>
+            </div>
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Adverse Credit Notices:
             </div>
           </div>
         </div>  
 
         <div class = "table">
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Code 1:
+            <div class = "tableCell25px">
             </div> 
             <div class = "tableCell">
-              Detail 1:
+              Code
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 1:
+              Detail
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice
             </div> 
           </div>
           <div class = "tableRowEven">
-            <div class = "tableCell">
-              Code 2:
+            <div class = "tableCell25px">
+              1
             </div> 
             <div class = "tableCell">
-              Detail 2:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 2:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
             </div> 
           </div>
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Code 3:
+            <div class = "tableCell25px">
+              2
             </div> 
             <div class = "tableCell">
-              Detail 3:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 3:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell25px">
+              3
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
             </div> 
           </div>
         </div>
@@ -219,48 +245,74 @@
           </div>
           <div class = "tableRowEven">
             <div class = "tableCell">
-              Adverse Credit Notices
+              <lightning:input type="checkbox" disabled="true" label="Adverse Co App Credit Notice Sent" name="AdverseCoAppCreditCheckbox" checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+            </div>
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Adverse Credit Notices:
             </div>
           </div>
         </div>  
 
         <div class = "table">
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Code 1:
+            <div class = "tableCell25px">
             </div> 
             <div class = "tableCell">
-              Detail 1:
+              Code
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 1:
+              Detail
+            </div> 
+            <div class = "tableCell">
+              Adverse Credit Notice
             </div> 
           </div>
           <div class = "tableRowEven">
-            <div class = "tableCell">
-              Code 2:
+            <div class = "tableCell25px">
+              1
             </div> 
             <div class = "tableCell">
-              Detail 2:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c}"/>
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 2:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_1__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c}"/>
+              <a href="#" onclick="{!c.openModel}" data-fieldname="Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c">Change</a>
             </div> 
           </div>
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Code 3:
+            <div class = "tableCell25px">
+              2
             </div> 
             <div class = "tableCell">
-              Detail 3:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c}"/>
             </div> 
             <div class = "tableCell">
-              Adverse Credit Notice 3:
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c}"/>
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell25px">
+              3
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c}"/>
+            </div> 
+            <div class = "tableCell">
+              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c}"/>
             </div> 
           </div>
         </div>
-
-
       </div>
     </div>
 
@@ -276,305 +328,305 @@
         <br></br>
 
         <div class ="table">
-         <div class = "tableRowEven">
-          <div class = "tableCell">
-            Adjusted DTI:
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Adjusted DTI:
+            </div>
+            <div class = "tableCell">
+            </div> 
           </div>
-          <div class = "tableCell">
-          </div> 
-        </div>
 
-        <div class = "tableRowOdd">
-          <div class = "tableCell">
-            DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
-          </div> 
-          <div class = "tableCell">
-            DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
-          </div> 
-        </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
+            </div> 
+            <div class = "tableCell">
+              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
+            </div> 
+          </div>
 
-        <div class = "tableRowEven">  
-          <div class = "tableCell">
-            DTI After Notes:
-          </div> 
-          <div class = "tableCell">
-          </div> 
+          <div class = "tableRowEven">  
+            <div class = "tableCell">
+              DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After_Notes__c}"/>
+            </div> 
+            <div class = "tableCell">
+            </div> 
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Co APPLICANT -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          <b>DTI</b>
+        </div>
+        <br></br>
+        <div class ="table">
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Adjusted DTI:
+            </div>
+            <div class = "tableCell">
+            </div> 
+          </div>
+
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c}"/>
+            </div> 
+            <div class = "tableCell">
+              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c}"/>
+            </div> 
+          </div>
+
+          <div class = "tableRowEven">  
+            <div class = "tableCell">
+              DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After_Notes__c}"/>
+            </div> 
+            <div class = "tableCell">
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEBT CELL -->
+    <div class = "rowDiv">
+      <!-- APPLICANT: -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          <b>Debt</b>
+        </div>
+        <br></br>  
+        <div class ="table">
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Personal Debt: 
+            </div>
+            <div class = "tableCell">
+              Adjusted Monthly Personal Debt:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+            </div> 
+            <div class = "tableCell">
+              Adjusted Personal Debt Notes: 
+            </div> 
+          </div>
+          <div class = "tableRowEven">  
+            <div class = "tableCell">
+              Total Debt:
+            </div> 
+            <div class = "tableCell">
+              Real Estate Payment:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Total High Credit:
+            </div> 
+            <div class = "tableCell">
+              Revolving Balance:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+            </div>
+            <div class = "tableCell">
+              Installment Balance:
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!-- CO APPLICANT -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          <b>Debt</b>
+        </div>
+        <br></br>
+
+        <div class ="table">
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Personal Debt: 
+            </div>
+            <div class = "tableCell">
+              Adjusted Monthly Personal Debt:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+            </div> 
+            <div class = "tableCell">
+              Adjusted Personal Debt Notes: 
+            </div> 
+          </div>
+          <div class = "tableRowEven">  
+            <div class = "tableCell">
+              Total Debt:
+            </div> 
+            <div class = "tableCell">
+              Real Estate Payment:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Total High Credit:
+            </div> 
+            <div class = "tableCell">
+              Revolving Balance:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+            </div>
+            <div class = "tableCell">
+              Installment Balance:
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
 
-    <!-- Co APPLICANT -->
-    <div class = "cellDiv">
-     <br></br>
-     <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-       <b>DTI</b>
-     </div>
-     <br></br>
-     <div class ="table">
-       <div class = "tableRowEven">
-        <div class = "tableCell">
-          Adjusted DTI:
+
+    <!-- INCOME CELL -->
+    <div class = "rowDiv">
+      <!-- APPLICANT: -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          <b>Income</b>
         </div>
-        <div class = "tableCell">
-        </div> 
+        <br></br>
+
+        <div class ="table">
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+            </div>
+            <div class = "tableCell">
+              Adjusted Annual Income:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+            </div> 
+            <div class = "tableCell">
+              Adjusted Annual Income Notes:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Income:
+            </div>
+            <div class = "tableCell">
+              Lived at residence more than 6 months? 
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Income Type:
+            </div> 
+            <div class = "tableCell">
+              Employed for more than 1 year? 
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Income Details:
+            </div>
+            <div class = "tableCell">
+              Employed for more than 6 months?
+            </div> 
+          </div>
+        </div>
+
       </div>
 
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c}"/>
-        </div> 
-        <div class = "tableCell">
-          DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c}"/>
-        </div> 
+      <!-- CO APPLICANT -->
+      <div class = "cellDiv">
+        <br></br>
+        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+          <b>Income</b>
+        </div>
+        <br></br>
+        <div class ="table">
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Annual Income:
+            </div>
+            <div class = "tableCell">
+              Adjusted Annual Income:
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+            </div> 
+            <div class = "tableCell">
+              Adjusted Annual Income Notes:
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Income:
+            </div>
+            <div class = "tableCell">
+              Lived at residence more than 6 months?
+            </div> 
+          </div>
+          <div class = "tableRowOdd">
+            <div class = "tableCell">
+              Income Type:
+            </div> 
+            <div class = "tableCell">
+              Employed for more than 1 year?
+            </div> 
+          </div>
+          <div class = "tableRowEven">
+            <div class = "tableCell">
+              Monthly Income Details:
+            </div>
+            <div class = "tableCell">
+              Employed for more than 6 months? 
+            </div> 
+          </div>
+        </div>
+
       </div>
 
-      <div class = "tableRowEven">  
-        <div class = "tableCell">
-          DTI After Notes:
-        </div> 
-        <div class = "tableCell">
-        </div> 
-      </div>
     </div>
+
+
+
   </div>
-</div>
 
-<!-- DEBT CELL -->
-<div class = "rowDiv">
-  <!-- APPLICANT: -->
-  <div class = "cellDiv">
-    <br></br>
-    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-      <b>Debt</b>
-    </div>
-    <br></br>  
-    <div class ="table">
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Personal Debt: 
-        </div>
-        <div class = "tableCell">
-          Adjusted Monthly Personal Debt:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-        </div> 
-        <div class = "tableCell">
-          Adjusted Personal Debt Notes: 
-        </div> 
-      </div>
-      <div class = "tableRowEven">  
-        <div class = "tableCell">
-          Total Debt:
-        </div> 
-        <div class = "tableCell">
-          Real Estate Payment:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          Total High Credit:
-        </div> 
-        <div class = "tableCell">
-          Revolving Balance:
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-        </div>
-        <div class = "tableCell">
-          Installment Balance:
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <!-- </div> -->
 
 
 
 
-  <!-- CO APPLICANT -->
-  <div class = "cellDiv">
-    <br></br>
-    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-      <b>Debt</b>
-    </div>
-    <br></br>
-
-    <div class ="table">
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Personal Debt: 
-        </div>
-        <div class = "tableCell">
-          Adjusted Monthly Personal Debt:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-        </div> 
-        <div class = "tableCell">
-          Adjusted Personal Debt Notes: 
-        </div> 
-      </div>
-      <div class = "tableRowEven">  
-        <div class = "tableCell">
-          Total Debt:
-        </div> 
-        <div class = "tableCell">
-          Real Estate Payment:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          Total High Credit:
-        </div> 
-        <div class = "tableCell">
-          Revolving Balance:
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-        </div>
-        <div class = "tableCell">
-          Installment Balance:
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- INCOME CELL -->
-<div class = "rowDiv">
-  <!-- APPLICANT: -->
-  <div class = "cellDiv">
-    <br></br>
-    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-      <b>Income</b>
-    </div>
-    <br></br>
-
-    <div class ="table">
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
-        </div>
-        <div class = "tableCell">
-          Adjusted Annual Income:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-        </div> 
-        <div class = "tableCell">
-          Adjusted Annual Income Notes:
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Income:
-        </div>
-        <div class = "tableCell">
-          Lived at residence more than 6 months? 
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          Income Type:
-        </div> 
-        <div class = "tableCell">
-          Employed for more than 1 year? 
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Income Details:
-        </div>
-        <div class = "tableCell">
-          Employed for more than 6 months?
-        </div> 
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CO APPLICANT -->
-  <div class = "cellDiv">
-    <br></br>
-    <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-      <b>Income</b>
-    </div>
-    <br></br>
-    <div class ="table">
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Annual Income:
-        </div>
-        <div class = "tableCell">
-          Adjusted Annual Income:
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-        </div> 
-        <div class = "tableCell">
-          Adjusted Annual Income Notes:
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Income:
-        </div>
-        <div class = "tableCell">
-          Lived at residence more than 6 months?
-        </div> 
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          Income Type:
-        </div> 
-        <div class = "tableCell">
-          Employed for more than 1 year?
-        </div> 
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Monthly Income Details:
-        </div>
-        <div class = "tableCell">
-          Employed for more than 6 months? 
-        </div> 
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-
-
-</div>
-
-
-<!-- </div> -->
-
-
-
-
-<br></br>
-Income Documentation:
-<table>
-  <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
-    <tr>  
-      <td>
-        <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
-      </td>
-    </tr>  
-  </aura:iteration> 
-</table>
+  <br></br>
+  Income Documentation:
+  <table>
+    <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
+      <tr>  
+        <td>
+          <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
+        </td>
+      </tr>  
+    </aura:iteration> 
+  </table>
 
 
 
@@ -582,9 +634,9 @@ Income Documentation:
 
 
 
-<!-- </div> -->
+  <!-- </div> -->
 
-<!-- </div> -->
-<br></br>
+  <!-- </div> -->
+  <br></br>
 
 </aura:component>

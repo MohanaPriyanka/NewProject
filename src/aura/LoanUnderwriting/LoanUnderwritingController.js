@@ -1,50 +1,9 @@
 ({
     doInit : function(component, event, helper) {
-        var action = component.get("c.getLead");
-        action.setParams({"leadId" : component.get("v.leadId")});
-        action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                var lead = resp.getReturnValue();
-                component.set("v.lead", lead);
-                component.set("v.bestFICO",
-                              Math.max(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                                       lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
-                component.set("v.combinedIncome",
-                              lead.Annual_Income_Currency__c + lead.Co_Applicant_Income__c);
-            } else {
-                $A.log("Errors", resp.getError());
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "LoanUnderwritingController",
-                                    "methodName" : "doInit",
-                                    "errors" : resp.getError()});
-                appEvent.fire();
-            }
-        });
-        $A.enqueueAction(action);
-
-        var arsAction = component.get("c.getAvidiaReviewStatus");
-        var inputsel = component.find("AvidiaReviewStatus");
-        var opts=[];
-        arsAction.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            inputsel.set("v.options", opts);
-
-        });
-        $A.enqueueAction(arsAction); 
-
-        var slApprovalAction = component.get("c.getSLApprovalStatus");
-        var slasInputSel = component.find("SolarLoanApprovalStatus");
-        var slasOpts=[];
-        slApprovalAction.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                slasOpts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            slasInputSel.set("v.options", slasOpts);
-
-        });
-        $A.enqueueAction(slApprovalAction);
+        helper.getLead(component);
+        helper.getReviewStatusOptions(component);
+        helper.getSolarLoanStatusOptions(component);
+        helper.getCreditNoticeOptions(component);
     },
 
     updateReviewStatus : function(component, event) {
@@ -76,5 +35,72 @@
         $A.util.removeClass(pageMessage, 'slds-transition-hide');
 
         $A.enqueueAction(action);
-    }
+    },
+        
+    emailCreditDecline : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        if (!lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c) {
+            alert("ADVERSE CREDIT NOTICE NOT SENT - " +
+                  "PLEASE PROVIDE CONTENT FOR THE ADVERSE CREDIT NOTICE IN THE PERSONAL CREDIT REPORT");
+        } else if(!lead.Personal_Credit_Report__r.LASERCA__Code__c) {
+            alert("ADVERSE CREDIT NOTICE NOT SENT - " +
+                  "PLEASE MANUALLY ENTER CREDIT DENIAL CODES FROM PDF ATTACHMENT ON CREDIT REPORT");
+        } else { 
+            var action = component.get("c.updateManualCreditDecline");
+            action.setParams({"lead": lead,
+                              "coApplicant": false});
+            action.setCallback(this, function(resp) {
+                if (resp.getState() == "SUCCESS") {
+                    helper.getLead(component);
+                    alert("Adverse Credit Notice has been sent to the Main Applicant.");
+                } else {
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "LoanUnderwritingController",
+                                        "methodName" : "emailCreditDecline",
+                                        "errors" : resp.getError()});
+                    appEvent.fire();
+                }                
+            });
+            $A.enqueueAction(action);
+        }
+    },
+
+    emailCoAppCreditDecline : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        if (!lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c) {
+            alert("ADVERSE CREDIT NOTICE NOT SENT - " +
+                  "PLEASE PROVIDE CONTENT FOR THE ADVERSE CREDIT NOTICE IN THE CO-APPLICANT PERSONAL CREDIT REPORT");
+        } else if(!lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c) {
+            alert("ADVERSE CREDIT NOTICE NOT SENT - " +
+                  "PLEASE MANUALLY ENTER CREDIT DENIAL CODES FROM PDF ATTACHMENT ON CO-APPLICANT CREDIT REPORT");
+        } else { 
+            var action = component.get("c.updateManualCreditDecline");
+            action.setParams({"lead": lead,
+                             "coApplicant": true});
+            action.setCallback(this, function(resp) {
+                if (resp.getState() == "SUCCESS") {
+                    alert("Adverse Credit Notice has been sent to the Co-Applicant.");
+                    helper.getLead(component);
+                } else {
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "LoanUnderwritingController",
+                                        "methodName" : "emailCoAppCreditDecline",
+                                        "errors" : resp.getError()});
+                    appEvent.fire();
+                }                
+            });
+            $A.enqueueAction(action);
+        }
+    },
+    
+    openModel: function(component, event, helper) {
+        component.set("v.isOpen", true);
+        console.log("event.srcElement.fieldname: " + event.target.dataset.fieldname);
+        component.set("v.adverseField", event.target.dataset.fieldname);
+    },
+    
+    closeModel: function(component, event, helper) {
+        alert(component.get("v.adverseField"));
+        component.set("v.isOpen", false);
+    },    
 })
