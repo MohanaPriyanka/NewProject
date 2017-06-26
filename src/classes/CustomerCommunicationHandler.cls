@@ -1,3 +1,12 @@
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * Sends collections emails based on how many days late an account is
+ + * Meant to be run as scheduled apex once a day.
+ + * 
+ + * Tested By: CustomerCommunicationHandlerTest
+ + *************************************************************************************/
+
+
 global class CustomerCommunicationHandler Implements Schedulable {
   
       global void execute(SchedulableContext sc){
@@ -13,7 +22,8 @@ global class CustomerCommunicationHandler Implements Schedulable {
                               WHERE DeveloperName = 'Property'];
             system.debug(rt);
 
-            List <Account> acclist =  [   SELECT id, Name, Send_Bills_Contact__C, Last_Bill_Send_Date__c, Recurring_Billing__c, Days_Past_Due__c, RecordTypeId, Total_Outstanding_Balance__c, Total_Billed__c
+            List <Account> acclist =  [   SELECT id, Name, Send_Bills_Contact__C, Last_Bill_Send_Date__c, Do_not_Send_Bills__c,
+                                           Recurring_Billing__c, Days_Past_Due__c, RecordTypeId, Total_Outstanding_Balance__c, Total_Billed__c
                                           FROM Account 
                                           WHERE Total_Outstanding_Balance__c > 1];
             system.debug(acclist);
@@ -35,7 +45,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
 
             if(billedacclist.size()>0){
                 for (Account act : billedacclist){
-                    if(act.Last_Bill_Send_Date__c != null && act.Send_Bills_Contact__c != null){
+                    if(act.Last_Bill_Send_Date__c != null && act.Send_Bills_Contact__c != null && !act.Do_not_Send_Bills__c){
                       datetime lastbill = act.Last_Bill_Send_Date__c;
                       date lbsd = date.newinstance(lastbill.year(), lastbill.month(), lastbill.day());
                       date duedate = lbsd + 17;
@@ -204,8 +214,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                       }
                     }
                   }
-
-              Messaging.sendEmail(emailstosend);  
+              MessagingService.sendEmail(emailstosend);
             }     
 
 
