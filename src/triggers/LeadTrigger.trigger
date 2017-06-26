@@ -9,7 +9,7 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
 
     if(Trigger.isUpdate && Trigger.isAfter){
         handler.OnAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
-        loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old);
+        loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
     }
    else if(Trigger.isUpdate && Trigger.isBefore){
         handler2.OnBeforeUpdate(Trigger.new);
