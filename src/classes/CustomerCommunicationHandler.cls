@@ -1,3 +1,12 @@
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * Sends collections emails based on how many days late an account is
+ + * Meant to be run as scheduled apex once a day.
+ + * 
+ + * Tested By: CustomerCommunicationHandlerTest
+ + *************************************************************************************/
+
+
 global class CustomerCommunicationHandler Implements Schedulable {
   
       global void execute(SchedulableContext sc){
@@ -205,8 +214,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                       }
                     }
                   }
-
-              Messaging.sendEmail(emailstosend, false);  
+              MessagingService.sendEmail(emailstosend);
             }     
 
 
