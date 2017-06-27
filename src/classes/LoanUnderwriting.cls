@@ -16,6 +16,7 @@
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
                             Annual_Income_Currency__c, Co_Applicant_Income__c,
                             Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
+                            Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                             Personal_Credit_Report__r.Id,
                             Personal_Credit_Report__r.Name,
                             Personal_Credit_Report__r.DTI_Before__c,
@@ -58,12 +59,15 @@
                             WHERE ID = :leadId];
 
         if (!leads.isEmpty()) {
-            System.debug(LoggingLevel.ERROR, leads);
             Lead lead = leads[0];
             lead.Personal_Credit_Report__r.DTI_Before__c = lead.Personal_Credit_Report__r.DTI_Before__c.setScale(2);
             lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
-            lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c = lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
-            lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c = lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
+            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
+                lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c =
+                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
+                lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c =
+                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
+            }
             return leads[0];
         } else {
             return new Lead();
@@ -87,7 +91,6 @@
 
     @AuraEnabled 
     public static void updatePCR(LASERCA__Personal_Credit_Report__c pcr) {
-        System.debug(LoggingLevel.ERROR, pcr);
         update pcr;
     }
 
