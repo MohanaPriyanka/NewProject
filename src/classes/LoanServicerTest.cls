@@ -93,7 +93,7 @@ public with sharing class LoanServicerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.today());
         insert loan;
@@ -104,7 +104,7 @@ public with sharing class LoanServicerTest {
                              FROM Product2
                              WHERE Name = 'MSLP - MA - 20 Year - 3.25%' LIMIT 1];
         loan.Product__c = mslp20Yr.Id;
-        loan.System_Costt__c = 45000;
+        loan.Requested_Loan_Amount__c = 45000;
         loan.Financing_Fee__c = 0;
         update loan;
 
@@ -129,7 +129,7 @@ public with sharing class LoanServicerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.today());
         insert loan;
@@ -180,7 +180,7 @@ public with sharing class LoanServicerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Commencement_Datee__c = Date.today());
         insert loan;
 
@@ -233,7 +233,7 @@ public with sharing class LoanServicerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.today());
         insert loan;
@@ -375,7 +375,7 @@ public with sharing class LoanServicerTest {
                                    Partner__c = partner.Id,
                                    Opportunity__c = opp.Id,
                                    Loan_Tranche__c = loanTraunch.Id,
-                                   System_Costt__c = 40316.93,
+                                   Requested_Loan_Amount__c = 40316.93,
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.today());
         insert loan;

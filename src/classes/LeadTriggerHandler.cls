@@ -56,9 +56,10 @@ public with sharing class LeadTriggerHandler {
         opp.Is_Loan_Secured__c = lead.Is_Loan_Secured__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.License_Number__c = lead.License_Number__c;
-        opp.Lived_at_residence_more_than_six_months__c = lead.Lived_Residence_Six_Months__c;
-        opp.Loan_Principle__c = lead.Loan_Amount__c;
+        opp.Lived_at_residence_more_than_six_months__c = lead.Lived_Residence_Six_Months__c;   
         opp.Loan_Program_Class__c = lead.Loan_Program_Class__c;
+        opp.Loan_Principle__c  = lead.System_Cost__c;       
+        opp.Requested_Loan_Amount__c  = lead.Requested_Loan_Amount__c;        
         opp.Maximum_Loan__c = lead.Maximum_Loan__c;
         opp.Maximum_Monthly_Disbursement__c = lead.Maximum_Monthly_Disbursement2__c;
         opp.Monthly_Income__c = lead.Monthly_Income__c;

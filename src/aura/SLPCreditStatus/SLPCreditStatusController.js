@@ -132,7 +132,7 @@
                         var state = lead.LASERCA__Home_State__c;
                         var zip = lead.LASERCA__Home_Zip__c;
                         var income = lead.Annual_Income_Currency__c;
-                        var systemCost = lead.System_Cost__c;
+                        var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
                         var lastName = lead.LastName;     
@@ -169,7 +169,7 @@
                         var formId = component.get("v.formId");   
                         var zip = lead.LASERCA__Home_Zip__c;
                         var income = lead.Annual_Income_Currency__c;
-                        var systemCost = lead.System_Cost__c;
+                        var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
                         var lastName = lead.LastName;                    

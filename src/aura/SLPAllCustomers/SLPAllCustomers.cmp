@@ -66,7 +66,7 @@
               		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
                     </aura:set>
                     </aura:if>
-                    <th scope="row"> <ui:outputCurrency class="" value="{!Customer.System_Costt__c}" /></th>
+                    <th scope="row"> <ui:outputCurrency class="" value="{!Customer.Requested_Loan_Amount__c}" /></th>
                     <aura:if isTrue="{!v.licenseType}">           
                       <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
                     </aura:if>          	                      

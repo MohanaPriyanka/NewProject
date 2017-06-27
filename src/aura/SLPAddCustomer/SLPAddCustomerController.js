@@ -49,7 +49,7 @@
             && lead.LastName != ''
             && lead.Email != ''
             && lead.LASERCA__Social_Security_Number__c != ''
-            && lead.System_Cost__c != null
+            && lead.Requested_Loan_Amount__c != null
             && lead.Annual_Income_Currency__c != null
             && lead.Credit_Check_Acknowledged__c == true
             && lead.Privacy_Policy_Acknowledged__c == true

@@ -39,7 +39,7 @@
         BSST__c salesIdQuery = [SELECT id FROM Bsst__c WHERE Name = 'Cole Swain'];
 
         Opportunity newOp = new Opportunity(name ='Cole Swain', email__c ='cswain@bluewave-capital.com', 
-                                            commencement_date__c = myDate, account = newAccount, Loan_Principle__c = 25000, 
+                                            commencement_date__c = myDate, account = newAccount, Requested_Loan_Amount__c = 25000, 
                                             stageName = 'new', type = 'New Business', closeDate = myDate, 
                                             loan_traunch__c = loanTranchePending.id ) ;
 
@@ -56,7 +56,7 @@
                                 LASERCA__Social_Security_Number__c = '000000001',
                                 Product_Line__c = 'Residential Loan',
                                 LASERCA__Home_State__c = 'MA',
-                                System_Cost__c = 25000,
+                                Requested_Loan_Amount__c = 25000,
                                 Unfinished_Lead__c = true,
                                 Custom_Id__c = 'test',
                                 Loan_Term__c = 120,

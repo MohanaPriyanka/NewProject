@@ -14,7 +14,7 @@ newTraunch.name = 'Avidian 1';
 
 insert newTraunch;
 
-Opportunity newOpportunity = new Opportunity(name = 'Tester', Loan_Principle__c = 50000, Loan_Rate__c = 0.0599,IRBD_Rate__c = 0.0325,Interest_Only_Period_DOER__c = 5, Principal_and_Interest_Period_DOER__c = 120,  type = 'New Business', product_line__c = 'DOER Solar Loan', loan_assignment__c = 'Automatic', closeDate = myDate, stageName='New', capital_expense__c = 10000); 
+Opportunity newOpportunity = new Opportunity(name = 'Tester', Requested_Loan_Amount__c = 50000, Loan_Rate__c = 0.0599,IRBD_Rate__c = 0.0325,Interest_Only_Period_DOER__c = 5, Principal_and_Interest_Period_DOER__c = 120,  type = 'New Business', product_line__c = 'DOER Solar Loan', loan_assignment__c = 'Automatic', closeDate = myDate, stageName='New', capital_expense__c = 10000); 
 insert newOpportunity;
 update newOpportunity;
 
