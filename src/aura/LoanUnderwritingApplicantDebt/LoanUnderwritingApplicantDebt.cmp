@@ -1,44 +1,61 @@
-<aura:component >
-  <table border="1">
-    <tr>  
-      <td>
-        Monthly Personal Debt:   
-      </td>
-      <td>
-        Adjusted Monthly Personal Debt:
-      </td>
-    </tr> 
-    <tr>  
-      <td> 
-      </td>
-      <td>
-        Adjusted Personal Debt Notes: 
-      </td>
-    </tr> 
-    <tr>
-      <td> 
-        Total Debt:
-      </td>
-      <td>
-        Real Estate Payment:
-      </td>
-    </tr>
-    <tr>  
-      <td> 
-        Total High Credit:
-      </td>
-      <td>
-        Revolving Balance:
-      </td>
-    </tr>
-    <tr>
-      <td>
-      </td>
-      <td>
-        Installment Balance:
-      </td>
-    </tr>
+<aura:component>
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
 
-
-  </table>
+  <div class ="table">
+    <div class = "tableRowEven">
+      <div class = "leftCol">
+        Monthly Personal Debt
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Sum_of_monthly_Personal_Debt__c}"/>
+      </div>
+      <div class = "rightCol">
+        <div>
+          <div>
+            Adjusted Monthly Personal Debt
+          </div>
+          <div>
+            <ui:inputCurrency aura:id="amount" class="field" value="2300"/>
+          </div>
+        </div>
+      </div> 
+    </div>
+    <div class = "tableRowOdd">
+      <div class = "wholeRow">
+        Adjusted Personal Debt Notes
+        <br></br>
+	<ui:inputText value=""/>
+      </div> 
+    </div>
+    <div class = "tableRowEven">  
+      <div class = "leftCol">
+        Total Debt: 
+      </div> 
+      <div class = "rightCol">
+        Real Estate Payment
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Real_Estate_Payment__c}"/>
+      </div> 
+    </div>
+    <div class = "tableRowOdd">
+      <div class = "leftCol">
+        Total High Credit
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Total_High_Credit__c}"/>
+      </div> 
+      <div class = "rightCol">
+        Revolving Balance
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Revolving_Balance__c}"/>
+      </div> 
+    </div>
+    <div class = "tableRowEven">
+      <div class = "leftCol">
+      </div>
+      <div class = "rightCol">
+        Installment Balance
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Installment_Balance__c}"/>
+      </div>
+    </div>
+  </div>
 </aura:component>

@@ -1,6 +1,4 @@
 <aura:component controller="LoanUnderwriting">
-  <ltng:require scripts="{!$Resource.jQuery}"/>
-
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:attribute name="leadId" type="String"/>
@@ -88,20 +86,13 @@
       </div>
       <div class = "tableRowOdd">
         <div class = "tableCell">
-          Approval Status: <ui:inputSelect class="dynamic" aura:id="SolarLoanApprovalStatus" value="{!v.lead.Personal_Credit_Report__r.Solar_Loan_Approval_Status__c}" required="true" change="{!c.updateSLApprovalStatus}"/>
-        </div>
-        <div class = "tableCell">
-        </div>
-      </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
           FICO:<ui:outputText value="{!v.bestFICO}"/>
         </div>
         <div class = "tableCell">
           DTI: <ui:outputText value="{!v.bestDTI}"/>
         </div>
       </div>
-      <div class = "tableRowOdd">
+      <div class = "tableRowEven">
         <div class = "tableCell">
         </div>
         <div class = "tableCell">
@@ -389,110 +380,24 @@
 
     <!-- DEBT CELL -->
     <div class = "rowDiv">
-      <!-- APPLICANT: -->
       <div class = "cellDiv">
         <br></br>
         <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
           <b>Debt</b>
         </div>
         <br></br>  
-        <div class ="table">
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Personal Debt: 
-            </div>
-            <div class = "tableCell">
-              Adjusted Monthly Personal Debt:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-            </div> 
-            <div class = "tableCell">
-              Adjusted Personal Debt Notes: 
-            </div> 
-          </div>
-          <div class = "tableRowEven">  
-            <div class = "tableCell">
-              Total Debt:
-            </div> 
-            <div class = "tableCell">
-              Real Estate Payment:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Total High Credit:
-            </div> 
-            <div class = "tableCell">
-              Revolving Balance:
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-            </div>
-            <div class = "tableCell">
-              Installment Balance:
-            </div>
-          </div>
-        </div>
+        <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report__r}"/>
       </div>
 
-
-
-
-      <!-- CO APPLICANT -->
       <div class = "cellDiv">
         <br></br>
         <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
           <b>Debt</b>
         </div>
         <br></br>
-
-        <div class ="table">
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Personal Debt: 
-            </div>
-            <div class = "tableCell">
-              Adjusted Monthly Personal Debt:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-            </div> 
-            <div class = "tableCell">
-              Adjusted Personal Debt Notes: 
-            </div> 
-          </div>
-          <div class = "tableRowEven">  
-            <div class = "tableCell">
-              Total Debt:
-            </div> 
-            <div class = "tableCell">
-              Real Estate Payment:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Total High Credit:
-            </div> 
-            <div class = "tableCell">
-              Revolving Balance:
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-            </div>
-            <div class = "tableCell">
-              Installment Balance:
-            </div>
-          </div>
-        </div>
+        <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
       </div>
     </div>
-
-
 
     <!-- INCOME CELL -->
     <div class = "rowDiv">
@@ -503,49 +408,34 @@
           <b>Income</b>
         </div>
         <br></br>
-
         <div class ="table">
           <div class = "tableRowEven">
-            <div class = "tableCell">
-              Annual Income: <ui:outputText value="{!v.lead.Annual_Income_Currency__c}"/>
+            <div class = "leftCol">
+              Annual Income:
             </div>
-            <div class = "tableCell">
+            <div class = "rightCol">
               Adjusted Annual Income:
             </div> 
           </div>
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-            </div> 
-            <div class = "tableCell">
+            <div class = "wholeRow">
               Adjusted Annual Income Notes:
             </div> 
           </div>
           <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Income:
-            </div>
-            <div class = "tableCell">
-              Lived at residence more than 6 months? 
+            <div class = "leftCol">
+              <lightning:input type="checkbox" disabled="true" label="Employed for more than 1 year?" name="EmployedYear" checked="{!(v.lead.Employed_for_more_than_one_year__c=='Yes')}"/>
             </div> 
-          </div>
+            <div class = "rightCol">
+              <lightning:input type="checkbox" disabled="true" label="Employed for more than 6 months?" name="EmployedSix" checked="{!(v.lead.Employed_for_more_than_six_months__c=='Yes')}"/>
+            </div> 
+          </div> 
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Income Type:
-            </div> 
-            <div class = "tableCell">
-              Employed for more than 1 year? 
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Income Details:
-            </div>
-            <div class = "tableCell">
-              Employed for more than 6 months?
+            <div class = "wholeRow">
+              <lightning:input type="checkbox" disabled="true" label="Lived at residence more than 6 months?" name="ResidenceSixMonths" checked="{!(v.lead.lived_residence_six_months__c=='Yes')}"/>
             </div> 
           </div>
         </div>
-
       </div>
 
       <!-- CO APPLICANT -->
@@ -557,81 +447,33 @@
         <br></br>
         <div class ="table">
           <div class = "tableRowEven">
-            <div class = "tableCell">
+            <div class = "leftCol">
               Annual Income:
             </div>
-            <div class = "tableCell">
+            <div class = "rightCol">
               Adjusted Annual Income:
             </div> 
           </div>
           <div class = "tableRowOdd">
-            <div class = "tableCell">
-            </div> 
-            <div class = "tableCell">
+            <div class = "wholeRow">
               Adjusted Annual Income Notes:
             </div> 
           </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Income:
-            </div>
-            <div class = "tableCell">
-              Lived at residence more than 6 months?
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Income Type:
-            </div> 
-            <div class = "tableCell">
-              Employed for more than 1 year?
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Monthly Income Details:
-            </div>
-            <div class = "tableCell">
-              Employed for more than 6 months? 
-            </div> 
-          </div>
         </div>
-
       </div>
-
     </div>
-
-
-
   </div>
-
-
-  <!-- </div> -->
-
-
-
 
   <br></br>
   Income Documentation:
-  <table>
+  <div class="table">
     <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
-      <tr>  
-        <td>
+      <div class="tableRowEven">
+        <div class="tableCell">
           <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
-        </td>
-      </tr>  
+        </div>
+      </div>
     </aura:iteration> 
-  </table>
-
-
-
-
-
-
-
-  <!-- </div> -->
-
-  <!-- </div> -->
-  <br></br>
+  </div>
 
 </aura:component>
