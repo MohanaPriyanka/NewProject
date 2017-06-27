@@ -39,7 +39,7 @@ public with sharing class CaseEscalationHandler {
 
     for (Case insertedCase : newlyCreatedCase) {
       String subjectString = insertedCase.Subject;
-      if(subjectString.contains('New Voice Message')) {
+      if (subjectString.contains('New Voice Message')) {
         Integer indexnum = subjectString.indexOf(' (');
         String plainTextPhone = subjectString.substring(indexNum + 2, indexNum + 5) 
                                 + subjectString.substring(indexNum + 7, indexNum + 10)
@@ -47,7 +47,7 @@ public with sharing class CaseEscalationHandler {
         phoneMap.put(plainTextPhone, insertedCase);
       }
     }
-    if(phoneMap.size() > 0) {
+    if (phoneMap.size() > 0) {
       for (Contact cnT : [SELECT Id, Plain_Text_Phone__c, LastActivityDate
                             FROM Contact
                             WHERE Plain_Text_Phone__c IN : phoneMap.keySet()
