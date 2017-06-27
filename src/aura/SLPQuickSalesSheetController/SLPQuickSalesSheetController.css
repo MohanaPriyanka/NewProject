@@ -1,0 +1,35 @@
+.THIS .largerText{
+    font-size : 24px;
+}
+
+.THIS .smallertext{
+    font-size : 10px;
+	width:30%;
+}
+
+.THIS .colorwhite {
+    color: #ffffff;
+}
+
+.THIS .bwcolorforcard {
+    color: #FFFFFF;
+    background-color:#266092;
+}
+
+.THIS .noDisplay {
+    display: none;
+}
+
+.THIS .yesDisplay {
+    visibility: visible;
+}
+
+.THIS .smallText {
+    font-size : 9px;
+}
+
+.THIS .bounce {
+  -webkit-animation-duration: 3.0s;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+}

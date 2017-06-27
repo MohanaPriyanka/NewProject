@@ -18,24 +18,24 @@ public with sharing class RecalculateUALCostController {
     */
 
     //Go through each UAS and check the following:
-    //Check the Open == true Schedule_Z_Filed__c = false records if we are able to deduct the difference then allow the user to process it.
+    //Check the Open == true ScheduleZ_Filed__c = false records if we are able to deduct the difference then allow the user to process it.
     //If there are still remaining balance:
-        //Check the Open == false Schedule_Z_Filed__c = false records if we are able to deduct the difference then allow the user to process it but with the option of asking the user:
+        //Check the Open == false ScheduleZ_Filed__c = false records if we are able to deduct the difference then allow the user to process it but with the option of asking the user:
         //- Deduct and mark as Open
         //- Deduct and keep as Closed
     
     //If there are still remaining balance:
-        //Check the Open == false Schedule_Z_Filed__c = true records if we are able to deduct the difference then allow the user to process it but with the option of asking the user:
+        //Check the Open == false ScheduleZ_Filed__c = true records if we are able to deduct the difference then allow the user to process it but with the option of asking the user:
 
 
     //Shared Solar System Name, Open, Scheduled Z Filed,Available Capacity, COD Date,Customer Group,Customer Ratio, Amount to be deducted, Action
 
-    //if (all records already have Schedule_Z_Filed__c == true){
+    //if (all records already have ScheduleZ_Filed__c == true){
     //    //If the user does not have "System Administrator" Profile
     //    //Error message: "Please contact one of Bluewave's Administrator to make this change as all systems have had a Schedule Z filed."
 
     //    //For the System Administrator profile:
-    //    // Allow the user to continue processing even if the Schedule_Z_Filed__c = true
+    //    // Allow the user to continue processing even if the ScheduleZ_Filed__c = true
     //}
 
     //Give the option of not deducting it for open systems
@@ -44,7 +44,7 @@ public with sharing class RecalculateUALCostController {
         //- Deduct and keep as Closed
         //-  Potential scenario on possibly not deducting it
 
-        //If Schedule_Z_Filed__c == true
+        //If ScheduleZ_Filed__c == true
         //    - Checkbox to mark (Confirm deduction to Schedule Z Filed System)
 
 
@@ -122,7 +122,7 @@ public with sharing class RecalculateUALCostController {
             'Opportunity__r.Shared_Solar_System__r.Id, ' +
             'Opportunity__r.Shared_Solar_System__r.Name, ' +
             'Opportunity__r.Shared_Solar_System__r.Open__c, ' +
-            'Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c ' +
             'FROM Utility_Account_Subscription__c ' +
@@ -130,7 +130,7 @@ public with sharing class RecalculateUALCostController {
         if (defaultSortOrder) {
             query += 
                 'ORDER BY Opportunity__r.Shared_Solar_System__r.Open__c DESC, ' +
-                'Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c ASC, ' +
+                'Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c ASC, ' +
                 'Subscribed_Annual_Cost_of_Electricity__c ASC, ' +
                 'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC NULLS LAST,' +
                 'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c DESC ';
@@ -156,7 +156,7 @@ public with sharing class RecalculateUALCostController {
                 }
                 UASAction act = new UASAction(uas, deductionAmount);
                 if (uas.Opportunity__r.Shared_Solar_System__r.Open__c &&
-                    !uas.Opportunity__r.Shared_Solar_System__r.Schedule_Z_Filed__c) {
+                    !uas.Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c) {
                     act.action = 'Auto deduct';
                 }
                 uasActionList.add(act);

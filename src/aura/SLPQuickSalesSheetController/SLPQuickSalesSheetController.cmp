@@ -1,0 +1,217 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPQuickSalesSheetHandler" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+  <aura:attribute name="docStatusText" type="String"/>
+  <aura:attribute name="docStatusPoller" type="Integer"/>
+  <aura:attribute name="quicksalessheet" type="Quick_Sales_Sheet__c"                
+    default="{ 'sobjectType': 'Quick_Sales_Sheet__c',
+                   'Send_to_Email__c' : '',
+                   'System_Cost__c':'$0.00',
+             	   'Down_Payment__c':'$0.00',
+                   'System_Size__c':'0',
+                   'Product__c':'Select'}"/>   
+    <aura:attribute name="calculatedQSS" type="Quick_Sales_Sheet__c"/>             
+  <aura:attribute name="qssLinkToFile" type="String" default="notgeneratedinportal"/> 
+  <aura:attribute name="ProductListAttribute" type="List"/> 
+  <div class="slds-page-header" role="banner">
+    <div class="slds-grid">
+      <div class="slds-col">
+        <p class="slds-text-heading--label">BlueWave Solar Loan</p>
+        <h1 class="slds-text-heading--medium">Generate Summary Sheet</h1>
+      </div>
+    </div>
+  </div>
+  <div class="slds-col slds-col--padded slds-p-top--large">
+    <div aria-labelledby="newqss">
+      <fieldset class="slds-box slds-theme--default slds-container--small">
+        <legend id="newqss" class="slds-text-heading--small slds-p-vertical--medium">
+            <!-- / can add in here for title on section-->
+        </legend>
+          <form class="slds-form--stacked">
+            <div class="slds-form-element slds-is-required">
+                <div class="slds-form-element__control">
+                  <label class="slds-form-element__label" for="input-03">Product:*</label>
+                    <ui:inputSelect aura:id="productinput" 
+                                    required="true"
+                                    class="slds-input" 
+                                    value="{!v.quicksalessheet.Product__c}" >
+                      <ui:inputSelectOption label="Select" text=""/>
+                      <aura:iteration items="{!v.ProductListAttribute}" var="product">
+                        <ui:inputSelectOption label="{!product.ProductCode}" text="{!product.Id}"/>
+                      </aura:iteration>
+                    </ui:inputSelect>
+                </div>                  
+            </div> 
+            <div class="slds-form-element slds-is-required">
+              <div class="slds-form-element__control">
+                <ui:inputNumber aura:id="systemsizeinput" 
+                              label="System Size (kW)"
+                              class="slds-input"
+                              labelClass="slds-form-element__label"
+                              value="{!v.quicksalessheet.System_Size__c}"
+                              required="true"/>
+              </div>
+            </div>             
+            <div class="slds-form-element slds-is-required">
+              <div class="slds-form-element__control">
+                <ui:inputCurrency aura:id="loanamountinput" 
+                                  label="System Cost:"
+                                  class="slds-input"
+                                  labelClass="slds-form-element__label"
+                                  value="{!v.quicksalessheet.System_Cost__c}"
+                                  required="true"/>
+              </div>
+            </div>
+            <div class="slds-form-element slds-is-required">
+              <div class="slds-form-element__control">
+                <ui:inputCurrency aura:id="downpaymentinput" 
+                              label="Down Payment:"
+                              class="slds-input"
+                              labelClass="slds-form-element__label"
+                              value="{!v.quicksalessheet.Down_Payment__c}"
+                              required="true"/>
+              </div>
+            </div>
+            <div class="slds-form-element slds-is-required">
+              <div class="slds-form-element__control">
+                <ui:inputText aura:id="emailinput" 
+                              label="Send to Email:"
+                              class="slds-input"
+                              labelClass="slds-form-element__label"
+                              value="{!v.quicksalessheet.Send_to_Email__c}"
+                              required="false"/>
+              </div>
+            </div>
+            <br></br>
+            <article aura:id="loaninfocard" class="slds-card">
+              <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
+               <thead>
+               	<tr class="slds-text-title_caps bwcolorforcard"> 
+                  <th scope="col">
+                    <div class="slds-truncate" title="Loan Info">Loan Info</div>
+                  </th>
+                  <th scope="col">
+                    <div class="slds-truncate" title="Refresh">
+    					<lightning:buttonIcon name="refreshbutton" class="colorwhite" iconName="utility:refresh" variant="bare" onclick="{!c.clickCreateQSS}" size="large" alternativeText="Refresh" />
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MP">Monthly Payment*
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="MP Value"><ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MPNB">Monthly Payment (no Buydown)
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="MPNB Value"><ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="IO">Monthly Interest Only Payment
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="IO Value"><ui:outputCurrency value="{!v.calculatedQSS.Interest_Payment__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="ITC">Federal Tax Credit+
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="ITC Value"><ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/></div>
+                  </td>
+                </tr>
+                <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}">                      
+                  <tr class="slds-hint-parent">
+                    <th scope="row">
+                      <div class="slds-truncate" title="ITC">State Tax Credit+
+                      </div>
+                    </th>
+                    <td>
+                      <div class="slds-truncate" title="ITC Value"><ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/></div>
+                    </td>
+                  </tr>
+                </aura:if>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="TLP">Total Loan Payments
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="TLP Value"><ui:outputCurrency value="{!v.calculatedQSS.Total_Loan_Payments__c}"/></div>
+                  </td>
+                </tr>  
+              </tbody>
+             </table>
+             <footer class="slds-card__footer">
+      			<span class="slds-assistive-text">disclaimer</span>
+                <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
+                <div class="smallText">+Estimated</div>
+  			</footer> 
+            <div class="slds-form-element"> 
+              <ui:button aura:id="documentCreatebutton"
+                  label="Create Document"
+                  class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard noDisplay"
+                  press="{!c.clickCreateDocument}"/>
+            </div>
+            </article>  
+            <div aura:id="spinnerandtext">
+                <br></br>
+                <div class="slds-form-element">
+                  <div class="slds-spinner_container">
+                      <div aura:id= "qssSpinner" role="status" class="slds-spinner slds-spinner--medium">
+                        <span class="slds-assistive-text">Loading...</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                  </div>
+                </div> 
+                <br></br>
+                <br></br>
+                <div class="slds-form-element"> 
+                    <div aura:id="docStatus" class="slds-align--absolute-center paddingTop1x5 noDisplay">
+                        <ui:outputText value="{!v.docStatusText}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form-element">
+              <a aura:id="downloadQSSbutton" href="{!v.qssLinkToFile}" target="_blank" class="slds-align--absolute-center paddingTop1x5 noDisplay">   
+                <div class="slds-grid">
+                  <div class="slds-col">
+                    <lightning:icon iconName="action:download" size="medium" alternativeText="Download"/>
+                  </div>
+                </div>
+              </a>
+            </div> 
+            <div aura:id="downloadQSStext" class="slds-form-element">  
+              <div class="slds-text-align_center"><b>Download</b></div>
+            </div>
+            <div class="slds-form-element">
+              <lightning:button aura:id="submitQSSbutton"
+                  name="submitUpfront"
+                  label="Generate Loan Summary Sheet"
+                  class="slds-button slds-button--brand bwcolorforcard"
+                  onclick="{!c.clickCreateQSS}"/>              
+              <lightning:button aura:id="viewLoanData"
+                  name="submitTable"
+                  label="View Loan Data"
+                  class="slds-button slds-button--brand bwcolorforcard"
+                  onclick="{!c.clickCreateQSS}"/>
+           	</div>      
+          </form>
+      </fieldset>
+    </div>      
+  </div>
+</aura:component>
