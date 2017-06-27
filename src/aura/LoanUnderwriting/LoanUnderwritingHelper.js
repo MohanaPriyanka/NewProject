@@ -23,6 +23,27 @@
         $A.enqueueAction(action);
     },
 
+    savePCR : function(component, id, field, value) {
+        var lead = component.get("v.lead");
+        var pcr = new Object();
+        pcr = {'sobjectType': 'LASERCA__Personal_Credit_Report__c',
+               'Id': id};
+        pcr[field] = value;
+        var action = component.get("c.updatePCR");
+        action.setParams({"pcr": pcr});
+        action.setCallback(this, function(resp) {
+            if (resp.getState() != "SUCCESS") {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "LoanUnderwritingController",
+                                    "methodName" : "updateReviewStatus",
+                                    "errors" : resp.getError()});
+                appEvent.fire();
+            }
+        });
+        $A.enqueueAction(action);
+        
+    },
+
     getReviewStatusOptions : function(component) {
         var arsAction = component.get("c.getAvidiaReviewStatus");
         var inputsel = component.find("AvidiaReviewStatus");
@@ -52,17 +73,22 @@
     },
     
     getCreditNoticeOptions : function(component) {
-        var arsAction = component.get("c.getCreditNoticeOptions");
-        var input1 = component.find("CoAppAdverseCreditNotice1");
+        var action = component.get("c.getCreditNoticeOptions");
+        var input1 = component.find("AdverseCreditNotice");
         var opts=[];
-        arsAction.setCallback(this, function(a) {
+        action.setCallback(this, function(a) {
             for(var i=0;i< a.getReturnValue().length;i++){
                 opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
             }
             input1.set("v.options", opts);
 
         });
-        $A.enqueueAction(arsAction); 
+        $A.enqueueAction(action); 
     },
 
+    getDescendantProp: function(obj, desc) {
+        var arr = desc.split(".");
+        while(arr.length && (obj = obj[arr.shift()]));
+        return obj;
+    },    
 })

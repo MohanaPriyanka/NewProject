@@ -9,33 +9,28 @@
   <aura:attribute name="bestFICO" type="Integer"/>
   <aura:attribute name="bestDTI" type="Decimal"/>
   <aura:attribute name="combinedIncome" type="Decimal"/>
+  <!-- These attributes support the modal dialog that shows the really wide Adverse Credit Notice picklist -->
   <aura:attribute name="isOpen" type="Boolean" default="false"/>
+  <aura:attribute name="adverseObject" type="String"/>
   <aura:attribute name="adverseField" type="String"/>
+  <aura:attribute name="adverseValue" type="String"/>
 
   <aura:if isTrue="{!v.isOpen}">
-    <!--###### MODAL BOX Start From Here ######--> 
-    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open slds-modal_large">
       <div class="slds-modal__container">
         <div class="slds-modal__header">
           <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModel}">
             X
             <span class="slds-assistive-text">Close</span>
           </button>
-          <h2 id="header99" class="slds-text-heading--medium">About Sfdcmonkey.com</h2>
+          <h2 class="slds-text-heading--medium">Adverse Credit Notice to Consumer</h2>
         </div>
         <div class="slds-modal__content slds-p-around--medium">
-          <p><b>The goal of this blog is to provide tips and tricks/workarounds for salesforce developer and admins.
-              Many of us face the same issues and have the same questions when using and implementing Salesforce.
-              As a community of users and developers, it is important for us to share our experiences.
-              I try to reach out to other users and help the Salesforce community in general.
-              Much of this blog will focus on Lightning(code &amp; config.) but I will also
-              cover some of the more basic topics in salesforce.
-            </b>
-          </p>
+          <ui:inputSelect class="dynamic" aura:id="AdverseCreditNotice" value="{!v.adverseValue}" required="true"/>
         </div>
         <div class="slds-modal__footer">
           <button class="slds-button slds-button--neutral" onclick="{!c.closeModel}" >Cancel</button>
-          <button class="slds-button slds-button--brand" onclick="{!c.likenClose}">Like and Close</button>
+          <button class="slds-button slds-button--brand" onclick="{!c.closeAndSaveModel}">Save</button>
         </div>
       </div>
     </div>
@@ -190,6 +185,7 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report__r" data-fieldname="Adverse_Credit_Notice_1__c">Change</a>]
             </div> 
           </div>
           <div class = "tableRowOdd">
@@ -204,9 +200,10 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report__r" data-fieldname="Adverse_Credit_Notice_2__c">Change</a>]
             </div> 
           </div>
-          <div class = "tableRowOdd">
+          <div class = "tableRowEven">
             <div class = "tableCell25px">
               3
             </div> 
@@ -218,6 +215,7 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report__r" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
             </div> 
           </div>
         </div>
@@ -240,7 +238,7 @@
           </div>
           <div class = "tableRowOdd">
             <div class = "tableCell">
-              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
+              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
             </div> 
           </div>
           <div class = "tableRowEven">
@@ -281,7 +279,7 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c}"/>
-              <a href="#" onclick="{!c.openModel}" data-fieldname="Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c">Change</a>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_1__c">Change</a>]
             </div> 
           </div>
           <div class = "tableRowOdd">
@@ -296,9 +294,10 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c}"/>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_2__c">Change</a>]
             </div> 
           </div>
-          <div class = "tableRowOdd">
+          <div class = "tableRowEven">
             <div class = "tableCell25px">
               3
             </div> 
@@ -310,6 +309,7 @@
             </div> 
             <div class = "tableCell">
               <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c}"/>
+              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
             </div> 
           </div>
         </div>
@@ -326,7 +326,6 @@
           <b>DTI</b>
         </div>
         <br></br>
-
         <div class ="table">
           <div class = "tableRowEven">
             <div class = "tableCell">
@@ -335,7 +334,6 @@
             <div class = "tableCell">
             </div> 
           </div>
-
           <div class = "tableRowOdd">
             <div class = "tableCell">
               DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After__c}"/>
@@ -344,12 +342,11 @@
               DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_Before__c}"/>
             </div> 
           </div>
-
+        </div>
+        <div class="table">
           <div class = "tableRowEven">  
-            <div class = "tableCell">
+            <div class = "tableCellLong">
               DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report__r.DTI_After_Notes__c}"/>
-            </div> 
-            <div class = "tableCell">
             </div> 
           </div>
         </div>
@@ -371,7 +368,6 @@
             <div class = "tableCell">
             </div> 
           </div>
-
           <div class = "tableRowOdd">
             <div class = "tableCell">
               DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c}"/>
@@ -380,12 +376,11 @@
               DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c}"/>
             </div> 
           </div>
-
+        </div>
+        <div class="table">
           <div class = "tableRowEven">  
-            <div class = "tableCell">
+            <div class = "tableCellLong">
               DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After_Notes__c}"/>
-            </div> 
-            <div class = "tableCell">
             </div> 
           </div>
         </div>

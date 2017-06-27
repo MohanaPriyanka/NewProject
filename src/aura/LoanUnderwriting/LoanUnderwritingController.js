@@ -3,38 +3,14 @@
         helper.getLead(component);
         helper.getReviewStatusOptions(component);
         helper.getSolarLoanStatusOptions(component);
-        helper.getCreditNoticeOptions(component);
     },
 
-    updateReviewStatus : function(component, event) {
+    updateReviewStatus : function(component, event, helper) {
         var lead = component.get("v.lead");
-        var pcr = new Object();
-        pcr = {'sobjectType': 'LASERCA__Personal_Credit_Report__c',
-               'Id': lead.Personal_Credit_Report__r.Id,
-               'Avidia_Review_Status__c': event.getSource().get("v.value")};
-        var action = component.get("c.updatePCR");
-        action.setParams({"pcr": pcr});
-        action.setCallback(this, function(resp) {
-            if (resp.getState() == "SUCCESS") {
-                // Couldn't get this to work :(
-                component.set("v.pageMessageText", "Update saved!");
-                console.log(component.get("v.pageMessageText"));
-                var pageMessage = component.find("pageMessage");
-                $A.util.addClass(pageMessage, "slds-transition-hide");
-            } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "LoanUnderwritingController",
-                                    "methodName" : "updateReviewStatus",
-                                    "errors" : resp.getError()});
-                appEvent.fire();
-            }                
-        });
-        component.set("v.pageMessageText", "Saving...");
-        console.log(component.get("v.pageMessageText"));
-        var pageMessage = component.find("pageMessage");
-        $A.util.removeClass(pageMessage, 'slds-transition-hide');
-
-        $A.enqueueAction(action);
+        helper.savePCR(component,
+                       lead.Personal_Credit_Report__r.Id,
+                       'Avidia_Review_Status__c',
+                       event.getSource().get("v.value"));
     },
         
     emailCreditDecline : function(component, event, helper) {
@@ -95,12 +71,30 @@
     
     openModel: function(component, event, helper) {
         component.set("v.isOpen", true);
-        console.log("event.srcElement.fieldname: " + event.target.dataset.fieldname);
-        component.set("v.adverseField", event.target.dataset.fieldname);
+        helper.getCreditNoticeOptions(component);
+        var objectName = event.target.dataset.objectname;
+        var fieldName = event.target.dataset.fieldname;
+        var lead = component.get("v.lead");
+        component.set("v.adverseObject", objectName);
+        component.set("v.adverseField", fieldName);
+        component.set("v.adverseValue", lead[objectName][fieldName]);
+    },
+
+    closeModel: function(component, event, helper) {
+        component.set("v.isOpen", false);
     },
     
-    closeModel: function(component, event, helper) {
-        alert(component.get("v.adverseField"));
+    closeAndSaveModel: function(component, event, helper) {
+        var lead = component.get("v.lead");
+        var objectName = component.get("v.adverseObject");
+        var fieldName = component.get("v.adverseField");
+        var adverseValue = component.get("v.adverseValue");
+        helper.savePCR(component,
+                       lead[objectName].Id,
+                       fieldName,
+                       adverseValue);
+        lead[objectName][fieldName]=adverseValue;
+        component.set("v.lead", lead);
         component.set("v.isOpen", false);
     },    
 })
