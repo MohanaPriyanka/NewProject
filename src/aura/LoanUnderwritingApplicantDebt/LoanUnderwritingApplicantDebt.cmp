@@ -1,0 +1,44 @@
+<aura:component >
+  <table border="1">
+    <tr>  
+      <td>
+        Monthly Personal Debt:   
+      </td>
+      <td>
+        Adjusted Monthly Personal Debt:
+      </td>
+    </tr> 
+    <tr>  
+      <td> 
+      </td>
+      <td>
+        Adjusted Personal Debt Notes: 
+      </td>
+    </tr> 
+    <tr>
+      <td> 
+        Total Debt:
+      </td>
+      <td>
+        Real Estate Payment:
+      </td>
+    </tr>
+    <tr>  
+      <td> 
+        Total High Credit:
+      </td>
+      <td>
+        Revolving Balance:
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td>
+        Installment Balance:
+      </td>
+    </tr>
+
+
+  </table>
+</aura:component>
