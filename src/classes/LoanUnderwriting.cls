@@ -19,6 +19,8 @@
                             Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                             lived_residence_six_months__c,
                             Employed_for_more_than_six_months__c, Employed_for_more_than_one_year__c,
+                            Requested_Loan_Amount__c, System_Cost__c,
+                            Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c,
                             Personal_Credit_Report__r.Id,
                             Personal_Credit_Report__r.Name,
                             Personal_Credit_Report__r.DTI_Before__c,
@@ -72,13 +74,23 @@
 
         if (!leads.isEmpty()) {
             Lead lead = leads[0];
-            lead.Personal_Credit_Report__r.DTI_Before__c = lead.Personal_Credit_Report__r.DTI_Before__c.setScale(2);
-            lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
+            if (lead.Personal_Credit_Report__c != null) {
+                if (lead.Personal_Credit_Report__r.DTI_Before__c != null) {
+                    lead.Personal_Credit_Report__r.DTI_Before__c = lead.Personal_Credit_Report__r.DTI_Before__c.setScale(2);
+                }
+                if (lead.Personal_Credit_Report__r.DTI_After__c != null) {
+                    lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
+                }
+            }
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
-                lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c =
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
-                lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c =
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
+                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c != null) {
+                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c =
+                        lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
+                }
+                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c != null) {
+                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c =
+                        lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
+                }
             }
             return leads[0];
         } else {

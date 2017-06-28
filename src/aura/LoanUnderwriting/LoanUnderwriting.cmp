@@ -3,7 +3,7 @@
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
-  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:attribute name="hasCoApp" type="Boolean" default="false"/>
   <aura:attribute name="bestFICO" type="Integer"/>
   <aura:attribute name="bestDTI" type="Decimal"/>
   <aura:attribute name="combinedIncome" type="Decimal"/>
@@ -35,102 +35,112 @@
     <div class="slds-backdrop slds-backdrop--open"></div>
   </aura:if>
 
-  <h1 class="slds-page-header__title slds-align_absolute-center slds-border_bottom" title="Customer Name">
-    <ui:outputText value="{!v.lead.Name}"/>
-  </h1>
+  <div class="slds-grid slds-grid_align-spread">
+    <div class="slds-col slds-align-middle">
+      <h1 class="slds-text-heading_large" title="Customer Name">
+        <ui:outputText class="slds-text-color_inverse" value="{!v.lead.Name}"/>
+      </h1>
+      <div class="slds-text-body_small slds-text-color_inverse">
+        <ui:outputText value="{!v.lead.Product__r.Name}"/> (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>, Max DTI: <ui:outputText value="{!v.lead.Product__r.Debt_To_Income_Maximum__c}"/>%)
+      </div>
+    </div>
 
-  <div class="slds-align_absolute-center slds-border_bottom">
-    <lightning:buttonGroup>
-      <lightning:button label="Save Changes" />
-      <lightning:button label="Send Main Applicant Credit Decline" onclick="{!c.emailCreditDecline}" disabled="{!v.lead.Manual_Credit_Decline__c}"/>
-      <lightning:button label="Send Co-App Credit Decline" onclick="{!c.emailCoAppCreditDecline}" disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
-    </lightning:buttonGroup>
+    <div>
+      <div class="slds-grid slds-wrap">
+        <aura:if isTrue="{!if(v.hasCoApp,false,true)}">
+          <div class="slds-size--1-of-1">
+            <lightning:button class="slds-float--right" label="Decline Applicant" onclick="{!c.emailCreditDecline}" disabled="{!v.lead.Manual_Credit_Decline__c}"/>
+          </div>
+        </aura:if>
+        <aura:if isTrue="{!if(v.hasCoApp,true,false)}">
+          <div class="slds-size--1-of-1">
+            <lightning:button class="slds-float--right" label="Decline Main Applicant" onclick="{!c.emailCreditDecline}" disabled="{!v.lead.Manual_Credit_Decline__c}"/>
+          </div>
+          <div class="slds-size--1-of-1">
+            <lightning:button class="slds-float--right" label="Decline Co-Applicant" onclick="{!c.emailCoAppCreditDecline}" disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+          </div>
+        </aura:if>
+      </div>
+    </div>
   </div>
   
-  <table class="slds-border_bottom slds-m-top_xx-small slds-m-bottom_xx-small" border="0">
-    <tr>
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Product: &nbsp; </b> <ui:outputText value="{!v.lead.Product__r.Name}"/>
-        </div>
-      </td>      
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b>Min FICO: &nbsp;</b> <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>
-        </div>
-      </td>
-      <td width="33%">
-        <div class="slds-align_absolute-center">
-          <b> Max DTI: &nbsp;</b> <ui:outputText value="{!v.lead.Product__r.Debt_To_Income_Maximum__c}"/>%
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <div class= "cellDivWhiteHeader">
-    <div class = "slds-box slds-text-heading_small">
-      <strong>Avidia Review Status:
-        <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/></strong>
+  <div class="slds-p-top_small">
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "darkCell slds-col slds-size--1-of-1">
+        <strong>Avidia Review Status:
+          <ui:inputSelect class="dynamic" aura:id="AvidiaReviewStatus" value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" required="true" change="{!c.updateReviewStatus}"/>
+        </strong>
+      </div>
+    </div>
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "lightCell slds-col slds-size--1-of-5">
+        Loan Amount:
+        <br></br>
+        <ui:outputCurrency value="{!v.lead.Requested_Loan_Amount__c}"/>
+      </div>
+      <div class = "lightCell slds-col slds-size--1-of-5">
+        System Cost:
+        <br></br>
+        <ui:outputCurrency value="{!v.lead.System_Cost__c}"/>
+      </div>
+      <div class = "lightCell slds-col slds-size--1-of-5">
+        <aura:if isTrue="{!v.hasCoApp}">
+          Max FICO:
+          <aura:set attribute="else">
+            FICO:
+          </aura:set>
+        </aura:if>
+        <br></br>
+        <ui:outputText value="{!v.bestFICO}"/>
+      </div>
+      <div class = "lightCell slds-col slds-size--1-of-5">
+        <aura:if isTrue="{!v.hasCoApp}">
+          Combined DTI:
+          <aura:set attribute="else">
+            DTI:
+          </aura:set>
+        </aura:if>
+        <br></br>
+        <ui:outputText value="{!v.bestDTI}"/>
+      </div>
+      <div class = "lightCell slds-col slds-size--1-of-5">
+        <aura:if isTrue="{!v.hasCoApp}">
+          Combined Income:
+          <aura:set attribute="else">
+            Income:
+          </aura:set>
+        </aura:if>
+        <br></br>
+        <ui:outputCurrency value="{!v.combinedIncome}"/>
+      </div>
     </div>
   </div>
 
-  <div class = "cellDiv">
-    <div class = "table">
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-          Loan Amount Requested: 
+  <div class="slds-p-top_small">
+    <aura:if isTrue="{!v.hasCoApp}">
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-align--absolute-center">
+          <b>Main Applicant: <ui:outputText value="{!v.lead.Name}"/></b>
         </div>
-        <div class = "tableCell">
-          System Cost:
-        </div>
-      </div>
-      <div class = "tableRowOdd">
-        <div class = "tableCell">
-          FICO:<ui:outputText value="{!v.bestFICO}"/>
-        </div>
-        <div class = "tableCell">
-          DTI: <ui:outputText value="{!v.bestDTI}"/>
+        <div class="slds-col slds-align--absolute-center">
+          <b>Co-Applicant: <ui:outputText value="{!v.lead.Co_Applicant_First_Name__c}"/>&nbsp;<ui:outputText value="{!v.lead.Co_Applicant_Last_Name__c}"/></b>
         </div>
       </div>
-      <div class = "tableRowEven">
-        <div class = "tableCell">
-        </div>
-        <div class = "tableCell">
-          Combined Income:  <ui:outputText value="{!v.combinedIncome}"/>
-        </div>
-      </div>
-    </div>
-  </div>  
-
-  <br></br>
-
-  <div class = "containerDiv">
-    <div class= "cellDivHeader">
-      <div class = "slds-box slds-align_absolute-center slds-theme_info">
-        <p> <b> Main Applicant </b></p>
-      </div>
-    </div>
-    <div class = "cellDivHeader">
-      <div class = "slds-box slds-align_absolute-center slds-theme_info">
-        <p> <b> Co Applicant </b></p>
-      </div>
-    </div>
-
+    </aura:if>
 
     <!-- CREDIT ROW -->
-    <div class = "rowDiv">
-      <!-- APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default ">
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
           <b>Credit</b>
-        </div>
-        <br></br>
+      </div>
+    </div>
 
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <div class = "table">
           <div class = "tableRowEven">
             <div class = "tableCellLong">
-              Link to Personal Credit Report:<ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
+              Credit Report: <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report__r.Id}" label="{!v.lead.Personal_Credit_Report__r.Name}" target="_blank"/>
             </div>
           </div>
           <div class = "tableRowOdd">
@@ -213,110 +223,106 @@
       </div>
 
 
-      <!-- CO APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          <b>Credit</b>
-        </div>
-        <br></br>
+      <aura:if isTrue="{!v.hasCoApp}">
+        <!-- CO APPLICANT: -->
+        <div class="slds-col slds-size--1-of-2 slds-p-left_small">
+          <div class = "table">
+            <div class = "tableRowEven">
+              <div class = "tableCellLong">
+                Credit Report: <ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report_Co_Applicant__r.Id}" label="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Name}" target="_blank"/>
+              </div>
+            </div>
+            <div class = "tableRowOdd">
+              <div class = "tableCell">
+                FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
+              </div> 
+            </div>
+            <div class = "tableRowEven">
+              <div class = "tableCell">
+                <lightning:input type="checkbox" disabled="true" label="Adverse Co-App Credit Notice Sent" name="AdverseCoAppCreditCheckbox" checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+              </div>
+            </div>
+            <div class = "tableRowOdd">
+              <div class = "tableCell">
+                Adverse Credit Notices:
+              </div>
+            </div>
+          </div>  
 
-        <div class = "table">
-          <div class = "tableRowEven">
-            <div class = "tableCellLong">
-              Link to Personal Credit Report:<ui:outputURL value="{!'/' + v.lead.Personal_Credit_Report_Co_Applicant__r.Id}" label="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Name}" target="_blank"/>
+          <div class = "table">
+            <div class = "tableRowOdd">
+              <div class = "tableCell25px">
+              </div> 
+              <div class = "tableCell">
+                Code
+              </div> 
+              <div class = "tableCell">
+                Detail
+              </div> 
+              <div class = "tableCell">
+                Adverse Credit Notice
+              </div> 
             </div>
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              FICO: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              <lightning:input type="checkbox" disabled="true" label="Adverse Co App Credit Notice Sent" name="AdverseCoAppCreditCheckbox" checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+            <div class = "tableRowEven">
+              <div class = "tableCell25px">
+                1
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_1__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c}"/>
+                &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_1__c">Change</a>]
+              </div> 
             </div>
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              Adverse Credit Notices:
+            <div class = "tableRowOdd">
+              <div class = "tableCell25px">
+                2
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c}"/>
+                &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_2__c">Change</a>]
+              </div> 
             </div>
-          </div>
-        </div>  
-
-        <div class = "table">
-          <div class = "tableRowOdd">
-            <div class = "tableCell25px">
-            </div> 
-            <div class = "tableCell">
-              Code
-            </div> 
-            <div class = "tableCell">
-              Detail
-            </div> 
-            <div class = "tableCell">
-              Adverse Credit Notice
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell25px">
-              1
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_1__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c}"/>
-              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_1__c">Change</a>]
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell25px">
-              2
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c}"/>
-              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_2__c">Change</a>]
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "tableCell25px">
-              3
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c}"/>
-            </div> 
-            <div class = "tableCell">
-              <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c}"/>
-              &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
-            </div> 
+            <div class = "tableRowEven">
+              <div class = "tableCell25px">
+                3
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c}"/>
+              </div> 
+              <div class = "tableCell">
+                <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c}"/>
+                &nbsp;[<a href="#" onclick="{!c.openModel}" data-objectname="Personal_Credit_Report_Co_Applicant__r" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
+              </div> 
+            </div>
           </div>
         </div>
-      </div>
+      </aura:if>
     </div>
 
 
     <!-- DTI CELL -->
-    <div class = "rowDiv">
-      <!-- APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
           <b>DTI</b>
-        </div>
-        <br></br>
+      </div>
+    </div>
+
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <div class ="table">
           <div class = "tableRowEven">
             <div class = "tableCell">
@@ -344,136 +350,96 @@
       </div>
 
 
-      <!-- Co APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          <b>DTI</b>
-        </div>
-        <br></br>
-        <div class ="table">
-          <div class = "tableRowEven">
-            <div class = "tableCell">
-              Adjusted DTI:
+      <aura:if isTrue="{!v.hasCoApp}">
+        <!-- Co APPLICANT -->
+        <div class="slds-col slds-size--1-of-2 slds-p-left_small">
+          <div class ="table">
+            <div class = "tableRowEven">
+              <div class = "tableCell">
+                Adjusted DTI:
+              </div>
+              <div class = "tableCell">
+              </div> 
             </div>
-            <div class = "tableCell">
-            </div> 
+            <div class = "tableRowOdd">
+              <div class = "tableCell">
+                DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c}"/>
+              </div> 
+              <div class = "tableCell">
+                DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c}"/>
+              </div> 
+            </div>
           </div>
-          <div class = "tableRowOdd">
-            <div class = "tableCell">
-              DTI After: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c}"/>
-            </div> 
-            <div class = "tableCell">
-              DTI Before: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c}"/>
-            </div> 
-          </div>
-        </div>
-        <div class="table">
-          <div class = "tableRowEven">  
-            <div class = "tableCellLong">
-              DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After_Notes__c}"/>
-            </div> 
+          <div class="table">
+            <div class = "tableRowEven">  
+              <div class = "tableCellLong">
+                DTI After Notes: <ui:outputText value="{!v.lead.Personal_Credit_Report_Co_Applicant__r.DTI_After_Notes__c}"/>
+              </div> 
+            </div>
           </div>
         </div>
+      </aura:if>
+    </div>
+
+    <!-- Debt CELL -->
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+          <b>Debt</b>
       </div>
     </div>
 
-    <!-- DEBT CELL -->
-    <div class = "rowDiv">
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          <b>Debt</b>
-        </div>
-        <br></br>  
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report__r}"/>
       </div>
 
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          <b>Debt</b>
+      <aura:if isTrue="{!v.hasCoApp}">
+        <div class="slds-col slds-size--1-of-2 slds-p-left_small">
+          <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
         </div>
-        <br></br>
-        <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
-      </div>
+      </aura:if>
     </div>
 
     <!-- INCOME CELL -->
-    <div class = "rowDiv">
-      <!-- APPLICANT: -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
           <b>Income</b>
-        </div>
-        <br></br>
-        <div class ="table">
-          <div class = "tableRowEven">
-            <div class = "leftCol">
-              Annual Income:
-            </div>
-            <div class = "rightCol">
-              Adjusted Annual Income:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "wholeRow">
-              Adjusted Annual Income Notes:
-            </div> 
-          </div>
-          <div class = "tableRowEven">
-            <div class = "leftCol">
-              <lightning:input type="checkbox" disabled="true" label="Employed for more than 1 year?" name="EmployedYear" checked="{!(v.lead.Employed_for_more_than_one_year__c=='Yes')}"/>
-            </div> 
-            <div class = "rightCol">
-              <lightning:input type="checkbox" disabled="true" label="Employed for more than 6 months?" name="EmployedSix" checked="{!(v.lead.Employed_for_more_than_six_months__c=='Yes')}"/>
-            </div> 
-          </div> 
-          <div class = "tableRowOdd">
-            <div class = "wholeRow">
-              <lightning:input type="checkbox" disabled="true" label="Lived at residence more than 6 months?" name="ResidenceSixMonths" checked="{!(v.lead.lived_residence_six_months__c=='Yes')}"/>
-            </div> 
-          </div>
-        </div>
+      </div>
+    </div>
+
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
+        <c:LoanUnderwritingApplicantIncome lead="{!v.lead}" isCoApp="false"/>
       </div>
 
-      <!-- CO APPLICANT -->
-      <div class = "cellDiv">
-        <br></br>
-        <div class = "slds-box slds-box_small slds-align_absolute-center slds-size_1-of-2 slds-theme_default">
-          <b>Income</b>
+      <aura:if isTrue="{!v.hasCoApp}">
+        <div class="slds-col slds-size--1-of-2 slds-p-left_small">
+          <c:LoanUnderwritingApplicantIncome lead="{!v.lead}" isCoApp="true"/>
         </div>
-        <br></br>
-        <div class ="table">
-          <div class = "tableRowEven">
-            <div class = "leftCol">
-              Annual Income:
-            </div>
-            <div class = "rightCol">
-              Adjusted Annual Income:
-            </div> 
-          </div>
-          <div class = "tableRowOdd">
-            <div class = "wholeRow">
-              Adjusted Annual Income Notes:
-            </div> 
-          </div>
-        </div>
+      </aura:if>
+    </div>
+
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+          <b>Income Documentation</b>
+      </div>
+    </div>
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class="slds-col slds-size--1-of-1">
+        <table class="slds-table slds-table_striped">
+          <tbody>
+            <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
+              <tr>
+                <td>
+                  <div>
+                    <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration> 
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-
-  <br></br>
-  Income Documentation:
-  <div class="table">
-    <aura:iteration items="{!v.lead.Attachments}" var="attachment" >
-      <div class="tableRowEven">
-        <div class="tableCell">
-          <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + attachment.Id}" label="{!attachment.Name}" target="_blank"/>
-        </div>
-      </div>
-    </aura:iteration> 
-  </div>
-
 </aura:component>

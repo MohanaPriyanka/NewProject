@@ -1,58 +1,52 @@
 <aura:component>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
 
-  <div class ="table">
-    <div class = "tableRowEven">
-      <div class = "leftCol">
-        Monthly Personal Debt
+  <div>
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class="tableRowEven slds-col slds-size--1-of-2">
+        Monthly Personal Debt:
         <br></br>
         <ui:outputCurrency value="{!v.pcr.LASERCA__Sum_of_monthly_Personal_Debt__c}"/>
       </div>
-      <div class = "rightCol">
-        <div>
-          <div>
-            Adjusted Monthly Personal Debt
-          </div>
-          <div>
-            <ui:inputCurrency aura:id="amount" class="field" value="2300"/>
-          </div>
-        </div>
-      </div> 
-    </div>
-    <div class = "tableRowOdd">
-      <div class = "wholeRow">
-        Adjusted Personal Debt Notes
+      <div class="tableRowEven slds-col slds-size--1-of-2">
+        Adjusted Monthly Personal Debt:
         <br></br>
-	<ui:inputText value=""/>
+        <ui:inputCurrency aura:id="amount" class="slds-size--1-of-1" value="2300"/>
       </div> 
     </div>
-    <div class = "tableRowEven">  
-      <div class = "leftCol">
-        Total Debt: 
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "tableRowOdd slds-col slds-size--1-of-1">
+        Adjusted Personal Debt Notes:
+        <br></br>
+	<ui:inputText class="slds-size--1-of-1" value=""/>
       </div> 
-      <div class = "rightCol">
-        Real Estate Payment
+    </div>
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "tableRowEven slds-col slds-size--1-of-2">
+        Total High Credit:
+        <br></br>
+        <ui:outputCurrency value="{!v.pcr.LASERCA__Total_High_Credit__c}"/>
+      </div> 
+      <div class = "tableRowEven slds-col slds-size--1-of-2">
+        Real Estate Payment:
         <br></br>
         <ui:outputCurrency value="{!v.pcr.LASERCA__Real_Estate_Payment__c}"/>
       </div> 
     </div>
-    <div class = "tableRowOdd">
-      <div class = "leftCol">
-        Total High Credit
-        <br></br>
-        <ui:outputCurrency value="{!v.pcr.LASERCA__Total_High_Credit__c}"/>
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "tableRowOdd slds-col slds-size--1-of-2">
       </div> 
-      <div class = "rightCol">
-        Revolving Balance
+      <div class = "tableRowOdd slds-col slds-size--1-of-2">
+        Revolving Balance:
         <br></br>
         <ui:outputCurrency value="{!v.pcr.LASERCA__Revolving_Balance__c}"/>
       </div> 
     </div>
-    <div class = "tableRowEven">
-      <div class = "leftCol">
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "tableRowEven slds-col slds-size--1-of-2">
       </div>
-      <div class = "rightCol">
-        Installment Balance
+      <div class = "tableRowEven slds-col slds-size--1-of-2">
+        Installment Balance:
         <br></br>
         <ui:outputCurrency value="{!v.pcr.LASERCA__Installment_Balance__c}"/>
       </div>

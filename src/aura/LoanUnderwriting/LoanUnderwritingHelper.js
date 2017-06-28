@@ -6,11 +6,18 @@
             if(resp.getState() == 'SUCCESS') {
                 var lead = resp.getReturnValue();
                 component.set("v.lead", lead);
-                component.set("v.bestFICO",
-                              Math.max(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                                       lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                if (lead.Personal_Credit_Report_Co_Applicant__r &&
+                    lead.Personal_Credit_Report__r) {
+                    component.set("v.hasCoApp", true);
+                    component.set("v.bestFICO",
+                                  Math.max((lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c || 0),
+                                           (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0)));
+                } else if (lead.Personal_Credit_Report__r) {
+                    component.set("v.bestFICO",
+                                  (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
+                }
                 component.set("v.combinedIncome",
-                              lead.Annual_Income_Currency__c + lead.Co_Applicant_Income__c);
+                              (lead.Annual_Income_Currency__c || 0) + (lead.Co_Applicant_Income__c || 0));
             } else {
                 $A.log("Errors", resp.getError());
                 var appEvent = $A.get("e.c:ApexCallbackError");
@@ -58,20 +65,6 @@
         $A.enqueueAction(arsAction); 
     },
 
-    getSolarLoanStatusOptions : function(component) {
-        var slApprovalAction = component.get("c.getSLApprovalStatus");
-        var slasInputSel = component.find("SolarLoanApprovalStatus");
-        var slasOpts=[];
-        slApprovalAction.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                slasOpts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            slasInputSel.set("v.options", slasOpts);
-
-        });
-        $A.enqueueAction(slApprovalAction);
-    },
-    
     getCreditNoticeOptions : function(component) {
         var action = component.get("c.getCreditNoticeOptions");
         var input1 = component.find("AdverseCreditNotice");

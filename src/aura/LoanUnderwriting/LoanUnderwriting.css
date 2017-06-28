@@ -1,65 +1,3 @@
-.THIS .tableMarginTop {
-	margin-top: 40px;
-}
-
-.THIS .tableheader {
-	display: ;
-	
-
-}
-
-.THIS .noDisplay {
-	display: none;
-
-}
-
-.THIS .containerDiv {
-	width: 100%; 
-	display:table;
-}    
-
-.THIS .rowDiv {
-	border: 1px solid #668db6;
-	/*background-color:#c23934;*/
-	display: table-row;
-}
-
-.THIS .cellDivHeader {
-	border-right: .5px solid gray;
-	border-left: .5px solid gray;
-	/* background-color: #c23934;*/
-	display: table-cell;
-	width:12%;
-	padding: 20px;
-	text-align: center;
-}
-
-.THIS .cellDivWhiteHeader {
-	/*border-right: 1px solid gray;*/
-	display: table-cell;
-	width:12%;
-	padding: 1px;
-	text-align: center;
-}
-
-.THIS .cellDiv {
-	border: .5px solid gray;
-	border-top: none;
-	border-bottom: none;
-	/*border-right: 1px solid white;
-	border-left: 1px solid white;*/
-	display: table-cell;
-	width:10%;
-	padding-right: 15px;
-	padding-left: 15px;
-	padding-bottom:4px;
-	padding-top: 4px;
-	text-align: center;
-	/*border-bottom: 1px solid white;*/
-	/*background-color: #c23934; */
-}
-
-
 .THIS .table{
 	display: table;
 	width: 100%;
@@ -75,39 +13,6 @@
 .THIS .tableRowOdd{
 	display:table-row;
 	background-color: #f7f9fb;
-}
-
-.THIS .wholeRow {
-    width:100%;
-    clear:both;
-    text-align: left;
-    padding-left: 4px;
-    vertical-align: middle;
-    border: 1px solid gray;
-}
-.THIS .leftCol {
-    width:50%;
-    float:left;
-    text-align: left;
-    padding-left: 4px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    vertical-align: middle;
-    border: 1px solid gray;
-    border-top: none;
-    border-bottom: none;
-}
-.THIS .rightCol {
-    width:50%;
-    float:left;
-    text-align: left;
-    padding-left: 4px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    vertical-align: middle;
-    border: 1px solid gray;
-    border-top: none;
-    border-bottom: none;
 }
 
 .THIS .tableCell {
@@ -140,4 +45,27 @@
 	border: 1px solid gray;
 	border-top: none;
 	border-bottom: none;
+}
+.THIS .darkCell {
+    background-color: #d8dde6;
+    padding-left: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    float:left;
+    text-align: left;
+    border: 1px solid gray;
+    border-top: none;
+    border-bottom: none;
+}
+
+.THIS .lightCell {
+    background-color: #f7f9fb;
+    padding-left: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    float:left;
+    text-align: left;
+    border: 1px solid gray;
+    border-top: none;
+    border-bottom: none;
 }

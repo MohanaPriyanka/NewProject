@@ -2,7 +2,6 @@
     doInit : function(component, event, helper) {
         helper.getLead(component);
         helper.getReviewStatusOptions(component);
-        helper.getSolarLoanStatusOptions(component);
     },
 
     updateReviewStatus : function(component, event, helper) {
