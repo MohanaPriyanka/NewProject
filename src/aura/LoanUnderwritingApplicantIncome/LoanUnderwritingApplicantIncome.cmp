@@ -1,44 +1,61 @@
-<aura:component >
+<aura:component extends="c.BlueWaveParent">
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="isCoApp" type="Boolean" default="false"/>
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
 
   <div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "darkCell slds-col slds-size--1-of-2">
-        Annual Income:
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class="darkCell slds-col slds-size--1-of-2">
+        Reported Annual Income:
         <br></br>
         <aura:if isTrue="{!v.isCoApp}">
-          <ui:outputCurrency value="{!v.lead.Co_Applicant_Income___c}"/>
+          <ui:outputCurrency value="{!v.lead.Co_Applicant_Income__c}"/>
           <aura:set attribute="else">
             <ui:outputCurrency value="{!v.lead.Annual_Income_Currency__c}"/>
           </aura:set>
         </aura:if>
       </div>
-      <div class = "darkCell slds-col slds-size--1-of-2">
+      <div class="darkCell slds-col slds-size--1-of-2">
         Adjusted Annual Income:
         <br></br>
-        <ui:inputCurrency class="slds-size--1-of-1" value="2300"/>
+        <ui:inputCurrency aura:id="AdjustedIncome" 
+                          class="slds-size--1-of-1" 
+                          value="{!v.pcr.Adjusted_Income__c}" 
+                          blur="{!c.saveAdjustedIncome}"
+                          updateOn="blur"/>
       </div> 
     </div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "lightCell slds-col slds-size--1-of-1">
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class="lightCell slds-col slds-size--1-of-1">
         Adjusted Annual Income Notes:
         <br></br>
 	<ui:inputText class="slds-size--1-of-1" value=""/>
       </div> 
     </div>
     <aura:if isTrue="{!if(v.isCoApp,false,true)}">
-      <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-        <div class = "darkCell slds-col slds-size--1-of-2">
-          <lightning:input type="checkbox" disabled="true" label="Employed for more than 1 year?" name="EmployedYear" checked="{!(v.lead.Employed_for_more_than_one_year__c=='Yes')}"/>
+      <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+        <div class="darkCell slds-col slds-size--1-of-2">
+          <lightning:input type="checkbox" 
+                           disabled="true" 
+                           label="Employed for more than 1 year?" 
+                           name="EmployedYear" 
+                           checked="{!(v.lead.Employed_for_more_than_one_year__c=='Yes')}"/>
         </div> 
-        <div class = "darkCell slds-col slds-size--1-of-2">
-          <lightning:input type="checkbox" disabled="true" label="Employed for more than 6 months?" name="EmployedSix" checked="{!(v.lead.Employed_for_more_than_six_months__c=='Yes')}"/>
+        <div class="darkCell slds-col slds-size--1-of-2">
+          <lightning:input type="checkbox" 
+                           disabled="true" 
+                           label="Employed for more than 6 months?" 
+                           name="EmployedSix" 
+                           checked="{!(v.lead.Employed_for_more_than_six_months__c=='Yes')}"/>
         </div> 
       </div> 
-      <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-        <div class = "lightCell slds-col slds-size--1-of-1">
-          <lightning:input type="checkbox" disabled="true" label="Lived at residence more than 6 months?" name="ResidenceSixMonths" checked="{!(v.lead.lived_residence_six_months__c=='Yes')}"/>
+      <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+        <div class="lightCell slds-col slds-size--1-of-1">
+          <lightning:input type="checkbox" 
+                           disabled="true" 
+                           label="Lived at residence more than 6 months?" 
+                           name="ResidenceSixMonths" 
+                           checked="{!(v.lead.lived_residence_six_months__c=='Yes')}"/>
         </div> 
       </div>
     </aura:if>

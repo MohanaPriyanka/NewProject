@@ -4,15 +4,21 @@
         action.setParams({"leadId" : component.get("v.leadId")});
         action.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
-                var lead = resp.getReturnValue();
+                var leadWithAttachments = resp.getReturnValue();
+                console.log(leadWithAttachments);
+                var lead = leadWithAttachments.lead;
+                console.log(lead);
                 component.set("v.lead", lead);
                 if (lead.Personal_Credit_Report_Co_Applicant__r &&
                     lead.Personal_Credit_Report__r) {
+                    component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
+                    component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
                     component.set("v.hasCoApp", true);
                     component.set("v.bestFICO",
                                   Math.max((lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c || 0),
                                            (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0)));
                 } else if (lead.Personal_Credit_Report__r) {
+                    component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
                     component.set("v.bestFICO",
                                   (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
                 }
@@ -78,10 +84,4 @@
         });
         $A.enqueueAction(action); 
     },
-
-    getDescendantProp: function(obj, desc) {
-        var arr = desc.split(".");
-        while(arr.length && (obj = obj[arr.shift()]));
-        return obj;
-    },    
 })

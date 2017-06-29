@@ -1,0 +1,7 @@
+<!-- 
+     This component should have attributes and methods in the helper that are generic and possibly useful
+     for all custom lightning components.
+  -->
+<aura:component extensible="true" abstract="true" controller="BlueWaveParent">
+  <div>{!v.body}</div>
+</aura:component>

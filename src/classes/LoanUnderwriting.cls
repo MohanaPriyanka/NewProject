@@ -7,11 +7,11 @@
  Tested By: LoanUnderwritingControllerTest
  *************************************************************************************/
 
- public without sharing class LoanUnderwriting {
+public without sharing class LoanUnderwriting {
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
     @AuraEnabled 
-    public static Lead getLead(Id leadId) {
+    public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [SELECT FirstName, LastName, Name, 
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
                             Annual_Income_Currency__c, Co_Applicant_Income__c,
@@ -73,6 +73,7 @@
                             WHERE ID = :leadId];
 
         if (!leads.isEmpty()) {
+            Attachment mainPCRAttachment, coAppPCRAttachment;
             Lead lead = leads[0];
             if (lead.Personal_Credit_Report__c != null) {
                 if (lead.Personal_Credit_Report__r.DTI_Before__c != null) {
@@ -81,6 +82,7 @@
                 if (lead.Personal_Credit_Report__r.DTI_After__c != null) {
                     lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
                 }
+                mainPCRAttachment = getAttachment(lead.Personal_Credit_Report__c);
             }
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
                 if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c != null) {
@@ -91,13 +93,26 @@
                     lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c =
                         lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
                 }
+                coAppPCRAttachment = getAttachment(lead.Personal_Credit_Report_Co_Applicant__c);
             }
-            return leads[0];
+            return(new LeadWithPCRAttachments(lead, mainPCRAttachment, coAppPCRAttachment));
         } else {
-            return new Lead();
+            return new LeadWithPCRAttachments();
         }
-    }   
+    }
 
+    private static Attachment getAttachment(Id pcrId) {
+        List<Attachment> attachments = [SELECT Id 
+                                        FROM Attachment 
+                                        WHERE ParentID = :pcrId
+                                        AND ContentType = 'application/pdf' LIMIT 1];
+        if (!attachments.isEmpty()) {
+            return(attachments[0]);
+        } else {
+            return null;
+        }
+    }
+     
     @AuraEnabled 
     public static List<String> getAvidiaReviewStatus() {
         return getPicklistFields('LASERCA__Personal_Credit_Report__c', 'Avidia_Review_Status__c');
@@ -128,19 +143,21 @@
         update lead;
     }
 
-    public static List<String> getPicklistFields(String objectName, String fieldName){
-        Schema.SObjectType ctype = globalDescribe.get(objectName); 
-        Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();
+    public class LeadWithPCRAttachments {
+        @AuraEnabled 
+        public Lead lead;
+        @AuraEnabled 
+        public Attachment mainPCRAttachment;
+        @AuraEnabled 
+        public Attachment coAppPCRAttachment;
 
-        List<String> options = new List<String>();
-        Schema.DescribeFieldResult fieldResult = fmap.get(fieldName).getDescribe();
-        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-        for (Schema.PicklistEntry f: ple) {
-            options.add(f.getLabel());
+        public LeadWithPCRAttachments() {
         }
 
-        return options;
+        public LeadWithPCRAttachments(Lead l, Attachment mainAttachment, Attachment coAppAttachment) {
+            lead = l;
+            mainPCRAttachment = mainAttachment;
+            coAppPCRAttachment = coAppAttachment;
+        }
     }
-
-
 }

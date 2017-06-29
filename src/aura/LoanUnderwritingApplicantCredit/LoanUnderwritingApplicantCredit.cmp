@@ -1,0 +1,113 @@
+<aura:component extends="c.BlueWaveParent">
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:attribute name="attachment" type="Attachment"/>
+  <aura:attribute name="objectName" type="String"/>
+  <!-- These attributes support the modal dialog that shows the really wide Adverse Credit Notice picklist -->
+  <aura:attribute name="isOpen" type="Boolean" default="false"/>
+  <aura:attribute name="adverseObject" type="String"/>
+  <aura:attribute name="adverseField" type="String"/>
+  <aura:attribute name="adverseValue" type="String"/>
+
+  <aura:if isTrue="{!v.isOpen}">
+    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open slds-modal_large">
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+            X
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-text-heading--medium">Adverse Credit Notice to Consumer</h2>
+        </div>
+        <div class="slds-modal__content slds-p-around--medium">
+          <ui:inputSelect class="dynamic" aura:id="AdverseCreditNotice" value="{!v.adverseValue}" required="true"/>
+        </div>
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button--neutral" onclick="{!c.closeModal}" >Cancel</button>
+          <button class="slds-button slds-button--brand" onclick="{!c.closeAndSaveModal}">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+
+  <div class = "table">
+    <div class = "tableRowEven">
+      <div class = "tableCellLong">
+        Credit Report: <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + v.attachment.Id}" label="{!v.pcr.Name}" target="_blank"/>
+      </div>
+    </div>
+    <div class = "tableRowOdd">
+      <div class = "tableCell">
+        FICO: <ui:outputText value="{!v.pcr.LASERCA__Credit_Score_TransUnion__c}"/>
+      </div> 
+    </div>
+    <div class = "tableRowEven">
+      <div class = "tableCell">
+        <lightning:input type="checkbox" disabled="true" label="Adverse Co-App Credit Notice Sent" name="AdverseCoAppCreditCheckbox" checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+      </div>
+    </div>
+  </div>  
+
+  <div class = "table">
+    <div class = "tableRowOdd">
+      <div class = "tableCell25px">
+      </div> 
+      <div class = "tableCell">
+        Code
+      </div> 
+      <div class = "tableCell">
+        Detail
+      </div> 
+      <div class = "tableCell">
+        Adverse Credit Notice
+      </div> 
+    </div>
+    <div class = "tableRowEven">
+      <div class = "tableCell25px">
+        1
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Code__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Detail_1__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.Adverse_Credit_Notice_1__c}"/>
+        &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_1__c">Change</a>]
+      </div> 
+    </div>
+    <div class = "tableRowOdd">
+      <div class = "tableCell25px">
+        2
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Code_2__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Detail_2__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.Adverse_Credit_Notice_2__c}"/>
+        &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_2__c">Change</a>]
+      </div> 
+    </div>
+    <div class = "tableRowEven">
+      <div class = "tableCell25px">
+        3
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Code_3__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Detail_3__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.Adverse_Credit_Notice_3__c}"/>
+        &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
+      </div> 
+    </div>
+  </div>
+
+</aura:component>

@@ -1,4 +1,4 @@
-<aura:component>
+<aura:component extends="c:BlueWaveParent">
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
 
   <div>
@@ -21,6 +21,14 @@
 	<ui:inputText class="slds-size--1-of-1" value=""/>
       </div> 
     </div>
+    <!-- 
+         6/27/17, conversation with Avidia (Rita, Diane): Show trade
+         accounts that have a balance or monthly payment with columns
+         of Account Ownership Type, Credit Loan Type, Account Balance,
+         Monthly Payment with a link to the trade account record. An
+         Exclude button would recalculate monthly personal debt
+         excluding that trade account record.
+      -->
     <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
       <div class = "tableRowEven slds-col slds-size--1-of-2">
         Total High Credit:
