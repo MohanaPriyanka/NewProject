@@ -18,7 +18,8 @@
       <div class="slds-text-body_small slds-text-color_inverse">
         <ui:outputText value="{!v.lead.Product__r.Name}"/> 
         (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>, 
-        Max DTI: <ui:outputText value="{!v.lead.Product__r.Debt_To_Income_Maximum__c}"/>%)
+        Max DTI: <lightning:formattedNumber value="{!v.lead.Product__r.Debt_To_Income_Maximum__c/100}"
+                                            style="percent"/>)
       </div>
     </div>
 
@@ -91,7 +92,11 @@
           </aura:set>
         </aura:if>
         <br></br>
-        <ui:outputText value="{!v.bestDTI}"/>
+        <aura:if isTrue="{!v.bestDTI}">
+          <lightning:formattedNumber value="{!v.bestDTI/100}"
+                                     style="percent" 
+                                     maximumFractionDigits="2"/>
+        </aura:if>
       </div>
       <div class = "lightCell slds-col slds-size--1-of-5">
         <aura:if isTrue="{!v.hasCoApp}">
@@ -156,7 +161,7 @@
 
       <aura:if isTrue="{!v.hasCoApp}">
         <!-- Co APPLICANT -->
-        <div class="slds-col slds-size--1-of-2 slds-p-right_small">
+        <div class="slds-col slds-size--1-of-2 slds-p-left_small">
           <c:LoanUnderwritingApplicantDTI pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
         </div>
       </aura:if>

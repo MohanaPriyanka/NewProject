@@ -1,7 +1,10 @@
 ({
     doInit : function(component, event, helper) {
         helper.getLead(component);
-        helper.getReviewStatusOptions(component);
+        helper.getPicklistOptions(component,
+                                  'LASERCA__Personal_Credit_Report__c', 
+                                  'Avidia_Review_Status__c',
+                                  component.find("AvidiaReviewStatus"));
     },
 
     updateReviewStatus : function(component, event, helper) {

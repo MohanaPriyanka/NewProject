@@ -5,9 +5,7 @@
         action.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 var leadWithAttachments = resp.getReturnValue();
-                console.log(leadWithAttachments);
                 var lead = leadWithAttachments.lead;
-                console.log(lead);
                 component.set("v.lead", lead);
                 if (lead.Personal_Credit_Report_Co_Applicant__r &&
                     lead.Personal_Credit_Report__r) {
@@ -24,6 +22,8 @@
                 }
                 component.set("v.combinedIncome",
                               (lead.Annual_Income_Currency__c || 0) + (lead.Co_Applicant_Income__c || 0));
+
+                this.calculateApplicationDTI(component);
             } else {
                 $A.log("Errors", resp.getError());
                 var appEvent = $A.get("e.c:ApexCallbackError");
@@ -34,6 +34,39 @@
             }
         });
         $A.enqueueAction(action);
+    },
+
+    calculateApplicationDTI : function(component) {
+        var lead = component.get("v.lead");
+        var mainPCR = lead.Personal_Credit_Report__r;
+        var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
+
+        if (component.get("v.hasCoApp")) {
+            var mainIncome, mainDebt, coAppIncome, coAppDebt;
+            if (mainPCR.Adjusted_Income__c) {
+                mainIncome = mainPCR.Adjusted_Income__c/12;
+            } else {
+                mainIncome = mainPCR.Annual_Income_Currency__c/12;
+            }
+
+            if (coAppPCR.Adjusted_Income__c) {
+                coAppIncome = coAppPCR.Adjusted_Income__c/12;
+            } else {
+                coAppIncome = lead.Co_Applicant_Income__c;
+            }
+
+            mainDebt = mainPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
+            coAppDebt = coAppPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
+
+            component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
+
+        } else {
+            if (mainPCR.Adjusted_DTI__c) {
+                component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
+            } else {
+                component.set("v.bestDTI", Math.max(mainPCR.DTI_After__c, mainPCR.DTI_Before__c));
+            }
+        }
     },
 
     savePCR : function(component, id, field, value) {
@@ -54,34 +87,5 @@
             }
         });
         $A.enqueueAction(action);
-        
-    },
-
-    getReviewStatusOptions : function(component) {
-        var arsAction = component.get("c.getAvidiaReviewStatus");
-        var inputsel = component.find("AvidiaReviewStatus");
-        var opts=[];
-        arsAction.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            inputsel.set("v.options", opts);
-
-        });
-        $A.enqueueAction(arsAction); 
-    },
-
-    getCreditNoticeOptions : function(component) {
-        var action = component.get("c.getCreditNoticeOptions");
-        var input1 = component.find("AdverseCreditNotice");
-        var opts=[];
-        action.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            input1.set("v.options", opts);
-
-        });
-        $A.enqueueAction(action); 
     },
 })

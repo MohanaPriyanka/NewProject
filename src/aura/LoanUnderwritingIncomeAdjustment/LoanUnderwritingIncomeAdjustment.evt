@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Fired when Annual Income is adjusted">
+  <aura:attribute name="adjustedIncome" type="Decimal"/>
+  <aura:attribute name="pcrId" type="String"/>
+</aura:event>

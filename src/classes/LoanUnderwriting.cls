@@ -25,7 +25,6 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report__r.Name,
                             Personal_Credit_Report__r.DTI_Before__c,
                             Personal_Credit_Report__r.DTI_After__c,
-                            Personal_Credit_Report__r.DTI_After_Notes__c,
                             Personal_Credit_Report__r.Avidia_Review_Status__c,
                             Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c,
                             Personal_Credit_Report__r.Adverse_Credit_Notice_1__c,
@@ -40,6 +39,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report__r.LASERCA__Detail_4__c,
                             Personal_Credit_Report__r.Adjusted_Income__c,
+                            Personal_Credit_Report__r.Adjusted_DTI__c,
                             Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                             Personal_Credit_Report__r.LASERCA__Total_High_Credit__c,
                             Personal_Credit_Report__r.LASERCA__Installment_Balance__c,
@@ -49,7 +49,6 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report_Co_Applicant__r.Name,
                             Personal_Credit_Report_Co_Applicant__r.DTI_Before__c,
                             Personal_Credit_Report_Co_Applicant__r.DTI_After__c,
-                            Personal_Credit_Report_Co_Applicant__r.DTI_After_Notes__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                             Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c,
                             Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c,
@@ -63,6 +62,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_4__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
+                            Personal_Credit_Report_Co_Applicant__r.Adjusted_DTI__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Total_High_Credit__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Installment_Balance__c,
@@ -76,23 +76,9 @@ public without sharing class LoanUnderwriting {
             Attachment mainPCRAttachment, coAppPCRAttachment;
             Lead lead = leads[0];
             if (lead.Personal_Credit_Report__c != null) {
-                if (lead.Personal_Credit_Report__r.DTI_Before__c != null) {
-                    lead.Personal_Credit_Report__r.DTI_Before__c = lead.Personal_Credit_Report__r.DTI_Before__c.setScale(2);
-                }
-                if (lead.Personal_Credit_Report__r.DTI_After__c != null) {
-                    lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
-                }
                 mainPCRAttachment = getAttachment(lead.Personal_Credit_Report__c);
             }
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
-                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c != null) {
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c =
-                        lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
-                }
-                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c != null) {
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c =
-                        lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
-                }
                 coAppPCRAttachment = getAttachment(lead.Personal_Credit_Report_Co_Applicant__c);
             }
             return(new LeadWithPCRAttachments(lead, mainPCRAttachment, coAppPCRAttachment));
@@ -113,21 +99,6 @@ public without sharing class LoanUnderwriting {
         }
     }
      
-    @AuraEnabled 
-    public static List<String> getAvidiaReviewStatus() {
-        return getPicklistFields('LASERCA__Personal_Credit_Report__c', 'Avidia_Review_Status__c');
-    }
-
-    @AuraEnabled 
-    public static List<String> getSLApprovalStatus() {
-        return getPicklistFields('LASERCA__Personal_Credit_Report__c', 'Solar_Loan_Approval_Status__c');
-    }
-
-    @AuraEnabled 
-    public static List<String> getCreditNoticeOptions() {
-        return getPicklistFields('LASERCA__Personal_Credit_Report__c', 'Adverse_Credit_Notice_1__c');
-    }
-
     @AuraEnabled 
     public static void updatePCR(LASERCA__Personal_Credit_Report__c pcr) {
         update pcr;

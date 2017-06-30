@@ -2,6 +2,7 @@
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="isCoApp" type="Boolean" default="false"/>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:registerEvent name="incomeEvent" type="c:LoanUnderwritingIncomeAdjustment"/>
 
   <div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">

@@ -1,12 +1,21 @@
 ({
     saveAdjustedIncome : function(component, event, helper) {
-        console.log('foo');
-        console.log('saving adjusted income: ' + component.get("v.pcr.Adjusted_Income__c"));
         var pcr = component.get("v.pcr");
-        helper.saveSObject(component,
-                           pcr.Id,
-                           'LASERCA__Personal_Credit_Report__c',
-                           'Adjusted_Income__c',
-                           component.get("v.pcr.Adjusted_Income__c"));
+        var savePromise = helper.saveSObject(component,
+                                             pcr.Id,
+                                             'LASERCA__Personal_Credit_Report__c',
+                                             'Adjusted_Income__c',
+                                             component.get("v.pcr.Adjusted_Income__c"));
+        savePromise.then(
+            $A.getCallback(function resolve(value) {
+                var incomeEvent = $A.get("e.c:LoanUnderwritingIncomeAdjustment");
+                incomeEvent.setParams({"adjustedIncome":component.get("v.pcr.Adjusted_Income__c")});
+                incomeEvent.setParams({"pcrId":component.get("v.pcr.Id")});
+                incomeEvent.fire();
+            }),
+            $A.getCallback(function(error){
+                alert('An error occurred getting the account : ' + error.message);
+            })
+        );
     }
 })
