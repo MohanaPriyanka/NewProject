@@ -1,13 +1,16 @@
 ({
     updateAdjustedDTI : function(component, annualIncome, monthlyDebt, adjustedMonthlyDebt) {
-        console.log('in DTIHelper');
-        var monthlyIncome = annualIncome/12;
         var adjustedDTI;
         var pcr = component.get("v.pcr");
-        if (adjustedMonthlyDebt) {
-            adjustedDTI = 100*(adjustedMonthlyDebt/monthlyIncome);
+        if (annualIncome > 0) {
+            var monthlyIncome = annualIncome/12;
+            if (adjustedMonthlyDebt) {
+                adjustedDTI = 100*(adjustedMonthlyDebt/monthlyIncome);
+            } else {
+                adjustedDTI = 100*(monthlyDebt/monthlyIncome);
+            }
         } else {
-            adjustedDTI = 100*(monthlyDebt/monthlyIncome);
+            adjustedDTI = null;
         }
         var savePromise = this.saveSObject(component,
                                            pcr.Id,

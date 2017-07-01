@@ -1,6 +1,6 @@
 <aura:component controller="LoanUnderwriting" extends="c:BlueWaveParent">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
+  <aura:handler event="c:LoanUnderwritingIncomeAdjustment" action="{!c.handleIncomeAdjustment}"/>
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="hasCoApp" type="Boolean" default="false"/>
@@ -9,6 +9,8 @@
   <aura:attribute name="combinedIncome" type="Decimal"/>
   <aura:attribute name="mainPCRAttachment" type="Attachment"/>
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
+  <aura:attribute name="declineMainButtonLabel" type="String"/>
+  <aura:attribute name="declineCoAppButtonLabel" type="String"/>
 
   <div class="slds-grid slds-grid_align-spread">
     <div class="slds-col slds-align-middle">
@@ -25,24 +27,16 @@
 
     <div>
       <div class="slds-grid slds-wrap">
-        <aura:if isTrue="{!if(v.hasCoApp,false,true)}">
+        <div class="slds-size--1-of-1">
+          <lightning:button class="slds-float--right" 
+                            label="{!v.declineMainButtonLabel}"
+                            onclick="{!c.emailCreditDecline}" 
+                            disabled="{!v.lead.Manual_Credit_Decline__c}"/>
+        </div>
+        <aura:if isTrue="{!v.hasCoApp}">
           <div class="slds-size--1-of-1">
             <lightning:button class="slds-float--right" 
-                              label="Decline Applicant" 
-                              onclick="{!c.emailCreditDecline}" 
-                              disabled="{!v.lead.Manual_Credit_Decline__c}"/>
-          </div>
-        </aura:if>
-        <aura:if isTrue="{!if(v.hasCoApp,true,false)}">
-          <div class="slds-size--1-of-1">
-            <lightning:button class="slds-float--right" 
-                              label="Decline Main Applicant" 
-                              onclick="{!c.emailCreditDecline}" 
-                              disabled="{!v.lead.Manual_Credit_Decline__c}"/>
-          </div>
-          <div class="slds-size--1-of-1">
-            <lightning:button class="slds-float--right" 
-                              label="Decline Co-Applicant" 
+                              label="{!v.declineCoAppButtonLabel}"
                               onclick="{!c.emailCoAppCreditDecline}" 
                               disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
           </div>
@@ -77,9 +71,7 @@
       <div class = "lightCell slds-col slds-size--1-of-5">
         <aura:if isTrue="{!v.hasCoApp}">
           Max FICO:
-          <aura:set attribute="else">
-            FICO:
-          </aura:set>
+          <aura:set attribute="else">FICO:</aura:set>
         </aura:if>
         <br></br>
         <ui:outputText value="{!v.bestFICO}"/>
@@ -87,12 +79,10 @@
       <div class = "lightCell slds-col slds-size--1-of-5">
         <aura:if isTrue="{!v.hasCoApp}">
           Combined DTI:
-          <aura:set attribute="else">
-            DTI:
-          </aura:set>
+          <aura:set attribute="else">DTI:</aura:set>
         </aura:if>
         <br></br>
-        <aura:if isTrue="{!v.bestDTI}">
+        <aura:if isTrue="{!v.bestDTI != null}">
           <lightning:formattedNumber value="{!v.bestDTI/100}"
                                      style="percent" 
                                      maximumFractionDigits="2"/>
@@ -101,9 +91,7 @@
       <div class = "lightCell slds-col slds-size--1-of-5">
         <aura:if isTrue="{!v.hasCoApp}">
           Combined Income:
-          <aura:set attribute="else">
-            Income:
-          </aura:set>
+          <aura:set attribute="else">Income:</aura:set>
         </aura:if>
         <br></br>
         <ui:outputCurrency value="{!v.combinedIncome}"/>
@@ -114,10 +102,10 @@
   <div class="slds-p-top_small">
     <aura:if isTrue="{!v.hasCoApp}">
       <div class="slds-grid slds-wrap">
-        <div class="slds-col slds-align--absolute-center">
+        <div class="slds-col slds-align--absolute-center slds-text-color_inverse">
           <b>Main Applicant: <ui:outputText value="{!v.lead.Name}"/></b>
         </div>
-        <div class="slds-col slds-align--absolute-center">
+        <div class="slds-col slds-align--absolute-center slds-text-color_inverse">
           <b>Co-Applicant: 
             <ui:outputText value="{!v.lead.Co_Applicant_First_Name__c}"/>&nbsp;
             <ui:outputText value="{!v.lead.Co_Applicant_Last_Name__c}"/></b>
@@ -127,7 +115,7 @@
 
     <!-- CREDIT -->
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
           <b>Credit</b>
       </div>
     </div>
@@ -150,7 +138,7 @@
 
     <!-- DTI -->
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
           <b>DTI</b>
       </div>
     </div>
@@ -158,9 +146,7 @@
       <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantDTI pcr="{!v.lead.Personal_Credit_Report__r}"/>
       </div>
-
       <aura:if isTrue="{!v.hasCoApp}">
-        <!-- Co APPLICANT -->
         <div class="slds-col slds-size--1-of-2 slds-p-left_small">
           <c:LoanUnderwritingApplicantDTI pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
         </div>
@@ -169,16 +155,14 @@
 
     <!-- DEBT -->
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
           <b>Debt</b>
       </div>
     </div>
-
     <div class="slds-grid slds-wrap slds-p-top_small">
       <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report__r}"/>
       </div>
-
       <aura:if isTrue="{!v.hasCoApp}">
         <div class="slds-col slds-size--1-of-2 slds-p-left_small">
           <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}"/>
@@ -188,7 +172,7 @@
 
     <!-- INCOME -->
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
           <b>Income</b>
       </div>
     </div>
@@ -198,7 +182,6 @@
                                            pcr="{!v.lead.Personal_Credit_Report__r}" 
                                            isCoApp="false"/>
       </div>
-
       <aura:if isTrue="{!v.hasCoApp}">
         <div class="slds-col slds-size--1-of-2 slds-p-left_small">
           <c:LoanUnderwritingApplicantIncome lead="{!v.lead}" 
@@ -210,7 +193,7 @@
 
     <!-- INCOME DOCUMENTATION -->
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
           <b>Income Documentation</b>
       </div>
     </div>

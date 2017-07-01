@@ -42,11 +42,6 @@
         FICO: <ui:outputText value="{!v.pcr.LASERCA__Credit_Score_TransUnion__c}"/>
       </div> 
     </div>
-    <div class = "tableRowEven">
-      <div class = "tableCell">
-        <lightning:input type="checkbox" disabled="true" label="Adverse Co-App Credit Notice Sent" name="AdverseCoAppCreditCheckbox" checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
-      </div>
-    </div>
   </div>  
 
   <div class = "table">

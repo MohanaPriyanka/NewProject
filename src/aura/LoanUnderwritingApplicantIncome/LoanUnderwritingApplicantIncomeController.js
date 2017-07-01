@@ -17,5 +17,14 @@
                 alert('An error occurred getting the account : ' + error.message);
             })
         );
+    },
+    
+    saveIncomeNotes : function(component, event, helper) {
+        var pcr = component.get("v.pcr");
+        helper.saveSObject(component,
+                           pcr.Id,
+                           'LASERCA__Personal_Credit_Report__c',
+                           'Adjustments_Comments__c',
+                           component.get("v.pcr.Adjustments_Comments__c"));
     }
 })

@@ -31,6 +31,7 @@
                 if (resp.getState() == "SUCCESS") {
                     helper.getLead(component);
                     alert("Adverse Credit Notice has been sent to the Main Applicant.");
+                    component.set("v.declineMainButtonLabel", "Main Applicant Adverse Notice Sent");
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "LoanUnderwritingController",
@@ -59,6 +60,7 @@
                 if (resp.getState() == "SUCCESS") {
                     alert("Adverse Credit Notice has been sent to the Co-Applicant.");
                     helper.getLead(component);
+                    component.set("v.declineCoAppButtonLabel", "Co-Applicant Adverse Notice Sent");
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "LoanUnderwritingController",
@@ -71,4 +73,18 @@
         }
     },
     
+    handleIncomeAdjustment : function(component, event, helper) {
+        var adjustedIncome = event.getParam("adjustedIncome");
+        var pcrId = event.getParam("pcrId");
+        var lead = component.get("v.lead");
+
+        if (pcrId === lead.Personal_Credit_Report__r.Id) {
+            lead.Personal_Credit_Report__r.Adjusted_Income__c = adjustedIncome;
+        } else {
+            lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c = adjustedIncome;
+        }
+        helper.calculateApplicationIncome(component);
+        helper.calculateApplicationDTI(component);
+    }
+
 })

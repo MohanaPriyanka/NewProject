@@ -7,6 +7,17 @@
                 var leadWithAttachments = resp.getReturnValue();
                 var lead = leadWithAttachments.lead;
                 component.set("v.lead", lead);
+                if (lead.Manual_Credit_Decline__c) {
+                    component.set("v.declineMainButtonLabel", "Main Applicant Adverse Notice Sent");
+                } else {
+                    component.set("v.declineMainButtonLabel", "Decline Main Applicant");
+                }
+                if (lead.Co_App_Manual_Credit_Decline__c) {
+                    component.set("v.declineCoAppButtonLabel", "Co-Applicant Adverse Notice Sent");
+                } else {
+                    component.set("v.declineCoAppButtonLabel", "Decline Co-Applicant");
+                }
+                
                 if (lead.Personal_Credit_Report_Co_Applicant__r &&
                     lead.Personal_Credit_Report__r) {
                     component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
@@ -20,9 +31,7 @@
                     component.set("v.bestFICO",
                                   (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
                 }
-                component.set("v.combinedIncome",
-                              (lead.Annual_Income_Currency__c || 0) + (lead.Co_Applicant_Income__c || 0));
-
+                this.calculateApplicationIncome(component);
                 this.calculateApplicationDTI(component);
             } else {
                 $A.log("Errors", resp.getError());
@@ -36,37 +45,62 @@
         $A.enqueueAction(action);
     },
 
+    calculateApplicationIncome : function(component) {
+        var lead = component.get("v.lead");
+        var mainPCR = lead.Personal_Credit_Report__r;
+        var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
+        var mainIncome = 0, coAppIncome = 0;
+
+        if (lead.Personal_Credit_Report__r.Adjusted_Income__c) {
+            mainIncome = lead.Personal_Credit_Report__r.Adjusted_Income__c;
+        } else {
+            mainIncome = (lead.Annual_Income_Currency__c || 0);
+        }
+
+        if (component.get("v.hasCoApp")) {
+            if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c) {
+                coAppIncome = lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c;
+            } else {
+                coAppIncome = (lead.Co_Applicant_Income || 0);
+            }
+        }
+        component.set("v.combinedIncome", mainIncome + coAppIncome);
+    },
+
     calculateApplicationDTI : function(component) {
         var lead = component.get("v.lead");
         var mainPCR = lead.Personal_Credit_Report__r;
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
 
-        if (component.get("v.hasCoApp")) {
-            var mainIncome, mainDebt, coAppIncome, coAppDebt;
-            if (mainPCR.Adjusted_Income__c) {
-                mainIncome = mainPCR.Adjusted_Income__c/12;
-            } else {
-                mainIncome = mainPCR.Annual_Income_Currency__c/12;
-            }
+        var mainIncome=0, mainDebt=0, coAppIncome=0, coAppDebt=0;
+        if (mainPCR.Adjusted_Income__c != null) {
+            mainIncome = mainPCR.Adjusted_Income__c/12;
+        } else {
+            mainIncome = lead.Annual_Income_Currency__c/12;
+        }
+        mainDebt = mainPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
 
-            if (coAppPCR.Adjusted_Income__c) {
+        if (coAppPCR) {
+            if (coAppPCR.Adjusted_Income__c != null) {
                 coAppIncome = coAppPCR.Adjusted_Income__c/12;
             } else {
-                coAppIncome = lead.Co_Applicant_Income__c;
+                coAppIncome = lead.Co_Applicant_Income__c/12;
             }
-
-            mainDebt = mainPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
             coAppDebt = coAppPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
-
-            component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
-
-        } else {
-            if (mainPCR.Adjusted_DTI__c) {
-                component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
-            } else {
-                component.set("v.bestDTI", Math.max(mainPCR.DTI_After__c, mainPCR.DTI_Before__c));
-            }
         }
+        
+        var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);
+        console.log(' mainPCR.Adjusted_Income__c: ' + mainPCR.Adjusted_Income__c +
+                    ' mainDebt: ' + mainDebt +
+                    ' coAppDebt: ' + coAppDebt +
+                    ' mainIncome: ' + mainIncome +
+                    ' coAppIncome: ' + coAppIncome +
+                    ' dti: ' + dti);
+        if (mainIncome + coAppIncome > 0) {
+            component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
+        } else {
+            component.set("v.bestDTI", null);
+        }            
     },
 
     savePCR : function(component, id, field, value) {
