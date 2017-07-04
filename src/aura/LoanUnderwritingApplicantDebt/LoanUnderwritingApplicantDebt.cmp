@@ -1,5 +1,7 @@
-<aura:component extends="c:BlueWaveParent">
+<aura:component extends="c:BlueWaveParent" controller="LoanUnderwriting">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:attribute name="tradeAccounts" type="LASERCA__Trade_Accounts__c[]"/>
 
   <div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
@@ -14,13 +16,6 @@
         <ui:inputCurrency aura:id="amount" class="slds-size--1-of-1" value="2300"/>
       </div> 
     </div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "tableRowOdd slds-col slds-size--1-of-1">
-        Adjusted Personal Debt Notes:
-        <br></br>
-	<ui:inputText class="slds-size--1-of-1" value=""/>
-      </div> 
-    </div>
     <!-- 
          6/27/17, conversation with Avidia (Rita, Diane): Show trade
          accounts that have a balance or monthly payment with columns
@@ -29,34 +24,87 @@
          Exclude button would recalculate monthly personal debt
          excluding that trade account record.
       -->
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "tableRowEven slds-col slds-size--1-of-2">
-        Total High Credit:
-        <br></br>
-        <ui:outputCurrency value="{!v.pcr.LASERCA__Total_High_Credit__c}"/>
-      </div> 
-      <div class = "tableRowEven slds-col slds-size--1-of-2">
-        Real Estate Payment:
-        <br></br>
-        <ui:outputCurrency value="{!v.pcr.LASERCA__Real_Estate_Payment__c}"/>
-      </div> 
-    </div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "tableRowOdd slds-col slds-size--1-of-2">
-      </div> 
-      <div class = "tableRowOdd slds-col slds-size--1-of-2">
-        Revolving Balance:
-        <br></br>
-        <ui:outputCurrency value="{!v.pcr.LASERCA__Revolving_Balance__c}"/>
-      </div> 
-    </div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "tableRowEven slds-col slds-size--1-of-2">
-      </div>
-      <div class = "tableRowEven slds-col slds-size--1-of-2">
-        Installment Balance:
-        <br></br>
-        <ui:outputCurrency value="{!v.pcr.LASERCA__Installment_Balance__c}"/>
+    <div class="slds-grid slds-wrap">
+      <div class="tableRowEven slds-col slds-size--1-of-1">
+        <table class="slds-table slds-table_striped">
+          <thead>
+            <tr class="slds-text-title_caps">
+              <th scope="col">
+                <div class="slds-truncate" title="Exclude">Exclude</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Account Name">Account Name</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Account Balance">Account Balance</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Monthly Payment">Monthly Payment</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!v.tradeAccounts}" var="tradeAcct">
+              <tr>
+                <td>
+                  <div class="slds-grid">
+                    <div class="slds-size--1-of-1">
+                      <lightning:input type="checkbox" 
+                                       disabled="false" 
+                                       label="Exclude"
+                                       variant="label-hidden"
+                                       name="{!tradeAcct.Id}"
+                                       checked="false"/>
+                    </div>
+                    <div class="slds-form-element slds-size--1-of-1">
+                      <div class="slds-form-element__icon slds-align-middle">
+                        <button class="slds-button slds-button_icon slds-button slds-button_icon"
+                                aria-describedby="help"
+                                title="Help"
+                                name="{!tradeAcct.Id}"
+                                onmouseenter="{!c.display}"
+                                onmouseleave="{!c.displayOut}">
+                          <lightning:icon iconName="utility:info" size="xx-small"/>
+                        </button>
+                      </div>
+                    </div>
+                    <div id="{!tradeAcct.Id + '_help'}"
+                         class="toggle slds-popover slds-popover_tooltip slds-nubbin_bottom-left"
+                         role="tooltip"
+                         style="position: absolute; bottom: 30px; left: 30px;">
+                      <div class="slds-popover__body">
+                        <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+                          <div class="slds-col slds-size--1-of-1">
+                            Loan Type: <ui:outputText value="{!tradeAcct.LASERCA__Credit_Loan_Type__c}"/>
+                          </div>
+                          <div class="slds-col slds-size--1-of-1">
+                            Ownership Type: <ui:outputText value="{!tradeAcct.LASERCA__Account_Ownership_Type__c}"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ui:outputURL value="{!'/' + tradeAcct.Id}" 
+                                  label="{!tradeAcct.Name}" target="_blank"/>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ui:outputCurrency value="{!tradeAcct.LASERCA__Account_Balance__c}"/>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ui:outputCurrency value="{!tradeAcct.LASERCA__Monthly_Payment__c}"/>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration> 
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

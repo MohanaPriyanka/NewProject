@@ -57,11 +57,14 @@
             mainIncome = (lead.Annual_Income_Currency__c || 0);
         }
 
+        console.log(' hasCoApp: ' + component.get("v.hasCoApp") +
+                    ' lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c: ' + lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c +
+                    ' lead.Co_Applicant_Income: ' + lead.Co_Applicant_Income);
         if (component.get("v.hasCoApp")) {
             if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c) {
                 coAppIncome = lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c;
             } else {
-                coAppIncome = (lead.Co_Applicant_Income || 0);
+                coAppIncome = (lead.Co_Applicant_Income__c || 0);
             }
         }
         component.set("v.combinedIncome", mainIncome + coAppIncome);
@@ -90,12 +93,6 @@
         }
         
         var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);
-        console.log(' mainPCR.Adjusted_Income__c: ' + mainPCR.Adjusted_Income__c +
-                    ' mainDebt: ' + mainDebt +
-                    ' coAppDebt: ' + coAppDebt +
-                    ' mainIncome: ' + mainIncome +
-                    ' coAppIncome: ' + coAppIncome +
-                    ' dti: ' + dti);
         if (mainIncome + coAppIncome > 0) {
             component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
         } else {

@@ -116,6 +116,23 @@ public without sharing class LoanUnderwriting {
         update lead;
     }
 
+    @AuraEnabled 
+    public static LASERCA__Personal_Credit_Report__c getPCRDebt(Id pcrId) {
+        List<LASERCA__Personal_Credit_Report__c> pcrList =
+            [SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c,
+             (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
+              LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c
+              FROM LASERCA__Trade_Accounts__r
+              WHERE LASERCA__Account_Balance__c > 0)
+             FROM LASERCA__Personal_Credit_Report__c
+             WHERE Id = :pcrId];
+        if (!pcrList.isEmpty()) {
+            return pcrList[0];
+        } else {
+            return null;
+        }
+    }
+
     public class LeadWithPCRAttachments {
         @AuraEnabled 
         public Lead lead;
