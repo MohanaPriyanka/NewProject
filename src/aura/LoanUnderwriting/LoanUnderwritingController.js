@@ -9,10 +9,11 @@
 
     updateReviewStatus : function(component, event, helper) {
         var lead = component.get("v.lead");
-        helper.savePCR(component,
-                       lead.Personal_Credit_Report__r.Id,
-                       'Avidia_Review_Status__c',
-                       event.getSource().get("v.value"));
+        helper.saveSObject(component,
+                           lead.Personal_Credit_Report__r.Id,
+                           'LASERCA__Personal_Credit_Report__c',
+                           'Avidia_Review_Status__c',
+                           event.getSource().get("v.value"));
     },
         
     emailCreditDecline : function(component, event, helper) {

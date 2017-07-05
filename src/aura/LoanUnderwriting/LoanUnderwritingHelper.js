@@ -96,24 +96,4 @@
             component.set("v.bestDTI", null);
         }            
     },
-
-    savePCR : function(component, id, field, value) {
-        var lead = component.get("v.lead");
-        var pcr = new Object();
-        pcr = {'sobjectType': 'LASERCA__Personal_Credit_Report__c',
-               'Id': id};
-        pcr[field] = value;
-        var action = component.get("c.updatePCR");
-        action.setParams({"pcr": pcr});
-        action.setCallback(this, function(resp) {
-            if (resp.getState() != "SUCCESS") {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "LoanUnderwritingController",
-                                    "methodName" : "updateReviewStatus",
-                                    "errors" : resp.getError()});
-                appEvent.fire();
-            }
-        });
-        $A.enqueueAction(action);
-    },
 })

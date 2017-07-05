@@ -106,11 +106,6 @@ public without sharing class LoanUnderwriting {
     }
      
     @AuraEnabled 
-    public static void updatePCR(LASERCA__Personal_Credit_Report__c pcr) {
-        update pcr;
-    }
-
-    @AuraEnabled 
     public static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
         if (coApplicant) {
             lead.Co_App_Manual_Credit_Decline__c = true;
