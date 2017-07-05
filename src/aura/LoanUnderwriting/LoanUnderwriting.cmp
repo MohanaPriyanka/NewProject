@@ -18,12 +18,14 @@
       <h1 class="slds-text-heading_large" title="Customer Name">
         <ui:outputText class="slds-text-color_inverse" value="{!v.lead.Name}"/>
       </h1>
-      <div class="slds-text-body_small slds-text-color_inverse">
-        <ui:outputText value="{!v.lead.Product__r.Name}"/> 
-        (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>, 
-        Max DTI: <lightning:formattedNumber value="{!v.lead.Product__r.Debt_To_Income_Maximum__c/100}"
-                                            style="percent"/>)
-      </div>
+      <aura:if isTrue="{!v.lead.Product__r != null}">
+        <div class="slds-text-body_small slds-text-color_inverse">
+          <ui:outputText value="{!v.lead.Product__r.Name}"/> 
+          (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>, 
+          Max DTI: <lightning:formattedNumber value="{!v.lead.Product__r.Debt_To_Income_Maximum__c/100}"
+                                              style="percent"/>)
+        </div>
+      </aura:if>
     </div>
 
     <div>
