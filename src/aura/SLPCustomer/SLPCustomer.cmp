@@ -86,7 +86,7 @@
     <aura:attribute name="loanUpdate" type="Loan__c" 
       default="{ 'sobjectType' : 'Loan__c',
       'Commencement_Datee__c': '',
-      'System_Costt__c':'',
+      'Requested_Loan_Amount__c':'',
       }"/>      
 
       <!-- main issues inclue the ability to break out subTasks within the task table. The tasks break out for each task with subTasks, filtering them by 
@@ -230,7 +230,7 @@
                         <th scope="col"><span class="slds-truncate"><b>Partner</b></span></th>
                         <th scope="col"><span class="slds-truncate"><b>Sales Agent</b></span></th>
                         <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
-                        <th scope="col"><span class="slds-truncate"><b>System Cost</b></span></th>
+                        <th scope="col"><span class="slds-truncate"><b>Requested Loan Amount</b></span></th>
                         <aura:if isTrue="{!v.licenseType}">
                           <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
                         </aura:if>
@@ -241,7 +241,7 @@
                         <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>
                         <th scope="row"> <b>{!v.customer.Loan__r.Sales_Agent__r.Name}</b> </th>    
                         <th scope="row"> <b>{!v.customer.Loan__r.Product__r.ProductCode}</b> </th>
-                        <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.System_Costt__c}" /></th> 
+                        <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.Requested_Loan_Amount__c}" /></th> 
                         <aura:if isTrue="{!v.licenseType}">   
                           <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}" /></th>
                         </aura:if>                
@@ -306,8 +306,8 @@
                             <div class="slds-form-element__group">
                               <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-p-horizontal--small ">
-                                  <label class="slds-form-element__label" for="input-03">System Cost</label>
-                                  <ui:outputCurrency aura:id="systemCost" class="slds-input" value="{!v.customerInformation.Loan__r.System_Costt__c}"/>          
+                                  <label class="slds-form-element__label" for="input-03">Requested Loan Amount</label>
+                                  <ui:outputCurrency aura:id="systemCost" class="slds-input" value="{!v.customerInformation.Loan__r.Requested_Loan_Amount__c}"/>          
                                 </div> 
                                 <div class="slds-form-element slds-p-horizontal--small ">
                                   <label class="slds-form-element__label" for="input-03">Principal Value</label>
@@ -327,7 +327,8 @@
                                   <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
                                   <ui:inputDate aura:id="commencementDateChanger" 
                                     class="slds-input" 
-                                    displayDatePicker="true"
+                                    format="MM/DD/YYYY"
+                                    displayDatePicker="false"                                    
                                     value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"                         
                                     />       
                                   </div>                     
@@ -382,7 +383,8 @@
                                     <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
                                     <ui:inputDate aura:id="MechInstallDate" 
                                       class="slds-input" 
-                                      displayDatePicker="true"
+                                      format="MM/DD/YYYY"
+                                      displayDatePicker="false"
                                       value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
                                       />       
                                     </div>                                                                                      
@@ -390,7 +392,8 @@
                                       <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
                                       <ui:inputDate aura:id="interconnectionDateChanger" 
                                         class="slds-input" 
-                                        displayDatePicker="true"
+                                        format="MM/DD/YYYY"
+                                        displayDatePicker="false"                                        
                                         value="{!v.customerInformation.Interconnection_Date__c}"                         
                                         />       
                                       </div>                                           

@@ -103,7 +103,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
-        loanListToUpdate[0].System_Costt__c = null;
+        loanListToUpdate[0].Requested_Loan_Amount__c = null;
         update loanListToUpdate;
 
         for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
@@ -164,7 +164,6 @@ public class LoanHandlerTestClass {
     	List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
     	List<Opportunity> oppListToUpdate = new List<Opportunity>();
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadlist);
@@ -224,7 +223,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadList);
@@ -296,7 +294,6 @@ public class LoanHandlerTestClass {
         List<Attachment> attachList = new List<Attachment>();
 
     	List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
@@ -482,7 +479,7 @@ public class LoanHandlerTestClass {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
-        loanListToUpdate[0].System_Costt__c = null;
+        loanListToUpdate[0].Requested_Loan_Amount__c = null;
         update loanListToUpdate;
         for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
                                                         Number_of_Inverters__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,  
@@ -548,7 +545,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = true];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
 
         convertLeads(leadList);
@@ -632,7 +628,6 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = true];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Test.startTest();
         
         convertLeads(leadList);
@@ -671,7 +666,6 @@ public class LoanHandlerTestClass {
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Attachment> attachList = new List<Attachment>();        
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        List<Loan__c> loanListToRemoveSystemCost = new List<Loan__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
@@ -764,35 +758,35 @@ public class LoanHandlerTestClass {
         Test.stopTest();
     }
 
-    @isTest static void testSystemCostChanges() {
+    @isTest static void testRequestedLoanAmountChanges() {
         List<Lead> leadList = [SELECT Id FROM Lead];
         Test.startTest();
         
         convertLeads(leadList);
 
-        List<Opportunity> opps = [SELECT Id, Loan_Principle__c
+        List<Opportunity> opps = [SELECT Id, Requested_Loan_Amount__c
                                   FROM Opportunity];
         System.assertEquals(3, opps.size());
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(opps);
 
-        List<Loan__c> loans = [SELECT Id, System_Costt__c, Opportunity__c
+        List<Loan__c> loans = [SELECT Id, Requested_Loan_Amount__c, Opportunity__c
                                FROM Loan__c];
         System.assertEquals(3, loans.size());
         
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Requested_Loan_Amount__c, loan.Requested_Loan_Amount__c);
         }
 
         for (Opportunity opp : opps) {
-            opp.Loan_Principle__c = opp.Loan_Principle__c + 10;
+            opp.Requested_Loan_Amount__c = opp.Requested_Loan_Amount__c + 10;
         }
         update opps;
         oppMap = new Map<Id, Opportunity>(opps);
         
-        loans = [SELECT Id, System_Costt__c, Opportunity__c
+        loans = [SELECT Id, Requested_Loan_Amount__c, Opportunity__c
                  FROM Loan__c];
         for (Loan__c loan : loans) {
-            System.assertEquals(oppMap.get(loan.Opportunity__c).Loan_Principle__c, loan.System_Costt__c);
+            System.assertEquals(oppMap.get(loan.Opportunity__c).Requested_Loan_Amount__c, loan.Requested_Loan_Amount__c);
         }
     }
 
