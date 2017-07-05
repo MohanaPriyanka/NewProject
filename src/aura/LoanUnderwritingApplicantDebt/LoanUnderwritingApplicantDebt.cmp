@@ -25,7 +25,7 @@
                 <div class="slds-truncate" title="Account Name">Account Name</div>
               </th>
               <th scope="col">
-                <div class="slds-truncate" title="Account Balance">Account Balance</div>
+                <div class="slds-truncate" title="Account Balance">Balance</div>
               </th>
               <th scope="col">
                 <div class="slds-truncate" title="Monthly Payment">Monthly Payment</div>

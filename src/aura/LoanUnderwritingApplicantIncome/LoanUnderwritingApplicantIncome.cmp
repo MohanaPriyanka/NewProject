@@ -22,7 +22,7 @@
         <ui:inputCurrency aura:id="AdjustedIncome" 
                           class="slds-size--1-of-1" 
                           value="{!v.pcr.Adjusted_Income__c}" 
-                          blur="{!c.saveAdjustedIncome}"/>
+                          change="{!c.saveAdjustedIncome}"/>
       </div> 
     </div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
@@ -32,7 +32,7 @@
 	<ui:inputText aura:id="AdjustmentComments"
                       class="slds-size--1-of-1"
                       value="{!v.pcr.Adjustments_Comments__c}"
-                      blur="{!c.saveIncomeNotes}"/>
+                      change="{!c.saveIncomeNotes}"/>
       </div> 
     </div>
     <aura:if isTrue="{!if(v.isCoApp,false,true)}">
