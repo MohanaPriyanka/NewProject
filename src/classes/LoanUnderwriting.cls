@@ -38,6 +38,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report__r.LASERCA__Detail_2__c,
                             Personal_Credit_Report__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report__r.LASERCA__Detail_4__c,
+                            Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
                             Personal_Credit_Report__r.Adjusted_Income__c,
                             Personal_Credit_Report__r.Adjustments_Comments__c,
                             Personal_Credit_Report__r.Adjusted_DTI__c,
@@ -62,6 +63,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_4__c,
+                            Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjusted_DTI__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjustments_Comments__c,
@@ -119,9 +121,9 @@ public without sharing class LoanUnderwriting {
     @AuraEnabled 
     public static LASERCA__Personal_Credit_Report__c getPCRDebt(Id pcrId) {
         List<LASERCA__Personal_Credit_Report__c> pcrList =
-            [SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c,
+            [SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c, Adjusted_Monthly_Personal_Debt__c,
              (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
-              LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c
+              LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
               FROM LASERCA__Trade_Accounts__r
               WHERE LASERCA__Account_Balance__c > 0)
              FROM LASERCA__Personal_Credit_Report__c

@@ -57,9 +57,6 @@
             mainIncome = (lead.Annual_Income_Currency__c || 0);
         }
 
-        console.log(' hasCoApp: ' + component.get("v.hasCoApp") +
-                    ' lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c: ' + lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c +
-                    ' lead.Co_Applicant_Income: ' + lead.Co_Applicant_Income);
         if (component.get("v.hasCoApp")) {
             if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c) {
                 coAppIncome = lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c;

@@ -1,33 +1,40 @@
 ({
     doInit : function(component, event, helper) {
-        var pcrId = component.get("v.pcr").Id;
-
-        var action = component.get("c.getPCRDebt");
-        action.setParams({"pcrId" : pcrId});
-        action.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                var pcr = resp.getReturnValue();
-                console.log(pcr);
-                component.set("v.tradeAccounts", pcr.LASERCA__Trade_Accounts__r);
-            } else {
-                $A.log("Errors", resp.getError());
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "LoanUnderwritingApplicantDebtController",
-                                    "methodName" : "doInit",
-                                    "errors" : resp.getError()});
-                appEvent.fire();
-            }
-        });
-        $A.enqueueAction(action);
+        helper.initHelper(component, event, helper);
     },
 
     display : function(component, event, helper) {
-        console.log('display');
         helper.toggleHelper(component, event);
     },
 
     displayOut : function(component, event, helper) {
-        console.log('displayOut');
         helper.toggleHelper(component, event);
-    }    
+    },
+
+    updateExclude : function(component, event, helper) {
+        var srcElement = event.srcElement;
+        var savePromise = helper.saveSObject(component,
+                                             srcElement.name,
+                                             'LASERCA__Trade_Accounts__c',
+                                             'Exclude_From_Rollup__c',
+                                             srcElement.checked);
+        savePromise.then(
+            $A.getCallback(function resolve(value) {
+                helper.initHelper(component, event);
+            }),
+            $A.getCallback(function(error){
+                alert('An error occurred getting the account : ' + error.message);
+            })
+        ).then(
+            $A.getCallback(function resolve(value) {
+                var debtEvent = $A.get("e.c:LoanUnderwritingDebtAdjustment");
+                incomeEvent.setParams({"adjustedDebt":component.get("v.adjustedDebt")});
+                incomeEvent.setParams({"pcrId":component.get("v.pcr.Id")});
+                incomeEvent.fire();
+            }),
+            $A.getCallback(function(error){
+                alert('An error occurred getting the account : ' + error.message);
+            })
+        )
+    }
 })
