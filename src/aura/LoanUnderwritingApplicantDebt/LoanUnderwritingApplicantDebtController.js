@@ -19,18 +19,18 @@
                                              'Exclude_From_Rollup__c',
                                              srcElement.checked);
         savePromise.then(
-            $A.getCallback(function resolve(value) {
-                helper.initHelper(component, event);
+            $A.getCallback(function(result) {
+                return(helper.initHelper(component, event));
             }),
             $A.getCallback(function(error){
                 alert('An error occurred getting the account : ' + error.message);
             })
         ).then(
-            $A.getCallback(function resolve(value) {
+            $A.getCallback(function(result) {
                 var debtEvent = $A.get("e.c:LoanUnderwritingDebtAdjustment");
-                incomeEvent.setParams({"adjustedDebt":component.get("v.adjustedDebt")});
-                incomeEvent.setParams({"pcrId":component.get("v.pcr.Id")});
-                incomeEvent.fire();
+                debtEvent.setParams({"adjustedDebt": component.get("v.adjustedDebt")});
+                debtEvent.setParams({"pcrId": component.get("v.pcr.Id")});
+                debtEvent.fire();
             }),
             $A.getCallback(function(error){
                 alert('An error occurred getting the account : ' + error.message);

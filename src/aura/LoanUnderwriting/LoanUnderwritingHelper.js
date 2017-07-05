@@ -78,7 +78,7 @@
         } else {
             mainIncome = lead.Annual_Income_Currency__c/12;
         }
-        mainDebt = mainPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
+        mainDebt = mainPCR.Adjusted_Monthly_Personal_Debt__c;
 
         if (coAppPCR) {
             if (coAppPCR.Adjusted_Income__c != null) {
@@ -86,7 +86,7 @@
             } else {
                 coAppIncome = lead.Co_Applicant_Income__c/12;
             }
-            coAppDebt = coAppPCR.LASERCA__Sum_of_monthly_Personal_Debt__c;
+            coAppDebt = coAppPCR.Adjusted_Monthly_Personal_Debt__c;
         }
         
         var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);

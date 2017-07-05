@@ -85,6 +85,21 @@
         }
         helper.calculateApplicationIncome(component);
         helper.calculateApplicationDTI(component);
+    },
+
+    handleDebtAdjustment : function(component, event, helper) {
+        var adjustedDebt = event.getParam("adjustedDebt");
+        var pcrId = event.getParam("pcrId");
+        var lead = component.get("v.lead");
+
+        if (pcrId === lead.Personal_Credit_Report__r.Id) {
+            lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c = adjustedDebt;
+        } else {
+            lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c = adjustedDebt;
+        }
+        helper.calculateApplicationIncome(component);
+        helper.calculateApplicationDTI(component);
     }
+
 
 })
