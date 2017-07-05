@@ -7,14 +7,14 @@
 
   <div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class="tableRowEven slds-col slds-size--1-of-1">
+      <div class="darkCell slds-col slds-size--1-of-1">
         Monthly Personal Debt:
         <br></br>
         <ui:outputCurrency value="{!v.adjustedDebt}"/>
       </div> 
     </div>
     <div class="slds-grid slds-wrap">
-      <div class="tableRowEven slds-col slds-size--1-of-1">
+      <div class="darkCell slds-col slds-size--1-of-1">
         <table class="slds-table slds-table_striped">
           <thead>
             <tr class="slds-text-title_caps">
