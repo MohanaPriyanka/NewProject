@@ -122,11 +122,8 @@
           <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
           </ui:button>
         </div>
-      </aura:if>
-  <aura:if isTrue="{!v.partnerRecord.Default_Application__c != 'Massachusetts Solar Loan Program'}">   
-  <br></br>
-  </aura:if>       
-  <aura:if isTrue="{!and(v.partnerRecord.State__c == 'MA', v.partnerRecord.Default_Application__c == 'Massachusetts Solar Loan Program')}">                      
+      </aura:if>     
+  <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">                      
     <div aura:id="mslpDisclaimer" class="box">
       <p class="marginAround marginTop proximaNovaDataBlue">
         Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan. 
@@ -144,7 +141,7 @@
   </aura:if>
   <div aura:id = "inputForm" class="box">            
     <div aura:id = "inputFormBox" class="box">
-      <aura:if isTrue="{!and(v.partnerRecord.State__c == 'MA', v.partnerRecord.Default_Application__c == 'Massachusetts Solar Loan Program')}">
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <img aura:id = "avidiaLogo" class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaLogo}"/>
       </aura:if>
       <fieldset class="slds-form--compound paddingTop1x5">
@@ -352,7 +349,7 @@
           </div>
         </div>             
       </fieldset>        
-      <aura:if isTrue="{!and(v.partnerRecord.State__c == 'MA', v.partnerRecord.Default_Application__c == 'Massachusetts Solar Loan Program')}">
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <span aura:id = "avidiaFooter" >
           <img class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaFooter}"/>
           <p class="slds-align--absolute-center  proximaNovaFont"> 42 Main St. Hudson, MA 01749 </p>

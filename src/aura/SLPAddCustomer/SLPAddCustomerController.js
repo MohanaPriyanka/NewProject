@@ -6,7 +6,16 @@
                 component.set("v.partnerRecord", resp.getReturnValue());
                 if (resp.getReturnValue().State__c == 'MA') {
                     component.set("v.newLead.DOER_Solar_Loan__c",true);                                       
-                    $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');                    
+                    $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');  
+                    if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
+                        component.set("v.newLead.DOER_Solar_Loan__c",false);  
+                        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
+                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
+                        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
+                        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
+                        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
+                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');   
+                    }                  
                 }                
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
@@ -185,41 +194,26 @@
 
     changeApplicationToMSLP : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",true);  
-        component.set("v.newLead.Product_Program__c",'MSLP');
-                 
-        var bwslButton = component.find("bwslAppButton");
-        var mslpButton = component.find("mslpAppButton");
-        var inputFormBox = component.find("inputFormBox");
-        var avidiaLogo = component.find("avidiaLogo");
-        var avidiaFooter = component.find("avidiaFooter");
-        var mslpDisclaimer = component.find("mslpDisclaimer");
+        component.set("v.newLead.Product_Program__c",'MSLP');                
 
-        $A.util.removeClass(bwslButton, 'noDisplayBar');      
-        $A.util.addClass(mslpButton, 'noDisplayBar'); 
-        $A.util.removeClass(avidiaLogo, 'noDisplay');  
-        $A.util.removeClass(avidiaFooter, 'noDisplay');
-        $A.util.removeClass(mslpDisclaimer, 'noDisplayBar');                        
+        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplayBar');      
+        $A.util.addClass(component.find("mslpAppButton"), 'noDisplayBar'); 
+        $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
+        $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
+        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplayBar');                        
     }, 
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
 
-        var bwslButton = component.find("bwslAppButton");
-        var mslpButton = component.find("mslpAppButton");
-        var inputFormBox = component.find("inputFormBox");
-        var avidiaLogo = component.find("avidiaLogo");
-        var avidiaFooter = component.find("avidiaFooter");
-        var mslpDisclaimer = component.find("mslpDisclaimer");
-
-
-        $A.util.addClass(bwslButton, 'noDisplayBar');      
-        $A.util.removeClass(mslpButton, 'noDisplayBar');
-        $A.util.addClass(avidiaLogo, 'noDisplay');  
-        $A.util.addClass(avidiaFooter, 'noDisplay');    
-        $A.util.addClass(mslpDisclaimer, 'noDisplayBar');      
+        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
+        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
+        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
+        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
+        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');      
     },         
 
-    openEmailCustomerModal: function(component, event, helper) {
+    openEmailCustomerModal : function(component, event, helper) {
         var modalBackground = component.find('emailCustomerModalBackground');
         $A.util.removeClass(modalBackground, 'slds-backdrop--hide');
         $A.util.addClass(modalBackground, 'slds-backdrop--open');     
