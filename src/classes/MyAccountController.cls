@@ -90,7 +90,7 @@ public without sharing class MyAccountController {
             }
           }
       }
-      return totalBalance;   
+      return totalBalance.setScale(2);   
    }
 
     @AuraEnabled

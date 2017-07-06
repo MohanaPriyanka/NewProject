@@ -80,7 +80,7 @@ public without sharing class SLPControllersTestclass {
     		LASERCA__Home_Zip__c = '02052',
     		Email = 'colemswain@gmail.com',
     		LASERCA__Social_Security_Number__c = '000000001',
-    		System_Cost__c = 25000,
+    		Requested_Loan_Amount__c = 25000,
     		Annual_Income_Currency__c = 150000,
     		Credit_Check_Acknowledged__c = true,
     		Privacy_Policy_Acknowledged__c = true,
@@ -223,7 +223,7 @@ public without sharing class SLPControllersTestclass {
             Partner_Lookup__c = partnerRecord.Id,
             Bs_Sales_ID__c = salesRepRecord.Id,                                  
     		LASERCA__Social_Security_Number__c = '000000001',
-    		System_Cost__c = 25000,
+    		Requested_Loan_Amount__c = 25000,
     		Annual_Income_Currency__c = 150000,
     		Credit_Check_Acknowledged__c = true,
     		Privacy_Policy_Acknowledged__c = true,
@@ -283,7 +283,7 @@ public without sharing class SLPControllersTestclass {
             Partner_Lookup__c = partnerRecord.Id,
             Bs_Sales_ID__c = salesRepRecord.Id,              
             LASERCA__Social_Security_Number__c = '000000001',
-            System_Cost__c = 25000,
+            Requested_Loan_Amount__c = 25000,
             Annual_Income_Currency__c = 150000,
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
@@ -348,7 +348,7 @@ public without sharing class SLPControllersTestclass {
             Partner_Lookup__c = partnerRecord.Id,
             Bs_Sales_ID__c = salesRepRecord.Id,                                  
             LASERCA__Social_Security_Number__c = '000000001',
-            System_Cost__c = 25000,
+            Requested_Loan_Amount__c = 25000,
             Annual_Income_Currency__c = 150000,
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
@@ -417,7 +417,7 @@ public without sharing class SLPControllersTestclass {
             Partner_Lookup__c = partnerRecord.Id,
             Bs_Sales_ID__c = salesRepRecord.Id,              
             LASERCA__Social_Security_Number__c = '000000001',
-            System_Cost__c = 25000,
+            Requested_Loan_Amount__c = 25000,
             Annual_Income_Currency__c = 150000,
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
@@ -762,7 +762,7 @@ public without sharing class SLPControllersTestclass {
             leadRecord.Status = 'Qualified';
         }    
         update leadList;        
-		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
+		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  FROM Loan__c];
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
@@ -807,7 +807,7 @@ public without sharing class SLPControllersTestclass {
             leadRecord.Status = 'Qualified';
         }    
         update leadList;        
-        List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  FROM Loan__c];
+        List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  FROM Loan__c];
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,

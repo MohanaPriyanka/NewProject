@@ -24,7 +24,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static List<Loan__c> getAllCustomers (String searchValue) {
     List<Loan__c> loanList = new List<Loan__c>();
-    String loanQuery = 'SELECT Id, Name, Product__r.Name, System_Costt__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)  ' ;
+    String loanQuery = 'SELECT Id, Name, Product__r.Name, Requested_Loan_Amount__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)  ' ;
     loanQuery += '      FROM Loan__c' ; 
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';   
     if (profile.LicenseType != 'Executive') {
@@ -44,7 +44,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled 
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
     List<Residential_Equipment__c> equipmentList = new List<Residential_Equipment__c>();
-    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Loan__r.Opportunity_Stage__c, Loan__r.State__c, Opportunity__r.Lead_Id__c, Auto_Reporting_to_PTS__c, Interconnection_Update_Dummy__c, GE_Serial_Number__c, Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Annual_Production_kWh_kW__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Loan__r.Product__r.Name,Loan__r.System_Costt__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, Loan__r.Principall__c, Loan__r.Principal__c, Loan__r.Product__r.Program__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c        ' ;
+    String equipQuery = 'SELECT Id, Name, Loan__r.Name, Loan__r.Opportunity_Stage__c, Loan__r.State__c, Opportunity__r.Lead_Id__c, Auto_Reporting_to_PTS__c, Interconnection_Update_Dummy__c, GE_Serial_Number__c, Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Annual_Production_kWh_kW__c, Loan__r.Lead__r.Annual_Income_Currency__c, Loan__r.Lead__r.Id, Loan__r.Product__r.Name,Loan__r.Requested_Loan_Amount__c,  Loan__r.Commencement_Datee__c, Loan__r.Maturity_Datee__c, Loan__r.Principall__c, Loan__r.Principal__c, Loan__r.Product__r.Program__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c,Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c        ' ;
     equipQuery += '      FROM Residential_Equipment__c' ;
     equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
     equipQuery += '      AND Loan__r.Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
@@ -258,19 +258,19 @@ public without sharing class SLPCustomerHandler {
     update equipmentRecord;
 
     //update the loan information  
-    Loan__c loanRecord = [SELECT Id, Name, Commencement_Datee__c, System_Costt__c  
+    Loan__c loanRecord = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  
                           FROM Loan__c
                           WHERE Id = : loanId];                          
     if(loan.Commencement_Datee__c  != null){
       loanRecord.Commencement_Datee__c   = loan.Commencement_Datee__c;      
     }
-    if(loan.System_Costt__c  != null){
-      loanRecord.System_Costt__c   = loan.System_Costt__c;      
+    if(loan.Requested_Loan_Amount__c  != null){
+      loanRecord.Requested_Loan_Amount__c   = loan.Requested_Loan_Amount__c;      
     }        
     update loanRecord;
 
     //update the lead record update dummy to run the partner task validation to update the status of the customer's process.
-    Lead leadRecord = [SELECT Id, Update_Dummy__c, System_Cost__c 
+    Lead leadRecord = [SELECT Id, Update_Dummy__c, Requested_Loan_Amount__c 
                        FROM Lead 
                        WHERE Id = : equipmentRecord.Lead__r.Id];
     if(leadRecord.Update_Dummy__c == true){

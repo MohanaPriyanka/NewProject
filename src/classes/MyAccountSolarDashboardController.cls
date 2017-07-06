@@ -65,7 +65,7 @@ public with sharing class MyAccountSolarDashboardController {
         }
       }
       system.debug(LoggingLevel.info, totalBalance);
-      return totalBalance;   
+      return totalBalance.setScale(2);   
    }
 
  
@@ -183,7 +183,7 @@ public with sharing class MyAccountSolarDashboardController {
         }
       }
       system.debug(LoggingLevel.info, totalBalance);
-      return totalBalance;   
+      return totalBalance.setScale(2);   
    }
           
 

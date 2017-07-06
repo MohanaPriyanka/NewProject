@@ -15,13 +15,13 @@ for (Loan_Traunch__c traunch: trigger.new) {
     }
 }
 
-for(opportunity op : [select id,loan_principle__c, loan_traunch__r.name  FROM opportunity WHERE loan_traunch__r.name  IN :traunchNames])
+for(opportunity op : [select id,Requested_Loan_Amount__c, loan_traunch__r.name  FROM opportunity WHERE loan_traunch__r.name  IN :traunchNames])
 {
     opId.add(op.id);
 }
 
 
-for(Aggregateresult large : [select SUM(loan_principle__c)lc, sum(Disbursal_1_Contract_Signature__c)d1 FROM opportunity WHERE id IN: opId AND stageName != 'Complete' AND stageName != 'Declined']){
+for(Aggregateresult large : [select SUM(Requested_Loan_Amount__c)lc, sum(Disbursal_1_Contract_Signature__c)d1 FROM opportunity WHERE id IN: opId AND stageName != 'Complete' AND stageName != 'Declined']){
          capExSum = integer.valueOf(large.get('lc'));
          capd1Sum = integer.valueOf(large.get('d1'));
 
@@ -30,7 +30,7 @@ for(Aggregateresult large : [select SUM(loan_principle__c)lc, sum(Disbursal_1_Co
          capExSum = 0; }    
 }
 
-for(Aggregateresult large2 : [select SUM(Disbursal_1_Contract_Signature__c)lc2, sum(loan_principle__c)d1a FROM opportunity WHERE id IN: opId AND stageName = 'Complete']){
+for(Aggregateresult large2 : [select SUM(Disbursal_1_Contract_Signature__c)lc2, sum(Requested_Loan_Amount__c)d1a FROM opportunity WHERE id IN: opId AND stageName = 'Complete']){
          capExSumComp = integer.valueOf(large2.get('d1a'));
          
          if(capExSum == null) { 

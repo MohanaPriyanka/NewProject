@@ -48,7 +48,7 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Lead> getLeads (String searchValue, String leadId) {
     List<Lead> leadList = new List<Lead>();
-    String leadQuery = 'SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, System_Cost__c' ;
+    String leadQuery = 'SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c' ;
     leadQuery += ' FROM Lead' ;
     leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
     leadQuery += ' AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
@@ -116,7 +116,7 @@ public without sharing class SLPCreditStatus {
     String customerName;
     Boolean updateDummy;
     Lead lead = [SELECT Id, Name, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c, LASERCA__Home_Address__c,
-                        LASERCA__Home_City__c, LASERCA__Home_Zip__c, Annual_Income_Currency__c, System_Cost__c, Update_Dummy__c, FirstName,
+                        LASERCA__Home_City__c, LASERCA__Home_Zip__c, Annual_Income_Currency__c, Requested_Loan_Amount__c, Update_Dummy__c, FirstName,
                         LastName, Partner_Email__c, Email, Partner_Lookup__r.Name
                         FROM Lead
                         WHERE Id = : leadId
