@@ -123,7 +123,7 @@
           <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
           </ui:button>
         </div>
-      </aura:if>
+      </aura:if>     
   <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">                      
     <div aura:id="mslpDisclaimer" class="box">
       <p class="marginAround marginTop proximaNovaDataBlue">
@@ -140,7 +140,6 @@
       <br></br>
     </div>
   </aura:if>
-
   <div aura:id = "inputForm" class="box">            
     <div aura:id = "inputFormBox" class="box">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
