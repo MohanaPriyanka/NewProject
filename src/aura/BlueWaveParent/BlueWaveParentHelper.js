@@ -3,6 +3,7 @@
         var action = component.get("c.getPicklistFields");
         action.setParams({"objectName": objectName,
                           "fieldName": fieldName});
+        action.setStorable();
         var opts=[];
         action.setCallback(this, function(a) {
             for(var i=0;i< a.getReturnValue().length;i++){
