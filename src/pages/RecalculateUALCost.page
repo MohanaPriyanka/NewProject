@@ -107,7 +107,7 @@
                                     </td>
                                     <td class="name">{!uasAction.sss.Name}</td>
                                     <td><apex:inputCheckbox value="{!uasAction.sss.Open__c}" disabled="true"/></td>
-                                    <td><apex:inputCheckbox value="{!uasAction.sss.Schedule_Z_Filed__c}" disabled="true"/></td>
+                                    <td><apex:inputCheckbox value="{!uasAction.sss.ScheduleZ_Filed__c}" disabled="true"/></td>
                                     <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
                                     <td>{!uasAction.sss.Estimated_COD_Date_QC__c}</td>
                                     <td>
@@ -130,7 +130,7 @@
                                             <apex:outputText styleClass="action"
                                                              value="Please contact one of Bluewave's Administrator to deduct from this record." />
                                         </apex:outputPanel>
-                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.Schedule_Z_Filed__c, adminMode)}" layout="none">
+                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, !uasAction.sss.ScheduleZ_Filed__c, adminMode)}" layout="none">
                                             <apex:selectList value="{!uasAction.action}" 
                                                              size="1" 
                                                              multiselect="false" 
@@ -140,7 +140,7 @@
                                                 <apex:selectOption itemLabel="Deduct and keep as Closed" itemValue="Deduct and keep as Closed" />
                                             </apex:selectList>
                                         </apex:outputPanel>
-                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, uasAction.sss.Schedule_Z_Filed__c, adminMode)}" layout="none">
+                                        <apex:outputPanel rendered="{!AND(!uasAction.sss.Open__c, uasAction.sss.ScheduleZ_Filed__c, adminMode)}" layout="none">
                                             <apex:selectList value="{!uasAction.action}" 
                                                              size="1" 
                                                              multiselect="false" 

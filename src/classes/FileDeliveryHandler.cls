@@ -24,7 +24,6 @@ public without sharing class FileDeliveryHandler {
         cd.Name = cont.Title;
         cd.ContentVersionId = cont.id;
         cd.PreferencesAllowOriginalDownload = true;
-        cd.PreferencesAllowPDFDownload = true;
         cd.PreferencesAllowViewInBrowser = true;
         cd.PreferencesAllowPdfDownload = true;
         cd.ExpiryDate = expydate;
