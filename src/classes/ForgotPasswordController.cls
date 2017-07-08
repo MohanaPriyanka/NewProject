@@ -69,7 +69,7 @@ public with sharing class ForgotPasswordController {
      
         // Sends the email
         Messaging.SendEmailResult [] r =
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] {email});
+            MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {email});
 
         errorMsg = EMAILSENT;
          
