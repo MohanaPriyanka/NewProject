@@ -22,7 +22,8 @@ private class PCRApprovalHandlerTest {
                                             Loan_Interest_Rate__c = 5.99,
                                             Loan_Interest_Only_Period__c = 12,
                                             Loan_Base_Rate__c = .0625,
-                                            Credit_Minimum__c = '700',
+                                            Debt_To_Income_Maximum__c = 50,
+                                            Credit_Minimum__c = '681',
                                             Credit_Maximum__c = '999',
                                             Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
                                             Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
@@ -37,7 +38,8 @@ private class PCRApprovalHandlerTest {
                                             Loan_Interest_Rate__c = 5.99,
                                             Loan_Interest_Only_Period__c = 12,
                                             Loan_Base_Rate__c = .0625,
-                                            Credit_Minimum__c = '700',
+                                            Debt_To_Income_Maximum__c = 50,
+                                            Credit_Minimum__c = '681',
                                             Credit_Maximum__c = '999',
                                             Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
                                             Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
@@ -61,20 +63,23 @@ private class PCRApprovalHandlerTest {
         insertleads.add(leadAF);
         Lead leadAG = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAG);
+        Lead leadAH = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        insertleads.add(leadAH);
+        Lead leadAI = getLead(null, 45000, productVar.Id, true, true, partner.Id);
+        insertleads.add(leadAI);
         insert insertleads;
         leadAE.Status = 'Pending Information';
         update leadAE;
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
-                                                                                        LASERCA__Code_2__c = '034',
                                                                                         LASERCA__Code__c = '039',
+                                                                                        LASERCA__Code_2__c = '034',
                                                                                         LASERCA__Code_3__c = '040',
                                                                                         LASERCA__Code_4__c = '022',
-                                                                                        LASERCA__Credit_Score_TransUnion__c = '700',
-                                                                                        Avidia_Review_Status__c = 'Reviewed - PreApproved');
+                                                                                        LASERCA__Credit_Score_TransUnion__c = '681');
         insertpcrlist.add(pcr);
         LASERCA__Personal_Credit_Report__c pcrA = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadA.Id,
-                                                                                         LASERCA__Credit_Score_TransUnion__c = '401');
+                                                                                         LASERCA__Credit_Score_TransUnion__c = '680');
         insertpcrlist.add(pcrA);
         LASERCA__Personal_Credit_Report__c pcrAA = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAA.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '402');
@@ -97,6 +102,12 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrAG = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAG.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '815');
         insertpcrlist.add(pcrAG);
+        LASERCA__Personal_Credit_Report__c pcrAH = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAH.Id,
+                                                                                          LASERCA__Credit_Score_TransUnion__c = '682');
+        insertpcrlist.add(pcrAH);
+        LASERCA__Personal_Credit_Report__c pcrAI = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAI.Id,
+                                                                                          LASERCA__Credit_Score_TransUnion__c = '700');
+        insertpcrlist.add(pcrAI);
         insert insertpcrlist;
                                                                                         
         Test.startTest();
@@ -128,6 +139,12 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c  tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
         inserttradeacct.add(tradeacctAG); 
+        LASERCA__Trade_Accounts__c  tradeacctAH = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAH.id,
+                                                                                 LASERCA__Monthly_Payment__c = 200);
+        inserttradeacct.add(tradeacctAH); 
+        LASERCA__Trade_Accounts__c  tradeacctAI = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAI.id,
+                                                                                 LASERCA__Monthly_Payment__c = 200);
+        inserttradeacct.add(tradeacctAI); 
         insert inserttradeacct;
         update inserttradeacct;
 
@@ -149,9 +166,13 @@ private class PCRApprovalHandlerTest {
              FROM LASERCA__Personal_Credit_Report__c];
 
         for (LASERCA__Personal_Credit_Report__c creditreport : pcrlist) {
-            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '700') {
+            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '681') {
+                System.assertEquals('Pending Review', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '682') {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
-            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '401') {
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '700') {
+                System.assertEquals(null, creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '680') {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '402') {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
