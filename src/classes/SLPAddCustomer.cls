@@ -98,7 +98,7 @@ public without sharing class SLPAddCustomer {
     //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled
     public static Partner__c getPartnerRecord() {
-        return [SELECT Id, Name, Logo__c, State__c 
+        return [SELECT Id, Name, Logo__c, State__c, Default_Application__c 
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     

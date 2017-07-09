@@ -42,8 +42,11 @@ openEmailCustomerModal: function(component, event, helper) {
 },   
 
 closeEmailCustomerModal: function(component, event, helper) {
+    var partnerRecord = component.get("v.partnerRecord");
     var emailButton = component.find('sendEmailButton');
-    var customerEmailMSLP = component.find('emailMSLP');
+    if (partnerRecord.State__c == "MA") {
+        component.find('emailMSLP').set("v.value", null);        
+    }
     var customerEmailBWSL = component.find('emailBWSL');
 
     var modal = component.find('emailCustomerModal');
@@ -53,7 +56,6 @@ closeEmailCustomerModal: function(component, event, helper) {
 
     emailButton.set("v.disabled",false);
     emailButton.set("v.label","Send");
-    customerEmailMSLP.set("v.value", null);
     customerEmailBWSL.set("v.value", null);    
     
     var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
@@ -89,6 +91,7 @@ emailModalSelectBWSL: function(component, event, helper) {
 },                    
 
 sendCustomerApplication : function(component, event, helper) {
+    var partnerRecord = component.get("v.partnerRecord");    
     $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
     helper.startSpinner(component, "emailSpinner");
     var productProgram = component.get("v.productProgram");
@@ -105,9 +108,10 @@ sendCustomerApplication : function(component, event, helper) {
             var emailButton = component.find('sendEmailButton');
             emailButton.set("v.disabled",true);
             emailButton.set("v.label",'Email Sent!')             
-            var customerEmailMSLP = component.find('emailMSLP');
             var customerEmailBWSL = component.find('emailBWSL');
-            customerEmailMSLP.set("v.value", null);
+            if (partnerRecord.State__c == "MA") {
+                component.find('emailMSLP').set("v.value", null);
+            }
             customerEmailBWSL.set("v.value", null);                  
         } else {
             var appEvent = $A.get("e.c:ApexCallbackError");
