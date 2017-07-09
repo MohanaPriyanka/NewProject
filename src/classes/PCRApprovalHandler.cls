@@ -71,11 +71,10 @@ public with sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            if (pcr.Annual_Income_From_Lead__c != NULL &&
+            if (pcr.Annual_Income_From_Lead__c != 0 &&
                 !pcr.Do_not_trigger_PCRApprovalHandler__c && 
                 pcr.LASERCA__Lead__c != NULL &&
-                pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != NULL &&
-                pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != 0) {
+                pcr.Adjusted_Monthly_Personal_Debt__c != 0) {
 
                 String bwApproval, doerApproval;
                 String conglomerate = 
@@ -95,10 +94,10 @@ public with sharing class PCRApprovalHandler {
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
                     productRepo.getCreditSummary(leadMap.get(pcr.LASERCA__Lead__c), 
                                                  creditScore, monthlyIncome, 
-                                                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                                                 pcr.Adjusted_Monthly_Personal_Debt__c,
                                                  pcr.DOER_Application__c);
 
-                pcr.DTI_Before__c = 100 * pcr.LASERCA__Sum_of_monthly_Personal_Debt__c / monthlyIncome;
+                pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_After__c = creditSummary.highestDTI;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
