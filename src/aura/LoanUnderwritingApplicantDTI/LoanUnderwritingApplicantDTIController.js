@@ -17,13 +17,8 @@
 
         if (pcrId === pcr.Id) {
             pcr.Adjusted_Monthly_Personal_Debt__c = adjustedDebt;
-            var annualIncome;
-            if (pcr.Adjusted_Income__c != null) {
-                annualIncome = pcr.Adjusted_Income__c;
-            } else {
-                annualIncome = pcr.Annual_Income_from_Lead__c;
-            }
-            helper.updateAdjustedDTI(component, annualIncome, adjustedDebt);
+            component.set("v.pcr.DTI_Before__c", event.getParam("dtiBefore"));
+            component.set("v.pcr.DTI_After__c", event.getParam("dtiAfter"));
         }
     }
 })

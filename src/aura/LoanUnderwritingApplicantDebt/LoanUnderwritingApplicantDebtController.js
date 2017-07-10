@@ -28,8 +28,10 @@
         ).then(
             $A.getCallback(function(result) {
                 var debtEvent = $A.get("e.c:LoanUnderwritingDebtAdjustment");
-                debtEvent.setParams({"adjustedDebt": component.get("v.adjustedDebt")});
-                debtEvent.setParams({"pcrId": component.get("v.pcr.Id")});
+                debtEvent.setParams({"adjustedDebt": component.get("v.adjustedDebt"),
+                                     "dtiBefore": component.get("v.dtiBefore"),
+                                     "dtiAfter": component.get("v.dtiAfter"),
+                                     "pcrId": component.get("v.pcr.Id")});
                 debtEvent.fire();
             }),
             $A.getCallback(function(error){

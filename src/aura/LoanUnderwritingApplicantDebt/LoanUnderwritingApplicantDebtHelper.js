@@ -10,6 +10,8 @@
                     var pcr = resp.getReturnValue();
                     component.set("v.pcr.Adjusted_Monthly_Personal_Debt__c", pcr.Adjusted_Monthly_Personal_Debt__c);
                     component.set("v.adjustedDebt", pcr.Adjusted_Monthly_Personal_Debt__c);
+                    component.set("v.dtiBefore", pcr.DTI_Before__c);
+                    component.set("v.dtiAfter", pcr.DTI_After__c);
                     component.set("v.tradeAccounts", pcr.LASERCA__Trade_Accounts__r);
                     resolve(pcr);
                 } else {

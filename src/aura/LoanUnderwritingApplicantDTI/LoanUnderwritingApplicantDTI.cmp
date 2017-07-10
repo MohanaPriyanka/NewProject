@@ -5,18 +5,6 @@
 
   <div>
     <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "darkCell slds-col slds-size--1-of-1">
-        Adjusted DTI:
-        <br></br>
-        <aura:if isTrue="{!v.pcr.Adjusted_DTI__c}">
-          <lightning:formattedNumber aura:id="AdjustedDTI" 
-                                     value="{!v.pcr.Adjusted_DTI__c/100}" 
-                                     style="percent" 
-                                     maximumFractionDigits="2"/>
-        </aura:if>
-      </div>
-    </div>
-    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
       <div class = "lightCell slds-col slds-size--1-of-2">
         DTI Before:
         <br></br>

@@ -1,4 +1,6 @@
 <aura:event type="APPLICATION" description="Event template">
   <aura:attribute name="adjustedDebt" type="Decimal"/>
+  <aura:attribute name="dtiBefore" type="Decimal"/>
+  <aura:attribute name="dtiAfter" type="Decimal"/>
   <aura:attribute name="pcrId" type="String"/>
 </aura:event>
