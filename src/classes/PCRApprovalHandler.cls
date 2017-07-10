@@ -61,7 +61,9 @@ public with sharing class PCRApprovalHandler {
         List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                                    Income_Support__c
+                                    Income_Support__c,
+                                    Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
+                                    Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
                                     FROM Lead 
                                     WHERE Id  IN : leadlist];
         for (Lead lead : relatedLeads) {
@@ -71,22 +73,48 @@ public with sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            if (pcr.Annual_Income_From_Lead__c != 0 &&
-                !pcr.Do_not_trigger_PCRApprovalHandler__c && 
+            if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
                 pcr.LASERCA__Lead__c != NULL &&
                 pcr.Adjusted_Monthly_Personal_Debt__c != 0) {
+                
+                Boolean isCoApp = false;
+                Boolean hasCoApp = false;
+                Decimal monthlyIncome;
+                if (leadMap.get(pcr.LASERCA__Lead__c).Personal_Credit_Report_Co_Applicant__c == pcr.Id) {
+                    isCoApp = true;
+                }
+                if (leadMap.get(pcr.LASERCA__Lead__c).Personal_Credit_Report_Co_Applicant__c != null) {
+                    hasCoApp = true;
+                }
+                System.debug(LoggingLevel.ERROR, 'PCRApprovalHandler coApp: ' + coApp);
+                if (isCoApp) {
+                    if (pcr.Co_Applicant_Income__c == 0) {
+                        continue;
+                    } else {
+                        monthlyIncome = pcr.Co_Applicant_Income__c/12;
+                    }
+                } else {
+                    if (pcr.Annual_Income_From_Lead__c == 0) {
+                        continue;
+                    } else {
+                        monthlyIncome = pcr.Annual_Income_From_Lead__c/12;
+                    }
+                }
 
+                System.debug(LoggingLevel.ERROR, 'PCRApprovalHandler monthlyIncome: ' + monthlyIncome);
                 String bwApproval, doerApproval;
                 String conglomerate = 
                     pcr.LASERCA__Code__c + ' ' + pcr.LASERCA__Code_2__c + ' ' +
                     pcr.LASERCA__Code_3__c + ' ' + pcr.LASERCA__Code_4__c;
-                Decimal monthlyIncome = pcr.Annual_Income_From_Lead__c/12;
-                if (pcr.Co_Applicant__c || pcr.LASERCA__Contact__c != NULL) {
-                    monthlyIncome = pcr.Co_Applicant_Income__c/12;
+                Integer creditScore;
+                if (hasCoApp) {
+                    creditScore =
+                        pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
+                        Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
+                } else {
+                    creditScore =
+                        Math.max(
                 }
-                Integer creditScore = 
-                    pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
-                    Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
@@ -96,6 +124,8 @@ public with sharing class PCRApprovalHandler {
                                                  creditScore, monthlyIncome, 
                                                  pcr.Adjusted_Monthly_Personal_Debt__c,
                                                  pcr.DOER_Application__c);
+
+                System.debug(LoggingLevel.ERROR, 'PCRApprovalHandler creditSummary: ' + creditSummary);
 
                 pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_After__c = creditSummary.highestDTI;
@@ -249,7 +279,8 @@ public with sharing class PCRApprovalHandler {
                 'Income Support if DOER: ' + incomeSupport + ', ' +
                 'Monthly Income: ' + monthlyIncome + ', ' +
                 'Monthly Debt Before Loan: ' + monthlyDebt + ', ' +
-                'Loan Principal: ' + loanPrincipal;
+                'Loan Principal: ' + loanPrincipal + ', ' +
+                'Highest DTI: ' + highestDTI;
             for (PCRApprovalHandler.CreditStatusResult csr : resultList) {
                 summary = summary + '\n' + csr.toString();
             }
@@ -388,6 +419,7 @@ public with sharing class PCRApprovalHandler {
             dtiDenominator = monthlyIncome;
             dtiAfter = 100*(dtiNumerator/dtiDenominator);
             dtiAfter.setScale(2);
+            System.debug(LoggingLevel.ERROR, 'PCRApprovalHandler calDTIAfter: ' + dtiAfter);
             return(new PCRApprovalHandler.CreditStatusResult(product, monthlyPayment, dtiAfter));
         }
 

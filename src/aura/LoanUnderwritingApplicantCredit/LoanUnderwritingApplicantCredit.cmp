@@ -103,6 +103,20 @@
         &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_3__c">Change</a>]
       </div> 
     </div>
+    <div class = "tableRowOdd">
+      <div class = "tableCell25px">
+        4
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Code_4__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.LASERCA__Detail_4__c}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.pcr.Adverse_Credit_Notice_4__c}"/>
+        &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_4__c">Change</a>]
+      </div> 
+    </div>
   </div>
-
 </aura:component>
