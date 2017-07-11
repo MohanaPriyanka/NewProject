@@ -259,12 +259,24 @@ public with sharing class PCRApprovalHandler {
 
         private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer,
                                        Integer creditMinimum, Decimal dtiMaximum) {
-            if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
-                return(APPROVED);
-            } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
-                return doer?DECLINED:PENDINGREVIEW;
+            if (doer) {
+                if (creditScore >= 700 && DTIafter <= dtiMaximum) {
+                    return APPROVED;
+                } else if (creditScore >= 690 && DTIafter <= 45) {
+                    return APPROVED;
+                } else if (creditScore >= creditMinimum && DTIafter <= 40) {
+                    return APPROVED;
+                } else {
+                    return DECLINED;
+                }
             } else {
-                return(DECLINED);
+                if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
+                    return APPROVED;
+                } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
+                    return PENDINGREVIEW;
+                } else {
+                    return DECLINED;
+                }
             }
         }
 
