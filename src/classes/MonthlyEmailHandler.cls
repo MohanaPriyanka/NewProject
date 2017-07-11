@@ -94,7 +94,7 @@ global class MonthlyEmailHandler Implements Schedulable {
                         mail.setOrgWideEmailAddressId(fromemailid); 
                       }
                                                         
-                      String[] ccAddresses = new String[] {'compliance@bluewave-capital.com'};
+                      String[] ccAddresses = new String[] {'compliance@bluewave-capital.com', 'cgosline@bluewavesolar.com'};
                       mail.setccAddresses(ccAddresses);
                       system.debug(ccAddresses);      
                       mail.setSubject(subject);
@@ -105,6 +105,7 @@ global class MonthlyEmailHandler Implements Schedulable {
 
                      // Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
                       MessagingService.sendEmail(messages);
+
                     }
                   }
             }     
