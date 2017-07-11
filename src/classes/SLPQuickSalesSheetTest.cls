@@ -64,11 +64,19 @@ public without sharing class SLPQuickSalesSheetTest{
     Test.startTest();          
       // Community User makes the QSS
       System.runAs(communityUser){
+        Quick_Sales_Sheet__c qssLoanTable = new Quick_Sales_Sheet__c (System_Cost__c = 40000,
+                                                                      Down_Payment__c = 3000,
+                                                                      Product__c = productRecord.Id);
+        Boolean generateDoc = false;
+        SLPQuickSalesSheetHandler.addNewQSS(qssLoanTable, generateDoc);
+        SLPQuickSalesSheetHandler.updateQSS(qssLoanTable);
+
         SLPQuickSalesSheetHandler.getActiveProducts();
+        generateDoc = true;
         Quick_Sales_Sheet__c qssnew = new Quick_Sales_Sheet__c (System_Cost__c = 40000,
                                                                 Down_Payment__c = 2000,
                                                                 Product__c = productRecord.Id);
-        SLPQuickSalesSheetHandler.addNewQSS(qssnew);
+        SLPQuickSalesSheetHandler.addNewQSS(qssnew, generateDoc);
       }
 
       // Conga runs as a System Admin
@@ -76,15 +84,25 @@ public without sharing class SLPQuickSalesSheetTest{
                                                       PathOnClient='/Loan Summary Sheet.pdf' );
       salesDocCV.VersionData = Blob.valueOf('This is the body of the pdf');
       insert salesDocCV;
-      ContentVersion testContent = [SELECT ContentDocumentId FROM ContentVersion where Id = :salesDocCV.Id]; 
-      Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
+      ContentVersion testContent = [SELECT ContentDocumentId 
+                                    FROM ContentVersion 
+                                    WHERE Id = :salesDocCV.Id]; 
+
+      Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Amount__c, Finance_Charge__c 
+                                          FROM Quick_Sales_Sheet__c 
+                                          WHERE Down_Payment__c = 2000];
+
       ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                               LinkedEntityId = qssInserted.Id,
                                                               ShareType = 'V' );
       insert newLink;
       List<ContentDistribution> distList = [SELECT Name, ContentVersionId
                                             FROM ContentDistribution];
-      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Partner_Logo_File_Name__c, Loan_Amount__c, Finance_Charge__c FROM Quick_Sales_Sheet__c];
+
+      Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Partner_Logo_File_Name__c, Loan_Amount__c, Finance_Charge__c 
+                                          FROM Quick_Sales_Sheet__c 
+                                          WHERE Down_Payment__c = 2000];
+
       system.AssertNotEquals('notgenerated', qssUpdated.Link_to_File__c);
       system.AssertNotEquals(0, distList.size());
       system.AssertEquals('PartnerFile', qssUpdated.Partner_Logo_File_Name__c);

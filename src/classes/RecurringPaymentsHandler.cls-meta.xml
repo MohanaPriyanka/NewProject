@@ -3,6 +3,11 @@
     <apiVersion>37.0</apiVersion>
     <packageVersions>
         <majorNumber>4</majorNumber>
+        <minorNumber>46</minorNumber>
+        <namespace>ChargentBase</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>4</majorNumber>
         <minorNumber>45</minorNumber>
         <namespace>ChargentOrders</namespace>
     </packageVersions>
