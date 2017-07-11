@@ -9,7 +9,6 @@
         savePromise.then(
             $A.getCallback(function resolve(value) {
                 var incomeEvent = $A.get("e.c:LoanUnderwritingIncomeAdjustment");
-                incomeEvent.setParams({"adjustedIncome":component.get("v.pcr.Adjusted_Income__c")});
                 incomeEvent.setParams({"pcrId":component.get("v.pcr.Id")});
                 incomeEvent.fire();
             }),

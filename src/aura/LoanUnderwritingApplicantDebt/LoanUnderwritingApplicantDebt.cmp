@@ -3,8 +3,6 @@
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
   <aura:attribute name="tradeAccounts" type="LASERCA__Trade_Accounts__c[]"/>
   <aura:attribute name="adjustedDebt" type="Decimal"/>
-  <aura:attribute name="dtiBefore" type="Decimal"/>
-  <aura:attribute name="dtiAfter" type="Decimal"/>
   <aura:registerEvent name="debtEvent" type="c:LoanUnderwritingDebtAdjustment"/>
 
   <div>

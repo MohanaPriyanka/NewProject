@@ -92,7 +92,9 @@ public with sharing class PCRApprovalHandler {
                                            Integer.valueOf(leadMap.get(pcr.LASERCA__Lead__c).Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
                 }
 
-                System.debug(LoggingLevel.ERROR, '===== PCRApprovalHandler creditScore: ' + creditScore);
+                if (monthlyIncome == 0) {
+                    continue;
+                }
 
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead

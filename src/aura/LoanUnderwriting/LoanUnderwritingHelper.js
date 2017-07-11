@@ -1,48 +1,51 @@
 ({
     getLead : function(component) {
-        var action = component.get("c.getLead");
-        action.setParams({"leadId" : component.get("v.leadId")});
-        action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                var leadWithAttachments = resp.getReturnValue();
-                var lead = leadWithAttachments.lead;
-                component.set("v.lead", lead);
-                if (lead.Manual_Credit_Decline__c) {
-                    component.set("v.declineMainButtonLabel", "Main Applicant Adverse Notice Sent");
+        // in the context of Promise, 'this' is not the helper.
+        var ltg = this;
+        return new Promise(function(resolve, reject) {
+            var action = component.get("c.getLead");
+            action.setParams({"leadId" : component.get("v.leadId")});
+            action.setCallback(this,function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    var leadWithAttachments = resp.getReturnValue();
+                    var lead = leadWithAttachments.lead;
+                    component.set("v.lead", lead);
+                    if (lead.Manual_Credit_Decline__c) {
+                        component.set("v.declineMainButtonLabel", "Main Applicant Adverse Notice Sent");
+                    } else {
+                        component.set("v.declineMainButtonLabel", "Decline Main Applicant");
+                    }
+                    if (lead.Co_App_Manual_Credit_Decline__c) {
+                        component.set("v.declineCoAppButtonLabel", "Co-Applicant Adverse Notice Sent");
+                    } else {
+                        component.set("v.declineCoAppButtonLabel", "Decline Co-Applicant");
+                    }
+                    
+                    if (lead.Personal_Credit_Report_Co_Applicant__r &&
+                        lead.Personal_Credit_Report__r) {
+                        component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
+                        component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
+                        component.set("v.hasCoApp", true);
+                        component.set("v.bestFICO",
+                                      Math.max((lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c || 0),
+                                               (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0)));
+                    } else if (lead.Personal_Credit_Report__r) {
+                        component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
+                        component.set("v.bestFICO",
+                                      (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
+                    }
+                    resolve(ltg);
                 } else {
-                    component.set("v.declineMainButtonLabel", "Decline Main Applicant");
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "LoanUnderwritingController",
+                                        "methodName" : "doInit",
+                                        "errors" : resp.getError()});
+                    appEvent.fire();
+                    reject(resp);
                 }
-                if (lead.Co_App_Manual_Credit_Decline__c) {
-                    component.set("v.declineCoAppButtonLabel", "Co-Applicant Adverse Notice Sent");
-                } else {
-                    component.set("v.declineCoAppButtonLabel", "Decline Co-Applicant");
-                }
-                
-                if (lead.Personal_Credit_Report_Co_Applicant__r &&
-                    lead.Personal_Credit_Report__r) {
-                    component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
-                    component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
-                    component.set("v.hasCoApp", true);
-                    component.set("v.bestFICO",
-                                  Math.max((lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c || 0),
-                                           (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0)));
-                } else if (lead.Personal_Credit_Report__r) {
-                    component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
-                    component.set("v.bestFICO",
-                                  (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
-                }
-                this.calculateApplicationIncome(component);
-                this.calculateApplicationDTI(component);
-            } else {
-                $A.log("Errors", resp.getError());
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "LoanUnderwritingController",
-                                    "methodName" : "doInit",
-                                    "errors" : resp.getError()});
-                appEvent.fire();
-            }
+            });
+            $A.enqueueAction(action);
         });
-        $A.enqueueAction(action);
     },
 
     calculateApplicationIncome : function(component) {

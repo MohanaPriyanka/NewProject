@@ -1,7 +1,5 @@
 <aura:component extends="c.BlueWaveParent">
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
-  <aura:handler event="c:LoanUnderwritingIncomeAdjustment" action="{!c.handleIncomeAdjustment}"/>
-  <aura:handler event="c:LoanUnderwritingDebtAdjustment" action="{!c.handleDebtAdjustment}"/>
 
   <div>
     <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">

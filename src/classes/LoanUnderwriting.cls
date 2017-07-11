@@ -129,7 +129,7 @@ public without sharing class LoanUnderwriting {
         if (!pcrList.isEmpty()) {
             return pcrList[0];
         } else {
-            return null;
+            throw new AuraHandledException('LoanUnderwriting.getPCRDebt, Personal Credit Report not found with ID: ' + pcrId);
         }
     }
 

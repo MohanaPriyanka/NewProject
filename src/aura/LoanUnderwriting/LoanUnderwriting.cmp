@@ -1,7 +1,7 @@
 <aura:component controller="LoanUnderwriting" extends="c:BlueWaveParent">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <aura:handler event="c:LoanUnderwritingIncomeAdjustment" action="{!c.handleIncomeAdjustment}"/>
-  <aura:handler event="c:LoanUnderwritingDebtAdjustment" action="{!c.handleDebtAdjustment}"/>
+  <aura:handler event="c:LoanUnderwritingIncomeAdjustment" action="{!c.handleEvent}"/>
+  <aura:handler event="c:LoanUnderwritingDebtAdjustment" action="{!c.handleEvent}"/>
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="hasCoApp" type="Boolean" default="false"/>
