@@ -86,5 +86,32 @@
                 helper.calculateApplicationIncome(component);
                 helper.calculateApplicationDTI(component);
             }));
-    }
+    },
+
+    updateAdjustedDTI : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        var savePromise = helper.saveSObject(component,
+                                             lead.Personal_Credit_Report__r.Id,
+                                             'LASERCA__Personal_Credit_Report__c',
+                                             'Adjusted_DTI__c',
+                                             lead.Personal_Credit_Report__r.Adjusted_DTI__c);
+        savePromise.then(
+            $A.getCallback(function resolve(value) {
+                var debtEvent = $A.get("e.c:LoanUnderwritingDebtAdjustment");
+                debtEvent.setParams({"pcrId":component.get("v.pcr.Id")});
+                debtEvent.fire();
+            })
+        );
+    },
+
+    saveDTINotes : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        helper.saveSObject(component,
+                           lead.Personal_Credit_Report__r.Id,
+                           'LASERCA__Personal_Credit_Report__c',
+                           'Adjusted_DTI_Notes__c',
+                           lead.Personal_Credit_Report__r.Adjusted_DTI_Notes__c);
+    },
+
+
 })

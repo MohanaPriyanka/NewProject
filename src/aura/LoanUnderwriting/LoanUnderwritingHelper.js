@@ -75,28 +75,35 @@
         var mainPCR = lead.Personal_Credit_Report__r;
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
 
-        var mainIncome=0, mainDebt=0, coAppIncome=0, coAppDebt=0;
-        if (mainPCR.Adjusted_Income__c != null) {
-            mainIncome = mainPCR.Adjusted_Income__c/12;
+        if (mainPCR.Adjusted_DTI__c != null) {
+            component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
         } else {
-            mainIncome = lead.Annual_Income_Currency__c/12;
-        }
-        mainDebt = mainPCR.Adjusted_Monthly_Personal_Debt__c;
+            if (coAppPCR) {
+                var mainIncome=0, mainDebt=0, coAppIncome=0, coAppDebt=0;
+                if (mainPCR.Adjusted_Income__c != null) {
+                    mainIncome = mainPCR.Adjusted_Income__c/12;
+                } else {
+                    mainIncome = lead.Annual_Income_Currency__c/12;
+                }
+                mainDebt = mainPCR.Adjusted_Monthly_Personal_Debt__c;
 
-        if (coAppPCR) {
-            if (coAppPCR.Adjusted_Income__c != null) {
-                coAppIncome = coAppPCR.Adjusted_Income__c/12;
+                if (coAppPCR.Adjusted_Income__c != null) {
+                    coAppIncome = coAppPCR.Adjusted_Income__c/12;
+                } else {
+                    coAppIncome = lead.Co_Applicant_Income__c/12;
+                }
+                coAppDebt = coAppPCR.Adjusted_Monthly_Personal_Debt__c;
+
+                var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);
+                if (mainIncome + coAppIncome > 0) {
+                    component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
+                } else {
+                    component.set("v.bestDTI", null);
+                }
+
             } else {
-                coAppIncome = lead.Co_Applicant_Income__c/12;
+                component.set("v.bestDTI", mainPCR.DTI_After__c);
             }
-            coAppDebt = coAppPCR.Adjusted_Monthly_Personal_Debt__c;
         }
-        
-        var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);
-        if (mainIncome + coAppIncome > 0) {
-            component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
-        } else {
-            component.set("v.bestDTI", null);
-        }            
     },
 })
