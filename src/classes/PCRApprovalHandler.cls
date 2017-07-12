@@ -71,7 +71,7 @@ public with sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            if (pcr.Annual_Income_From_Lead__c != NULL &&
+            if (pcr.Annual_Income_From_Lead__c != 0 &&
                 !pcr.Do_not_trigger_PCRApprovalHandler__c && 
                 pcr.LASERCA__Lead__c != NULL &&
                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != NULL &&
@@ -230,8 +230,10 @@ public with sharing class PCRApprovalHandler {
             this.resultList = new List<PCRApprovalHandler.CreditStatusResult>();
         }
 
-        public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result) {
-            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, doer);
+        public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result,
+                                      Integer creditMinimum, Decimal dtiMaximum) {
+            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, doer,
+                                                  creditMinimum, dtiMaximum);
             resultList.add(result);
             if (betterThan(latestStatus, bestStatus)) {
                 bestStatus = latestStatus;
@@ -255,19 +257,26 @@ public with sharing class PCRApprovalHandler {
             return summary;
         }
 
-        private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer) {
-            if (creditScore >= 700 && DTIafter <= 50) {
-                return(APPROVED);
-            } else if (creditScore >= 690 && DTIafter <= 45) {
-                return doer?APPROVED:DECLINED;
-            } else if (creditScore >= 680 && DTIafter <= 40) {
-                return doer?APPROVED:DECLINED;
-            } else if (creditScore >= 700 && DTIafter > 50) {
-                return doer?DECLINED:PENDINGREVIEW;
-            } else if (creditScore <=680 && DTIafter >= 40) {
-                return(DECLINED);
+        private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer,
+                                       Integer creditMinimum, Decimal dtiMaximum) {
+            if (doer) {
+                if (creditScore >= 700 && DTIafter <= dtiMaximum) {
+                    return APPROVED;
+                } else if (creditScore >= 690 && DTIafter <= 45) {
+                    return APPROVED;
+                } else if (creditScore >= creditMinimum && DTIafter <= 40) {
+                    return APPROVED;
+                } else {
+                    return DECLINED;
+                }
             } else {
-                return(DECLINED);
+                if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
+                    return APPROVED;
+                } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
+                    return PENDINGREVIEW;
+                } else {
+                    return DECLINED;
+                }
             }
         }
 
@@ -348,7 +357,9 @@ public with sharing class PCRApprovalHandler {
 
             for (Product2 product : getApplicableProducts(lead, creditScore)) {
                 PCRApprovalHandler.CreditStatusResult result = calcDTIAfter(product, lead, monthlyIncome, monthlyDebt);
-                creditResultSummary.checkAndAddResult(result);
+                creditResultSummary.checkAndAddResult(result,
+                                                      Integer.valueOf(product.Credit_Minimum__c),
+                                                      product.Debt_To_Income_Maximum__c);
             }
             return creditResultSummary;
         }
@@ -390,9 +401,7 @@ public with sharing class PCRApprovalHandler {
             dtiDenominator = monthlyIncome;
             dtiAfter = 100*(dtiNumerator/dtiDenominator);
             dtiAfter.setScale(2);
-            PCRApprovalHandler.CreditStatusResult result = 
-                new PCRApprovalHandler.CreditStatusResult(product, monthlyPayment, dtiAfter);
-            return result;
+            return(new PCRApprovalHandler.CreditStatusResult(product, monthlyPayment, dtiAfter));
         }
 
     }
