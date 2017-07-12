@@ -140,8 +140,28 @@ public class LoanTestRecordWarehouse {
                                                 Product__c = null,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check'); 
+        Lead coApplicantLead = new lead(FirstName = 'coApplicantLead',
+                                                LastName = 'Test',
+                                                Loan_Amount__c = 35000,
+                                                DOER_Solar_Loan__c = true,
+                                                Company = 'Cole Swain',
+                                                Product_Line__c = 'Residential Loan',
+                                                LASERCA__Home_State__c = 'MA',
+                                                Requested_Loan_Amount__c = 35000,
+                                                Custom_Id__c = 'test',
+                                                Co_Applicant_Income__c = 200000,
+                                                Partner_Lookup__c = partner.Id,
+                                                Bs_Sales_ID__c = salesRep.Id,
+                                                Loan_Term__c = 240,
+                                                Product_Program__c = 'MSLP',
+                                                Pre_Approval_Form__c = true,
+                                                Unfinished_Lead__c = true,
+                                                Annual_Income_Currency__c = 10000,
+                                                Product__c = null,
+                                                Automatic_Product_Assignment__c = true,
+                                                Status = 'Ready for Credit Check');         
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725, 
-                                leadMALoanTerm20Rate699, leadMALoanTerm20Rate725}; 
+                                leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead}; 
         //
         LASERCA__Personal_Credit_Report__c pcr10710 = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
@@ -174,8 +194,25 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_3__c = '001',
                                                                                             LASERCA__Code_4__c = '001',                                                                                                                    
                                                                                             LASERCA__Credit_Score_TransUnion__c = '690',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm20Rate725.Id);        
-        insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690};
+                                                                                            LASERCA__Lead__c = leadMALoanTerm20Rate725.Id);              
+        LASERCA__Personal_Credit_Report__c pcrPrimaryApplicant = new LASERCA__Personal_Credit_Report__c(           
+                                                                                            Name = 'Personal Credit Report 7',
+                                                                                            LASERCA__Code__c ='001',
+                                                                                            LASERCA__Code_2__c ='001',
+                                                                                            LASERCA__Code_3__c = '001',
+                                                                                            LASERCA__Code_4__c = '001',                                                                                                                    
+                                                                                            LASERCA__Credit_Score_TransUnion__c = '690',
+                                                                                            LASERCA__Lead__c = coApplicantLead.Id);  
+        LASERCA__Personal_Credit_Report__c pcrCoApplicant = new LASERCA__Personal_Credit_Report__c(           
+                                                                                            Name = 'Personal Credit Report 8',
+                                                                                            LASERCA__Code__c ='001',
+                                                                                            LASERCA__Code_2__c ='001',
+                                                                                            LASERCA__Code_3__c = '001',
+                                                                                            LASERCA__Code_4__c = '001',                                                                                                                    
+                                                                                            LASERCA__Credit_Score_TransUnion__c = '750',
+                                                                                            LASERCA__Lead__c = coApplicantLead.Id);                                                                                                                                                                                                                                                                           
+        insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690, pcrPrimaryApplicant};
+        insert pcrCoApplicant;
 
         LASERCA__Trade_Accounts__c pcr10710Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 1',
@@ -193,7 +230,15 @@ public class LoanTestRecordWarehouse {
                                                                                 Name = 'Personal Credit Report Trade 6',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr20690.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);
-        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade};        
+        LASERCA__Trade_Accounts__c pcrPrimaryApplicantTrade = new LASERCA__Trade_Accounts__c(
+                                                                                Name = 'Personal Credit Report Trade 6',
+                                                                                LASERCA__Personal_Credit_Report__c = pcr20690.Id,
+                                                                                LASERCA__Monthly_Payment__c = 100);
+        LASERCA__Trade_Accounts__c pcrCoApplicantTrade = new LASERCA__Trade_Accounts__c(
+                                                                                Name = 'Personal Credit Report Trade 6',
+                                                                                LASERCA__Personal_Credit_Report__c = pcr20690.Id,
+                                                                                LASERCA__Monthly_Payment__c = 100);                                                                                        
+        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade, pcrCoApplicantTrade};        
         //
        
         return leadList;

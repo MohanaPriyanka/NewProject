@@ -202,7 +202,7 @@ public without sharing class SLPControllersTestclass {
     	List<Product2> productList = new List<Product2>();
     	List<Product2> productReturnList = new List<Product2>();
     	List<Lead> leadReturnList = new List<Lead>();
-
+        Map<String, Lead> leadMap = new Map<String, Lead>();
 
     	String partnerId;
     	String leadId;
@@ -240,18 +240,21 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        Lead lead = [SELECT Id, LASER_Credit_Score__c, Email
-                     FROM Lead 
-                     WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
-        System.assertEquals('710', lead.LASER_Credit_Score__c);
+        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName
+                          FROM Lead 
+                          WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
+            leadMap.put(lead.FirstName, lead);
+        }
+        System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
     	System.runAs(partnerUser) {
-            productReturnList = SLPCreditStatus.getCustomerProducts(lead.Id);
+            productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
-            SLPCreditStatus.sendApplication(lead.Id, prod, 12);
+            SLPCreditStatus.sendApplication(leadMap.get('leadMALoanTerm10Rate699').Id, prod, 12);
             System.assertEquals(1, MessagingService.emailsSent.size());
-            
+            productReturnList.clear();
+            productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
     	}
     	Test.stopTest();
     }

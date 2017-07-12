@@ -80,28 +80,21 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Product2> getCustomerProducts (String leadId) {
     List<Product2> productList = new List<Product2>();
-    List<Lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
-                           Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
-                           LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c,
-                           Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c
-                           FROM Lead
-                           WHERE Id = : leadId];
-    Lead lead = leadList[0];
-
-    PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(leadList);
+    PCRApprovalHandler.CreditQualifyingMetrics creditMetric = PCRApprovalHandler.calculateCreditQualifyingMetrics(leadId);
+    PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(creditMetric.leadList);
     List<Product2> allProducts = 
-        productRepo.getApplicableProducts(lead, Integer.valueOf(lead.LASER_Credit_Score__c));
+        productRepo.getApplicableProducts(creditMetric.leadList[0], creditMetric.creditScore);
     for (Product2 prod : allProducts) {
-        if (productRepo.calcDTIAfter(prod, lead, 
-                                     lead.Annual_Income_Currency__c/12, 
-                                     lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c).dtiAfter <= 
+        if (productRepo.calcDTIAfter(prod, creditMetric.leadList[0], 
+                                     creditMetric.totalAnnualIncome/12, 
+                                     creditMetric.totalMonthlyDebt).dtiAfter <= 
             prod.Debt_To_Income_Maximum__c) {
             productList.add(prod);
         }
     }
     return productList;
   }
-
+  
   @AuraEnabled 
   public static Product2 getSelectedProduct (String productId) {
     List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c 

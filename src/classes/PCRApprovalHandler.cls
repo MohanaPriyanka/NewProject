@@ -8,7 +8,7 @@
  * Tested By: PCRApprovalHandlerTest
  *************************************************************************************/
 
-public with sharing class PCRApprovalHandler {
+public without sharing class PCRApprovalHandler {
     public static final String UNABLETOPREQUALIFY = 'Unable to Pre-Qualify';
     public static final String PREQUALIFIED = 'Pre-Qualified';
     public static final String PENDINGREVIEW = 'Pending Review';
@@ -286,6 +286,82 @@ public with sharing class PCRApprovalHandler {
             }
         }
     } 
+
+    @TestVisible
+    public class CreditQualifyingMetrics {
+        public List<lead> leadList;
+        public Integer creditScore;
+        public Decimal totalAnnualIncome;
+        public Decimal totalMonthlyDebt;     
+    }   
+
+    @AuraEnabled
+    public static CreditQualifyingMetrics calculateCreditQualifyingMetrics(String leadId) {
+        CreditQualifyingMetrics creditMetric = new CreditQualifyingMetrics();
+        creditMetric.creditScore = 0;
+        creditMetric.totalMonthlyDebt = 0;
+        List<String> socialSecurityVerificationList = new List<String>();
+        List<Product2> productList = new List<Product2>();
+        List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
+        System.debug('the lead id is ' + leadId);
+        creditMetric.leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Co_Applicant_Income__c,
+                               Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                               LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c,
+                               Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                               (SELECT Id, LASERCA__Credit_Score_TransUnion__c, DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,LASERCA__Sum_of_monthly_Personal_Debt__c FROM LASERCA__Personal_Credit_Reports__r)
+                               FROM Lead
+                               WHERE Id = : leadId];
+        creditReportList = creditMetric.leadList[0].LASERCA__Personal_Credit_Reports__r;
+
+        if (isCoapplicant(creditReportList)) {
+          for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
+            if (creditMetric.creditScore < Integer.valueOf(creditReport.LASERCA__Credit_Score_TransUnion__c)) {
+              creditMetric.creditScore = Integer.valueOf(creditReport.LASERCA__Credit_Score_TransUnion__c);   
+            }
+            if (!isDuplicateCreditReport(creditReport.LASERCA__Confirming_Social_Security_Number__c, socialSecurityVerificationList)) {
+              creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.LASERCA__Sum_of_monthly_Personal_Debt__c;     
+            } else {
+              continue;
+            }        
+            socialSecurityVerificationList.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);        
+          } 
+          creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c + creditMetric.leadList[0].Co_Applicant_Income__c;        
+        } else {
+          creditMetric.creditScore = Integer.valueOf(creditMetric.leadList[0].LASER_Credit_Score__c);
+          creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c;      
+          creditMetric.totalMonthlyDebt = creditMetric.leadList[0].Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c;  
+        }   
+        return creditMetric;         
+    }
+
+    @AuraEnabled
+    public static boolean isCoapplicant (List<LASERCA__Personal_Credit_Report__c> creditReportList) {
+        List<String> socialSecurityVerificationList = new List<String>();        
+        List<LASERCA__Personal_Credit_Report__c> nonDuplicateCreditReportList = new List<LASERCA__Personal_Credit_Report__c>();
+        for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
+            if (!isDuplicateCreditReport(creditReport.LASERCA__Confirming_Social_Security_Number__c, socialSecurityVerificationList)) {
+                nonDuplicateCreditReportList.add(creditReport);
+                socialSecurityVerificationList.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);                
+            } else {
+                continue;
+            }
+        }
+        if (nonDuplicateCreditReportList.size() > 1) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+
+      @AuraEnabled
+      public static boolean isDuplicateCreditReport (String socialSecurityNumber, List<String> socialSecurityVerificationList) {
+        Set<String> socialSecurityVerificationSet = new Set<String>(socialSecurityVerificationList);
+        if (socialSecurityVerificationSet.contains(socialSecurityNumber)) {
+          return true;
+        } else {
+          return false;
+        }
+      }      
 
     @TestVisible
     public class CreditStatusResult {
