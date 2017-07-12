@@ -113,5 +113,20 @@
                            lead.Personal_Credit_Report__r.Adjusted_DTI_Notes__c);
     },
 
+    handleFilesChange : function(component, event, helper) {
+        console.log(event.getSource().get("v.files"));
+        event.stopPropagation(); 
+        event.preventDefault(); 
 
+        var files = event.getSource().get("v.files")
+        for (var i=0; i<files.length; i=i+1) { 
+            var file = files[i]; 
+            var reader = new FileReader(); 
+            reader.onloadend = function(e) { 
+                console.log("loaded"); 
+            }; 
+            reader.readAsDataURL(file); 
+            // http://peterknolle.com/file-upload-lightning-component/
+        } 
+    },
 })
