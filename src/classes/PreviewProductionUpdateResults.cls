@@ -32,15 +32,16 @@ public without sharing class PreviewProductionUpdateResults{
 			        ORDER BY Name_on_Account_From_Log__c];
 			for (Utility_Account_Subscription__c uas : uasList) {
 				if (uas.Customer_Subscription_KW_DC_STATIC__c != NULL) {
-					UASB__c newBill = new UASB__c (	Name = 'PreGenerated Bill',
-													PreGen_IsPreGen__c = production.Generate_Bills__c, 
-													PreGen_Discounted_Bill__c = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c)*.9,
-													PreGen_NMCs_Allocated__c = uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c,
-													PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,
-													PreGen_Production_Update__c = production.MonthDate__c + ' '+ production.YearDate__c,
-													PreGen_Schedule_Z_Status__c = uas.Next_Schedule_Z_Status__c,
-													PreGen_System_Share__c = uas.Share_of_System__c.setScale(4),
-													PreGen_Utility_Acct__c = uas.Name);
+					UASB__c newBill = new UASB__c (	
+						Name = 'PreGenerated Bill',
+						PreGen_IsPreGen__c = production.Generate_Bills__c, 
+						PreGen_Discounted_Bill__c = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c)*.9,
+						PreGen_NMCs_Allocated__c = uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c,
+						PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,
+						PreGen_Production_Update__c = production.MonthDate__c + ' '+ production.YearDate__c,
+						PreGen_Schedule_Z_Status__c = uas.Next_Schedule_Z_Status__c,
+						PreGen_System_Share__c = uas.Share_of_System__c.setScale(4),
+						PreGen_Utility_Acct__c = uas.Name);
 					newBillList.add(newBill);
 				}
 			}
@@ -73,16 +74,17 @@ public without sharing class PreviewProductionUpdateResults{
 				for (Energy_Usage_Update__c productionUpdate : productionList) {
 					if (subscription.Opportunity__r.Shared_Solar_System__r.Id == productionUpdate.Shared_Solar_System__r.Id
 					 	&& !productionUpdate.Generate_Bills__c) {	
-							UASB__c newBill = new UASB__c (	Name = 'PreGenerated Bill',
-															PreGen_IsPreGen__c = False, 
-															PreGen_Discounted_Bill__c = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c)*.9,
-															PreGen_NMCs_Allocated__c = subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c,
-															PreGen_Name_on_Account__c = subscription.Name_on_Account_From_Log__c,
-															PreGen_Production_Update__c = productionUpdate.Name,
-															Utility_Account_Subscription__c = subscription.Id,
-															PreGen_Schedule_Z_Status__c = subscription.Next_Schedule_Z_Status__c,
-															PreGen_System_Share__c = subscription.Share_of_System__c.setScale(4),
-															PreGen_Utility_Acct__c = subscription.Name);
+							UASB__c newBill = new UASB__c (	
+								Name = 'PreGenerated Bill',
+								PreGen_IsPreGen__c = False, 
+								PreGen_Discounted_Bill__c = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c)*.9,
+								PreGen_NMCs_Allocated__c = subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c,
+								PreGen_Name_on_Account__c = subscription.Name_on_Account_From_Log__c,
+								PreGen_Production_Update__c = productionUpdate.Name,
+								Utility_Account_Subscription__c = subscription.Id,
+								PreGen_Schedule_Z_Status__c = subscription.Next_Schedule_Z_Status__c,
+								PreGen_System_Share__c = subscription.Share_of_System__c.setScale(4),
+								PreGen_Utility_Acct__c = subscription.Name);
 							newBillList.add(newBill);
 					}
 				}
@@ -99,16 +101,17 @@ public without sharing class PreviewProductionUpdateResults{
 	    								ORDER BY Date__c DESC];
 
 	    	for (UASB__c oldBill : uasbList) {
-	    		UASB__c modifiedBill = new UASB__c (	Name = 'Old Bill',
-														PreGen_IsPreGen__c = True, 
-														PreGen_Discounted_Bill__c = oldBill.Discounted_Bill__c,
-														PreGen_NMCs_Allocated__c = oldBill.Net_Metering_Credits_Allocated__c,
-														PreGen_Name_on_Account__c = oldBill.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-														PreGen_Production_Update__c = oldBill.Production_Update__r.Name ,
-														Utility_Account_Subscription__c = oldBill.Id,
-														PreGen_Schedule_Z_Status__c = oldBill.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-														PreGen_System_Share__c =  oldBill.Utility_Account_Subscription__r.Share_of_System__c.setScale(4), 
-														PreGen_Utility_Acct__c = oldBill.Utility_Account_Subscription__r.Name);
+	    		UASB__c modifiedBill = new UASB__c (	
+	    			Name = 'Old Bill',
+					PreGen_IsPreGen__c = True, 
+					PreGen_Discounted_Bill__c = oldBill.Discounted_Bill__c,
+					PreGen_NMCs_Allocated__c = oldBill.Net_Metering_Credits_Allocated__c,
+					PreGen_Name_on_Account__c = oldBill.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+					PreGen_Production_Update__c = oldBill.Production_Update__r.Name ,
+					Utility_Account_Subscription__c = oldBill.Id,
+					PreGen_Schedule_Z_Status__c = oldBill.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+					PreGen_System_Share__c =  oldBill.Utility_Account_Subscription__r.Share_of_System__c.setScale(4), 
+					PreGen_Utility_Acct__c = oldBill.Utility_Account_Subscription__r.Name);
 				newBillList.add(modifiedBill);
 	    	}
 	    	system.debug(newBillList);
