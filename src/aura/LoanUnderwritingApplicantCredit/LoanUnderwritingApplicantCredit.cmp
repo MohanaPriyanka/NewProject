@@ -1,5 +1,6 @@
-<aura:component extends="c.BlueWaveParent">
+<aura:component extends="c.BlueWaveParent" controller="LoanUnderwriting">
   <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="isCoApp" type="Boolean"/>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
   <aura:attribute name="attachment" type="Attachment"/>
   <aura:attribute name="objectName" type="String"/>
@@ -31,15 +32,59 @@
     <div class="slds-backdrop slds-backdrop--open"></div>
   </aura:if>
 
-  <div class = "table">
-    <div class = "tableRowEven">
-      <div class = "tableCellLong">
-        Credit Report: <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + v.attachment.Id}" label="{!v.pcr.Name}" target="_blank"/>
+  <div>
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "darkCell slds-col slds-size--1-of-1">
+        Credit Report:
+        <br></br>
+        <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + v.attachment.Id}" label="{!v.pcr.Name}" target="_blank"/>
       </div>
     </div>
-    <div class = "tableRowOdd">
-      <div class = "tableCell">
-        FICO: <ui:outputText value="{!v.pcr.LASERCA__Credit_Score_TransUnion__c}"/>
+    <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class="lightCell slds-col slds-size--1-of-2">
+        FICO:
+        <br></br>
+        <ui:outputText value="{!v.pcr.LASERCA__Credit_Score_TransUnion__c}"/>
+      </div> 
+      <div class="lightCell slds-col slds-size--1-of-2">
+        <aura:if isTrue="{!v.isCoApp}">
+          <div>
+            <div class="slds-grid slds-wrap">
+              <div class="slds-size--1-of-1">
+                <lightning:button label="Co Applicant Email - Credit Decline"
+                                  onclick="{!c.emailCoAppCreditDecline}" 
+                                  disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
+              </div>
+              <div class="slds-size--1-of-1">
+                <lightning:input type="checkbox" 
+                                 disabled="{!if(v.lead.Co_App_Manual_Credit_Decline__c,false,true)}" 
+                                 label="Adverse Credit Notice Sent"
+                                 name="Co_App_Manual_Credit_Decline__c"
+                                 checked="{!v.lead.Co_App_Manual_Credit_Decline__c}"
+                                 onchange="{!c.updateCreditDecline}"/>
+              </div>
+            </div>
+          </div>
+          <aura:set attribute="else">
+            <div>
+              <div class="slds-grid slds-wrap">
+                <div class="slds-size--1-of-1">
+                  <lightning:button label="Email - Credit Decline"
+                                    onclick="{!c.emailCreditDecline}" 
+                                    disabled="{!v.lead.Manual_Credit_Decline__c}"/>
+                </div>
+                <div class="slds-size--1-of-1">
+                  <lightning:input type="checkbox" 
+                                   disabled="{!if(v.lead.Manual_Credit_Decline__c,false,true)}" 
+                                   label="Adverse Credit Notice Sent"
+                                   name="Manual_Credit_Decline__c"
+                                   checked="{!v.lead.Manual_Credit_Decline__c}"
+                                   onchange="{!c.updateCreditDecline}"/>
+                </div>
+              </div>
+            </div>
+          </aura:set>
+        </aura:if>
       </div> 
     </div>
   </div>  

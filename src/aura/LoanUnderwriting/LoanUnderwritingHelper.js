@@ -10,17 +10,6 @@
                     var leadWithAttachments = resp.getReturnValue();
                     var lead = leadWithAttachments.lead;
                     component.set("v.lead", lead);
-                    if (lead.Manual_Credit_Decline__c) {
-                        component.set("v.declineMainButtonLabel", "Main Applicant Adverse Notice Sent");
-                    } else {
-                        component.set("v.declineMainButtonLabel", "Decline Main Applicant");
-                    }
-                    if (lead.Co_App_Manual_Credit_Decline__c) {
-                        component.set("v.declineCoAppButtonLabel", "Co-Applicant Adverse Notice Sent");
-                    } else {
-                        component.set("v.declineCoAppButtonLabel", "Decline Co-Applicant");
-                    }
-                    
                     if (lead.Personal_Credit_Report_Co_Applicant__r &&
                         lead.Personal_Credit_Report__r) {
                         component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
@@ -109,6 +98,7 @@
 
     MAX_FILE_SIZE: 750000,
     upload: function(component, file, fileContents, parentId) {
+        var ltg = this;
         return new Promise($A.getCallback(function(resolve, reject) {
             var action = component.get("c.saveTheFile"); 
             
@@ -121,7 +111,6 @@
             
             action.setCallback(this, function(a) {
                 attachId = a.getReturnValue();
-                console.log(attachId);
                 resolve(ltg);
             });
             

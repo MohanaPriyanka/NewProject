@@ -10,8 +10,6 @@
   <aura:attribute name="combinedIncome" type="Decimal"/>
   <aura:attribute name="mainPCRAttachment" type="Attachment"/>
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
-  <aura:attribute name="declineMainButtonLabel" type="String"/>
-  <aura:attribute name="declineCoAppButtonLabel" type="String"/>
 
   <div class="slds-grid slds-grid_align-spread">
     <div class="slds-col slds-align-middle">
@@ -26,25 +24,6 @@
                                               style="percent"/>)
         </div>
       </aura:if>
-    </div>
-
-    <div>
-      <div class="slds-grid slds-wrap">
-        <div class="slds-size--1-of-1">
-          <lightning:button class="slds-float--right" 
-                            label="{!v.declineMainButtonLabel}"
-                            onclick="{!c.emailCreditDecline}" 
-                            disabled="{!v.lead.Manual_Credit_Decline__c}"/>
-        </div>
-        <aura:if isTrue="{!v.hasCoApp}">
-          <div class="slds-size--1-of-1">
-            <lightning:button class="slds-float--right" 
-                              label="{!v.declineCoAppButtonLabel}"
-                              onclick="{!c.emailCoAppCreditDecline}" 
-                              disabled="{!v.lead.Co_App_Manual_Credit_Decline__c}"/>
-          </div>
-        </aura:if>
-      </div>
     </div>
   </div>
   
@@ -125,13 +104,15 @@
     <div class="slds-grid slds-wrap slds-p-top_small">
       <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantCredit lead="{!v.lead}" 
+                                           isCoApp="false"
                                            pcr="{!v.lead.Personal_Credit_Report__r}" 
                                            attachment="{!v.mainPCRAttachment}" 
                                            objectName="Personal_Credit_Report__r"/>
       </div>
       <aura:if isTrue="{!v.hasCoApp}">
         <div class="slds-col slds-size--1-of-2 slds-p-left_small">
-          <c:LoanUnderwritingApplicantCredit lead="{!v.lead}" 
+          <c:LoanUnderwritingApplicantCredit lead="{!v.lead}"
+                                             isCoApp="true"
                                              pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}" 
                                              attachment="{!v.coAppPCRAttachment}" 
                                              objectName="Personal_Credit_Report_Co_Applicant__r"/>
@@ -243,7 +224,7 @@
         </table>
       </div>
       <div class="slds-col slds-size--1-of-1">
-        <lightning:input type="file" label="Attachment" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
+        <lightning:input type="file" label="Attachment" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
       </div>
     </div>
   </div>
