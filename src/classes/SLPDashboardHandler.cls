@@ -42,8 +42,8 @@ public without sharing class SLPDashboardHandler {
     }   
 
     //the getsTasksByStage method returns the task list to be displayed on the dashboard of the SLP
-	@AuraEnabled
-	public static List<Partner_Task__c> getTasksByStage(String stageName) {    
+    @AuraEnabled
+    public static List<Partner_Task__c> getTasksByStage(String stageName) {    
         List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
         String taskQuery = 'SELECT Id, Name, Status__c, Loan__r.Product__r.Name, Lead__r.Name, Loan__r.Name, Task_Type__c ' ;
         taskQuery += '      FROM Partner_Task__c' ;
