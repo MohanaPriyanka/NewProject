@@ -4,23 +4,20 @@
         var compParentId = component.get("v.parentId");
         var isProductionUpdate = component.get("v.IsProdUpdate");
         
-        switch (component.get("v.IsProdUpdate")) {
-           case "FALSE":
-        	// $A.util.addClass(component.find('switchDisplay'), 'noDisplay');
-        	// $A.util.addClass(component.find('switchDisplayTwo'), 'noDisplay');
-             break;
-           case "TRUE":
-             break;
-        }
         actionGetUASList.setParams({
             "parentId" : compParentId,
             "isProdUpdate" : isProductionUpdate,
         });
         
         actionGetUASList.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
+            if (resp.getState() === 'SUCCESS') {
                 component.set("v.SchZBillList", resp.getReturnValue());  
             } else {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+				appEvent.setParams({"className" : "PreviewProductionUpdateResults",
+				"methodName" : "getUASes",
+				"errors" : "No Active UASes Found"});
+				appEvent.fire();
             }
         });   
         $A.enqueueAction(actionGetUASList);

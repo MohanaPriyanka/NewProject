@@ -30,7 +30,7 @@
    <aura:iteration items="{!v.transactionList}" var="trans">
       <tr>
        <td>
-         <div class="slds-truncate" ><a href="{!'https://cs14.salesforce.com/' + trans.Id}"  target="_blank"><ui:outputText value="{!trans.Name}"/></a></div>
+         <div class="slds-truncate" ><a href="{!'https://na54.salesforce.com/' + trans.Id}"  target="_blank"><ui:outputText value="{!trans.Name}"/></a></div>
        </td>
        <td>
          <div class="slds-truncate" ><ui:outputDate value="{!trans.ChargentOrders__Gateway_Date__c}" format="MM/DD/YYYY hh:mm a"/></div>
