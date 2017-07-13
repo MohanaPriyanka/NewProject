@@ -104,7 +104,8 @@ global class MonthlyEmailHandler Implements Schedulable {
                       messages.add(mail);
 
                      // Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
-                     MessagingService.sendEmail(messages);
+                      MessagingService.sendEmail(messages);
+
                     }
                   }
             }     
