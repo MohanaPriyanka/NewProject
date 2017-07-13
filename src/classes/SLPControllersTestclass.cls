@@ -255,6 +255,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(1, MessagingService.emailsSent.size());
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
+            System.assertEquals(2, productReturnList.size());
     	}
     	Test.stopTest();
     }

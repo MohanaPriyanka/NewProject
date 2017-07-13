@@ -303,7 +303,6 @@ public without sharing class PCRApprovalHandler {
         List<String> socialSecurityVerificationList = new List<String>();
         List<Product2> productList = new List<Product2>();
         List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
-        System.debug('the lead id is ' + leadId);
         creditMetric.leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Co_Applicant_Income__c,
                                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c,
