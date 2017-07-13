@@ -71,6 +71,11 @@
                 <span class="slds-truncate proximaNovaDataMountaintopSmall">Email Application to Customer</span>
               </a>
             </li>
+            <li class="slds-dropdown__item" role="presentation">
+              <a href="/slportal/s/loansheet" role="menuitem" tabindex="-1">
+                <span class="slds-truncate proximaNovaDataMountaintopSmall">Loan Summary Sheet</span>
+              </a>
+            </li>
           </ul>
         </div>         
       </div>
