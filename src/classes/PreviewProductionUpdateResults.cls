@@ -37,6 +37,7 @@ public without sharing class PreviewProductionUpdateResults{
 						PreGen_IsPreGen__c = production.Generate_Bills__c, 
 						PreGen_Discounted_Bill__c = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c)*.9,
 						PreGen_NMCs_Allocated__c = uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c,
+						Utility_Account_Subscription__c = uas.Id,
 						PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,
 						PreGen_Production_Update__c = production.MonthDate__c + ' '+ production.YearDate__c,
 						PreGen_Schedule_Z_Status__c = uas.Next_Schedule_Z_Status__c,
