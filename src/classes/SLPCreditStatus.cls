@@ -85,11 +85,17 @@ public without sharing class SLPCreditStatus {
     List<Product2> allProducts = 
         productRepo.getApplicableProducts(creditMetric.leadList[0], creditMetric.creditScore);
     for (Product2 prod : allProducts) {
-        if (productRepo.calcDTIAfter(prod, creditMetric.leadList[0], 
+        if (creditMetric.AdjustedDTI != null) {
+          if (creditMetric.AdjustedDTI <= prod.Debt_To_Income_Maximum__c) {
+            productList.add(prod);
+          }
+        } else {
+          if (productRepo.calcDTIAfter(prod, creditMetric.leadList[0], 
                                      creditMetric.totalAnnualIncome/12, 
                                      creditMetric.totalMonthlyDebt).dtiAfter <= 
             prod.Debt_To_Income_Maximum__c) {
             productList.add(prod);
+          }
         }
     }
     return productList;
