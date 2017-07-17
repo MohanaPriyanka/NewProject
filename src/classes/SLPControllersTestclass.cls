@@ -196,7 +196,7 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();
     }     
 
-    @isTest static void testCreditStatus1() {
+    @isTest static void testGetCustomerProducts() {
     	Test.startTest();
     	List<Lead> leadList = new List<Lead>();
     	List<Product2> productList = new List<Product2>();
@@ -258,7 +258,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(2, productReturnList.size());
     	}
     	Test.stopTest();
-    }
+    }   
 
         @isTest static void testCreditStatus2() {
         Test.startTest();

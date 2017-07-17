@@ -315,8 +315,8 @@ public without sharing class PCRApprovalHandler {
         List<Product2> productList = new List<Product2>();
         List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
         List<lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Co_Applicant_Income__c,
-                               Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
-                               LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c,
+                               Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
+                               LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
                                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                 (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c, 
                                     DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
@@ -324,7 +324,7 @@ public without sharing class PCRApprovalHandler {
                                 FROM LASERCA__Personal_Credit_Reports__r)
                                FROM Lead
                                WHERE Id = : leadId];
-        creditMetric.leadList[0] = leadList[0];                               
+        creditMetric.leadList= leadList;                               
         creditReportList = leadList[0].LASERCA__Personal_Credit_Reports__r;
 
         if (leadIsCoapplicant(creditReportList)) {
@@ -347,8 +347,15 @@ public without sharing class PCRApprovalHandler {
                 }
             }
         } else {
+            if (creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_DTI__c != null) {
+                creditMetric.adjustedDTI = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_DTI__c;
+            }
+            if (creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Income__c != null) {
+                creditMetric.totalAnnualIncome = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Income__c;                      
+            } else {
+                creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c;                      
+            }
             creditMetric.creditScore = Integer.valueOf(creditMetric.leadList[0].LASER_Credit_Score__c);
-            creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c;      
             creditMetric.totalMonthlyDebt = creditMetric.leadList[0].Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c;  
         }   
         return creditMetric;         
@@ -384,7 +391,7 @@ public without sharing class PCRApprovalHandler {
             income = creditReport.Adjusted_Income__c;
         } else if (creditReport.Adjusted_Income__c == null && !pcrIsCoApplicant(creditReport)){
             income = creditMetric.leadList[0].Annual_Income_Currency__c;                        
-        } else {
+        } else if (creditReport.Adjusted_Income__c == null && pcrIsCoApplicant(creditReport)){
             income = creditMetric.leadList[0].Co_Applicant_Income__c;                                               
         }    
         return income;
