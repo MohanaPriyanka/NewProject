@@ -325,6 +325,7 @@ public without sharing class PCRApprovalHandler {
                                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
                                LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
                                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                               Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
                                 (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c, 
                                     DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
                                     LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c, 
