@@ -198,49 +198,16 @@ public without sharing class SLPControllersTestclass {
 
     @isTest static void testGetCustomerProducts() {
     	Test.startTest();
-    	List<Lead> leadList = new List<Lead>();
-    	List<Product2> productList = new List<Product2>();
     	List<Product2> productReturnList = new List<Product2>();
-    	List<Lead> leadReturnList = new List<Lead>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
-
-    	String partnerId;
-    	String leadId;
-    	String searchValue = null;
-
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Name = 'BlueWave Inside Sales'];
-        BSST__c salesRepRecord = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User'];
-    	Lead newLead = new Lead(
-    		FirstName = 'Cole',
-    		LastName = 'Swain',
-    		Company = 'Cole Swain',
-    		LASERCA__Home_Address__c = '55 Boston St.',
-    		LASERCA__Home_City__c = 'Boston',
-    		LASERCA__Home_State__c = 'MA',
-    		LASERCA__Home_Zip__c = '02052',
-    		Email = 'colemswain@gmail.com',
-            Partner_Lookup__c = partnerRecord.Id,
-            Bs_Sales_ID__c = salesRepRecord.Id,                                  
-    		LASERCA__Social_Security_Number__c = '000000001',
-    		Requested_Loan_Amount__c = 25000,
-    		Annual_Income_Currency__c = 150000,
-    		Credit_Check_Acknowledged__c = true,
-    		Privacy_Policy_Acknowledged__c = true,
-    		Automatic_Product_Assignment__c = true,
-    		Loan_Term__c = 120,
-    		Product_Program__c = 'BlueWave Solar Loan',
-    		Pre_Approval_Form__c = true,
-    		Unfinished_Lead__c = true,
-    		Utility_Bill_Access_Acknowledged__c = true 		
-    	);
-    	insert newLead;
 
-    	productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+    	List<Product2> productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     	insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName
+        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName,
+                            (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead 
                           WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
             leadMap.put(lead.FirstName, lead);
@@ -251,12 +218,32 @@ public without sharing class SLPControllersTestclass {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
+            System.assertEquals(prod.Name, 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%');
             SLPCreditStatus.sendApplication(leadMap.get('leadMALoanTerm10Rate699').Id, prod, 12);
             System.assertEquals(1, MessagingService.emailsSent.size());
+            
+            productReturnList.clear();
+            productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
+            System.assertEquals(0, productReturnList.size());
+        }
+            List<LASERCA__Personal_Credit_Report__c> creditReportList = leadMap.get('coApplicantLead').LASERCA__Personal_Credit_Reports__r;
+            creditReportList[0].Adjusted_Income__c = 200000;
+            update creditReportList[0];
+
+        System.runAs(partnerUser) {
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
             System.assertEquals(2, productReturnList.size());
     	}
+            creditReportList[0].Adjusted_Income__c = 0;
+            creditReportList[0].Adjusted_DTI__c = 30;            
+            update creditReportList[0];
+
+        System.runAs(partnerUser) {
+            productReturnList.clear();
+            productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
+            System.assertEquals(2, productReturnList.size());
+        }        
     	Test.stopTest();
     }   
 

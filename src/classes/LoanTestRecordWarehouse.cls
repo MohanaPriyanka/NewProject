@@ -149,17 +149,18 @@ public class LoanTestRecordWarehouse {
                                                 LASERCA__Home_State__c = 'MA',
                                                 Requested_Loan_Amount__c = 35000,
                                                 Custom_Id__c = 'test',
-                                                Co_Applicant_Income__c = 200000,
+                                                Co_Applicant_Income__c = 2000,
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 240,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
-                                                Annual_Income_Currency__c = 10000,
+                                                Annual_Income_Currency__c = 1000,
                                                 Product__c = null,
-                                                Automatic_Product_Assignment__c = true,
+                                                Automatic_Product_Assignment__c = false,
                                                 Status = 'Ready for Credit Check');         
+
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725, 
                                 leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead}; 
         //
@@ -232,13 +233,14 @@ public class LoanTestRecordWarehouse {
                                                                                 LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcrPrimaryApplicantTrade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 6',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr20690.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+                                                                                LASERCA__Personal_Credit_Report__c = pcrPrimaryApplicant.Id,
+                                                                                LASERCA__Monthly_Payment__c = 500);
         LASERCA__Trade_Accounts__c pcrCoApplicantTrade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 6',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr20690.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);                                                                                        
-        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade, pcrCoApplicantTrade};        
+                                                                                LASERCA__Personal_Credit_Report__c = pcrCoApplicant.Id,
+                                                                                LASERCA__Monthly_Payment__c = 250);                                                                                        
+        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade};        
+        insert pcrCoApplicantTrade;
         //
        
         return leadList;

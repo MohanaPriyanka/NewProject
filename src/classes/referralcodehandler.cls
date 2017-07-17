@@ -7,11 +7,13 @@ public with sharing class referralcodehandler {
     public void OnBeforeUpdate(Map<Id, Lead> oldLeadMap, Map<Id, Lead> newLeadMap){
     List<Lead> leadsToUpdate = new List<Lead>();
         for (Lead leadRecord : newLeadMap.values()) {
-            if (leadRecord.Custom_Id__c != oldLeadMap.get(leadRecord.Id).Custom_Id__c) {
+            if (leadRecord.Custom_Id__c != oldLeadMap.get(leadRecord.Id).Custom_Id__c && leadRecord.Product_Line__c == 'Community Solar') {
                 leadsToUpdate.add(leadRecord);
             }
         }
-        assignAcquisitionObjectFromCustomId(leadsToUpdate);
+        if (!leadsToUpdate.isEmpty()) {
+            assignAcquisitionObjectFromCustomId(leadsToUpdate);            
+        }
     }
 
     public void assignAcquisitionObjectFromCustomId(list<Lead> leads){
