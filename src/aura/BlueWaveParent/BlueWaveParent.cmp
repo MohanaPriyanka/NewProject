@@ -3,7 +3,7 @@
      for all custom lightning components.
   -->
 <aura:component extensible="true" abstract="true" controller="BlueWaveParent">
+  <aura:handler event="aura:systemError" action="{!c.handleSystemError}"/>
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
-
   <div>{!v.body}</div>
 </aura:component>

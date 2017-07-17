@@ -95,26 +95,4 @@
             }
         }
     },
-
-    MAX_FILE_SIZE: 750000,
-    upload: function(component, file, fileContents, parentId) {
-        var ltg = this;
-        return new Promise($A.getCallback(function(resolve, reject) {
-            var action = component.get("c.saveTheFile"); 
-            
-            action.setParams({
-                parentId: parentId,
-                fileName: file.name,
-                base64Data: encodeURIComponent(fileContents), 
-                contentType: file.type
-            });
-            
-            action.setCallback(this, function(a) {
-                attachId = a.getReturnValue();
-                resolve(ltg);
-            });
-            
-            $A.enqueueAction(action); 
-        }));
-    }
 })

@@ -1,5 +1,7 @@
 <aura:component controller="LoanUnderwriting" extends="c:BlueWaveParent">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:handler event="aura:waiting" action="{!c.waiting}"/>
+  <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>
   <aura:handler event="c:LoanUnderwritingIncomeAdjustment" action="{!c.handleEvent}"/>
   <aura:handler event="c:LoanUnderwritingDebtAdjustment" action="{!c.handleEvent}"/>
   <aura:attribute name="leadId" type="String"/>
@@ -10,6 +12,8 @@
   <aura:attribute name="combinedIncome" type="Decimal"/>
   <aura:attribute name="mainPCRAttachment" type="Attachment"/>
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
+
+  <c:LightningErrorHandler/>
 
   <div class="slds-grid slds-grid_align-spread">
     <div class="slds-col slds-align-middle">
@@ -225,6 +229,9 @@
       </div>
       <div class="slds-col slds-size--1-of-1">
         <lightning:input type="file" label="Attachment" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
+        <div aura:id="uploading" class="notUploading">
+            <img src="/resource/paura__images/loading-gray.gif" alt="uploading" class="small-spinner" /> Uploading...
+    	</div>        
       </div>
     </div>
   </div>

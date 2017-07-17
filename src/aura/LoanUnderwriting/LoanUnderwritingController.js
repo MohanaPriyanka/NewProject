@@ -55,42 +55,20 @@
                            lead.Personal_Credit_Report__r.Adjusted_DTI_Notes__c);
     },
 
-    // http://peterknolle.com/file-upload-lightning-component/
+    waiting : function(component, event, helper) {
+    	$A.util.addClass(component.find("uploading").getElement(), "uploading");
+    	$A.util.removeClass(component.find("uploading").getElement(), "notUploading");        
+    },
+
+    doneWaiting : function(component, event, helper) {
+    	$A.util.removeClass(component.find("uploading").getElement(), "uploading");
+    	$A.util.addClass(component.find("uploading").getElement(), "notUploading");        
+    },
+
     handleFilesChange : function(component, event, helper) {
         var files = event.getSource().get("v.files")
         var parentId = component.get("v.lead.Id");
-        for (var i=0; i<files.length; i=i+1) {
-            (function(file) {
-                if (file.size > helper.MAX_FILE_SIZE) {
-                    alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-    	                  'Selected file size: ' + file.size);
-                }
-                console.log(file);
-                var fr = new FileReader(); 
-
-       	        fr.onload = function() {
-                    var fileContents = fr.result;
-                    var base64Mark = 'base64,';
-                    var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
-
-                    fileContents = fileContents.substring(dataStart);
-                    
-                    helper.upload(component, file, fileContents, parentId).then(
-                        $A.getCallback(function resolve(helper) {
-                                helper.getLead(component);
-                            }),
-                        $A.getCallback(function resolve() {
-                                var appEvent = $A.get("e.c:ApexCallbackError");
-                                appEvent.setParams({"className" : "LoanUnderwritingController",
-                                            "methodName" : "emailCreditDecline",
-                                            "errors" : resp.getError()});
-                                appEvent.fire();
-                            }));
-                };
-
-                fr.readAsDataURL(file);
-            })(files[i]);
-        }
+        helper.uploadFiles(component, files, parentId, helper.getLead);
     },
 
 })
