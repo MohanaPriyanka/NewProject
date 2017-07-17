@@ -46,7 +46,7 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled
-    public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) {                     
+    public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) {
         if (fileId == '') {
             fileId = saveTheFile(parentId, fileName, base64Data, contentType);
         } else {
