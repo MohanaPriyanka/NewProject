@@ -1,0 +1,26 @@
+<aura:component extends="c.BlueWaveParent">
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+
+  <div>
+    <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+      <div class = "lightCell slds-col slds-size--1-of-2">
+        DTI Before:
+        <br></br>
+        <aura:if isTrue="{!v.pcr.DTI_Before__c}">
+          <lightning:formattedNumber value="{!v.pcr.DTI_Before__c/100}"
+                                     style="percent" 
+                                     maximumFractionDigits="2"/>
+        </aura:if>
+      </div> 
+      <div class = "lightCell slds-col slds-size--1-of-2">
+        DTI After:
+        <br></br>
+        <aura:if isTrue="{!v.pcr.DTI_After__c}">
+          <lightning:formattedNumber value="{!v.pcr.DTI_After__c/100}"
+                                     style="percent" 
+                                     maximumFractionDigits="2"/>
+        </aura:if>
+      </div> 
+    </div>
+  </div>
+</aura:component>

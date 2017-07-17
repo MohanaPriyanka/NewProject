@@ -1,0 +1,11 @@
+<aura:component access="global">	
+ <aura:attribute name="prodUpdate" type="String"/>
+ <aura:attribute name="prodName" type="String"/>
+ <aura:attribute name="totalNMCs" type="String"/>
+    
+ <h1 class="slds-text-heading--large"><ui:outputText value="{!v.prodName}"/></h1>   
+ <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>	
+ <br></br>
+ <c.PregeneratedBillsTable parentId="{!v.prodUpdate}" IsProdUpdate="TRUE"/>
+ 
+</aura:component>

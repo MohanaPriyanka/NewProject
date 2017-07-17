@@ -61,7 +61,9 @@ public without sharing class PCRApprovalHandler {
         List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                                    Income_Support__c
+                                    Income_Support__c,
+                                    Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
+                                    Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
                                     FROM Lead 
                                     WHERE Id  IN : leadlist];
         for (Lead lead : relatedLeads) {
@@ -71,23 +73,28 @@ public without sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            if (pcr.Annual_Income_From_Lead__c != 0 &&
-                !pcr.Do_not_trigger_PCRApprovalHandler__c && 
+            if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
                 pcr.LASERCA__Lead__c != NULL &&
-                pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != NULL &&
-                pcr.LASERCA__Sum_of_monthly_Personal_Debt__c != 0) {
+                pcr.Adjusted_Monthly_Personal_Debt__c != 0) {
 
                 String bwApproval, doerApproval;
                 String conglomerate = 
                     pcr.LASERCA__Code__c + ' ' + pcr.LASERCA__Code_2__c + ' ' +
                     pcr.LASERCA__Code_3__c + ' ' + pcr.LASERCA__Code_4__c;
-                Decimal monthlyIncome = pcr.Annual_Income_From_Lead__c/12;
-                if (pcr.Co_Applicant__c || pcr.LASERCA__Contact__c != NULL) {
-                    monthlyIncome = pcr.Co_Applicant_Income__c/12;
-                }
                 Integer creditScore = 
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
                     Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
+
+                Decimal monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Annual_Income_From_Lead__c:pcr.Adjusted_Income__c)/12;
+                if (pcr.LASERCA__Contact__c != NULL) {
+                    monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Co_Applicant_Income__c:pcr.Adjusted_Income__c)/12;
+                    creditScore = Math.max(creditScore,
+                                           Integer.valueOf(leadMap.get(pcr.LASERCA__Lead__c).Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                }
+
+                if (monthlyIncome == 0) {
+                    continue;
+                }
 
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
@@ -95,10 +102,10 @@ public without sharing class PCRApprovalHandler {
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
                     productRepo.getCreditSummary(leadMap.get(pcr.LASERCA__Lead__c), 
                                                  creditScore, monthlyIncome, 
-                                                 pcr.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                                                 pcr.Adjusted_Monthly_Personal_Debt__c,
                                                  pcr.DOER_Application__c);
 
-                pcr.DTI_Before__c = 100 * pcr.LASERCA__Sum_of_monthly_Personal_Debt__c / monthlyIncome;
+                pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_After__c = creditSummary.highestDTI;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
