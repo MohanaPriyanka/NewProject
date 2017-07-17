@@ -224,7 +224,9 @@ public class CustomerCommunicationHandlerTest{
                                                                             Total_System_NMCs__c = 45000,
                                                                             Date__c = myDateJan);
 
-    Insert productionupdateA1;
+    insert productionupdateA1;
+    productionupdateA1.Generate_Bills__c = TRUE;       
+    update productionupdateA1;
 
 
     List <Account_Bill__c> accountBillList = [SELECT Id, Name, Total_Due__c, Property_Account_Name__c, Bill_Number__c, Property_Account_ID__c 

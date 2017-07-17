@@ -192,8 +192,10 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                 Production__c = 120000,
                 Date__c = myDateFeb
                 );
-                
+        
         insert productionupdateB2;
+        productionupdateB2.Generate_Bills__c = TRUE;       
+        update productionupdateB2;
 
                
         Account_Bill__c accbilltwo = new Account_Bill__c (

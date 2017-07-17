@@ -1,0 +1,30 @@
+<aura:component controller="PreviewProductionUpdateResults" access="global">	
+ <aura:attribute name="accountID" type="String"/>
+ <aura:attribute name="acctName" type="String"/>
+ <aura:attribute name="totalBalance" type="String"/>
+ <aura:attribute name="IsProdUpdate" type="Boolean"/>
+    
+ <h1 class="slds-text-heading--large"><ui:outputText value="{!v.acctName}"/></h1> 
+ <h1 class="slds-text-heading--small"><ui:outputText value="{!'Total Outstanding Balance: ' + v.totalBalance}"/></h1>  
+ <br></br>    
+  <div class="slds-tabs_default">
+    <ul class="slds-tabs_default__nav">
+      <li class="slds-tabs_default__item slds-is-active">
+    	<a aura:id="tabone"
+                onclick="{!c.switchToNMCs}" 
+                class="slds-tabs_default__link">NMCs on Utility Account</a>      
+      </li>
+      <li class="slds-tabs_default__item">
+          <a aura:id="tabtwo"
+                  onclick="{!c.switchToTransactions}" 
+                  class="slds-tabs_default__link">Transactions</a>    
+      </li>
+    </ul>
+    <div aura:id="billTable" class="slds-tabs_default__content slds-show" >
+      <c.PregeneratedBillsTable parentId="{!v.accountID}" IsProdUpdate="FALSE"/>
+    </div>
+    <div aura:id="transactionTable" class="slds-tabs_default__content slds-hide" >
+      <c.TableofTransactions accountLookupId="{!v.accountID}" />
+    </div>
+  </div>
+</aura:component>

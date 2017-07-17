@@ -1,0 +1,32 @@
+<apex:page standardStylesheets="false">
+<apex:includeLightning />
+<apex:slds />
+<style>  
+  div.padded {  
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    background-color: #85C1E9;
+}  
+</style>  
+<div class="slds-scope padded" id="lightning"/>
+<script>
+var prodUpdate = "{!$CurrentPage.parameters.prodUpdate}";
+var prodName = "{!$CurrentPage.parameters.prodName}";
+var totalNMCs = "{!$CurrentPage.parameters.totalNMCs}";
+	$Lightning.use("c:PregenerateBills", function() {
+	    $Lightning.createComponent(
+	    	"c:PreviewProductionUpdate", 
+        {"prodUpdate": prodUpdate,
+         "prodName": prodName, 
+         "totalNMCs": totalNMCs}, 
+        "lightning",
+
+          function(cmp) {
+          	 console.log('component created');
+          });
+    });
+
+</script>        
+</apex:page>

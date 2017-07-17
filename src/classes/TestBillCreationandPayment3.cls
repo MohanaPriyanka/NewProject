@@ -156,6 +156,7 @@
                 Production__c = 90000,
                 Due_Date__c = myDateJan,
                 Billing_Period_End_Date__c = myDateFeb,
+                Total_System_NMCs__c = 45000,
                 Date__c = myDateJan 
                 );
 
@@ -168,11 +169,22 @@
                 Production__c = 120000,
                 Due_Date__c = myDateFeb,
                 Billing_Period_End_Date__c = myDateMar,
+                Total_System_NMCs__c = 45000,
                 Date__c = myDateFeb
                 );
                 
         insert productionupdateB2;
-        
+        system.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionupdateA1.Id, TRUE)).size());
+        system.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionupdateB2.Id, TRUE)).size());
+        productionupdateA1.Generate_Bills__c = TRUE;
+        productionupdateB2.Generate_Bills__c = TRUE;
+
+        String acctId = accountA.Id;
+        string subAcctId = acctId.substring(0,15);
+        system.AssertEquals( 2, (PreviewProductionUpdateResults.getUASes(subAcctId, FALSE)).size());
+        update productionupdateA1;
+        update productionupdateB2; 
+
         // Execute Batch DML from EnergyUsageUpdateHandler
         Test.stopTest();
 
@@ -249,8 +261,10 @@
                                                        Activity_Type__c = 'Payment');
 
                 insert transB;
-            }
-        }
+            }   
+        }  
+        system.AssertEquals( 2, (PreviewProductionUpdateResults.getUASes(subAcctId, FALSE)).size());
+        system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(subAcctId)).size());
 
         for (System_Bill__c sbill : systemBillList) {
             if (sbill.Bill_Number__c == 2) {    
