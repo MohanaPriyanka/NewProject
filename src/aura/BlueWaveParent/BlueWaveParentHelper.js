@@ -74,8 +74,12 @@
                                 callbackFunc(component);
                             }
                         }),
-                        function () {
-                            alert('reject');
+                        function(error) {
+                            var appEvent = $A.get("e.c:ApexCallbackError");
+                            appEvent.setParams({"className" : "BlueWaveParentHelper",
+                                                "methodName" : "uploadFiles",
+                                                "errors" : error});
+                            appEvent.fire();
                         }
                     )
                 };
@@ -92,11 +96,11 @@
         // start with the initial chunk
         var ltg = this;
         return new Promise($A.getCallback(function(resolve, reject) {
-            ltg.uploadChunk(component, file, fileContents, parentId, fromPos, toPos, '', resolve);
+            ltg.uploadChunk(component, file, fileContents, parentId, fromPos, toPos, '', resolve, reject);
         }));
     },
     
-    uploadChunk : function(component, file, fileContents, parentId, fromPos, toPos, attachId, resolveCallback) {
+    uploadChunk : function(component, file, fileContents, parentId, fromPos, toPos, attachId, resolveCallback, rejectCallback) {
         console.log('uploadChunk fromPos: ' + fromPos + ' toPos: ' + toPos + ' of: ' + fileContents.length);
         var action = component.get("c.saveTheChunk"); 
         var chunk = fileContents.substring(fromPos, toPos);
@@ -121,8 +125,7 @@
                     resolveCallback();                
                 }
             } else if (a.getState() === 'ERROR')   {
-                console.log('error: ');
-                console.log(action.errors);
+                rejectCallback();
             }
         });
         

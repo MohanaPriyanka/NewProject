@@ -19,6 +19,13 @@
                            'LASERCA__Personal_Credit_Report__c',
                            'Avidia_Review_Status__c',
                            event.getSource().get("v.value"));
+        if (component.get("v.hasCoApp")) {
+            helper.saveSObject(component,
+                               lead.Personal_Credit_Report_Co_Applicant__r.Id,
+                               'LASERCA__Personal_Credit_Report__c',
+                               'Avidia_Review_Status__c',
+                               event.getSource().get("v.value"));
+        }
     },
         
     handleEvent : function(component, event, helper) {
@@ -40,10 +47,17 @@
         savePromise.then(
             $A.getCallback(function resolve(value) {
                 var debtEvent = $A.get("e.c:LoanUnderwritingDebtAdjustment");
-                debtEvent.setParams({"pcrId":component.get("v.pcr.Id")});
+                debtEvent.setParams({"pcrId" : lead.Personal_Credit_Report__r.Id});
                 debtEvent.fire();
             })
         );
+        if (component.get("v.hasCoApp")) {
+            helper.saveSObject(component,
+                               lead.Personal_Credit_Report_Co_Applicant__r.Id,
+                               'LASERCA__Personal_Credit_Report__c',
+                               'Adjusted_DTI__c',
+                               lead.Personal_Credit_Report__r.Adjusted_DTI__c);
+        }
     },
 
     saveDTINotes : function(component, event, helper) {
