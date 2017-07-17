@@ -188,7 +188,8 @@ public class LoanTestRecordWarehouse {
         LASERCA__Trade_Accounts__c pcr20710Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 4',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr20710.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+                                                                                LASERCA__Monthly_Payment__c = 100,
+                                                                                LASERCA__Account_Balance__c = 10000);
         LASERCA__Trade_Accounts__c pcr20690Trade = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 6',
                                                                                 LASERCA__Personal_Credit_Report__c = pcr20690.Id,
