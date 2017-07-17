@@ -327,7 +327,8 @@ public without sharing class PCRApprovalHandler {
                                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                 (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c, 
                                     DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
-                                    LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c 
+                                    LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c, 
+                                    Adjusted_Monthly_Personal_Debt__c 
                                 FROM LASERCA__Personal_Credit_Reports__r)
                                FROM Lead
                                WHERE Id = : leadId];
@@ -340,7 +341,7 @@ public without sharing class PCRApprovalHandler {
                     creditMetric.creditScore = Integer.valueOf(LoanServicer.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c));   
                 }
                 if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
-                    creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.LASERCA__Sum_of_monthly_Personal_Debt__c;     
+                    creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.Adjusted_Monthly_Personal_Debt__c;     
                     incomeList.add(identifyCorrectIncomeValue(creditReport, creditMetric));     
                     if (creditReport.Adjusted_DTI__c != null && !pcrIsCoApplicant(creditReport)) {
                         creditMetric.adjustedDTI = creditReport.Adjusted_DTI__c;
@@ -363,7 +364,7 @@ public without sharing class PCRApprovalHandler {
                 creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c;                      
             }
             creditMetric.creditScore = Integer.valueOf(creditMetric.leadList[0].LASER_Credit_Score__c);
-            creditMetric.totalMonthlyDebt = creditMetric.leadList[0].Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c;  
+            creditMetric.totalMonthlyDebt = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;  
         }   
         return creditMetric;         
     }
