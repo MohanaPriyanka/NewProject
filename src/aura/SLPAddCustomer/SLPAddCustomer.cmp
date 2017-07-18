@@ -67,7 +67,7 @@
     'LASERCA__Home_State__c': '',
     'LASERCA__Home_Zip__c': '',
     'Email': '',
-    'LASERCA__Social_Security_Number__c': '',
+    'LASERCA__SSN__c': '',
     'Requested_Loan_Amount__c':'',
     'DOER_Solar_Loan__c':'',
     'Annual_Income_Currency__c':'',
