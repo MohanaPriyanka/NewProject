@@ -8,7 +8,7 @@
  * Tested By: PCRApprovalHandlerTest
  *************************************************************************************/
 
-public with sharing class PCRApprovalHandler {
+public without sharing class PCRApprovalHandler {
     public static final String UNABLETOPREQUALIFY = 'Unable to Pre-Qualify';
     public static final String PREQUALIFIED = 'Pre-Qualified';
     public static final String PENDINGREVIEW = 'Pending Review';
@@ -302,6 +302,109 @@ public with sharing class PCRApprovalHandler {
             }
         }
     } 
+
+    @TestVisible
+    public class CreditQualifyingMetrics {
+        public Lead lead; 
+        public Decimal adjustedDTI;
+        public Integer creditScore;
+        public Decimal totalAnnualIncome;
+        public Decimal totalMonthlyDebt;     
+    }   
+
+    public static CreditQualifyingMetrics calculateCreditQualifyingMetrics(String leadId) {
+        CreditQualifyingMetrics creditMetric = new CreditQualifyingMetrics();
+        creditMetric.creditScore = 0;
+        creditMetric.totalMonthlyDebt = 0;
+        creditMetric.totalAnnualIncome = 0;
+        Set<String> socialSecurityVerificationSet = new Set<String>();
+        List<Decimal> incomeList = new List<Decimal>();
+        List<Product2> productList = new List<Product2>();
+        List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
+        List<lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Co_Applicant_Income__c,
+                               Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
+                               LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
+                               Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                               Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
+                                (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c, 
+                                    DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
+                                    LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c, 
+                                    Adjusted_Monthly_Personal_Debt__c 
+                                FROM LASERCA__Personal_Credit_Reports__r)
+                               FROM Lead
+                               WHERE Id = : leadId];
+        creditMetric.Lead = leadList[0];                               
+        creditReportList = leadList[0].LASERCA__Personal_Credit_Reports__r;
+
+        if (leadIsCoapplicant(creditReportList)) {
+            for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
+                if (creditMetric.creditScore < Integer.valueOf(LoanServicer.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c))) {
+                    creditMetric.creditScore = Integer.valueOf(LoanServicer.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c));   
+                }
+                if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
+                    creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.Adjusted_Monthly_Personal_Debt__c;     
+                    incomeList.add(identifyCorrectIncomeValue(creditReport, creditMetric));     
+                    if (creditReport.Adjusted_DTI__c != null && !pcrIsCoApplicant(creditReport)) {
+                        creditMetric.adjustedDTI = creditReport.Adjusted_DTI__c;
+                    }
+                    socialSecurityVerificationSet.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);
+                }        
+            }       
+            if (!incomeList.isEmpty()) {
+                for (Decimal incomeValue : incomeList) {
+                    creditMetric.totalAnnualIncome = incomeValue + creditMetric.totalAnnualIncome;                                            
+                }
+            }
+        } else {
+            if (creditMetric.Lead.Personal_Credit_Report__r.Adjusted_DTI__c != null) {
+                creditMetric.adjustedDTI = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_DTI__c;
+            }
+            if (creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c != null) {
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c;                      
+            } else {
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Annual_Income_Currency__c;                      
+            }
+            creditMetric.creditScore = Integer.valueOf(creditMetric.Lead.LASER_Credit_Score__c);
+            creditMetric.totalMonthlyDebt = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;  
+        }   
+        return creditMetric;         
+    }
+
+    public static Boolean leadIsCoapplicant (List<LASERCA__Personal_Credit_Report__c> creditReportList) {
+        Set<String> socialSecurityVerificationSet = new Set<String>();        
+        List<LASERCA__Personal_Credit_Report__c> nonDuplicateCreditReportList = new List<LASERCA__Personal_Credit_Report__c>();
+        for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
+            if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
+                nonDuplicateCreditReportList.add(creditReport);
+                socialSecurityVerificationSet.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);                
+            }
+        }
+        if (nonDuplicateCreditReportList.size() > 1) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+
+    public static Boolean pcrIsCoApplicant (LASERCA__Personal_Credit_Report__c creditReport) {
+        if (creditReport.LASERCA__Contact__c == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static Decimal identifyCorrectIncomeValue (LASERCA__Personal_Credit_Report__c creditReport, PCRApprovalHandler.CreditQualifyingMetrics creditMetric) {
+        Decimal income;
+        if (creditReport.Adjusted_Income__c != null) {
+            income = creditReport.Adjusted_Income__c;
+        } else if (creditReport.Adjusted_Income__c == null && !pcrIsCoApplicant(creditReport)){
+            income = creditMetric.Lead.Annual_Income_Currency__c;                        
+        } else if (creditReport.Adjusted_Income__c == null && pcrIsCoApplicant(creditReport)){
+            income = creditMetric.Lead.Co_Applicant_Income__c;                                               
+        }    
+        return income;
+    }
 
     @TestVisible
     public class CreditStatusResult {

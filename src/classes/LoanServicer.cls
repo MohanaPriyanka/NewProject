@@ -565,6 +565,10 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         return (value==null?0:value);
     }
 
+    public static String nullToZero(String value) {
+        return (String.isBlank(value)?'0':value);
+    }    
+
     public class LoanProductException extends Exception{}
 
 }

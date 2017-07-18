@@ -11,7 +11,9 @@ public with sharing class referralcodehandler {
                 leadsToUpdate.add(leadRecord);
             }
         }
-        assignAcquisitionObjectFromCustomId(leadsToUpdate);
+        if (!leadsToUpdate.isEmpty()) {
+            assignAcquisitionObjectFromCustomId(leadsToUpdate);            
+        }
     }
 
     public void assignAcquisitionObjectFromCustomId(list<Lead> leads){

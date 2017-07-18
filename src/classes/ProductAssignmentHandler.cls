@@ -8,15 +8,12 @@ public with sharing class ProductAssignmentHandler {
     }
     /*public void OnBeforeLeadInsert(Lead[] newLeads){
         assignLoanProductToLead(newLeads);
-        system.debug('The newLeads list: ' + newLeads);
     }*/
     public void onBeforeUpdate(List<Lead> newLeads, Map<ID, Lead> oldLeadsMap){
-        System.debug('lead Trigger Check');
         assignLoanProductToLead(newLeads, oldLeadsMap);       
     }
-    public void onBeforePCRUpdate(List<LASERCA__Personal_Credit_Report__c> newLeads){
-        System.debug('OnBeforePCRUpdate Check');
-        assignLoanProductToLeadViaPCR(newLeads);
+    public void onBeforePCRUpdate(List<LASERCA__Personal_Credit_Report__c> pcrList){
+        assignLoanProductToLeadViaPCR(pcrList);
     }    
     
     public List<Product2> getProductRecords(){
@@ -28,23 +25,32 @@ public with sharing class ProductAssignmentHandler {
                                         WHERE isActive = TRUE]){
             productList.add(productRecord);
         }
-        system.debug(productList);
         return productList;        
     }
  
     //assigns the appropriate product record to the triggered leads.
     public void assignLoanProductToLead(List<Lead> leadList, Map<ID, Lead> oldLeadsMap){
-       List<Product2> productList = new List<Product2>(getProductRecords());
+        Boolean runProductAssignment;
+        List<Product2> productList = new List<Product2>();
+        for (Lead leadRecord : leadList) {
+            if (!leadRecord.Automatic_Product_Assignment__c) {
+                runProductAssignment = false;
+            } else {
+                runProductAssignment = true;
+                break;
+            }
+        }     
+        if (runProductAssignment) {
+           productList = getProductRecords();            
+        }
         for(Lead leadRecord : leadList){
             if(leadRecord.Automatic_Product_Assignment__c == true 
                 && leadRecord.Product_Line__c == 'Residential Loan' 
                 //&& (leadRecord.Status == 'Qualified' || leadRecord.Pre_Approval_form__c == true ) 
                 && leadRecord.Loan_Term__c != null 
                 && oldLeadsMap.get(leadRecord.Id).Status != 'Qualified'){
-                    system.debug('checkResi/qual/term/status');
                     //run through all of the products per lead to find the specific product suitable for this customer.
                     if(productList.size() > 0){
-                        system.debug('checkSize');
                         for(Product2 productRecord : productList){
                             //****Product Line could have issues as all leads, opps, etc. are set as Residential Loan and the Product is going to be Solar Loan. Also, home state is returned after credit.
                             if(productRecord.IsActive == true 
@@ -53,7 +59,6 @@ public with sharing class ProductAssignmentHandler {
                                 && productRecord.Loan_Term__c == leadRecord.Loan_term__c 
                                 && productRecord.State__c == leadRecord.LASERCA__Home_State__c ){
                                 if(leadRecord.LASER_Credit_Score__c >= productRecord.Credit_Minimum__c && leadRecord.LASER_Credit_Score__c <= productRecord.Credit_Maximum__c){
-                                    system.debug('check2');
                                     //assign the product to the lead
                                     if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
                                         leadRecord.Product__c = productRecord.Id;
@@ -103,7 +108,6 @@ public with sharing class ProductAssignmentHandler {
     This howver allows for the trade accounts to be factored in after the product has been assigned.*/
     public void assignLoanProductToLeadViaPCR(List<LASERCA__Personal_Credit_Report__c> pcrList){
        List<String> pcrLeadIdList = new List<String>();
-       System.debug('pcrList check' + pcrList);
        for (LASERCA__Personal_Credit_Report__c pcrRecord : pcrList){
             pcrLeadIdList.add(pcrRecord.PCR_Lead_ID__c);
        }
@@ -118,10 +122,8 @@ public with sharing class ProductAssignmentHandler {
         for(Lead leadRecord : leadList){
             if(leadRecord.Product_Line__c == 'Residential Loan' && 
              leadRecord.Loan_Term__c != null){
-                system.debug('checkResi/qual/term/status');
                 //run through all of the products per lead to find the specific product suitable for this customer.
                 if(productList.size() > 0){
-                    system.debug('checkSize');
                     for(Product2 productRecord : productList){
                         //****Product Line could have issues as all leads, opps, etc. are set as Residential Loan and the Product is going to be Solar Loan. Also, home state is returned after credit.                      
                         if(leadRecord.Automatic_Product_Assignment__c == true && 
@@ -131,7 +133,6 @@ public with sharing class ProductAssignmentHandler {
                             productRecord.State__c == leadRecord.LASERCA__Home_State__c ){
                                 if(leadRecord.LASER_Credit_Score__c >= productRecord.Credit_Minimum__c && 
                                     leadRecord.LASER_Credit_Score__c <= productRecord.Credit_Maximum__c){
-                                    system.debug('check2');
                                     //assign the product to the lead
                                    if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
                                     leadRecord.Product__c = productRecord.Id;
@@ -168,7 +169,6 @@ public with sharing class ProductAssignmentHandler {
                 }
             }
         }
-        System.debug(leadList);
         update leadList;       
     }    
 } 
