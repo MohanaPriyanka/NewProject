@@ -57,7 +57,7 @@
             && lead.FirstName != ''
             && lead.LastName != ''
             && lead.Email != ''
-            && lead.LASERCA__Social_Security_Number__c != ''
+            && lead.LASERCA__SSN__c != ''
             && lead.Requested_Loan_Amount__c != null
             && lead.Annual_Income_Currency__c != null
             && lead.Credit_Check_Acknowledged__c == true
