@@ -282,7 +282,7 @@
           <div class="slds-form-element__row">                   
             <div class="slds-form-element slds-p-horizontal--small ">
               <label class="slds-form-element__label" for="input-03">Social Security Number</label>
-              <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__Social_Security_Number__c}" required="true"/>
+              <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
             </div> 
             <div class="slds-form-element slds-p-horizontal--small">
               <label class="slds-form-element__label" for="input-03">Estimated Annual Income</label>
