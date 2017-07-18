@@ -305,6 +305,7 @@ public without sharing class PCRApprovalHandler {
 
     @TestVisible
     public class CreditQualifyingMetrics {
+        public Lead lead; 
         public Decimal adjustedDTI;
         public Integer creditScore;
         public Decimal totalAnnualIncome;
