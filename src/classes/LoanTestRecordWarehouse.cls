@@ -143,6 +143,7 @@ public class LoanTestRecordWarehouse {
         Lead coApplicantLead = new lead(FirstName = 'coApplicantLead',
                                                 LastName = 'Test',
                                                 Loan_Amount__c = 35000,
+                                                Partner_Email__c = 'jpentaleri@bluewave-capital.com',
                                                 DOER_Solar_Loan__c = false,
                                                 Company = 'Cole Swain',
                                                 Product_Line__c = 'Residential Loan',
@@ -152,7 +153,6 @@ public class LoanTestRecordWarehouse {
                                                 Co_Applicant_Income__c = 2000,
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 240,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -164,6 +164,18 @@ public class LoanTestRecordWarehouse {
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725, 
                                 leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead}; 
         //
+        Account coApplicantAccount = new Account( Name = 'CoapplicantAccount'); 
+        insert coApplicantAccount;
+
+        Contact coApplicantContact = new Contact(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            AccountId = coApplicantAccount.Id,
+            Lead__c = coApplicantLead.Id,
+            Income__c = 2000,
+            LASERCA__Social_Security_Number__c = '000000002');
+        insert coApplicantContact;
+
         LASERCA__Personal_Credit_Report__c pcr10710 = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
                                                                                             LASERCA__Code__c ='001',
@@ -202,7 +214,8 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_2__c ='001',
                                                                                             LASERCA__Code_3__c = '001',
                                                                                             LASERCA__Code_4__c = '001',                                                                                                                    
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '690',
+                                                                                            LASERCA__Credit_Score_TransUnion__c = '760',
+                                                                                            LASERCA__Confirming_Social_Security_Number__c = '000000001',                                                                                            
                                                                                             LASERCA__Lead__c = coApplicantLead.Id);  
         LASERCA__Personal_Credit_Report__c pcrCoApplicant = new LASERCA__Personal_Credit_Report__c(           
                                                                                             Name = 'Personal Credit Report 8',
@@ -210,7 +223,9 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_2__c ='001',
                                                                                             LASERCA__Code_3__c = '001',
                                                                                             LASERCA__Code_4__c = '001',                                                                                                                    
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '750',
+                                                                                            LASERCA__Credit_Score_TransUnion__c = '760',
+                                                                                            LASERCA__Contact__c = coApplicantContact.Id,
+                                                                                            LASERCA__Confirming_Social_Security_Number__c = '000000002',
                                                                                             LASERCA__Lead__c = coApplicantLead.Id);                                                                                                                                                                                                                                                                           
         insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690, pcrPrimaryApplicant};
         insert pcrCoApplicant;

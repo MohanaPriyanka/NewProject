@@ -305,7 +305,6 @@ public without sharing class PCRApprovalHandler {
 
     @TestVisible
     public class CreditQualifyingMetrics {
-        public List<Lead> leadList; 
         public Decimal adjustedDTI;
         public Integer creditScore;
         public Decimal totalAnnualIncome;
@@ -333,7 +332,7 @@ public without sharing class PCRApprovalHandler {
                                 FROM LASERCA__Personal_Credit_Reports__r)
                                FROM Lead
                                WHERE Id = : leadId];
-        creditMetric.leadList= leadList;                               
+        creditMetric.Lead = leadList[0];                               
         creditReportList = leadList[0].LASERCA__Personal_Credit_Reports__r;
 
         if (leadIsCoapplicant(creditReportList)) {
@@ -356,16 +355,16 @@ public without sharing class PCRApprovalHandler {
                 }
             }
         } else {
-            if (creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_DTI__c != null) {
-                creditMetric.adjustedDTI = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_DTI__c;
+            if (creditMetric.Lead.Personal_Credit_Report__r.Adjusted_DTI__c != null) {
+                creditMetric.adjustedDTI = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_DTI__c;
             }
-            if (creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Income__c != null) {
-                creditMetric.totalAnnualIncome = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Income__c;                      
+            if (creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c != null) {
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c;                      
             } else {
-                creditMetric.totalAnnualIncome = creditMetric.leadList[0].Annual_Income_Currency__c;                      
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Annual_Income_Currency__c;                      
             }
-            creditMetric.creditScore = Integer.valueOf(creditMetric.leadList[0].LASER_Credit_Score__c);
-            creditMetric.totalMonthlyDebt = creditMetric.leadList[0].Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;  
+            creditMetric.creditScore = Integer.valueOf(creditMetric.Lead.LASER_Credit_Score__c);
+            creditMetric.totalMonthlyDebt = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;  
         }   
         return creditMetric;         
     }
@@ -399,9 +398,9 @@ public without sharing class PCRApprovalHandler {
         if (creditReport.Adjusted_Income__c != null) {
             income = creditReport.Adjusted_Income__c;
         } else if (creditReport.Adjusted_Income__c == null && !pcrIsCoApplicant(creditReport)){
-            income = creditMetric.leadList[0].Annual_Income_Currency__c;                        
+            income = creditMetric.Lead.Annual_Income_Currency__c;                        
         } else if (creditReport.Adjusted_Income__c == null && pcrIsCoApplicant(creditReport)){
-            income = creditMetric.leadList[0].Co_Applicant_Income__c;                                               
+            income = creditMetric.Lead.Co_Applicant_Income__c;                                               
         }    
         return income;
     }

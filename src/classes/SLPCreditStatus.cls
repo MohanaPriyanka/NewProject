@@ -80,17 +80,20 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Product2> getCustomerProducts (String leadId) {
     List<Product2> productList = new List<Product2>();
+    List<Lead> leadList = new List<Lead>();
+    
     PCRApprovalHandler.CreditQualifyingMetrics creditMetric = PCRApprovalHandler.calculateCreditQualifyingMetrics(leadId);
-    PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(creditMetric.leadList);
+    leadList.add(creditMetric.lead);
+    PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(leadList);
     List<Product2> allProducts = 
-        productRepo.getApplicableProducts(creditMetric.leadList[0], creditMetric.creditScore);
+        productRepo.getApplicableProducts(creditMetric.lead, creditMetric.creditScore);
     for (Product2 prod : allProducts) {
         if (creditMetric.AdjustedDTI != null) {
           if (creditMetric.AdjustedDTI <= prod.Debt_To_Income_Maximum__c) {
             productList.add(prod);
           }
         } else {
-          if (productRepo.calcDTIAfter(prod, creditMetric.leadList[0], 
+          if (productRepo.calcDTIAfter(prod, creditMetric.lead, 
                                      creditMetric.totalAnnualIncome/12, 
                                      creditMetric.totalMonthlyDebt).dtiAfter <= 
             prod.Debt_To_Income_Maximum__c) {

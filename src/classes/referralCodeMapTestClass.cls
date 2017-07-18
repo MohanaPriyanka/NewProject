@@ -36,7 +36,7 @@ Static testMethod void referralCodeMap(){
     Lead newLoanLead = new lead(FirstName = 'Cole', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Residential Loan', Status = 'contacted', Custom_Id__c = null, Parcel_zip__c = '02052') ;
     newLeadList.add(newLoanLead);
 
-    Lead newLoanLead2 = new lead(FirstName = 'Matthew', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Residential Loan', Status = 'contacted', Custom_Id__c = 'swain', Parcel_zip__c = '02052') ;
+    Lead newLoanLead2 = new lead(FirstName = 'Matthew', LastName = 'Swain', Company = 'BlueWave', Product_Line__c = 'Residential Loan', Product_Line__c = 'Community Solar', Status = 'contacted', Custom_Id__c = 'swain', Parcel_zip__c = '02052') ;
     newLeadList.add(newLoanLead2);    
 
     Insert newLeadList;
