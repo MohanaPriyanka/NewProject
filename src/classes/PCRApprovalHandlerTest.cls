@@ -67,9 +67,20 @@ private class PCRApprovalHandlerTest {
         insertleads.add(leadAH);
         Lead leadAI = getLead(null, 45000, productVar.Id, true, true, partner.Id);
         insertleads.add(leadAI);
+        Lead coAppLead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        coAppLead.Co_Applicant_Income__c = 2000;
+        insertleads.add(coAppLead);
         insert insertleads;
-        leadAE.Status = 'Pending Information';
-        update leadAE;
+        Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
+        insert coApplicantAccount;
+
+        Contact coApplicantContact = new Contact(FirstName = 'Cole',
+                                                 LastName = 'Swain',
+                                                 AccountId = coApplicantAccount.Id,
+                                                 Lead__c = coAppLead.Id,
+                                                 Income__c = 2000,
+                                                 LASERCA__Social_Security_Number__c = '000000002');
+        insert coApplicantContact;
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
                                                                                         LASERCA__Code__c = '039',
@@ -108,18 +119,31 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrAI = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAI.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '700');
         insertpcrlist.add(pcrAI);
+        LASERCA__Personal_Credit_Report__c pcrCoAppLead = 
+            new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
+                                                   LASERCA__Lead__c = coAppLead.Id);
+        insertpcrlist.add(pcrCoAppLead);
         insert insertpcrlist;
-                                                                                        
+
+        LASERCA__Personal_Credit_Report__c pcrCoAppContact = 
+            new LASERCA__Personal_Credit_Report__c(Name = 'PCR Co App',
+                                                   LASERCA__Lead__c = coAppLead.Id,
+                                                   LASERCA__Contact__c = coApplicantContact.Id);
+        insert pcrCoAppContact;
+
         Test.startTest();
 
         LASERCA__Trade_Accounts__c  tradeacctA = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrA.id,
-                                                                                LASERCA__Monthly_Payment__c = 500);
+                                                                                LASERCA__Monthly_Payment__c = 500,
+                                                                                LASERCA__Account_Balance__c = 10000);
         inserttradeacct.add(tradeacctA);  
         LASERCA__Trade_Accounts__c  tradeacctAA = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAA.id,
-                                                                                 LASERCA__Monthly_Payment__c = 500);
+                                                                                 LASERCA__Monthly_Payment__c = 500,
+                                                                                 LASERCA__Account_Balance__c = 10000);
         inserttradeacct.add(tradeacctAA);  
         LASERCA__Trade_Accounts__c  tradeacct = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
-                                                                               LASERCA__Monthly_Payment__c = 500);
+                                                                               LASERCA__Monthly_Payment__c = 500,
+                                                                               LASERCA__Account_Balance__c = 10000);
         inserttradeacct.add(tradeacct);  
         LASERCA__Trade_Accounts__c  tradeacctAB = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAB.id,
                                                                                  LASERCA__Monthly_Payment__c = 500);
@@ -145,23 +169,40 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c  tradeacctAI = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAI.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
         inserttradeacct.add(tradeacctAI); 
+        LASERCA__Trade_Accounts__c  tradeacctcoAppLead1 = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppLead.id,
+                                           LASERCA__Monthly_Payment__c = 200,
+                                           LASERCA__Account_Balance__c = 1000);
+        inserttradeacct.add(tradeacctcoAppLead1); 
+        LASERCA__Trade_Accounts__c  tradeacctcoAppLead2 = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppLead.id,
+                                           LASERCA__Monthly_Payment__c = 200,
+                                           LASERCA__Account_Balance__c = 1000);
+        inserttradeacct.add(tradeacctcoAppLead2); 
         insert inserttradeacct;
-        update inserttradeacct;
+
+        System.debug(LoggingLevel.ERROR, '5. SOQL Queries: ' + Limits.getQueries());
+        LASERCA__Trade_Accounts__c  tradeacctcoAppContact1 = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppContact.id,
+                                           LASERCA__Monthly_Payment__c = 200,
+                                           LASERCA__Account_Balance__c = 1000);
+        LASERCA__Trade_Accounts__c  tradeacctcoAppContact2 = 
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppContact.id,
+                                           LASERCA__Monthly_Payment__c = 200,
+                                           LASERCA__Account_Balance__c = 1000);
+        insert new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2}; 
 
         pcrAB.Solar_Loan_Manual_Decline__c = True;
-        update pcrAB;
-
         pcrAA.Solar_Loan_Manual_Approval__c = True;
-        update pcrAA;
-
         pcrAF.Avidia_Review_Status__c = 'Reviewed - Declined';
-        update pcrAF;
-
         pcrAG.Avidia_Review_Status__c = 'Pending Review';
-        update pcrAG;
+
+        update new List<LASERCA__Personal_Credit_Report__c>{pcrAB, pcrAA, pcrAF, pcrAG};
+
+        System.debug(LoggingLevel.ERROR, '6. SOQL Queries: ' + Limits.getQueries());
 
         List<LASERCA__Personal_Credit_Report__c> pcrlist = 
-            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c,
+            [SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
              LASERCA__Lead__r.Status
              FROM LASERCA__Personal_Credit_Report__c];
 
@@ -182,26 +223,48 @@ private class PCRApprovalHandlerTest {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '801') {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
-            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '805') {
-                System.assertEquals('Pending Information', creditreport.LASERCA__Lead__r.Status);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '810') {
                 System.assertEquals('Unqualified', creditreport.LASERCA__Lead__r.Status);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '815') {
                 System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
+            } else if (creditreport.Name == 'PCR Primary with Co App.Joey') {
+                System.debug(LoggingLevel.ERROR, 
+                             creditreport.Name + 
+                             ' DTI Before: ' + creditreport.DTI_Before__c + 
+                             ' FICO: ' + creditreport.LASERCA__Credit_Score_TransUnion__c);
+                System.assertEquals(9.6, creditreport.DTI_Before__c.setScale(1));
+            } else if (creditreport.Name == 'PCR Co App.Joey') {
+                System.debug(LoggingLevel.ERROR, 
+                             creditreport.Name + 
+                             ' DTI Before: ' + creditreport.DTI_Before__c + 
+                             ' FICO: ' + creditreport.LASERCA__Credit_Score_TransUnion__c);
+                System.assertEquals(240, creditreport.DTI_Before__c.setScale(1));
             }
+
         }
 
         pcrAG.Avidia_Review_Status__c = 'Reviewed - PreApproved';
         update pcrAG;
 
-        pcrlist = 
-            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c,
-             LASERCA__Lead__r.Status
-             FROM LASERCA__Personal_Credit_Report__c
-             WHERE LASERCA__Credit_Score_TransUnion__c = '815'];
+        System.debug(LoggingLevel.ERROR, '7. SOQL Queries: ' + Limits.getQueries());
 
+        tradeacctcoAppContact1.Exclude_From_Rollup__c = true;
+        tradeacctcoAppContact2.Exclude_From_Rollup__c = true;
+        update new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2}; 
+
+        pcrlist = 
+            [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
+             LASERCA__Lead__r.Status, LASERCA__Contact__c
+             FROM LASERCA__Personal_Credit_Report__c
+             WHERE LASERCA__Credit_Score_TransUnion__c = '815' OR LASERCA__Credit_Score_TransUnion__c = null];
+
+        System.assertEquals(3, pcrlist.size());
         for (LASERCA__Personal_Credit_Report__c creditreport : pcrlist) {
-            System.assertEquals('Pre-Qualified', creditreport.LASERCA__Lead__r.Status);
+            if (creditreport.LASERCA__Credit_Score_TransUnion__c == '815') {
+                System.assertEquals('Pre-Qualified', creditreport.LASERCA__Lead__r.Status);
+            } else if (creditreport.LASERCA__Contact__c != null) {
+                system.assertEquals(0, creditreport.DTI_Before__c);
+            }
         }
 
         Test.stopTest();
@@ -266,6 +329,9 @@ private class PCRApprovalHandlerTest {
         Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
         insert lead;
         
+        lead.Status = 'Pending Information';
+        update lead;
+
         LASERCA__Personal_Credit_Report__c pcr = 
             new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
                                                    LASERCA__Credit_Score_TransUnion__c = '700');
@@ -285,6 +351,7 @@ private class PCRApprovalHandlerTest {
                 WHERE Id = :lead.Id];
 
         PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
+        System.assertEquals('Pending Information', lead.Status);
         System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
         System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
         System.assertEquals(50.53,
