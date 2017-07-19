@@ -74,9 +74,8 @@ public without sharing class PCRApprovalHandler {
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
-                pcr.LASERCA__Lead__c != NULL &&
-                pcr.Adjusted_Monthly_Personal_Debt__c != 0) {
-
+                pcr.LASERCA__Lead__c != NULL) {
+                Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
                 String conglomerate = 
                     pcr.LASERCA__Code__c + ' ' + pcr.LASERCA__Code_2__c + ' ' +
@@ -89,7 +88,7 @@ public without sharing class PCRApprovalHandler {
                 if (pcr.LASERCA__Contact__c != NULL) {
                     monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Co_Applicant_Income__c:pcr.Adjusted_Income__c)/12;
                     creditScore = Math.max(creditScore,
-                                           Integer.valueOf(leadMap.get(pcr.LASERCA__Lead__c).Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                                           Integer.valueOf(LoanServicer.nullToZero(ld.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
                 }
 
                 if (monthlyIncome == 0) {
@@ -100,7 +99,7 @@ public without sharing class PCRApprovalHandler {
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
-                    productRepo.getCreditSummary(leadMap.get(pcr.LASERCA__Lead__c), 
+                    productRepo.getCreditSummary(ld, 
                                                  creditScore, monthlyIncome, 
                                                  pcr.Adjusted_Monthly_Personal_Debt__c,
                                                  pcr.DOER_Application__c);
@@ -134,7 +133,6 @@ public without sharing class PCRApprovalHandler {
                     pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
                 }
 
-                Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
                 if (ld.Status == READYFORCREDITCHECK || 
                     ld.Status == PENDINGCREDITREVIEW || 
                     ld.Status == UNQUALIFIED ||
