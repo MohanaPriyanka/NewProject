@@ -14,10 +14,6 @@
     color: #FFFFFF;
     font-size:100%;
     }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
     .proximaNovaDataStream {
     font-family: proximaNovaFont;   
     font-size:100%;
@@ -39,16 +35,14 @@
         <div class="slds-dropdown slds-dropdown_right slds-dropdown_small">
           <ul class="slds-dropdown__list" role="menu">
             <li class="slds-dropdown__item" role="presentation">
-<!--               <a href="/secur/logout.jsp" role="menuitem" tabindex="0">
- -->                
-                <a href="https://bluewavememberportal.force.com/slportal/s/login/" role="menuitem" tabindex="0">
-                <span class="slds-truncate proximaNovaDataStream" title="Table View"><b>Logout</b></span>
-                <lightning:icon iconName="utility:logout" size="small"/>  
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+              <a href="/slportal/secur/logout.jsp" role="menuitem" tabindex="0" >
+               <span class="slds-truncate proximaNovaDataStream" title="Table View"><b>Logout</b></span>
+               <lightning:icon iconName="utility:logout" size="small"/>  
+             </a>
+           </li>
+         </ul>
+       </div>
+     </div>
+   </div>
+ </div>
 </aura:component>
