@@ -1,97 +1,52 @@
-public class CustomerCareHandler {
-	public  void isAfterUpdate (List<Task> updatedTasks, List<Task> oldTask) {
-        //instantiate the Map for old values
-        Map <Id, Task> oldvalues = new Map <Id, Task> (); 
-        List <Task> triggeredvalues = new List <Task> ();
+/*************************************************************************************
+ * Created By:  Sarah Renfro
+ * Description: Called from TaskTrigger. 
+ *              Creates new Customer Care case when button is triggered on Task.
+ *              Populates fields on case with subject, status, record type, and either 
+ *              the contact or lead information 
+ *              
+ * Test: CustomerCareHandlerTest
+ *************************************************************************************/
 
-        //Fill the map with the old values        
-        for(Task oldtaskvalue : oldTask) {
-        	oldvalues.put(oldtaskvalue.id, oldtaskvalue);
-        }
+ public class CustomerCareHandler {
+ 	public  void createCases (List<Task> updatedTasks, Map <Id,Task> oldTaskMap) {
+ 		
+ 		List <Task> triggeredvalues = new List <Task> ();
 
-        //Check if old value = new value
-        for(Task checkvalue : updatedTasks){
+        //Check if old value = new value in order to concentrate on tasks that have been updated 
+        for (Task checkvalue : updatedTasks) {
         	String newvalueID = checkvalue.Id;
-        	//Checking status of the checkbox 
         	Boolean newbox = checkvalue.Customer_Care_Case__c;
-        	Boolean oldbox = oldvalues.get(newvalueId).Customer_Care_Case__c;
-        	if(newbox != oldbox){
+        	Boolean oldbox = oldTaskMap.get(newvalueId).Customer_Care_Case__c;
+        	if (newbox != oldbox){
         		triggeredvalues.add(checkvalue);
         	}
-
         }
 
-        //Call method to create a new case
-        for(Task triggercase : triggeredvalues){
-        	String subject = triggercase.Subject;
-        	String status = 'New';
+        List<Case> newcases = new List<Case>();
 
-            //Check type (Lead vs. Contact)
+        for (Task triggercase : triggeredvalues) {
 
-            String taskID = String.valueOf(triggercase.WhoId);
-            String customertype =  taskID.substring(0, 3);
+        	Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care Case').getRecordTypeId();
 
-            system.debug('Customer Type: ' + customertype);
+        	String taskID = String.valueOf(triggercase.WhoID);
+        	Case newcase = new Case(
+        		Subject = triggercase.Subject,
+        		Status = 'New',
+        		ContactId = (taskID.startsWith('003')?triggercase.WhoId:null),
+        		Lead_Lookup__c = (taskID.startsWith('00Q')?triggercase.WhoId:null),
+        		RecordTypeId = ccRecordTypeId
+        		);
 
-            Lead leadname = null;
-            Contact contactname = null;
-
-            if(customertype.equals( '00Q')){
-
-            	leadname = [SELECT Id, Name FROM Lead WHERE Id = :triggercase.WhoId];
-            	system.debug('Set the Lead ' + leadname);
-
-            	} else {
-            		contactname = [SELECT Id, Name FROM Contact WHERE Id = :triggercase.WhoId];
-            		system.debug('Set the Contact '+ contactname);
-            	}
-
-            	Case newcase = createCustomerCase(subject, status, customertype, leadname, contactname);
-            //Write code to open new case in window 
-            upsert newcase;
-
+            // Set Unique ID field on task object in order for javascript button to open new case in window
             String uniqueID = newcase.Id;
-            system.debug('Unique ID: ' + uniqueID);
-
             triggercase.Customer_Case_Unique_ID__c = uniqueID; 
 
+            newcases.add(newcase);
         }
+
+        insert newcases;
     }
 
-    public Case createCustomerCase(String subject, String status, String customertype, Lead leadname, Contact contactname){
-    	Id caseId = '012j00000000HA8';
 
-    	//Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care Case').getRecordTypeId();
-    	Boolean islead = null;
-
-    	//Check type of customer
-    	if(customertype.equals('00Q')){
-    		islead = true;
-    		} else {
-    			islead = false;
-    		}
-
-    		//Create case for a Lead
-    		if(islead == true){
-    			Case newcase = new Case(
-    				Subject = subject,
-    				Status = status, 
-    				Lead_Lookup__c = leadname.Id,
-    				RecordTypeId = caseId
-    				);
-    			return newcase;
-    			//Create a case for a Contact
-    			}else{
-
-    				system.debug('Time to create a contact case!');
-
-    				Case newcase = new Case(
-    					Subject = subject,
-    					Status = status, 
-    					ContactId = contactname.Id,
-    					RecordTypeId = caseId
-    					);
-    				return newcase;
-    			}
-    		}
-    	}
+}
