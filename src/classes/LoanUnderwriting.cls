@@ -14,7 +14,7 @@ public without sharing class LoanUnderwriting {
     public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [SELECT FirstName, LastName, Name, 
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
-                            Annual_Income_Currency__c, Co_Applicant_Income__c,
+                            Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment__c,
                             Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                             Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                             lived_residence_six_months__c,

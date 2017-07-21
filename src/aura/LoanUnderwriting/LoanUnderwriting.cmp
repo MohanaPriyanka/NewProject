@@ -7,6 +7,7 @@
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="hasCoApp" type="Boolean" default="false"/>
+  <aura:attribute name="monthlyLoanPayment" type="Decimal"/>
   <aura:attribute name="bestFICO" type="Integer"/>
   <aura:attribute name="bestDTI" type="Decimal"/>
   <aura:attribute name="combinedIncome" type="Decimal"/>

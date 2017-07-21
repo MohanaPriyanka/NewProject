@@ -91,7 +91,19 @@
                 }
 
             } else {
-                component.set("v.bestDTI", mainPCR.DTI_After__c);
+                if (mainPCR.Adjusted_Income__c != null) {
+                    mainIncome = mainPCR.Adjusted_Income__c/12;
+                } else {
+                    mainIncome = lead.Annual_Income_Currency__c/12;
+                }
+
+                mainDebt = mainPCR.Adjusted_Monthly_Personal_Debt__c;
+
+                if (mainIncome > 0) {
+                    component.set("v.bestDTI", 100 * (mainDebt) / (mainIncome));
+                } else {
+                    component.set("v.bestDTI", mainPCR.DTI_After__c);
+                }
             }
         }
     },
