@@ -9,13 +9,15 @@
                     $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');  
                     if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
                         component.set("v.newLead.DOER_Solar_Loan__c",false);  
-                        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
-                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
-                        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
+                        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');    
+                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+                        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
                         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
                         $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');   
-                    }                  
+                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');   
+                    } else {
+                        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');           
+                    }
                 }                
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
@@ -290,6 +292,7 @@
         component.set("v.newLead.DOER_Solar_Loan__c",true);  
         component.set("v.newLead.Product_Program__c",'MSLP');                
 
+        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.removeClass(component.find("bwslAppButton"), 'noDisplay');      
         $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
         $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
@@ -300,6 +303,7 @@
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
 
+        $A.util.removeClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
         $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
