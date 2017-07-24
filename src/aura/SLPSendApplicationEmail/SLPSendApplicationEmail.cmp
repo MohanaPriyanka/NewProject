@@ -58,7 +58,7 @@
             <div class="slds-tabs--default">
               <ul class="slds-tabs--default__nav" role="tablist">
                 <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item slds-tabs--scoped__nav" role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="-1" aria-selected="true" onclick="{!c.emailModalSelectMSLP}">MA Solar Loan Program</a></li>
+                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item slds-tabs--scoped__nav" role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="-1" aria-selected="true" onclick="{!c.emailModalSelectMSLP}">MCEC Solar Loan Program</a></li>
                 </aura:if>
                 <li aura:id="bwslEmailInput" class="slds-tabs--default__item " role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="0" aria-selected="false"  onclick="{!c.emailModalSelectBWSL}">BlueWave Solar Loan</a></li>
                 </ul>

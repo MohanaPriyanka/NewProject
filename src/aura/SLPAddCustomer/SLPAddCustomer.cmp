@@ -25,7 +25,12 @@
     font-family: proximaNovaFont;   
     font-size:100%;
     color: #00AFA9;
-    }                 
+    }    
+    .proximaNovaWhite {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+    }                   
   </style> 
 <!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
@@ -80,23 +85,27 @@
 
   <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
       <div aura:id="customerEmailButton"> 
-        <ui:button label="Email Customer Application"
-         class="slds-button slds-button--brand marginBottom25"
+        <ui:button label="Email this application to a Customer"
+         class="slds-button slds-button--brand slds-m-bottom_medium proximaNovaWhite"
          press="{!c.openEmailCustomerModal}"/> 
        </div>  
        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-        <div aura:id="mslpAppButton"  class=" paddingBottom1 paddingTop1x5 noDisplay">
-          <ui:button label=" Go to MSLP Application" class="slds-button slds-button--brand marginBottom25" press="{!c.changeApplicationToMSLP}">
+        <div aura:id="mslpAppButton"  class=" slds-m-bottom_medium slds-m-top_medium noDisplay">
+          <ui:button label="Apply for an MCEC Solar Loan" class="slds-button slds-button--brand slds-m-bottom_small" press="{!c.changeApplicationToMSLP}">
           </ui:button>
         </div>         
-        <div aura:id="bwslAppButton" class="paddingBottom1 paddingTop1x5">
-          <ui:button label="Go to BlueWave Solar Loan Application" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}">
+        <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
+          <ui:button label="Apply for BlueWave's Solar Loan" class="slds-button slds-button--brand " press="{!c.changeApplicationToBWSL}">
           </ui:button>
         </div>
       </aura:if>     
-  <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">                      
+  <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
     <div aura:id="mslpDisclaimer" class="box">
-      <p class="marginAround marginTop proximaNovaBlue">
+      <br></br>
+      <div class="proximaNovaStream slds-m-top_small slds-align--absolute-center"> 
+        <b><h3> Application for the Massachussets Clean Energy Center (MCEC) Solar Loan Program </h3></b> 
+      </div>                         
+      <p class="marginAround proximaNovaBlue">
         Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan. 
       </p>
 
@@ -109,18 +118,19 @@
       </p>            
       <br></br>
     </div>
+    <br></br>
   </aura:if>
-  <div aura:id = "inputForm" class="box">            
+  <div aura:id = "inputForm" class="">            
     <div aura:id = "inputFormBox" class="box">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-        <img aura:id = "avidiaLogo" class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaLogo}"/>
+        <img aura:id = "avidiaLogo" class="slds-align--absolute-center slds-p-top_medium slds-m-bottom_medium" src="{!$Resource.avidiaLogo}"/>
       </aura:if>
       <fieldset class="slds-form--compound paddingTop1x5">
-        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Customer Information </h3> </div>
+        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Applicant Information </h3></b> </div>
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue  "> <b>First Name</b> </label>
+              <label class="slds-form-element__label proximaNovaBlue  "> <b> First Name</b> </label>
               <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
             </div> 
             <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
@@ -134,11 +144,11 @@
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="customerEmail" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Email</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Email Address</b></label>
               <ui:inputText aura:id="email" class="slds-input" value="{!v.newLead.Email}" />          
             </div> 
             <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Customer Date of Birth</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Date of Birth</b></label>
               <div aura:id="dateOfBirth" class="slds-form-element__control">              
                 <c:BlueWaveDate value="{!v.newLead.LASERCA__Birthdate__c}"
                                 displayPicker = "false" 
@@ -152,11 +162,11 @@
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="homeAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Street Address</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Home Street Address</b></label>
               <ui:inputText aura:id="street" class="slds-input" value="{!v.newLead.LASERCA__Home_Address__c}" />          
             </div>                    
             <div aura:id="cityElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>City</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Home City</b></label>
               <ui:inputText aura:id="city" 
                             class="slds-input"       
                             value="{!v.newLead.LASERCA__Home_City__c}"/>
@@ -168,7 +178,7 @@
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>State</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Home State</b></label>
               <ui:inputSelect aura:id="state" 
                               class="slds-input" 
                               value="{!v.newLead.LASERCA__Home_State__c}" >
@@ -187,7 +197,7 @@
       </fieldset>
       <hr></hr>
       <fieldset class="slds-form--compound">
-        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Loan Information </h3> </div>        
+        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Loan Information </h3></b> </div>        
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
@@ -203,7 +213,7 @@
       </fieldset>  
       <hr></hr>      
       <fieldset class="slds-form--compound">
-        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Credit Information </h3> </div>        
+        <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Credit Information </h3></b> </div>        
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                   
             <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated ">
@@ -218,7 +228,7 @@
           <div class="slds-form-element__row">                   
             <div aura:id="creditHistoryElement" class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label proximaNovaBlue" for="creditToggle">I give BlueWave and Avidia Bank permission to access my credit history. </label>
+                <label class="slds-form-element__label proximaNovaBlue" for="creditToggle">The Applicant gives BlueWave and Avidia Bank permission to access their credit history. </label>
                 <ui:inputCheckbox name="creditToggle" value="{!v.newLead.Credit_Check_Acknowledged__c}" required="true" />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -231,14 +241,14 @@
         </div>
       </fieldset>
       <hr></hr>
-      <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Acknowledgements and Privacy Policy </h3> </div>        
+      <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> <b>Acknowledgements and Privacy Policy </b></h3> </div>        
       <a href="http://bluewavesolar.com/about-us/privacy-policy/" target="_blank" class="slds-p-horizontal--small"> <b><u>Click here to view our Privacy Policy</u></b></a>
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                 
             <div aura:id="privacyPolicyElement" class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label proximaNovaBlue" for="creditToggle">I acknowledge BlueWave's privacy policy and accept its terms.</label>                        
+                <label class="slds-form-element__label proximaNovaBlue" for="creditToggle">The Applicant acknowledges BlueWave's privacy policy and accept its terms.</label>                        
                 <ui:inputCheckbox name="interconnectToggle" value="{!v.newLead.Privacy_Policy_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -253,7 +263,7 @@
           <div class="slds-form-element__row">                 
             <div aura:id="energyHistoryElement" class="slds-form-element slds-p-horizontal--small paddingTop1x5">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label proximaNovaBlue" for="energyAccessToggle">I give BlueWave and its affiliates permission to access my energy billing history.</label>
+                <label class="slds-form-element__label proximaNovaBlue" for="energyAccessToggle">The Applicant gives BlueWave and its affiliates permission to access their energy billing history.</label>
                 <ui:inputCheckbox name="interconnectToggle" value="{!v.newLead.Utility_Bill_Access_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -284,14 +294,14 @@
       </fieldset>        
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <span aura:id = "avidiaFooter" >
-          <img class="slds-align--absolute-center paddingTop1x5 paddingBottom1" src="{!$Resource.avidiaFooter}"/>
-          <p class="slds-align--absolute-center  proximaNovaFont"> 42 Main St. Hudson, MA 01749 </p>
+          <img class="slds-align--absolute-center slds-m-top_small slds-m-bottom_small" src="{!$Resource.avidiaFooter}"/>
+          <p class="slds-align--absolute-center  proximaNovaBlue"> Avidia Bank - 42 Main St. Hudson, MA 01749 </p>
         </span>
       </aura:if>
-      <div aura:id="SubmitButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
+      <div aura:id="SubmitButton" class="slds-align--absolute-center slds-m-bottom_small slds-m-top_small">
         <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.addCustomer}"></ui:button>
       </div>
-      <div class="slds-align--absolute-center paddingBottom1 paddingTop1x5">
+      <div class="slds-align--absolute-center paddingBottom1 slds-m-top_small">
         <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
     </div>
@@ -299,11 +309,8 @@
 
   <div aura:id="addedCustomerConfirmCredit" class=" noDisplay">
     <p class="marginAround marginTop proximaNovaBlue">
-      <div class="paddingBottom1">
-        You've added a new customer and application! 
-      </div>
-      <div class="paddingBottom1">
-        Please double check their information before running a credit report by clicking the button below. If you need to modify the application, please contact BlueWave at 844-786-4100.
+      <div class="slds-m-bottom_small">
+        You've added a new applicant. Please review this applicants's information to make sure it is correct before running a credit check. If you need to modify their information, please contact BlueWave at 844-786-4100. We apologize for the inconvenience, the ability to edit this applicant's information on this page will be available very shortly.
       </div>
       <div class="box">
         <fieldset class="slds-form--compound paddingTop1x5">

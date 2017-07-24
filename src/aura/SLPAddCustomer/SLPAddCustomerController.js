@@ -290,21 +290,21 @@
         component.set("v.newLead.DOER_Solar_Loan__c",true);  
         component.set("v.newLead.Product_Program__c",'MSLP');                
 
-        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplayBar');      
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplayBar'); 
+        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplay');      
+        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
         $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
         $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
-        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplayBar');                        
+        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');                        
     }, 
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
 
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
-        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
+        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
         $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');      
+        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');      
     },         
 
     openEmailCustomerModal : function(component, event, helper) {
