@@ -41,6 +41,8 @@
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
+
+        //perform error handling
         if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
             $A.util.addClass(component.find("dateOfBirth"), 'slds-has-error');  
             $A.util.addClass(component.find("dateOfBirth"), 'shake');  
@@ -75,20 +77,25 @@
             return;
         }             
 
-        if(helper.stringInputIsNull(component, helper, lead.FirstName, "firstNameElement", 
-          "Please enter the Customer's First Name.")) {
+        if(helper.formInputIsNullString(component, helper, lead.FirstName, "firstNameElement", 
+          "Please enter the Customer's First Name.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
         }    
 
-        if(helper.stringInputIsNull(component, helper, lead.FirstName, "lastNameElement", 
-          "Please enter the Customer's Last Name.")) {
+        if(helper.formInputIsNullString(component, helper, lead.FirstName, "lastNameElement", 
+          "Please enter the Customer's Last Name.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
         }     
 
-        if(helper.stringInputIsNull(component, helper, lead.LASERCA__Home_Address__c, "homeAddressElement", 
-          "Please enter a valid Home Address")) {
+        if(helper.formInputIsNullString(component, helper, lead.LASERCA__Home_Address__c, "homeAddressElement", 
+          "Please enter the Customer's Home Address", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
-        }                           
+        }                       
+
+        if(helper.formInputIsNullString(component, helper, lead.LASERCA__Home_City__c, "cityElement", 
+          "Please enter the Customer's City", "SLPAddCustomerController", "addCustomer", "shake")) {
+            return;
+        }                 
 
         if(lead.LASERCA__Home_State__c == "Select") {
             $A.util.addClass(component.find("stateElement"), 'slds-has-error');  
@@ -114,20 +121,35 @@
             return;
         }    
 
-        if(helper.numberInputIsNull(component, helper, lead.Requested_Loan_Amount__c, "loanAmountElement", 
-          "Please enter a Requested Loan Amount.")) {
+        if(helper.formInputIsNullNumber(component, helper, lead.Requested_Loan_Amount__c, "loanAmountElement", 
+          "Please enter the Customer's Requested Loan Amount.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
         }
 
-        if(helper.numberInputIsNull(component, helper, lead.System_Cost__c, "systemCostElement", 
-          "Please enter a System Cost.")) {
+        if(helper.formInputIsNullNumber(component, helper, lead.System_Cost__c, "systemCostElement", 
+          "Please enter the System's Cost.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
         }  
 
-        if(helper.numberInputIsNull(component, helper, lead.Annual_Income_Currency__c, "incomeElement", 
-          "Please enter an Estimated Annual Income.")) {
+        if(helper.formInputIsNullNumber(component, helper, lead.Annual_Income_Currency__c, "incomeElement", 
+          "Please enter the Customer's Estimated Annual Income.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
-        }                
+        }     
+
+        if(helper.formInputIsTrue(component, helper, lead.Credit_Check_Acknowledged__c, "creditHistoryElement", 
+          "Please have the Customer give BlueWave and Avidia Bank permission to access their credit history.", "SLPAddCustomerController", "addCustomer", "shake")) {
+            return;
+        }         
+
+        if(helper.formInputIsTrue(component, helper, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", 
+          "Please have the Customer acknowledge BlueWave's Privacy Policy.", "SLPAddCustomerController", "addCustomer", "shake")) {
+            return;
+        }        
+
+        if(helper.formInputIsTrue(component, helper, lead.Utility_Bill_Access_Acknowledged__c, "energyHistoryElement", 
+          "Please have the Customer give BlueWave permission to access their energy billing history.", "SLPAddCustomerController", "addCustomer", "shake")) {
+            return;
+        }                                   
 
         //remove any error highlights that may have been added in the error handling above.
         $A.util.removeClass(component.find("dateOfBirth"), 'slds-has-error');       
@@ -141,55 +163,40 @@
         $A.util.removeClass(component.find("loanAmountElement"), 'slds-has-error');   
         $A.util.removeClass(component.find("systemCostElement"), 'slds-has-error');   
         $A.util.removeClass(component.find("incomeElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("creditHistoryElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("privacyPolicyElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("energyHistoryElement"), 'slds-has-error');   
 
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
 
-        if (lead.LASERCA__Home_Address__c != null 
-            && lead.LASERCA__Home_City__c != ''
-            && lead.FirstName != ''
-            && lead.LastName != ''
-            && lead.Email != ''
-            && lead.LASERCA__SSN__c != ''
-            && lead.Requested_Loan_Amount__c != null
-            && lead.Annual_Income_Currency__c != null
-            && lead.Credit_Check_Acknowledged__c == true
-            && lead.Privacy_Policy_Acknowledged__c == true
-            && lead.Utility_Bill_Access_Acknowledged__c == true) {
-            var Action = component.get("c.addNewLeadRecord");
-            Action.setParams({"newLead" : lead});
-            
-            Action.setCallback(this, function(resp) {
-                    if(resp.getState() == "SUCCESS") {
-                        component.set("v.newLead", resp.getReturnValue());
+        var Action = component.get("c.addNewLeadRecord");
+        Action.setParams({"newLead" : lead});
+        
+        Action.setCallback(this, function(resp) {
+            if(resp.getState() == "SUCCESS") {
+                component.set("v.newLead", resp.getReturnValue());
 
-                        $A.util.addClass(component.find("mslpAppbutton"), 'noDisplay'); 
-                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
-                        $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
-                        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
-                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
-                        $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
-                        $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
-                        $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
-                    } else {
-                        helper.stopSpinner(component, "leadSpinner");
-                        $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
+                $A.util.addClass(component.find("mslpAppbutton"), 'noDisplay'); 
+                $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+                $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
+                $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
+                $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
+                $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
+                $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
+                $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
+            } else {
+                helper.stopSpinner(component, "leadSpinner");
+                $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-                        var appEvent = $A.get("e.c:ApexCallbackError");
-                        appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "addCustomer",
-                                            "errors" : resp.getError()});
-                        appEvent.fire();
-                    }
-                }); 
-            $A.enqueueAction(Action);
-        } else {
-            alert("Please acknowledge our privacy policy, give BlueWave permission " +
-                  "to access credit history, energy history and fill out all of the fields on this form.");
-
-            helper.stopSpinner(component, 'leadSpinner');
-            $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
-        }
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "SLPAddCustomerController",
+                    "methodName" : "addCustomer",
+                    "errors" : resp.getError()});
+                appEvent.fire();
+            }
+        }); 
+        $A.enqueueAction(Action);        
     },
     
     checkCredit : function(component, event, helper) {

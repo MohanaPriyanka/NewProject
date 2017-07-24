@@ -171,6 +171,57 @@
         } else {
             return false;
         }
-    }                    
+    }, 
+
+    formInputIsNullString : function(component, helper, field, auraId, errorMessage, className, methodName, animation) {        
+        if (field == '') {
+            $A.util.addClass(component.find(auraId), 'slds-has-error');  
+            if (animation != null) {
+                $A.util.addClass(component.find(auraId), animation);                  
+            }
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : className,
+                                "methodName" : methodName,
+                                "errors" : errorMessage});
+            appEvent.fire();
+            return true;            
+        } else {
+            return false;
+        }
+    } ,
+
+    formInputIsNullNumber : function(component, helper, field, auraId, errorMessage,  className, methodName, animation) {
+        if (field == null) {
+            $A.util.addClass(component.find(auraId), 'slds-has-error');  
+            if (animation != null) {
+                $A.util.addClass(component.find(auraId), animation);                  
+            }
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : className,
+                                "methodName" : methodName,
+                                "errors" : errorMessage});
+            appEvent.fire();
+            return true;            
+        } else {
+            return false;
+        }
+    } ,  
+
+    formInputIsTrue : function(component, helper, field, auraId, errorMessage,  className, methodName, animation) {
+        if (!field) {
+            $A.util.addClass(component.find(auraId), 'slds-has-error');  
+            if (animation != null) {
+                $A.util.addClass(component.find(auraId), animation);                  
+            }
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : className,
+                                "methodName" : methodName,
+                                "errors" : errorMessage});
+            appEvent.fire();
+            return true;            
+        } else {
+            return false;
+        }
+    } ,                             
 })
 

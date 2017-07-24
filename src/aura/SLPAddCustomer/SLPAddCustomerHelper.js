@@ -46,37 +46,4 @@
             });
         $A.enqueueAction(action);
     },
-
-    stringInputIsNull : function(component, helper, field, auraId, errorMessage) {
-        if (field == '') {
-            $A.util.addClass(component.find(auraId), 'slds-has-error');  
-            $A.util.addClass(component.find(auraId), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : errorMessage});
-            appEvent.fire();
-            return true;            
-        } else {
-            return false;
-        }
-    } ,
-
-    numberInputIsNull : function(component, helper, field, auraId, errorMessage) {
-        if (field == null) {
-            $A.util.addClass(component.find(auraId), 'slds-has-error');  
-            $A.util.addClass(component.find(auraId), 'shake');  
-            
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : errorMessage});
-            appEvent.fire();
-            return true;            
-        } else {
-            return false;
-        }
-    } ,
-
 })
