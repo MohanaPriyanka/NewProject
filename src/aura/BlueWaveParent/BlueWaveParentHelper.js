@@ -131,36 +131,6 @@
         
         $A.enqueueAction(action); 
     },
-    
-    handleDateFormatting : function(component, attribute, dateInput, event) {
-        console.log(dateInput);
-        console.log(attribute);
-
-        var dateField = event.getSource().get("v.value");
-        var attribute2 = event.getSource().get("v.labelClass")   
-
-        console.log(event.getSource().get("v.value"));
-        console.log(attribute2);
-        alert(dateInput.match(/^\d{2}\/\d{2}$/));
-        //you'll need to verify that the text does not contain a slash already to avoid the program from entering in a double slash
-        if (dateInput.match(/^\d{2}$/) !== null) {
-            console.log('check1');
-            component.set(attribute, dateInput + "/");                
-        } else if (dateInput.match(/^\d{2}\/\d{2}$/) !== null) {
-            console.log('check2');
-            component.set(attribute, dateInput + "/");                
-        } else if (dateInput.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null) {
-            console.log('check3');
-            component.set(attribute, dateInput.substring(0,10));
-        }
-    } ,
-
-    getFormattingAttributes : function(component) {
-        var ltg = this;
-        return new Promise(function(resolve, reject) {
-            event.getSource().get("v.value");
-        })
-    } ,
 
     checkValue : function(str, max) {
       if (str.charAt(0) !== '0' || str == '00') {
@@ -169,6 +139,19 @@
         str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
       };
       return str;
-    }       
+    } ,
 
+    // For some reason, using this pattern in a lighting:input type=date doesn't work
+    // Assumes dateString comes from ui:inputDate, which uses format yyyy-mm-dd
+    // only validates format xxxx-xx-xx, but we can add checks for numbers, leap years,
+    // etc.
+    // See http://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
+    validDate : function(dateString) {
+        // First check for the pattern
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+            return true;
+        } else {
+            return false;
+        }
+    }           
 })

@@ -37,35 +37,20 @@
             }
         });
         $A.enqueueAction(actionGetTimeout);
-    },    
-
-    formatDate : function(component, event, helper) {
-        var dateField = event.getSource().get("v.value");
-        var attribute = event.getSource().get("v.labelClass");
-        if (dateField != null && attribute != null) {
-            console.log('consoleNll');
-            console.log(dateField);
-            console.log(event.getSource())
-            //helper.handleDateFormatting(component, attribute, dateField, event);
-        }
-    },  
-
-    formatDateOnChange : function(component, event, helper) {
-        var dateField = event.getSource().get("v.value");
-        var formattedDate = dateField.replace(/^([\d]{2})([\d]{2})([\d]{4})$/,"$1/$2/$3");  
-        component.set(event.getSource().get("v.labelClass"), formattedDate);                
-    },      
+    },        
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
         if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
+            $A.util.addClass(component.find("dateOfBirth"), 'slds-has-error');  
             var appEvent = $A.get("e.c:ApexCallbackError");
             appEvent.setParams({"className" : "SLPAddCustomerController",
                                 "methodName" : "addCustomer",
-                                "errors" : "Please enter a Date of Birth in the format Month/Day/Year. We saw a date of: " + lead.LASERCA__Birthdate__c});
+                                "errors" : "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c});
             appEvent.fire();
             return;
         }
+        $A.util.removeClass(component.find("dateOfBirth"), 'slds-has-error');          
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
 
@@ -86,21 +71,15 @@
             Action.setCallback(this, function(resp) {
                     if(resp.getState() == "SUCCESS") {
                         component.set("v.newLead", resp.getReturnValue());
-                        var inputForm = component.find("inputForm");
-                        var pullCreditButtons = component.find("pullCreditButtons");
-                        var mslpButton = component.find("mslpAppbutton");
-                        var addedCustomerConfirmCredit = component.find("addedCustomerConfirmCredit");
-                        var bwslButton = component.find("bwslAppButton");
-                        var avidiaLogo = component.find("avidiaLogo");
-                        var mslpDisclaimer = component.find("mslpDisclaimer");
 
-                        $A.util.addClass(mslpButton, 'noDisplayBar'); 
-                        $A.util.addClass(bwslButton, 'noDisplayBar');      
-                        $A.util.addClass(inputForm, 'noDisplayBar'); 
-                        $A.util.addClass(avidiaLogo, 'noDisplayBar');    
-                        $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
-                        $A.util.removeClass(pullCreditButtons, 'noDisplayBar');
-                        $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplay');
+                        $A.util.addClass(component.find("mslpAppbutton"), 'noDisplay'); 
+                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+                        $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
+                        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
+                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
+                        $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
+                        $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
+                        $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
                     } else {
                         helper.stopSpinner(component, "leadSpinner");
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
@@ -126,7 +105,7 @@
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
         $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
         $A.util.addClass(component.find("bwslAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("customerEmailButton"), 'noDisplayBar'); 
+        $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
 
         helper.startSpinner(component, 'creditSpinner');
 
