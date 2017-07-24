@@ -119,11 +119,11 @@
         <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Customer Information </h3> </div>
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
-            <div aura:id="firstNameElement" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue  "> <b>First Name</b> </label>
               <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
             </div> 
-            <div aura:id="lastNameElement" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"> <b>Last Name</b></label>
               <ui:inputText aura:id="lastName" class="slds-input" value="{!v.newLead.LastName}"/>          
             </div>   
@@ -133,11 +133,11 @@
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
-            <div aura:id="customerEmail" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="customerEmail" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Email</b></label>
               <ui:inputText aura:id="email" class="slds-input" value="{!v.newLead.Email}" />          
             </div> 
-            <div class="slds-form-element slds-p-horizontal--small animated">
+            <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Customer Date of Birth</b></label>
               <div aura:id="dateOfBirth" class="slds-form-element__control">              
                 <c:BlueWaveDate value="{!v.newLead.LASERCA__Birthdate__c}"
@@ -151,11 +151,11 @@
         <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
-            <div aura:id="homeAddressElement" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="homeAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Street Address</b></label>
               <ui:inputText aura:id="street" class="slds-input" value="{!v.newLead.LASERCA__Home_Address__c}" />          
             </div>                    
-            <div aura:id="cityElement" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="cityElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>City</b></label>
               <ui:inputText aura:id="city" 
                             class="slds-input"       
@@ -206,11 +206,11 @@
         <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> Credit Information </h3> </div>        
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                   
-            <div aura:id="ssnElement" class="slds-form-element slds-p-horizontal--small animated ">
+            <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated ">
               <label class="slds-form-element__label proximaNovaBlue"><b>Social Security Number</b></label>
               <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
             </div> 
-            <div aura:id="incomeElement" class="slds-form-element slds-p-horizontal--small animated">
+            <div aura:id="incomeElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>
               <ui:inputCurrency aura:id="income" class="slds-input" value="{!v.newLead.Annual_Income_Currency__c}" required="true"  />  
             </div> 
@@ -268,7 +268,7 @@
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                 
-            <div class="slds-form-element slds-p-horizontal--small paddingTop1x5 noDisplay">
+            <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small paddingTop1x5 noDisplay">
               <label class="slds-checkbox--toggle slds-grid">
                 <label class="slds-form-element__label " for="mslpToggle">MSLP</label>                        
                 <ui:inputCheckbox aura:id="mslpToggle" class="" name="mslpToggle" value="{!v.newLead.DOER_Solar_Loan__c}" required="true"  />
@@ -309,51 +309,51 @@
         <fieldset class="slds-form--compound paddingTop1x5">
           <div class="slds-form-element__group">
             <div class="slds-form-element__row">
-              <div class="slds-form-element slds-p-horizontal--small ">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small ">
                 <label class="slds-form-element__label proximaNovaBlue"><b>First Name</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.FirstName}"  />
               </div> 
-              <div class="slds-form-element slds-p-horizontal--small ">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small ">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Last Name</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.LastName}"/>
               </div>
             </div>
             <div class="slds-form-element__row">
-              <div class="slds-form-element slds-p-horizontal--small">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Email</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.Email}" />
               </div>
-              <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-grid--align-center ">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Date of Birth</b></label>
                 <ui:outputDate class="slds-outputput" value="{!v.newLead.LASERCA__Birthdate__c}"/>
               </div>
             </div>
             <div class="slds-form-element__row">
-              <div class="slds-form-element slds-p-horizontal--small">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Street Address</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_Address__c}"/>
               </div>
-              <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-grid--align-center ">
                 <label class="slds-form-element__label proximaNovaBlue"><b>City</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_City__c}"/>
               </div>
             </div>
             <div class="slds-form-element__row">
-              <div class="slds-form-element slds-p-horizontal--small paddingTop2">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small paddingTop2">
                 <label class="slds-form-element__label proximaNovaBlue"><b>State</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_State__c}"/>
               </div>
-              <div class="slds-form-element slds-p-horizontal--small">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Zip Code</b></label>
                 <ui:outputText class="slds-output" value="{!v.newLead.LASERCA__Home_Zip__c}"/>
               </div>
             </div>
             <div class="slds-form-element__row">
-              <div class="slds-form-element slds-p-horizontal--small">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
                 <ui:outputCurrency class="slds-output" value="{!v.newLead.Requested_Loan_Amount__c}"/>
               </div>
-              <div class="slds-form-element slds-p-horizontal--small">
+              <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small">
                 <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>
                 <ui:outputCurrency class="slds-output" value="{!v.newLead.Annual_Income_Currency__c}"/>
               </div>
