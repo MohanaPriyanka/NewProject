@@ -25,9 +25,9 @@
 
         List<Case> newcases = new List<Case>();
 
-        for (Task triggercase : triggeredvalues) {
+        Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care').getRecordTypeId();
 
-        	Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care Case').getRecordTypeId();
+        for (Task triggercase : triggeredvalues) {
 
         	String taskID = String.valueOf(triggercase.WhoID);
         	Case newcase = new Case(
