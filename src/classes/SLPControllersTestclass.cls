@@ -197,7 +197,6 @@ public without sharing class SLPControllersTestclass {
     }     
 
     @isTest static void testGetCustomerProducts() {
-    	Test.startTest();
     	List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
@@ -206,14 +205,16 @@ public without sharing class SLPControllersTestclass {
     	insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+
         for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName,
-                            (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
+                          (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead 
                           WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
             leadMap.put(lead.FirstName, lead);
         }
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
+    	Test.startTest();
     	System.runAs(partnerUser) {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
@@ -226,9 +227,9 @@ public without sharing class SLPControllersTestclass {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
             System.assertEquals(0, productReturnList.size());
         }
-            List<LASERCA__Personal_Credit_Report__c> creditReportList = leadMap.get('coApplicantLead').LASERCA__Personal_Credit_Reports__r;
-            creditReportList[0].Adjusted_Income__c = 500000;
-            update creditReportList[0];
+        List<LASERCA__Personal_Credit_Report__c> creditReportList = leadMap.get('coApplicantLead').LASERCA__Personal_Credit_Reports__r;
+        creditReportList[0].Adjusted_Income__c = 500000;
+        update creditReportList[0];
 
         System.runAs(partnerUser) {
             productReturnList.clear();
@@ -236,13 +237,13 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(2, productReturnList.size());
     	}   
 
-            for(LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
-                if(creditReport.LASERCA__Contact__c == null) {
-                    creditReport.Adjusted_DTI__c = 20;
-                }
+        for(LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
+            if(creditReport.LASERCA__Contact__c == null) {
+                creditReport.Adjusted_DTI__c = 20;
             }
-            creditReportList[0].Adjusted_Income__c = 0;
-            update creditReportList;
+        }
+        creditReportList[0].Adjusted_Income__c = 0;
+        update creditReportList;
 
         System.runAs(partnerUser) {
             productReturnList.clear();
