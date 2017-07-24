@@ -148,10 +148,29 @@
     // See http://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
     validDate : function(dateString) {
         // First check for the pattern
-        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+        var format = /^\d{2}\/\d{2}\/\d{4}$/;
+        return format.test(dateString);
+    } ,
+
+    validEmail : function(emailString) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(emailString);
+    } ,
+
+    validSSN : function(ssnString) {
+        if (ssnString.length == 9) {
             return true;
         } else {
             return false;
         }
-    }           
+    } ,
+
+    validZipCode : function(zipCode) {
+        if (zipCode.length == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }                    
 })
+

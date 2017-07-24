@@ -43,6 +43,8 @@
         var lead = component.get("v.newLead");
         if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
             $A.util.addClass(component.find("dateOfBirth"), 'slds-has-error');  
+            $A.util.addClass(component.find("dateOfBirth"), 'shake');  
+
             var appEvent = $A.get("e.c:ApexCallbackError");
             appEvent.setParams({"className" : "SLPAddCustomerController",
                                 "methodName" : "addCustomer",
@@ -50,7 +52,96 @@
             appEvent.fire();
             return;
         }
-        $A.util.removeClass(component.find("dateOfBirth"), 'slds-has-error');          
+        if (!helper.validEmail(lead.Email)) {
+            $A.util.addClass(component.find("customerEmail"), 'slds-has-error'); 
+            $A.util.addClass(component.find("customerEmail"), 'shake');  
+
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "addCustomer",
+                                "errors" : "Please enter a valid email address. The email you entered is: " + lead.Email});
+            appEvent.fire();
+            return;
+        }  
+        if (!helper.validSSN(lead.LASERCA__SSN__c)) {
+            $A.util.addClass(component.find("ssnElement"), 'slds-has-error');  
+            $A.util.addClass(component.find("ssnElement"), 'shake');  
+
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "addCustomer",
+                                "errors" : "Please enter a valid 9 digit Social Security Number."});
+            appEvent.fire();
+            return;
+        }             
+
+        if(helper.stringInputIsNull(component, helper, lead.FirstName, "firstNameElement", 
+          "Please enter the Customer's First Name.")) {
+            return;
+        }    
+
+        if(helper.stringInputIsNull(component, helper, lead.FirstName, "lastNameElement", 
+          "Please enter the Customer's Last Name.")) {
+            return;
+        }     
+
+        if(helper.stringInputIsNull(component, helper, lead.LASERCA__Home_Address__c, "homeAddressElement", 
+          "Please enter a valid Home Address")) {
+            return;
+        }                           
+
+        if(lead.LASERCA__Home_State__c == "Select") {
+            $A.util.addClass(component.find("stateElement"), 'slds-has-error');  
+            $A.util.addClass(component.find("stateElement"), 'shake');  
+
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "addCustomer",
+                                "errors" : "Please enter a valid State."});
+            appEvent.fire();
+            return; 
+        }     
+
+        if (!helper.validZipCode(lead.LASERCA__Home_Zip__c)) {
+            $A.util.addClass(component.find("zipCodeElement"), 'slds-has-error');  
+            $A.util.addClass(component.find("zipCodeElement"), 'shake');  
+
+            var appEvent = $A.get("e.c:ApexCallbackError");
+            appEvent.setParams({"className" : "SLPAddCustomerController",
+                                "methodName" : "addCustomer",
+                                "errors" : "Please enter a valid 5 digit Zip Code."});
+            appEvent.fire();
+            return;
+        }    
+
+        if(helper.numberInputIsNull(component, helper, lead.Requested_Loan_Amount__c, "loanAmountElement", 
+          "Please enter a Requested Loan Amount.")) {
+            return;
+        }
+
+        if(helper.numberInputIsNull(component, helper, lead.System_Cost__c, "systemCostElement", 
+          "Please enter a System Cost.")) {
+            return;
+        }  
+
+        if(helper.numberInputIsNull(component, helper, lead.Annual_Income_Currency__c, "incomeElement", 
+          "Please enter an Estimated Annual Income.")) {
+            return;
+        }                
+
+        //remove any error highlights that may have been added in the error handling above.
+        $A.util.removeClass(component.find("dateOfBirth"), 'slds-has-error');       
+        $A.util.removeClass(component.find("customerEmail"), 'slds-has-error');   
+        $A.util.removeClass(component.find("ssnElement"), 'slds-has-error');  
+        $A.util.removeClass(component.find("firstNameElement"), 'slds-has-error'); 
+        $A.util.removeClass(component.find("lastNameElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("homeAddressElement"), 'slds-has-error');           
+        $A.util.removeClass(component.find("stateElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("zipCodeElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("loanAmountElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("systemCostElement"), 'slds-has-error');   
+        $A.util.removeClass(component.find("incomeElement"), 'slds-has-error');   
+
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
 
