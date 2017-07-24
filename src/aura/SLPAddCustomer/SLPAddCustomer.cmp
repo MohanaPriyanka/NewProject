@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAddCustomer" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes"  extends="c:BlueWaveParent" controller="SLPAddCustomer" access="global">
   <ltng:require styles="{!$Resource.animations}" />   
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/> 
@@ -166,13 +166,40 @@
               <label class="slds-form-element__label" for="input-03">Email</label>
               <ui:inputText aura:id="email" class="slds-input" value="{!v.newLead.Email}" />          
             </div> 
+
+
             <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
-              <label class="slds-form-element__label" for="input-03">Date of Birth</label>
-              <ui:inputDate aura:id="dateofBirth" 
-                            class="slds-input" 
-                            format="MM/DD/YYYY"
-                            displayDatePicker="false"
-                            value="{!v.newLead.LASERCA__Birthdate__c}"/>
+              <!-- <label class="slds-form-element__label" for="input-03">Date of Birth</label> -->
+              <!--               <input aura:id="dateOfBirth" 
+              type="date" 
+              class="slds-input" 
+              name="dateOfBirth"
+              value="{!v.newLead.LASERCA__Birthdate__c}"/>      -->   
+              <div class="slds-form-element">
+                <label class="slds-form-element__label slds-align-middle" for="form-help">Customer Date of Birth</label>
+                <div class="slds-form-element__icon">
+                  <button aria-describedby="help" class="slds-button slds-button_icon">
+                    <div class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                     <lightning:icon iconName="utility:info" size="xx-small"/>
+                   </div>
+                   <span class="slds-assistive-text">Help</span>
+                 </button>
+               </div>
+               <div class="slds-form-element__control">
+                <ui:inputDate aura:id="dateofBirth" 
+                  class="slds-input" 
+                  labelClass="v.newLead.LASERCA__Birthdate__c"
+                  format="MM/DD/YYYY"
+                  displayDatePicker="false"
+                  keypress="{!c.formatDate}" 
+                  value="{!v.newLead.LASERCA__Birthdate__c}"/>
+                </div>
+              </div>
+              <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left noDisplay" id="help" role="tooltip" style="position: absolute; bottom: 75px; left: 165px; margin-left: -1rem; width: 20rem;">
+                <div class="slds-popover__body slds-text-longform">
+                  <p>Please enter the customer's date of birth.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -202,56 +229,9 @@
                               class="slds-input" 
                               value="{!v.newLead.LASERCA__Home_State__c}" >
                   <ui:inputSelectOption text="Select"/>                        
-                  <ui:inputSelectOption text="AK"/>
-                  <ui:inputSelectOption text="AL"/>
-                  <ui:inputSelectOption text="AR"/>
-                  <ui:inputSelectOption text="AZ"/>
-                  <ui:inputSelectOption text="CA"/>
-                  <ui:inputSelectOption text="CO"/>
-                  <ui:inputSelectOption text="CT"/>
-                  <ui:inputSelectOption text="DE"/>
-                  <ui:inputSelectOption text="FL"/>
-                  <ui:inputSelectOption text="GA"/>
-                  <ui:inputSelectOption text="HI"/>
-                  <ui:inputSelectOption text="IA"/>
-                  <ui:inputSelectOption text="ID"/>
-                  <ui:inputSelectOption text="IL"/>
-                  <ui:inputSelectOption text="IN"/>
-                  <ui:inputSelectOption text="KS"/>
-                  <ui:inputSelectOption text="KY"/>
-                  <ui:inputSelectOption text="LA"/>
                   <ui:inputSelectOption text="MA"/>
-                  <ui:inputSelectOption text="MD"/>
-                  <ui:inputSelectOption text="ME"/>
-                  <ui:inputSelectOption text="MI"/>
-                  <ui:inputSelectOption text="MN"/>
-                  <ui:inputSelectOption text="MO"/>
-                  <ui:inputSelectOption text="MS"/>
-                  <ui:inputSelectOption text="MT"/>
-                  <ui:inputSelectOption text="NC"/>
-                  <ui:inputSelectOption text="ND"/>
-                  <ui:inputSelectOption text="NE"/>
-                  <ui:inputSelectOption text="NH"/>
-                  <ui:inputSelectOption text="NJ"/>
-                  <ui:inputSelectOption text="NM"/>
-                  <ui:inputSelectOption text="NV"/>
-                  <ui:inputSelectOption text="NY"/>
-                  <ui:inputSelectOption text="OH"/>
-                  <ui:inputSelectOption text="OK"/>
-                  <ui:inputSelectOption text="OR"/>
-                  <ui:inputSelectOption text="PA"/>
-                  <ui:inputSelectOption text="RI"/>
+                  <ui:inputSelectOption text="NC"/>                  
                   <ui:inputSelectOption text="SC"/>
-                  <ui:inputSelectOption text="SD"/>
-                  <ui:inputSelectOption text="TN"/>
-                  <ui:inputSelectOption text="TX"/>
-                  <ui:inputSelectOption text="UT"/>
-                  <ui:inputSelectOption text="VA"/>
-                  <ui:inputSelectOption text="VT"/>
-                  <ui:inputSelectOption text="WA"/>
-                  <ui:inputSelectOption text="WI"/>
-                  <ui:inputSelectOption text="WV"/>
-                  <ui:inputSelectOption text="WY"/>
               </ui:inputSelect>
             </div>                  
             <div class="slds-form-element slds-p-horizontal--small">

@@ -131,5 +131,44 @@
         
         $A.enqueueAction(action); 
     },
+    
+    handleDateFormatting : function(component, attribute, dateInput, event) {
+        console.log(dateInput);
+        console.log(attribute);
+
+        var dateField = event.getSource().get("v.value");
+        var attribute2 = event.getSource().get("v.labelClass")   
+
+        console.log(event.getSource().get("v.value"));
+        console.log(attribute2);
+        alert(dateInput.match(/^\d{2}\/\d{2}$/));
+        //you'll need to verify that the text does not contain a slash already to avoid the program from entering in a double slash
+        if (dateInput.match(/^\d{2}$/) !== null) {
+            console.log('check1');
+            component.set(attribute, dateInput + "/");                
+        } else if (dateInput.match(/^\d{2}\/\d{2}$/) !== null) {
+            console.log('check2');
+            component.set(attribute, dateInput + "/");                
+        } else if (dateInput.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null) {
+            console.log('check3');
+            component.set(attribute, dateInput.substring(0,10));
+        }
+    } ,
+
+    getFormattingAttributes : function(component) {
+        var ltg = this;
+        return new Promise(function(resolve, reject) {
+            event.getSource().get("v.value");
+        })
+    } ,
+
+    checkValue : function(str, max) {
+      if (str.charAt(0) !== '0' || str == '00') {
+        var num = parseInt(str);
+        if (isNaN(num) || num <= 0 || num > max) num = 1;
+        str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+      };
+      return str;
+    }       
 
 })

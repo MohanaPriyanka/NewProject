@@ -39,6 +39,23 @@
         $A.enqueueAction(actionGetTimeout);
     },    
 
+    formatDate : function(component, event, helper) {
+        var dateField = event.getSource().get("v.value");
+        var attribute = event.getSource().get("v.labelClass");
+        if (dateField != null && attribute != null) {
+            console.log('consoleNll');
+            console.log(dateField);
+            console.log(event.getSource())
+            //helper.handleDateFormatting(component, attribute, dateField, event);
+        }
+    },  
+
+    formatDateOnChange : function(component, event, helper) {
+        var dateField = event.getSource().get("v.value");
+        var formattedDate = dateField.replace(/^([\d]{2})([\d]{2})([\d]{4})$/,"$1/$2/$3");  
+        component.set(event.getSource().get("v.labelClass"), formattedDate);                
+    },      
+
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
         if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
@@ -83,7 +100,7 @@
                         $A.util.addClass(avidiaLogo, 'noDisplayBar');    
                         $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
                         $A.util.removeClass(pullCreditButtons, 'noDisplayBar');
-                        $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplayBar');
+                        $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplay');
                     } else {
                         helper.stopSpinner(component, "leadSpinner");
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
