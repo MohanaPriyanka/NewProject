@@ -245,7 +245,7 @@ public without sharing class LoanHandler{
     public void createLoan(List<Lead> newLeadList){
         Loan_Traunch__c tranchePending = [SELECT Id, Name 
                                           FROM Loan_Traunch__c 
-                                          WHERE Name = 'Tranche Assignment Pending'];
+                                          WHERE Name = 'Tranche Assignment Pending' LIMIT 1];
         List<Loan__c> newLoanList = new List<Loan__c>();
         integer i;
         for (i = 0; i < newLeadList.size(); i++){

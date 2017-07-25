@@ -12,8 +12,13 @@
   <aura:attribute name="combinedIncome" type="Decimal"/>
   <aura:attribute name="mainPCRAttachment" type="Attachment"/>
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
+  <aura:attribute name="waiting" type="Boolean" default="false"/>
 
-  <c:LightningErrorHandler/>
+  <c:LightningErrorHandler />
+
+  <aura:if isTrue="{!v.waiting}">
+    <lightning:spinner alternativeText="Saving..." class="slds-is-fixed" size="medium"/>
+  </aura:if>
 
   <div class="slds-grid slds-grid_align-spread">
     <div class="slds-col slds-align-middle">
@@ -35,8 +40,7 @@
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
       <div class = "darkCell slds-col slds-size--1-of-1">
         <strong>Avidia Review Status:
-          <ui:inputSelect class="dynamic" 
-                          aura:id="AvidiaReviewStatus" 
+          <ui:inputSelect aura:id="AvidiaReviewStatus" 
                           value="{!v.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" 
                           required="true" 
                           change="{!c.updateReviewStatus}"/>
@@ -44,17 +48,22 @@
       </div>
     </div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
-      <div class = "lightCell slds-col slds-size--1-of-5">
+      <div class = "lightCell slds-col slds-size--1-of-6">
         Loan Amount:
         <br></br>
         <ui:outputCurrency value="{!v.lead.Requested_Loan_Amount__c}"/>
       </div>
-      <div class = "lightCell slds-col slds-size--1-of-5">
+      <div class = "lightCell slds-col slds-size--1-of-6">
+        Payment Amount:
+        <br></br>
+        <ui:outputCurrency value="{!v.lead.Monthly_Payment_IBLS__c}"/>
+      </div>
+      <div class = "lightCell slds-col slds-size--1-of-6">
         System Cost:
         <br></br>
         <ui:outputCurrency value="{!v.lead.System_Cost__c}"/>
       </div>
-      <div class = "lightCell slds-col slds-size--1-of-5">
+      <div class = "lightCell slds-col slds-size--1-of-6">
         <aura:if isTrue="{!v.hasCoApp}">
           Max FICO:
           <aura:set attribute="else">FICO:</aura:set>
@@ -62,7 +71,7 @@
         <br></br>
         <ui:outputText value="{!v.bestFICO}"/>
       </div>
-      <div class = "lightCell slds-col slds-size--1-of-5">
+      <div class = "lightCell slds-col slds-size--1-of-6">
         <aura:if isTrue="{!v.hasCoApp}">
           Combined DTI After:
           <aura:set attribute="else">DTI After:</aura:set>
@@ -74,7 +83,7 @@
                                      maximumFractionDigits="2"/>
         </aura:if>
       </div>
-      <div class = "lightCell slds-col slds-size--1-of-5">
+      <div class = "lightCell slds-col slds-size--1-of-6">
         <aura:if isTrue="{!v.hasCoApp}">
           Combined Income:
           <aura:set attribute="else">Income:</aura:set>
@@ -230,8 +239,7 @@
       <div class="slds-col slds-size--1-of-1">
         <lightning:input type="file" label="Attachment" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
         <div aura:id="uploading" class="notUploading">
-            <img src="/resource/paura__images/loading-gray.gif" alt="uploading" class="small-spinner" /> Saving...
-    	</div>        
+    	</div>
       </div>
     </div>
   </div>
