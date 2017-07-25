@@ -372,34 +372,7 @@
                                   </div>
                                 </div>
                               </fieldset>  
-                            </aura:if> 
-                            <hr></hr>
-                            <fieldset class="slds-form--compound ">
-                              <div class="slds-form-element__group">
-                                <div class="slds-form-element__row">
-                                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center noDisplay">    
-                                  </div>              
-                                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center slds-p-horizontal--small">
-                                    <label class="slds-form-element__label" for="input-03">Mechanical Installation Date</label>
-                                    <ui:inputDate aura:id="MechInstallDate" 
-                                      class="slds-input" 
-                                      format="MM/DD/YYYY"
-                                      displayDatePicker="false"
-                                      value="{!v.customerInformation.Mechanical_Installation_Date__c}"                         
-                                      />       
-                                    </div>                                                                                      
-                                    <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center slds-p-horizontal--small">
-                                      <label class="slds-form-element__label" for="input-03">Interconnection Date</label>
-                                      <ui:inputDate aura:id="interconnectionDateChanger" 
-                                        class="slds-input" 
-                                        format="MM/DD/YYYY"
-                                        displayDatePicker="false"                                        
-                                        value="{!v.customerInformation.Interconnection_Date__c}"                         
-                                        />       
-                                      </div>                                           
-                                    </div>
-                                  </div>
-                                </fieldset>                                                   
+                            </aura:if>                                                   
                               </div>
                               <div class="slds-modal__footer">
                                 <lightning:button aura:id="closeCustomerModalButton" class="slds-button " onclick="{!c.closeCustomerModal}" label="Close"></lightning:button>
