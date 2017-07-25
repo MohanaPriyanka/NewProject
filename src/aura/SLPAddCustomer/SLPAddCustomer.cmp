@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes"  extends="c:BlueWaveParent" controller="SLPAddCustomer" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAddCustomer" access="global">
   <ltng:require styles="{!$Resource.animations}" />   
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/> 
@@ -96,11 +96,11 @@
        </div>  
        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <div aura:id="mslpAppButton"  class=" slds-m-bottom_medium slds-m-top_medium noDisplay">
-          <ui:button label="Apply for an MCEC Solar Loan" class="slds-button slds-button--brand slds-m-bottom_small" press="{!c.changeApplicationToMSLP}">
+          <ui:button label="Apply for an MCEC Solar Loan" class="slds-button slds-button--brand slds-m-bottom_small proximaNovaWhite" press="{!c.changeApplicationToMSLP}">
           </ui:button>
         </div>         
         <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
-          <ui:button label="Apply for BlueWave's Solar Loan" class="slds-button slds-button--brand " press="{!c.changeApplicationToBWSL}">
+          <ui:button label="Apply for BlueWave's Solar Loan" class="slds-button slds-button--brand proximaNovaWhite " press="{!c.changeApplicationToBWSL}">
           </ui:button>
         </div>
       </aura:if>     
@@ -148,9 +148,9 @@
       </fieldset>
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
-          <div class="slds-form-element__row">
+          <div class="slds-form-element__row">         
             <div aura:id="customerEmail" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Email Address</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Email Address</b></label>              
               <ui:inputText aura:id="email" class="slds-input" value="{!v.newLead.Email}" />          
             </div> 
             <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
@@ -194,13 +194,13 @@
                   <ui:inputSelectOption text="SC"/>
               </ui:inputSelect>
             </div>                  
-            <div aura:id="zipCodeElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Zip Code</b></label>
-              <ui:inputText aura:id="zip" class="slds-input" value="{!v.newLead.LASERCA__Home_Zip__c}"  />          
+            <div aura:id="zipCodeElement" class="slds-form-element slds-p-horizontal--small animated">                
+              <label class="slds-form-element__label proximaNovaBlue"><b>Zip Code</b></label>              
+              <ui:inputText aura:id="zip" class="slds-input" value="{!v.newLead.LASERCA__Home_Zip__c}"  />                                 
             </div>                     
           </div>
         </div>
-      </fieldset>
+      </fieldset>    
       <hr></hr>
       <fieldset class="slds-form--compound">
         <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Loan Information </h3></b> </div>        
@@ -208,11 +208,27 @@
           <div class="slds-form-element__row">
             <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
-              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />          
-            </div>                                      
+              <div class="slds-form-element__control">
+              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />     
+              <c:BlueWaveInputToolTip icon="utility:info"
+                                      assistiveText = "Help" 
+                                      buttonPixelsTop = "-72px"
+                                      buttonPixelsLeft = "183.5px"
+                                      toolTipPixelsTop = "-150px"
+                                      toolTipPixelsLeft = "168px"                                      
+                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their system's before applying for a loan." />                     
+              </div>
+            </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
-              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />          
+              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
+              <c:BlueWaveInputToolTip icon="utility:info"
+                                      assistiveText = "Help" 
+                                      buttonPixelsTop = "-72px"
+                                      buttonPixelsLeft = "151px"
+                                      toolTipPixelsTop = "-160px"
+                                      toolTipPixelsLeft = "143px"                                      
+                                      helpText = "Please provide us with this applicant's total cost of their system. Please keep in mind that this is the total cost of the system and inclusive of any down payments this applicant may have made or plans to make. This field does not represent the value in which the customer is applying for financing for." />                        
             </div>             
           </div>
         </div>
@@ -225,10 +241,24 @@
             <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated ">
               <label class="slds-form-element__label proximaNovaBlue"><b>Social Security Number</b></label>
               <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
+              <c:BlueWaveInputToolTip icon="utility:info"
+                                      assistiveText = "Help" 
+                                      buttonPixelsTop = "-72px"
+                                      buttonPixelsLeft = "175px"
+                                      toolTipPixelsTop = "-85px"
+                                      toolTipPixelsLeft = "170px"                                      
+                                      helpText = "The customer's social security number is 100% private and secure. We collect his information in order to run a credit check on our customers." />                  
             </div> 
             <div aura:id="incomeElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>           
               <ui:inputCurrency aura:id="income" class="slds-input" value="{!v.newLead.Annual_Income_Currency__c}" required="true"  />  
+              <c:BlueWaveInputToolTip icon="utility:info"
+                                      assistiveText = "Help" 
+                                      buttonPixelsTop = "-72px"
+                                      buttonPixelsLeft = "186.5px"
+                                      toolTipPixelsTop = "-83px"
+                                      toolTipPixelsLeft = "178px"                                      
+                                      helpText = "Please provide us with this applicant's estimated total income. Proof of income will come at a later stage." />                    
             </div> 
           </div>     
           <div class="slds-form-element__row">                   

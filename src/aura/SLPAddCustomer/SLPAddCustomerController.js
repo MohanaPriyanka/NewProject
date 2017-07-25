@@ -123,6 +123,8 @@
             return;
         }    
 
+        $A.util.addClass(component.find("loanAmountElement"), 'slds-has-error');  
+
         if(helper.formInputIsNullNumber(component, helper, lead.Requested_Loan_Amount__c, "loanAmountElement", 
           "Please enter the Customer's Requested Loan Amount.", "SLPAddCustomerController", "addCustomer", "shake")) {
             return;
@@ -368,7 +370,5 @@
             }
         });                                                   
         $A.enqueueAction(actionSendApp);               
-    },         
-
-    
+    },      
 })
