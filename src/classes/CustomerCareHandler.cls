@@ -8,42 +8,38 @@
  * Test: CustomerCareHandlerTest
  *************************************************************************************/
 
- public class CustomerCareHandler {
- 	public  void createCases (List<Task> updatedTasks, Map <Id,Task> oldTaskMap) {
- 		
- 		List <Task> triggeredvalues = new List <Task> ();
+public class CustomerCareHandler {
+    public  void createCases (List<Task> updatedTasks, Map <Id,Task> oldTaskMap) {
+        List <Task> triggeredvalues = new List <Task> ();
 
         //Check if old value = new value in order to concentrate on tasks that have been updated 
-        
         for (Task checkValue : updatedTasks) {
             if (oldTaskMap.get(checkValue.Id).Customer_Care_Case__c != checkValue.Customer_Care_Case__c) {
                 triggeredvalues.add(checkvalue);
             }
         }
 
-      List<Case> newcases = new List<Case>();
+        List<Case> newCases = new List<Case>();
 
-      Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care').getRecordTypeId();
+        Id ccRecordTypeId = 
+            Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care').getRecordTypeId();
 
-      for (Task triggercase : triggeredvalues) {
-
-       String taskID = String.valueOf(triggercase.WhoID);
-       Case newcase = new Case(
-          Subject = triggercase.Subject,
-          Status = 'New',
-          ContactId = (taskID.startsWith('003')?triggercase.WhoId:null),
-          Lead_Lookup__c = (taskID.startsWith('00Q')?triggercase.WhoId:null),
-          RecordTypeId = ccRecordTypeId
-          );
+        for (Task triggerCase : triggeredvalues) {
+            String taskID = String.valueOf(triggerCase.WhoID);
+            Case newCase = new Case(Subject = triggerCase.Subject,
+                                    Status = 'New',
+                                    ContactId = (taskID.startsWith('003')?triggerCase.WhoId:null),
+                                    Lead_Lookup__c = (taskID.startsWith('00Q')?triggerCase.WhoId:null),
+                                    RecordTypeId = ccRecordTypeId);
 
             // Set Unique ID field on task object in order for javascript button to open new case in window
-            String uniqueID = newcase.Id;
-            triggercase.Customer_Case_Unique_ID__c = uniqueID; 
+            String uniqueID = newCase.Id;
+            triggerCase.Customer_Case_Unique_ID__c = uniqueID; 
 
-            newcases.add(newcase);
+            newCases.add(newCase);
         }
 
-        insert newcases;
+        insert newCases;
     }
 
 
