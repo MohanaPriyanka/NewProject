@@ -14,29 +14,27 @@
  		List <Task> triggeredvalues = new List <Task> ();
 
         //Check if old value = new value in order to concentrate on tasks that have been updated 
-        for (Task checkvalue : updatedTasks) {
-        	String newvalueID = checkvalue.Id;
-        	Boolean newbox = checkvalue.Customer_Care_Case__c;
-        	Boolean oldbox = oldTaskMap.get(newvalueId).Customer_Care_Case__c;
-        	if (newbox != oldbox){
-        		triggeredvalues.add(checkvalue);
-        	}
+        
+        for (Task checkValue : updatedTasks) {
+            if (oldTaskMap.get(checkValue.Id).Customer_Care_Case__c != checkValue.Customer_Care_Case__c) {
+                triggeredvalues.add(checkvalue);
+            }
         }
 
-        List<Case> newcases = new List<Case>();
+      List<Case> newcases = new List<Case>();
 
-        Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care').getRecordTypeId();
+      Id ccRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Customer Care').getRecordTypeId();
 
-        for (Task triggercase : triggeredvalues) {
+      for (Task triggercase : triggeredvalues) {
 
-        	String taskID = String.valueOf(triggercase.WhoID);
-        	Case newcase = new Case(
-        		Subject = triggercase.Subject,
-        		Status = 'New',
-        		ContactId = (taskID.startsWith('003')?triggercase.WhoId:null),
-        		Lead_Lookup__c = (taskID.startsWith('00Q')?triggercase.WhoId:null),
-        		RecordTypeId = ccRecordTypeId
-        		);
+       String taskID = String.valueOf(triggercase.WhoID);
+       Case newcase = new Case(
+          Subject = triggercase.Subject,
+          Status = 'New',
+          ContactId = (taskID.startsWith('003')?triggercase.WhoId:null),
+          Lead_Lookup__c = (taskID.startsWith('00Q')?triggercase.WhoId:null),
+          RecordTypeId = ccRecordTypeId
+          );
 
             // Set Unique ID field on task object in order for javascript button to open new case in window
             String uniqueID = newcase.Id;
