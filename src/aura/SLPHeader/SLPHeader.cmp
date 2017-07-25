@@ -1,29 +1,48 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="NavHeaderController">
-    <aura:attribute name="userName" type="String"  />
-    <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />         
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="userName" type="String"  />
+  <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />         
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
 
-     <style type="text/css">
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNova {
-            font-family: proximaNovaFont;    
-      		color: #FFFFFF;
-         	font-size:100%;
-        }
+  <style type="text/css">
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNova {
+    font-family: proximaNovaFont;    
+    color: #FFFFFF;
+    font-size:100%;
+    }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }  
   </style> 
-	<div aura:id="header" class="header gradLeftRight ">
+  <div aura:id="header" class="header gradLeftRight ">
     <a href="/slportal/s/slpdashboard">
       <div class="w3-container">
         <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
       </div>
     </a>
-        <div class="user"><a href="accountinfo"><h2 class="username fadeIn">{!v.userName}</h2></a>
-            <img src="{!$Resource.Gear}" class="gearimage"/>
-        </div>
-   	</div>
-    <!--<div style="clear:both;dispay:none;" />-->
+    <div class="user">
+      <div class="slds-dropdown-trigger">
+        <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
+          <lightning:icon iconName="utility:down" size="small"/>  
+          <span class="slds-assistive-text">Options</span>
+        </button>
+        <div class="slds-dropdown slds-dropdown_right slds-dropdown_small">
+          <ul class="slds-dropdown__list" role="menu">
+            <li class="slds-dropdown__item" role="presentation">
+              <a href="/slportal/secur/logout.jsp" role="menuitem" tabindex="0" >
+               <span class="slds-truncate proximaNovaDataStream" title="Table View"><b>Logout</b></span>
+               <lightning:icon iconName="utility:logout" size="small"/>  
+             </a>
+           </li>
+         </ul>
+       </div>
+     </div>
+   </div>
+ </div>
 </aura:component>

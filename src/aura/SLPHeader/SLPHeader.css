@@ -321,9 +321,15 @@
 
 
 .THIS .user {
-    float:right;
-    margin-top: 20px;
-	margin-right: 15px;
+  float:right;
+  margin-top: 20px;
+  margin-right: 15px;
+}
+
+.THIS .userMenu {
+  float:right;
+  margin-top: 20px;
+  margin-right: 5%;
 }
 
 .THIS .gearimage {
@@ -331,6 +337,11 @@
     float:right;
     color: #FFFFFF
 }
+
+.THIS .floatRight {
+  float:right;
+}
+
 
 .THIS .username {
     float:left;
