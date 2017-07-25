@@ -43,14 +43,14 @@
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
         var mainIncome = 0, coAppIncome = 0;
 
-        if (lead.Personal_Credit_Report__r.Adjusted_Income__c) {
+        if (lead.Personal_Credit_Report__r.Adjusted_Income__c != null) {
             mainIncome = lead.Personal_Credit_Report__r.Adjusted_Income__c;
         } else {
             mainIncome = (lead.Annual_Income_Currency__c || 0);
         }
 
         if (component.get("v.hasCoApp")) {
-            if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c) {
+            if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c != null) {
                 coAppIncome = lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c;
             } else {
                 coAppIncome = (lead.Co_Applicant_Income__c || 0);
@@ -63,6 +63,7 @@
         var lead = component.get("v.lead");
         var mainPCR = lead.Personal_Credit_Report__r;
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
+        var loanPayment = lead.Monthly_Payment_IBLS__c;
 
         if (mainPCR.Adjusted_DTI__c != null) {
             component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
@@ -83,15 +84,26 @@
                 }
                 coAppDebt = coAppPCR.Adjusted_Monthly_Personal_Debt__c;
 
-                var dti = 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome);
                 if (mainIncome + coAppIncome > 0) {
-                    component.set("v.bestDTI", 100 * (mainDebt + coAppDebt) / (mainIncome + coAppIncome));
+                    component.set("v.bestDTI", 100 * (mainDebt + coAppDebt + loanPayment) / (mainIncome + coAppIncome));
                 } else {
                     component.set("v.bestDTI", null);
                 }
 
             } else {
-                component.set("v.bestDTI", mainPCR.DTI_After__c);
+                if (mainPCR.Adjusted_Income__c != null) {
+                    mainIncome = mainPCR.Adjusted_Income__c/12;
+                } else {
+                    mainIncome = lead.Annual_Income_Currency__c/12;
+                }
+
+                mainDebt = mainPCR.Adjusted_Monthly_Personal_Debt__c;
+
+                if (mainIncome > 0) {
+                    component.set("v.bestDTI", 100 * (mainDebt + loanPayment) / (mainIncome));
+                } else {
+                    component.set("v.bestDTI", mainPCR.DTI_After__c);
+                }
             }
         }
     },
