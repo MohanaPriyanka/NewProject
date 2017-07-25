@@ -14,7 +14,7 @@
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
   <aura:attribute name="waiting" type="Boolean" default="false"/>
 
-  <c:LightningErrorHandler/>
+  <c:LightningErrorHandler />
 
   <aura:if isTrue="{!v.waiting}">
     <lightning:spinner alternativeText="Saving..." class="slds-is-fixed" size="medium"/>
@@ -56,7 +56,7 @@
       <div class = "lightCell slds-col slds-size--1-of-6">
         Payment Amount:
         <br></br>
-        <ui:outputCurrency value="{!v.lead.Monthly_Payment__c}"/>
+        <ui:outputCurrency value="{!v.lead.Monthly_Payment_IBLS__c}"/>
       </div>
       <div class = "lightCell slds-col slds-size--1-of-6">
         System Cost:

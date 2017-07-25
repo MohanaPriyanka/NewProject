@@ -6,19 +6,17 @@
       <div class = "lightCell slds-col slds-size--1-of-2">
         DTI Before:
         <br></br>
-        <aura:if isTrue="{!v.pcr.DTI_Before__c}">
-          <lightning:formattedNumber value="{!v.pcr.DTI_Before__c/100}"
-                                     style="percent" 
-                                     maximumFractionDigits="2"/>
+        <aura:if isTrue="{!v.pcr.DTI_Before__c!=null}">
+          <ui:outputText value="{!v.pcr.DTI_Before__c}"/>%
+          <aura:set attribute="else">-</aura:set>
         </aura:if>
       </div> 
       <div class = "lightCell slds-col slds-size--1-of-2">
         DTI After:
         <br></br>
-        <aura:if isTrue="{!v.pcr.DTI_After__c}">
-          <lightning:formattedNumber value="{!v.pcr.DTI_After__c/100}"
-                                     style="percent" 
-                                     maximumFractionDigits="2"/>
+        <aura:if isTrue="{!v.pcr.DTI_After__c != null}">
+          <ui:outputText value="{!v.pcr.DTI_After__c}"/>%
+          <aura:set attribute="else">-</aura:set>
         </aura:if>
       </div> 
     </div>

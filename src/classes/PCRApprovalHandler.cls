@@ -92,6 +92,9 @@ public without sharing class PCRApprovalHandler {
                 }
 
                 if (monthlyIncome == 0) {
+                    pcr.DTI_Before__c = null;
+                    pcr.DTI_After__c = null;
+                    pcr.DTI_After_Notes__c = null;
                     continue;
                 }
 
