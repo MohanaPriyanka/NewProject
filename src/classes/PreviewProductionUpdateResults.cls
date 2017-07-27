@@ -9,6 +9,20 @@
 
 
 public without sharing class PreviewProductionUpdateResults{
+	@AuraEnabled
+	public static List<Account> getProperties (String parentAcctId, Boolean isParentAcct) {
+	    	if ( isParentAcct ) {
+				List<Account> accountList = [SELECT Id, Name
+											 FROM Account
+											 WHERE Parent_Account_ID__c = : parentAcctId];
+				return accountList;
+			} else {
+				List<Account> accountList = [SELECT Id, Name
+											 FROM Account
+											 WHERE Id = : parentAcctId];
+				return accountList;
+			}
+	}
 
 	@AuraEnabled
     public static List<UASB__c> getUASes (String parentId, Boolean isProdUpdate) {
@@ -122,12 +136,18 @@ public without sharing class PreviewProductionUpdateResults{
     }
 
     @AuraEnabled
-    public static List<ChargentOrders__Transaction__c> getTransactions (String accountLookup) {
+    public static List<ChargentOrders__Transaction__c> getTransactions (List<Account> accountLookup) {
+    	List<String> idList = new List<String>();
+    	String stringId;
+    	for (Account acc : accountLookup){
+    		stringId = acc.Id;
+    		idList.add(stringId.substring(0,15));
+    	}
 		List<ChargentOrders__Transaction__c> transactionList = [ SELECT Name, Id, ChargentOrders__Gateway_Date__c, ChargentOrders__Amount__c,
 																ChargentOrders__Response_Status__c, ChargentOrders__Gateway__r.Name, 
 																ChargentOrders__Order__r.ChargentOrders__Payment_Status__c
 	    														FROM ChargentOrders__Transaction__c
-	    														WHERE Property_Account_ID__c = : accountLookup 
+	    														WHERE Property_Account_ID__c IN : idList 
 	    														ORDER BY  ChargentOrders__Gateway_Date__c DESC];
     	return transactionList;
     }

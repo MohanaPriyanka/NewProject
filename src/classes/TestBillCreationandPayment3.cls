@@ -85,9 +85,14 @@
 
         Id parentAccountRT = 
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-        Account accountA = new Account(name = 'Account A',
+        
+        Account accountParent = new Account(name = 'Account Parent',
                                        RecordTypeId = parentAccountRT);
-        insert accountA;      
+        insert accountParent;  
+
+        Account accountA = new Account(name = 'Account A', 
+                                      Parent_Account__c = accountParent.Id);
+        insert accountA;     
 
         Utility_Account_Log__c ualog = 
             new Utility_Account_Log__c(Name = '0000234',
@@ -179,8 +184,11 @@
         productionupdateA1.Generate_Bills__c = TRUE;
         productionupdateB2.Generate_Bills__c = TRUE;
 
+        String parId = accountParent.Id;
         String acctId = accountA.Id;
-        string subAcctId = acctId.substring(0,15);
+        string subAcctId = parId.substring(0,15);
+        system.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(subAcctId, TRUE)).size());
+        subAcctId = acctId.substring(0,15);
         system.AssertEquals( 2, (PreviewProductionUpdateResults.getUASes(subAcctId, FALSE)).size());
         update productionupdateA1;
         update productionupdateB2; 
@@ -262,9 +270,11 @@
 
                 insert transB;
             }   
-        }  
+        }
+        List<Account> acctList = new List<Account> ();
+        acctList.add(accountA);  
         system.AssertEquals( 2, (PreviewProductionUpdateResults.getUASes(subAcctId, FALSE)).size());
-        system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(subAcctId)).size());
+        system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
 
         for (System_Bill__c sbill : systemBillList) {
             if (sbill.Bill_Number__c == 2) {    
