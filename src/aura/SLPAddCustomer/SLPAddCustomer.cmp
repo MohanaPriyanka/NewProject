@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAddCustomer" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCustomer" access="global">
   <ltng:require styles="{!$Resource.animations}" />   
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/> 
@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-  <aura:attribute name="newLead" type="Lead" 
+<!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -60,9 +60,9 @@
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
-    }"/>
+    }"/> -->
 
-<!--     Enable during development for convenience
+    Enable during development for convenience
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
@@ -87,7 +87,7 @@
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'100',
     }"/>
- -->
+
   <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
       <div aura:id="customerEmailButton"> 
         <ui:button label="Email this application to a Customer"
@@ -98,13 +98,27 @@
         <div aura:id="mslpAppButton"  class=" slds-m-bottom_medium slds-m-top_medium noDisplay">
           <ui:button label="Apply for an MCEC Solar Loan" class="slds-button slds-button--brand slds-m-bottom_small proximaNovaWhite" press="{!c.changeApplicationToMSLP}">
           </ui:button>
+          <c:BlueWaveInputToolTip icon="utility:info"
+                          assistiveText = "Help" 
+                          buttonPixelsTop = "-49px"
+                          buttonPixelsLeft = "265px"
+                          toolTipPixelsTop = "230px"
+                          toolTipPixelsLeft = "637px"                                      
+                          helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />                   
         </div>         
         <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
           <ui:button label="Apply for BlueWave's Solar Loan" class="slds-button slds-button--brand proximaNovaWhite " press="{!c.changeApplicationToBWSL}">
           </ui:button>
-        </div>
+          <c:BlueWaveInputToolTip icon="utility:info"
+                          assistiveText = "Help" 
+                          buttonPixelsTop = "-37px"
+                          buttonPixelsLeft = "265px"
+                          toolTipPixelsTop = "230px"
+                          toolTipPixelsLeft = "637px"                                      
+                          helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />             
+        </div> 
       </aura:if>     
-  <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>     
+  <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>   
   <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
     <div aura:id="mslpDisclaimer" class="box">
       <br></br>
@@ -116,7 +130,7 @@
       </p>
 
       <p class="marginAround  proximaNovaBlue">
-        Avidia and BlueWave require that solar loan customers to sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.  
+       Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.  
       </p>
 
       <p class="marginAround  proximaNovaBlue">
@@ -153,11 +167,10 @@
               <label class="slds-form-element__label proximaNovaBlue"><b>Email Address</b></label>              
               <ui:inputText aura:id="email" class="slds-input" value="{!v.newLead.Email}" />          
             </div> 
-            <div class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
+            <div aura:id="dateOfBirth" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Date of Birth</b></label>
-              <div aura:id="dateOfBirth" class="slds-form-element__control">              
+              <div class="slds-form-element__control">              
                 <c:BlueWaveDate value="{!v.newLead.LASERCA__Birthdate__c}"
-                                displayPicker = "false" 
                                 label = "Customer Date of Birth"/>
                 </div>
               </div>
@@ -188,10 +201,16 @@
               <ui:inputSelect aura:id="state" 
                               class="slds-input" 
                               value="{!v.newLead.LASERCA__Home_State__c}" >
-                  <ui:inputSelectOption text="Select"/>                        
-                  <ui:inputSelectOption text="MA"/>
-                  <ui:inputSelectOption text="NC"/>                  
-                  <ui:inputSelectOption text="SC"/>
+                  <aura:if isTrue="{!v.newLead.DOER_Solar_Loan__c}">                                
+                      <ui:inputSelectOption text="Select"/>                        
+                      <ui:inputSelectOption text="MA"/>
+                    <aura:set attribute="else">     
+                      <ui:inputSelectOption text="Select"/>                        
+                      <ui:inputSelectOption text="MA"/>
+                      <ui:inputSelectOption text="NC"/>                  
+                      <ui:inputSelectOption text="SC"/>      
+                    </aura:set>                         
+                  </aura:if>
               </ui:inputSelect>
             </div>                  
             <div aura:id="zipCodeElement" class="slds-form-element slds-p-horizontal--small animated">                
@@ -216,7 +235,7 @@
                                       buttonPixelsLeft = "183.5px"
                                       toolTipPixelsTop = "-150px"
                                       toolTipPixelsLeft = "168px"                                      
-                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their system's before applying for a loan." />                     
+                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their system's."/>                     
               </div>
             </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
@@ -226,9 +245,9 @@
                                       assistiveText = "Help" 
                                       buttonPixelsTop = "-72px"
                                       buttonPixelsLeft = "151px"
-                                      toolTipPixelsTop = "-160px"
+                                      toolTipPixelsTop = "-45px"
                                       toolTipPixelsLeft = "143px"                                      
-                                      helpText = "Please provide us with this applicant's total cost of their system. Please keep in mind that this is the total cost of the system and inclusive of any down payments this applicant may have made or plans to make. This field does not represent the value in which the customer is applying for financing for." />                        
+                                      helpText = "Please provide the total installation cost." />                        
             </div>             
           </div>
         </div>
@@ -247,7 +266,7 @@
                                       buttonPixelsLeft = "175px"
                                       toolTipPixelsTop = "-85px"
                                       toolTipPixelsLeft = "170px"                                      
-                                      helpText = "The customer's social security number is 100% private and secure. We collect his information in order to run a credit check on our customers." />                  
+                                      helpText = "All application data is 100% private and secure.  We collect this information in order to run a credit check on the applicant." />                  
             </div> 
             <div aura:id="incomeElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
               <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>           

@@ -1,25 +1,12 @@
 <aura:component access="global">
   <aura:handler name="render" value="{!this}" action="{!c.onRender}" />
   <aura:attribute name="value" type="String"/>
-  <aura:attribute name="displayPicker" type="Boolean"/>
   <aura:attribute name="label" type="String"/>
-  <aura:attribute name="isError" type="Boolean"/>
-      <aura:if isTrue="displayPicker">
-        <lightning:input aura:id="BlueWaveDate"
-                         label="name"
-                         name="BlueWaveDate"
-                         variant="label-hidden"
-                         placeholder="MM/DD/YYYY"
-                         value="{!v.value}"
-                         onchange="{!c.format}"/>
-      <aura:set attribute="else">
         <ui:inputText aura:id="BlueWaveDate"
                       class="slds-input"
                       placeholder="MM/DD/YYYY"
                       value="{!v.value}"
                       keyup="{!c.format}"
                       updateOn="keyup"/>
-      </aura:set>
-      </aura:if>
 </aura:component> 
 

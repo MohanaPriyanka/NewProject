@@ -131,97 +131,16 @@
         
         $A.enqueueAction(action); 
     },
-
+    
     checkValue : function(str, max) {
       if (str.charAt(0) !== '0' || str == '00') {
         var num = parseInt(str);
-        if (isNaN(num) || num <= 0 || num > max) num = 1;
+        if (isNaN(num) || num <= 0 || num > max) {
+            num = 1;
+        }
         str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
       };
       return str;
-    } ,
-
-    // For some reason, using this pattern in a lighting:input type=date doesn't work
-    // Assumes dateString comes from ui:inputDate, which uses format yyyy-mm-dd
-    // only validates format xxxx-xx-xx, but we can add checks for numbers, leap years,
-    // etc.
-    // See http://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
-    validDate : function(dateString) {
-        // First check for the pattern
-        var format = /^\d{2}\/\d{2}\/\d{4}$/;
-        return format.test(dateString);
-    } ,
-
-    validEmail : function(emailString) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(emailString);
-    } ,
-
-    validSSN : function(ssnString) {
-        if (ssnString.length == 9) {
-            return true;
-        } else {
-            return false;
-        }
-    } ,
-
-    validZipCode : function(zipCode) {
-        if (zipCode.length == 5) {
-            return true;
-        } else {
-            return false;
-        }
-    }, 
-
-    formInputIsNullString : function(component, helper, field, auraId, errorMessage, className, methodName, animation) {        
-        if (field == '') {
-            $A.util.addClass(component.find(auraId), 'slds-has-error');  
-            if (animation != null) {
-                $A.util.addClass(component.find(auraId), animation);                  
-            }
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : className,
-                                "methodName" : methodName,
-                                "errors" : errorMessage});
-            appEvent.fire();
-            return true;            
-        } else {
-            return false;
-        }
-    } ,
-
-    formInputIsNullNumber : function(component, helper, field, auraId, errorMessage,  className, methodName, animation) {
-        if (field == null) {
-            $A.util.addClass(component.find(auraId), 'slds-has-error');  
-            if (animation != null) {
-                $A.util.addClass(component.find(auraId), animation);                  
-            }
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : className,
-                                "methodName" : methodName,
-                                "errors" : errorMessage});
-            appEvent.fire();
-            return true;            
-        } else {
-            return false;
-        }
-    } ,  
-
-    formInputIsTrue : function(component, helper, field, auraId, errorMessage,  className, methodName, animation) {
-        if (!field) {
-            $A.util.addClass(component.find(auraId), 'slds-has-error');  
-            if (animation != null) {
-                $A.util.addClass(component.find(auraId), animation);                  
-            }
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : className,
-                                "methodName" : methodName,
-                                "errors" : errorMessage});
-            appEvent.fire();
-            return true;            
-        } else {
-            return false;
-        }
-    } ,                             
+    } ,    
 })
 

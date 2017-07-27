@@ -43,133 +43,11 @@
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
-
-        //perform error handling
-        if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
-            $A.util.addClass(component.find("dateOfBirth"), 'slds-has-error');  
-            $A.util.addClass(component.find("dateOfBirth"), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c});
-            appEvent.fire();
+        var errors = helper.errorsInForm(component, helper, lead);
+        if (errors != null) {
+            helper.logError("SLPAddCustomerController", "addCustomer", errors);
             return;
         }
-        if (!helper.validEmail(lead.Email)) {
-            $A.util.addClass(component.find("customerEmail"), 'slds-has-error'); 
-            $A.util.addClass(component.find("customerEmail"), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a valid email address. The email you entered is: " + lead.Email});
-            appEvent.fire();
-            return;
-        }  
-        if (!helper.validSSN(lead.LASERCA__SSN__c)) {
-            $A.util.addClass(component.find("ssnElement"), 'slds-has-error');  
-            $A.util.addClass(component.find("ssnElement"), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a valid 9 digit Social Security Number."});
-            appEvent.fire();
-            return;
-        }             
-
-        if(helper.formInputIsNullString(component, helper, lead.FirstName, "firstNameElement", 
-          "Please enter the Customer's First Name.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }    
-
-        if(helper.formInputIsNullString(component, helper, lead.FirstName, "lastNameElement", 
-          "Please enter the Customer's Last Name.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }     
-
-        if(helper.formInputIsNullString(component, helper, lead.LASERCA__Home_Address__c, "homeAddressElement", 
-          "Please enter the Customer's Home Address", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }                       
-
-        if(helper.formInputIsNullString(component, helper, lead.LASERCA__Home_City__c, "cityElement", 
-          "Please enter the Customer's City", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }                 
-
-        if(lead.LASERCA__Home_State__c == "Select") {
-            $A.util.addClass(component.find("stateElement"), 'slds-has-error');  
-            $A.util.addClass(component.find("stateElement"), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a valid State."});
-            appEvent.fire();
-            return; 
-        }     
-
-        if (!helper.validZipCode(lead.LASERCA__Home_Zip__c)) {
-            $A.util.addClass(component.find("zipCodeElement"), 'slds-has-error');  
-            $A.util.addClass(component.find("zipCodeElement"), 'shake');  
-
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a valid 5 digit Zip Code."});
-            appEvent.fire();
-            return;
-        }    
-
-        $A.util.addClass(component.find("loanAmountElement"), 'slds-has-error');  
-
-        if(helper.formInputIsNullNumber(component, helper, lead.Requested_Loan_Amount__c, "loanAmountElement", 
-          "Please enter the Customer's Requested Loan Amount.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }
-
-        if(helper.formInputIsNullNumber(component, helper, lead.System_Cost__c, "systemCostElement", 
-          "Please enter the System's Cost.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }  
-
-        if(helper.formInputIsNullNumber(component, helper, lead.Annual_Income_Currency__c, "incomeElement", 
-          "Please enter the Customer's Estimated Annual Income.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }     
-
-        if(helper.formInputIsTrue(component, helper, lead.Credit_Check_Acknowledged__c, "creditHistoryElement", 
-          "Please have the Customer give BlueWave and Avidia Bank permission to access their credit history.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }         
-
-        if(helper.formInputIsTrue(component, helper, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", 
-          "Please have the Customer acknowledge BlueWave's Privacy Policy.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }        
-
-        if(helper.formInputIsTrue(component, helper, lead.Utility_Bill_Access_Acknowledged__c, "energyHistoryElement", 
-          "Please have the Customer give BlueWave permission to access their energy billing history.", "SLPAddCustomerController", "addCustomer", "shake")) {
-            return;
-        }                                   
-
-        //remove any error highlights that may have been added in the error handling above.
-        $A.util.removeClass(component.find("dateOfBirth"), 'slds-has-error');       
-        $A.util.removeClass(component.find("customerEmail"), 'slds-has-error');   
-        $A.util.removeClass(component.find("ssnElement"), 'slds-has-error');  
-        $A.util.removeClass(component.find("firstNameElement"), 'slds-has-error'); 
-        $A.util.removeClass(component.find("lastNameElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("homeAddressElement"), 'slds-has-error');           
-        $A.util.removeClass(component.find("stateElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("zipCodeElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("loanAmountElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("systemCostElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("incomeElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("creditHistoryElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("privacyPolicyElement"), 'slds-has-error');   
-        $A.util.removeClass(component.find("energyHistoryElement"), 'slds-has-error');   
 
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
@@ -178,30 +56,21 @@
         Action.setParams({"newLead" : lead});
         
         Action.setCallback(this, function(resp) {
-            if(resp.getState() == "SUCCESS") {
+            if (resp.getState() == "SUCCESS") {
                 component.set("v.newLead", resp.getReturnValue());
-
-                $A.util.addClass(component.find("mslpAppbutton"), 'noDisplay'); 
-                $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
-                $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
-                $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
-                $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
-                $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
-                $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
-                $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
+                helper.removeAddCustomerForm(component);
+                helper.showCreditCheckPage(component);
             } else {
                 helper.stopSpinner(component, "leadSpinner");
                 $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPAddCustomerController",
-                    "methodName" : "addCustomer",
-                    "errors" : resp.getError()});
-                appEvent.fire();
+                helper.logError("SLPAddCustomerController", "addCustomer", resp.getError());
             }
         }); 
         $A.enqueueAction(Action);        
     },
+
+    
     
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
