@@ -13,11 +13,9 @@
                body.push(newButton);
                component.set("v.body", body);
            $A.util.removeClass(component.find("secondaryHeader"), 'slds-hide');
-          }
-          else if (status === "INCOMPLETE") {
+          } else if (status === "INCOMPLETE") {
                console.log("No response from server or client is offline.")
-          }
-          else if (status === "ERROR") {
+          } else if (status === "ERROR") {
                console.log("Error: " + errorMessage);
           }
           }

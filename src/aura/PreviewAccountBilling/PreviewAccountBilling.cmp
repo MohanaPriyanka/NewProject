@@ -8,7 +8,11 @@
  <aura:attribute name="propAccountList" type="Account[]"/>
     
  <h1 class="slds-text-heading--large"><ui:outputText value="{!v.acctName}"/></h1> 
- <h1 class="slds-text-heading--small"><ui:outputText value="{!'Total Outstanding Balance: ' + v.totalBalance}"/></h1>  
+ <aura:if isTrue="{!v.isParentAcct}">
+    <aura:set attribute="else">
+       <h1 aura:id="outstandingbalance" class="slds-text-heading--small"><ui:outputText value="{!'Total Outstanding Balance: ' + v.totalBalance}"/></h1>
+    </aura:set>
+ </aura:if>  
  <br></br>
 	<div  class="slds-show" aura:id="propertyTree">
       <lightning:breadcrumbs >
