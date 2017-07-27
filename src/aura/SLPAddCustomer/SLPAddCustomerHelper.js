@@ -50,8 +50,8 @@
 
     errorsInForm : function(component, helper, lead) {
         var errorMessage = "";
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, false, true, "Please enter the Applicants's First Name without any special characters (be sure to remove apostrophes or hyphens).", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, false, true, "Please enter the Applicants's Last Name without any special characters (be sure to apostrophes or hyphens).", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, false, true, "Please enter the Applicants's First Name without any special characters.", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, false, true, "Please enter the Applicants's Last Name without any special characters.", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "customerEmail", "shake", null, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Birthdate__c, "dateOfBirth", "shake", null, null, null, "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c, "date");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Address__c, "homeAddressElement", "shake", null, false, true, "Please enter the Applicants's Home Address", "standard");        

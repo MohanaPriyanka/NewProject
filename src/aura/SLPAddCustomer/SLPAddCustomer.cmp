@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-<!--   <aura:attribute name="newLead" type="Lead" 
+  <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -60,9 +60,9 @@
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
-    }"/> -->
+    }"/>
 
-    Enable during development for convenience
+<!--     Enable during development for convenience
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
@@ -86,7 +86,7 @@
     'LASERCA__Birthdate__c':'02/21/1993',
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'100',
-    }"/>
+    }"/> -->
 
   <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
       <div aura:id="customerEmailButton"> 
@@ -102,8 +102,8 @@
                           assistiveText = "Help" 
                           buttonPixelsTop = "-49px"
                           buttonPixelsLeft = "265px"
-                          toolTipPixelsTop = "230px"
-                          toolTipPixelsLeft = "637px"                                      
+                          toolTipPixelsTop = "235px"
+                          toolTipPixelsLeft = "1119px"                                      
                           helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />                   
         </div>         
         <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
@@ -113,8 +113,8 @@
                           assistiveText = "Help" 
                           buttonPixelsTop = "-37px"
                           buttonPixelsLeft = "265px"
-                          toolTipPixelsTop = "230px"
-                          toolTipPixelsLeft = "637px"                                      
+                          toolTipPixelsTop = "235px"
+                          toolTipPixelsLeft = "1119px"                                      
                           helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />             
         </div> 
       </aura:if>     
@@ -235,7 +235,7 @@
                                       buttonPixelsLeft = "183.5px"
                                       toolTipPixelsTop = "-150px"
                                       toolTipPixelsLeft = "168px"                                      
-                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their system's."/>                     
+                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their systems."/>                     
               </div>
             </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
