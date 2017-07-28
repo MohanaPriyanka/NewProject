@@ -1,30 +1,39 @@
 <aura:component controller="PreviewProductionUpdateResults" access="global">	
+ <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="accountID" type="String"/>
  <aura:attribute name="acctName" type="String"/>
  <aura:attribute name="totalBalance" type="String"/>
- <aura:attribute name="IsProdUpdate" type="Boolean"/>
+ <aura:attribute name="IsProdUpdate" type="Boolean" default="FALSE"/>
+ <aura:attribute name="isParentAcct" type="Boolean" default="FALSE"/>
+ <aura:attribute name="propAccountList" type="Account[]"/>
     
  <h1 class="slds-text-heading--large"><ui:outputText value="{!v.acctName}"/></h1> 
  <h1 class="slds-text-heading--small"><ui:outputText value="{!'Total Outstanding Balance: ' + v.totalBalance}"/></h1>  
- <br></br>    
+ <br></br>
+	<div  class="slds-show" aura:id="propertyTree">
+      <lightning:breadcrumbs >
+        <lightning:breadcrumb label="Property Accounts"/>
+        <aura:iteration items="{!v.propAccountList}" var="propAcct">
+          <lightning:breadcrumb label="{!propAcct.Name}" title="{!propAcct.Id}" onclick="{!c.updateAccountId}"/>
+        </aura:iteration>
+      </lightning:breadcrumbs>
+    </div>
+ <br></br>
+ <div aura:id="secondaryHeader">   
   <div class="slds-tabs_default">
     <ul class="slds-tabs_default__nav">
-      <li class="slds-tabs_default__item slds-is-active">
-    	<a aura:id="tabone"
-                onclick="{!c.switchToNMCs}" 
-                class="slds-tabs_default__link">NMCs on Utility Account</a>      
+      <li aura:id="tabone" class="slds-tabs_default__item slds-is-active">
+    	<a   onclick="{!c.switchToNMCs}" 
+             class="slds-tabs_default__link">NMCs on Utility Account</a>      
       </li>
-      <li class="slds-tabs_default__item">
-          <a aura:id="tabtwo"
-                  onclick="{!c.switchToTransactions}" 
-                  class="slds-tabs_default__link">Transactions</a>    
+      <li aura:id="tabtwo" class="slds-tabs_default__item">
+          <a onclick="{!c.switchToTransactions}" 
+             class="slds-tabs_default__link">Transactions</a>    
       </li>
     </ul>
-    <div aura:id="billTable" class="slds-tabs_default__content slds-show" >
-      <c.PregeneratedBillsTable parentId="{!v.accountID}" IsProdUpdate="FALSE"/>
-    </div>
-    <div aura:id="transactionTable" class="slds-tabs_default__content slds-hide" >
-      <c.TableofTransactions accountLookupId="{!v.accountID}" />
-    </div>
+   </div> 
+   <div aura:id="newbillTable">
+         {!v.body}
+   </div>
   </div>
 </aura:component>
