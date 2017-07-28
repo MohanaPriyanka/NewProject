@@ -124,17 +124,18 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c, Loan__r.State__c ' ;
-    taskQuery += '      FROM Partner_Task__c' ;
-    taskQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
-    taskQuery += '      AND Parent__c = true ';
-    taskQuery += '      AND Sub_Task_Type__c = null ';
-    taskQuery += '      AND Parent_Task__c = null ';
-    taskQuery += '      AND Partner__r.Id  =  \'' + profile.partnerId +  '\' ';  
+    String taskQuery = 
+        ' SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, Status__c, ' +
+        ' Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c, Loan__r.State__c ' +
+        ' FROM Partner_Task__c' +
+        ' WHERE (Loan__c  =  \'' + loanId +  '\'' +
+        ' OR Parent_Task__r.Loan__c = \'' + loanId +  '\' ' +
+        ' OR Parent_Task__r.Parent_Task__r.Loan__c = \'' + loanId +  '\') ' +
+        ' AND Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
     if (profile.LicenseType != 'Executive') {
       taskQuery += '    AND Sales_Representative__r.Id  =  \'' + profile.salesRepId +  '\' ';      
     }
-    taskQuery += '      ORDER BY Task_Sequence__c ASC'; 
+    taskQuery += '      ORDER BY Full_Tree_Sequence__c ASC'; 
     for(Partner_Task__c taskRecord : Database.query(taskQuery)){
       taskList.add(taskRecord);
     }        
