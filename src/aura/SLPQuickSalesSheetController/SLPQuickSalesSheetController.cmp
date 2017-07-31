@@ -48,7 +48,9 @@
                               class="slds-input"
                               labelClass="slds-form-element__label"
                               value="{!v.quicksalessheet.System_Size__c}"
-                              required="true"/>
+                              required="true"
+                              click="{!c.eraseZeros}"
+                              select="{!c.eraseZeros}"/>
               </div>
             </div>             
             <div class="slds-form-element slds-is-required">
@@ -58,7 +60,9 @@
                                   class="slds-input"
                                   labelClass="slds-form-element__label"
                                   value="{!v.quicksalessheet.System_Cost__c}"
-                                  required="true"/>
+                                  required="true"
+                                  click="{!c.eraseZeros}"
+                                  select="{!c.eraseZeros}"/>
               </div>
             </div>
             <div class="slds-form-element slds-is-required">
@@ -68,7 +72,9 @@
                               class="slds-input"
                               labelClass="slds-form-element__label"
                               value="{!v.quicksalessheet.Down_Payment__c}"
-                              required="true"/>
+                              required="true"
+                              click="{!c.eraseZeros}"
+                              select="{!c.eraseZeros}"/>
               </div>
             </div>
             <div class="slds-form-element slds-is-required">
