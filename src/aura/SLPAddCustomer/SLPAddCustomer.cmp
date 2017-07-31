@@ -87,14 +87,14 @@
     'System_Cost__c':'100',
     }"/> -->
 
-     <div class="slds-tabs_default slds-m-bottom_small" style="position:relative">
+     <div class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
         <c:BlueWaveInputToolTip icon="utility:info"
                                 assistiveText = "Help" 
                                 buttonPixelsTop = "30.5px"
                                 buttonPixelsLeft = "1085px"
                                 toolTipPosition = "absolute"
-                                toolTipPixelsTop = "-50px"
+                                toolTipPixelsTop = "-48px"
                                 toolTipPixelsLeft = "800px"                                      
                                 helpText = "Please select which loan this applicant would like to apply for by toggling the application tabs to the left."
                                 nubbinType = "slds-nubbin_bottom-right"/>         
