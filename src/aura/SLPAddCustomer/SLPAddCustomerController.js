@@ -20,12 +20,7 @@
                     }
                 }                
             } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPAddCustomerController",
-                    "methodName" : "doInit",
-                    "errors" : resp.getError()});
-                appEvent.fire();
-
+                helper.logError("SLPAddCustomerController", "doInIt", resp.getERror());
             }
         });    
         $A.enqueueAction(actionPartnerRecord);
@@ -51,7 +46,8 @@
 
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
-
+        
+        lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         var Action = component.get("c.addNewLeadRecord");
         Action.setParams({"newLead" : lead});
         
@@ -114,21 +110,16 @@
                         helper.stopSpinner(component, 'creditSpinner');
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-                        var appEvent = $A.get("e.c:ApexCallbackError");
-                        appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "checkCredit",
-                                            "errors" : resp.getError()});
-                        appEvent.fire();
-                        $A.log("Errors", resp.getError());
+                        helper.logError("SLPAddCustomerController", "checkCredit",  "There was an issue running credit on this customer. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the customer's name");    
+                        $A.log("Errors", "There was an issue running credit on this customer. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the customer's name");        
+                        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');         
+                        $A.util.removeClass(component.find("addAnotherCustomerButton"), 'noDisplay'); 
+                        component.set("v.newLead", lead);
                     }
                 });
             $A.enqueueAction(action);
         } else {
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "checkCredit",
-                                "errors" : "No Customer (Lead) ID was found when checking credit: " + lead});
-            appEvent.fire();
+            helper.logError("SLPAddCustomerController", "checkCredit", "No Customer (Lead) ID was found when checking credit: " + lead);            
         }
     },
 

@@ -142,5 +142,13 @@
       };
       return str;
     } ,    
+
+    logError : function(className, methodName, errorMessage) {
+        var appEvent = $A.get("e.c:ApexCallbackError");
+        appEvent.setParams({"className" : className,
+                            "methodName" : methodName,
+                            "errors" : errorMessage});
+        appEvent.fire();
+    },     
 })
 

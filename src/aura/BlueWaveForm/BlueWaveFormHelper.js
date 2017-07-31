@@ -22,7 +22,7 @@
 				}
 			}   	
 			if (!allowSpecialChars && allowSpaces) {
-				if (!/^[a-zA-Z0-9- \b]+$/.test(fieldValue)) {
+				if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
 					error = true;
 				}
 			}
@@ -52,14 +52,6 @@
 			return false;
 		}
     },
-
-    logError : function(className, methodName, errorMessage) {
-        var appEvent = $A.get("e.c:ApexCallbackError");
-        appEvent.setParams({"className" : className,
-                            "methodName" : methodName,
-                            "errors" : errorMessage});
-        appEvent.fire();
-    }, 
 
     setInputToError : function(component, fieldId, animation) {
         $A.util.addClass(component.find(fieldId), 'slds-has-error'); 

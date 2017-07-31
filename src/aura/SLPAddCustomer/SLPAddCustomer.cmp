@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-  <aura:attribute name="newLead" type="Lead" 
+<!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -61,8 +61,7 @@
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
     }"/>
-
-<!--     Enable during development for convenience
+ -->
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
@@ -86,36 +85,22 @@
     'LASERCA__Birthdate__c':'02/21/1993',
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'100',
-    }"/> -->
+    }"/>
 
   <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
       <div aura:id="customerEmailButton"> 
-        <ui:button label="Email this application to a Customer"
+        <ui:button label="Email this application"
          class="slds-button slds-button--brand slds-m-bottom_medium proximaNovaWhite"
          press="{!c.openEmailCustomerModal}"/> 
        </div>  
        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <div aura:id="mslpAppButton"  class=" slds-m-bottom_medium slds-m-top_medium noDisplay">
-          <ui:button label="Apply for an MCEC Solar Loan" class="slds-button slds-button--brand slds-m-bottom_small proximaNovaWhite" press="{!c.changeApplicationToMSLP}">
-          </ui:button>
-          <c:BlueWaveInputToolTip icon="utility:info"
-                          assistiveText = "Help" 
-                          buttonPixelsTop = "-49px"
-                          buttonPixelsLeft = "265px"
-                          toolTipPixelsTop = "235px"
-                          toolTipPixelsLeft = "1119px"                                      
-                          helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />                   
+          <ui:button label="Switch to MCEC's Solar Loan Application" class="slds-button slds-button--brand slds-m-bottom_small proximaNovaWhite" press="{!c.changeApplicationToMSLP}">
+          </ui:button>          
         </div>         
         <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
-          <ui:button label="Apply for BlueWave's Solar Loan" class="slds-button slds-button--brand proximaNovaWhite " press="{!c.changeApplicationToBWSL}">
-          </ui:button>
-          <c:BlueWaveInputToolTip icon="utility:info"
-                          assistiveText = "Help" 
-                          buttonPixelsTop = "-37px"
-                          buttonPixelsLeft = "265px"
-                          toolTipPixelsTop = "235px"
-                          toolTipPixelsLeft = "1119px"                                      
-                          helpText = "Please use this button to switch between BlueWave's Standard Loan Product and the MCEC Solar Loan Product." />             
+          <ui:button label="Switch to BlueWave's Solar Loan Application" class="slds-button slds-button--brand proximaNovaWhite " press="{!c.changeApplicationToBWSL}">
+          </ui:button>           
         </div> 
       </aura:if>     
   <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>   
@@ -185,7 +170,7 @@
               <ui:inputText aura:id="street" class="slds-input" value="{!v.newLead.LASERCA__Home_Address__c}" />          
             </div>                    
             <div aura:id="cityElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Home City</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Home City</b></label>       
               <ui:inputText aura:id="city" 
                             class="slds-input"       
                             value="{!v.newLead.LASERCA__Home_City__c}"/>
@@ -233,6 +218,7 @@
                                       assistiveText = "Help" 
                                       buttonPixelsTop = "-72px"
                                       buttonPixelsLeft = "183.5px"
+                                      toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-150px"
                                       toolTipPixelsLeft = "168px"                                      
                                       helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their systems."/>                     
@@ -245,6 +231,7 @@
                                       assistiveText = "Help" 
                                       buttonPixelsTop = "-72px"
                                       buttonPixelsLeft = "151px"
+                                      toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-45px"
                                       toolTipPixelsLeft = "143px"                                      
                                       helpText = "Please provide the total installation cost." />                        
@@ -259,11 +246,12 @@
           <div class="slds-form-element__row">                   
             <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated ">
               <label class="slds-form-element__label proximaNovaBlue"><b>Social Security Number</b></label>
-              <ui:inputSecret aura:id="ssn" class="slds-input" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
+              <ui:inputSecret aura:id="ssn" class="slds-input" placeholder="XXX-XX-XXXX" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
               <c:BlueWaveInputToolTip icon="utility:info"
                                       assistiveText = "Help" 
                                       buttonPixelsTop = "-72px"
                                       buttonPixelsLeft = "175px"
+                                      toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-85px"
                                       toolTipPixelsLeft = "170px"                                      
                                       helpText = "All application data is 100% private and secure.  We collect this information in order to run a credit check on the applicant." />                  
@@ -275,6 +263,7 @@
                                       assistiveText = "Help" 
                                       buttonPixelsTop = "-72px"
                                       buttonPixelsLeft = "186.5px"
+                                      toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-83px"
                                       toolTipPixelsLeft = "178px"                                      
                                       helpText = "Please provide us with this applicant's estimated total income. Proof of income will come at a later stage." />                    
