@@ -10,11 +10,7 @@
                     if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
                         component.set("v.newLead.DOER_Solar_Loan__c",false);  
                         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');    
-                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
-                        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
-                        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
-                        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');   
+                        helper.showBWSLApplication(component); 
                     } else {
                         $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');           
                     }
@@ -65,18 +61,12 @@
         }); 
         $A.enqueueAction(Action);        
     },
-
-    
     
     checkCredit : function(component, event, helper) {
-        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
-
+        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');  
         helper.startSpinner(component, 'creditSpinner');
-
         var lead = component.get("v.newLead");
+        lead.LASERCA__Birthdate__c = lead.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         if (!$A.util.isUndefinedOrNull(lead.Id)) {
             var self = this;
             var action = component.get("c.pullCreditStatus");
@@ -110,7 +100,7 @@
                         helper.stopSpinner(component, 'creditSpinner');
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-                        helper.logError("SLPAddCustomerController", "checkCredit",  "There was an issue running credit on this customer. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the customer's name");    
+                        helper.logError("SLPAddCustomerController", "checkCredit",  resp.getError());    
                         $A.log("Errors", "There was an issue running credit on this customer. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the customer's name");        
                         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');         
                         $A.util.removeClass(component.find("addAnotherCustomerButton"), 'noDisplay'); 
@@ -153,24 +143,12 @@
     changeApplicationToMSLP : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",true);  
         component.set("v.newLead.Product_Program__c",'MSLP');                
-
-        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
-        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplay');      
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
-        $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
-        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');                        
+        helper.showMSLPApplication(component);                    
     }, 
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
-        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
-
-        $A.util.removeClass(component.find("bwApplicationHeader"), 'noDisplay');      
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
-        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
-        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');      
+        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');      
+        helper.showBWSLApplication(component);     
     },         
 
     openEmailCustomerModal : function(component, event, helper) {
@@ -221,11 +199,7 @@
                 btn.set("v.disabled",true);
                 btn.set("v.label",'Email Sent!')             
             } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPAddCustomerController",
-                    "methodName" : "sendCustomerApplication",
-                    "errors" : resp.getError()});
-                appEvent.fire();
+                helper.logError("SLPAddCustomerController", "sendCustomerApplication", resp.getERror());
                 $A.log("Errors", resp.getError());                      
             }
         });                                                   

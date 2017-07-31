@@ -87,4 +87,23 @@
         $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
     },        
 
+    showMSLPApplication : function(component) {
+        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
+        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplay');      
+        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
+        $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
+        $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
+        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');    
+    },     
+
+    showBWSLApplication : function(component) {
+        $A.util.removeClass(component.find("bwApplicationHeader"), 'noDisplay');      
+        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplay');
+        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
+        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
+        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');     
+    },         
+
 })
+ 
