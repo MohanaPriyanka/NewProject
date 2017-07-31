@@ -51,7 +51,7 @@
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "customerEmail", "shake", null, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Birthdate__c, "dateOfBirth", "shake", null, null, null, "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c, "date");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Address__c, "homeAddressElement", "shake", null, false, true, "Please enter the Applicants's correct home address", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_City__c, "cityElement", "shake", null, false, true, "Please enter the Customer's City", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_City__c, "cityElement", "shake", null, false, true, "Please enter the Applicant's City", "standard");        
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
             errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";                          
@@ -64,9 +64,9 @@
         lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__SSN__c, "ssnElement", "shake", 9, false, false, "Please enter a valid 9 digit Social Security Number without any special characters/symbols.", "standard");             
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Annual_Income_Currency__c, "incomeElement", "shake", null, false, false, "Please enter this Applicant's estimated annual income", "standard");             
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Credit_Check_Acknowledged__c, "creditHistoryElement", "shake", null, false, false, "Please have the Customer give BlueWave and Avidia Bank permission to access their credit history.", "standard");             
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", "shake", null, false, false, "Please have the Customer acknowledge BlueWave's Privacy Policy.", "standard");             
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Utility_Bill_Access_Acknowledged__c, "energyHistoryElement", "shake", null, false, false, "Please have the Customer give BlueWave permission to access their energy billing history.", "standard");             
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Credit_Check_Acknowledged__c, "creditHistoryElement", "shake", null, false, false, "Please have the Applicant give BlueWave and Avidia Bank permission to access their credit history.", "standard");             
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", "shake", null, false, false, "Please have the Applicant acknowledge BlueWave's Privacy Policy.", "standard");             
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Utility_Bill_Access_Acknowledged__c, "energyHistoryElement", "shake", null, false, false, "Please have the Applicant give BlueWave permission to access their energy billing history.", "standard");             
 
         if (errorMessage.length > 0) {
             return errorMessage;
@@ -74,8 +74,8 @@
     },    
 
     removeAddCustomerForm : function(component) {
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay');      
+        $A.util.addClass(component.find("applicationTabBar"), 'noDisplay');
+        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');
         $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
         $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');

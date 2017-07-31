@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-  <aura:attribute name="newLead" type="Lead" 
+<!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -60,9 +60,9 @@
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
-    }"/>
+    }"/> -->
 
-<!--   <aura:attribute name="newLead" type="Lead" 
+  <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
     'LastName': 'Testcase',
@@ -85,9 +85,9 @@
     'LASERCA__Birthdate__c':'02/21/1993',
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'100',
-    }"/> -->
+    }"/>
 
-     <div class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
+     <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
         <c:BlueWaveInputToolTip icon="utility:info"
                                 assistiveText = "Help" 
