@@ -73,7 +73,7 @@ sendCustomerApplication : function(component, event, helper) {
         if (resp.getState() == 'SUCCESS') {
             helper.stopSpinner(component, "emailSpinner");
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-            helper.disableButton('sendEmailButton', 'Email Sent!');       
+            helper.disableButton(component, 'sendEmailButton', 'Email Sent!');       
             if (partnerRecord.State__c == "MA") {
                 component.find('emailMSLP').set("v.value", null);
             }

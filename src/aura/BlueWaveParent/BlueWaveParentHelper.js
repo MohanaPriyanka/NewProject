@@ -143,7 +143,7 @@
       return str;
     } ,    
 
-    disableButton : function(buttonId, replacementText) {
+    disableButton : function(component, buttonId, replacementText) {
         var button = component.find(buttonId);
         button.set("v.disabled", true);
         button.set("v.label", replacementText);    
