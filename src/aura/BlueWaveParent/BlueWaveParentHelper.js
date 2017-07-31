@@ -143,6 +143,12 @@
       return str;
     } ,    
 
+    disableButton : function(buttonId, replacementText) {
+        var button = component.find(buttonId);
+        button.set("v.disabled", true);
+        button.set("v.label", replacementText);    
+    }, 
+
     logError : function(className, methodName, errorMessage) {
         var appEvent = $A.get("e.c:ApexCallbackError");
         appEvent.setParams({"className" : className,
