@@ -1,6 +1,6 @@
 ({
-	checkFieldValidity : function(component, fieldValue, fieldId, animation, expectedLength, allowSpecialChars, allowSpaces, errorMessage, fieldType) {
-		if (this.invalidField(component, fieldValue, expectedLength, allowSpecialChars, allowSpaces, fieldType)) {
+	checkFieldValidity : function(component, fieldValue, fieldId, animation, expectedLength, allowLetters, allowSpecialChars, allowSpaces, errorMessage, fieldType) {
+		if (this.invalidField(component, fieldValue, allowLetters, expectedLength, allowSpecialChars, allowSpaces, fieldType)) {
 			this.setInputToError(component, fieldId, animation);
 			return errorMessage + "\n" + "\n";                      
 		} else {
@@ -9,7 +9,7 @@
 		}     
 	},       
 
-    invalidField : function(component, fieldValue, expectedLength, allowSpecialChars, allowSpaces, fieldType) {
+    invalidField : function(component, fieldValue, expectedLength, allowLetters, allowSpecialChars, allowSpaces, fieldType) {
     	var error;
     	var format;
 		if (fieldType === 'standard') {
@@ -21,6 +21,11 @@
 					error = true;
 				}
 			}   	
+			if (!allowLetters) {
+				if (!/^[0-9]+$/.test(fieldValue)) {
+					error = true;
+				}
+			}
 			if (!allowSpecialChars && allowSpaces) {
 				if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
 					error = true;
