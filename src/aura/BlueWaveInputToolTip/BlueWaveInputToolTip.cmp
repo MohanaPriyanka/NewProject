@@ -7,6 +7,7 @@
 	<aura:attribute name="toolTipPixelsTop" type="String" />	
 	<aura:attribute name="toolTipPixelsLeft" type="String" />	
 	<aura:attribute name="helpText" type="String" />
+	<aura:attribute name="nubbinType" type="String" />
 	<style>
 		@font-face {
 		font-family: proximaNovaFont;
@@ -36,7 +37,9 @@
 				</button>
 			</div>
 		</div>
-		<div aura:id="helpTextBubble" class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left noDisplay" role="tooltip" id="help" style="{!'position:' + ' ' + (v.toolTipPosition) + '; top:' + ' ' +  (v.toolTipPixelsTop) + '; left:' + ' ' + (v.toolTipPixelsLeft) + ';'}">
+		<div aura:id="helpTextBubble" class="noDisplay">
+		<div class="{!'slds-popover slds-popover_tooltip' + ' ' + (v.nubbinType)}" role="tooltip" id="help" style="{!'position:' + ' ' + (v.toolTipPosition) + '; top:' + ' ' +  (v.toolTipPixelsTop) + '; left:' + ' ' + (v.toolTipPixelsLeft) + ';'}">
 			<div class="slds-popover__body slds-text-longform proximaNovaWhite">{!v.helpText}</div>
 		</div>
+	</div>
 </aura:component>

@@ -87,27 +87,30 @@
     'System_Cost__c':'100',
     }"/> -->
 
-  <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div> 
-      <div aura:id="customerEmailButton"> 
-        <ui:button label="Email this application"
-         class="slds-button slds-button--brand slds-m-bottom_medium proximaNovaWhite"
-         press="{!c.openEmailCustomerModal}"/> 
-       </div>  
-       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-        <div aura:id="mslpAppButton"  class=" slds-m-bottom_medium slds-m-top_medium noDisplay">
-          <ui:button label="Switch to MCEC's Solar Loan Application" class="slds-button slds-button--brand slds-m-bottom_small proximaNovaWhite" press="{!c.changeApplicationToMSLP}">
-          </ui:button>          
-        </div>         
-        <div aura:id="bwslAppButton" class="slds-m-bottom_medium slds-m-top_medium">
-          <ui:button label="Switch to BlueWave's Solar Loan Application" class="slds-button slds-button--brand proximaNovaWhite " press="{!c.changeApplicationToBWSL}">
-          </ui:button>           
-        </div> 
-      </aura:if>     
-  <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>   
-  <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
+     <div class="slds-tabs_default slds-m-bottom_small" style="position:relative">
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
+        <c:BlueWaveInputToolTip icon="utility:info"
+                                assistiveText = "Help" 
+                                buttonPixelsTop = "30.5px"
+                                buttonPixelsLeft = "1085px"
+                                toolTipPosition = "absolute"
+                                toolTipPixelsTop = "-50px"
+                                toolTipPixelsLeft = "800px"                                      
+                                helpText = "Please select which loan this applicant would like to apply for by toggling the application tabs to the left."
+                                nubbinType = "slds-nubbin_bottom-right"/>         
+    </aura:if>
+      <ul class="slds-tabs_default__nav" role="tablist">
+        <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue"><a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab" ><b>BlueWave Solar Loan Application</b></a></li>        
+        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
+          <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue"><a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab"   ><b>MCEC Loan Application</b></a></li>
+        </aura:if>
+      </ul>
+    </div>
+    <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>   
+    <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
     <div aura:id="mslpDisclaimer" class="box">
       <br></br>
-      <div class="proximaNovaMCEC slds-m-top_small slds-align--absolute-center"> 
+      <div class="proximaNovaMCEC slds-m-top_medium slds-align--absolute-center"> 
         <b><h3> Application for the Massachussets Clean Energy Center (MCEC) Solar Loan Program </h3></b> 
       </div>                         
       <p class="marginAround proximaNovaBlue">
@@ -220,7 +223,8 @@
                                       buttonPixelsLeft = "183.5px"
                                       toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-150px"
-                                      toolTipPixelsLeft = "168px"                                      
+                                      toolTipPixelsLeft = "168px" 
+                                      nubbinType = "slds-nubbin_bottom-left"                                     
                                       helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their systems."/>                     
               </div>
             </div>      
@@ -233,7 +237,8 @@
                                       buttonPixelsLeft = "151px"
                                       toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-45px"
-                                      toolTipPixelsLeft = "143px"                                      
+                                      toolTipPixelsLeft = "143px" 
+                                      nubbinType = "slds-nubbin_bottom-left"                                    
                                       helpText = "Please provide the total installation cost." />                        
             </div>             
           </div>
@@ -253,7 +258,8 @@
                                       buttonPixelsLeft = "175px"
                                       toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-85px"
-                                      toolTipPixelsLeft = "170px"                                      
+                                      toolTipPixelsLeft = "170px"    
+                                      nubbinType = "slds-nubbin_bottom-left"                                  
                                       helpText = "All application data is 100% private and secure.  We collect this information in order to run a credit check on the applicant." />                  
             </div> 
             <div aura:id="incomeElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
@@ -265,7 +271,8 @@
                                       buttonPixelsLeft = "186.5px"
                                       toolTipPosition = "absolute"
                                       toolTipPixelsTop = "-83px"
-                                      toolTipPixelsLeft = "178px"                                      
+                                      toolTipPixelsLeft = "178px"    
+                                      nubbinType = "slds-nubbin_bottom-left"                                  
                                       helpText = "Please provide us with this applicant's estimated total income. Proof of income will come at a later stage." />                    
             </div> 
           </div>     
