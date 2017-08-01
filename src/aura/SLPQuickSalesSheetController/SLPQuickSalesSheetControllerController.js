@@ -118,7 +118,8 @@
     
     eraseZeros : function(component, event, helper) {
         var source = event.getSource();
-        source.set("v.value","");
+        if (source.get("v.value")=="0" || source.get("v.value")=="$0.00") {
+           source.set("v.value","");
+        }
     },
-
 })
