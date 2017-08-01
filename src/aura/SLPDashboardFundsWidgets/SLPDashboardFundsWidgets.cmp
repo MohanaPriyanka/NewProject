@@ -10,13 +10,11 @@
   <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />
   <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
 
- <style type="text/css">
-  </style>    
   <aura:if isTrue="{!v.licenseType}">
     <div aura:id = "disbursalWidgets" class="main2">        
-    <aura:if isTrue="{!v.alertPrompt}" >
+      <aura:if isTrue="{!v.alertPrompt}" >
         <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
-            aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
+             aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
           <div class="slds-modal__container">
             <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
               <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlerts[0].Name}</h2>
@@ -27,62 +25,62 @@
               <p>{!v.partnerAlerts[0].Body__c}</p>
             </div>
             <div class="slds-modal__footer slds-theme--default">
-            <ui:button aura:id="importantAlertButton"
-               class="slds-button--brand box"
-               labelClass="proximaNova95"
-               label="Okay"                  
-               press="{!c.acknowledgeAlert}"/>            
-            <ui:button aura:id="importantAlertButton"
-               class="slds-button--brand box"
-               labelClass="proximaNova95"
-               label="Remind me later"                  
-               press="{!c.closeAlert}"/>   
+              <ui:button aura:id="importantAlertButton"
+                         class="slds-button--brand box"
+                         labelClass="proximaNova95"
+                         label="Okay"                  
+                         press="{!c.acknowledgeAlert}"/>            
+              <ui:button aura:id="importantAlertButton"
+                         class="slds-button--brand box"
+                         labelClass="proximaNova95"
+                         label="Remind me later"                  
+                         press="{!c.closeAlert}"/>   
             </div>
           </div>
         </div>
-    </aura:if>    
-    <br></br>      
-        <div class="clearfix ">               
-        	<div class="boxAnim">
-                <a href="slpcustomer">
-                    <div class="headertop ">
-                    	<div class="navtext proximaNova text-align: center vertical-align: text-center ">
-                    		<h2>Systems Contracted</h2>
-                      </div>                        
-                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.widgets.totalSystemsContracted}" /> 
-                            </div>
-                    </div>
-                </a>        
-		    </div>
-        	<div class="boxAnimCenter">
-                <a href="slpdisbursals">
-                    <div class="headertop ">
-                        <div class="navtext proximaNova text-align: center vertical-align: text-center">
-                    		<h2>Funds Disbursed</h2>
-                         </div>
-                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.widgets.totalFundsDisbursed}" />                            
-                        	</div>
-                       
-                    </div>
-                </a>        
-		    </div>            
-		    <div class="boxAnimRight">
-                <a href="slpdisbursals">
-                    <div class="headertop ">
-                        <div class="navtext proximaNova text-align: center vertical-align: text-center">
-                    		<h2>Funds Pending</h2>
-                        </div>                        
-                            <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
-                                <ui:outputCurrency value="{!v.widgets.totalFundsPending}" />                            
-                        	</div>                            
-                    </div>
-                </a>        
-		    </div>
-        </div>            
+      </aura:if>    
+      <br></br>      
+      <div class="clearfix ">               
+        <div class="boxAnim">
+          <a href="slpcustomer">
+            <div class="headertop ">
+              <div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                <h2>Systems Contracted</h2>
+              </div>                        
+              <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                <ui:outputCurrency value="{!v.widgets.totalSystemsContracted}" /> 
+              </div>
+            </div>
+          </a>        
+	</div>
+        <div class="boxAnimCenter">
+          <a href="slpdisbursals">
+            <div class="headertop ">
+              <div class="navtext proximaNova text-align: center vertical-align: text-center">
+                <h2>Funds Disbursed</h2>
+              </div>
+              <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                <ui:outputCurrency value="{!v.widgets.totalFundsDisbursed}" />                            
+              </div>
+              
+            </div>
+          </a>        
+	</div>            
+	<div class="boxAnimRight">
+          <a href="slpdisbursals">
+            <div class="headertop ">
+              <div class="navtext proximaNova text-align: center vertical-align: text-center">
+                <h2>Funds Pending</h2>
+              </div>                        
+              <div class="navtext proximaNovaDataGreen text-align: center vertical-align: text-center ">
+                <ui:outputCurrency value="{!v.widgets.totalFundsPending}" />                            
+              </div>                            
+            </div>
+          </a>        
+	</div>
+      </div>            
     </div>
   </aura:if>
-    <br>
-    </br>
+  <br>
+  </br>
 </aura:component>
