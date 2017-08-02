@@ -1,44 +1,40 @@
 ({
-	doInit : function(component, event, helper) {
-	    var closeButton = component.find("closeButton");
+    doInit : function(component, event, helper) {
+	var closeButton = component.find("closeButton");
         $A.util.addClass(closeButton, 'noDisplay');
 
         //The following block of code retrieves the user's license type to determine what to display on the UI
         var actionLicenseType = component.get("c.getLicenseType");
-        actionLicenseType.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if(resp.getReturnValue().length > 0){
-                    if(resp.getReturnValue() == 'Executive')
-                    component.set("v.licenseType", true);
+        actionLicenseType.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                if (resp.getReturnValue().length > 0) {
+                    if (resp.getReturnValue() == 'Executive')
+                        component.set("v.licenseType", true);
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
         $A.enqueueAction(actionLicenseType);
         component.set("v.vendorIdLabel", "Unique Identifier");
-
-
-	},
+    },
 
     openCustomerWindow : function(component, event, helper) {
         //remove the noDisplayBar class from the Component - brining the page to display.
         var customerPage = component.find("customerPage");
         $A.util.removeClass(customerPage, 'noDisplayBar');
 
-		//retrieve the loan Id to set the record for the component to display.
+	//retrieve the loan Id to set the record for the component to display.
         var label = event.getParam("customerLoanId");
 
         //retrieve the customer's full information to display in the component
         var customerInformationAction = component.get("c.getCustomerInformation");
         customerInformationAction.setParams({loanId : label})
-        customerInformationAction.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
                 component.set("v.customer", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -47,7 +43,7 @@
         //progress bar status - removes/adds classes based on returned value of last completed task.
         var progressBarData = component.get("c.getProgressBarData");
         progressBarData.setParams({loanId : label})
-        progressBarData.setCallback(this,function(resp){
+        progressBarData.setCallback(this,function(resp) {
             var creditToggle = component.find("credit");
             var systemInfoToggle = component.find("systemInfo");
             var reviewToggle = component.find("bwReview");
@@ -58,22 +54,21 @@
             var completeToggle = component.find("complete");
             var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
 
-            if(resp.getState() == 'SUCCESS') {
+            if (resp.getState() == 'SUCCESS') {
                 helper.getProgressBarDataMethod(component, event, helper);
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
                 alert("There was an issue loading the progress bar");
             }
         });
-		$A.enqueueAction(progressBarData);
+	$A.enqueueAction(progressBarData);
         var i;
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : label});
-        partnerTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
@@ -82,8 +77,7 @@
                         continue;
                     }
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -91,38 +85,33 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : label});
-		completeLoanDisbursals.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+	completeLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : label});
-		incompleteLoanDisbursals.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+	incompleteLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
 
         $A.enqueueAction(completeLoanDisbursals);
-
         $A.enqueueAction(incompleteLoanDisbursals);
     },
 
-	exitCustomerWindow : function(component, event, helper) {
+    exitCustomerWindow : function(component, event, helper) {
         $A.get('e.force:refreshView').fire();
     },
 
-
-	openTaskInformation : function(component, event, helper) {
-
+    openTaskInformation : function(component, event, helper) {
         var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
         var customerInformationToggle1 = component.find("customerInformation1");
@@ -152,8 +141,8 @@
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : loanUpdateIdVar});
-        partnerTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
@@ -162,8 +151,7 @@
                         continue;
                     }
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -171,10 +159,9 @@
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
         helper.getProgressBarDataMethod(component, event, helper);
+    },
 
-	},
-
-	openCustomerInformation : function(component, event, helper) {
+    openCustomerInformation : function(component, event, helper) {
         var loanId = component.get("v.customerInformation.Loan__r.Id");
         var taskTableToggle = component.find("taskTable");
         var customerInformationToggle1 = component.find("customerInformation1");
@@ -202,11 +189,10 @@
 
         var customerInformationAction = component.get("c.getCustomerInformation");
         customerInformationAction.setParams({loanId : loanId})
-        customerInformationAction.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -214,9 +200,9 @@
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
         helper.getProgressBarDataMethod(component, event, helper);
-	},
+    },
 
-	openDisbursalInformation : function(component, event, helper) {
+    openDisbursalInformation : function(component, event, helper) {
         $A.util.addClass(component.find('disbursalModal'), 'slds-fade-in-open');
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
 
@@ -236,11 +222,10 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : loanId});
-		completeLoanDisbursals.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+	completeLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -248,8 +233,8 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : loanId});
-		incompleteLoanDisbursals.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+	incompleteLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             }
             else {
@@ -261,7 +246,7 @@
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
         helper.getProgressBarDataMethod(component, event, helper);
-	},
+    },
 
     closeDisbursalModal : function(component, event, helper) {
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
@@ -270,7 +255,6 @@
 
     //The use of the event.currentTarget.value is taken from the below link. Event.getSource was not working with lightning buttons.
     //https://salesforce.stackexchange.com/questions/144129/winter-17-release-event-getsource-is-not-a-function-on-lightningbutton/14718
-
     setSrecOptInCalendarQuarter : function(component, event, helper) {
         var srecOptInCQ = event.currentTarget.value;
         component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);
@@ -282,7 +266,6 @@
     },
 
     setEquipmentCommonwealthProgram : function(component, event, helper) {
-
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));
     },
@@ -357,7 +340,7 @@
         $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
 
-		var equipmentUpdateVar = component.get("v.equipmentUpdate");
+	var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
         var loanUpdateVar = component.get("v.loanUpdate");
         var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
@@ -371,31 +354,30 @@
         });
 
         saveAction.setCallback(this, function(resp) {
-            if(resp.getState() == "SUCCESS") {
+            if (resp.getState() == "SUCCESS") {
                 helper.stopSpinner(component, "srecSaveSpinner");
                 helper.stopSpinner(component, "customerInformationSpinner");
                 $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
                 $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
-            }else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
 
         var customerInformationAction = component.get("c.getCustomerInformation");
         customerInformationAction.setParams({loanId : loanUpdateIdVar})
-        customerInformationAction.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.customerInformation", resp.getReturnValue());
                 var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
 
-		$A.enqueueAction(saveAction);
+	$A.enqueueAction(saveAction);
 
         $A.enqueueAction(customerInformationAction);
         helper.getProgressBarDataMethod(component, event, helper);
@@ -433,10 +415,9 @@
             var completeToggle = component.find("complete");
             var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
 
-            if(resp.getState() == 'SUCCESS') {
+            if (resp.getState() == 'SUCCESS') {
                 helper.getProgressBarDataMethod(component, event, helper);
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
                 alert("There was an issue loading the progress bar");
             }
@@ -447,8 +428,8 @@
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : label});
-        partnerTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
@@ -457,8 +438,7 @@
                         continue;
                     }
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -473,8 +453,8 @@
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
         partnerTaskList.setParams({loanId : loanUpdateIdVar});
-        partnerTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
                 for (i=0; i<resp.getReturnValue().length; i++) {
                     if (resp.getReturnValue()[i].Name == "Interconnection") {
@@ -483,8 +463,7 @@
                         continue;
                     }
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -533,82 +512,82 @@
     fieldChanges : function(component, event, helper) {
 
         var mechDate = component.get("v.customerInformation.Mechanical_Installation_Date__c");
-        if(mechDate != null){
+        if (mechDate != null) {
         	component.set("v.equipmentUpdate.Mechanical_Installation_Date__c", mechDate);
         }
 
         var interconnectDate = component.get("v.customerInformation.Interconnection_Date__c");
-        if(interconnectDate != null){
+        if (interconnectDate != null) {
         	component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
         }
 
         var commencementDate = component.get("v.customerInformation.Loan__r.Commencement_Datee__c");
-        if(commencementDate != null){
+        if (commencementDate != null) {
         	component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
         }
 
         var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
-        if(solarMeterReadDate != null){
+        if (solarMeterReadDate != null) {
             component.set("v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c", solarMeterReadDate);
         }
 
         var contractExecutionDate = component.get("v.customerInformation.Contract_Execution_Date__c");
-        if(contractExecutionDate != null){
+        if (contractExecutionDate != null) {
             component.set("v.equipmentUpdate.Contract_Execution_Date__c", contractExecutionDate);
         }
 
         var generatorInterconnectionDate = component.get("v.customerInformation.Generator_Interconnection_Date__c");
-        if(generatorInterconnectionDate != null){
+        if (generatorInterconnectionDate != null) {
             component.set("v.equipmentUpdate.Generator_Interconnection_Date__c", generatorInterconnectionDate);
         }
 
         var generatorInstallationDate = component.get("v.customerInformation.Generator_Installation_Date__c");
-        if(generatorInstallationDate != null){
+        if (generatorInstallationDate != null) {
             component.set("v.equipmentUpdate.Generator_Installation_Date__c", generatorInstallationDate);
         }
 
         var generatorOnlineDate = component.get("v.customerInformation.Generator_Energized_Online_Date__c");
-        if(generatorOnlineDate != null){
+        if (generatorOnlineDate != null) {
             component.set("v.equipmentUpdate.Generator_Energized_Online_Date__c", generatorOnlineDate);
         }
 
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
-        if(mechInstallCheck != null){
+        if (mechInstallCheck != null) {
         	component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
         }
 
         var interconnectChange = component.get("v.customerInformation.Interconnected__c");
-        if(interconnectChange != null){
+        if (interconnectChange != null) {
         	component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
         }
 
         var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
-        if(interconnectChange != null){
+        if (interconnectChange != null) {
             component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonwealthSolarRebateProgram);
         }
 
         var maFacilityType = component.get("v.customerInformation.MA_Facility_Type__c");
-        if(maFacilityType != null){
+        if (maFacilityType != null) {
             component.set("v.equipmentUpdate.MA_Facility_Type__c", maFacilityType);
         }
 
         var maFacilitySector = component.get("v.customerInformation.MA_Facility_Sector__c");
-        if(maFacilitySector != null){
+        if (maFacilitySector != null) {
             component.set("v.equipmentUpdate.MA_Facility_Sector__c", maFacilitySector);
         }
 
         var autoReportingVendor = component.get("v.customerInformation.Remote_Monitoring_System_Vendor__c");
-        if(autoReportingVendor != null){
+        if (autoReportingVendor != null) {
             component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", autoReportingVendor);
         }
 
         var commonWealthProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
-        if(commonWealthProgram != null){
+        if (commonWealthProgram != null) {
             component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonWealthProgram);
         }
 
         var autoReport = component.get("v.customerInformation.Auto_Reporting_to_PTS__c");
-        if(autoReport != null){
+        if (autoReport != null) {
             component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", autoReport);
         }
     },
@@ -619,19 +598,18 @@
         //var viewButton = component.find("viewButton");
         //var closeButton = component.find("closeButton");
 
-		var subTaskTableToggle = component.find("subTaskTable");
+	var subTaskTableToggle = component.find("subTaskTable");
         var subTaskHeaderToggle = component.find("subTaskHeader");
 
         var parentSubTaskList = component.get("c.getLoanParentSubTasks");
         parentSubTaskList.setParams({taskId : taskId});
-        parentSubTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        parentSubTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 //component.set("v.taskType", resp.getReturnValue()[0].Task_Type__c);
                 component.set("v.parentSubTaskList", resp.getReturnValue());
                 $A.util.removeClass(subTaskHeaderToggle, 'noDisplay');
                 $A.util.removeClass(subTaskTableToggle, 'noDisplay');
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -646,15 +624,14 @@
         var subTaskList = component.get("c.getLoanParentSubTasks");
         subTaskList.setParams({taskId : taskId});
 
-        subTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        subTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.subTaskList", resp.getReturnValue());
-                if(resp.getReturnValue() != null){
+                if (resp.getReturnValue() != null) {
                     $A.util.removeClass(parentSubTaskToggle, 'noDisplay');
         			$A.util.removeClass(subTaskTypeToggle, 'noDisplay');
                 }
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -664,17 +641,17 @@
     exitParentSubTasks : function(component, event, helper) {
         var parentSubTaskToggle = component.find("parentSubTasks");
         component.set("v.parentSubTaskButton", true);
-		component.set("v.parentSubTaskList", null);
+	component.set("v.parentSubTaskList", null);
         var subTaskTypeToggle = component.find("subTaskType");
         var taskTableToggle = component.find("taskTable");
         var subTaskHeaderToggle = component.find("subTaskHeader");
         var subTaskTableToggle = component.find("subTaskTable");
-         $A.util.addClass(subTaskTableToggle, 'noDisplay');
-         $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
+        $A.util.addClass(subTaskTableToggle, 'noDisplay');
+        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
     },
 
     exitSubTasks : function(component, event, helper) {
-		component.set("v.subTaskList", null);
+        component.set("v.subTaskList", null);
     },
 
     handleTaskAction : function(component, event, helper) {
@@ -734,9 +711,9 @@
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         var equipmentId = component.get("v.customerInformation.Id");
         var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        if(updateDummy == true){
+        if (updateDummy == true) {
             updateDummy = false;
-        }else{
+        } else {
             updateDummy = true;
         }
 
@@ -754,9 +731,9 @@
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         var equipmentId = component.get("v.customerInformation.Id");
         var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        if(updateDummy == true){
+        if (updateDummy == true) {
             updateDummy = false;
-        }else{
+        } else {
             updateDummy = true;
         }
 
@@ -776,19 +753,19 @@
         var equipmentId = component.get("v.customerInformation.Id");
         var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
         var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
-        if(updateDummy == true){
+        if (updateDummy == true) {
             updateDummy = false;
-        }else{
+        } else {
             updateDummy = true;
         }
         var urlEvent = $A.get("e.force:navigateToURL");
-        if(mslp == false) {
+        if (mslp == false) {
             urlEvent.setParams({
               "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
                 + '&' + 'tfa_1180=' + updateDummy
                 + '&' + 'tfa_390=' + income
             });
-        }else {
+        } else {
             urlEvent.setParams({
               "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
                 + '&' + 'tfa_1180=' + updateDummy
@@ -801,9 +778,9 @@
     navigateSalesAgreementDoc : function(component, event, helper) {
         var leadId = component.get("v.customerInformation.Opportunity__r.Id");
         var updateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
-        if(updateDummy == true){
+        if (updateDummy == true) {
             updateDummy = false;
-        }else{
+        } else {
             updateDummy = true;
         }
 
@@ -816,3 +793,4 @@
         urlEvent.fire();
     },
 })
+

@@ -20,9 +20,9 @@
                 if (resp.getReturnValue().program == 'MSLP') {
                     progressBarPendingTaskName = progressBarPendingTaskName + 'ProgressBarMSLP';
                 } else {
-                   progressBarPendingTaskName = progressBarPendingTaskName + 'ProgressBar';
-                }
-                progressBarPendingTaskName = progressBarPendingTaskName.replace(/\s+/g, '');
+                    progressBarPendingTaskName = progressBarPendingTaskName + 'ProgressBar';                    
+                }               
+                progressBarPendingTaskName = progressBarPendingTaskName.replace(/\s+/g, ''); 
 
                 $A.util.removeClass(progressBarToggle);
                 $A.util.addClass(progressBarToggle, 'slds-wizard__progress-bar');
@@ -37,12 +37,11 @@
 
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanUpdateIdVar});
-        partnerTaskList.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+        partnerTaskList.setParams({loanId : loanUpdateIdVar});       
+        partnerTaskList.setCallback(this,function(resp){ 
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         });
@@ -55,19 +54,21 @@
         evt.setParams({ isVisible : true });
         evt.fire();
     },
+
     stopSpinner : function(component, spinnerName) {
         var spinner = component.find(spinnerName);
         var evt = spinner.get("e.toggle");
         evt.setParams({ isVisible : false });
         evt.fire();
     },
-    getGenericPage: function(page, component) {
-        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
+    
+    getGenericPage: function(page, component) { 
+        $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                           
+        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');      
+        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay'); 
+        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');       
+        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay'); 
         $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
         $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
 
@@ -98,18 +99,17 @@
     },
 
     MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
-
     saveFile : function(component, event) {
         var fileInput = event.getSource().get("v.files")[0];
 
         var file = fileInput;
-
+        
         if (file.size > this.MAX_FILE_SIZE) {
             alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-              'Selected file size: ' + file.size);
+                  'Selected file size: ' + file.size);
             return;
         }
-
+        
         var fr = new FileReader();
 
         var self = this;
@@ -119,13 +119,13 @@
             var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
 
             fileContents = fileContents.substring(dataStart);
-
+            
             self.upload(component, file, fileContents);
         };
 
         fr.readAsDataURL(file);
     },
-
+    
     upload: function(component, file, fileContents) {
         var action = component.get("c.savePTODocumentation");
         action.setParams({
