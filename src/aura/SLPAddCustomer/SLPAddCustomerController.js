@@ -9,21 +9,14 @@
                     $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');  
                     if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
                         component.set("v.newLead.DOER_Solar_Loan__c",false);  
-                        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
-                        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
-                        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
-                        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
-                        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-                        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');   
-                    }                  
+                        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');    
+                        helper.showBWSLApplication(component); 
+                    } else {
+                        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');           
+                    }
                 }                
             } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPAddCustomerController",
-                    "methodName" : "doInit",
-                    "errors" : resp.getError()});
-                appEvent.fire();
-
+                helper.logError("SLPAddCustomerController", "doInIt", resp.getERror());
             }
         });    
         $A.enqueueAction(actionPartnerRecord);
@@ -37,83 +30,43 @@
             }
         });
         $A.enqueueAction(actionGetTimeout);
-    },    
+    },        
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
-        if (!helper.validDate(lead.LASERCA__Birthdate__c)) {
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "addCustomer",
-                                "errors" : "Please enter a Date of Birth in the format Month/Day/Year. We saw a date of: " + lead.LASERCA__Birthdate__c});
-            appEvent.fire();
+        var errors = helper.errorsInForm(component, helper, lead);
+        if (errors != null) {
+            helper.logError("SLPAddCustomerController", "addCustomer", errors);
             return;
         }
+
         $A.util.addClass(component.find("SubmitButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
+        
+        lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
+        var Action = component.get("c.addNewLeadRecord");
+        Action.setParams({"newLead" : lead});
+        
+        Action.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+                component.set("v.newLead", resp.getReturnValue());
+                helper.removeAddCustomerForm(component);
+                helper.showCreditCheckPage(component);
+            } else {
+                helper.stopSpinner(component, "leadSpinner");
+                $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-        if (lead.LASERCA__Home_Address__c != null 
-            && lead.LASERCA__Home_City__c != ''
-            && lead.FirstName != ''
-            && lead.LastName != ''
-            && lead.Email != ''
-            && lead.LASERCA__SSN__c != ''
-            && lead.Requested_Loan_Amount__c != null
-            && lead.Annual_Income_Currency__c != null
-            && lead.Credit_Check_Acknowledged__c == true
-            && lead.Privacy_Policy_Acknowledged__c == true
-            && lead.Utility_Bill_Access_Acknowledged__c == true) {
-            var Action = component.get("c.addNewLeadRecord");
-            Action.setParams({"newLead" : lead});
-            
-            Action.setCallback(this, function(resp) {
-                    if(resp.getState() == "SUCCESS") {
-                        component.set("v.newLead", resp.getReturnValue());
-                        var inputForm = component.find("inputForm");
-                        var pullCreditButtons = component.find("pullCreditButtons");
-                        var mslpButton = component.find("mslpAppbutton");
-                        var addedCustomerConfirmCredit = component.find("addedCustomerConfirmCredit");
-                        var bwslButton = component.find("bwslAppButton");
-                        var avidiaLogo = component.find("avidiaLogo");
-                        var mslpDisclaimer = component.find("mslpDisclaimer");
-
-                        $A.util.addClass(mslpButton, 'noDisplayBar'); 
-                        $A.util.addClass(bwslButton, 'noDisplayBar');      
-                        $A.util.addClass(inputForm, 'noDisplayBar'); 
-                        $A.util.addClass(avidiaLogo, 'noDisplayBar');    
-                        $A.util.addClass(mslpDisclaimer, 'noDisplayBar');
-                        $A.util.removeClass(pullCreditButtons, 'noDisplayBar');
-                        $A.util.removeClass(addedCustomerConfirmCredit, 'noDisplayBar');
-                    } else {
-                        helper.stopSpinner(component, "leadSpinner");
-                        $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
-
-                        var appEvent = $A.get("e.c:ApexCallbackError");
-                        appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "addCustomer",
-                                            "errors" : resp.getError()});
-                        appEvent.fire();
-                    }
-                }); 
-            $A.enqueueAction(Action);
-        } else {
-            alert("Please acknowledge our privacy policy, give BlueWave permission " +
-                  "to access credit history, energy history and fill out all of the fields on this form.");
-
-            helper.stopSpinner(component, 'leadSpinner');
-            $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
-        }
+                helper.logError("SLPAddCustomerController", "addCustomer", "We've encountered an issue while trying to add this applicant. Please verify that all of the applicant's information has been entered in correctly and try again. If the issue persists, please call (888) 817-2703 for support");
+            }
+        }); 
+        $A.enqueueAction(Action);        
     },
     
     checkCredit : function(component, event, helper) {
-        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay'); 
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("customerEmailButton"), 'noDisplayBar'); 
-
+        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');  
         helper.startSpinner(component, 'creditSpinner');
-
         var lead = component.get("v.newLead");
+        lead.LASERCA__Birthdate__c = lead.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         if (!$A.util.isUndefinedOrNull(lead.Id)) {
             var self = this;
             var action = component.get("c.pullCreditStatus");
@@ -147,21 +100,16 @@
                         helper.stopSpinner(component, 'creditSpinner');
                         $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
 
-                        var appEvent = $A.get("e.c:ApexCallbackError");
-                        appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "checkCredit",
-                                            "errors" : resp.getError()});
-                        appEvent.fire();
-                        $A.log("Errors", resp.getError());
+                        helper.logError("SLPAddCustomerController", "checkCredit",   "There was an issue running credit on this applicant. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the applicant's name");    
+                        $A.log("Errors", "There was an issue running credit on this applicant. The error has been logged and you'll need to start the application over again. We apologize for this inconvenience. Please make sure you enter social security number correctly and leave out any sort of special characters in the applicant's name");        
+                        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');         
+                        $A.util.removeClass(component.find("addAnotherCustomerButton"), 'noDisplay'); 
+                        component.set("v.newLead", lead);
                     }
                 });
             $A.enqueueAction(action);
         } else {
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                                "methodName" : "checkCredit",
-                                "errors" : "No Customer (Lead) ID was found when checking credit: " + lead});
-            appEvent.fire();
+            helper.logError("SLPAddCustomerController", "checkCredit", "No Customer (Lead) ID was found when checking credit: " + lead);            
         }
     },
 
@@ -195,22 +143,12 @@
     changeApplicationToMSLP : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",true);  
         component.set("v.newLead.Product_Program__c",'MSLP');                
-
-        $A.util.removeClass(component.find("bwslAppButton"), 'noDisplayBar');      
-        $A.util.addClass(component.find("mslpAppButton"), 'noDisplayBar'); 
-        $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
-        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplayBar');                        
+        helper.showMSLPApplication(component);                    
     }, 
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);  
-        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');         
-
-        $A.util.addClass(component.find("bwslAppButton"), 'noDisplayBar');      
-        $A.util.removeClass(component.find("mslpAppButton"), 'noDisplayBar');
-        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
-        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplayBar');      
+        component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');      
+        helper.showBWSLApplication(component);     
     },         
 
     openEmailCustomerModal : function(component, event, helper) {
@@ -261,16 +199,10 @@
                 btn.set("v.disabled",true);
                 btn.set("v.label",'Email Sent!')             
             } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPAddCustomerController",
-                    "methodName" : "sendCustomerApplication",
-                    "errors" : resp.getError()});
-                appEvent.fire();
+                helper.logError("SLPAddCustomerController", "sendCustomerApplication", resp.getERror());
                 $A.log("Errors", resp.getError());                      
             }
         });                                                   
         $A.enqueueAction(actionSendApp);               
-    },         
-
-    
+    },      
 })
