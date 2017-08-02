@@ -115,5 +115,11 @@
         
         $A.enqueueAction(actionCreateDocQss);
     },   
-
+    
+    eraseZeros : function(component, event, helper) {
+        var source = event.getSource();
+        if (source.get("v.value")=="0" || source.get("v.value")=="$0.00") {
+           source.set("v.value","");
+        }
+    },
 })

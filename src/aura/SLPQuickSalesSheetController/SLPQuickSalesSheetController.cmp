@@ -48,7 +48,9 @@
                               class="slds-input"
                               labelClass="slds-form-element__label"
                               value="{!v.quicksalessheet.System_Size__c}"
-                              required="true"/>
+                              required="true"
+                              click="{!c.eraseZeros}"
+                              select="{!c.eraseZeros}"/>
               </div>
             </div>             
             <div class="slds-form-element slds-is-required">
@@ -58,7 +60,9 @@
                                   class="slds-input"
                                   labelClass="slds-form-element__label"
                                   value="{!v.quicksalessheet.System_Cost__c}"
-                                  required="true"/>
+                                  required="true"
+                                  click="{!c.eraseZeros}"
+                                  select="{!c.eraseZeros}"/>
               </div>
             </div>
             <div class="slds-form-element slds-is-required">
@@ -68,7 +72,9 @@
                               class="slds-input"
                               labelClass="slds-form-element__label"
                               value="{!v.quicksalessheet.Down_Payment__c}"
-                              required="true"/>
+                              required="true"
+                              click="{!c.eraseZeros}"
+                              select="{!c.eraseZeros}"/>
               </div>
             </div>
             <div class="slds-form-element slds-is-required">
@@ -145,15 +151,6 @@
                   	</td>
                  </tr>
                 </aura:if> 
-                <tr class="slds-hint-parent">
-                  <th scope="row">
-                    <div class="slds-truncate" title="TLP">Total Loan Payments
-                    </div>
-                  </th>
-                  <td>
-                    <div class="slds-truncate" title="TLP Value"><ui:outputCurrency value="{!v.calculatedQSS.Total_Loan_Payments__c}"/></div>
-                  </td>
-                </tr>  
               </tbody>
              </table>
              <footer class="slds-card__footer">
