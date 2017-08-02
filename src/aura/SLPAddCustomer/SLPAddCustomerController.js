@@ -12,7 +12,7 @@
                         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');    
                         helper.showBWSLApplication(component); 
                     } else {
-                        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');           
+                        helper.showMSLPApplication(component);          
                     }
                 }                
             } else {
