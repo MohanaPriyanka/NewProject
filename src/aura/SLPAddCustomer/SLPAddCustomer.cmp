@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-<!--   <aura:attribute name="newLead" type="Lead" 
+  <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -60,9 +60,9 @@
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
-    }"/> -->
+    }"/>
 
-  <aura:attribute name="newLead" type="Lead" 
+<!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
     'LastName': 'Testcase',
@@ -85,7 +85,7 @@
     'LASERCA__Birthdate__c':'02/21/1993',
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'100',
-    }"/>
+    }"/> -->
 
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
@@ -106,13 +106,9 @@
         </aura:if>
       </ul>
     </div>
-    <div aura:id="bwApplicationHeader" class="slds-m-top_small slds-m-bottom_small slds-align--absolute-center proximaNovaStream"><b><h3> Application for BlueWave's Solar Loan Program </h3></b></div>   
     <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
     <div aura:id="mslpDisclaimer" class="box">
-      <br></br>
-      <div class="proximaNovaMCEC slds-m-top_medium slds-align--absolute-center"> 
-        <b><h3> Application for the Massachussets Clean Energy Center (MCEC) Solar Loan Program </h3></b> 
-      </div>                         
+      <br></br>                     
       <p class="marginAround proximaNovaBlue">
         Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan. 
       </p>
@@ -346,7 +342,7 @@
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <span aura:id = "avidiaFooter" >
           <img class="slds-align--absolute-center slds-m-top_small slds-m-bottom_small" src="{!$Resource.avidiaFooter}"/>
-          <p class="slds-align--absolute-center proximaNovaMCEC"> Avidia Bank - 42 Main St. Hudson, MA 01749 </p>
+          <p class="slds-align--absolute-center proximaNovaBlue"> Avidia Bank - 42 Main St. Hudson, MA 01749 </p>
         </span>
       </aura:if>
       <div aura:id="SubmitButton" class="slds-align--absolute-center slds-m-bottom_small slds-m-top_small">
