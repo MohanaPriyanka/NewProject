@@ -127,9 +127,10 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, Status__c, ' +
+    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, ' +
+        'Status__c, Parent_Task__r.Status__c, Parent_Task__r.Parent_Task__r.Status__c, ' +
         'Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c, Loan__r.State__c, ' +
-        'Owner__c, Action_Label__c ';
+        'Owner__c, Action_Label__c, Task_Label__c ';
     taskQuery += '      FROM Partner_Task__c' ;
     taskQuery += '      WHERE (Loan__c  =  \'' + loanId +  '\' ';
     taskQuery += '      OR Parent_Task__r.Loan__c = \'' + loanId +  '\' ';

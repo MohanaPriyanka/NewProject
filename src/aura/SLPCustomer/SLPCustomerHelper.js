@@ -197,5 +197,4 @@
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
     },
 
-
 })

@@ -996,28 +996,31 @@
       </div>
       <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>
       <!--  _________________________________TASK TABLE ___________________________________ -->
-      <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped box ">
+      <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
         <thead>
           <tr class="slds-text-heading--label " >
             <th scope="col"><span class="slds-truncate"><b>Task</b></span></th>
+            <th scope="col"><span class="slds-truncate"><b>Owner</b></span></th>
             <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Completion Date</b></span></th>
-            <th scope="col"><span aura:id = "viewParentSubTasks" class="slds-truncate"><b>Sub-Tasks</b></span></th>
+            <th scope="col"><span class="slds-truncate"><b>Completed On</b></span></th>
+            <th scope="col"><span class="slds-truncate"><b>Action</b></span></th>
           </tr>
         </thead>
         <tbody>
           <aura:iteration items="{!v.partnerTaskList}" var="task">
             <tr>
-              <th scope="row"> <b>{!task.Name}</b> </th>
-              <aura:if isTrue="{!task.Status__c == 'Pending'}">
-                <th scope="row" class="proximaNovaDataStream"> <b>{!task.Status__c}</b> </th>
-                <aura:set attribute="else">
-                  <th scope="row"> <b>{!task.Status__c}</b> </th>
-                </aura:set>
-              </aura:if>
-              <th scope="row"> <b>{!task.Completion_Date__c}</b> </th>
+              <th scope="row">
+                <lightning:icon iconName="utility:info" size="x-small"/>&nbsp;
+                <b>{!task.Task_Label__c}</b>
+              </th>
+              <th scope="row"><b>{!task.Owner__c}</b></th>
+              <th scope="row" class="{!and(task.Status__c == 'Pending', task.Owner__c == 'Installer')?'proximaNovaDataStream':''}">
+                
+                <b>{!and(task.Status__c == 'Incomplete', (task.Parent_Task__r.Status__c == 'Pending' || task.Parent_Task__r.Parent_Task__r.Status__c == 'Pending'))?'Pending':task.Status__c}</b>
+              </th>
+              <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>
               <th>
-                <aura:if isTrue="{!task.Status__c == 'Pending'}">
+                <aura:if isTrue="{!and(task.Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
                   <ui:button aura:id="viewButton"
                              label="{!task.Action_Label__c}"
                              class="{!task.Name}"
@@ -1029,7 +1032,6 @@
           </aura:iteration>
         </tbody>
       </table>
-      <br></br>
     </div>
     <aura:if isTrue="{!v.licenseType}">
       <div>
@@ -1116,7 +1118,6 @@
       </div>
     </aura:if>
     <div>
-      <br></br>
       <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
     </div>
   </div>
