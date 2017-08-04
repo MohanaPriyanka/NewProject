@@ -58,7 +58,7 @@
         } else {
             helper.setInputToCorrect(component, "stateElement" );
         }     
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Zip__c, "zipCodeElement", "shake", 5, false, false, false, "Please enter a valid 5 digit Zip Code", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Zip__c, "zipCodeElement", "shake", false, 5, false, false, "Please enter a valid 5 digit Zip Code", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Requested_Loan_Amount__c, "loanAmountElement", "shake", false, null, false, false, "Please enter this Applicant's requested loan amount", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", false, null, false, false, "Please enter this Applicant's system installation cost", "standard");                
         lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
