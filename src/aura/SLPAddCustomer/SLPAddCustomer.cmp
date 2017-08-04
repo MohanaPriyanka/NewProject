@@ -11,32 +11,6 @@
   <aura:attribute name="creditStatusTimeout" type="Integer"/>
   <aura:attribute name="productProgram" type="String" />
   <aura:attribute name="customerEmail" type="String" />
-  <style>
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaBlue {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #1c5a7d;
-    }                
-    .proximaNovaStream {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #00AFA9;
-    }    
-    .proximaNovaWhite {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #FFFFFF;
-    }        
-    .proximaNovaMCEC {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #F59F1A;
-    }                      
-  </style> 
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
@@ -88,21 +62,31 @@
     }"/> -->
 
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
-      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
-        <c:BlueWaveInputToolTip icon="utility:info"
-                                assistiveText = "Help" 
-                                buttonPixelsTop = "30.5px"
-                                buttonPixelsLeft = "1085px"
-                                toolTipPosition = "absolute"
-                                toolTipPixelsTop = "-48px"
-                                toolTipPixelsLeft = "800px"                                      
-                                helpText = "Please select which loan this applicant would like to apply for by toggling the application tabs to the left."
-                                nubbinType = "slds-nubbin_bottom-right"/>         
-    </aura:if>
       <ul class="slds-tabs_default__nav" role="tablist">
-        <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue"><a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab" ><b>BlueWave Solar Loan Application</b></a></li>        
-        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}"> 
-          <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue"><a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab"   ><b>MCEC Loan Application</b></a></li>
+        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+            <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
+              <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
+                <b>BlueWave Solar Loan Application</b>
+              </a>
+            </li>
+	  </c:BlueWaveInputToolTip>
+          <aura:set attribute="else">
+            <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
+              <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
+                <b>BlueWave Solar Loan Application</b>
+              </a>
+            </li>
+          </aura:set>
+        </aura:if>
+        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+            <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
+              <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
+                <b>MCEC Loan Application</b>
+              </a>
+            </li>
+	  </c:BlueWaveInputToolTip>
         </aura:if>
       </ul>
     </div>
@@ -155,7 +139,7 @@
               <label class="slds-form-element__label proximaNovaBlue"><b>Date of Birth</b></label>
               <div class="slds-form-element__control">              
                 <c:BlueWaveDate value="{!v.newLead.LASERCA__Birthdate__c}"
-                                label = "Customer Date of Birth"/>
+                                label="Customer Date of Birth"/>
                 </div>
               </div>
             </div>
@@ -210,32 +194,21 @@
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
             <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b>&nbsp;
+                <c:BlueWaveInputToolTip popoverText="Please provide us with the total value in which this 
+                                                     applicant is applying to finance. Keep in mind, this 
+                                                     may not be the total system cost, as some customers 
+                                                     place down payments on their systems."/>
+              </label>
               <div class="slds-form-element__control">
-              <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />     
-              <c:BlueWaveInputToolTip icon="utility:info"
-                                      assistiveText = "Help" 
-                                      buttonPixelsTop = "-72px"
-                                      buttonPixelsLeft = "183.5px"
-                                      toolTipPosition = "absolute"
-                                      toolTipPixelsTop = "-150px"
-                                      toolTipPixelsLeft = "168px" 
-                                      nubbinType = "slds-nubbin_bottom-left"                                     
-                                      helpText = "Please provide us with the total value in which this applicant is applying to finance. Keep in mind, this may not be the total system cost, as some customers place down payments on their systems."/>                     
+                <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />     
               </div>
             </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b>&nbsp;
+                <c:BlueWaveInputToolTip popoverText="Please provide the total installation cost."/>
+              </label>
               <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
-              <c:BlueWaveInputToolTip icon="utility:info"
-                                      assistiveText = "Help" 
-                                      buttonPixelsTop = "-72px"
-                                      buttonPixelsLeft = "151px"
-                                      toolTipPosition = "absolute"
-                                      toolTipPixelsTop = "-45px"
-                                      toolTipPixelsLeft = "143px" 
-                                      nubbinType = "slds-nubbin_bottom-left"                                    
-                                      helpText = "Please provide the total installation cost." />                        
             </div>             
           </div>
         </div>
@@ -246,30 +219,18 @@
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                   
             <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated ">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Social Security Number</b></label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Social Security Number</b>&nbsp;
+                <c:BlueWaveInputToolTip popoverText="All application data is 100% private and secure. 
+                                                     We collect this information in order to run a credit check on the applicant."/>
+              </label>
               <ui:inputSecret aura:id="ssn" class="slds-input" placeholder="XXX-XX-XXXX" value="{!v.newLead.LASERCA__SSN__c}" required="true"/>
-              <c:BlueWaveInputToolTip icon="utility:info"
-                                      assistiveText = "Help" 
-                                      buttonPixelsTop = "-72px"
-                                      buttonPixelsLeft = "175px"
-                                      toolTipPosition = "absolute"
-                                      toolTipPixelsTop = "-85px"
-                                      toolTipPixelsLeft = "170px"    
-                                      nubbinType = "slds-nubbin_bottom-left"                                  
-                                      helpText = "All application data is 100% private and secure.  We collect this information in order to run a credit check on the applicant." />                  
             </div> 
             <div aura:id="incomeElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b></label>           
+              <label class="slds-form-element__label proximaNovaBlue"><b>Estimated Annual Income</b>&nbsp;
+                <c:BlueWaveInputToolTip popoverText="Please provide us with this applicant's estimated total income. 
+                                                     Proof of income will come at a later stage."/>
+              </label>           
               <ui:inputCurrency aura:id="income" class="slds-input" value="{!v.newLead.Annual_Income_Currency__c}" required="true"  />  
-              <c:BlueWaveInputToolTip icon="utility:info"
-                                      assistiveText = "Help" 
-                                      buttonPixelsTop = "-72px"
-                                      buttonPixelsLeft = "186.5px"
-                                      toolTipPosition = "absolute"
-                                      toolTipPixelsTop = "-83px"
-                                      toolTipPixelsLeft = "178px"    
-                                      nubbinType = "slds-nubbin_bottom-left"                                  
-                                      helpText = "Please provide us with this applicant's estimated total income. Proof of income will come at a later stage." />                    
             </div> 
           </div>     
           <div class="slds-form-element__row">                   

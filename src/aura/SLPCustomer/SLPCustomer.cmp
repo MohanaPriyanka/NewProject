@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global" extends="c.BlueWaveParent">
   <aura:attribute name="loanList" type="Object"/>
   <aura:attribute name="customer" type="Object"/>
   <aura:attribute name="customerInformation" type="Object"/>
@@ -101,86 +101,6 @@
        issue with making them dissapear and appear correctly. It only
        occurs when the task list is reloaded by clicking the view
        button on the dashboard page -->
-
-  <style>
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNova95 {
-    font-family: proximaNovaFont;
-    font-size:95%;
-    color: #FFFFFF;
-    }
-
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaBrand {
-    font-family: proximaNovaFont;
-    font-size:32px;
-    color: #236192;
-    }
-
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataGreenSmall {
-    font-family: proximaNovaFont;
-    font-size:100%;
-    color: #32CD32;
-    }
-
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataGreenSmall {
-    font-family: proximaNovaFont;
-    font-size:100%;
-    color: #32CD32;
-    }
-
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataStream {
-    font-family: proximaNovaFont;
-    font-size:100%;
-    color: #00b2a9;
-    }
-
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataBlue {
-    font-family: proximaNovaFont;
-    font-size:90%;
-    color: #266092;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaWhite {
-    font-family: proximaNovaFont;
-    font-size:200%;
-    color: #FFFFFF;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataBlue50 {
-    font-family: proximaNovaFont;
-    font-size:85%;
-    color: #266092;
-    }
-  </style>
 
   <div aura:id = "customerPage" class="noDisplayBar">
     <div aura:id="customerName" class="main2 proximaNovaBrand slds-grid">
@@ -1010,12 +930,16 @@
           <aura:iteration items="{!v.partnerTaskList}" var="task">
             <tr>
               <th scope="row">
-                <lightning:icon iconName="utility:info" size="x-small"/>&nbsp;
-                <b>{!task.Task_Label__c}</b>
+                <div class="slds-form-element slds-p-horizontal--small">
+                  <b>{!task.Task_Label__c}</b>
+                  <aura:if isTrue="{!task.Help_Text__c != null}">
+                    <c:BlueWaveInputToolTip popoverBody="{!task.Help_Text__c}"/>
+                  </aura:if>
+                </div>
               </th>
               <th scope="row"><b>{!task.Owner__c}</b></th>
               <th scope="row" class="{!and(task.Status__c == 'Pending', task.Owner__c == 'Installer')?'proximaNovaDataStream':''}">
-                
+
                 <b>{!and(task.Status__c == 'Incomplete', (task.Parent_Task__r.Status__c == 'Pending' || task.Parent_Task__r.Parent_Task__r.Status__c == 'Pending'))?'Pending':task.Status__c}</b>
               </th>
               <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>
