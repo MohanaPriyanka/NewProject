@@ -426,11 +426,12 @@
                  labelClass="proximaNovaBlue"
                  label="Run Credit Report"
                  press="{!c.checkCredit}"/>
-      <ui:button aura:id="editPencil"
-                 class="box buttonRight"
-                 labelClass="proximaNovaBlue"
+      <lightning:button aura:id="editPencil"
+                 class="box buttonRight proximaNovaBlue"
                  label="Edit Customer"
-                 press="{!c.returnToEdit}"/>
+                 iconName="utility:edit" 
+                 iconPosition="right"
+                 onclick="{!c.returnToEdit}"/>
     </div>
     <div class="slds-align--absolute-center">
       <ui:spinner aura:id="creditSpinner" isVisible="false"/>

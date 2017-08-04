@@ -67,6 +67,8 @@ private class PCRApprovalHandlerTest {
         insertleads.add(leadAH);
         Lead leadAI = getLead(null, 45000, productVar.Id, true, true, partner.Id);
         insertleads.add(leadAI);
+        Lead leadAJ = getLead(100000, 30000, productVar.Id, false, true, partner.Id);
+        insertleads.add(leadAJ);
         Lead coAppLead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
         coAppLead.Co_Applicant_Income__c = 2000;
         insertleads.add(coAppLead);
@@ -119,6 +121,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrAI = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAI.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '700');
         insertpcrlist.add(pcrAI);
+        LASERCA__Personal_Credit_Report__c pcrAJ = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAJ.Id,
+                                                                                          LASERCA__Credit_Score_TransUnion__c = '678');
+        insertpcrlist.add(pcrAJ);
         LASERCA__Personal_Credit_Report__c pcrCoAppLead = 
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
                                                    LASERCA__Lead__c = coAppLead.Id);
@@ -169,6 +174,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c  tradeacctAI = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAI.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
         inserttradeacct.add(tradeacctAI); 
+        LASERCA__Trade_Accounts__c  tradeacctAJ = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAJ.id,
+                                                                                 LASERCA__Monthly_Payment__c = 200);
+        inserttradeacct.add(tradeacctAJ); 
         LASERCA__Trade_Accounts__c  tradeacctcoAppLead1 = 
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppLead.id,
                                            LASERCA__Monthly_Payment__c = 200,
@@ -203,7 +211,7 @@ private class PCRApprovalHandlerTest {
 
         List<LASERCA__Personal_Credit_Report__c> pcrlist = 
             [SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
-             LASERCA__Lead__r.Status
+             LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
              FROM LASERCA__Personal_Credit_Report__c];
 
         for (LASERCA__Personal_Credit_Report__c creditreport : pcrlist) {
@@ -213,10 +221,13 @@ private class PCRApprovalHandlerTest {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '700') {
                 System.assertEquals(null, creditreport.Solar_Loan_Approval_Status__c);
+                System.assertEquals(FALSE, creditreport.Credit_Denial_Email_Sent__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '680') {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '402') {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '678') {
+                System.assertEquals(TRUE, creditreport.Credit_Denial_Email_Sent__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '800') {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '701') {
@@ -362,8 +373,8 @@ private class PCRApprovalHandlerTest {
 
     private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, 
                                 Boolean doerLoan, Boolean preApproval, Id partnerId) {
-        return(new Lead(LastName = 'Chan',
-                        FirstName = 'Joey',
+        return(new Lead(LastName = 'testcase',
+                        FirstName = 'test',
                         Automatic_Product_Assignment__c = false,
                         Email = 'test@email.com',
                         Company = 'Cloud Jedi',
