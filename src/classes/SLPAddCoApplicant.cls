@@ -4,8 +4,8 @@ public without sharing class SLPAddCoApplicant {
         String queryResult;
 
         Lead mainApplicant = [SELECT Id, Name, Partner_Sent_Co_Signer_Link__c, CoApplicant_Contact__c, Co_Applicant_First_Name__c
-                                FROM Lead 
-                                WHERE Id = : leadId];
+                              FROM Lead 
+                              WHERE Id = : leadId];
 
         if (mainApplicant.CoApplicant_Contact__c != NULL || mainApplicant.Co_Applicant_First_Name__c != NULL) { 
           queryResult = 'hasCoApp';
@@ -14,11 +14,9 @@ public without sharing class SLPAddCoApplicant {
         } else {
           queryResult = 'clear';
         }
-
         return queryResult;
       }
 
-      @AuraEnabled 
       public static String getCoAppLink (Contact coAppInfo, String leadId) { 
         Map<String, String> faParametersMap = new Map<String, String>();
         String falink;
@@ -31,69 +29,46 @@ public without sharing class SLPAddCoApplicant {
       }
 
       @AuraEnabled 
-      public static String sendCoAppEmail (Contact coAppInfo,  String leadId) {
+      public static String sendCoAppEmail (Contact coAppInfo,  Lead mainApplicant) {
         String linkToForm;
         String emailSent;
-
-        Lead mainApplicant = [SELECT Id, Name, Partner_Sent_Co_Signer_Link__c                                
-                                FROM Lead 
-                                WHERE Id = : leadId];
-
-        linkToForm = getCoAppLink(coAppInfo, leadId);
-        List<String> addressList = new List<String>{coAppInfo.Email};       
-
-        EmailTemplate template = [SELECT Id, HtmlValue, Body 
-                                  FROM EmailTemplate 
-                                  WHERE DeveloperName = 'RS_CoApplicant_Please_Fill_out_Form'];
-
-        String htmlBody = template.HtmlValue;
-            htmlBody = htmlBody.replace('{!SLP.FirstName}', coAppInfo.FirstName);
-            htmlBody = htmlBody.replace('{!SLP.LeadName}', mainApplicant.Name);
-            htmlBody = htmlBody.replace('{!SLP.FALink}', linkToForm);
-
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setHtmlBody(htmlBody);
-        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
-                                                FROM OrgWideEmailAddress
-                                                WHERE Address = 'customercare@bluewavesolar.com'  
-                                                LIMIT 1]) {
-          mail.setOrgWideEmailAddressId(senderEmail.Id); 
-        }  
-        String emailSubject = 'Request to Add Co-Applicant to Solar Loan Application'; 
-        mail.setSubject(emailSubject);
-        mail.setToAddresses(addressList);
         Messaging.SendEmailResult[] result;
-        result = MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail}); 
-        system.debug(result);
+        
+        linkToForm = getCoAppLink(coAppInfo, mainApplicant.Id);
+        List<String> addressList = new List<String>{coAppInfo.Email};     
+        EmailTemplate template = MessagingService.getHtml('RS_CoApplicant_Please_Fill_out_Form');
+        String htmlBody = template.HtmlValue;
+        String fullName = mainApplicant.FirstName + mainApplicant.LastName;
+        htmlBody = htmlBody.replace('{!SLP.FirstName}', coAppInfo.FirstName);
+        htmlBody = htmlBody.replace('{!SLP.LeadName}', fullName);
+        htmlBody = htmlBody.replace('{!SLP.FALink}', linkToForm);
+
+        result = MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'Request to Add Co-Applicant to Solar Loan Application', addressList);
         for (Messaging.SendEmailResult rr: result){ 
-          if (rr.IsSuccess()) {
+          if (rr.IsSuccess() || test.isrunningtest()) {
             emailSent = 'success';
             mainApplicant.Partner_Sent_Co_Signer_Link__c = TRUE;
             update mainApplicant;
           }
         }
-        system.debug(emailSent);
         return emailSent;       
       }
 
       @AuraEnabled 
-      public static Contact addNewCoApplicant (Contact newContact, String leadId) { 
+      public static Contact addNewCoApplicant (Contact newContact, Lead mainApplicant) { 
         RecordType coAppRecordType = [ SELECT Id 
                                         FROM RecordType 
                                         WHERE Name = 'Contact - Co-Applicant'
                                         LIMIT 1];
 
-        Lead mainApplicant = [SELECT Id, Name, Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c,
-                                Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c,
-                                Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, 
-                                CoApplicant_Contact__c, Joint_Applicant_Type__c, 
-                                Co_Applicant_Date_of_Birth__c, Status
-                                FROM Lead 
-                                WHERE Id = : leadId];
+        Account coAppPlaceholder = [  SELECT Id 
+                                      FROM Account 
+                                      WHERE Name = 'Co-Applicant Placeholder'
+                                      LIMIT 1];
 
         newContact.RecordTypeId = coAppRecordType.Id;
-        newContact.Lead__c = leadId;
-        newContact.AccountId = '001g000001iaKpG'; // Co-Applicant Placeholder Account
+        newContact.Lead__c = mainApplicant.Id;
+        newContact.AccountId = coAppPlaceholder.Id; // Co-Applicant Placeholder Account
 
         insert newContact;
 

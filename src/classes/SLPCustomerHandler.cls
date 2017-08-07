@@ -4,9 +4,8 @@
  * Description: The SLPCustomerHandler class services the SLP Customer
  * tab and customer window. For the most part, it returns data for
  * display; however it also allows the user to update system information
- * and loan information. It controls the customer window progress bar,
- * returns disubrsal information, updates disbursals as confirmed and
- * returns equipment information.
+ * and loan information. It returns disubrsal information, updates disbursals 
+ * as confirmed and returns equipment information.
  *
  * Tested By: SLPControllerTestclass
  *************************************************************************************/
@@ -61,15 +60,6 @@ public without sharing class SLPCustomerHandler {
       return equipmentList.get(0);
   }
 
-  public class ProgressBarData {
-      @AuraEnabled
-      public String pendingTaskName;
-      @AuraEnabled
-      public String program;
-      @AuraEnabled
-      public Integer pendingTaskSequence;
-  }
-
   @AuraEnabled
   public static Attachment getDescribedFile (String parentId, String description) {
       System.debug('The description is ' + description);
@@ -83,53 +73,12 @@ public without sharing class SLPCustomerHandler {
       }
   }
 
-  //the getProgressBarData returns the pending task for the SLP's customer window progress bar. It could be replaced with the getLoanCustomerTasks
-  //method if the right logic is applied to the SLPCustomerController component
-  @AuraEnabled
-  public static ProgressBarData getProgressBarData(String loanId) {
-    ProgressBarData pbData = new ProgressBarData();
-    String progressBarTaskName;
-    String pendingQuery = 'SELECT Id, Name, Status__c, Completion_Date__c, Task_Sequence__c, Loan__r.Name ' ;
-    pendingQuery += '      FROM Partner_Task__c' ;
-    pendingQuery += '      WHERE Loan__c  =  \'' + loanId +  '\' ';
-    pendingQuery += '      AND Status__c = \'' + 'Pending' + '\' ';
-    pendingQuery += '      AND Parent__c = true ';
-    pendingQuery += '      AND Sub_Task_Type__c = null ';
-    pendingQuery += '      AND Parent_Task__c = null ';
-    pendingQuery += '      AND Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
-    if (profile.LicenseType != 'Executive') {
-      pendingQuery += '    AND Sales_Representative__r.Id  =  \'' + profile.salesRepId +  '\' ';
-    }
-    pendingQuery += '      ORDER BY Completion_Date__c, Task_Sequence__c DESC';
-    pendingQuery += '      LIMIT 1 ';
-    for(Partner_Task__c taskRecord : Database.query(pendingQuery)){
-      pbData.pendingTaskName = taskRecord.Name;
-      pbData.pendingTaskSequence = (Integer)taskRecord.Task_Sequence__c;
-    }
-    String completedTaskQuery = 'SELECT Id, (SELECT Id, Name, Task_Sequence__c, Loan__r.DOER_Solar_Loann__c FROM Partner_Tasks__r WHERE Parent__c = true AND Sub_Task_Type__c = null AND Parent_Task__c = null)';
-    completedTaskQuery += '      FROM Loan__c' ;
-    completedTaskQuery += '      WHERE Id  =  \'' + loanId +  '\' ';
-    for(Loan__c loan : Database.query(completedTaskQuery)){
-      for (Partner_Task__c taskRecord : loan.Partner_Tasks__r) {
-        progressBarTaskName = taskRecord.Name + 'ProgressBar';
-        if (taskRecord.Loan__r.DOER_Solar_Loann__c) {
-          pbData.program = 'MSLP';
-        } else {
-          pbData.program = 'BWSL';
-        }
-      }
-    }
-    System.debug('chck ' + pbData);
-    return pbData;
-  }
-
   //the getLoanCustomerTasks returns the list of tasks for the customer window
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
     List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
     String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Loan__r.DOER_Solar_Loann__c, ' +
-        'Effective_Status__c, ' +
-        'Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Progress_Bar_Id__c, Progress_Bar_Name__c, Loan__r.State__c, ' +
+        'Effective_Status__c, Loan__r.Id, Loan__c, Task_Sequence__c, Task_Type__c, Loan__r.State__c, ' +
         'Owner__c, Action_Label__c, Task_Label__c, Help_Text__c ';
     taskQuery += '      FROM Partner_Task__c' ;
     taskQuery += '      WHERE (Loan__c  =  \'' + loanId +  '\' ';
@@ -142,24 +91,6 @@ public without sharing class SLPCustomerHandler {
     }
     taskQuery += '      ORDER BY Full_Tree_Sequence__c ASC';
     for(Partner_Task__c taskRecord : Database.query(taskQuery)) {
-      taskList.add(taskRecord);
-    }
-    return taskList;
-  }
-
-  //the getLoanParentSubTasks returns the list of subTasks for the selected grand-parent task on the customer window
-  @AuraEnabled
-  public static List<Partner_Task__c> getLoanParentSubTasks(String taskId) {
-    List<Partner_Task__c>  taskList = new List<Partner_Task__c>();
-    String taskQuery = 'SELECT Id, Name, Completion_Date__c, SubTasks__c, Parent_Task__r.Name, Status__c, Loan__r.Id, Loan__c, Task_Type__c, Task_Sequence__c ' ;
-    taskQuery += '      FROM Partner_Task__c' ;
-    taskQuery += '      WHERE Parent_Task__c  =  \'' + taskId +  '\' ';
-    taskQuery += '      AND Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
-    if (profile.LicenseType != 'Executive') {
-      taskQuery += '    AND Sales_Representative__r.Id  =  \'' + profile.salesRepId +  '\' ';
-    }
-    taskQuery += '      ORDER BY Task_Sequence__c ASC';
-    for(Partner_Task__c taskRecord : Database.query(taskQuery)){
       taskList.add(taskRecord);
     }
     return taskList;

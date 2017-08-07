@@ -461,7 +461,6 @@ public without sharing class SLPControllersTestclass {
       List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
       String loanId;
-      String progressBarString;
       String nullString = null;
 
       Loan__c loanRecord;
@@ -506,7 +505,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        String progressBarString;
         String nullString = null;
 
         Loan__c loanRecord;
@@ -535,8 +533,6 @@ public without sharing class SLPControllersTestclass {
         System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
-            partnerTaskList.clear();
-            partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
         }
         Test.stopTest();        
     }    
@@ -550,7 +546,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        String progressBarString;
         String nullString = null;
 
         Loan__c loanRecord;
@@ -595,7 +590,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        SLPCustomerHandler.ProgressBarData pbData = new SLPCustomerHandler.ProgressBarData();
         String nullString = null;
 
         Loan__c loanRecord;
@@ -623,10 +617,7 @@ public without sharing class SLPControllersTestclass {
         System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
         System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            pbData = SLPCustomerHandler.getProgressBarData(loanId);
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
-            partnerTaskList.clear();
-            partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
         }
         Test.stopTest();        
     }    
@@ -1102,6 +1093,9 @@ public without sharing class SLPControllersTestclass {
         Integer j;
         Date dob = date.newInstance(1990, 05, 13);
 
+        Account coAppPlaceholder = new Account (Name = 'Co-Applicant Placeholder');
+        insert coAppPlaceholder;
+
         Contact coAppInfo = new Contact(FirstName = 'Jordan',
                                         LastName = 'CoApplicant',
                                         Email = 'jpentaleri@bluewavesolar.com');
@@ -1137,6 +1131,7 @@ public without sharing class SLPControllersTestclass {
             }
             update leadList;
             for (j = 0; j < leadList.size(); j++) {
+                system.debug(leadList.get(j));
                 leadId = leadList.get(j).Id;
                 System.runAs(partnerUser) {
                     if ( j == 1) {
@@ -1144,17 +1139,16 @@ public without sharing class SLPControllersTestclass {
                         System.assertEquals(checkForCoAppsTest, 'hasCoApp');
                         getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
                         System.assertNotEquals(checkForCoAppsTest, '');
+                        sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(newCoApp, leadList.get(j));
+                        System.assertEquals(sendCoAppEmailTest, 'success');
                     } else if ( j == 2) {
                         checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
                         System.assertEquals(checkForCoAppsTest, 'sentEmail');
                         getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
                         System.assertNotEquals(checkForCoAppsTest, '');
-                        checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadId);
+                        checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadList.get(j));
                         System.assertNotEquals(checkaddCoApp.Lead__c, '');
-                    } else {
-                        sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(coAppInfo, leadId);
-                        System.assertEquals(sendCoAppEmailTest, 'success');
-                    }
+                    } 
                 }
             }
         Test.stopTest();

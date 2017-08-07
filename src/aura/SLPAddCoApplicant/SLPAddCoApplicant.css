@@ -7,20 +7,22 @@
     display: none;
 }
 
-.THIS .buttonRight {
+.THIS .buttonRightNoPadding {
     float:right;
     color:#FFFFFF;
-    margin-right:20%;
 }
 
-.THIS .buttonLeft {
+.THIS .buttonLeftNoPadding {
     float:left;
     color:#FFFFFF;
-    margin-left:20%;
 }
 
 .THIS .closeButton {
     float:right;
     color:#FFFFFF;
     margin-right:3%;
+}
+
+.THIS .textSize {
+    font-size:90%;
 }

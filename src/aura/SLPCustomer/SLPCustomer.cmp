@@ -938,7 +938,7 @@
                 </div>
               </th>
               <th scope="row"><b>{!task.Owner__c}</b></th>
-              <th scope="row" class="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer')?'proximaNovaDataStream':''}">
+              <th scope="row" class="{!task.Effective_Status__c == 'Pending'?'proximaNovaDataStream':''}">
                 <b>{!task.Effective_Status__c}</b>
               </th>
               <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>

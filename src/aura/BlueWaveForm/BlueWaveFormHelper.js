@@ -15,27 +15,28 @@
 		if (fieldType === 'standard') {
 			if (fieldValue === '' || fieldValue === null || !fieldValue) {
 				error = true;
-			} 
-			else if (expectedLength > 0) {
-				if (fieldValue.length != expectedLength) {
-					error = true;
-				}
-			}   	
-			else if (!allowLetters) {
-				if (!/^[0-9]+$/.test(fieldValue)) {
-					error = true;
-				}
-			}
-			else if (!allowSpecialChars && allowSpaces) {
-				if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
-					error = true;
-				}
-			}
-			else if (!allowSpecialChars && !allowSpaces) {
-				if (!/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
-					error = true;
-				}
-			}	
+            } else {
+                if (expectedLength > 0) {
+                    if (fieldValue.length != expectedLength) {
+                        error = true;
+                    }
+                }   	
+                if (!allowLetters) {
+                    if (!/^[0-9]+$/.test(fieldValue)) {
+                        error = true;
+                    }
+                }
+                if (!allowSpecialChars && allowSpaces) {
+                    if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
+                        error = true;
+                    }
+                }
+                if (!allowSpecialChars && !allowSpaces) {
+                    if (!/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
+                        error = true;
+                    }
+                }
+            }
 		} else if (fieldType === 'email') {
 	        format = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	        if (format.test(fieldValue)) {

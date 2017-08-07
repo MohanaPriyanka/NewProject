@@ -18,7 +18,7 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Lead> searchLeads (String searchValue, String leadId) {
     List<Lead> leadList = new List<Lead>();
-    String leadQuery = 'SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, DOER_Solar_Loan__c' ;
+    String leadQuery = 'SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c, Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c, Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, CoApplicant_Contact__c, Joint_Applicant_Type__c, Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c' ;
     leadQuery += ' FROM Lead' ; 
     leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
     leadQuery += '  AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
@@ -48,7 +48,7 @@ public without sharing class SLPCreditStatus {
   @AuraEnabled 
   public static List<Lead> getLeads (String searchValue, String leadId) {
     List<Lead> leadList = new List<Lead>();
-    String leadQuery = 'SELECT Id, Name, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c' ;
+    String leadQuery = 'SELECT Id, Name, Pre_Qualification_Status__c, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c, Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c, Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, CoApplicant_Contact__c, Joint_Applicant_Type__c, Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c' ;
     leadQuery += ' FROM Lead' ;
     leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
     leadQuery += ' AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
@@ -143,9 +143,11 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1179=' + product.Id 
                                 + '&' + 'tfa_1313=' + lead.LASERCA__Home_Zip__c     
                                 + '&' + 'tfa_1287=' + loanTerm     
-                                + '&' + 'tfa_1375=' + 'SLPortal - Emailed Customer Phase 2 Application 381610'     
+                                + '&' + 'tfa_1375=' + 'SLPortal - Emailed Customer Phase 2 Application 381610'
+                                + '&' + 'tfa_1181=true'      
                                 + '&' + 'tfa_1372=' + lead.FirstName     
                                 + '&' + 'tfa_1373=' + lead.LastName;       
+
     } else if (product.Program__c == 'MSLP') {
       continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually' 
                                 + '&' + 'tfa_154=Massachusetts&tfa_526=' + lead.Id 
