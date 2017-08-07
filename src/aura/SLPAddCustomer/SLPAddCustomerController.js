@@ -50,6 +50,7 @@
         Action.setCallback(this, function(resp) {
             if (resp.getState() == "SUCCESS") {
                 component.set("v.newLead", resp.getReturnValue());
+                component.get("v.newLead").LASERCA__Birthdate__c = component.get("v.newLead").LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
                 helper.removeAddCustomerForm(component);
                 helper.showCreditCheckPage(component);
             } else {
@@ -204,5 +205,71 @@
             }
         });                                                   
         $A.enqueueAction(actionSendApp);               
-    },      
+    }, 
+    
+    returnToEdit : function(component, event, helper) {
+        helper.returnAddCustomerForm(component);
+        helper.hideCreditCheckPage(component);
+        helper.stopSpinner(component, "leadSpinner");
+        $A.util.removeClass(component.find("EditButton"), 'noDisplay'); 
+    },   
+    
+    updateCustomer : function(component, event, helper) {
+        var actionUpdate = component.get("c.updateLeadRecord");
+        var leadToUpdate = component.get("v.newLead");
+        var errors = helper.errorsInForm(component, helper, leadToUpdate);
+        if (errors != null) {
+            helper.logError("SLPAddCustomerController", "updateLeadRecord", errors);
+            return;
+        }
+        
+        $A.util.addClass(component.find("EditButton"), 'noDisplay'); 
+        helper.startSpinner(component, "leadSpinner");
+        
+        leadToUpdate.LASERCA__SSN__c = leadToUpdate.LASERCA__SSN__c.replace(/-/g,"");
+        
+		actionUpdate.setParams({"updatedLead" : leadToUpdate});
+        
+        actionUpdate.setCallback(this, function(resp) {
+                    if(resp.getState() == "SUCCESS") {
+                        component.set("v.newLead", resp.getReturnValue());
+                        helper.removeAddCustomerForm(component);
+                        helper.showCreditCheckPage(component);
+                        helper.stopSpinner(component, "leadSpinner");
+                    } else {
+                        $A.util.removeClass(component.find("EditButton"), 'noDisplay'); 
+                        helper.stopSpinner(component, "leadSpinner");
+
+                        var appEvent = $A.get("e.c:ApexCallbackError");
+                        appEvent.setParams({"className" : "SLPAddCustomerController",
+                                            "methodName" : "updateLeadRecord",
+                                            "errors" : resp.getError()});
+                        appEvent.fire();
+                    }
+                }); 
+         $A.enqueueAction(actionUpdate);
+    },
+    
+    openAddCoApplicant : function(component, event, helper) {    
+       var ldRecord = component.get("v.newLead.Id");
+        
+       $A.createComponent(
+		  "c:SLPAddCoApplicant", 
+          {"leadId": ldRecord}, 
+           
+       function(newButton, status, errorMessage){
+          if (status === "SUCCESS") {
+ 		       var body = component.get("v.body");
+               body.push(newButton);
+               component.set("v.body", body);
+          }
+          else if (status === "INCOMPLETE") {
+               console.log("No response from server or client is offline.")
+          }
+          else if (status === "ERROR") {
+               console.log("Error: " + errorMessage);
+          }
+          }
+          );               
+    },
 })

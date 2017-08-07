@@ -156,6 +156,7 @@
                             + '&' + 'tfa_1287=' + loanTerm     
                             + '&' + 'tfa_1372=' + firstName     
                             + '&' + 'tfa_1373=' + lastName
+                            + '&' + 'tfa_1181=true' 
                             + '&' + 'tfa_1375=' + 'SLPortal - Phase 2 Application 381610'      
                         });
                         urlEvent.fire();  
@@ -243,5 +244,32 @@
     exitProductSelection : function(component, event, helper) { 
         $A.get('e.force:refreshView').fire();
     },    
+    
+    openAddCoApplicant : function(component, event, helper) {            
+        var source = event.getSource();
+        var leadId = source.get("v.class");
+        if (!$A.util.isUndefinedOrNull(component.get("v.leadId"))) {
+            leadId = component.get("v.leadId");
+        }
+        
+       $A.createComponent(
+		  "c:SLPAddCoApplicant", 
+           {"leadId" : leadId}, 
+           
+       function(newButton, status, errorMessage){
+          if (status === "SUCCESS") {
+ 		       var body = component.get("v.body");
+               body.push(newButton);
+               component.set("v.body", body);
+          }
+          else if (status === "INCOMPLETE") {
+               console.log("No response from server or client is offline.")
+          }
+          else if (status === "ERROR") {
+               console.log("Error: " + errorMessage);
+          }
+          }
+          );               
+    }, 
 
 })

@@ -1,0 +1,26 @@
+.THIS .blueBackground {
+    background:#266092; 
+    color:#FFFFFF;
+}
+
+.THIS .noDisplay {
+    display: none;
+}
+
+.THIS .buttonRight {
+    float:right;
+    color:#FFFFFF;
+    margin-right:20%;
+}
+
+.THIS .buttonLeft {
+    float:left;
+    color:#FFFFFF;
+    margin-left:20%;
+}
+
+.THIS .closeButton {
+    float:right;
+    color:#FFFFFF;
+    margin-right:3%;
+}

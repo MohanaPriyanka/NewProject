@@ -1,0 +1,130 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCoApplicant" access="global">    
+<aura:attribute name="contactInfo" type="Contact" default="{ 'sobjectType': 'Contact',
+                     'FirstName' : '',
+                     'LastName' : '',
+                     'Email' : '',
+                     'Phone' : '',                                     
+                     'LASERCA__Home_Address__c' : '',                                     
+                     'LASERCA__Home_State__c' : '',  
+                     'LASERCA__Home_City__c' : '',  
+                     'LASERCA__Home_Zip__c' : '',  
+                     'Lead__c' : '',  
+                     'Account' : '',
+                     'Income__c' : '',
+                     'LASERCA__Co_Applicant_DOB__c' : '',     
+                     'LASERCA__Social_Security_Number__c' : '',
+           'Credit_Check_Acknowledged__c' : '',
+           'Privacy_Policy_Acknowledged__c' : '',
+                     'LASERCA__Co_Applicant_Social_Security_Number__c' : ''}"/>
+<aura:attribute name="leadId" type="String" default=""/> 
+<aura:attribute name="responseMessage" type="String" default=""/> 
+<aura:attribute name="errorText" type="String" default=""/> 
+
+<ui:outputText aura:id="message" class="slds-align--absolute-center noDisplay" value="{!v.responseMessage}"/>       
+ <div aura:id="formBody" class="">
+ <div class="slds-form slds-form_compound">
+  <fieldset class="slds-form-element"> 
+   <div aura:id="rowOne" class="slds-form-element__row">
+    <div aura:id="inputFirstName" class="slds-form-element slds-size_1-of-2 ">
+        <label class="slds-form-element__label proximaNovaBlue" ><b>First Name:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.FirstName}"/>       
+    </div>
+   <div aura:id="inputLastName" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Last Name:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.LastName}"/>       
+    </div>      
+   </div>
+   <div aura:id="rowTwo" class="slds-form-element__row">
+    <div aura:id="inputEmail" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Email:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.Email}"/>       
+    </div>    
+   </div>
+   <div aura:id="rowThree" class="slds-form-element__row">    
+    <div aura:id="inputStreet" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Street Address:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.LASERCA__Home_Address__c}"/>       
+    </div>  
+   </div>
+   <div aura:id="rowFour" class="slds-form-element__row">
+    <div aura:id="inputCity" class="slds-form-element slds-size_1-of-2 ">
+        <label class="slds-form-element__label proximaNovaBlue" ><b>City:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.LASERCA__Home_City__c}"/>       
+    </div>    
+    <div aura:id="inputState" class="slds-form-element slds-size_1-of-2 ">
+        <label class="slds-form-element__label proximaNovaBlue"><b>State:</b></label>
+       <ui:inputSelect class="slds-input" 
+                       value="{!v.contactInfo.LASERCA__Home_State__c}" >
+        <ui:inputSelectOption text="Select"/>                        
+        <ui:inputSelectOption text="MA"/>
+        <ui:inputSelectOption text="NC"/>                  
+        <ui:inputSelectOption text="SC"/>      
+       </ui:inputSelect>    
+    </div>      
+   </div>
+   <div aura:id="rowFive" class="slds-form-element__row">
+    <div aura:id="inputZip" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Zip:</b></label>
+     <ui:inputText class="slds-input" value="{!v.contactInfo.LASERCA__Home_Zip__c}"/>       
+    </div>  
+    <div aura:id="inputDOB" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Date of Birth:</b></label>
+       <c:BlueWaveDate value="{!v.contactInfo.LASERCA__Co_Applicant_DOB__c}" label="Date of Birth:"/>   
+    </div>     
+   </div>
+   <div aura:id="rowSix" class="slds-form-element__row">
+    <div aura:id="inputSSN" class="slds-form-element slds-size_1-of-2 ">
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Social Security Number:</b></label>
+     <ui:inputSecret class="slds-input" placeholder="XXX-XX-XXXX" value="{!v.contactInfo.LASERCA__Social_Security_Number__c}"/>   
+    </div>
+    <div Class="slds-form-element slds-size_1-of-2 " aura:id="inputIncome" >
+     <label class="slds-form-element__label proximaNovaBlue" ><b>Estimated Annual Income:</b></label>
+     <ui:inputCurrency class="slds-input" value="{!v.contactInfo.Income__c}"/>       
+    </div>      
+   </div>                        
+  </fieldset>
+ </div>
+ <br></br>
+   <a aura:id="linkToPrivacyPolicy" href="http://bluewavesolar.com/about-us/privacy-policy/"> 
+    <div class="slds-text-body_small proximaNovaBlue"><b>Click here to view our Privacy Policy.</b></div>
+   </a>
+   <br></br>
+      <fieldset class="slds-form--compound">
+        <div class="slds-form-element__group">
+          <div class="slds-form-element__row">                 
+            <div class="slds-form-element slds-p-horizontal--small paddingTop1x5">
+              <label class="slds-checkbox--toggle slds-grid">
+                <label class="slds-form-element__label proximaNovaBlue" for="creditToggle">I acknowledge BlueWave's privacy policy and accept its terms.</label>                        
+                <ui:inputCheckbox aura:id="privacyPolicy" value="{!v.contactInfo.Privacy_Policy_Acknowledged__c}" required="true"  />
+                <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
+                  <span class="slds-checkbox--faux"></span>
+                  <span class="slds-checkbox--on bwSecondary">I Approve</span>
+                  <span class="slds-checkbox--off"></span>
+                </span>
+              </label>
+            </div>                     
+          </div>
+        </div>
+        <div class="slds-form-element__group">
+          <div class="slds-form-element__row">                 
+            <div class="slds-form-element slds-p-horizontal--small paddingTop1x5">
+              <label class="slds-checkbox--toggle slds-grid">
+                <label class="slds-form-element__label proximaNovaBlue" for="energyAccessToggle">I give BlueWave and Avidia Bank permission to access my credit history.</label>
+                <ui:inputCheckbox aura:id="accessToCredit" value="{!v.contactInfo.Credit_Check_Acknowledged__c}" required="true"  />
+                <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
+                  <span class="slds-checkbox--faux"></span>
+                  <span class="slds-checkbox--on bwSecondary">I Approve</span>
+                  <span class="slds-checkbox--off"></span>
+                </span>
+              </label>
+            </div>                     
+          </div>
+        </div>                
+      </fieldset>
+    <ui:outputText aura:id="errorTextLine" class="proximaNovaBlue noDisplay" value="{!'There was an error: ' + v.errorText}"/>      
+     <hr></hr>
+      <div aura:id="buttonLink" class="">
+       <lightning:button label="Submit" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.createContact}"/>
+      </div>
+  </div>   
+</aura:component>

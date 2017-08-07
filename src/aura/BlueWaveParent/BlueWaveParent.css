@@ -1,0 +1,36 @@
+@font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+}
+
+.THIS .proximaNova95 {
+    font-family: proximaNovaFont;
+    font-size:95%;
+    color: #FFFFFF;
+}
+.THIS .proximaNovaBrand {
+    font-family: proximaNovaFont;
+    font-size:32px;
+    color: #236192;
+}
+.THIS .proximaNovaDataStream {
+    font-family: proximaNovaFont;
+    font-size:100%;
+    color: #00b2a9;
+}
+.THIS .proximaNovaDataBlue {
+    font-family: proximaNovaFont;
+    font-size:90%;
+    color: #266092;
+}
+.THIS .proximaNovaDataBlue50 {
+    font-family: proximaNovaFont;
+    font-size:85%;
+    color: #266092;
+}
+
+.THIS .proximaNovaWhite {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+}

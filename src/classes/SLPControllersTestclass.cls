@@ -4,21 +4,21 @@ public without sharing class SLPControllersTestclass {
         Test.startTest();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community User (Custom)'];        
 
- 		Account accountRecord = new Account(Name = 'BlueWave Customer Care');
- 		insert accountRecord;
+     Account accountRecord = new Account(Name = 'BlueWave Customer Care');
+     insert accountRecord;
 
         List<String> partnerSetUpIds = new List<String>();  
         partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
 
-		RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
- 		Contact contactRecord = new Contact(
- 			FirstName = 'User', 
- 			LastName = 'Swain', 
- 			AccountId = accountRecord.Id,
- 			RecordType = partnerRecordType,
- 			Partner_Lookup__c = partnerSetUpIds.get(0),
+    RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
+     Contact contactRecord = new Contact(
+       FirstName = 'User', 
+       LastName = 'Swain', 
+       AccountId = accountRecord.Id,
+       RecordType = partnerRecordType,
+       Partner_Lookup__c = partnerSetUpIds.get(0),
             Sales_Representative__c = partnerSetUpIds.get(1));
- 		Insert contactRecord; 		
+     Insert contactRecord;     
 
         Account accountRecordExec = new Account(Name = 'BlueWave Customer Care');
         insert accountRecordExec;
@@ -32,14 +32,14 @@ public without sharing class SLPControllersTestclass {
             Sales_Representative__c = partnerSetUpIds.get(2));
         Insert contactRecordExec;           
 
- 		User userRecord = new User(
+     User userRecord = new User(
                 FirstName = 'User',
                 Lastname ='Testing',                 
- 				Alias = 'cswain', 
- 				Email = 'tropicole34@aol.com', 
- 				Emailencodingkey ='UTF-8',                 
+         Alias = 'cswain', 
+         Email = 'tropicole34@aol.com', 
+         Emailencodingkey ='UTF-8',                 
                 PortalRole = 'Manager',
- 				Languagelocalekey ='en_US',
+         Languagelocalekey ='en_US',
                 Localesidkey ='en_US', 
                 Profileid = profileRecord.Id, 
                 Country ='United States',
@@ -47,7 +47,7 @@ public without sharing class SLPControllersTestclass {
                 ContactId = contactRecord.Id,
                 Timezonesidkey='America/Los_Angeles', 
                 Username='tropicole34@aol.com');
-		Insert userRecord; 
+    Insert userRecord; 
 
         User executiveRecord = new User(
                 FirstName = 'Executive',     
@@ -65,36 +65,36 @@ public without sharing class SLPControllersTestclass {
                 Timezonesidkey='America/Los_Angeles', 
                 Username='colematthewswain@gmail.com');
         Insert executiveRecord;         
-		Test.stopTest();		                   
-    }	
+    Test.stopTest();                       
+    }  
 
-    @isTest static void testAddNewLeadRecord() {    	
+    @isTest static void testAddNewLeadRecord() {      
         Test.startTest();
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-    	Lead newLead = new Lead(
-    		FirstName = 'Cole',
-    		LastName = 'Swain',
-    		LASERCA__Home_Address__c = '55 Boston St.',
-    		LASERCA__Home_City__c = 'Boston',
-    		LASERCA__Home_State__c = 'MA',
-    		LASERCA__Home_Zip__c = '02052',
-    		Email = 'colemswain@gmail.com',
-    		LASERCA__Social_Security_Number__c = '000000001',
-    		Requested_Loan_Amount__c = 25000,
-    		Annual_Income_Currency__c = 150000,
-    		Credit_Check_Acknowledged__c = true,
-    		Privacy_Policy_Acknowledged__c = true,
-    		Automatic_Product_Assignment__c = true,
-    		Loan_Term__c = 120,
-    		Product_Program__c = 'BlueWave Solar Loan',
-    		Pre_Approval_Form__c = true,
-    		Unfinished_Lead__c = true,
-    		Utility_Bill_Access_Acknowledged__c = true 		
-    	);
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+      Lead newLead = new Lead(
+        FirstName = 'Cole',
+        LastName = 'Swain',
+        LASERCA__Home_Address__c = '55 Boston St.',
+        LASERCA__Home_City__c = 'Boston',
+        LASERCA__Home_State__c = 'MA',
+        LASERCA__Home_Zip__c = '02052',
+        Email = 'colemswain@gmail.com',
+        LASERCA__Social_Security_Number__c = '000000001',
+        Requested_Loan_Amount__c = 25000,
+        Annual_Income_Currency__c = 150000,
+        Credit_Check_Acknowledged__c = true,
+        Privacy_Policy_Acknowledged__c = true,
+        Automatic_Product_Assignment__c = true,
+        Loan_Term__c = 120,
+        Product_Program__c = 'BlueWave Solar Loan',
+        Pre_Approval_Form__c = true,
+        Unfinished_Lead__c = true,
+        Utility_Bill_Access_Acknowledged__c = true     
+      );
         List<Lead> leadList;
 
         System.assertEquals(SLPAddCustomer.getCreditCheckTimeout(), 60000);
-    	System.runAs(partnerUser) {
+      System.runAs(partnerUser) {
             SLPAddCustomer.addNewLeadRecord(newLead);
 
             leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
@@ -110,8 +110,8 @@ public without sharing class SLPControllersTestclass {
                                    FROM Lead
                                    WHERE LastName = 'Swain'];            
             System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
-    	}
-    	Test.stopTest();
+      }
+      Test.stopTest();
 
         // LCA should set pull credit once the future method fires
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
@@ -123,40 +123,40 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testAlertsHandlerUser() {
-    	Test.startTest();
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-    	Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Name = 'BlueWave Inside Sales'];
+      Test.startTest();
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+      Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c WHERE Name = 'BlueWave Inside Sales'];
         BSST__c salesRepRecord = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User'];     
-    	List<Partner_Alert__c> partnerAlertList = new List<Partner_Alert__c>();
-    	Partner_Alert__c partnerAlertRecord;
-    	String partnerId;
-    	String alertId;
+      List<Partner_Alert__c> partnerAlertList = new List<Partner_Alert__c>();
+      Partner_Alert__c partnerAlertRecord;
+      String partnerId;
+      String alertId;
 
-    	Partner_Alert__c partnerAlert = new Partner_Alert__c(
-    		Name = 'Test Alert', 
-    		Active__c = true, 
-    		Body__c = 'Test', 
+      Partner_Alert__c partnerAlert = new Partner_Alert__c(
+        Name = 'Test Alert', 
+        Active__c = true, 
+        Body__c = 'Test', 
             Audience__c = 'Managers',
-    		Importance__c = '1');
-    	insert partnerAlert;
+        Importance__c = '1');
+      insert partnerAlert;
 
-    	Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
-    		Name = 'BlueWave Customer Care',
-    		Partner__c = partnerRecord.Id,
+      Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
+        Name = 'BlueWave Customer Care',
+        Partner__c = partnerRecord.Id,
             Sales_Representative__c = salesRepRecord.Id,
-    		Partner_Alert__c = partnerAlert.Id);
-    	insert partnerAlertFilter;
+        Partner_Alert__c = partnerAlert.Id);
+      insert partnerAlertFilter;
 
-    	List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
+      List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
 
-    	System.runAs(partnerUser) {
-    		partnerId = String.valueOf(partnerRecord.Id);
-    		partnerAlertList = SLPAlertsHandler.getPartnerAlerts(partnerId);
+      System.runAs(partnerUser) {
+        partnerId = String.valueOf(partnerRecord.Id);
+        partnerAlertList = SLPAlertsHandler.getPartnerAlerts(partnerId);
 
-    		alertId = String.valueOf(partnerAlertList.get(0).Id);
-    		partnerAlertRecord = SLPAlertsHandler.getPartnerAlert(alertId);
-    	}
-    	Test.stopTest();
+        alertId = String.valueOf(partnerAlertList.get(0).Id);
+        partnerAlertRecord = SLPAlertsHandler.getPartnerAlert(alertId);
+      }
+      Test.stopTest();
     }
 
     @isTest static void testAlertsHandlerExecutive() {
@@ -197,12 +197,12 @@ public without sharing class SLPControllersTestclass {
     }     
 
     @isTest static void testGetCustomerProducts() {
-    	List<Product2> productReturnList = new List<Product2>();
+      List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
 
-    	List<Product2> productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
-    	insert productList;
+      List<Product2> productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+      insert productList;
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
 
@@ -214,8 +214,8 @@ public without sharing class SLPControllersTestclass {
         }
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
-    	Test.startTest();
-    	System.runAs(partnerUser) {
+      Test.startTest();
+      System.runAs(partnerUser) {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
@@ -235,7 +235,7 @@ public without sharing class SLPControllersTestclass {
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
             System.assertEquals(2, productReturnList.size());
-    	}   
+      }   
 
         for(LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
             if(creditReport.LASERCA__Contact__c == null) {
@@ -250,7 +250,7 @@ public without sharing class SLPControllersTestclass {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);           
             System.assertEquals(2, productReturnList.size());
         }        
-    	Test.stopTest();
+      Test.stopTest();
     }   
 
         @isTest static void testCreditStatus2() {
@@ -453,25 +453,25 @@ public without sharing class SLPControllersTestclass {
     }    
 
     @isTest static void testCustomerHandlerPartOne() {
-    	User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
+      User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
 
-    	List<Lead> leadList = new List<Lead>();
-    	List<Loan__c> loanReturnList = new List<Loan__c>();
-    	List<Product2> productList = new List<Product2>();
-    	List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+      List<Lead> leadList = new List<Lead>();
+      List<Loan__c> loanReturnList = new List<Loan__c>();
+      List<Product2> productList = new List<Product2>();
+      List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
-    	String loanId;
-    	String progressBarString;
-    	String nullString = null;
+      String loanId;
+      String progressBarString;
+      String nullString = null;
 
-    	Loan__c loanRecord;
-    	Residential_Equipment__c equipmentRecord;
+      Loan__c loanRecord;
+      Residential_Equipment__c equipmentRecord;
 
-    	Test.startTest();
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-    	insert productList;
+      Test.startTest();
+      productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+      insert productList;
 
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
+    leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords(); 
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
@@ -483,19 +483,19 @@ public without sharing class SLPControllersTestclass {
         }    
         update leadList;
 
-		List<Loan__c> loanList = [SELECT Id FROM Loan__c];
-		loanId = String.valueOf(loanList.get(0).Id);
+    List<Loan__c> loanList = [SELECT Id FROM Loan__c];
+    loanId = String.valueOf(loanList.get(0).Id);
         update loanList;            
         System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
         System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
-    	System.runAs(partnerUser) {
-			loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-			loanReturnList.clear();
-			loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
-			equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
-		}
+      System.runAs(partnerUser) {
+      loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
+      loanReturnList.clear();
+      loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+      equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
+    }
         Test.stopTest();        
-	}
+  }
 
     @isTest static void testCustomerHandlerPartTwo() {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
@@ -631,21 +631,21 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();        
     }    
 
-	@isTest static void testCustomerHandlerPartThree() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];	
-    	List<Lead> leadList = new List<Lead>();
-    	List<Loan__c> loanReturnList = new List<Loan__c>();
-    	List<Product2> productList = new List<Product2>();    		
-    	List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-    	
-    	String nullString = null;    	
-    	String loanId;
+  @isTest static void testCustomerHandlerPartThree() {
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];  
+      List<Lead> leadList = new List<Lead>();
+      List<Loan__c> loanReturnList = new List<Loan__c>();
+      List<Product2> productList = new List<Product2>();        
+      List<Disbursal__c> disbursalList = new List<Disbursal__c>();
+      
+      String nullString = null;      
+      String loanId;
 
-    	Test.startTest();
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-    	insert productList;
+      Test.startTest();
+      productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+      insert productList;
 
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+    leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
 
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
@@ -658,30 +658,30 @@ public without sharing class SLPControllersTestclass {
         }    
         update leadList;
 
-		List<Loan__c> loanList = [SELECT Id FROM Loan__c];
-		loanId = String.valueOf(loanList.get(0).Id);  
+    List<Loan__c> loanList = [SELECT Id FROM Loan__c];
+    loanId = String.valueOf(loanList.get(0).Id);  
 
 
-		System.runAs(partnerUser) {
+    System.runAs(partnerUser) {
 
-			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(loanId, 'Test');
-			disbursalList.clear();
-			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(loanId, nullString);
-			disbursalList.clear();		
-			disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, null);
-			disbursalList.clear();
+      disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(loanId, 'Test');
+      disbursalList.clear();
+      disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(loanId, nullString);
+      disbursalList.clear();    
+      disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, null);
+      disbursalList.clear();
             disbursalList = SLPCustomerHandler.getCompleteLoanDisbursals(nullString, 'Test');
             disbursalList.clear();            
-			disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(nullString, nullString);			
-			disbursalList.clear();
-			disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(loanId, nullString);
-			disbursalList.clear();
-			disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(loanId, 'Test');
+      disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(nullString, nullString);      
+      disbursalList.clear();
+      disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(loanId, nullString);
+      disbursalList.clear();
+      disbursalList = SLPCustomerHandler.getIncompleteLoanDisbursals(loanId, 'Test');
 
-			List<Disbursal__c> disbursalUpdateList = [SELECT Id FROM Disbursal__c LIMIT 1];
+      List<Disbursal__c> disbursalUpdateList = [SELECT Id FROM Disbursal__c LIMIT 1];
 
-    	Test.stopTest();				
-		}
+      Test.stopTest();        
+    }
     }
 
     @isTest static void testCustomerHandlerPartThreeExec() {
@@ -737,18 +737,18 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testSaveCustomerInformationMethod() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];	
-    	List<Lead> leadList = new List<Lead>();
-    	List<Product2> productList = new List<Product2>();    		
-    	
-    	String loanId;
-    	String equipmentId;
-    	Residential_Equipment__c equipment;
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];  
+      List<Lead> leadList = new List<Lead>();
+      List<Product2> productList = new List<Product2>();        
+      
+      String loanId;
+      String equipmentId;
+      Residential_Equipment__c equipment;
 
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-    	insert productList;
+      productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+      insert productList;
 
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+    leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
@@ -759,7 +759,7 @@ public without sharing class SLPControllersTestclass {
             leadRecord.Status = 'Qualified';
         }    
         update leadList;        
-		List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  FROM Loan__c];
+    List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  FROM Loan__c];
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
@@ -771,13 +771,13 @@ public without sharing class SLPControllersTestclass {
         equipmentList.get(0).Inverter_Manufacturer__c = 'SolarWorldSolarWorldSolarWorld';
         update equipmentList.get(0);
 
-		loanId = String.valueOf(loanList.get(0).Id);        	
-		equipmentId = String.valueOf(equipmentList.get(0).Id);
-    	Test.startTest();		
-    	System.runAs(partnerUser) {
-    		SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
-    	}
-    	Test.stopTest();
+    loanId = String.valueOf(loanList.get(0).Id);          
+    equipmentId = String.valueOf(equipmentList.get(0).Id);
+      Test.startTest();    
+      System.runAs(partnerUser) {
+        SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
+      }
+      Test.stopTest();
     }
 
     @isTest static void testSaveCustomerInformationMethodExec() {
@@ -822,41 +822,41 @@ public without sharing class SLPControllersTestclass {
     }    
 
     @isTest static void testDashboardHandler() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-    	List<Decimal> dashboardWidgetsList = new List<Decimal>();
-    	List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
-    	Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c];
-    	String alertId;    	
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+      List<Decimal> dashboardWidgetsList = new List<Decimal>();
+      List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+      Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c];
+      String alertId;      
 
-    	Partner_Alert__c partnerAlert = new Partner_Alert__c(
-    		Name = 'Test Alert', 
+      Partner_Alert__c partnerAlert = new Partner_Alert__c(
+        Name = 'Test Alert', 
             Audience__c = 'Users; Executives',
-    		Active__c = true, 
-    		Body__c = 'Test', 
-    		Importance__c = '1');
-    	insert partnerAlert;
+        Active__c = true, 
+        Body__c = 'Test', 
+        Importance__c = '1');
+      insert partnerAlert;
 
-    	Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
-    		Name = 'BlueWave Customer Care',
-    		Partner__c = partnerRecord.Id,
-    		Partner_Alert__c = partnerAlert.Id);
-    	insert partnerAlertFilter;
+      Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
+        Name = 'BlueWave Customer Care',
+        Partner__c = partnerRecord.Id,
+        Partner_Alert__c = partnerAlert.Id);
+      insert partnerAlertFilter;
 
-    	List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
+      List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
 
-    	Test.startTest();		
-    	System.runAs(partnerUser) {
+      Test.startTest();    
+      System.runAs(partnerUser) {
             SLPDashboardHandler.DashboardWidgets widgets = SLPDashboardHandler.getDashboardWidgets();
-    		partnerTaskList = SLPDashboardHandler.getTasksByStage('All');
-    		partnerTaskList.clear();
-    		partnerTaskList = SLPDashboardHandler.getTasksByStage('Provide All Customer Information');
+        partnerTaskList = SLPDashboardHandler.getTasksByStage('All');
+        partnerTaskList.clear();
+        partnerTaskList = SLPDashboardHandler.getTasksByStage('Provide All Customer Information');
 
-    		alertId = String.valueOf(partnerAlert.Id);
-    		SLPDashboardHandler.getPartnerAlerts();
-    		SLPDashboardHandler.acknowledgePartnerAlert(alertId);
-    		SLPDashboardHandler.partnerAlertRemindLater(alertId);
-    	}
-    	Test.stopTest();
+        alertId = String.valueOf(partnerAlert.Id);
+        SLPDashboardHandler.getPartnerAlerts();
+        SLPDashboardHandler.acknowledgePartnerAlert(alertId);
+        SLPDashboardHandler.partnerAlertRemindLater(alertId);
+      }
+      Test.stopTest();
     }  
 
     @isTest static void testDashboardHandlerExec() {
@@ -898,19 +898,19 @@ public without sharing class SLPControllersTestclass {
     }  
 
     @isTest static void testDashboardStageChartHandler() {
-    	User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-    	Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
+      User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+      Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
 
-    	SLPDashboardStageChartHandler.StageChartResult result = new SLPDashboardStageChartHandler.StageChartResult(); 
-    	List<Product2> productList = new List<Product2>();    	
-    	List<Lead> leadList = new List<Lead>();	
-    	List<Lead> leadUpdateList = new List<Lead>();	
+      SLPDashboardStageChartHandler.StageChartResult result = new SLPDashboardStageChartHandler.StageChartResult(); 
+      List<Product2> productList = new List<Product2>();      
+      List<Lead> leadList = new List<Lead>();  
+      List<Lead> leadUpdateList = new List<Lead>();  
 
-    	Test.startTest();		    	
-    	productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-    	insert productList;
+      Test.startTest();          
+      productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
+      insert productList;
 
-		leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+    leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
@@ -921,20 +921,20 @@ public without sharing class SLPControllersTestclass {
             leadRecord.Status = 'Qualified';
         }    
         update leadList;
-    	Partner_Task__c partnerTask = new Partner_Task__c(
-    		Name = 'Under BlueWave Review',
-    		Status__c = 'Pending',
-    		Lead__c = leadList.get(0).Id,
-    		Partner__c = partnerRecord.Id    		
-    	);
-    	insert partnerTask;
+      Partner_Task__c partnerTask = new Partner_Task__c(
+        Name = 'Under BlueWave Review',
+        Status__c = 'Pending',
+        Lead__c = leadList.get(0).Id,
+        Partner__c = partnerRecord.Id        
+      );
+      insert partnerTask;
 
-    	System.runAs(partnerUser) {
-    		List<Partner_Task__c> partnerTaskList = [SELECT Id FROM Partner_Task__c];
-    		System.debug('partnerTaskListx' + partnerTaskList);
-			result = SLPDashboardStageChartHandler.getAll();
-    	}
-    	Test.stopTest();
+      System.runAs(partnerUser) {
+        List<Partner_Task__c> partnerTaskList = [SELECT Id FROM Partner_Task__c];
+        System.debug('partnerTaskListx' + partnerTaskList);
+      result = SLPDashboardStageChartHandler.getAll();
+      }
+      Test.stopTest();
     }    
 
     @isTest static void testDashboardStageChartHandlerExec() {
@@ -1087,6 +1087,76 @@ public without sharing class SLPControllersTestclass {
             Attachment describedFile = SLPCustomerHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
             System.assertEquals(describedFile.Description, 'PTO Documentation');
         }
+        Test.stopTest();
+    }
+
+    @isTest static void testSLPAddCoApplicant() {
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        String checkForCoAppsTest;
+        String getCoAppLinkTest;
+        String sendCoAppEmailTest;
+        Contact checkaddCoApp;
+        String leadId;
+        String leadName;
+        Integer i;
+        Integer j;
+        Date dob = date.newInstance(1990, 05, 13);
+
+        Contact coAppInfo = new Contact(FirstName = 'Jordan',
+                                        LastName = 'CoApplicant',
+                                        Email = 'jpentaleri@bluewavesolar.com');
+        Contact preExisting = new Contact(FirstName = 'Jordan',
+                                          LastName = 'PreExist',
+                                          Email = 'jpentaleri@bluewavesolar.com');
+        insert preExisting;
+        
+        Contact newCoApp = new Contact(FirstName = 'Jordan',
+                                        LastName = 'PreExist',
+                                        Email = 'jpentaleri@bluewavesolar.com',
+                                        LASERCA__Home_Address__c = '200 Street',
+                                        LASERCA__Home_State__c = 'MA',
+                                        LASERCA__Home_City__c = 'Boston',
+                                        LASERCA__Home_Zip__c = '02114',
+                                        Income__c = 40000, 
+                                        LASERCA__Co_Applicant_DOB__c = dob,
+                                        LASERCA__Social_Security_Number__c = '000000001',
+                                        Credit_Check_Acknowledged__c = TRUE,
+                                        Privacy_Policy_Acknowledged__c = TRUE,
+                                        LASERCA__Co_Applicant_Social_Security_Number__c  = '000000001');
+
+
+        Test.startTest();
+            List<Lead> leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+            for (i=0 ; i < leadList.size(); i++) {
+                leadList.get(i).Status = 'Unqualified';
+                if ( i == 1 ) {
+                   leadList.get(i).CoApplicant_Contact__c = preExisting.Id;
+                } else if ( i == 2 ) {
+                   leadList.get(i).Partner_Sent_Co_Signer_Link__c = TRUE;
+                } 
+            }
+            update leadList;
+            for (j = 0; j < leadList.size(); j++) {
+                leadId = leadList.get(j).Id;
+                System.runAs(partnerUser) {
+                    if ( j == 1) {
+                        checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
+                        System.assertEquals(checkForCoAppsTest, 'hasCoApp');
+                        getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
+                        System.assertNotEquals(checkForCoAppsTest, '');
+                    } else if ( j == 2) {
+                        checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
+                        System.assertEquals(checkForCoAppsTest, 'sentEmail');
+                        getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
+                        System.assertNotEquals(checkForCoAppsTest, '');
+                        checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadId);
+                        System.assertNotEquals(checkaddCoApp.Lead__c, '');
+                    } else {
+                        sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(coAppInfo, leadId);
+                        System.assertEquals(sendCoAppEmailTest, 'success');
+                    }
+                }
+            }
         Test.stopTest();
     }                                                        
 }
