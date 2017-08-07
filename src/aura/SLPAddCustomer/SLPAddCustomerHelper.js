@@ -13,6 +13,7 @@
     },
     handleCreditCheckResponse : function(component, divToShow) {
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
+        $A.util.addClass(component.find("editPencil"), 'noDisplay');
         $A.util.removeClass(component.find(divToShow), 'noDisplay');
         this.stopSpinner(component, "creditSpinner");
         window.clearInterval(component.get("v.crefditStatusPoller"));
@@ -39,6 +40,7 @@
                 } else {
                     helper.logError("SLPAddCustomerHelper", "checkCreditStatus", resp.getError());
                     window.clearInterval(component.get("v.creditStatusPoller"));
+                    $A.util.addClass(component.find("editPencil"), 'noDisplay');
                 }
             });
         $A.enqueueAction(action);
@@ -81,11 +83,20 @@
         $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
         $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
     },    
+   
+    returnAddCustomerForm : function(component) {
+        $A.util.removeClass(component.find("inputForm"), 'noDisplay'); 
+    },    
 
     showCreditCheckPage : function(component) {
         $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
         $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
-    },        
+    },  
+    
+    hideCreditCheckPage : function(component) {
+        $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');
+        $A.util.addClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
+    },      
 
     showMSLPApplication : function(component) {
         $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
@@ -106,4 +117,3 @@
     },         
 
 })
- 

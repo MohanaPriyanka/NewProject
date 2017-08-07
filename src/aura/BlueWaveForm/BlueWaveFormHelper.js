@@ -16,22 +16,22 @@
 			if (fieldValue === '' || fieldValue === null || !fieldValue) {
 				error = true;
 			} 
-			if (expectedLength > 0) {
+			else if (expectedLength > 0) {
 				if (fieldValue.length != expectedLength) {
 					error = true;
 				}
 			}   	
-			if (!allowLetters) {
+			else if (!allowLetters) {
 				if (!/^[0-9]+$/.test(fieldValue)) {
 					error = true;
 				}
 			}
-			if (!allowSpecialChars && allowSpaces) {
+			else if (!allowSpecialChars && allowSpaces) {
 				if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
 					error = true;
 				}
 			}
-			if (!allowSpecialChars && !allowSpaces) {
+			else if (!allowSpecialChars && !allowSpaces) {
 				if (!/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
 					error = true;
 				}

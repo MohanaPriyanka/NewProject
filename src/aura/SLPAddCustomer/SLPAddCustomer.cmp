@@ -36,7 +36,7 @@
     'System_Cost__c':'',
     }"/>
 
-<!--   <aura:attribute name="newLead" type="Lead" 
+    <!--<aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
     'LastName': 'Testcase',
@@ -312,12 +312,16 @@
       <div class="slds-align--absolute-center paddingBottom1 slds-m-top_small">
         <ui:spinner aura:id="leadSpinner" isVisible="false"/>
       </div>
+      <div aura:id="EditButton" class="slds-align--absolute-center paddingBottom1 paddingTop1x5 noDisplay">
+        <ui:button label="Submit" class="slds-button slds-button--brand" press="{!c.updateCustomer}">
+        </ui:button>
+      </div>
     </div>
   </div>
   <div aura:id="addedCustomerConfirmCredit" class=" noDisplay">
     <p class="marginAround marginTop proximaNovaBlue">
       <div class="slds-m-bottom_small">
-        You've added a new applicant. Please review this applicants's information to make sure it is correct before running a credit check. If you need to modify their information, please contact BlueWave at 844-786-4100. We apologize for the inconvenience, the ability to edit this applicant's information on this page will be available very shortly.
+        You've added a new applicant. Please review this applicants's information to make sure it is correct before running a credit check. 
       </div>
       <div class="box">
         <fieldset class="slds-form--compound paddingTop1x5">
@@ -379,15 +383,16 @@
     <hr></hr>
     <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay">
       <ui:button aura:id="creditStatusButton"
-                 class=" box buttonLeft"
+                 class="box buttonLeft"
                  labelClass="proximaNovaBlue"
                  label="Run Credit Report"
                  press="{!c.checkCredit}"/>
-      <ui:button aura:id="addAnotherCustomerButton"
-                 class=" box buttonRight"
-                 labelClass="proximaNovaBlue"
-                 label="Cancel and start a new application"
-                 press="{!c.navigateAddAnotherCustomer}"/>
+      <lightning:button aura:id="editPencil"
+                 class="box buttonRight proximaNovaBlue"
+                 label="Edit Customer"
+                 iconName="utility:edit" 
+                 iconPosition="right"
+                 onclick="{!c.returnToEdit}"/>
     </div>
     <div class="slds-align--absolute-center">
       <ui:spinner aura:id="creditSpinner" isVisible="false"/>
@@ -411,10 +416,25 @@
         <ui:outputText value="Credit status requires additional BlueWave review. Please give us 1-2 business days to review."/>
       </div>
     </div>
-    <div aura:id="creditResultUnqualified"
-         class="slds-align--absolute-center noDisplay">
-      <ui:outputText value="This application cannot be pre-qualified."/>
-    </div>
+    <div aura:id="creditResultUnqualified" class="noDisplay">
+      <div class="slds-align--absolute-center" >
+           <ui:outputText value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
+      </div>
+      <br/>
+      <div >
+        <ui:button aura:id="addCoApplicant"
+                   class="box buttonLeft"
+                   label="Add Co-Signer"
+                   press="{!c.openAddCoApplicant}"/>
+        <ui:button aura:id="Return"
+                   class="box buttonRight"
+                   label="Return"
+                   press="{!c.navigateAddAnotherCustomer}"/>  
+      </div>
+     </div>  
+    <div aura:id="popUpCoAppWindow" class=""> 
+        {!v.body}
+    </div> 
     <div aura:id="creditResultError"
          class="slds-align--absolute-center noDisplay">
       <ui:outputText class="buttonLeft" value="{!'There was an error: ' + v.creditStatusErrorText}"/>

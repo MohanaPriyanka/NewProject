@@ -1,0 +1,37 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+  <style type="text/css">
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNova {
+    font-family: proximaNovaFont;    
+    color: #FFFFFF;
+    font-size:100%;
+    }
+    .proximaNovaSmall {
+    font-family: proximaNovaFont;    
+    color: #7c98ab;
+    font-size:95%;
+    }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }  
+  </style> 
+  <div aura:id="divider" class="divider slds-align--absolute-center">
+  </div>
+  <div aura:id="footerBreak" class="footerBreak slds-align--absolute-center">
+  </div>
+  <div aura:id="header" class="header paddingTop">
+    <div>
+        <ui:outputText class="slds-truncate proximaNovaSmall slds-align--absolute-center" value="Have a question? Contact the BlueWave Partner Support Team:"/>
+    </div>
+    <div class="slds-align--absolute-center">
+        <ui:outputText class="slds-truncate proximaNovaSmall" value="partnersupport@bluewavesolar.com"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <ui:outputText class="slds-truncate proximaNovaSmall" value="844-786-4100"/>
+    </div>  
+  </div>
+</aura:component>
