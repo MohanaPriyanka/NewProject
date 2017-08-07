@@ -938,13 +938,12 @@
                 </div>
               </th>
               <th scope="row"><b>{!task.Owner__c}</b></th>
-              <th scope="row" class="{!and(task.Status__c == 'Pending', task.Owner__c == 'Installer')?'proximaNovaDataStream':''}">
-
-                <b>{!and(task.Status__c == 'Incomplete', (task.Parent_Task__r.Status__c == 'Pending' || task.Parent_Task__r.Parent_Task__r.Status__c == 'Pending'))?'Pending':task.Status__c}</b>
+              <th scope="row" class="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer')?'proximaNovaDataStream':''}">
+                <b>{!task.Effective_Status__c}</b>
               </th>
               <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>
               <th>
-                <aura:if isTrue="{!and(task.Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
+                <aura:if isTrue="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
                   <ui:button aura:id="viewButton"
                              label="{!task.Action_Label__c}"
                              class="{!task.Name}"
