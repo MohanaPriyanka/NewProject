@@ -62,33 +62,24 @@
     }"/> -->
 
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
-      <ul class="slds-tabs_default__nav" role="tablist">
-        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+      <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+        <ul class="slds-tabs_default__nav" role="tablist">
           <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
             <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
                 <b>BlueWave Solar Loan Application</b>
               </a>
             </li>
-	  </c:BlueWaveInputToolTip>
-          <aura:set attribute="else">
-            <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
-              <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
-                <b>BlueWave Solar Loan Application</b>
-              </a>
-            </li>
-          </aura:set>
-        </aura:if>
-        <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+          </c:BlueWaveInputToolTip>           
           <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
             <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
                 <b>MCEC Loan Application</b>
               </a>
             </li>
-	  </c:BlueWaveInputToolTip>
-        </aura:if>
-      </ul>
+          </c:BlueWaveInputToolTip>   
+        </ul>          
+      </aura:if>
     </div>
     <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">   
     <div aura:id="mslpDisclaimer" class="box">

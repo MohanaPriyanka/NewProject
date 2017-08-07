@@ -99,7 +99,6 @@
     },      
 
     showMSLPApplication : function(component) {
-        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.removeClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.addClass(component.find("mslpAppTab"), 'slds-has-focus'); 
         $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
@@ -108,12 +107,29 @@
     },     
 
     showBWSLApplication : function(component) {
-        $A.util.removeClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.addClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.removeClass(component.find("mslpAppTab"), 'slds-has-focus');
         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
         $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
         $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');     
     },         
+
+    removeErrorAnimations : function(component, animation) {
+        $A.util.removeClass(component.find("firstNameElement"), animation);
+        $A.util.removeClass(component.find("lastNameElement"), animation);
+        $A.util.removeClass(component.find("customerEmail"), animation); 
+        $A.util.removeClass(component.find("dateOfBirth"), animation);    
+        $A.util.removeClass(component.find("homeAddressElement"), animation);
+        $A.util.removeClass(component.find("cityElement"), animation); 
+        $A.util.removeClass(component.find("stateElement"), animation);
+        $A.util.removeClass(component.find("zipCodeElement"), animation);
+        $A.util.removeClass(component.find("loanAmountElement"), animation); 
+        $A.util.removeClass(component.find("systemCostElement"), animation);    
+        $A.util.removeClass(component.find("incomeElement"), animation);
+        $A.util.removeClass(component.find("creditHistoryElement"), animation);         
+        $A.util.removeClass(component.find("privacyPolicyElement"), animation);    
+        $A.util.removeClass(component.find("energyHistoryElement"), animation);
+        $A.util.removeClass(component.find("ssnElement"), animation);        
+    },      
 
 })
