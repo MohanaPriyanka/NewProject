@@ -1102,6 +1102,9 @@ public without sharing class SLPControllersTestclass {
         Integer j;
         Date dob = date.newInstance(1990, 05, 13);
 
+        Account coAppPlaceholder = new Account (Name = 'Co-Applicant Placeholder');
+        insert coAppPlaceholder;
+
         Contact coAppInfo = new Contact(FirstName = 'Jordan',
                                         LastName = 'CoApplicant',
                                         Email = 'jpentaleri@bluewavesolar.com');
