@@ -14,7 +14,7 @@
                     helper.showWarning(component, "alreadyHasCoApp");
                 } else if (response.getReturnValue() === "sentEmail") {
                     helper.showWarning(component, "alreadySentEmail");
-                } else if (response.getReturnValue() === "clear") { 
+                } else if (response.getReturnValue() ==="clear") { 
                     // clear doesn't need to trigger any messages, but we need to differentiate clear from an error ie. null
                 } 
              } else { 

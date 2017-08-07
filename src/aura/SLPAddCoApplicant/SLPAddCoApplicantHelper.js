@@ -31,14 +31,14 @@
         $A.util.addClass(component.find("emailErrorText"), 'noDisplay'); 
     },
     
-    enterInfoNow : function(component, helper) {            
+    enterInfoNow : function(component, event, helper) {            
 		$A.util.addClass(component.find("windowFooter"), 'noDisplay'); 
         $A.util.addClass(component.find("formBody"), 'noDisplay'); 
         $A.util.removeClass(component.find("backButton"), 'noDisplay'); 
         component.set("v.enterNow", "TRUE");
     },
     
-    backButton : function(component, helper) {            
+    backButton : function(component, event, helper) {            
 		$A.util.removeClass(component.find("windowFooter"), 'noDisplay'); 
         $A.util.removeClass(component.find("formBody"), 'noDisplay'); 
         $A.util.addClass(component.find("backButton"), 'noDisplay'); 

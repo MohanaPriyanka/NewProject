@@ -1,6 +1,6 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false">
   <apex:includeLightning />
-  <apex:slds />
+  <apex:slds/>
   <style>  
     div.padded {  
     padding-top: 20px;
