@@ -99,7 +99,6 @@
     },      
 
     showMSLPApplication : function(component) {
-        $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.removeClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.addClass(component.find("mslpAppTab"), 'slds-has-focus'); 
         $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
@@ -108,7 +107,6 @@
     },     
 
     showBWSLApplication : function(component) {
-        $A.util.removeClass(component.find("bwApplicationHeader"), 'noDisplay');      
         $A.util.addClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.removeClass(component.find("mslpAppTab"), 'slds-has-focus');
         $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
@@ -131,6 +129,7 @@
         $A.util.removeClass(component.find("creditHistoryElement"), animation);         
         $A.util.removeClass(component.find("privacyPolicyElement"), animation);    
         $A.util.removeClass(component.find("energyHistoryElement"), animation);
+        $A.util.removeClass(component.find("ssnElement"), animation);        
     },      
 
 })
