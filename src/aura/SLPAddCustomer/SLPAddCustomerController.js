@@ -52,11 +52,11 @@
                 component.set("v.newLead", resp.getReturnValue());
                 component.get("v.newLead").LASERCA__Birthdate__c = component.get("v.newLead").LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
                 helper.removeAddCustomerForm(component);
+                helper.removeErrorAnimations(component, "shake");
                 helper.showCreditCheckPage(component);
             } else {
                 helper.stopSpinner(component, "leadSpinner");
                 $A.util.removeClass(component.find("SubmitButton"), 'noDisplay'); 
-
                 helper.logError("SLPAddCustomerController", "addCustomer", "We've encountered an issue while trying to add this applicant. Please verify that all of the applicant's information has been entered in correctly and try again. If the issue persists, please call (888) 817-2703 for support");
             }
         }); 
