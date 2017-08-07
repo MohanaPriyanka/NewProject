@@ -40,28 +40,6 @@
         });
         $A.enqueueAction(customerInformationAction);
 
-        //progress bar status - removes/adds classes based on returned value of last completed task.
-        var progressBarData = component.get("c.getProgressBarData");
-        progressBarData.setParams({loanId : label})
-        progressBarData.setCallback(this,function(resp) {
-            var creditToggle = component.find("credit");
-            var systemInfoToggle = component.find("systemInfo");
-            var reviewToggle = component.find("bwReview");
-            var contractToggle = component.find("contract");
-            var mechInstallToggle = component.find("mechInstall");
-            var progressBarToggle = component.find("progressBar");
-            var interconnectionToggle = component.find("intemodalrconnection");
-            var completeToggle = component.find("complete");
-            var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-
-            if (resp.getState() == 'SUCCESS') {
-                helper.getProgressBarDataMethod(component, event, helper);
-            } else {
-                $A.log("Errors", resp.getError());
-                alert("There was an issue loading the progress bar");
-            }
-        });
-	$A.enqueueAction(progressBarData);
         var i;
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");

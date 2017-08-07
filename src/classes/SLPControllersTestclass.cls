@@ -461,7 +461,6 @@ public without sharing class SLPControllersTestclass {
       List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
       String loanId;
-      String progressBarString;
       String nullString = null;
 
       Loan__c loanRecord;
@@ -506,7 +505,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        String progressBarString;
         String nullString = null;
 
         Loan__c loanRecord;
@@ -535,8 +533,6 @@ public without sharing class SLPControllersTestclass {
         System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
-            partnerTaskList.clear();
-            partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
         }
         Test.stopTest();        
     }    
@@ -550,7 +546,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        String progressBarString;
         String nullString = null;
 
         Loan__c loanRecord;
@@ -595,7 +590,6 @@ public without sharing class SLPControllersTestclass {
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
         String loanId;
-        SLPCustomerHandler.ProgressBarData pbData = new SLPCustomerHandler.ProgressBarData();
         String nullString = null;
 
         Loan__c loanRecord;
@@ -623,10 +617,7 @@ public without sharing class SLPControllersTestclass {
         System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
         System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            pbData = SLPCustomerHandler.getProgressBarData(loanId);
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
-            partnerTaskList.clear();
-            partnerTaskList = SLPCustomerHandler.getLoanParentSubTasks(loanId);
         }
         Test.stopTest();        
     }    
