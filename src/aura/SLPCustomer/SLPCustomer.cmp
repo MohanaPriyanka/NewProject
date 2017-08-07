@@ -958,7 +958,6 @@
     </div>
     <aura:if isTrue="{!v.licenseType}">
       <div>
-        <br></br>
         <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->
         <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large animated">
           <div  class="slds-modal__container ">
@@ -1041,6 +1040,7 @@
       </div>
     </aura:if>
     <div>
+      <br></br>
       <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
     </div>
   </div>
