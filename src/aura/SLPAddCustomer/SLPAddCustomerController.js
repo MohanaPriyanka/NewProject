@@ -229,7 +229,7 @@
         leadToUpdate.LASERCA__Birthdate__c = leadToUpdate.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         leadToUpdate.LASERCA__SSN__c = leadToUpdate.LASERCA__SSN__c.replace(/-/g,"");
         
-        actionUpdate.setParams({"updatedLead" : leadToUpdate});
+		actionUpdate.setParams({"updatedLead" : leadToUpdate});
         
         actionUpdate.setCallback(this, function(resp) {
                     if(resp.getState() == "SUCCESS") {
@@ -252,23 +252,23 @@
     },
     
     openAddCoApplicant : function(component, event, helper) {    
-      var ldRecord = component.get("v.newLead");
+        var ldRecord = component.get("v.newLead");
         
-      $A.createComponent(
-        "c:SLPAddCoApplicant", 
-        {"mainApplicant": ldRecord}, 
+        $A.createComponent(
+    		"c:SLPAddCoApplicant", 
+            {"mainApplicant": ldRecord}, 
            
-      function(newButton, status, errorMessage){
-        if (status === "SUCCESS") {
-               var body = component.get("v.body");
-               body.push(newButton);
-               component.set("v.body", body);
-        } else if (status === "INCOMPLETE") {
-               console.log("No response from server or client is offline.")
-        } else if (status === "ERROR") {
-               console.log("Error: " + errorMessage);
-        }
-       }
-      );               
+            function(newButton, status, errorMessage){
+                if (status === "SUCCESS") {
+     		       var body = component.get("v.body");
+                   body.push(newButton);
+                   component.set("v.body", body);
+                } else if (status === "INCOMPLETE") {
+                   console.log("No response from server or client is offline.")
+                } else if (status === "ERROR") {
+                   console.log("Error: " + errorMessage);
+                }
+            }
+        );               
     },
 })

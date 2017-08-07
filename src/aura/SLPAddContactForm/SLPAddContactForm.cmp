@@ -1,21 +1,21 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCoApplicant" access="global">    
-<aura:attribute name="contactInfo" type="Contact" default="{ 'sobjectType': 'Contact',
-                     'FirstName' : '',
-                     'LastName' : '',
-                     'Email' : '',
-                     'Phone' : '',                                     
-                     'LASERCA__Home_Address__c' : '',                                     
-                     'LASERCA__Home_State__c' : '',  
-                     'LASERCA__Home_City__c' : '',  
-                     'LASERCA__Home_Zip__c' : '',  
-                     'Lead__c' : '',  
-                     'Account' : '',
-                     'Income__c' : '',
-                     'LASERCA__Co_Applicant_DOB__c' : '',     
-                     'LASERCA__Social_Security_Number__c' : '',
-                 'Credit_Check_Acknowledged__c' : '',
-                 'Privacy_Policy_Acknowledged__c' : '',
-                     'LASERCA__Co_Applicant_Social_Security_Number__c' : ''}"/>
+<aura:attribute name="contactInfo" type="Contact" default="{'sobjectType': 'Contact',
+                                                            'FirstName' : '',
+                                                            'LastName' : '',
+                                                            'Email' : '',
+                                                            'Phone' : '',                                     
+                                                            'LASERCA__Home_Address__c' : '',                                     
+                                                            'LASERCA__Home_State__c' : '',  
+                                                            'LASERCA__Home_City__c' : '',  
+                                                            'LASERCA__Home_Zip__c' : '',  
+                                                            'Lead__c' : '',  
+                                                            'Account' : '',
+                                                            'Income__c' : '',
+                                                            'LASERCA__Co_Applicant_DOB__c' : '',     
+                                                            'LASERCA__Social_Security_Number__c' : '',
+                                                            'Credit_Check_Acknowledged__c' : '',
+                                                            'Privacy_Policy_Acknowledged__c' : '',
+                                                            'LASERCA__Co_Applicant_Social_Security_Number__c' : ''}"/>
 <aura:attribute name="leadId" type="String" default=""/> 
 <aura:attribute name="leadVar" type="Object" default=""/> 
 <aura:attribute name="responseMessage" type="String" default=""/> 
@@ -59,9 +59,9 @@
                        value="{!v.contactInfo.LASERCA__Home_State__c}" >
         <ui:inputSelectOption text="Select"/>                        
         <ui:inputSelectOption text="AL"/>
-    <ui:inputSelectOption text="AK"/>
-    <ui:inputSelectOption text="AZ"/>
-    <ui:inputSelectOption text="AR"/>
+    		<ui:inputSelectOption text="AK"/>
+    		<ui:inputSelectOption text="AZ"/>
+    		<ui:inputSelectOption text="AR"/>
         <ui:inputSelectOption text="CA"/>
         <ui:inputSelectOption text="CO"/>
         <ui:inputSelectOption text="CT"/>
@@ -113,7 +113,7 @@
    </div>
    <div aura:id="rowFive" class="slds-form-element__row">
     <div aura:id="inputZip" class="slds-form-element slds-size_1-of-2 ">
-     <label class="slds-form-element__label textSize" ><b>Zipcode:</b></label>
+     <label class="slds-form-element__label textSize" ><b>Zip Code:</b></label>
      <ui:inputText class="slds-input" value="{!v.contactInfo.LASERCA__Home_Zip__c}"/>       
     </div>  
     <div aura:id="inputDOB" class="slds-form-element slds-size_1-of-2 ">

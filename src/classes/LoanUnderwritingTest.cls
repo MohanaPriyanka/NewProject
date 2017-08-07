@@ -32,7 +32,6 @@ public with sharing class LoanUnderwritingTest {
         LASERCA__Personal_Credit_Report__c pcr = [SELECT Id, Adverse_Credit_Notice_1__c
                                                   FROM LASERCA__Personal_Credit_Report__c
                                                   LIMIT 1];
-        Test.startTest();
         System.assertEquals(null, pcr.Adverse_Credit_Notice_1__c);
         pcr.Adverse_Credit_Notice_1__c = 'Bankruptcy';
         BlueWaveParent.updateSObject(pcr);
@@ -57,7 +56,7 @@ public with sharing class LoanUnderwritingTest {
                 LIMIT 1];
         System.assertEquals(true, lead.Manual_Credit_Decline__c);
 
-        
+
         List<Attachment> a = [SELECT Id, Body
                               FROM Attachment
                               WHERE ParentId = :lead.Id];
@@ -71,6 +70,5 @@ public with sharing class LoanUnderwritingTest {
              WHERE ParentId = :lead.Id];
         System.assertEquals(1, a.size());
         // Couldn't test body contents here (BLOB is not a valid UTF-8 string), but works through user testing
-        Test.stopTest();
     }
 }

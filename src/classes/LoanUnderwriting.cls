@@ -14,7 +14,7 @@ public without sharing class LoanUnderwriting {
     public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [SELECT FirstName, LastName, Name, 
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
-                            Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment_IBLS__c,
+                            Annual_Income_Currency__c, Co_Applicant_Income__c,
                             Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                             Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                             lived_residence_six_months__c,
@@ -83,21 +83,9 @@ public without sharing class LoanUnderwriting {
             Lead lead = leads[0];
             if (lead.Personal_Credit_Report__c != null) {
                 mainPCRAttachment = getAttachment(lead.Personal_Credit_Report__c);
-                if (lead.Personal_Credit_Report__r.DTI_Before__c != null) {
-                    lead.Personal_Credit_Report__r.DTI_Before__c = lead.Personal_Credit_Report__r.DTI_Before__c.setScale(2);
-                }
-                if (lead.Personal_Credit_Report__r.DTI_After__c != null) {
-                    lead.Personal_Credit_Report__r.DTI_After__c = lead.Personal_Credit_Report__r.DTI_After__c.setScale(2);
-                }
             }
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
                 coAppPCRAttachment = getAttachment(lead.Personal_Credit_Report_Co_Applicant__c);
-                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c != null) {
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c = lead.Personal_Credit_Report_Co_Applicant__r.DTI_Before__c.setScale(2);
-                }
-                if (lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c != null) {
-                    lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c = lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
-                }
             }
             return(new LeadWithPCRAttachments(lead, mainPCRAttachment, coAppPCRAttachment));
         } else {
