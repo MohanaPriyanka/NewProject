@@ -15,14 +15,16 @@
  var accountID = "{!$CurrentPage.parameters.accountID}";
  var acctName = "{!$CurrentPage.parameters.acctName}";
  var totalBalance = "{!$CurrentPage.parameters.totalBalance}";
+ var isParentAcct = "{!$CurrentPage.parameters.isParentAcct}";
 
 	$Lightning.use("c:AccountBillingInfo", function() {
 	    $Lightning.createComponent(
 	    	"c:PreviewAccountBilling", 
         {"accountID": accountID,
          "acctName" : acctName,
+         "isParentAcct" : isParentAcct,
          "totalBalance" : totalBalance},
-        "lightning",
+         "lightning",
 
           function(cmp) {
           	 console.log('component created');
