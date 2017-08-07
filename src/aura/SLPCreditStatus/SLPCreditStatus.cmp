@@ -101,9 +101,9 @@
                        <aura:set attribute="else">
                         <aura:if isTrue="{!Customer.Status == 'Unqualified'}">                                            
                          <ui:button label="Add Co-Signer"
-                       			        labelClass="label"
-                                        class="{!Customer.Id}"
-                       				    press="{!c.openAddCoApplicant}"/>   
+                                    labelClass="label"
+                                        class="{!Customer}"
+                                  press="{!c.openAddCoApplicant}"/>   
                          <aura:set attribute="else">
                           <th></th>
                          </aura:set>

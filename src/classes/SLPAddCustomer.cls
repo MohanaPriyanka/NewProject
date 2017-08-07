@@ -52,6 +52,17 @@ public without sharing class SLPAddCustomer {
         return newLead;
     }
 
+    @AuraEnabled
+    public static Lead updateLeadRecord (Lead updatedLead) {
+        system.debug(updatedLead);
+        String propertyString = updatedLead.firstName + ' ' + updatedLead.lastName;
+        updatedLead.Company = propertyString;
+        updatedLead.Email_Re_Enter__c = updatedLead.Email;
+
+        update updatedLead;
+        return updatedLead;
+    }
+
     // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
     // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
     // or Credit Report Log objects related to the Lead
@@ -102,7 +113,6 @@ public without sharing class SLPAddCustomer {
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     
-
     @AuraEnabled 
     public static String sendApplication (String customerEmail, String productProgram) {
         String startApplicationUrl;
@@ -155,4 +165,4 @@ public without sharing class SLPAddCustomer {
         MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});        
         return customerName;
       }     
-}    
+}

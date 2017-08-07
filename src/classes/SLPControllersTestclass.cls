@@ -1128,6 +1128,7 @@ public without sharing class SLPControllersTestclass {
             }
             update leadList;
             for (j = 0; j < leadList.size(); j++) {
+                system.debug(leadList.get(j));
                 leadId = leadList.get(j).Id;
                 System.runAs(partnerUser) {
                     if ( j == 1) {
@@ -1135,17 +1136,16 @@ public without sharing class SLPControllersTestclass {
                         System.assertEquals(checkForCoAppsTest, 'hasCoApp');
                         getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
                         System.assertNotEquals(checkForCoAppsTest, '');
+                        sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(newCoApp, leadList.get(j));
+                        System.assertEquals(sendCoAppEmailTest, 'success');
                     } else if ( j == 2) {
                         checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
                         System.assertEquals(checkForCoAppsTest, 'sentEmail');
                         getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
                         System.assertNotEquals(checkForCoAppsTest, '');
-                        checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadId);
+                        checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadList.get(j));
                         System.assertNotEquals(checkaddCoApp.Lead__c, '');
-                    } else {
-                        sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(coAppInfo, leadId);
-                        System.assertEquals(sendCoAppEmailTest, 'success');
-                    }
+                    } 
                 }
             }
         Test.stopTest();
