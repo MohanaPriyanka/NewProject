@@ -3,3 +3,11 @@
   -webkit-animation-delay: 0s;
   -webkit-animation-iteration-count: 1;
 }
+
+.THIS .redcolor {
+  color: #FF0000;
+}
+
+.THIS .textSize {
+    font-size:90%;
+}

@@ -37,7 +37,7 @@
     color: #F59F1A;
     }                      
   </style> 
-	<aura:attribute name="newLead" type="Lead" 
+  <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -421,11 +421,10 @@
     </p> 
     <hr></hr>
     <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay">
-      <ui:button aura:id="creditStatusButton"
-                 class="box buttonLeft"
-                 labelClass="proximaNovaBlue"
+      <lightning:button aura:id="creditStatusButton"
+                 class="box buttonLeft proximaNovaBlue"
                  label="Run Credit Report"
-                 press="{!c.checkCredit}"/>
+                 onclick="{!c.checkCredit}"/>
       <lightning:button aura:id="editPencil"
                  class="box buttonRight proximaNovaBlue"
                  label="Edit Customer"

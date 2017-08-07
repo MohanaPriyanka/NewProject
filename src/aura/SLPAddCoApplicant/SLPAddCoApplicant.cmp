@@ -4,14 +4,11 @@
                      'FirstName' : '',
                      'LastName' : '',
                      'Email' : ''}"/>
-<aura:attribute name="leadEmail" type="String"/> 
-<aura:attribute name="leadId" type="String" default=""/> 
-<aura:attribute name="mainAppName" type="String" default=""/> 
-<aura:attribute name="faLink" type="String"/>  
 <aura:attribute name="checkForCoApplicants" type="String"/>  
-<aura:attribute name="enterNow" type="Boolean" default=""/> 
+<aura:attribute name="enterNow" type="Boolean" default=""/>
+<aura:attribute name="mainApplicant" type="Object" default=""/>     
     
-<div style="height: 640px;">
+<div>
   <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
     <div class="slds-modal__container">
       <header class="slds-modal__header blueBackground">
@@ -24,25 +21,25 @@
            <fieldset class="slds-form-element">              
             <div aura:id="rowOne" class="slds-form-element__row">
                 <div class="slds-form-element slds-size_1-of-2">
-                  <label class="slds-form-element__label proximaNovaBlue" ><b>Co-Signer First Name:</b></label>
+                  <label class="slds-form-element__label textSize" ><b>Co-Signer First Name:</b></label>
                   <ui:inputText aura:id="firstName" class="slds-input" value="{!v.coAppInfo.FirstName}"/>       
                 </div>                 
                 <div class="slds-form-element slds-size_1-of-2">
-                  <label class="slds-form-element__label proximaNovaBlue" ><b>Co-Signer Last Name:</b></label>
+                  <label class="slds-form-element__label textSize" ><b>Co-Signer Last Name:</b></label>
                   <ui:inputText aura:id="lastName" class="slds-input" value="{!v.coAppInfo.LastName}"/>       
                 </div>  
              </div>
              <div aura:id="rowTwo" class="slds-form-element__row">
                 <div class="slds-form-element slds-size_1-of-2">
-                  <label class="slds-form-element__label proximaNovaBlue" ><b>Co-Signer Email Address:</b></label>
+                  <label class="slds-form-element__label textSize" ><b>Co-Signer Email Address:</b></label>
                   <ui:inputText aura:id="emailCoApp" class="slds-input" value="{!v.coAppInfo.Email}"/>       
                 </div>
              </div>                
             </fieldset>
            </div>
-          </div>
+          </div> 
           <aura:if isTrue="{!v.enterNow}">
-           <c.SLPAddContactForm contactInfo="{!v.coAppInfo}" leadId="{!v.leadId}"/>
+           <c.SLPAddContactForm contactInfo="{!v.coAppInfo}" leadVar="{!v.mainApplicant}"/>
           </aura:if>
           <div aura:id="backButton" class="noDisplay">
           <lightning:buttonIcon name="back" iconName="utility:back" variant="bare" onclick="{!c.backButton}" size="medium" alternativeText="back" />
@@ -54,18 +51,18 @@
                  <ui:outputText class="slds-align--absolute-center" value="Email was not sent, please try a different email"/>
               </div>
               <div aura:id="alreadySentEmail" class="noDisplay">
-                 <ui:outputText class="slds-align--absolute-center" value="A link to add a co-signer has already been sent to this customer. Send again?"/>
+                 <ui:outputText class="slds-align--absolute-center" value="A form to add a Co-Signer has already been sent to this Applicant. Please click continue if you would like to send another."/>
               </div>
               <div aura:id="alreadyHasCoApp" class="noDisplay">
-                 <ui:outputText class="slds-align--absolute-center" value="This application already has a co-signer or co-applicant. Add another?"/>
+                 <ui:outputText class="slds-align--absolute-center" value="This application already has a Co-Signer or Co-Applicant. Please click continue if you would like to add a different Co-Signer."/>
               </div>
        </div>
       <footer aura:id="windowFooter" class="slds-modal__footer">
-       <div aura:id="buttonLink" class="">
-           <lightning:button label="Enter Info Now" class="slds-button buttonLeft blueBackground" onclick="{!c.enterInfoNow}"/>
+       <div aura:id="buttonLink" class="buttonLeftNoPadding">
+           <lightning:button label="Enter Information Here" class="slds-button blueBackground" onclick="{!c.enterInfoNow}"/>
        </div>
-       <div aura:id="buttonEmail" class="">
-           <lightning:button label="Send Link Via Email" iconName="utility:email" iconPosition="right" class="slds-button buttonRight blueBackground" onclick="{!c.sendLinktoCoAppForm}"/>
+       <div aura:id="buttonEmail" class="buttonRightNoPadding">
+           <lightning:button label="Send Information Request To Co-Signer" iconName="utility:email" iconPosition="right" class="slds-button blueBackground" onclick="{!c.sendLinktoCoAppForm}"/>
        </div>   
        <div aura:id="continueButton" class="noDisplay">
            <lightning:button label="Continue" class="slds-button slds-align--absolute-center blueBackground" onclick="{!c.continueAnyway}"/>
