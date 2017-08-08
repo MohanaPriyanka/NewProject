@@ -85,10 +85,10 @@ public without sharing class SLPAddCustomer {
 
     @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
-        Lead lead = [SELECT Id, Status,
-                     (SELECT id, LASERCA__Error_Message__c 
+        Lead lead = [SELECT Id, Status, LASTMODIFIEDDATE,
+                     (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
                       FROM LASERCA__Credit_Report_Logs__r 
-                      ORDER BY CREATEDDATE DESC LIMIT 1),
+                      ORDER BY CREATEDDATE DESC),
                      (SELECT id, Solar_Loan_Approval_Status__c 
                       FROM LASERCA__Personal_Credit_Reports__r 
                       ORDER BY CREATEDDATE DESC LIMIT 1)
@@ -98,11 +98,18 @@ public without sharing class SLPAddCustomer {
             // If a PCR was successfully created, the Status will be updated on the Lead
             return(lead.Status);
         } else if (!lead.LASERCA__Credit_Report_Logs__r.isEmpty()) {
-            // If a PCR was successfully created but a Credit Report Log was, return the first line of the error
-            return(parseError(lead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Error_Message__c.split('\\n')[0]));
-        } else {
-            return(lead.Status);
+            // Since an installer can run credit multiple times on an applicant (if there was an error),
+            // there might be multiple CRLs, some or all of which might be for previous credit checks.
+
+            // Assuming the credit check is run based on checking the "Pull Credit Check" checkbox, we
+            // can use the Lead.LASTMODIFIEDDATE to find the relevant CRL.
+            for (LASERCA__Credit_Report_Log__c crl : lead.LASERCA__Credit_Report_Logs__r) {
+                if (crl.CREATEDDATE > Lead.LASTMODIFIEDDATE) {
+                    return(parseError(crl.LASERCA__Error_Message__c.split('\\n')[0]));
+                }
+            }
         }
+        return(lead.Status);
     }
 
     // We often get errors in this format, if so, we can parse out the error text (everything after the first dash)
