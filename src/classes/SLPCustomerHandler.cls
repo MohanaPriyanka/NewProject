@@ -148,15 +148,16 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static void updateDisbursals(String disbursalId, Boolean disbursalValue) {
     List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-    String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c  ' ;
-    disbursalQuery += '      FROM Disbursal__c' ;
-    disbursalQuery += '      WHERE Id =  \'' + disbursalId +  '\' ' ;
-    disbursalQuery += '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
+    String disbursalQuery = 
+        '      SELECT Id, Name, Partner_Confirmation__c  ' +
+        '      FROM Disbursal__c' +
+        '      WHERE Id =  \'' + disbursalId +  '\' ' +
+        '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
     if (profile.LicenseType != 'Executive') {
       disbursalQuery += '    AND Sales_Representative__r.Id =  \'' + profile.salesRepId +  '\' ' ;
     }
     disbursalQuery += '      LIMIT 1' ;
-    for(Disbursal__c disbursal : Database.query(disbursalQuery)){
+    for (Disbursal__c disbursal : Database.query(disbursalQuery)) {
       disbursal.Partner_Confirmation__c = disbursalValue;
       disbursalList.add(disbursal);
     }
@@ -198,11 +199,11 @@ public without sharing class SLPCustomerHandler {
     Loan__c loanRecord = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c
                           FROM Loan__c
                           WHERE Id = : loanId];
-    if(loan.Commencement_Datee__c  != null){
-      loanRecord.Commencement_Datee__c   = loan.Commencement_Datee__c;
+    if(loan.Commencement_Datee__c != null){
+      loanRecord.Commencement_Datee__c = loan.Commencement_Datee__c;
     }
-    if(loan.Requested_Loan_Amount__c  != null){
-      loanRecord.Requested_Loan_Amount__c   = loan.Requested_Loan_Amount__c;
+    if(loan.Requested_Loan_Amount__c != null){
+      loanRecord.Requested_Loan_Amount__c = loan.Requested_Loan_Amount__c;
     }
     update loanRecord;
 
@@ -210,11 +211,7 @@ public without sharing class SLPCustomerHandler {
     Lead leadRecord = [SELECT Id, Update_Dummy__c, Requested_Loan_Amount__c
                        FROM Lead
                        WHERE Id = : equipmentRecord.Lead__r.Id];
-    if(leadRecord.Update_Dummy__c == true){
-      leadRecord.Update_Dummy__c = false;
-    }else{
-      leadRecord.Update_Dummy__c = true;
-    }
+    leadRecord.Update_Dummy__c = !leadRecord.Update_Dummy__c;
     update leadRecord;
   }
 
@@ -243,8 +240,7 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static SLPortal_Settings__c getSLPortalSettings() {
-    List<SLPortal_Settings__c> slportalSettings = SLPortal_Settings__c.getall().values();
-    return slportalSettings[0];
+    return SLPortal_Settings__c.getall().values()[0];
   }
 
   @AuraEnabled
@@ -252,12 +248,7 @@ public without sharing class SLPCustomerHandler {
     Boolean updateDummy;
     String attachmentId = SLPFileHandler.saveTheFile(parentId, fileName, base64Data, contentType, 'PTO Documentation');
     Residential_Equipment__c equipment = [SELECT Id, Interconnection_Update_Dummy__c FROM Residential_Equipment__c WHERE Id = :parentId];
-    if (equipment.Interconnection_Update_Dummy__c) {
-      updateDummy = false;
-    } else {
-      updateDummy = true;
-    }
-    equipment.Interconnection_Update_Dummy__c = updateDummy;
+    equipment.Interconnection_Update_Dummy__c = !equipment.Interconnection_Update_Dummy__c;
     update equipment;
   }
 
@@ -283,17 +274,9 @@ public without sharing class SLPCustomerHandler {
       }
     }
     if (profile.LicenseType == 'Executive') {
-      if (!leadsNotViewedByAdminList.isEmpty()) {
-        return true;
-      } else {
-        return false;
-      }
+        return(!leadsNotViewedByAdminList.isEmpty());
     } else if (profile.LicenseType == 'User') {
-        if (!leadsNotViewedByAgentList.isEmpty()) {
-          return true;
-        } else {
-          return false;
-        }
+        return (!leadsNotViewedByAgentList.isEmpty());
     } else {
       return false;
     }
