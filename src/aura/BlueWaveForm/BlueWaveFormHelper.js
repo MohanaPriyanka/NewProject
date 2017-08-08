@@ -1,6 +1,6 @@
 ({
 	checkFieldValidity : function(component, fieldValue, fieldId, animation, expectedLength, allowLetters, allowSpecialChars, allowSpaces, errorMessage, fieldType) {
-		if (this.invalidField(component, fieldValue, allowLetters, expectedLength, allowSpecialChars, allowSpaces, fieldType)) {
+		if (this.invalidField(component, fieldValue, expectedLength, allowLetters, allowSpecialChars, allowSpaces, fieldType)) {
 			this.setInputToError(component, fieldId, animation);
 			return errorMessage + "\n" + "\n";                      
 		} else {
