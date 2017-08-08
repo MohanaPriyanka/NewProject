@@ -240,6 +240,7 @@
                     } else {
                         $A.util.removeClass(component.find("EditButton"), 'noDisplay'); 
                         helper.stopSpinner(component, "leadSpinner");
+                        helper.logError("SLPAddCustomer", "updateLeadRecord", resp.getERror());
                     }
                 }); 
          $A.enqueueAction(actionUpdate);
