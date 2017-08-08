@@ -46,6 +46,9 @@
           </div>
               <div aura:id="emailSentText" class="noDisplay">
                  <ui:outputText class="slds-align--absolute-center" value="{!'Email Sent to: ' + v.coAppInfo.Email}"/>
+                 <br></br>
+                 <ui:outputText class="slds-align--absolute-center" value="{!'Once the Co-Signer has submitted their information, '}"/>
+                 <ui:outputText class="slds-align--absolute-center" value="{!'please allow 1-2 business days for BlueWave to complete a credit review.'}"/>
               </div>
               <div aura:id="emailErrorText" class="noDisplay">
                  <ui:outputText class="slds-align--absolute-center" value="Email was not sent, please try a different email"/>
@@ -66,6 +69,9 @@
        </div>   
        <div aura:id="continueButton" class="noDisplay">
            <lightning:button label="Continue" class="slds-button slds-align--absolute-center blueBackground" onclick="{!c.continueAnyway}"/>
+       </div>
+       <div aura:id="doneRedirect" class="noDisplay">
+        <lightning:button label="Done" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.doneRedirect}"/>
        </div>
       </footer>
     </div>

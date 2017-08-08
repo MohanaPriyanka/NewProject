@@ -19,9 +19,15 @@
 <aura:attribute name="leadId" type="String" default=""/> 
 <aura:attribute name="leadVar" type="Object" default=""/> 
 <aura:attribute name="responseMessage" type="String" default=""/> 
+<aura:attribute name="responseMessageLineTwo" type="String" default=""/> 
 <aura:attribute name="errorText" type="String" default=""/> 
 
-<ui:outputText aura:id="message" class="slds-align--absolute-center noDisplay" value="{!v.responseMessage}"/>  
+<div aura:id="message" class ="noDisplay">
+  <ui:outputText class="slds-align--absolute-center" value="{!v.responseMessage}"/>  
+  <ui:outputText class="slds-align--absolute-center" value="{!v.responseMessageLineTwo}"/> 
+  <br></br>
+  <lightning:button label="Done" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.doneButton}"/>
+</div>
 <ui:outputText aura:id="errorTextLine" class="proximaNova redcolor noDisplay" value="{!v.errorText}"/>      
  <div aura:id="formBody" class="">
  <div class="slds-form slds-form_compound">

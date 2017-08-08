@@ -64,5 +64,9 @@
     backButton : function(component, event, helper) {            
         helper.backButton(component);
     },
+
+    doneRedirect : function(component, event, helper) {
+        window.location.href = "/slportal/s/";
+    },
     
 })

@@ -18,7 +18,8 @@
             
             actionInsertContact.setCallback(this,function(resp) {       
                 if(resp.getState() == "SUCCESS"){       
-                    component.set("v.responseMessage" , 'Co-Applicant Added Successfully');
+                    component.set("v.responseMessage" , 'Co-Signer Added Successfully.');
+                    component.set("v.responseMessageLineTwo" , 'Please allow 1-2 business days for a credit review.');
                     $A.util.removeClass(component.find("message"), 'noDisplay'); 
                     $A.util.addClass(component.find("formBody"), 'noDisplay'); 
                 } else {
@@ -28,5 +29,9 @@
                                            
            $A.enqueueAction(actionInsertContact);
         }
+    },
+
+    doneButton : function(component, event, helper) {
+        window.location.href = "/slportal/s/";
     },
 })
