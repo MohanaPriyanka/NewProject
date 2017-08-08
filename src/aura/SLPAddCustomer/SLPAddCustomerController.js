@@ -226,7 +226,6 @@
         $A.util.addClass(component.find("EditButton"), 'noDisplay'); 
         helper.startSpinner(component, "leadSpinner");
         
-        leadToUpdate.LASERCA__Birthdate__c = leadToUpdate.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         leadToUpdate.LASERCA__SSN__c = leadToUpdate.LASERCA__SSN__c.replace(/-/g,"");
         
         actionUpdate.setParams({"updatedLead" : leadToUpdate});
@@ -237,15 +236,10 @@
                         helper.removeAddCustomerForm(component);
                         helper.showCreditCheckPage(component);
                         helper.stopSpinner(component, "leadSpinner");
+                        component.get("v.newLead").LASERCA__Birthdate__c = component.get("v.newLead").LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
                     } else {
                         $A.util.removeClass(component.find("EditButton"), 'noDisplay'); 
                         helper.stopSpinner(component, "leadSpinner");
-
-                        var appEvent = $A.get("e.c:ApexCallbackError");
-                        appEvent.setParams({"className" : "SLPAddCustomerController",
-                                            "methodName" : "updateLeadRecord",
-                                            "errors" : resp.getError()});
-                        appEvent.fire();
                     }
                 }); 
          $A.enqueueAction(actionUpdate);
