@@ -22,7 +22,7 @@
                     $A.util.removeClass(component.find("message"), 'noDisplay'); 
                     $A.util.addClass(component.find("formBody"), 'noDisplay'); 
                 } else {
-                    helper.logError("SLPAddCoApplicant", "addNewCoApplicant", resp.getERror());
+                    helper.logError("SLPAddCoApplicant", "addNewCoApplicant", resp.getError());
                 }                
            });
                                            
