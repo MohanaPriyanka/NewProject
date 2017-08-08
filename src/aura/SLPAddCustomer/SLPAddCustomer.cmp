@@ -63,14 +63,14 @@
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <ul class="slds-tabs_default__nav" role="tablist">
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+          <c:BlueWaveInputToolTip popoverText="Use these tabs to switch between loan applications">
             <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
                 <b>BlueWave Solar Loan Application</b>
               </a>
             </li>
           </c:BlueWaveInputToolTip>           
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+          <c:BlueWaveInputToolTip popoverText="Use these tabs to switch between loan applications">
             <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
                 <b>MCEC Loan Application</b>
