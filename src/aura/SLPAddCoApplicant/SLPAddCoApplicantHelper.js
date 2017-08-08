@@ -34,6 +34,7 @@
     enterInfoNow : function(component, helper) {            
 		$A.util.addClass(component.find("windowFooter"), 'noDisplay'); 
         $A.util.addClass(component.find("formBody"), 'noDisplay'); 
+        $A.util.addClass(component.find("emailErrorText"), 'noDisplay'); 
         $A.util.removeClass(component.find("backButton"), 'noDisplay'); 
         component.set("v.enterNow", "TRUE");
     },
