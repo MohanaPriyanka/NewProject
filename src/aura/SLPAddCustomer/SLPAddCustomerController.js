@@ -210,6 +210,7 @@
     returnToEdit : function(component, event, helper) {
         helper.returnAddCustomerForm(component);
         helper.hideCreditCheckPage(component);
+        $A.util.addClass(component.find('creditResultError'), 'noDisplay');
         helper.stopSpinner(component, "leadSpinner");
         $A.util.removeClass(component.find("EditButton"), 'noDisplay'); 
     },   

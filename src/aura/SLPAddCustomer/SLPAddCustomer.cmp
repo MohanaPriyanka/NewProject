@@ -312,7 +312,7 @@
   <div aura:id="addedCustomerConfirmCredit" class=" noDisplay">
     <p class="marginAround marginTop proximaNovaBlue">
       <div class="slds-m-bottom_small">
-        You've added a new applicant. Please review this applicants's information to make sure it is correct before running a credit check. 
+        You've added a new applicant. Please review this applicants' information to make sure it is correct before running a credit check. 
       </div>
       <div class="box">
         <fieldset class="slds-form--compound paddingTop1x5">
@@ -372,17 +372,17 @@
       </div>
     </p> 
     <hr></hr>
-    <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay">
-      <lightning:button aura:id="creditStatusButton"
-                 class="box buttonLeft proximaNovaBlue"
-                 label="Run Credit Report"
-                 onclick="{!c.checkCredit}"/>
+    <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay paddingBottom5">
       <lightning:button aura:id="editPencil"
-                 class="box buttonRight proximaNovaBlue"
-                 label="Edit Customer"
+                 class="box buttonLeft proximaNovaBlue"
+                 label="Edit Applicant"
                  iconName="utility:edit" 
                  iconPosition="right"
                  onclick="{!c.returnToEdit}"/>
+      <lightning:button aura:id="creditStatusButton"
+                 class="box buttonRight proximaNovaBlue"
+                 label="Run Credit Report"
+                 onclick="{!c.checkCredit}"/>
     </div>
     <div class="slds-align--absolute-center">
       <ui:spinner aura:id="creditSpinner" isVisible="false"/>
@@ -426,12 +426,20 @@
         {!v.body}
     </div> 
     <div aura:id="creditResultError"
-         class="slds-align--absolute-center noDisplay">
-      <ui:outputText class="buttonLeft" value="{!'There was an error: ' + v.creditStatusErrorText}"/>
-      <ui:button aura:id="startNewApplication"
-                 class=" box buttonRight"
-                 label="Cancel and start a new application"
-                 press="{!c.navigateAddAnotherCustomer}"/>
+         class="noDisplay center">
+      <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText}"/>
+      <div class="paddingTop1x5 paddingBottom5">
+        <lightning:button aura:id="editPencil"
+                          class="box proximaNovaBlue buttonLeft"
+                          label="Edit Applicant"
+                          iconName="utility:edit" 
+                          iconPosition="right"
+                          onclick="{!c.returnToEdit}"/>
+        <ui:button aura:id="startNewApplication"
+                   class="box proximaNovaBlue buttonRight"
+                   label="Cancel"
+                   press="{!c.navigateAddAnotherCustomer}"/>
+      </div>
     </div>
   </div>
 </aura:component>

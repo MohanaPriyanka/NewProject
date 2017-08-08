@@ -16,7 +16,7 @@
         $A.util.addClass(component.find("editPencil"), 'noDisplay');
         $A.util.removeClass(component.find(divToShow), 'noDisplay');
         this.stopSpinner(component, "creditSpinner");
-        window.clearInterval(component.get("v.crefditStatusPoller"));
+        window.clearInterval(component.get("v.creditStatusPoller"));
     },
 
     checkCreditStatus : function(component, helper) {
