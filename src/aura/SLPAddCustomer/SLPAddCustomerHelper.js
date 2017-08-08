@@ -51,6 +51,7 @@
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, true, false, true, "Please enter the Applicants's First Name without any special characters.", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, true, false, true, "Please enter the Applicants's Last Name without any special characters.", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "customerEmail", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Birthdate__c, "dateOfBirth", "shake", null, false, null, null, "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c, "date");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Address__c, "homeAddressElement", "shake", null, true, false, true, "Please enter the Applicants's correct home address", "standard");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_City__c, "cityElement", "shake", null, true, false, true, "Please enter the Applicant's City", "standard");        
         if (lead.LASERCA__Home_State__c == "Select") {
