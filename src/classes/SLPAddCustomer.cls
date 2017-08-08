@@ -99,11 +99,22 @@ public without sharing class SLPAddCustomer {
             return(lead.Status);
         } else if (!lead.LASERCA__Credit_Report_Logs__r.isEmpty()) {
             // If a PCR was successfully created but a Credit Report Log was, return the first line of the error
-            return(lead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Error_Message__c.split('\\n')[0]);
+            return(parseError(lead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Error_Message__c.split('\\n')[0]));
         } else {
             return(lead.Status);
         }
     }
+
+    // We often get errors in this format, if so, we can parse out the error text (everything after the first dash)
+    //   ERROR: E999 - CreditBureau - Invalid borrower first name
+    @testVisible
+    private static String parseError(String s) {
+        if (Pattern.matches('^ERROR: [A-Z]\\d* - .*$', s)) {
+          return(s.right(s.length() - s.indexOf(' - ') - 3));
+        } else {
+            return(s);
+        }
+    }        
 
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
     //state to determine if the add a customer page should allow the user to submit MSLP applications
