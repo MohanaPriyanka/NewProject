@@ -494,8 +494,8 @@
             case "Interconnection":
             case "Report Interconnection to MCEC":
                 if (component.get("v.customerInformation.Loan__r.State__c") === "MA") {
-                    helper.openInterconnectionModal(component, event, helper);
-                    return;
+                    var formId = "381637";
+                    break;
                 } else {
                     var formId = "381589";
                     break;
@@ -520,14 +520,24 @@
                  + '&' + 'tfa_1180=' + !updateDummy
                  + '&' + 'tfa_390=' + income
             });
-        } else {
+        } else if (formId === "381589") {
             var equipmentId = component.get("v.customerInformation.Id");
             urlEvent.setParams(
                 {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
                  "tfa_814=" + leadId
                  + '&' + 'tfa_828=' + !updateDummy
                  + '&' + 'tfa_821=' + equipmentId
-                });
+            });
+        } else if (formId === "381637") {
+            var equipmentId = component.get("v.customerInformation.Id");
+            var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
+            var opportunityId = component.get("v.customerInformation.Opportunity__r.Id");
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_117=" + equipmentId
+                 + '&' + 'tfa_118=' + !equipmentUpdateDummy
+                 + '&' + 'tfa_107=' + opportunityId
+            });
         }
         urlEvent.fire();
     },
