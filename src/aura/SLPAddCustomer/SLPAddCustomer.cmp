@@ -63,14 +63,14 @@
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <ul class="slds-tabs_default__nav" role="tablist">
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to switch between loan applications">
+          <c:BlueWaveInputToolTip popoverText="Use this tab to apply for the BlueWave Solar Loan">
             <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
                 <b>BlueWave Solar Loan Application</b>
               </a>
             </li>
           </c:BlueWaveInputToolTip>           
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to switch between loan applications">
+          <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
             <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
                 <b>MCEC Loan Application</b>
@@ -195,9 +195,7 @@
               </div>
             </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b>&nbsp;
-                <c:BlueWaveInputToolTip popoverText="Please provide the total installation cost."/>
-              </label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
               <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
             </div>             
           </div>
@@ -371,15 +369,15 @@
       </div>
     </p> 
     <hr></hr>
-    <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay paddingBottom5">
+    <div aura:id="pullCreditButtons" class="center noDisplay paddingBottom5">
       <lightning:button aura:id="editPencil"
-                 class="box buttonLeft proximaNovaBlue"
+                 class="box proximaNovaBlue marginAround"
                  label="Edit Applicant"
                  iconName="utility:edit" 
                  iconPosition="right"
                  onclick="{!c.returnToEdit}"/>
       <lightning:button aura:id="creditStatusButton"
-                 class="box buttonRight proximaNovaBlue"
+                 class="box proximaNovaBlue marginAround"
                  label="Run Credit Report"
                  onclick="{!c.checkCredit}"/>
     </div>
@@ -406,17 +404,15 @@
       </div>
     </div>
     <div aura:id="creditResultUnqualified" class="noDisplay">
-      <div class="slds-align--absolute-center" >
-           <ui:outputText value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
-      </div>
-      <br/>
-      <div >
+      <ui:outputText class="slds-align--absolute-center marginAround" 
+                     value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
+      <div class="center">
         <ui:button aura:id="addCoApplicant"
-                   class="box buttonLeft"
+                   class="box proximaNovaBlue marginAround"
                    label="Add Co-Signer"
                    press="{!c.openAddCoApplicant}"/>
         <ui:button aura:id="Return"
-                   class="box buttonRight"
+                   class="box proximaNovaBlue marginAround"
                    label="Return"
                    press="{!c.navigateAddAnotherCustomer}"/>  
       </div>
@@ -429,13 +425,13 @@
       <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText}"/>
       <div class="paddingTop1x5 paddingBottom5">
         <lightning:button aura:id="editPencil"
-                          class="box proximaNovaBlue buttonLeft"
+                          class="box proximaNovaBlue marginAround"
                           label="Edit Applicant"
                           iconName="utility:edit" 
                           iconPosition="right"
                           onclick="{!c.returnToEdit}"/>
         <ui:button aura:id="startNewApplication"
-                   class="box proximaNovaBlue buttonRight"
+                   class="box proximaNovaBlue marginAround"
                    label="Cancel"
                    press="{!c.navigateAddAnotherCustomer}"/>
       </div>
