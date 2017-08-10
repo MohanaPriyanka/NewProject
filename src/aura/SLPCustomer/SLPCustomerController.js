@@ -218,6 +218,47 @@
         $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
     },
 
+    saveSystemInformation : function(component, event, helper) {       
+        helper.startSpinner(component, "customerInformationSpinner");
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+
+        var equipmentUpdateVar = component.get("v.equipmentUpdate");
+        var equipmentIdVar = component.get("v.customerInformation.Id");
+        var loanUpdateVar = component.get("v.loanUpdate");
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+
+        var saveAction = component.get("c.saveCustomerInformation");
+        saveAction.setParams({
+            "equipmentFromComponent" : equipmentUpdateVar,
+            "equipmentId" : equipmentIdVar,
+            "loanId" : loanUpdateIdVar,
+            "loan" : loanUpdateVar,
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+                helper.stopSpinner(component, "customerInformationSpinner");
+                helper.confirmSystemInformationSaved(component);             
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(saveAction);
+
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanUpdateIdVar})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(customerInformationAction);
+    },    
+
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
         helper.startSpinner(component, "customerInformationSpinner");
@@ -334,11 +375,12 @@
     closeCustomerModal : function(component, event, helper) {
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.closeSystemInformationSaved(component);
 
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanUpdateIdVar});
+        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
         partnerTaskList.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
@@ -356,7 +398,6 @@
         $A.enqueueAction(partnerTaskList);
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
     },
 
     getSrecInterconnectionPage: function(component, event, helper) {

@@ -148,4 +148,15 @@
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
     },
 
+    confirmSystemInformationSaved : function(component, event, helper) {
+        $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("systemInformationInputs"), 'noDisplay');
+        $A.util.removeClass(component.find("systemInformationSubmitConfirmation"), 'noDisplay');
+    },    
+
+    closeSystemInformationSaved : function(component, event, helper) {
+        $A.util.removeClass(component.find("systemInformationInputs"), 'noDisplay');
+        $A.util.addClass(component.find("systemInformationSubmitConfirmation"), 'noDisplay');
+        $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');    
+    },     
 })

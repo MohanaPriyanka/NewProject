@@ -178,24 +178,24 @@
             </button>
             <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
           </div>
+          <div aura:id="systemInformationInputs">
           <div class="slds-modal__content slds-p-around--medium">
-            <fieldset class="slds-form--compound">
+            <fieldset class="slds-form--compound ">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">System Size</label>
+                    <label class="slds-form-element__label" for="input-03"><b>System Size</b></label>
                     <ui:inputNumber aura:id="systemSize" class="slds-input"
                                     value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}"
                                     placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>
                   </div>
-                  <div class="slds-form-element slds-p-horizontal--small slds-grid--align-center ">
-                    <label class="slds-form-element__label" for="input-03">Estimated Date of Completion</label>
-                    <ui:inputDate aura:id="commencementDateChanger"
-                                  class="slds-input"
-                                  format="MM/DD/YYYY"
-                                  displayDatePicker="false"
-                                  value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"/>
-                  </div>
+                  <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
+                    <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
+                    <div class="slds-form-element__control">              
+                      <c:BlueWaveDate value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"
+                        label="Estimated Date of Completion"/>
+                      </div>
+                    </div>                  
                 </div>
               </div>
             </fieldset>
@@ -204,19 +204,19 @@
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Module Manufacturer</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Module Manufacturer</b></label>
                       <ui:inputText aura:id="moduleManfuacturer" class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Manufacturer__c}"
                                     placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Module Model Number/Type</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Module Model Number/Type</b></label>
                       <ui:inputText aura:id="moduleType" class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Model_Number__c}"
                                     placeholder="{!v.customerInformation.Module_Model_Number__c}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Number of Modules</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
                       <ui:inputNumber aura:id="moduleNumber" class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Modules__c}"
                                       placeholder="{!v.customerInformation.Number_of_Modules__c}"/>
@@ -228,19 +228,19 @@
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Inverter Manufacturer</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
                       <ui:inputText aura:id="inverterManufacturer" class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Manufacturer__c}"
                                     placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Inverter Model Number/Type</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Inverter Model Number/Type</b></label>
                       <ui:inputText aura:id="inverterType" class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Model_Number__c}"
                                     placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small">
-                      <label class="slds-form-element__label" for="input-03">Number of Inverters</label>
+                      <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
                       <ui:inputNumber aura:id="inverterNumber" class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Inverters__c}"
                                       placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>
@@ -250,6 +250,14 @@
               </fieldset>
             </aura:if>
           </div>
+        </div>
+        <div aura:id="systemInformationSubmitConfirmation" class="noDisplay">
+          <div  class="slds-modal__content slds-p-around--medium">
+            <div class="slds-align--absolute-center ">
+              <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The system information has been saved, thank you! </b></p>
+            </div>
+          </div>
+        </div>
           <div class="slds-modal__footer">
             <lightning:button aura:id="closeCustomerModalButton"
                               class="slds-button"
@@ -257,7 +265,7 @@
                               label="Close"></lightning:button>
             <lightning:button aura:id="saveCustomerModalButton"
                               class="slds-button slds-button--brand"
-                              onclick="{!c.saveEquipmentInformation}"
+                              onclick="{!c.saveSystemInformation}"
                               label="Save"></lightning:button>
             <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>
           </div>
