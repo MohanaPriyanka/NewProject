@@ -480,7 +480,9 @@
 
     handleTaskAction : function(component, event, helper) {
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var oppId = component.get("v.customerInformation.Opportunity__r.Id");                
+        var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");        
         var taskName = event.getSource().get("v.class");
         switch (taskName) {
             case "Provide all System Information":
@@ -511,6 +513,7 @@
             default:
                 var formId = "";
         }
+        var equipmentId = component.get("v.customerInformation.Id");
         var urlEvent = $A.get("e.force:navigateToURL");
         if (formId === "381611") {
             var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
@@ -519,16 +522,7 @@
                  + '&' + 'tfa_1180=' + !updateDummy
                  + '&' + 'tfa_390=' + income
             });
-        } else if (formId === "381589") {
-            var equipmentId = component.get("v.customerInformation.Id");
-            urlEvent.setParams(
-                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
-                 "tfa_814=" + leadId
-                 + '&' + 'tfa_828=' + !updateDummy
-                 + '&' + 'tfa_821=' + equipmentId
-            });
         } else if (formId === "381637") {
-            var equipmentId = component.get("v.customerInformation.Id");
             var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
             var opportunityId = component.get("v.customerInformation.Opportunity__r.Id");
             urlEvent.setParams(
@@ -537,9 +531,21 @@
                  + '&' + 'tfa_118=' + !equipmentUpdateDummy
                  + '&' + 'tfa_107=' + opportunityId
             });
+        } else if (formId === "381606") {
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_814=" + oppId
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
+            }); 
+        }else {
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_814=" + leadId
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
+                 + '&' + 'tfa_821=' + equipmentId
+                });
         }
         urlEvent.fire();
     },
-
 })
 
