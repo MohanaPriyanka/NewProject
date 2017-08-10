@@ -63,14 +63,14 @@
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
         <ul class="slds-tabs_default__nav" role="tablist">
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+          <c:BlueWaveInputToolTip popoverText="Use this tab to apply for the BlueWave Solar Loan">
             <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
                 <b>BlueWave Solar Loan Application</b>
               </a>
             </li>
           </c:BlueWaveInputToolTip>           
-          <c:BlueWaveInputToolTip popoverText="Use these tabs to toggle the loan application tabs">
+          <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
             <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
               <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
                 <b>MCEC Loan Application</b>
@@ -195,9 +195,7 @@
               </div>
             </div>      
             <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
-              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b>&nbsp;
-                <c:BlueWaveInputToolTip popoverText="Please provide the total installation cost."/>
-              </label>
+              <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
               <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
             </div>             
           </div>
@@ -311,7 +309,7 @@
   <div aura:id="addedCustomerConfirmCredit" class=" noDisplay">
     <p class="marginAround marginTop proximaNovaBlue">
       <div class="slds-m-bottom_small">
-        You've added a new applicant. Please review this applicants's information to make sure it is correct before running a credit check. 
+        You've added a new applicant. Please review this applicants' information to make sure it is correct before running a credit check. 
       </div>
       <div class="box">
         <fieldset class="slds-form--compound paddingTop1x5">
@@ -371,17 +369,17 @@
       </div>
     </p> 
     <hr></hr>
-    <div aura:id="pullCreditButtons" class="documentsButtonCenter noDisplay">
-      <lightning:button aura:id="creditStatusButton"
-                 class="box buttonLeft proximaNovaBlue"
-                 label="Run Credit Report"
-                 onclick="{!c.checkCredit}"/>
+    <div aura:id="pullCreditButtons" class="center noDisplay paddingBottom5">
       <lightning:button aura:id="editPencil"
-                 class="box buttonRight proximaNovaBlue"
-                 label="Edit Customer"
+                 class="box proximaNovaBlue marginAround"
+                 label="Edit Applicant"
                  iconName="utility:edit" 
                  iconPosition="right"
                  onclick="{!c.returnToEdit}"/>
+      <lightning:button aura:id="creditStatusButton"
+                 class="box proximaNovaBlue marginAround"
+                 label="Run Credit Report"
+                 onclick="{!c.checkCredit}"/>
     </div>
     <div class="slds-align--absolute-center">
       <ui:spinner aura:id="creditSpinner" isVisible="false"/>
@@ -406,17 +404,15 @@
       </div>
     </div>
     <div aura:id="creditResultUnqualified" class="noDisplay">
-      <div class="slds-align--absolute-center" >
-           <ui:outputText value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
-      </div>
-      <br/>
-      <div >
+      <ui:outputText class="slds-align--absolute-center marginAround" 
+                     value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
+      <div class="center">
         <ui:button aura:id="addCoApplicant"
-                   class="box buttonLeft"
+                   class="box proximaNovaBlue marginAround"
                    label="Add Co-Signer"
                    press="{!c.openAddCoApplicant}"/>
         <ui:button aura:id="Return"
-                   class="box buttonRight"
+                   class="box proximaNovaBlue marginAround"
                    label="Return"
                    press="{!c.navigateAddAnotherCustomer}"/>  
       </div>
@@ -425,12 +421,20 @@
         {!v.body}
     </div> 
     <div aura:id="creditResultError"
-         class="slds-align--absolute-center noDisplay">
-      <ui:outputText class="buttonLeft" value="{!'There was an error: ' + v.creditStatusErrorText}"/>
-      <ui:button aura:id="startNewApplication"
-                 class=" box buttonRight"
-                 label="Cancel and start a new application"
-                 press="{!c.navigateAddAnotherCustomer}"/>
+         class="noDisplay center">
+      <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText}"/>
+      <div class="paddingTop1x5 paddingBottom5">
+        <lightning:button aura:id="editPencil"
+                          class="box proximaNovaBlue marginAround"
+                          label="Edit Applicant"
+                          iconName="utility:edit" 
+                          iconPosition="right"
+                          onclick="{!c.returnToEdit}"/>
+        <ui:button aura:id="startNewApplication"
+                   class="box proximaNovaBlue marginAround"
+                   label="Cancel"
+                   press="{!c.navigateAddAnotherCustomer}"/>
+      </div>
     </div>
   </div>
 </aura:component>

@@ -179,22 +179,6 @@
             <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
           </div>
           <div class="slds-modal__content slds-p-around--medium">
-            <fieldset class="slds-form--compound paddingTop1x5">
-              <div class="slds-form-element__group">
-                <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small ">
-                    <label class="slds-form-element__label" for="input-03">Requested Loan Amount</label>
-                    <ui:outputCurrency aura:id="systemCost" class="slds-input"
-                                       value="{!v.customerInformation.Loan__r.Requested_Loan_Amount__c}"/>
-                  </div>
-                  <div class="slds-form-element slds-p-horizontal--small ">
-                    <label class="slds-form-element__label" for="input-03">Principal Value</label>
-                    <ui:outputCurrency aura:id="principalValue" class="slds-input"
-                                       value="{!v.customerInformation.Loan__r.Principal__c}"/>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
             <fieldset class="slds-form--compound">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">

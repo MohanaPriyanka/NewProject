@@ -2,10 +2,24 @@
     font-family: proximaNovaFont;
     src: url('{!$Resource.ProximaNova}');
 }
-
+.THIS .proximaNovaWhite {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+}
+.THIS .proximaNova {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #FFFFFF;
+}
 .THIS .proximaNova95 {
     font-family: proximaNovaFont;
     font-size:95%;
+    color: #FFFFFF;
+}
+.THIS .proximaNova150 {
+    font-family: proximaNovaFont;
+    font-size:150%;
     color: #FFFFFF;
 }
 .THIS .proximaNovaBrand {
@@ -33,9 +47,8 @@
     font-size:85%;
     color: #266092;
 }
-
-.THIS .proximaNovaWhite {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #FFFFFF;
+.THIS .proximaNovaDataMountaintop95 {
+    font-family: proximaNovaFont;
+    font-size:95%;
+    color: #7C98AB;
 }

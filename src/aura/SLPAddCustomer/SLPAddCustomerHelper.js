@@ -1,22 +1,26 @@
 ({
     startSpinner : function(component, name) {
         var spinner = component.find(name);
-        var evt = spinner.get("e.toggle");
-        evt.setParams({ isVisible : true });
-        evt.fire();
+        if (spinner) {
+            var evt = spinner.get("e.toggle");
+            evt.setParams({ isVisible : true });
+            evt.fire();
+        }
     },
     stopSpinner : function(component, spinnerName) {
         var spinner = component.find(spinnerName);
-        var evt = spinner.get("e.toggle");
-        evt.setParams({ isVisible : false });
-        evt.fire();
+        if (spinner) {
+            var evt = spinner.get("e.toggle");
+            evt.setParams({ isVisible : false });
+            evt.fire();
+        }
     },
     handleCreditCheckResponse : function(component, divToShow) {
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
         $A.util.addClass(component.find("editPencil"), 'noDisplay');
         $A.util.removeClass(component.find(divToShow), 'noDisplay');
         this.stopSpinner(component, "creditSpinner");
-        window.clearInterval(component.get("v.crefditStatusPoller"));
+        window.clearInterval(component.get("v.creditStatusPoller"));
     },
 
     checkCreditStatus : function(component, helper) {
