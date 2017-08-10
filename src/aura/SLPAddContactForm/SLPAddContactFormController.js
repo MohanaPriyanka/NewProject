@@ -10,6 +10,8 @@
             $A.util.addClass(component.find("errorTextLine"), 'noDisplay'); 
             newContact.LASERCA__Social_Security_Number__c = newContact.LASERCA__Social_Security_Number__c.replace(/-/g,"");
             var actionInsertContact  = component.get("c.addNewCoApplicant");
+            var evtCustomerWindow = $A.get("e.c:SLPafterContactAddEvent");
+            evtCustomerWindow.fire();         
             
             actionInsertContact.setParams({
                 "newContact" : newContact,
@@ -32,6 +34,6 @@
     },
 
     doneButton : function(component, event, helper) {
-        window.location.href = "/slportal/s/";
+        window.location.href = "/slportal/s/slpcreditstatus";
     },
 })

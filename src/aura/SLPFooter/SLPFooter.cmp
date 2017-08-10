@@ -31,7 +31,7 @@
     <div class="slds-align--absolute-center">
         <ui:outputText class="slds-truncate proximaNovaSmall" value="partnersupport@bluewavesolar.com"/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <ui:outputText class="slds-truncate proximaNovaSmall" value="844-786-4100"/>
+        <ui:outputText class="slds-truncate proximaNovaSmall" value="888-817-2703"/>
     </div>  
   </div>
 </aura:component>

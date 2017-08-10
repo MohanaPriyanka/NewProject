@@ -49,6 +49,11 @@
          $A.enqueueAction(actionSendLink);          
     },
     
+    handleAfterContactAdd : function(component, event, helper) {
+        $A.util.addClass(component.find("closeButton"), 'noDisplay');
+        $A.util.addClass(component.find("backButton"), 'noDisplay');
+    },
+    
     continueAnyway : function(component, event, helper) {    
         helper.continueAnyway(component);
     },
@@ -66,7 +71,7 @@
     },
 
     doneRedirect : function(component, event, helper) {
-        window.location.href = "/slportal/s/";
+        window.location.href = "/slportal/s/slpcreditstatus";
     },
     
 })
