@@ -578,7 +578,14 @@
                  "tfa_814=" + oppId
                  + '&' + 'tfa_828=' + !oppUpdateDummy
             }); 
-        }else {
+        } else if (formId === "381585") {
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_814=" + leadId
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
+                 + '&' + 'tfa_821=' + equipmentId
+                });
+        } else if (formId === "381589") {
             urlEvent.setParams(
                 {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
                  "tfa_814=" + leadId
