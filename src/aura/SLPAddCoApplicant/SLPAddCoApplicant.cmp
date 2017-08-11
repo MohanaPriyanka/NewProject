@@ -7,12 +7,14 @@
 <aura:attribute name="checkForCoApplicants" type="String"/>  
 <aura:attribute name="enterNow" type="Boolean" default=""/>
 <aura:attribute name="mainApplicant" type="Object" default=""/>     
+<aura:handler event="c:SLPafterContactAddEvent" action="{!c.handleAfterContactAdd}"/> 
     
 <div>
   <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
     <div class="slds-modal__container">
       <header class="slds-modal__header blueBackground">
-        <lightning:buttonIcon name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeWindow}" size="small" alternativeText="close" />
+        <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeWindow}" size="small" alternativeText="close" />
+        <lightning:buttonIcon aura:id="backButton" class="backButton noDisplay" name="back" iconName="utility:back" variant="bare" onclick="{!c.backButton}" size="medium" alternativeText="back" />
         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate proximaNovaWhite">Add a Co-Signer</h2>
       </header>
        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
@@ -41,9 +43,6 @@
           <aura:if isTrue="{!v.enterNow}">
            <c.SLPAddContactForm contactInfo="{!v.coAppInfo}" leadVar="{!v.mainApplicant}"/>
           </aura:if>
-          <div aura:id="backButton" class="noDisplay">
-          <lightning:buttonIcon name="back" iconName="utility:back" variant="bare" onclick="{!c.backButton}" size="medium" alternativeText="back" />
-          </div>
               <div aura:id="emailSentText" class="noDisplay">
                  <ui:outputText class="slds-align--absolute-center" value="{!'Email Sent to: ' + v.coAppInfo.Email}"/>
                  <br></br>
@@ -65,7 +64,7 @@
            <lightning:button label="Enter Information Here" class="slds-button blueBackground" onclick="{!c.enterInfoNow}"/>
        </div>
        <div aura:id="buttonEmail" class="buttonRightNoPadding">
-           <lightning:button label="Send Information Request To Co-Signer" iconName="utility:email" iconPosition="right" class="slds-button blueBackground" onclick="{!c.sendLinktoCoAppForm}"/>
+           <lightning:button label="Email Form to Co-Signer" iconName="utility:email" iconPosition="right" class="slds-button blueBackground" onclick="{!c.sendLinktoCoAppForm}"/>
        </div>   
        <div aura:id="continueButton" class="noDisplay">
            <lightning:button label="Continue" class="slds-button slds-align--absolute-center blueBackground" onclick="{!c.continueAnyway}"/>

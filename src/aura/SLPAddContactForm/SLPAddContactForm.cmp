@@ -20,7 +20,8 @@
 <aura:attribute name="leadVar" type="Object" default=""/> 
 <aura:attribute name="responseMessage" type="String" default=""/> 
 <aura:attribute name="responseMessageLineTwo" type="String" default=""/> 
-<aura:attribute name="errorText" type="String" default=""/> 
+<aura:attribute name="errorText" type="String" default=""/>
+<aura:registerEvent name="SLPafterContactAddEvent" type="c:SLPafterContactAddEvent"/>
 
 <div aura:id="message" class ="noDisplay">
   <ui:outputText class="slds-align--absolute-center" value="{!v.responseMessage}"/>  
@@ -140,16 +141,15 @@
   </fieldset>
  </div>
  <br></br>
-   <a aura:id="linkToPrivacyPolicy" href="http://bluewavesolar.com/about-us/privacy-policy/"> 
+   <a aura:id="linkToPrivacyPolicy" href="http://bluewavesolar.com/about-us/privacy-policy/" target="_blank"> 
     <div class="slds-text-body_small textSize"><b>Click here to view our Privacy Policy.</b></div>
    </a>
-   <br></br>
       <fieldset class="slds-form--compound">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">                 
             <div class="slds-form-element slds-p-horizontal--small slds-m-top_small">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label textSize" for="creditToggle">I acknowledge BlueWave's privacy policy and accept its terms.</label>                        
+                <label class="slds-form-element__label textSize" for="creditToggle">The applicant acknowledges BlueWave's privacy policy and accepts its terms.</label>                        
                 <ui:inputCheckbox aura:id="privacyPolicy" value="{!v.contactInfo.Privacy_Policy_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -163,7 +163,7 @@
           <div class="slds-form-element__row">                 
             <div class="slds-form-element slds-p-horizontal--small slds-m-top_small">
               <label class="slds-checkbox--toggle slds-grid">
-                <label class="slds-form-element__label textSize" for="energyAccessToggle">I give BlueWave and Avidia Bank permission to access my credit history.</label>
+                <label class="slds-form-element__label textSize" for="energyAccessToggle">The applicant gives BlueWave and Avidia Bank permission to access their credit history.</label>
                 <ui:inputCheckbox aura:id="accessToCredit" value="{!v.contactInfo.Credit_Check_Acknowledged__c}" required="true"  />
                 <span id="toggle-desc" class="slds-checkbox--faux_container " aria-live="assertive">
                   <span class="slds-checkbox--faux"></span>
@@ -174,7 +174,6 @@
           </div>
         </div>                
       </fieldset>
-     <hr></hr>
       <div aura:id="buttonLink" class="">
        <lightning:button label="Submit" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.createContact}"/>
       </div>
