@@ -43,7 +43,7 @@ public without sharing class SLPAddCoApplicant {
         htmlBody = htmlBody.replace('{!SLP.LeadName}', fullName);
         htmlBody = htmlBody.replace('{!SLP.FALink}', linkToForm);
 
-        result = MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'Request to Add Co-Applicant to Solar Loan Application', addressList);
+        result = MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'Request to Add Co-Signer to Solar Loan Application', addressList);
         for (Messaging.SendEmailResult rr: result){ 
           if (rr.IsSuccess() || test.isrunningtest()) {
             emailSent = 'success';

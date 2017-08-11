@@ -78,3 +78,7 @@
     margin-right:0%;
     background-color: #7c98ad;
 }
+
+.THIS.noDisplayBar {
+    display: none;
+}
