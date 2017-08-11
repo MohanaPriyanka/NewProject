@@ -218,6 +218,47 @@
         $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
     },
 
+    saveSystemInformation : function(component, event, helper) {       
+        helper.startSpinner(component, "customerInformationSpinner");
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+
+        var equipmentUpdateVar = component.get("v.equipmentUpdate");
+        var equipmentIdVar = component.get("v.customerInformation.Id");
+        var loanUpdateVar = component.get("v.loanUpdate");
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+
+        var saveAction = component.get("c.saveCustomerInformation");
+        saveAction.setParams({
+            "equipmentFromComponent" : equipmentUpdateVar,
+            "equipmentId" : equipmentIdVar,
+            "loanId" : loanUpdateIdVar,
+            "loan" : loanUpdateVar,
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+                helper.stopSpinner(component, "customerInformationSpinner");
+                helper.confirmSystemInformationSaved(component);             
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(saveAction);
+
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanUpdateIdVar})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(customerInformationAction);
+    },    
+
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
         helper.startSpinner(component, "customerInformationSpinner");
@@ -334,11 +375,12 @@
     closeCustomerModal : function(component, event, helper) {
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.closeSystemInformationSaved(component);
 
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanUpdateIdVar});
+        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
         partnerTaskList.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
@@ -356,7 +398,6 @@
         $A.enqueueAction(partnerTaskList);
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
     },
 
     getSrecInterconnectionPage: function(component, event, helper) {
@@ -480,7 +521,9 @@
 
     handleTaskAction : function(component, event, helper) {
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var oppId = component.get("v.customerInformation.Opportunity__r.Id");                
+        var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");        
         var taskName = event.getSource().get("v.class");
         switch (taskName) {
             case "Provide all System Information":
@@ -493,8 +536,8 @@
             case "Interconnection":
             case "Report Interconnection to MCEC":
                 if (component.get("v.customerInformation.Loan__r.State__c") === "MA") {
-                    helper.openInterconnectionModal(component, event, helper);
-                    return;
+                    var formId = "381637";
+                    break;
                 } else {
                     var formId = "381589";
                     break;
@@ -511,6 +554,7 @@
             default:
                 var formId = "";
         }
+        var equipmentId = component.get("v.customerInformation.Id");
         var urlEvent = $A.get("e.force:navigateToURL");
         if (formId === "381611") {
             var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
@@ -519,17 +563,30 @@
                  + '&' + 'tfa_1180=' + !updateDummy
                  + '&' + 'tfa_390=' + income
             });
-        } else {
-            var equipmentId = component.get("v.customerInformation.Id");
+        } else if (formId === "381637") {
+            var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
+            var opportunityId = component.get("v.customerInformation.Opportunity__r.Id");
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_117=" + equipmentId
+                 + '&' + 'tfa_118=' + !equipmentUpdateDummy
+                 + '&' + 'tfa_107=' + opportunityId
+            });
+        } else if (formId === "381606") {
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_814=" + oppId
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
+            }); 
+        }else {
             urlEvent.setParams(
                 {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
                  "tfa_814=" + leadId
-                 + '&' + 'tfa_828=' + !updateDummy
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
                  + '&' + 'tfa_821=' + equipmentId
                 });
         }
         urlEvent.fire();
     },
-
 })
 
