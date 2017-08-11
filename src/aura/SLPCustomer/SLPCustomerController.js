@@ -560,7 +560,7 @@
             var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
             urlEvent.setParams(
                 {"url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
-                 + '&' + 'tfa_1180=' + !updateDummy
+                 + '&' + 'tfa_1180=' + !leadUpdateDummy
                  + '&' + 'tfa_390=' + income
             });
         } else if (formId === "381637") {
@@ -578,7 +578,14 @@
                  "tfa_814=" + oppId
                  + '&' + 'tfa_828=' + !oppUpdateDummy
             }); 
-        }else {
+        } else if (formId === "381585") {
+            urlEvent.setParams(
+                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
+                 "tfa_814=" + leadId
+                 + '&' + 'tfa_828=' + !oppUpdateDummy
+                 + '&' + 'tfa_821=' + equipmentId
+                });
+        } else if (formId === "381589") {
             urlEvent.setParams(
                 {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
                  "tfa_814=" + leadId
