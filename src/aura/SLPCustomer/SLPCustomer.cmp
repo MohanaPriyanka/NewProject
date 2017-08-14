@@ -690,6 +690,7 @@
                                   onchange="{!c.setAutoReportingVendor}"
                                   value="{!v.equipmentUpdate.Remote_Monitoring_System_Vendor__c}">
                             <option>Select</option>
+                            <option>eGauge Systems</option>
                             <option>PowerDash</option>
                             <option>SolarEdge</option>
                             <option>SolarLog</option>
