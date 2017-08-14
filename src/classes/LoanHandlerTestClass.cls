@@ -792,18 +792,20 @@ public class LoanHandlerTestClass {
 
 
     public static void convertLeads(List<Lead> leadList) {
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
         }
         update leadList;
-        for (Lead l :leadList){     
-            database.leadConvert lc = new database.leadConvert();
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+        for (Lead l :leadList){
+            Database.LeadConvert lc = new Database.LeadConvert();
             lc.setLeadId(l.Id);
-
-            leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
             lc.setConvertedStatus(convertStatus.MasterLabel);
-
-            Database.LeadConvertResult lcr = Database.convertLead(lc);
+            leadConverts.add(lc);
+        }
+        List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
+        for (Database.LeadConvertResult lcr : lcrs)  {
             System.assert(lcr.isSuccess());
         }
     }
