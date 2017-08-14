@@ -529,7 +529,7 @@
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
-        // Some forms (Sales Agreement, Non-MA Interconnection, Mech installation) use the Lead ID 
+        // Some forms (Non-MA Interconnection, Mech installation) use the Lead ID 
         // field on the Opportunity to find the Opportunity to update
         switch (taskName) {
             case 'Provide all System Information':
