@@ -218,7 +218,7 @@
         $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
     },
 
-    saveSystemInformation : function(component, event, helper) {       
+    saveSystemInformation : function(component, event, helper) {
         helper.startSpinner(component, "customerInformationSpinner");
         $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
@@ -239,7 +239,7 @@
         saveAction.setCallback(this, function(resp) {
             if (resp.getState() == "SUCCESS") {
                 helper.stopSpinner(component, "customerInformationSpinner");
-                helper.confirmSystemInformationSaved(component);             
+                helper.confirmSystemInformationSaved(component);
             } else {
                 $A.log("Errors", resp.getError());
             }
@@ -257,7 +257,7 @@
             }
         });
         $A.enqueueAction(customerInformationAction);
-    },    
+    },
 
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
@@ -314,11 +314,11 @@
         helper.saveFile(component, event);
     },
 
-    openCustomerModal : function(component, event, helper) { 
+    openCustomerModal : function(component, event, helper) {
         helper.openCustomerModal(component, event, helper);
-    },        
+    },
 
-    openInterconnectionModal : function(component, event, helper) { 
+    openInterconnectionModal : function(component, event, helper) {
         helper.openInterconnectionModal(component, event, helper);
     },
 
@@ -520,78 +520,54 @@
     },
 
     handleTaskAction : function(component, event, helper) {
+        console.log(component.get("v.customerInformation"));
+        var equipmentId = component.get("v.customerInformation.Id");
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var oppId = component.get("v.customerInformation.Opportunity__r.Id");                
+        var oppId = component.get("v.customerInformation.Opportunity__r.Id");
         var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");        
+        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
+        var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
+        var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
+        // Some forms (Sales Agreement, Non-MA Interconnection, Mech installation) use the Lead ID 
+        // field on the Opportunity to find the Opportunity to update
         switch (taskName) {
-            case "Provide all System Information":
-            case "Provide All System Information":
+            case 'Provide all System Information':
+            case 'Provide All System Information':
                 helper.openCustomerModal(component, event, helper);
                 return;
-            case "Mechanical Installation":
-                var formId = "381585";
+            case 'Mechanical Installation':
+                urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381585'
+                               + '?tfa_814=' + leadId
+                               + '&tfa_828=' + !equipmentUpdateDummy
+                               + '&tfa_821=' + equipmentId});
                 break;
-            case "Interconnection":
-            case "Report Interconnection to MCEC":
-                if (component.get("v.customerInformation.Loan__r.State__c") === "MA") {
-                    var formId = "381637";
+            case 'Interconnection':
+            case 'Report Interconnection to MCEC':
+                if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
+                    urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381637'
+                               + '?tfa_117=' + equipmentId
+                               + '&tfa_118=' + !equipmentUpdateDummy
+                               + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    var formId = "381589";
+                    urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381589'
+                               + '?tfa_814=' + leadId
+                               + '&tfa_828=' + !equipmentUpdateDummy
+                               + '&tfa_821=' + equipmentId});
                     break;
                 }
-            case "Provide PayStub Documentation":
-            case "Provide SSN/Pension Award Letter or Bank Statement":
-            case "Provide Tax Return (Previous Year)":
-            case "Provide Tax Return (Two Years Previous)":
-                var formId = "381611";
-                break;
-            case "Provide Sales Agreement":
-                var formId = "381606";
+            case 'Provide Sales Agreement':
+                urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381606'
+                               + '?tfa_814=' + oppId
+                               + '&tfa_828=' + !oppUpdateDummy});
                 break;
             default:
-                var formId = "";
-        }
-        var equipmentId = component.get("v.customerInformation.Id");
-        var urlEvent = $A.get("e.force:navigateToURL");
-        if (formId === "381611") {
-            var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
-            urlEvent.setParams(
-                {"url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
-                 + '&' + 'tfa_1180=' + !leadUpdateDummy
-                 + '&' + 'tfa_390=' + income
-            });
-        } else if (formId === "381637") {
-            var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
-            var opportunityId = component.get("v.customerInformation.Opportunity__r.Id");
-            urlEvent.setParams(
-                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
-                 "tfa_117=" + equipmentId
-                 + '&' + 'tfa_118=' + !equipmentUpdateDummy
-                 + '&' + 'tfa_107=' + opportunityId
-            });
-        } else if (formId === "381606") {
-            urlEvent.setParams(
-                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
-                 "tfa_814=" + oppId
-                 + '&' + 'tfa_828=' + !oppUpdateDummy
-            }); 
-        } else if (formId === "381585") {
-            urlEvent.setParams(
-                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
-                 "tfa_814=" + leadId
-                 + '&' + 'tfa_828=' + !oppUpdateDummy
-                 + '&' + 'tfa_821=' + equipmentId
-                });
-        } else if (formId === "381589") {
-            urlEvent.setParams(
-                {"url": "https://forms.bluewaverenewables.com/" + formId + "?" +
-                 "tfa_814=" + leadId
-                 + '&' + 'tfa_828=' + !oppUpdateDummy
-                 + '&' + 'tfa_821=' + equipmentId
-                });
+                break;
         }
         urlEvent.fire();
     },
