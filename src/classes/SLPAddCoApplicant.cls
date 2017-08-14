@@ -38,7 +38,7 @@ public without sharing class SLPAddCoApplicant {
         List<String> addressList = new List<String>{coAppInfo.Email};     
         EmailTemplate template = MessagingService.getHtml('RS_CoApplicant_Please_Fill_out_Form');
         String htmlBody = template.HtmlValue;
-        String fullName = mainApplicant.FirstName + mainApplicant.LastName;
+        String fullName = mainApplicant.Name;
         htmlBody = htmlBody.replace('{!SLP.FirstName}', coAppInfo.FirstName);
         htmlBody = htmlBody.replace('{!SLP.LeadName}', fullName);
         htmlBody = htmlBody.replace('{!SLP.FALink}', linkToForm);
