@@ -52,73 +52,53 @@ public without sharing class MyAccountController {
    public static String getPropertyAccountId(String propertyAccountId) {
       return propertyAccountId;
   }   
-  //@AuraEnabled
-  //public static Decimal getMyBill (String propertyAccountId) {
-  //  Decimal totalBalance = 0;
-  //  Decimal maxBillNumber = 0;
-  //  if (customerUser.ContactId != null) {
-  //    if (propertyAccountId == 'All' || propertyAccountId == null) {
-  //      for (Account propertyAccount : [SELECT Id, Name, 
-  //                                        (SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c, 
-  //                                         FROM Account_Bills__r 
-  //                                         ORDER BY Bill_Number__c)
-  //                                      FROM Accounts__r
-  //                                      WHERE Parent_Account__r.Id = : customerUser.Parent_Account_Id__c]) {
-  //        if (!propertyAccount.Account_Bills__r.isEmpty()) {
-  //          for (Account_Bill__c accountBill : propertyAccount.Account_Bills__r) {
-  //            accountBillMap.put(accountBill.Bill_Number__c + accountBill.Id, accountBill.Carry_Over_Balance__c);
-  //            if (maxBillNumber == 0 || maxBillNumber < accountBill.Bill_Number__c) {
-  //              maxBillNumber = accountBill.Bill_Number__c;
-  //            }
-  //            latestAccontBillsMap.Put(propertyAccount.Id, maxBillNumber + accountBill.Id);
-  //          }
-  //          carryOverBalanceList.add(accountBillMap.get(latestAccontBillsMap.get(propertyAccount.Id)));
-  //        }
-  //      }
 
-  //    } else {
-  //      propertyAccountBills = [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c 
-  //                              FROM Account_Bill__c
-  //                              WHERE Parent_Account__r.Id = : propertyAccountId
-  //                              ORDER BY Bill_Number__c];
-  //    }
-  //}  
-
-  @AuraEnabled
-  public static Decimal getMyBill(String propertyAccountId) {
-    Decimal totalBalance = 0;   
-    Decimal maxBillNumber = 0; 
-    Integer j;       
-    List<Account_Bill__c> acctBillsact;
-    List<Id> acctBillsPropertyIds = new List<id>(); 
-
-    if(customerUser.ContactId != null) {
-      if(propertyAccountId == 'All' || propertyAccountId == null) {
-        acctBillsact = [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
-                        FROM Account_Bill__c
-                        WHERE Account_ID__c = : customerUser.Parent_Account_ID__c
-                        ORDER BY Bill_Number__c];   
-      } else {
-        acctBillsact = [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
-                        FROM Account_Bill__c
-                        WHERE Parent_Account__r.Id = : propertyAccountId 
-                        ORDER BY Bill_Number__c];
-      }
-      for (Account_Bill__c accountBill : acctBillsact) {
-
-      }
-      for (j = 0; j < acctBillsact.size(); j++) {
-        integer maxbill = acctBillsact.size() - 1;
-        maxBillNumber = acctBillsact.get(maxbill).Bill_Number__c;
-      }
-      for (Account_Bill__c acctbill : acctBillsact) {
-        if (acctbill.Bill_Number__c == maxBillNumber) {
-          totalbalance = totalbalance + acctbill.Carry_Over_Balance__c;
+    @AuraEnabled
+    public static Decimal getMyBill (String propertyAccountId) {
+        Decimal totalBalance = 0;
+        Decimal maxBillNumber = 0;
+        Decimal carryOverBalance = 0;
+        List<Decimal> carryOverBalanceList = new List<Decimal>();
+        if (customerUser.ContactId != null) {
+            if (propertyAccountId == 'All' || propertyAccountId == null) {
+                for (Account propertyAccount : [SELECT Id, Name, 
+                                                    (SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
+                                                    FROM Account_Bills__r 
+                                                    ORDER BY Bill_Number__c)
+                                                FROM Account
+                                                WHERE Parent_Account__r.Id = : customerUser.Parent_Account_Id__c]) {
+                    if (!propertyAccount.Account_Bills__r.isEmpty()) {
+                        for (Account_Bill__c accountBill : propertyAccount.Account_Bills__r) {
+                            if (maxBillNumber == 0 || maxBillNumber < accountBill.Bill_Number__c) {
+                                carryOverBalance = accountBill.Carry_Over_Balance__c;
+                                maxBillNumber = accountBill.Bill_Number__c;                
+                            }
+                        }
+                        carryOverBalanceList.add(carryOverBalance);
+                        carryOverBalance = 0;
+                        maxBillNumber = 0;
+                    }
+                }
+                for (Decimal carryOverBalanceLoopVar : carryOverBalanceList) {
+                  totalBalance = totalBalance + carryOverBalanceLoopVar;
+            }
+            return totalBalance;
+        } else {
+            for (Account_Bill__c propertyAccountBills : [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
+                                                         FROM Account_Bill__c
+                                                         WHERE Parent_Account__r.Id = : propertyAccountId
+                                                         ORDER BY Bill_Number__c]) {
+                if (maxBillNumber == 0 || maxBillNumber < propertyAccountBills.Bill_Number__c) {
+                    carryOverBalance = propertyAccountBills.Carry_Over_Balance__c;
+                    maxBillNumber = propertyAccountBills.Bill_Number__c;                
+                }    
+            }
+            return carryOverBalance;
         }
-      }
-    }
-    return totalBalance.setScale(2);   
-    }
+    } else {
+        return null;
+    }  
+  }
 
     @AuraEnabled
     public static List<AggregateResult> getSystemBills(String propertyAccountId) {
