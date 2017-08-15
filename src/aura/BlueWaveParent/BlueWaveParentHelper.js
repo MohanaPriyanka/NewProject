@@ -131,5 +131,30 @@
         
         $A.enqueueAction(action); 
     },
+    
+    checkValue : function(str, max) {
+      if (str.charAt(0) !== '0' || str == '00') {
+        var num = parseInt(str);
+        if (isNaN(num) || num <= 0 || num > max) {
+            num = 1;
+        }
+        str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+      };
+      return str;
+    } ,    
 
+    disableButton : function(component, buttonId, replacementText) {
+        var button = component.find(buttonId);
+        button.set("v.disabled", true);
+        button.set("v.label", replacementText);    
+    }, 
+
+    logError : function(className, methodName, errorMessage) {
+        var appEvent = $A.get("e.c:ApexCallbackError");
+        appEvent.setParams({"className" : className,
+                            "methodName" : methodName,
+                            "errors" : errorMessage});
+        appEvent.fire();
+    },     
 })
+

@@ -7,8 +7,7 @@
         var actionLicenseType = component.get("c.getLicenseType");
         actionLicenseType.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
-                if (resp.getReturnValue().length > 0) {
-                    if (resp.getReturnValue() == 'Executive')
+                if (resp.getReturnValue() && resp.getReturnValue() == 'Executive') {
                         component.set("v.licenseType", true);
                 }
             } else {
@@ -40,28 +39,6 @@
         });
         $A.enqueueAction(customerInformationAction);
 
-        //progress bar status - removes/adds classes based on returned value of last completed task.
-        var progressBarData = component.get("c.getProgressBarData");
-        progressBarData.setParams({loanId : label})
-        progressBarData.setCallback(this,function(resp) {
-            var creditToggle = component.find("credit");
-            var systemInfoToggle = component.find("systemInfo");
-            var reviewToggle = component.find("bwReview");
-            var contractToggle = component.find("contract");
-            var mechInstallToggle = component.find("mechInstall");
-            var progressBarToggle = component.find("progressBar");
-            var interconnectionToggle = component.find("intemodalrconnection");
-            var completeToggle = component.find("complete");
-            var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-
-            if (resp.getState() == 'SUCCESS') {
-                helper.getProgressBarDataMethod(component, event, helper);
-            } else {
-                $A.log("Errors", resp.getError());
-                alert("There was an issue loading the progress bar");
-            }
-        });
-	$A.enqueueAction(progressBarData);
         var i;
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
@@ -109,97 +86,6 @@
 
     exitCustomerWindow : function(component, event, helper) {
         $A.get('e.force:refreshView').fire();
-    },
-
-    openTaskInformation : function(component, event, helper) {
-        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
-        var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle1 = component.find("customerInformation1");
-        var customerInformationToggle2 = component.find("customerInformation2");
-
-        var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
-        var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
-        var pendingDisbursalsToggle = component.find("pendingDisbursals");
-        var completedDisbursalsToggle = component.find("completeDisbursals");
-        var mslpCustomerInfoTextToggle = component.find("cusomterInformationTextMSLP");
-
-        $A.util.addClass(mslpCustomerInfoTextToggle, 'noDisplay');
-        $A.util.removeClass(taskTableToggle, 'noDisplay');
-        $A.util.addClass(customerInformationToggle1, 'noDisplay');
-        $A.util.addClass(customerInformationToggle2, 'noDisplay');
-
-        $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
-        $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
-        var subTaskHeaderToggle = component.find("subTaskHeader");
-        var subTaskTableToggle = component.find("subTaskTable");
-        $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
-        $A.util.addClass(pendingDisbursalsToggle, 'noDisplay');
-        $A.util.addClass(completedDisbursalsToggle, 'noDisplay');
-
-        var i;
-        var partnerTaskList = component.get("c.getLoanCustomerTasks");
-        var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanUpdateIdVar});
-        partnerTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerTaskList", resp.getReturnValue());
-                for (i=0; i<resp.getReturnValue().length; i++) {
-                    if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
-                    } else {
-                        continue;
-                    }
-                }
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(partnerTaskList);
-
-        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
-    },
-
-    openCustomerInformation : function(component, event, helper) {
-        var loanId = component.get("v.customerInformation.Loan__r.Id");
-        var taskTableToggle = component.find("taskTable");
-        var customerInformationToggle1 = component.find("customerInformation1");
-        var customerInformationToggle2 = component.find("customerInformation2");
-        var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
-        var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
-        var pendingDisbursalsToggle = component.find("pendingDisbursals");
-        var completedDisbursalsToggle = component.find("completeDisbursals");
-        var mslpCustomerInfoTextToggle = component.find("cusomterInformationTextMSLP");
-
-        $A.util.removeClass(mslpCustomerInfoTextToggle, 'noDisplay');
-        $A.util.addClass(taskTableToggle, 'noDisplay');
-        $A.util.removeClass(customerInformationToggle1, 'noDisplay');
-        $A.util.removeClass(customerInformationToggle2, 'noDisplay');
-        $A.util.addClass(disbursalCompleteTableToggle, 'noDisplay');
-        $A.util.addClass(disbursalIncompleteTableToggle, 'noDisplay');
-        component.set("v.blueWaveReviewAlert", false);
-        $A.util.addClass(pendingDisbursalsToggle, 'noDisplay');
-        $A.util.addClass(completedDisbursalsToggle, 'noDisplay');
-
-        var subTaskHeaderToggle = component.find("subTaskHeader");
-        var subTaskTableToggle = component.find("subTaskTable");
-        $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
-
-        var customerInformationAction = component.get("c.getCustomerInformation");
-        customerInformationAction.setParams({loanId : loanId})
-        customerInformationAction.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.customerInformation", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(customerInformationAction);
-
-        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
     },
 
     openDisbursalInformation : function(component, event, helper) {
@@ -332,6 +218,47 @@
         $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
     },
 
+    saveSystemInformation : function(component, event, helper) {
+        helper.startSpinner(component, "customerInformationSpinner");
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+
+        var equipmentUpdateVar = component.get("v.equipmentUpdate");
+        var equipmentIdVar = component.get("v.customerInformation.Id");
+        var loanUpdateVar = component.get("v.loanUpdate");
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+
+        var saveAction = component.get("c.saveCustomerInformation");
+        saveAction.setParams({
+            "equipmentFromComponent" : equipmentUpdateVar,
+            "equipmentId" : equipmentIdVar,
+            "loanId" : loanUpdateIdVar,
+            "loan" : loanUpdateVar,
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+                helper.stopSpinner(component, "customerInformationSpinner");
+                helper.confirmSystemInformationSaved(component);
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(saveAction);
+
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanUpdateIdVar})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(customerInformationAction);
+    },
+
     saveEquipmentInformation : function(component, event, helper) {
         helper.startSpinner(component, "srecSaveSpinner");
         helper.startSpinner(component, "customerInformationSpinner");
@@ -388,59 +315,11 @@
     },
 
     openCustomerModal : function(component, event, helper) {
-        $A.util.addClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
-        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.openCustomerModal(component, event, helper);
     },
 
     openInterconnectionModal : function(component, event, helper) {
-        $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open');
-        $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
-        $A.util.removeClass(component.find('SrecInterconnectionPage'), 'noDisplay');
-        $A.util.removeClass(component.find('SrecNextPageGeneratorButton'), 'noDisplay');
-        $A.util.addClass(component.find('SrecNextPageModuleButton'), 'noDisplay');
-        $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecModulePage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInverterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecRemoteMonitoringPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecSolarMeterPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecMiscPage'), 'noDisplay');
-        $A.util.addClass(component.find('SrecInstallationTimeLinePage'), 'noDisplay');
-
-        helper.getDescribedFile(component, 'PTO Documentation');
-
-        var slportalSettings = component.get("c.getSLPortalSettings");
-        slportalSettings.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                var srecQuarters = resp.getReturnValue().SREC_Opt_In_Quarters__c;
-                var srecQuartersList = srecQuarters .split(",");
-                component.set("v.srecQuarters", srecQuartersList);
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(slportalSettings);
-
-        var customerInformation = component.get("v.customerInformation");
-        if (customerInformation.Auto_Reporting_to_PTS__c) {
-            if (customerInformation.Remote_Monitoring_System_Vendor__c == "SolarLog") {
-                $A.util.removeClass(component.find("geSerialNumber"), 'noDisplay');
-            } else {
-                $A.util.addClass(component.find("geSerialNumber"), 'noDisplay');
-            }
-            if (customerInformation.Remote_Monitoring_System_Vendor__c == null) {
-                component.set("v.vendorIdLabel", "Unique Identifier");
-            } else if (customerInformation.Remote_Monitoring_System_Vendor__c == "Locus") {
-                component.set("v.vendorIdLabel", "Mac Id");
-            } else {
-                component.set("v.vendorIdLabel", customerInformation.Remote_Monitoring_System_Vendor__c  + " " + "Unique Identifier");
-            }
-            $A.util.removeClass(component.find("vendorSelection"), 'noDisplay');
-            $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
-            component.set("v.equipmentUpdate.Interconnected__c  ", customerInformation.Interconnected__c);
-            component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", customerInformation.Auto_Reporting_to_PTS__c);
-            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c);
-            component.find("srecInterconnectionToggle").set("v.checked", "true");
-        }
+        helper.openInterconnectionModal(component, event, helper);
     },
 
     closeInterconnectionModal : function(component, event, helper) {
@@ -452,7 +331,7 @@
         //progress bar status - removes/adds classes based on returned value of last completed task.
         var progressBarData = component.get("c.getProgressBarData");
         progressBarData.setParams({loanId : label})
-        progressBarData.setCallback(this,function(resp) {
+        progressBarData.setCallback(this,function(resp){
             var creditToggle = component.find("credit");
             var systemInfoToggle = component.find("systemInfo");
             var reviewToggle = component.find("bwReview");
@@ -496,11 +375,12 @@
     closeCustomerModal : function(component, event, helper) {
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.closeSystemInformationSaved(component);
 
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanUpdateIdVar});
+        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
         partnerTaskList.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerTaskList", resp.getReturnValue());
@@ -518,7 +398,6 @@
         $A.enqueueAction(partnerTaskList);
 
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
     },
 
     getSrecInterconnectionPage: function(component, event, helper) {
@@ -640,151 +519,57 @@
         }
     },
 
-    openParentSubTasks : function(component, event, helper) {
-        var source = event.getSource();
-        var taskId = source.get("v.labelClass");
-        //var viewButton = component.find("viewButton");
-        //var closeButton = component.find("closeButton");
-
-	var subTaskTableToggle = component.find("subTaskTable");
-        var subTaskHeaderToggle = component.find("subTaskHeader");
-
-        var parentSubTaskList = component.get("c.getLoanParentSubTasks");
-        parentSubTaskList.setParams({taskId : taskId});
-        parentSubTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                //component.set("v.taskType", resp.getReturnValue()[0].Task_Type__c);
-                component.set("v.parentSubTaskList", resp.getReturnValue());
-                $A.util.removeClass(subTaskHeaderToggle, 'noDisplay');
-                $A.util.removeClass(subTaskTableToggle, 'noDisplay');
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(parentSubTaskList);
-
-    },
-
-    openSubTasks : function(component, event, helper) {
-        var source = event.getSource();
-        var taskId = source.get("v.labelClass");
-
-        var subTaskList = component.get("c.getLoanParentSubTasks");
-        subTaskList.setParams({taskId : taskId});
-
-        subTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.subTaskList", resp.getReturnValue());
-                if (resp.getReturnValue() != null) {
-                    $A.util.removeClass(parentSubTaskToggle, 'noDisplay');
-        			$A.util.removeClass(subTaskTypeToggle, 'noDisplay');
+    handleTaskAction : function(component, event, helper) {
+        console.log(component.get("v.customerInformation"));
+        var equipmentId = component.get("v.customerInformation.Id");
+        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
+        var oppId = component.get("v.customerInformation.Opportunity__r.Id");
+        var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
+        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
+        var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
+        var urlEvent = $A.get("e.force:navigateToURL");
+        var taskName = event.getSource().get("v.class");
+        // Some forms (Non-MA Interconnection, Mech installation) use the Lead ID 
+        // field on the Opportunity to find the Opportunity to update
+        switch (taskName) {
+            case 'Provide all System Information':
+            case 'Provide All System Information':
+                helper.openCustomerModal(component, event, helper);
+                return;
+            case 'Mechanical Installation':
+                urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381585'
+                               + '?tfa_814=' + leadId
+                               + '&tfa_828=' + !equipmentUpdateDummy
+                               + '&tfa_821=' + equipmentId});
+                break;
+            case 'Interconnection':
+            case 'Report Interconnection to MCEC':
+                if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
+                    urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381637'
+                               + '?tfa_117=' + equipmentId
+                               + '&tfa_118=' + !equipmentUpdateDummy
+                               + '&tfa_107=' + oppId});
+                    break;
+                } else {
+                    urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381589'
+                               + '?tfa_814=' + leadId
+                               + '&tfa_828=' + !equipmentUpdateDummy
+                               + '&tfa_821=' + equipmentId});
+                    break;
                 }
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(subTaskList);
-    },
-
-    exitParentSubTasks : function(component, event, helper) {
-        var parentSubTaskToggle = component.find("parentSubTasks");
-        component.set("v.parentSubTaskButton", true);
-	component.set("v.parentSubTaskList", null);
-        var subTaskTypeToggle = component.find("subTaskType");
-        var taskTableToggle = component.find("taskTable");
-        var subTaskHeaderToggle = component.find("subTaskHeader");
-        var subTaskTableToggle = component.find("subTaskTable");
-        $A.util.addClass(subTaskTableToggle, 'noDisplay');
-        $A.util.addClass(subTaskHeaderToggle, 'noDisplay');
-    },
-
-    exitSubTasks : function(component, event, helper) {
-	component.set("v.subTaskList", null);
-    },
-
-    navigateInstallationDocs : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var equipmentId = component.get("v.customerInformation.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        if (updateDummy == true) {
-            updateDummy = false;
-        } else {
-            updateDummy = true;
+            case 'Provide Sales Agreement':
+                urlEvent.setParams(
+                       {'url': 'https://forms.bluewaverenewables.com/381606'
+                               + '?tfa_814=' + oppId
+                               + '&tfa_828=' + !oppUpdateDummy});
+                break;
+            default:
+                break;
         }
-
-        var urlEvent = $A.get("e.force:navigateToURL");
-        urlEvent.setParams({
-          "url": 'https://forms.bluewaverenewables.com/381585?tfa_814=' + leadId
-            + '&' + 'tfa_821=' + equipmentId
-            + '&' + 'tfa_828=' + updateDummy
-
-        });
-        urlEvent.fire();
-    },
-
-    navigateInterconnectionDocs : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var equipmentId = component.get("v.customerInformation.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        if (updateDummy == true) {
-            updateDummy = false;
-        } else {
-            updateDummy = true;
-        }
-
-        var urlEvent = $A.get("e.force:navigateToURL");
-        urlEvent.setParams({
-          "url": 'https://forms.bluewaverenewables.com/381589?tfa_814=' + leadId
-            + '&' + 'tfa_821=' + equipmentId
-            + '&' + 'tfa_828=' + updateDummy
-
-        });
-        urlEvent.fire();
-    },
-
-    navigateIncomeDocs : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        var mslp = component.get("v.customerInformation.Loan__r.DOER_Solar_Loann__c");
-        var equipmentId = component.get("v.customerInformation.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        var income = component.get("v.customerInformation.Loan__r.Lead__r.Annual_Income_Currency__c");
-        if (updateDummy == true) {
-            updateDummy = false;
-        } else {
-            updateDummy = true;
-        }
-        var urlEvent = $A.get("e.force:navigateToURL");
-        if (mslp == false) {
-            urlEvent.setParams({
-              "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
-                + '&' + 'tfa_1180=' + updateDummy
-                + '&' + 'tfa_390=' + income
-            });
-        } else {
-            urlEvent.setParams({
-              "url": 'https://forms.bluewaverenewables.com/381611?tfa_526=' + leadId
-                + '&' + 'tfa_1180=' + updateDummy
-                + '&' + 'tfa_390=' + income
-            });
-        }
-        urlEvent.fire();
-    },
-
-    navigateSalesAgreementDoc : function(component, event, helper) {
-        var leadId = component.get("v.customerInformation.Opportunity__r.Id");
-        var updateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
-        if (updateDummy == true) {
-            updateDummy = false;
-        } else {
-            updateDummy = true;
-        }
-
-        var urlEvent = $A.get("e.force:navigateToURL");
-        urlEvent.setParams({
-          "url": 'https://forms.bluewaverenewables.com/381606?tfa_814=' + leadId
-            + '&' + 'tfa_828=' + updateDummy
-
-        });
         urlEvent.fire();
     },
 })
+

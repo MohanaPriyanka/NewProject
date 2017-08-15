@@ -15,7 +15,7 @@
 .THIS .boxCenter {
     width:30%;
     float:left;
-   	margin-left: 5%;
+    margin-left: 5%;
     margin-right: 5%;
 }
 
@@ -101,7 +101,7 @@
 .THIS .fundsBoxCenter {
     width:22%;
     float:left;
-   	margin-left: 16%;
+    margin-left: 16%;
     margin-right: 16%;
     border:2px solid #7c98ad  ;
     border-radius:5px;
@@ -177,7 +177,7 @@
 .THIS .navsectionCenter {
     width:22%;
     float:left;
-   	margin-left: 16%;
+    margin-left: 16%;
     margin-right: 16%;
     border:2px solid #7c98ad  ;
     border-radius:5px;
@@ -191,15 +191,15 @@
 }
 
 .THIS .buttonRight {
-	float:right;
+    float:right;
 }
 
 .THIS .paddingBottom1 {
-	padding-bottom:1%;
+    padding-bottom:1%;
 }
 
 .THIS .paddingTop1x5 {
-	padding-top:1.5%;
+    padding-top:1.5%;
 }
 
 

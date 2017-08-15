@@ -1,0 +1,21 @@
+.THIS.anchor {
+    position: relative;
+    display: inline-block;
+}
+
+.THIS .slds-popover {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: calc(50% - 25px);
+    display: none;
+    white-space: normal;
+    background-color: rgb(22, 50, 92);
+}
+
+.THIS.anchor:hover .slds-popover {
+    display: block;
+}
+
+.THIS .noDisplay {
+    display: none;
+}
