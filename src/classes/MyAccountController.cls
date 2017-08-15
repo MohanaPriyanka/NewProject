@@ -81,24 +81,24 @@ public without sharing class MyAccountController {
                 }
                 for (Decimal carryOverBalanceLoopVar : carryOverBalanceList) {
                   totalBalance = totalBalance + carryOverBalanceLoopVar;
-            }
+                }
             return totalBalance;
-        } else {
-            for (Account_Bill__c propertyAccountBills : [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
-                                                         FROM Account_Bill__c
-                                                         WHERE Parent_Account__r.Id = : propertyAccountId
-                                                         ORDER BY Bill_Number__c]) {
-                if (maxBillNumber == 0 || maxBillNumber < propertyAccountBills.Bill_Number__c) {
-                    carryOverBalance = propertyAccountBills.Carry_Over_Balance__c;
-                    maxBillNumber = propertyAccountBills.Bill_Number__c;                
-                }    
+            } else {
+                for (Account_Bill__c propertyAccountBills : [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
+                                                             FROM Account_Bill__c
+                                                             WHERE Parent_Account__r.Id = : propertyAccountId
+                                                             ORDER BY Bill_Number__c]) {
+                    if (maxBillNumber == 0 || maxBillNumber < propertyAccountBills.Bill_Number__c) {
+                        carryOverBalance = propertyAccountBills.Carry_Over_Balance__c;
+                        maxBillNumber = propertyAccountBills.Bill_Number__c;                
+                    }    
+                }
+                return carryOverBalance;
             }
-            return carryOverBalance;
-        }
-    } else {
-        return null;
-    }  
-  }
+        } else {
+            return null;
+        }  
+    }
 
     @AuraEnabled
     public static List<AggregateResult> getSystemBills(String propertyAccountId) {
