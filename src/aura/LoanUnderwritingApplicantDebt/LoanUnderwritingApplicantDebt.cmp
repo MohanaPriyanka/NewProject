@@ -8,10 +8,17 @@
   <div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
       <div class="darkCell slds-col slds-size--1-of-1">
-        Monthly Personal Debt:
-        <br></br>
-        <ui:outputCurrency value="{!v.adjustedDebt}"/>
-      </div> 
+        <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+          <div class="slds-col slds-size--1-of-2">
+            Monthly Personal Debt:
+            <br></br>
+            <ui:outputCurrency value="{!v.adjustedDebt}"/>
+          </div>
+          <div class="slds-align-bottom slds-m-horizontal--medium">
+            <lightning:button class="tableRowEven" label="Add Liability"/>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="slds-grid slds-wrap">
       <div class="darkCell slds-col slds-size--1-of-1">
