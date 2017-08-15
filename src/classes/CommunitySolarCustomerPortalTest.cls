@@ -239,20 +239,20 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                                Unique_ID__c = oppP2A.Name + ' ' + sss2.Id + ' ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));
 
         System_Bill__c sbFebP2B = new System_Bill__c(Name = oppP2B.Name + ' ' + sss2.Name + ' ' + billingDate2.Month() + ' ' + billingDate2.Year(),
-                                               Shared_Solar_System__c = sss2.Id,
-                                               Account_Bill__c = abFebB.Id,
-                                               Date__c = billingDate2,
-                                               Bill_Number__c = 1,
-                                               Opportunity__c = oppP2B.Id,
-                                               Due_this_month__c = 375,
-                                               Refund_This_Balance__c = TRUE,
-                                               Amount_To_Add__c = 70,
-                                               Previous_month_overdue_balance__c = 0,
-                                               Total_Due__c = 375,
-                                               Balance_net_late_payments__c = 375,
-                                               Carry_over_balance__c = 375,
-                                               Property_Account__c = propertyAcc2.Id,
-                                               Unique_ID__c = oppP2B.Name + ' ' + sss2.Id + ' ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));
+                                                   Shared_Solar_System__c = sss2.Id,
+                                                   Account_Bill__c = abFebB.Id,
+                                                   Date__c = billingDate2,
+                                                   Bill_Number__c = 1,
+                                                   Opportunity__c = oppP2B.Id,
+                                                   Due_this_month__c = 375,
+                                                   Refund_This_Balance__c = TRUE,
+                                                   Amount_To_Add__c = 70,
+                                                   Previous_month_overdue_balance__c = 0,
+                                                   Total_Due__c = 375,
+                                                   Balance_net_late_payments__c = 375,
+                                                   Carry_over_balance__c = 375,
+                                                   Property_Account__c = propertyAcc2.Id,
+                                                   Unique_ID__c = oppP2B.Name + ' ' + sss2.Id + ' ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));
         insert new List<System_Bill__c>{sbJanP1A, sbFebP1A, sbFebP2A, sbFebP2B};
         update new List<System_Bill__c>{sbJanP1A, sbFebP1A, sbFebP2A, sbFebP2B};
 
@@ -300,27 +300,27 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                        NMC_Rate__c = nmcRate.Value_of_Net_Metering_Credit__c,
                                        Unique_ID__c = oppP1A.Shared_Solar_System__c + ' - ' + uasP1A.Id + ' - ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));        
         UASB__c uasbFebP2A = new UASB__c(Name = uasP2A.Name + sss2.Name,
-                                   Customer_Subscription_KW_DC__c = uasP2A.Customer_Subscription_KW_DC_STATIC__c,
-                                   CS_Billing_Log__c = uabFebA.Id,
-                                   Date__c = billingDate2,
-                                   Utility_Account_Subscription__c = uasP2A.Id,
-                                   Opportunity__c = oppP2A.Id,
-                                   System_Bill__c = sbFebP2A.Id,
-                                   Shared_Solar_System__c = sss2.Id,
-                                   Total_System_Size_kw_DC__c = sss2.Total_System_Size_kWh_DC__c,
-                                   NMC_Rate__c = nmcRate.Value_of_Net_Metering_Credit__c,
-                                   Unique_ID__c = oppP2A.Shared_Solar_System__c + ' - ' + uasP2A.Id + ' - ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));      
+                                       Customer_Subscription_KW_DC__c = uasP2A.Customer_Subscription_KW_DC_STATIC__c,
+                                       CS_Billing_Log__c = uabFebA.Id,
+                                       Date__c = billingDate2,
+                                       Utility_Account_Subscription__c = uasP2A.Id,
+                                       Opportunity__c = oppP2A.Id,
+                                       System_Bill__c = sbFebP2A.Id,
+                                       Shared_Solar_System__c = sss2.Id,
+                                       Total_System_Size_kw_DC__c = sss2.Total_System_Size_kWh_DC__c,
+                                       NMC_Rate__c = nmcRate.Value_of_Net_Metering_Credit__c,
+                                       Unique_ID__c = oppP2A.Shared_Solar_System__c + ' - ' + uasP2A.Id + ' - ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));      
         UASB__c uasbFebP2B = new UASB__c(Name = uasP2B.Name + sss2.Name,
-                                   Customer_Subscription_KW_DC__c = uasP2B.Customer_Subscription_KW_DC_STATIC__c,
-                                   CS_Billing_Log__c = uabFebB.Id,
-                                   Date__c = billingDate2,
-                                   Utility_Account_Subscription__c = uasP2B.Id,
-                                   Opportunity__c = oppP2B.Id,
-                                   System_Bill__c = sbFebP2B.Id,
-                                   Shared_Solar_System__c = sss2.Id,
-                                   Total_System_Size_kw_DC__c = sss2.Total_System_Size_kWh_DC__c,
-                                   NMC_Rate__c = nmcRate.Value_of_Net_Metering_Credit__c,
-                                   Unique_ID__c = oppP2B.Shared_Solar_System__c + ' - ' + uasP2B.Id + ' - ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));                                           
+                                       Customer_Subscription_KW_DC__c = uasP2B.Customer_Subscription_KW_DC_STATIC__c,
+                                       CS_Billing_Log__c = uabFebB.Id,
+                                       Date__c = billingDate2,
+                                       Utility_Account_Subscription__c = uasP2B.Id,
+                                       Opportunity__c = oppP2B.Id,
+                                       System_Bill__c = sbFebP2B.Id,
+                                       Shared_Solar_System__c = sss2.Id,
+                                       Total_System_Size_kw_DC__c = sss2.Total_System_Size_kWh_DC__c,
+                                       NMC_Rate__c = nmcRate.Value_of_Net_Metering_Credit__c,
+                                       Unique_ID__c = oppP2B.Shared_Solar_System__c + ' - ' + uasP2B.Id + ' - ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));                                           
         insert new List<UASB__c>{uasbJanP1A, uasbFebP1A, uasbFebP2A, uasbFebP2B };
     
      ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',

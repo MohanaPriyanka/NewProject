@@ -1,3 +1,11 @@
+/*************************************************************************************
+ * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
+ * 
+ * Description: This class handles most actions needed to be performed by the Community Solar Customer Portal's My Account Page.
+ * 
+ Tested By: CommunitySolarCUstomerPortalTest
+ *************************************************************************************/
+
 public without sharing class MyAccountController {
 
   public static User customerUser = new User();
