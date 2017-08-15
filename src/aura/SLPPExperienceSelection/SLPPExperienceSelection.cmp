@@ -1,28 +1,9 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler">
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPDashboardHandler" extends="c.BlueWaveParent">
     <aura:attribute name="totalCostandDisbrsals" type="List"  />   
     <aura:attribute name="partnerAlerts" type="Object" />
     <aura:attribute name="alertPrompt" type="Boolean" />
     <aura:registerEvent name="headerDisplay" type="c:SLPLandingPageEvent"/>     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
- <style type="text/css">
-       
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNova {
-            font-family: proximaNovaFont;   
-        font-size:150%;
-          color: #FFFFFF;
-          padding-top:1.5%;
-          padding-left:2.5%;
-        }
-        @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-
-  </style>      
     <div aura:id = "disbursalWidgets" class="main2">        
     <aura:if isTrue="{!v.alertPrompt}" >
         <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
@@ -56,7 +37,7 @@
         	<div class="boxAnim">
                 <a href="slpaddcustomer">
                     <div class="headertop ">                 
-                            <div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                            <div class="navtext proximaNova150 text-align: center vertical-align: text-center ">
                                 Add a Customer 
                             </div>
                     </div>
@@ -65,7 +46,7 @@
 		    <div class="boxAnimRight">
                 <a href="slpdashboard">
                     <div class="headertop ">  
-                            <div class="navtext proximaNova text-align: center vertical-align: text-center ">
+                            <div class="navtext proximaNova150 text-align: center vertical-align: text-center ">
                               Manage Customers
                         	</div> 
                     </div>

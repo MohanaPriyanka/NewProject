@@ -92,21 +92,34 @@
                       </aura:set>                             
                     </aura:if>                                
                     <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
-                    <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                                            
-                      <th><ui:button label="Select Product"
-                       class="{!Customer.Id}"
-                       labelClass="label"
-                       press="{!c.getProducts}"/>   </th> 
+                    <th>
+                     <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                                            
+                        <ui:button label="Select Product"
+                                     class="{!Customer.Id}"
+                                     labelClass="label"
+                                     press="{!c.getProducts}"/>    
                        <aura:set attribute="else">
-                        <th></th>
-                      </aura:set>                             
-                    </aura:if>                                          
+                        <aura:if isTrue="{!Customer.Status == 'Unqualified'}">                                            
+                         <ui:button label="Add Co-Signer"
+                                    labelClass="label"
+                                        class="{!Customer}"
+                                  press="{!c.openAddCoApplicant}"/>   
+                         <aura:set attribute="else">
+                          <th></th>
+                         </aura:set>
+                        </aura:if>
+                       </aura:set>                                                         
+                     </aura:if>  
+                    </th>
                   </tr>                                      
                 </aura:iteration>          
               </tbody>
             </table>     
           </div>
-        </div>                                            
+        </div>
+        <div aura:id="popUpCoAppWindow" class=""> 
+         {!v.body}
+        </div>
         <div aura:id = "productTable" class="noDisplay">
           <h2> Please select the product you would like to apply for and click one of the options that appear.</h2>
           <hr></hr>

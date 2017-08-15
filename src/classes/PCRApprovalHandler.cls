@@ -20,6 +20,7 @@ public without sharing class PCRApprovalHandler {
     
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
+    private static EmailTemplate denialEmailTemplate;
     private static OrgWideEmailAddress infoEmailAddress;
 
     public PCRApprovalHandler() {
@@ -33,6 +34,12 @@ public without sharing class PCRApprovalHandler {
             standardEmailTemplate = [SELECT id, HtmlValue, Body 
                                      FROM EmailTemplate 
                                      WHERE DeveloperName = 'RS_PreQualification_Approval'
+                                     LIMIT 1];
+        }
+        if (denialEmailTemplate == null) {
+            denialEmailTemplate = [SELECT id, HtmlValue, Body 
+                                     FROM EmailTemplate 
+                                     WHERE DeveloperName = 'RS_Customer_PreApplication_Denial'
                                      LIMIT 1];
         }
         if (infoEmailAddress == null) {
@@ -111,6 +118,8 @@ public without sharing class PCRApprovalHandler {
                 pcr.DTI_After__c = creditSummary.highestDTI;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
+                boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
+
                 if (creditSummary.bestStatus == APPROVED) {
                     if (conglomerate.contains('018') || 
                         conglomerate.contains('020') ||
@@ -163,26 +172,51 @@ public without sharing class PCRApprovalHandler {
                         htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
-
-                        sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Mass Solar Loan', 
+                        string massLoanSubject = 'Congrats! ' +  pcr.First_Name_from_Lead__c + 
+                                                ', you have been prequalified for a BlueWave Mass Solar Loan'; 
+                        sendEmail(pcr.First_Name_from_Lead__c, massLoanSubject, 
                                   htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                         pcr.Credit_PreApproval_Email_Sent__c = TRUE;
+
                     } else {
                         String htmlbody = standardEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
-
-                        sendEmail(pcr.First_Name_from_Lead__c, 'BlueWave Solar Loan', 
+                        string doerSubject = 'Congrats! ' +  pcr.First_Name_from_Lead__c + 
+                                            ', you have been prequalified for a BlueWave Solar Loan'; 
+                        sendEmail(pcr.First_Name_from_Lead__c, doerSubject, 
                                   htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                         pcr.Credit_PreApproval_Email_Sent__c = TRUE;
                     }
+                } else if ( !pcr.Credit_PreApproval_Email_Sent__c &&
+                            !pcr.Credit_Denial_Email_Sent__c &&
+                            pcr.PreApproval_Form__c &&
+                            pcr.LASERCA__Contact__c == NULL &&
+                            pcr.First_Name_from_Lead__c != NULL &&
+                            pcr.Last_Name_from_Lead__c != NULL &&
+                            pcr.Email_from_Lead__c != NULL &&
+                            pcr.Solar_Loan_Approval_Status__c == DECLINED &&
+                            declinedFromFICO ){
+                        
+                        String htmlbody = denialEmailTemplate.HtmlValue;
+                        htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
+                        htmlBody = htmlBody.replace('{!Lead.Id}',pcr.PCR_Lead_ID__c );
+                        string denialSubject = pcr.First_Name_from_Lead__c + 
+                                            ', your BlueWave Solar Loan Pre-Approval Application was not able to be Pre-Approved'; 
+                        sendEmail(pcr.First_Name_from_Lead__c, denialSubject, 
+                                  htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
+                        pcr.Credit_Denial_Email_Sent__c = TRUE;
                 }
             }
         }
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate;
         }
+    }
+
+    private Boolean deniedBecauseFICO (Integer creditScore, Integer creditMinimum) {
+        return (creditScore < creditMinimum);
     } 
 
     private void setLeadStatus(String approval, Lead lead) {
@@ -195,7 +229,7 @@ public without sharing class PCRApprovalHandler {
         }
     }
 
-    private void sendEmail(String firstname, String loanType, String body, String partnerEmail, Id targetObjectId) {
+    private void sendEmail(String firstname, String subjectLine, String body, String partnerEmail, Id targetObjectId) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setHtmlBody(body);
         mail.setOrgWideEmailAddressId(infoEmailAddress.id); 
@@ -205,9 +239,9 @@ public without sharing class PCRApprovalHandler {
             mail.setccAddresses(ccAddresses);
         }
                                                           
-        String subject = 'Congrats! ' +  firstname + ', you have been prequalified for a ' + loanType; 
-        mail.setSubject(subject);
+        mail.setSubject(subjectLine);
         mail.setTargetObjectId(targetObjectId);
+        system.debug(mail);
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
     }
 

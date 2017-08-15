@@ -1,44 +1,32 @@
 ({
-    doInit : function(component, event, helper) {
+doInit: function(component, event, helper) {
+   
+},    
 
-
-    },  
-    
 openEmailCustomerModal: function(component, event, helper) {
-        var actionPartnerRecord = component.get("c.getPartnerRecord");        
-        actionPartnerRecord.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerRecord", resp.getReturnValue());
-                if (resp.getReturnValue().State__c == 'MA') {
-                    component.set("v.productProgram","mslp");                                        
-                    $A.util.removeClass(component.find("bwslEmailInput"), 'slds-active'); 
-                    $A.util.addClass(component.find("mslpEmailInput"), 'slds-tabs--scoped__nav');    
-                    $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');
-                    $A.util.addClass(component.find('mslpEmailInput'), 'nimbusBackground'); 
-                    $A.util.removeClass(component.find('bwslEmailInput'), 'nimbusBackground');
+    var actionGetPartnerRecord = component.get("c.getPartnerRecord");        
+    actionGetPartnerRecord.setCallback(this,function(resp){
+        if (resp.getState() == 'SUCCESS') {
+            component.set("v.partnerRecord", resp.getReturnValue());
+            if (resp.getReturnValue().State__c === 'MA') {
+                if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
+                    helper.setWindowToBWSL(component);
                 } else {
-                    $A.util.addClass(component.find("bwslEmailInput"), 'slds-tabs--scoped__nav'); 
-                    $A.util.removeClass(component.find('mslpEmailInput'), 'nimbusBackground'); 
-                    $A.util.addClass(component.find('bwslEmailInput'), 'nimbusBackground');      
-                    component.set("v.productProgram","bwsl");                                        
-                }
+                    helper.setWindowToMSLP(component);
+                }                    
             } else {
-                var appEvent = $A.get("e.c:ApexCallbackError");
-                appEvent.setParams({"className" : "SLPSendApplicationEmailController",
-                    "methodName" : "openEmailCustomerModal",
-                    "errors" : resp.getError()});
-                appEvent.fire();
+                helper.setWindowToBWSL(component);                                 
             }
-        });    
-        $A.enqueueAction(actionPartnerRecord);    
-        var modalToggle = event.getParam("openModal");    
-        if (modalToggle == "openModal") {        
-            var modal = component.find('emailCustomerModal');
-            $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");
-            $A.util.removeClass(component.find("emailCustomerModal"), "animated bounceOutRight");                                    
-            $A.util.removeClass(modal, 'slds-fade-in-hide');
-            $A.util.addClass(modal, 'slds-fade-in-open');     
-        }           
+        } else {
+            helper.logError("SLPSendApplicationEmailController", "openEmailCustomerModal", resp.getError());
+        }
+    });    
+    $A.enqueueAction(actionGetPartnerRecord);    
+    var modalToggle = event.getParam("openModal");    
+    if (modalToggle == "openModal") {                                        
+        $A.util.removeClass(component.find('emailCustomerModal'), 'slds-fade-in-hide');
+        $A.util.addClass(component.find('emailCustomerModal'), 'slds-fade-in-open');     
+    }           
 },   
 
 closeEmailCustomerModal: function(component, event, helper) {
@@ -47,53 +35,33 @@ closeEmailCustomerModal: function(component, event, helper) {
     if (partnerRecord.State__c == "MA") {
         component.find('emailMSLP').set("v.value", null);        
     }
-    var customerEmailBWSL = component.find('emailBWSL');
+    component.find('emailBWSL').set("v.value", null);
 
     var modal = component.find('emailCustomerModal');
     $A.util.removeClass(modal, 'slds-fade-in-open');
     $A.util.addClass(modal, 'slds-fade-in-hide');  
-    $A.util.removeClass(component.find("emailIcon"), "animated bounceOutRight");    
 
     emailButton.set("v.disabled",false);
     emailButton.set("v.label","Send");
-    customerEmailBWSL.set("v.value", null);    
-    
+     
     var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
     evtCustomerWindow.setParams({"closeModal": "closeModal"});
     evtCustomerWindow.fire();         
 },    
 
 emailModalSelectMSLP: function(component, event, helper) {
-    $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');    
-    helper.startSpinner(component, "emailSpinner");
-    $A.util.removeClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
-    $A.util.addClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav');
-    $A.util.addClass(component.find('mslpEmailInput'), 'nimbusBackground'); 
-    $A.util.removeClass(component.find('bwslEmailInput'), 'nimbusBackground');    
-    
-    component.set("v.productProgram","mslp");          
-    helper.stopSpinner(component, "emailSpinner");
-    $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
+    helper.setWindowToMSLP(component);
 },             
 
 emailModalSelectBWSL: function(component, event, helper) {
-    $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');    
-    helper.startSpinner(component, "emailSpinner");    
-    $A.util.addClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
-    $A.util.removeClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav'); 
-    $A.util.addClass(component.find('bwslEmailInput'), 'nimbusBackground');  
-    $A.util.removeClass(component.find('mslpEmailInput'), 'nimbusBackground');    
-    
-    
-    component.set("v.productProgram","bwsl");     
-    helper.stopSpinner(component, "emailSpinner");
-    $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');                                                      
+    helper.setWindowToBWSL(component);                                       
 },                    
 
 sendCustomerApplication : function(component, event, helper) {
     var partnerRecord = component.get("v.partnerRecord");    
     $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
     helper.startSpinner(component, "emailSpinner");
+
     var productProgram = component.get("v.productProgram");
     var customerEmail = component.get("v.customerEmail");
     var actionSendApp = component.get("c.sendApplication");    
@@ -105,20 +73,13 @@ sendCustomerApplication : function(component, event, helper) {
         if (resp.getState() == 'SUCCESS') {
             helper.stopSpinner(component, "emailSpinner");
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-            var emailButton = component.find('sendEmailButton');
-            emailButton.set("v.disabled",true);
-            emailButton.set("v.label",'Email Sent!')             
-            var customerEmailBWSL = component.find('emailBWSL');
+            helper.disableButton(component, 'sendEmailButton', 'Email Sent!');       
             if (partnerRecord.State__c == "MA") {
                 component.find('emailMSLP').set("v.value", null);
             }
-            customerEmailBWSL.set("v.value", null);                  
+            component.find('emailBWSL').set("v.value", null);                  
         } else {
-            var appEvent = $A.get("e.c:ApexCallbackError");
-            appEvent.setParams({"className" : "SLPAddCustomerController",
-                "methodName" : "sendCustomerApplication",
-                "errors" : resp.getError()});
-            appEvent.fire();
+            helper.logError("SLPSendApplicationEmailEvent", "sendCustomerApplication", resp.getError());
             $A.log("Errors", resp.getError());                      
         }
     });                                                   

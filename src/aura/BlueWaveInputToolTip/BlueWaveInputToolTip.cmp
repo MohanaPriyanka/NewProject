@@ -1,0 +1,43 @@
+<aura:component access="global" extends="c.BlueWaveParent">
+<!--
+    Adds a tool tip around any markup. If there's no markup, the component adds a simple help bubble:
+    <c:BlueWaveInputToolTip popoverText="{!v.Help_Text__c}"/>
+
+    You can add a tool tip around other markup, like this:
+    <c:BlueWaveInputToolTip popoverText="Popup text around an order list item!">
+      <li>BlueWave Solar Loan Application</li>
+    </c:BlueWaveInputToolTip>
+
+    The original author has more examples:
+    https://github.com/pozil/sfdc-ui-popover
+-->
+  <aura:attribute access="global"
+                  name="popoverBody"
+                  type="Aura.Component[]"
+                  required="false"
+                  description="Holds the content of the popover. Any kind of markup is supported."/>
+  <aura:attribute access="global"
+                  name="popoverText"
+                  type="String"
+                  required="false"
+                  description="Holds a simple text popover, but only supports strings, not markup"/>
+
+  <div class="anchor">
+    <aura:if isTrue="{!empty(v.body)}">
+      <lightning:icon class="paddingLeft" iconName="utility:info" size="x-small"/>
+      <aura:set attribute="else">
+        {!v.body}
+      </aura:set>
+    </aura:if>
+    <div class="slds-popover slds-nubbin--bottom-left" role="dialog">
+      <div class="slds-popover__body proximaNovaWhite">
+        <aura:if isTrue="{!empty(v.popoverText)}">
+          {!v.popoverBody}
+          <aura:set attribute="else">
+            {!v.popoverText}
+          </aura:set>
+        </aura:if>
+      </div>
+    </div>
+  </div>
+</aura:component>
