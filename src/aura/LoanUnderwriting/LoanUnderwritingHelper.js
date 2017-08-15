@@ -64,8 +64,6 @@
         var mainPCR = lead.Personal_Credit_Report__r;
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
         var loanPayment = lead.Monthly_Payment__c;
-        console.log(mainPCR);
-        console.log('coAppPCR: ' + coAppPCR);
         if (mainPCR.Adjusted_DTI__c != null) {
             component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
         } else {

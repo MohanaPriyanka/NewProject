@@ -28,8 +28,31 @@
                     resolve(retVal);
                 } else if (resp.getState() === "ERROR") {
                     var appEvent = $A.get("e.c:ApexCallbackError");
-                    appEvent.setParams({"className" : "LoanUnderwritingController",
-                                        "methodName" : "updateReviewStatus",
+                    appEvent.setParams({"className" : "BlueWaveParentHelper",
+                                        "methodName" : "updateSObject",
+                                        "errors" : resp.getError()});
+                    appEvent.fire();
+                    reject(resp.getError());
+                } else {
+                    reject(Error("Unknown error"));
+                }
+            });
+            $A.enqueueAction(action);
+        });
+    },
+
+    insertSObject : function(component, sObject) {
+        return new Promise(function(resolve, reject) {
+            var action = component.get("c.insertSObject");
+            action.setParams({"sobj": sObject});
+            action.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    var retVal = resp.getReturnValue();
+                    resolve(retVal);
+                } else if (resp.getState() === "ERROR") {
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "BlueWaveParentHelper",
+                                        "methodName" : "insertSObject",
                                         "errors" : resp.getError()});
                     appEvent.fire();
                     reject(resp.getError());

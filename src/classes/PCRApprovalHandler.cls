@@ -530,9 +530,10 @@ public without sharing class PCRApprovalHandler {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
             Decimal interestRate = product.Loan_Interest_Rate__c / 100;
-            // Aug 2017: IBLS is based on household income. Even if we use joint income, we don't know 
+            // IBLS is based on household income. Even if we use joint income, we don't know 
             // if the customer will get IBLS, so don't base DTI After on IBLS
             paymentNumerator = leadRecord.Loan_Principal__c * interestRate / 12;
+
             paymentDenominatorVar1 = ( 1 + interestRate/12);
             paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
             paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);

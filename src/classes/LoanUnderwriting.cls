@@ -135,7 +135,7 @@ public without sharing class LoanUnderwriting {
              (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
               LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
               FROM LASERCA__Trade_Accounts__r
-              WHERE LASERCA__Account_Balance__c > 0)
+              WHERE LASERCA__Account_Balance__c > 0 OR LASERCA__Monthly_Payment__c > 0)
              FROM LASERCA__Personal_Credit_Report__c
              WHERE Id = :pcrId];
         if (!pcrList.isEmpty()) {

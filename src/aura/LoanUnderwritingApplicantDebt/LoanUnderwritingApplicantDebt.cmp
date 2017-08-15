@@ -4,6 +4,9 @@
   <aura:attribute name="tradeAccounts" type="LASERCA__Trade_Accounts__c[]"/>
   <aura:attribute name="adjustedDebt" type="Decimal"/>
   <aura:registerEvent name="debtEvent" type="c:LoanUnderwritingDebtAdjustment"/>
+  <aura:attribute name="isModalOpen" type="Boolean" default="false"/>
+  <aura:attribute name="tradeAccountName" type="String"/>
+  <aura:attribute name="tradeAccountMonthlyPayment" type="Decimal"/>
 
   <div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
@@ -15,7 +18,7 @@
             <ui:outputCurrency value="{!v.adjustedDebt}"/>
           </div>
           <div class="slds-align-bottom slds-m-horizontal--medium">
-            <lightning:button class="tableRowEven" label="Add Liability"/>
+            <lightning:button class="tableRowEven" label="Add Liability" onclick="{!c.openModal}"/>
           </div>
         </div>
       </div>
@@ -107,4 +110,28 @@
       </div>
     </div>
   </div>
+
+  <aura:if isTrue="{!v.isModalOpen}">
+    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open slds-modal_large">
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+            X
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-text-heading--medium">Add Liability</h2>
+        </div>
+        <div class="slds-modal__content slds-p-around--medium">
+          <lightning:input type="text" label="Account Name" value="{!v.tradeAccountName}"/>
+          <lightning:input type="number" label="Monthly Payment" formatter="currency" value="{!v.tradeAccountMonthlyPayment}"/>
+        </div>
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button--neutral" onclick="{!c.closeModal}" >Cancel</button>
+          <button class="slds-button slds-button--brand" onclick="{!c.closeAndSaveModal}">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+  </aura:if>
+
 </aura:component>

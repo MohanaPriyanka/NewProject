@@ -37,6 +37,11 @@ public with sharing class LoanUnderwritingTest {
         pcr.Adverse_Credit_Notice_1__c = 'Bankruptcy';
         BlueWaveParent.updateSObject(pcr);
 
+        LASERCA__Trade_Accounts__c ta = new LASERCA__Trade_Accounts__c(Name = 'Test',
+                                                                       LASERCA__Personal_Credit_Report__c = pcr.Id,
+                                                                       LASERCA__Monthly_Payment__c = 100);
+        BlueWaveParent.insertSObject(ta);
+
         pcr = [SELECT Id, Adverse_Credit_Notice_1__c
                FROM LASERCA__Personal_Credit_Report__c
                WHERE Id = :pcr.Id];
