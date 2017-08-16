@@ -28,9 +28,11 @@
       <aura:if isTrue="{!v.lead.Product__r != null}">
         <div class="slds-text-body_small slds-text-color_inverse">
           <ui:outputText value="{!v.lead.Product__r.Name}"/> 
-          (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>, 
-          Max DTI: <lightning:formattedNumber value="{!v.lead.Product__r.Debt_To_Income_Maximum__c/100}"
-                                              style="percent"/>)
+          (Min FICO: <ui:outputText value="{!v.lead.Product__r.Credit_Minimum__c}"/>
+          <aura:if isTrue="{!v.lead.Product__r.Debt_To_Income_Maximum__c != null}">
+            , Max DTI: <lightning:formattedNumber value="{!v.lead.Product__r.Debt_To_Income_Maximum__c/100}"
+                                                  style="percent"/>
+          </aura:if>)
         </div>
       </aura:if>
     </div>
@@ -56,7 +58,7 @@
       <div class = "lightCell slds-col slds-size--1-of-6">
         Payment Amount:
         <br></br>
-        <ui:outputCurrency value="{!v.lead.Monthly_Payment_IBLS__c}"/>
+        <ui:outputCurrency value="{!v.lead.Monthly_Payment__c}"/>
       </div>
       <div class = "lightCell slds-col slds-size--1-of-6">
         System Cost:

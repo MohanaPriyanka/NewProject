@@ -14,7 +14,7 @@ public without sharing class LoanUnderwriting {
     public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [SELECT FirstName, LastName, Name, 
                             Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
-                            Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment_IBLS__c,
+                            Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment__c,
                             Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                             Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                             lived_residence_six_months__c,
@@ -135,7 +135,7 @@ public without sharing class LoanUnderwriting {
              (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
               LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
               FROM LASERCA__Trade_Accounts__r
-              WHERE LASERCA__Account_Balance__c > 0)
+              WHERE LASERCA__Account_Balance__c > 0 OR LASERCA__Monthly_Payment__c > 0)
              FROM LASERCA__Personal_Credit_Report__c
              WHERE Id = :pcrId];
         if (!pcrList.isEmpty()) {
