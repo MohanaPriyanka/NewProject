@@ -11,7 +11,7 @@
   <aura:attribute name="creditStatusTimeout" type="Integer"/>
   <aura:attribute name="productProgram" type="String" />
   <aura:attribute name="customerEmail" type="String" />
-  <aura:attribute name="newLead" type="Lead" 
+<!--   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -34,8 +34,8 @@
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',
     'System_Cost__c':'',
-    }"/>
-<!--     <aura:attribute name="newLead" type="Lead" 
+    }"/> -->
+    <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
     'FirstName': 'P',
     'LastName': 'Testcase',
@@ -58,7 +58,7 @@
     'LASERCA__Birthdate__c':'02/21/1993',
     'Utility_Bill_Access_Acknowledged__c':true,
     'System_Cost__c':'15000',
-    }"/>  -->
+    }"/> 
 
      <div aura:id="applicationTabBar" class="slds-tabs_default slds-m-bottom_medium" style="position:relative">
       <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
@@ -165,7 +165,8 @@
                     <aura:set attribute="else">     
                       <ui:inputSelectOption text="Select"/>                        
                       <ui:inputSelectOption text="MA"/>
-                      <ui:inputSelectOption text="NC"/>                  
+                      <ui:inputSelectOption text="NC"/>   
+                      <ui:inputSelectOption text="RI"/>                
                       <ui:inputSelectOption text="SC"/>      
                     </aura:set>                         
                   </aura:if>
