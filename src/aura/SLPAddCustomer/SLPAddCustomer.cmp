@@ -165,7 +165,8 @@
                     <aura:set attribute="else">     
                       <ui:inputSelectOption text="Select"/>                        
                       <ui:inputSelectOption text="MA"/>
-                      <ui:inputSelectOption text="NC"/>                  
+                      <ui:inputSelectOption text="NC"/>   
+                      <ui:inputSelectOption text="RI"/>                
                       <ui:inputSelectOption text="SC"/>      
                     </aura:set>                         
                   </aura:if>
