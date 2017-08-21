@@ -233,3 +233,8 @@ debug/
 *.*~
 *.sublime-workspace
 #*#
+
+# ant
+build.xml
+build.properties
+ant-salesforce.jar

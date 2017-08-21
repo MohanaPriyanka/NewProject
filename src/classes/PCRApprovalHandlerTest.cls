@@ -10,7 +10,7 @@ private class PCRApprovalHandlerTest {
         List<Lead> insertleads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
-        
+
         Product2 productVar = new Product2( name = 'BlueWave Solar Loan - MA',
                                             State__c = 'MA',
                                             Family = 'Solar Loan',
@@ -124,13 +124,13 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrAJ = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAJ.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '678');
         insertpcrlist.add(pcrAJ);
-        LASERCA__Personal_Credit_Report__c pcrCoAppLead = 
+        LASERCA__Personal_Credit_Report__c pcrCoAppLead =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
                                                    LASERCA__Lead__c = coAppLead.Id);
         insertpcrlist.add(pcrCoAppLead);
         insert insertpcrlist;
 
-        LASERCA__Personal_Credit_Report__c pcrCoAppContact = 
+        LASERCA__Personal_Credit_Report__c pcrCoAppContact =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Co App',
                                                    LASERCA__Lead__c = coAppLead.Id,
                                                    LASERCA__Contact__c = coApplicantContact.Id);
@@ -141,64 +141,64 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c  tradeacctA = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrA.id,
                                                                                 LASERCA__Monthly_Payment__c = 500,
                                                                                 LASERCA__Account_Balance__c = 10000);
-        inserttradeacct.add(tradeacctA);  
+        inserttradeacct.add(tradeacctA);
         LASERCA__Trade_Accounts__c  tradeacctAA = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAA.id,
                                                                                  LASERCA__Monthly_Payment__c = 500,
                                                                                  LASERCA__Account_Balance__c = 10000);
-        inserttradeacct.add(tradeacctAA);  
+        inserttradeacct.add(tradeacctAA);
         LASERCA__Trade_Accounts__c  tradeacct = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
                                                                                LASERCA__Monthly_Payment__c = 500,
                                                                                LASERCA__Account_Balance__c = 10000);
-        inserttradeacct.add(tradeacct);  
+        inserttradeacct.add(tradeacct);
         LASERCA__Trade_Accounts__c  tradeacctAB = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAB.id,
                                                                                  LASERCA__Monthly_Payment__c = 500);
-        inserttradeacct.add(tradeacctAB);  
+        inserttradeacct.add(tradeacctAB);
         LASERCA__Trade_Accounts__c  tradeacctAC = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAC.id,
                                                                                  LASERCA__Monthly_Payment__c = 1000);
-        inserttradeacct.add(tradeacctAC); 
+        inserttradeacct.add(tradeacctAC);
         LASERCA__Trade_Accounts__c  tradeacctAD = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAD.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAD); 
+        inserttradeacct.add(tradeacctAD);
         LASERCA__Trade_Accounts__c  tradeacctAE = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAE.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAE); 
+        inserttradeacct.add(tradeacctAE);
         LASERCA__Trade_Accounts__c  tradeacctAF = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAF.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAF); 
+        inserttradeacct.add(tradeacctAF);
         LASERCA__Trade_Accounts__c  tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAG); 
+        inserttradeacct.add(tradeacctAG);
         LASERCA__Trade_Accounts__c  tradeacctAH = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAH.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAH); 
+        inserttradeacct.add(tradeacctAH);
         LASERCA__Trade_Accounts__c  tradeacctAI = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAI.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAI); 
+        inserttradeacct.add(tradeacctAI);
         LASERCA__Trade_Accounts__c  tradeacctAJ = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAJ.id,
                                                                                  LASERCA__Monthly_Payment__c = 200);
-        inserttradeacct.add(tradeacctAJ); 
-        LASERCA__Trade_Accounts__c  tradeacctcoAppLead1 = 
+        inserttradeacct.add(tradeacctAJ);
+        LASERCA__Trade_Accounts__c  tradeacctcoAppLead1 =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppLead.id,
                                            LASERCA__Monthly_Payment__c = 200,
                                            LASERCA__Account_Balance__c = 1000);
-        inserttradeacct.add(tradeacctcoAppLead1); 
-        LASERCA__Trade_Accounts__c  tradeacctcoAppLead2 = 
+        inserttradeacct.add(tradeacctcoAppLead1);
+        LASERCA__Trade_Accounts__c  tradeacctcoAppLead2 =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppLead.id,
                                            LASERCA__Monthly_Payment__c = 200,
                                            LASERCA__Account_Balance__c = 1000);
-        inserttradeacct.add(tradeacctcoAppLead2); 
+        inserttradeacct.add(tradeacctcoAppLead2);
         insert inserttradeacct;
 
         System.debug(LoggingLevel.ERROR, '5. SOQL Queries: ' + Limits.getQueries());
-        LASERCA__Trade_Accounts__c  tradeacctcoAppContact1 = 
+        LASERCA__Trade_Accounts__c  tradeacctcoAppContact1 =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppContact.id,
                                            LASERCA__Monthly_Payment__c = 200,
                                            LASERCA__Account_Balance__c = 1000);
-        LASERCA__Trade_Accounts__c  tradeacctcoAppContact2 = 
+        LASERCA__Trade_Accounts__c  tradeacctcoAppContact2 =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrCoAppContact.id,
                                            LASERCA__Monthly_Payment__c = 200,
                                            LASERCA__Account_Balance__c = 1000);
-        insert new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2}; 
+        insert new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2};
 
         pcrAB.Solar_Loan_Manual_Decline__c = True;
         pcrAA.Solar_Loan_Manual_Approval__c = True;
@@ -209,7 +209,7 @@ private class PCRApprovalHandlerTest {
 
         System.debug(LoggingLevel.ERROR, '6. SOQL Queries: ' + Limits.getQueries());
 
-        List<LASERCA__Personal_Credit_Report__c> pcrlist = 
+        List<LASERCA__Personal_Credit_Report__c> pcrlist =
             [SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
              LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
              FROM LASERCA__Personal_Credit_Report__c];
@@ -239,15 +239,15 @@ private class PCRApprovalHandlerTest {
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '815') {
                 System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
             } else if (creditreport.Name == 'PCR Primary with Co App.Joey') {
-                System.debug(LoggingLevel.ERROR, 
-                             creditreport.Name + 
-                             ' DTI Before: ' + creditreport.DTI_Before__c + 
+                System.debug(LoggingLevel.ERROR,
+                             creditreport.Name +
+                             ' DTI Before: ' + creditreport.DTI_Before__c +
                              ' FICO: ' + creditreport.LASERCA__Credit_Score_TransUnion__c);
                 System.assertEquals(9.6, creditreport.DTI_Before__c.setScale(1));
             } else if (creditreport.Name == 'PCR Co App.Joey') {
-                System.debug(LoggingLevel.ERROR, 
-                             creditreport.Name + 
-                             ' DTI Before: ' + creditreport.DTI_Before__c + 
+                System.debug(LoggingLevel.ERROR,
+                             creditreport.Name +
+                             ' DTI Before: ' + creditreport.DTI_Before__c +
                              ' FICO: ' + creditreport.LASERCA__Credit_Score_TransUnion__c);
                 System.assertEquals(240, creditreport.DTI_Before__c.setScale(1));
             }
@@ -261,9 +261,9 @@ private class PCRApprovalHandlerTest {
 
         tradeacctcoAppContact1.Exclude_From_Rollup__c = true;
         tradeacctcoAppContact2.Exclude_From_Rollup__c = true;
-        update new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2}; 
+        update new List<LASERCA__Trade_Accounts__c>{tradeacctcoAppContact1,tradeacctcoAppContact2};
 
-        pcrlist = 
+        pcrlist =
             [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
              LASERCA__Lead__r.Status, LASERCA__Contact__c
              FROM LASERCA__Personal_Credit_Report__c
@@ -287,17 +287,17 @@ private class PCRApprovalHandlerTest {
         Lead lead = getLead(50000, 1000000, null, false, false, partner.Id);
         insert lead;
 
-        LASERCA__Personal_Credit_Report__c pcr = 
+        LASERCA__Personal_Credit_Report__c pcr =
             new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
                                                    LASERCA__Credit_Score_TransUnion__c = '700');
         insert pcr;
-        LASERCA__Trade_Accounts__c  tradeacct = 
+        LASERCA__Trade_Accounts__c  tradeacct =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
                                            LASERCA__Monthly_Payment__c = 1970);
         insert tradeacct;
         update tradeacct;
 
-        pcr = 
+        pcr =
             [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c,
              DTI_After_Notes__c
              FROM LASERCA__Personal_Credit_Report__c
@@ -313,17 +313,17 @@ private class PCRApprovalHandlerTest {
         Lead lead = getLead(81000, 10000, null, true, false, partner.Id);
         insert lead;
 
-        LASERCA__Personal_Credit_Report__c pcr = 
+        LASERCA__Personal_Credit_Report__c pcr =
             new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
                                                    LASERCA__Credit_Score_TransUnion__c = '700');
         insert pcr;
-        LASERCA__Trade_Accounts__c  tradeacct = 
+        LASERCA__Trade_Accounts__c  tradeacct =
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
                                            LASERCA__Monthly_Payment__c = 3300);
         insert tradeacct;
         update tradeacct;
 
-        pcr = 
+        pcr =
             [SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c
              FROM LASERCA__Personal_Credit_Report__c
              WHERE LASERCA__Lead__c = :lead.Id
@@ -333,11 +333,64 @@ private class PCRApprovalHandlerTest {
 
     static testMethod void testProductRepo() {
         Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 product = [SELECT Id, Name, Product_Type__c, Program__c, State__c, 
+        Product2 product = [SELECT Id, Name, Product_Type__c, Program__c, State__c,
                             Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
                             FROM Product2
                             WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
         Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
+        insert lead;
+
+        lead.Status = 'Pending Information';
+        update lead;
+
+        LASERCA__Personal_Credit_Report__c pcr =
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '700');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct =
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 3300);
+        insert tradeacct;
+        update tradeacct;
+
+        lead = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.DTI_After__c,
+                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c
+                FROM Lead
+                WHERE Id = :lead.Id];
+
+        PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
+        System.assertEquals('Pending Information', lead.Status);
+        System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
+        System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
+        System.assertEquals(50.53,
+                            productRepo.calcDTIAfter(product, lead, 6750, 3300).dtiAfter);
+        System.assertEquals(50.61,
+                            lead.Personal_Credit_Report__r.DTI_After__c);
+    }
+
+    static testMethod void testNoIBLSInDTI() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 mslp = new Product2( name = 'BlueWave Solar Loan - MA',
+                                            State__c = 'MA',
+                                            Family = 'Solar Loan',
+                                            Product_Type__c = 'Residential Loan',
+                                            Program__c = 'MSLP',
+                                            IsActive = TRUE,
+                                            ProductCode = 'x',
+                                            Loan_Term__c = 120,
+                                            Loan_Interest_Rate__c = 5.99,
+                                            Loan_Interest_Only_Period__c = 12,
+                                            Loan_Base_Rate__c = .0625,
+                                            Debt_To_Income_Maximum__c = 50,
+                                            Credit_Minimum__c = '681',
+                                            Credit_Maximum__c = '999',
+                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                                            Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
+        insert mslp;
+        Lead lead = getLead(60000, 10000, null, true, false, partner.Id);
         insert lead;
         
         lead.Status = 'Pending Information';
@@ -349,7 +402,7 @@ private class PCRApprovalHandlerTest {
         insert pcr;
         LASERCA__Trade_Accounts__c  tradeacct = 
             new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
-                                           LASERCA__Monthly_Payment__c = 3300);
+                                           LASERCA__Monthly_Payment__c = 1000);
         insert tradeacct;
         update tradeacct;
 
@@ -363,15 +416,17 @@ private class PCRApprovalHandlerTest {
 
         PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
         System.assertEquals('Pending Information', lead.Status);
-        System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 3300);
-        System.assertEquals(2, productRepo.getApplicableProducts(lead, 700).size());
-        System.assertEquals(50.53,
-                            productRepo.calcDTIAfter(product, lead, 6750, 3300).dtiAfter);
-        System.assertEquals(50.61,
+        System.assertEquals(lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, 1000);
+        System.assertEquals(1, productRepo.getApplicableProducts(lead, 700).size());
+        System.assertEquals('Category 1', lead.Income_Support__c);
+        // DTI After with IBLS is 21.55
+        System.assertEquals(22.22,
+                            productRepo.calcDTIAfter(mslp, lead, 5000, 1000).dtiAfter);
+        System.assertEquals(22.22,
                             lead.Personal_Credit_Report__r.DTI_After__c);
     }    
 
-    private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId, 
+    private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId,
                                 Boolean doerLoan, Boolean preApproval, Id partnerId) {
         return(new Lead(LastName = 'testcase',
                         FirstName = 'test',
