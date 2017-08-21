@@ -1,30 +1,32 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAllCustomersHandler" access="global">
 	<aura:attribute name="allCustomers" type="Object"  /> 
-  <aura:attribute name="licenseType" type="Boolean"  />       
+  <aura:attribute name="licenseType" type="Boolean"  />      
+  <aura:attribute type="Boolean" name="sortAsc" />
+  <aura:attribute type="Boolean" name="sortArrow" />
+  <aura:attribute type="String" name="sortField" />
 	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
 	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <style>
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataStream {
-            font-family: proximaNovaFont;   
-     		font-size:100%;
-      		color: #00b2a9;
-        }
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataBlue {
-            font-family: proximaNovaFont;   
-        font-size:100%;
-          color: #266092;
-        }        
+      @font-face {
+      font-family: proximaNovaFont;
+      src: url('{!$Resource.ProximaNova}');
+      }
+      .proximaNovaDataStream {
+      font-family: proximaNovaFont;   
+      font-size:100%;
+      color: #00b2a9;
+      }
+      .proximaNovaDataBlue {
+      font-family: proximaNovaFont;   
+      font-size:100%;
+      color: #266092;
+      }        
     </style>    
-   <div aura:id = "allCustomers" class="">
+<!--    <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product']" 
+                        tableRecords="{!v.allCustomers}" 
+                        recordFieldNames="['Name']"/> -->
+   <div aura:id = "allCustomers">
    <div class="slds-form-element slds-lookup" data-select="single">
    <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
        <div class="slds-form-element__control">
@@ -38,17 +40,81 @@
       </div>
   </div> 
   <br></br>
-    <div aura:id = "customerTable" class="main2"> 
+    <div aura:id = "customerTable" class="slds-p-top_small"> 
 		<br></br>
       <div>
-        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+        <table class="slds-table slds-table--bordered slds-table--striped box proximaNovaBlack slds-scrollable ">
           <thead>
-            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>  
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Sales Agent</b></span></th>  
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
-			        <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>
+            <tr class="slds-text-heading--label proximaNovaBWBlueTable" > 
+              <th class="slds-is-sortable slds-text-title_caps" scope="col">
+                <a name="Name" class="slds-th__action" onclick="{!c.sortTable}">
+                  <span class="slds-assistive-text">Sort </span>
+                  <span class="slds-truncate proximaNovaBWBlueTable" title="Name">Customer Name</span>
+                  <aura:if isTrue="{!v.sortField == 'Name'}">
+                    <div class="slds-icon_container">
+                      <aura:if isTrue="{!v.sortAsc}">
+                        <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+                        <aura:set attribute="else">
+                          <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                  </aura:if>
+                  <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                </a>      
+              </th>                                   
+              <th class="slds-is-sortable slds-text-title_caps" scope="col">
+                <a name="Sales_Agent__r.Name" class="slds-th__action" onclick="{!c.sortTable}">
+                  <span class="slds-assistive-text">Sort </span>
+                  <span class="slds-truncate proximaNovaBWBlueTable" title="Name">Sales Agent</span>
+                  <aura:if isTrue="{!v.sortField == 'Sales_Agent__r.Name'}">
+                    <div class="slds-icon_container">
+                      <aura:if isTrue="{!v.sortAsc}">
+                        <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+                        <aura:set attribute="else">
+                          <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                  </aura:if>
+                  <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                </a>      
+              </th> 
+              <th class="slds-is-sortable slds-text-title_caps" scope="col">
+                <a name="Product__r.Name" class="slds-th__action" onclick="{!c.sortTable}">
+                  <span class="slds-assistive-text">Sort </span>
+                  <span class="slds-truncate proximaNovaBWBlueTable" title="Name">Product</span>
+                  <aura:if isTrue="{!v.sortField == 'Product__r.Name'}">
+                    <div class="slds-icon_container">
+                      <aura:if isTrue="{!v.sortAsc}">
+                        <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+                        <aura:set attribute="else">
+                          <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                  </aura:if>
+                  <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                </a>      
+              </th> 
+              <th class="slds-is-sortable slds-text-title_caps" scope="col">
+                <a name="Acquisition_Status__c" class="slds-th__action" onclick="{!c.sortTable}">
+                  <span class="slds-assistive-text">Sort </span>
+                  <span class="slds-truncate proximaNovaBWBlueTable" title="Name">Status</span>
+                  <aura:if isTrue="{!v.sortField == 'Acquisition_Status__c'}">
+                    <div class="slds-icon_container">
+                      <aura:if isTrue="{!v.sortAsc}">
+                        <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+                        <aura:set attribute="else">
+                          <lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+                        </aura:set>
+                      </aura:if>
+                    </div>
+                  </aura:if>
+                  <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                </a>      
+              </th>                                           
+              <th scope="col"><span class="slds-truncate proximaNovaDataBlue "><b>System Cost</b></span></th>
               <aura:if isTrue="{!v.licenseType}">
                 <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>
               </aura:if>             
@@ -56,7 +122,7 @@
           </thead>
           <tbody>
  			<aura:iteration items="{!v.allCustomers}" var="Customer">
-              		<tr>
+              		<tr>           
                 		<th scope="row"> <b>{!Customer.Name}</b> </th>
                     <th scope="row"> <b>{!Customer.Sales_Agent__r.Name}</b> </th>                    
                     <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
@@ -80,5 +146,5 @@
         </table>
     </div>
     </div>
-</div>         
+</div>     
 </aura:component>

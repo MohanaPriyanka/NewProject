@@ -1,0 +1,7 @@
+<aura:component extensible="true"  access="global">
+    <aura:attribute name="objectRecord" type="Object" />
+    <aura:attribute name="fieldName" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <ui:outputText aura:Id="outputTextId" />
+</aura:component>

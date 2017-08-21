@@ -22,26 +22,6 @@ public without sharing class SLPCustomerHandler {
       return profile.LicenseType;
   }
 
- //The getAllCustomers method returns a list of loans to the SLPCustomer lightning component to show up in the customers tab
-  @AuraEnabled
-  public static List<Loan__c> getAllCustomers (String searchValue) {
-    List<Loan__c> loanList = new List<Loan__c>();
-    String loanQuery = 'SELECT Id, Name, Product__r.Name, Requested_Loan_Amount__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)  ' ;
-    loanQuery += '      FROM Loan__c' ;
-    loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
-    if (profile.LicenseType != 'Executive') {
-      loanQuery += '    AND Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';
-    }
-    if (searchValue != null) {
-      loanQuery += '    AND Name LIKE \'' + '%' + String.escapeSingleQuotes(searchValue) + '%' + '\'' ;
-    }
-    loanQuery += '      ORDER BY createdDate DESC';
-    for(Loan__c loanRecord : Database.query(loanQuery)){
-      loanList.add(loanRecord);
-    }
-    return loanList;
-  }
-
   //The getCustomerInformation method returns an equipment list to show system information, and other customer information on the customer window
   @AuraEnabled
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
