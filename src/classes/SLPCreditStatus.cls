@@ -144,7 +144,6 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1313=' + lead.LASERCA__Home_Zip__c     
                                 + '&' + 'tfa_1287=' + loanTerm     
                                 + '&' + 'tfa_1375=' + 'SLPortal - Emailed Customer Phase 2 Application 381610'
-                                + '&' + 'tfa_1181=true'      
                                 + '&' + 'tfa_1372=' + lead.FirstName     
                                 + '&' + 'tfa_1373=' + lead.LastName;       
 
@@ -157,7 +156,6 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1179=' + product.Id 
                                 + '&' + 'tfa_81=' + lead.LASERCA__Home_Zip__c     
                                 + '&' + 'tfa_1287=' + loanTerm     
-                                + '&' + 'tfa_1181=true'    
                                 + '&' + 'tfa_1310=' + 'SLPortal - Emailed Customer Phase 2 Application 381607'                                     
                                 + '&' + 'tfa_94=' + lead.LASERCA__Home_Address__c ;        
     }     
