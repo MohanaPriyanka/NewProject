@@ -34,6 +34,7 @@
   						<span class="slds-truncate proximaNovaDataBlue">
   							<b>
   								<c:BlueWaveDataTableRow objectRecord="{!record}" fieldName="{!fieldName}"/>
+                  }
   							</b>
   						</span>
   					</th>
