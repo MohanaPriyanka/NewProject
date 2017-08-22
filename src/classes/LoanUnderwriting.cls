@@ -7,7 +7,7 @@
  Tested By: LoanUnderwritingControllerTest
  *************************************************************************************/
 
-public without sharing class LoanUnderwriting {
+global without sharing class LoanUnderwriting {
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
     @AuraEnabled 
@@ -117,14 +117,42 @@ public without sharing class LoanUnderwriting {
         }
     }
      
+    // Can be called from custom buttons on the Lead page, or from the LoanUnderwriting screen
     @AuraEnabled 
-    public static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
+    webservice static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
+        // Copy Transunion factor 5
+        lead = [SELECT Id, Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c, 
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c,
+                Credit_Report_Detail_5__c, Co_App_Credit_Report_Detail_5__c
+                FROM Lead
+                WHERE Id =: lead.Id];
         if (coApplicant) {
+            lead.Co_App_Credit_Report_Detail_5__c = 
+                getFifthFactor(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Co_App_Manual_Credit_Decline__c = true;
         } else {
+            lead.Credit_Report_Detail_5__c = 
+                getFifthFactor(lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Manual_Credit_Decline__c = true;
         }
         update lead;
+    }
+
+    // Parses out the fifth TransUnion Factor since the current version of LASERCA only has four factors
+    @testVisible
+    private static String getFifthFactor(String tuScoreFactor) {
+        if (tuScoreFactor != null) {
+            List<String> factors = tuScoreFactor.split('\\n');
+            if (factors.size() == 5) {
+                List<String> factorParts = factors[4].split(' - ');
+                if (factorParts.size() == 2) {
+                    return factorParts[1];
+                } else {
+                    return factors[4];
+                }
+            }
+        }
+        return null;
     }
 
     @AuraEnabled 
