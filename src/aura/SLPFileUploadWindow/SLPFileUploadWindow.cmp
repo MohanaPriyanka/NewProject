@@ -1,0 +1,22 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">    
+    
+<div>
+  <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header blueBackground">
+        <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeWindow}" size="small" alternativeText="close" />
+        <h2 id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_medium slds-hyphenate proximaNovaWhite">XX Documentation</h2>
+      </header>
+       <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+       
+       </div>
+      <footer aura:id="windowFooter" class="slds-modal__footer">
+       <div aura:id="uploadButton" class="">
+           <lightning:button label="Upload" class="slds-button slds-align--absolute-center blueBackground" onclick="{!c.closeWindow}"/>
+       </div>
+      </footer>
+    </div>
+  </section>
+  <div aura:id="greyout" class="slds-backdrop slds-backdrop_open"></div>
+</div>
+</aura:component>
