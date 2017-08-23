@@ -1,7 +1,12 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
+  <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>    
 	<aura:attribute name="headerLabels" type="String[]"/>
-	<aura:attribute name="tableRecords" type="Object[]"/>
+	<aura:attribute name="tableRecords" type="Loan__c[]"/>
 	<aura:attribute name="recordFieldNames" type="String[]"/>
+  <aura:attribute name="headerMap" type="Map"/>
+  <aura:attribute type="Boolean" name="sortAsc" />
+  <aura:attribute type="Boolean" name="sortArrow" />
+  <aura:attribute type="String" name="sortField" />  
 	<style>
       @font-face {
       font-family: proximaNovaFont;
@@ -22,7 +27,7 @@
   	<thead>
   		<tr class="slds-text-heading--label">			
   			<aura:iteration items="{!v.headerLabels}" var="label">
-  				<th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>{!label}</b></span></th>  
+          <c:BlueWaveDataTableHeader label="{!label}" headerMap="{!v.headerMap}" sortField="{!v.sortField}"/>
   			</aura:iteration>
   		</tr>					
   	</thead>
@@ -34,7 +39,6 @@
   						<span class="slds-truncate proximaNovaDataBlue">
   							<b>
   								<c:BlueWaveDataTableRow objectRecord="{!record}" fieldName="{!fieldName}"/>
-                  }
   							</b>
   						</span>
   					</th>

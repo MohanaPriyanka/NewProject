@@ -5,27 +5,28 @@
   <aura:attribute type="Boolean" name="sortArrow" />
   <aura:attribute type="String" name="sortField" />
 	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
-	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-    <style>
-      @font-face {
-      font-family: proximaNovaFont;
-      src: url('{!$Resource.ProximaNova}');
-      }
-      .proximaNovaDataStream {
-      font-family: proximaNovaFont;   
-      font-size:100%;
-      color: #00b2a9;
-      }
-      .proximaNovaDataBlue {
-      font-family: proximaNovaFont;   
-      font-size:100%;
-      color: #266092;
-      }        
-    </style>    
+	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />    
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <style>
+    @font-face {
+    font-family: proximaNovaFont;
+    src: url('{!$Resource.ProximaNova}');
+    }
+    .proximaNovaDataStream {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00b2a9;
+    }
+    .proximaNovaDataBlue {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #266092;
+    }        
+  </style>    
    <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product']" 
                         tableRecords="{!v.allCustomers}" 
-                        recordFieldNames="[Product__r.Name']"/>
+                        recordFieldNames="['Name', 'Id', 'Product__r.Name']"
+                        headerMap="{Customer: 'Name', 'Sales Agent': 'Id', Product: 'Product__r.Name'}"/>
    <div aura:id = "allCustomers">
    <div class="slds-form-element slds-lookup" data-select="single">
    <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
