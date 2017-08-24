@@ -308,6 +308,8 @@ public without sharing class PCRApprovalHandler {
                     return APPROVED;
                 } else if (creditScore >= creditMinimum && DTIafter <= 40) {
                     return APPROVED;
+                } else if (creditScore >= creditMinimum && DTIafter > 40) {
+                    return PENDINGREVIEW;
                 } else {
                     return DECLINED;
                 }
