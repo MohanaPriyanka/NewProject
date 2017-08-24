@@ -83,15 +83,15 @@ public with sharing class LoanUnderwritingTest {
 
     static testMethod void testGetFifthFactor() {
         Test.startTest();
-        System.assertEquals(null, LoanUnderwriting.getFifthFactor('039 - SERIOUS DELINQUENCY'));
-        System.assertEquals(null, LoanUnderwriting.getFifthFactor(null));
+        System.assertEquals(null, LoanUnderwriting.getFifthDetail('039 - SERIOUS DELINQUENCY'));
+        System.assertEquals(null, LoanUnderwriting.getFifthDetail(null));
         String s = 
             '039 - SERIOUS DELINQUENCY\n' +
             '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +
             '027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n' +
             '003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\n' +
             'FA - INQUIRIES IMPACTED THE CREDIT SCORE\n';
-        System.assertEquals('INQUIRIES IMPACTED THE CREDIT SCORE', LoanUnderwriting.getFifthFactor(s));
+        System.assertEquals('INQUIRIES IMPACTED THE CREDIT SCORE', LoanUnderwriting.getFifthDetail(s));
         Test.stopTest();
     }
 }

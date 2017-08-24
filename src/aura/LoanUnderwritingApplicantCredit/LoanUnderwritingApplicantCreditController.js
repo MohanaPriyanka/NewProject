@@ -1,4 +1,37 @@
 ({
+    doInit : function(component, event, helper) {
+        var actionDetail = component.get("c.getFifthDetail");
+        actionDetail.setParams({"tuScoreFactor" : component.get("v.pcr.LASERCA__TransUnion_Score_Factor__c")});
+        actionDetail.setCallback(this, function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                component.set("v.detailFive", resp.getReturnValue());
+            } else {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "LoanUnderwritingApplicantCreditController",
+                                    "methodName" : "doInitDetail",
+                                    "errors" : resp.getError()});
+                appEvent.fire();
+            }
+        });
+
+        var actionCode = component.get("c.getFifthCode");
+        actionCode.setParams({"tuScoreFactor" : component.get("v.pcr.LASERCA__TransUnion_Score_Factor__c")});
+        actionCode.setCallback(this, function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                component.set("v.codeFive", resp.getReturnValue());
+            } else {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "LoanUnderwritingApplicantCreditController",
+                                    "methodName" : "doInitCode",
+                                    "errors" : resp.getError()});
+                appEvent.fire();
+            }
+        });
+
+        $A.enqueueAction(actionDetail);
+        $A.enqueueAction(actionCode);
+    },
+
     openModal: function(component, event, helper) {
         component.set("v.isOpen", true);
         helper.getPicklistOptions(component, 
