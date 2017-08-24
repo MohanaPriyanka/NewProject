@@ -23,10 +23,11 @@
     color: #266092;
     }        
   </style>    
-   <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product']" 
-                        tableRecords="{!v.allCustomers}" 
-                        recordFieldNames="['Name', 'Id', 'Product__r.Name']"
-                        headerMap="{Customer: 'Name', 'Sales Agent': 'Id', Product: 'Product__r.Name'}"/>
+  <div class="box">
+      <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product', 'Status']" 
+                           tableRecords="{!v.allCustomers}" 
+                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.Name', 'Partner_Tasks__r[0].Name' ]"/>
+   </div>                        
    <div aura:id = "allCustomers">
    <div class="slds-form-element slds-lookup" data-select="single">
    <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>

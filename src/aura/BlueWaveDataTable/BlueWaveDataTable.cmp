@@ -1,4 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>    
 	<aura:attribute name="headerLabels" type="String[]"/>
 	<aura:attribute name="tableRecords" type="Loan__c[]"/>
@@ -7,36 +8,22 @@
   <aura:attribute type="Boolean" name="sortAsc" />
   <aura:attribute type="Boolean" name="sortArrow" />
   <aura:attribute type="String" name="sortField" />  
-	<style>
-      @font-face {
-      font-family: proximaNovaFont;
-      src: url('{!$Resource.ProximaNova}');
-      }
-      .proximaNovaDataStream {
-      font-family: proximaNovaFont;   
-      font-size:100%;
-      color: #00b2a9;
-      }
-      .proximaNovaDataBlue {
-      font-family: proximaNovaFont;   
-      font-size:100%;
-      color: #266092;
-      }  
-  </style>
-  <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table--striped slds-scrollable box">
+  <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
   	<thead>
-  		<tr class="slds-text-heading--label">			
-  			<aura:iteration items="{!v.headerLabels}" var="label">
-          <c:BlueWaveDataTableHeader label="{!label}" headerMap="{!v.headerMap}" sortField="{!v.sortField}"/>
-  			</aura:iteration>
-  		</tr>					
+  		<tr class="slds-text-heading--label proximaNovaDataBlue">		
+        <aura:if isTrue="{!v.headerMap != null}">
+          <aura:iteration items="{!v.headerLabels}" var="label">
+            <c:BlueWaveDataTableHeader label="{!label}" headerMap="{!v.headerMap}" sortField="{!v.sortField}"/>
+          </aura:iteration>
+        </aura:if>
+      </tr>					
   	</thead>
   	<tbody>
   		<aura:iteration items="{!v.tableRecords}" var="record">
   			<tr>
   				<aura:iteration items="{!v.recordFieldNames}" var="fieldName">
   					<th scope="col">
-  						<span class="slds-truncate proximaNovaDataBlue">
+  						<span class="slds-truncate">
   							<b>
   								<c:BlueWaveDataTableRow objectRecord="{!record}" fieldName="{!fieldName}"/>
   							</b>
