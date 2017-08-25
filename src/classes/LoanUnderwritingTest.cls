@@ -63,7 +63,7 @@ public with sharing class LoanUnderwritingTest {
                 WHERE FirstName = 'leadMALoanTerm20Rate699'
                 LIMIT 1];
         System.assertEquals(true, lead.Manual_Credit_Decline__c);
-        System.assertEquals('INQUIRIES IMPACTED THE CREDIT SCORE', lead.Credit_Report_Detail_5__c);
+        System.assertEquals('FA - INQUIRIES IMPACTED THE CREDIT SCORE', lead.Credit_Report_Detail_5__c);
         
         List<Attachment> a = [SELECT Id, Body
                               FROM Attachment

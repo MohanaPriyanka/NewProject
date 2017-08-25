@@ -132,10 +132,14 @@ global without sharing class LoanUnderwriting {
                 WHERE Id =: lead.Id];
         if (coApplicant) {
             lead.Co_App_Credit_Report_Detail_5__c = 
+                getFifthCode(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c) +
+                ' - ' +
                 getFifthDetail(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Co_App_Manual_Credit_Decline__c = true;
         } else {
             lead.Credit_Report_Detail_5__c = 
+                getFifthCode(lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c) +
+                ' - ' +
                 getFifthDetail(lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Manual_Credit_Decline__c = true;
         }
