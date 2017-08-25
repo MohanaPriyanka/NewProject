@@ -231,7 +231,7 @@ private class PCRApprovalHandlerTest {
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '800') {
                 System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '701') {
-                System.assertEquals('Declined', creditreport.Solar_Loan_Approval_Status__c);
+                System.assertEquals('Pending Review', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '801') {
                 System.assertEquals('Approved', creditreport.Solar_Loan_Approval_Status__c);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '810') {
