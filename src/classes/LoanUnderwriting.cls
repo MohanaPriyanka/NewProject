@@ -7,8 +7,10 @@
  Tested By: LoanUnderwritingControllerTest
  *************************************************************************************/
 
-public without sharing class LoanUnderwriting {
+global without sharing class LoanUnderwriting {
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+    public static Integer CODE = 0;
+    public static Integer DETAIL = 1;
 
     @AuraEnabled 
     public static LeadWithPCRAttachments getLead(Id leadId) {
@@ -38,6 +40,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report__r.LASERCA__Detail_2__c,
                             Personal_Credit_Report__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report__r.LASERCA__Detail_4__c,
+                            Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c,
                             Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
                             Personal_Credit_Report__r.Annual_Income_from_Lead__c,
                             Personal_Credit_Report__r.Adjusted_Income__c,
@@ -64,6 +67,7 @@ public without sharing class LoanUnderwriting {
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_4__c,
+                            Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
                             Personal_Credit_Report_Co_Applicant__r.Annual_Income_from_Lead__c,
                             Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
@@ -117,14 +121,59 @@ public without sharing class LoanUnderwriting {
         }
     }
      
+    // Can be called from custom buttons on the Lead page, or from the LoanUnderwriting screen
     @AuraEnabled 
-    public static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
+    webservice static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
+        // Copy Transunion factor 5
+        lead = [SELECT Id, Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c, 
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c,
+                Credit_Report_Detail_5__c, Co_App_Credit_Report_Detail_5__c
+                FROM Lead
+                WHERE Id =: lead.Id];
         if (coApplicant) {
+            lead.Co_App_Credit_Report_Detail_5__c = 
+                getFifthFactor(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Co_App_Manual_Credit_Decline__c = true;
         } else {
+            lead.Credit_Report_Detail_5__c = 
+                getFifthFactor(lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Manual_Credit_Decline__c = true;
         }
         update lead;
+    }
+
+    // Parses out the fifth TransUnion Factor since the current version of LASERCA only has four factors
+    @AuraEnabled        
+    public static String getFifthCode(String tuScoreFactor) {
+        return(getFifthFactor(tuScoreFactor, CODE));
+    }
+
+    @AuraEnabled        
+    public static String getFifthDetail(String tuScoreFactor) {
+        return(getFifthFactor(tuScoreFactor, DETAIL));
+    }
+
+    private static String getFifthFactor(String tuScoreFactor) {
+        if (getFifthCode(tuScoreFactor) != null) {
+            return getFifthCode(tuScoreFactor) + ' - ' + getFifthDetail(tuScoreFactor);
+        } else {
+            return null;
+        }
+    }
+
+    private static String getFifthFactor(String tuScoreFactor, Integer codeOrDetail) {
+        if (tuScoreFactor != null) {
+            List<String> factors = tuScoreFactor.split('\\n');
+            if (factors.size() == 5) {
+                List<String> factorParts = factors[4].split(' - ');
+                if (factorParts.size() == 2) {
+                    return factorParts[codeOrDetail];
+                } else {
+                    return factors[4];
+                }
+            }
+        }
+        return null;
     }
 
     @AuraEnabled 
