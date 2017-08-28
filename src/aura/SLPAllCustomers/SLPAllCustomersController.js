@@ -18,7 +18,7 @@
         var action = component.get("c.getAllCustomers");        
         action.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                component.set("v.allCustomers", resp.getReturnValue());
+                component.set("v.allCustomers", resp.getReturnValue());       
             }
             else {
                 $A.log("Errors", resp.getError());

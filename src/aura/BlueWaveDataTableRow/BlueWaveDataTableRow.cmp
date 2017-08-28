@@ -1,6 +1,18 @@
 <aura:component extensible="true"  access="global">
     <aura:attribute name="objectRecord" type="Object" />
     <aura:attribute name="fieldName" type="String" />
+    <aura:attribute name="colorMap" type="Map" />
+    <aura:attribute name="fieldTypeMap" type="Map" />
+    <aura:attribute name="colorCode" type="String" />
+    <aura:attribute name="fieldType" type="String" />   
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <ui:outputText aura:Id="outputTextId" />
+
+    <div style="{!'color:' + v.colorCode}">    
+    	<aura:if isTrue="{!v.fieldType == 'String'}">    
+    		<ui:outputText aura:Id="outputTextId"/>
+    	</aura:if>
+    	<aura:if isTrue="{!v.fieldType == 'Currency'}">    
+    		<ui:outputCurrency aura:Id="outputCurrencyId"/>
+    	</aura:if>    	
+    </div>
 </aura:component>

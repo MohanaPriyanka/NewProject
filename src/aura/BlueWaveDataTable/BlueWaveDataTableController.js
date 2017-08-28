@@ -1,3 +1,4 @@
+// consider putting a query attribure into the component that allows the user to chooose if they want to query in the table or outside the table
 ({
     doInit : function(component, helper) {
         var headerMap = {};
@@ -12,65 +13,17 @@
     },
 
     sortTable: function(component, event, helper) {
-    	var removedList = [];
+        var removedList = [];
         var sortField = event.getParam("sortField");        
-        var currentOrder = component.get("v.sortAsc"),
-            currentList = component.get("v.tableRecords");
-        currentOrder = !currentOrder;
-        console.log(currentList);        
-        for (i=0; i < currentList.length; i++) {
-            var record = currentList[i];
-        	if (sortField.includes("__r.")) {
-        		var crossRelationalField = sortField.split(".");
-        		var objectRecord = crossRelationalField[0].replace("__r", "__c");
-        		if (record[objectRecord] == null) {
-        			removedList.push(record);        			
-        			currentList.splice(i, 1);   			
-        		}        		             		
-        	} else if (sortField.includes("__r[0]")) {
-                // console.log(record);
-                var childObjectList = sortField.split("[0].");                
-                if (record[childObjectList[0]] == null) {
-                    removedList.push(record);                   
-                    currentList.splice(i, 1);  
-                    // console.log(currentList);
-                    debugger;    
-                    console.log(removedList);                 
-                } else {
-                    if (record[childObjectList[0]]["0"][childObjectList[1]] == null) {
-                        console.log(record[childObjectList[0]]["0"][childObjectList[1]]);
-                        removedList.push(record);                   
-                        currentList.splice(i, 1);                    
-                    }
-                }                              
-            } 
-            else {
-        		if (record[sortField] == null) {
-        			removedList.push(record);        			
-        			currentList.splice(i, 1);
-        		}        		             		        		
-        	}
-        }
-        currentList.sort(function(a,b) {
-        	if (a[sortField] == null) {
-        		return -1;
-        	} else {
-            	var t1 = a[sortField] == b[sortField], t2 = a[sortField] < b[sortField];
-            	return t1? 0: (currentOrder?-1:1)*(t2?1:-1);
-        	}
-        });
-        // console.log(removedList);
-        if (removedList.length > 0) {
-        	for (i=0; i < removedList.length; i++) {
-        		if (currentOrder) {
-        			currentList.unshift(removedList[i]);
-        		} else {
-        			currentList.push(removedList[i]);
-        		}
-        	}        	
-        }
-        component.set("v.sortAsc", currentOrder);
-        component.set("v.tableRecords", currentList);
-        component.set("v.sortField", sortField);
+        var currentOrder = !component.get("v.sortAsc"),
+            recordList = component.get("v.tableRecords");
+        var returnLists = helper.handleNullValuesInSort(component, recordList, removedList, sortField);
+        recordList = [];
+        removedList = returnLists[0];
+        recordList = returnLists[1];
+
+        helper.sortRecords(component, recordList, currentOrder, sortField);
+        helper.addNullValuesTorecordList(component, recordList, removedList, currentOrder);
+        helper.setComponentSortAttributes(component, recordList, currentOrder, sortField);
     },
 })

@@ -1,3 +1,4 @@
+<!-- add the option to query in the table -->
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>    
@@ -5,15 +6,19 @@
 	<aura:attribute name="tableRecords" type="Loan__c[]"/>
 	<aura:attribute name="recordFieldNames" type="String[]"/>
   <aura:attribute name="headerMap" type="Map"/>
+  <aura:attribute name="colorMap" type="Map"/>  
+  <aura:attribute name="fieldTypeMap" type="Map"/>
   <aura:attribute type="Boolean" name="sortAsc" />
   <aura:attribute type="Boolean" name="sortArrow" />
-  <aura:attribute type="String" name="sortField" />  
+  <aura:attribute type="String" name="sortField" />
   <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
   	<thead>
   		<tr class="slds-text-heading--label proximaNovaDataBlue">		
         <aura:if isTrue="{!v.headerMap != null}">
           <aura:iteration items="{!v.headerLabels}" var="label">
-            <c:BlueWaveDataTableHeader label="{!label}" headerMap="{!v.headerMap}" sortField="{!v.sortField}"/>
+            <c:BlueWaveDataTableHeader label="{!label}" 
+                                       headerMap="{!v.headerMap}" 
+                                       sortField="{!v.sortField}"/>
           </aura:iteration>
         </aura:if>
       </tr>					
@@ -25,7 +30,10 @@
   					<th scope="col">
   						<span class="slds-truncate">
   							<b>
-  								<c:BlueWaveDataTableRow objectRecord="{!record}" fieldName="{!fieldName}"/>
+  								<c:BlueWaveDataTableRow objectRecord="{!record}" 
+                                          fieldName="{!fieldName}" 
+                                          colorMap="{!v.colorMap}"
+                                          fieldTypeMap="{!v.fieldTypeMap}"/>
   							</b>
   						</span>
   					</th>
