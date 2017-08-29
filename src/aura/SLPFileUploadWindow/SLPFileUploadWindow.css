@@ -3,32 +3,65 @@
     color:#FFFFFF;
 }
 
+.THIS .tealBackground {
+    background:#00AFA9; 
+    color:#FFFFFF;
+}
+
+.THIS .greyBackground {
+    background:#A9A9A9; 
+    color:#FFFFFF;
+}
+
 .THIS .noDisplay {
     display: none;
 }
 
-.THIS .buttonRightNoPadding {
-    float:right;
+.THIS .whiteText {
     color:#FFFFFF;
 }
 
-.THIS .buttonLeftNoPadding {
-    float:left;
-    color:#FFFFFF;
+.THIS .blueText {
+    color:#266092;
+}
+
+.THIS .shake {
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+}
+
+.THIS .redcolor {
+  color: #FF0000;
+}
+
+.THIS .fortyWidth {
+ 	width: 40%;
+}
+
+.THIS .border {
+    border-style: solid;
+    border-width: 6px;
+    border-color:#00AFA9;
+    border-radius: 2px;
+}
+
+.THIS .greyborder {
+    border-style: solid;
+    border-width: 8px;
+    border-color:#A9A9A9;
+    border-radius: 2px;
+}
+
+.THIS .paddingAround {
+    margin-top:2%;
+    margin-left:2%;
+    margin-right:2%;
+    margin-bottom:5%;
 }
 
 .THIS .closeButton {
     float:right;
     color:#FFFFFF;
     margin-right:3%;
-}
-
-.THIS .backButton {
-    float:left;
-    color:#FFFFFF;
-    margin-left:3%;
-}
-
-.THIS .textSize {
-    font-size:90%;
 }

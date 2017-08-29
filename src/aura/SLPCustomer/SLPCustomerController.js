@@ -23,7 +23,7 @@
         var customerPage = component.find("customerPage");
         $A.util.removeClass(customerPage, 'noDisplayBar');
 
-	//retrieve the loan Id to set the record for the component to display.
+		//retrieve the loan Id to set the record for the component to display.
         var label = event.getParam("customerLoanId");
 
         //retrieve the customer's full information to display in the component
@@ -260,54 +260,7 @@
     },
 
     saveEquipmentInformation : function(component, event, helper) {
-        helper.startSpinner(component, "srecSaveSpinner");
-        helper.startSpinner(component, "customerInformationSpinner");
-        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
-
-	var equipmentUpdateVar = component.get("v.equipmentUpdate");
-        var equipmentIdVar = component.get("v.customerInformation.Id");
-        var loanUpdateVar = component.get("v.loanUpdate");
-        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
-
-        var saveAction = component.get("c.saveCustomerInformation");
-        saveAction.setParams({
-            "equipmentFromComponent" : equipmentUpdateVar,
-            "equipmentId" : equipmentIdVar,
-            "loanId" : loanUpdateIdVar,
-            "loan" : loanUpdateVar,
-        });
-
-        saveAction.setCallback(this, function(resp) {
-            if (resp.getState() == "SUCCESS") {
-                helper.stopSpinner(component, "srecSaveSpinner");
-                helper.stopSpinner(component, "customerInformationSpinner");
-                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-        var customerInformationAction = component.get("c.getCustomerInformation");
-        customerInformationAction.setParams({loanId : loanUpdateIdVar})
-        customerInformationAction.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.customerInformation", resp.getReturnValue());
-                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-	$A.enqueueAction(saveAction);
-
-        $A.enqueueAction(customerInformationAction);
-        helper.getProgressBarDataMethod(component, event, helper);
+        helper.saveCustomerData(component, event, helper);
     },
 
     savePtoDoc : function(component, event, helper) {
@@ -376,27 +329,7 @@
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
         helper.closeSystemInformationSaved(component);
-
-        var i;
-        var partnerTaskList = component.get("c.getLoanCustomerTasks");
-        var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
-        partnerTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerTaskList", resp.getReturnValue());
-                for (i=0; i<resp.getReturnValue().length; i++) {
-                    if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
-                    } else {
-                        continue;
-                    }
-                }
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(partnerTaskList);
-
+		helper.refreshPartnerTasks(component);
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
     },
 
@@ -522,6 +455,8 @@
     handleTaskAction : function(component, event, helper) {
         console.log(component.get("v.customerInformation"));
         var equipmentId = component.get("v.customerInformation.Id");
+        var equipmentObject = component.get("v.equipmentUpdate");
+        console.log(equipmentId);
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
         var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
@@ -536,40 +471,54 @@
             case 'Provide All System Information':
                 helper.openCustomerModal(component, event, helper);
                 return;
+                
             case 'Mechanical Installation':
-                urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381585'
-                               + '?tfa_814=' + leadId
-                               + '&tfa_828=' + !equipmentUpdateDummy
-                               + '&tfa_821=' + equipmentId});
-                break;
+                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, equipmentObject, "Mechanical Installation Documentation");
+                return;
+
             case 'Interconnection':
             case 'Report Interconnection to MCEC':
                 if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
                     urlEvent.setParams(
+                    // THIS NEEDS TO STAY IN FORM ASSEMBLY FOR NOW
                        {'url': 'https://forms.bluewaverenewables.com/381637'
                                + '?tfa_117=' + equipmentId
                                + '&tfa_118=' + !equipmentUpdateDummy
                                + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381589'
-                               + '?tfa_814=' + leadId
-                               + '&tfa_828=' + !equipmentUpdateDummy
-                               + '&tfa_821=' + equipmentId});
-                    break;
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation");
+                	return;
                 }
             case 'Provide Sales Agreement':
-                urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381606'
-                               + '?tfa_814=' + oppId
-                               + '&tfa_828=' + !oppUpdateDummy});
-                break;
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement");
+              return;
             default:
-                break;
+              break;
         }
         urlEvent.fire();
     },
+    
+    handleAfterFileUpload : function(component, event, helper) {
+        var newResiEquip = event.getParam("residentialEquipment");
+        var oppId = event.getParam("opportunityID");
+        if (oppId != null) {
+        	var actionOppUpdate = component.get("c.updateOpportunity");
+            actionOppUpdate.setParams({
+                "opportunityUpdateId" : oppId
+            });
+            actionOppUpdate.setCallback(this, function(resp) {
+                if (resp.getState() == "SUCCESS") {
+                   helper.refreshPartnerTasks(component);
+                } else {
+                   $A.log("Errors", resp.getError());
+                }
+            });
+            $A.enqueueAction(actionOppUpdate);
+        } else {
+            component.set("v.equipmentUpdate", newResiEquip);
+        	helper.saveCustomerData(component, event, helper);
+        	helper.refreshPartnerTasks(component);
+        }                                  
+    },
 })
-

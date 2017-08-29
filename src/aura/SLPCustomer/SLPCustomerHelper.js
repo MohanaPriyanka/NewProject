@@ -13,6 +13,70 @@
         evt.fire();
     },
     
+    saveCustomerData : function(component, event, helper) {
+    	this.startSpinner(component, "srecSaveSpinner");
+        this.startSpinner(component, "customerInformationSpinner");
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
+
+		var equipmentUpdateVar = component.get("v.equipmentUpdate");
+        var equipmentIdVar = component.get("v.customerInformation.Id");
+        var loanUpdateVar = component.get("v.loanUpdate");
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+
+        var saveAction = component.get("c.saveCustomerInformation");
+        saveAction.setParams({
+            "equipmentFromComponent" : equipmentUpdateVar,
+            "equipmentId" : equipmentIdVar,
+            "loanId" : loanUpdateIdVar,
+            "loan" : loanUpdateVar,
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+                this.stopSpinner(component, "srecSaveSpinner");
+                this.stopSpinner(component, "customerInformationSpinner");
+                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
+                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanUpdateIdVar})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
+		$A.enqueueAction(saveAction)
+        $A.enqueueAction(customerInformationAction);
+    },
+    
+    refreshPartnerTasks : function (component) {
+     	var i;
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(partnerTaskList);
+    },
+    
     getGenericPage: function(page, component) { 
         $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                           
         $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
@@ -75,6 +139,33 @@
         };
 
         fr.readAsDataURL(file);
+    },
+        
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
+      var body = component.get("v.body");  
+      component.set("v.body", []);  
+      $A.createComponent(
+      "c:SLPFileUploadWindow", 
+      	{"dateLabel": dateLabelString,
+      	"windowHeader": windowHeaderString,
+        "fileParentId": parentId,
+        "resiEquipment" : equipmentObject,
+        "fileName": nameFile }, 
+                       
+          function(newButton, status, errorMessage){
+          if (status === "SUCCESS") {
+            var body = component.get("v.body");
+            body.push(newButton);
+            component.set("v.body", body);
+          }
+          else if (status === "INCOMPLETE") {
+            console.log("No response from server or client is offline.")
+          }
+          else if (status === "ERROR") {
+            console.log("Error: " + errorMessage);
+          }
+         }
+       );       
     },
     
     upload: function(component, file, fileContents) {
@@ -152,7 +243,7 @@
         $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("systemInformationInputs"), 'noDisplay');
         $A.util.removeClass(component.find("systemInformationSubmitConfirmation"), 'noDisplay');
-    },    
+    }, 
 
     closeSystemInformationSaved : function(component, event, helper) {
         $A.util.removeClass(component.find("systemInformationInputs"), 'noDisplay');
