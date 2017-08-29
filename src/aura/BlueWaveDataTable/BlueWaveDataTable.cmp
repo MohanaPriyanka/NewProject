@@ -2,15 +2,19 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>    
-	<aura:attribute name="headerLabels" type="String[]"/>
-	<aura:attribute name="tableRecords" type="Loan__c[]"/>
-	<aura:attribute name="recordFieldNames" type="String[]"/>
+  <aura:attribute name="headerLabels" type="String[]"/>
+  <aura:attribute name="tableRecords" type="Loan__c[]"/>
+  <aura:attribute name="recordFieldNames" type="String[]"/>
   <aura:attribute name="headerMap" type="Map"/>
   <aura:attribute name="colorMap" type="Map"/>  
   <aura:attribute name="fieldTypeMap" type="Map"/>
-  <aura:attribute type="Boolean" name="sortAsc" />
-  <aura:attribute type="Boolean" name="sortArrow" />
-  <aura:attribute type="String" name="sortField" />
+  <aura:attribute name="sortAsc" type="Boolean"/>
+  <aura:attribute name="sortArrow" type="Boolean"/>
+  <aura:attribute name="sortField" type="String" />
+  <aura:attribute name="buttonConditionalField" type="String" />
+  <aura:attribute name="buttonConditionalsMap" type="Map"/> 
+  <aura:attribute name="buttonLabelsMap" type="Map"/>  
+  <aura:attribute name="buttonLabel" type="String"/>  
   <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
   	<thead>
   		<tr class="slds-text-heading--label proximaNovaDataBlue">		
@@ -29,12 +33,18 @@
   				<aura:iteration items="{!v.recordFieldNames}" var="fieldName">
   					<th scope="col">
   						<span class="slds-truncate">
-  							<b>
-  								<c:BlueWaveDataTableRow objectRecord="{!record}" 
+                <aura:if isTrue="{!fieldName != 'Action'}">
+  							   <b>
+  								    <c:BlueWaveDataTableRow objectRecord="{!record}" 
                                           fieldName="{!fieldName}" 
                                           colorMap="{!v.colorMap}"
                                           fieldTypeMap="{!v.fieldTypeMap}"/>
-  							</b>
+  							   </b>
+                  <aura:set attribute="else">
+                    <ui:button label="{!v.buttonLabel}"
+                               labelClass="label"/>  
+                  </aura:set>
+                </aura:if>
   						</span>
   					</th>
   				</aura:iteration>

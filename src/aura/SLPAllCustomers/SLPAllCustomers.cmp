@@ -24,11 +24,13 @@
     }        
   </style>    
   <div class="box">
-      <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Loan Amount']" 
+      <c:BlueWaveDataTable headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Loan Amount', '']" 
                            tableRecords="{!v.allCustomers}" 
-                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.Name', 'Partner_Tasks__r[0].Name', 'Requested_Loan_Amount__c']"
+                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.Name', 'Partner_Tasks__r[0].Name', 'Requested_Loan_Amount__c', 'Action']"
                            fieldTypeMap="{Requested_Loan_Amount__c: 'Currency'}"
-                           colorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"/>
+                           colorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                           buttonConditionalField="Name"
+                           buttonConditionalsMap="{'IX Testcase': 'Cole', 'Seventy Testcase': 'Swain'}" />
    </div>                        
    <div aura:id = "allCustomers">
    <div class="slds-form-element slds-lookup" data-select="single">
