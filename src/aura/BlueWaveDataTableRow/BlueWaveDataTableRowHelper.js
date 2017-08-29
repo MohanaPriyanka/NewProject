@@ -63,5 +63,43 @@
                 component.set("v.colorCode", color);            
             }
         }
-    },              
+    },   
+
+    setButtonLabels : function(component) {
+        var record = component.get("v.objectRecord");
+        var conditionalField = component.get("v.buttonConditionalField");
+        var conditionalFieldMap = component.get("v.buttonConditionalsLabelMap");
+        var allButtonLabels = component.get("v.allButtonLabels");  
+
+        if (allButtonLabels != null) {
+            component.set("v.buttonLabel", allButtonLabels);
+        } else {
+            if (conditionalField != null) {
+                if (conditionalFieldMap[record[conditionalField]] != null) {
+                    component.set("v.buttonLabel", conditionalFieldMap[record[conditionalField]]);  
+                } else {
+                    component.set("v.buttonLabel", null);  
+                }
+            } 
+        }  
+    }, 
+
+    setButtonEvents : function(component) {
+        var record = component.get("v.objectRecord");
+        var conditionalField = component.get("v.buttonConditionalField");
+        var conditionalFieldMap = component.get("v.buttonConditionalsEventMap");
+        var allButtonEvents = component.get("v.allButtonEvents");  
+
+        if (allButtonEvents != null) {
+            component.set("v.buttonEventId", allButtonEvents);
+        } else {
+            if (conditionalField != null) {
+                if (conditionalFieldMap[record[conditionalField]] != null) {
+                    component.set("v.buttonEventId", conditionalFieldMap[record[conditionalField]]);  
+                } else {
+                    component.set("v.buttonEventId", null);  
+                }
+            } 
+        }  
+    },                  
 })

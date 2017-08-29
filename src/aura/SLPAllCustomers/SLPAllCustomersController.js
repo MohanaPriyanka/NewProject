@@ -1,5 +1,5 @@
 ({
-	doInit : function(component, event, helper) {
+    doInit : function(component, event, helper) {
         //The following block of code retrieves the user's license type to determine what to display on the UI
         var actionLicenseType = component.get("c.getLicenseType");        
         actionLicenseType.setCallback(this,function(resp){
@@ -27,7 +27,16 @@
         $A.enqueueAction(action);  
         component.set("v.sortAsc", true);   
         component.set("v.sortField", "Name");   
-	},
+    },
+
+    executeTableButtonActions : function(component, event, helper) {        
+       var buttonEventId = event.getParam("buttonEventId");
+       var record = event.getParam("record");
+        switch (buttonEventId) {
+            case 'openCustomerWindow':
+                helper.openCustomerWindow(component, record);   
+        }  
+    },    
     
     searchCustomers : function(component, event, helper) {            
         var input = component.find("customerSearch");
@@ -74,7 +83,6 @@
         var evtCustomerWindow = $A.get("e.c:SLPAllCustomersEvent");
         evtCustomerWindow.setParams({"customerLoanId": customerLoanId});
         evtCustomerWindow.fire(); 
-	    //}   
     },
     
 

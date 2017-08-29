@@ -1,7 +1,8 @@
 <!-- add the option to query in the table -->
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-  <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>    
+  <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>   
+  <aura:attribute name="name" type="String"/> 
   <aura:attribute name="headerLabels" type="String[]"/>
   <aura:attribute name="tableRecords" type="Loan__c[]"/>
   <aura:attribute name="recordFieldNames" type="String[]"/>
@@ -12,9 +13,10 @@
   <aura:attribute name="sortArrow" type="Boolean"/>
   <aura:attribute name="sortField" type="String" />
   <aura:attribute name="buttonConditionalField" type="String" />
-  <aura:attribute name="buttonConditionalsMap" type="Map"/> 
-  <aura:attribute name="buttonLabelsMap" type="Map"/>  
-  <aura:attribute name="buttonLabel" type="String"/>  
+  <aura:attribute name="buttonConditionalsLabelMap" type="Map"/> 
+  <aura:attribute name="buttonConditionalsEventMap" type="Map"/>
+  <aura:attribute name="allButtonLabels" type="String"/>  
+  <aura:attribute name="allButtonEvents" type="String"/> 
   <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
   	<thead>
   		<tr class="slds-text-heading--label proximaNovaDataBlue">		
@@ -33,18 +35,17 @@
   				<aura:iteration items="{!v.recordFieldNames}" var="fieldName">
   					<th scope="col">
   						<span class="slds-truncate">
-                <aura:if isTrue="{!fieldName != 'Action'}">
-  							   <b>
-  								    <c:BlueWaveDataTableRow objectRecord="{!record}" 
-                                          fieldName="{!fieldName}" 
-                                          colorMap="{!v.colorMap}"
-                                          fieldTypeMap="{!v.fieldTypeMap}"/>
-  							   </b>
-                  <aura:set attribute="else">
-                    <ui:button label="{!v.buttonLabel}"
-                               labelClass="label"/>  
-                  </aura:set>
-                </aura:if>
+							   <b>
+								    <c:BlueWaveDataTableRow objectRecord="{!record}" 
+                                            fieldName="{!fieldName}" 
+                                            colorMap="{!v.colorMap}"
+                                            fieldTypeMap="{!v.fieldTypeMap}"
+                                            allButtonLabels="{!v.allButtonLabels}"
+                                            allButtonEvents="{!v.allButtonEvents}"
+                                            buttonConditionalField="{!v.buttonConditionalField}"
+                                            buttonConditionalsLabelMap="{!v.buttonConditionalsLabelMap}"
+                                            buttonConditionalsEventMap="{!v.buttonConditionalsEventMap}"/>
+							   </b>
   						</span>
   					</th>
   				</aura:iteration>
