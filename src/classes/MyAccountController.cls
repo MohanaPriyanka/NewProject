@@ -1,12 +1,24 @@
+/*************************************************************************************
+ * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
+ * 
+ * Description: This class handles most actions needed to be performed by the Community Solar Customer Portal's My Account Page.
+ * 
+ Tested By: CommunitySolarCUstomerPortalTest
+ *************************************************************************************/
+
 public without sharing class MyAccountController {
- @AuraEnabled
+
+  public static User customerUser = new User();
+  static {
+    customerUser = [SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  FROM User WHERE Id = :UserInfo.getUserId()];
+  }
+
+  @AuraEnabled
     public static List<Account> getMenuLabelList() {
     list<Account> propertyAccountLabelList = new list<Account>();
     User u = [SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  FROM User WHERE Id = :UserInfo.getUserId()];
-    System.debug('The user is ' + u.Parent_account_id__c);
     String userAccountId = (String)u.Contact.Account.Id;      
     for(Account propertyAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c FROM Account WHERE Parent_Account__c = : u.Contact.AccountId]) {
-        System.debug('The returned propertyAccount is ' + propertyAccount);
         propertyAccountLabelList.add(propertyAccount);
     }    
     return propertyAccountLabelList;
@@ -25,10 +37,7 @@ public without sharing class MyAccountController {
                                         FROM Opportunities__r WHERE stageName = 'Complete' 
                                         AND Account.Parent_Account__c = : u.Parent_Account_ID__c )
                                       FROM Shared_Solar_System__c]) {     
-      System.debug(LoggingLevel.info, sss.Opportunities__r.size());
       for (Opportunity opp : sss.Opportunities__r) {
-        System.debug(Logginglevel.info, 'The Opp Account ID is ' + ' ' + String.valueOf(opp.Account.Parent_Account__r.Id).subString(0,15));
-        System.debug(Logginglevel.info, 'The user account ID is ' + ' ' + u.Parent_Account_ID__c);
 
         //if (String.valueOf(opp.Account.Parent_Account__r.Id).substring(0,15) == u.Parent_Account_ID__c) {
           if (sss.Auto_Payment_Form__c == true) {
@@ -39,14 +48,10 @@ public without sharing class MyAccountController {
         //}
       }
     }      
-    System.debug(Logginglevel.info, 'The nonChargentFormList size ' + ' ' + nonChargentFormList.size());
-    System.debug(Logginglevel.info, 'The ChargentFormlist size ' + ' ' + chargentFormList.size());   
 
     if (nonChargentFormList.size() > 0 && chargentFormList.size() <= 0 ) {
-    System.debug(Logginglevel.info, 'true');   
         return true;
     } else {
-    System.debug(Logginglevel.info, 'false ');
         return false;
     }
   }
@@ -54,44 +59,54 @@ public without sharing class MyAccountController {
     @AuraEnabled
    public static String getPropertyAccountId(String propertyAccountId) {
       return propertyAccountId;
-  }       
+  }   
+
     @AuraEnabled
-   public static Decimal getMyBill(String propertyAccountId) {
-     User u = [ SELECT Id, ContactId, Parent_Account_ID__c 
-                FROM User 
-                WHERE Id = :UserInfo.getUserId()];
-
-     Decimal totalBalance = 0;   
-     Decimal maxBillNumber = 0;
-
-      if(u.ContactId != null) {
-          List<Account_Bill__c> acctBillsact ;
-          if(propertyAccountId == 'All' || propertyAccountId == null) {
-                acctBillsact = [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
-                                  FROM Account_Bill__c
-                                  WHERE Account_ID__c = : u.Parent_Account_ID__c
-                                  ORDER BY Bill_Number__c];   
-          } else {
-                acctBillsact = [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
-                                  FROM Account_Bill__c
-                                  WHERE Parent_Account__r.Id = : propertyAccountId 
-                                  ORDER BY Bill_Number__c];
-          }
-          Integer j;
-          List<Id> acctBillsPropertyIds = new List<id>(); 
-                
-          for (j = 0; j < acctBillsact.size(); j++) {
-              integer maxbill = acctBillsact.size() - 1;
-              maxBillNumber = acctBillsact.get(maxbill).Bill_Number__c;
-          }
-         for (Account_Bill__c acctbill : acctBillsact) {
-            if (acctbill.Bill_Number__c == maxBillNumber) {
-                totalbalance = totalbalance + acctbill.Carry_Over_Balance__c;
+    public static Decimal getMyBill (String propertyAccountId) {
+        Decimal totalBalance = 0;
+        Decimal maxBillNumber = 0;
+        Decimal carryOverBalance = 0;
+        List<Decimal> carryOverBalanceList = new List<Decimal>();
+        if (customerUser.ContactId != null) {
+            if (propertyAccountId == 'All' || propertyAccountId == null) {
+                for (Account propertyAccount : [SELECT Id, Name, 
+                                                    (SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
+                                                    FROM Account_Bills__r 
+                                                    ORDER BY Bill_Number__c)
+                                                FROM Account
+                                                WHERE Parent_Account__r.Id = : customerUser.Parent_Account_Id__c]) {
+                    if (!propertyAccount.Account_Bills__r.isEmpty()) {
+                        for (Account_Bill__c accountBill : propertyAccount.Account_Bills__r) {
+                            if (maxBillNumber == 0 || maxBillNumber < accountBill.Bill_Number__c) {
+                                carryOverBalance = accountBill.Carry_Over_Balance__c;
+                                maxBillNumber = accountBill.Bill_Number__c;                
+                            }
+                        }
+                        carryOverBalanceList.add(carryOverBalance);
+                        carryOverBalance = 0;
+                        maxBillNumber = 0;
+                    }
+                }
+                for (Decimal carryOverBalanceLoopVar : carryOverBalanceList) {
+                  totalBalance = totalBalance + carryOverBalanceLoopVar;
+                }
+            return totalBalance;
+            } else {
+                for (Account_Bill__c propertyAccountBills : [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
+                                                             FROM Account_Bill__c
+                                                             WHERE Parent_Account__r.Id = : propertyAccountId
+                                                             ORDER BY Bill_Number__c]) {
+                    if (maxBillNumber == 0 || maxBillNumber < propertyAccountBills.Bill_Number__c) {
+                        carryOverBalance = propertyAccountBills.Carry_Over_Balance__c;
+                        maxBillNumber = propertyAccountBills.Bill_Number__c;                
+                    }    
+                }
+                return carryOverBalance;
             }
-          }
-      }
-      return totalBalance.setScale(2);   
-   }
+        } else {
+            return null;
+        }  
+    }
 
     @AuraEnabled
     public static List<AggregateResult> getSystemBills(String propertyAccountId) {
@@ -153,7 +168,6 @@ public without sharing class MyAccountController {
                                                
       }
 
-      system.debug('JP_TESTING' + aggresultlist);
       return aggresultlist;  
     }  
 
@@ -171,7 +185,6 @@ public without sharing class MyAccountController {
             myParentAccountId = abP.Id;           
         }
         catch(Exception ex) {
-          system.debug('There was an error');
         }
       }
       return myParentAccountId;   
@@ -202,13 +215,11 @@ public without sharing class MyAccountController {
                              AND Account.Parent_Account__r.Id = : u.Parent_Account_ID__c]) {
         oppList.add(opp);
       }
-    System.debug(oppList);  
     return oppList;
   }
 
   @AuraEnabled
   public static List<Account_Bill__c> getAccountBills (String propertyAccountId) {
-    system.debug(loggingLevel.info, propertyAccountId);
     User u = [Select Id, ContactId, Parent_Account_ID__c from User where Id = :UserInfo.getUserId()];
     List<Account_Bill__c> accountBillList = new List<Account_Bill__c>();
     integer check = 0;
@@ -222,7 +233,6 @@ public without sharing class MyAccountController {
                                             ORDER BY Bill_Number__c DESC]) {
         accountBillList.add(accountBillAll);
       }
-      system.debug(accountBillList);    
     }
     else{
       check = 2;
@@ -232,15 +242,12 @@ public without sharing class MyAccountController {
                                             ORDER BY Bill_Number__c DESC]) {
         accountBillList.add(accountBillProperty);
       }
-      system.debug(accountBillList);
     }
-    system.debug(loggingLevel.info,check);
     return accountBillList;
   }
 
   @AuraEnabled
   public static List<ChargentOrders__Transaction__c > getTransactions (String propertyAccountId) {
-    system.debug(loggingLevel.info, propertyAccountId);
     User u = [Select Id, ContactId, Parent_Account_ID__c from User where Id = :UserInfo.getUserId()];
     List<ChargentOrders__Transaction__c> chargentTransactionsList = new List<ChargentOrders__Transaction__c>();
     integer check = 0;
@@ -255,7 +262,6 @@ public without sharing class MyAccountController {
         
         chargentTransactionsList.add(chargentTransactionsAll);
       }
-      system.debug(chargentTransactionsList);    
     }
     else{
       check = 2;
@@ -267,9 +273,7 @@ public without sharing class MyAccountController {
                                                                          ORDER BY CreatedDate DESC]) {
         chargentTransactionsList.add(chargentTransactionsProperty);
       }
-      system.debug(chargentTransactionsList);
     }
-    system.debug(loggingLevel.info,check);
     return chargentTransactionsList;
   }  
 
@@ -287,20 +291,7 @@ public without sharing class MyAccountController {
       }
       return code;
    }  
-   
- //   @AuraEnabled
-//public static String getStatement(String parentId) {
-//  system.debug(Logginglevel.info, 'attachment ab id ' + parentId);
-//  String attachmentId;
-//  User u = [Select Id, ContactId, contact.AccountId from User where Id = :UserInfo.getUserId()];
-//    if(u.ContactId != null) {
-//        Attachment a = [select Id, Name from Attachment 
-//            where ParentId =: parentId LIMIT 1 ];
-//    attachmentId = a.Id;
-            
-//    }
-//    return attachmentId;
-//}
+
    @AuraEnabled
    public static String sendEmail(String emailAddress) {
      try {

@@ -3,7 +3,7 @@
  * Description: Controller for BlueWaveParent super component that can be used for all
  *              custom lightning components
  *
- Tested By: LoanUnderwritingControllerTest
+ * Tested By: LoanUnderwritingTest
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
@@ -12,6 +12,11 @@ public without sharing class BlueWaveParent {
     @AuraEnabled 
     public static void updateSObject(SObject sobj) {
         update sobj;
+    }
+
+    @AuraEnabled 
+    public static void insertSObject(SObject sobj) {
+        insert sobj;
     }
 
     @AuraEnabled 

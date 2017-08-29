@@ -1,7 +1,9 @@
 <aura:component extends="c.BlueWaveParent" controller="LoanUnderwriting">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="isCoApp" type="Boolean"/>
   <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:handler name="change" value="{!v.pcr}" action="{!c.doInit}" />
   <aura:attribute name="attachment" type="Attachment"/>
   <aura:attribute name="objectName" type="String"/>
   <!-- These attributes support the modal dialog that shows the really wide Adverse Credit Notice picklist -->
@@ -9,6 +11,9 @@
   <aura:attribute name="adverseObject" type="String"/>
   <aura:attribute name="adverseField" type="String"/>
   <aura:attribute name="adverseValue" type="String"/>
+  <!-- There's no field for Fifth Code and Detail, so we need to parse it out and treat separately -->
+  <aura:attribute name="codeFive" type="String"/>
+  <aura:attribute name="detailFive" type="String"/>
 
   <aura:if isTrue="{!v.isOpen}">
     <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open slds-modal_large">
@@ -159,8 +164,19 @@
         <ui:outputText value="{!v.pcr.LASERCA__Detail_4__c}"/>
       </div> 
       <div class = "tableCell">
-        <ui:outputText value="{!v.pcr.Adverse_Credit_Notice_4__c}"/>
-        &nbsp;[<a href="#" onclick="{!c.openModal}" data-objectname="{!v.objectName}" data-fieldname="Adverse_Credit_Notice_4__c">Change</a>]
+      </div> 
+    </div>
+    <div class = "tableRowEven">
+      <div class = "tableCell25px">
+        5
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.codeFive}"/>
+      </div> 
+      <div class = "tableCell">
+        <ui:outputText value="{!v.detailFive}"/>
+      </div> 
+      <div class = "tableCell">
       </div> 
     </div>
   </div>

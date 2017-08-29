@@ -3,13 +3,15 @@
         var leadPromise = helper.getLead(component);
         leadPromise.then(
             $A.getCallback(function resolve(helper) {
-                helper.calculateApplicationIncome(component);
-                helper.calculateApplicationDTI(component);
+                if (component.get("v.lead.Personal_Credit_Report__r")) {
+                    helper.calculateApplicationIncome(component);
+                    helper.calculateApplicationDTI(component);
+                }
+                helper.getPicklistOptions(component,
+                                          'LASERCA__Personal_Credit_Report__c', 
+                                          'Avidia_Review_Status__c',
+                                          component.find("AvidiaReviewStatus"));
             }));
-        helper.getPicklistOptions(component,
-                                  'LASERCA__Personal_Credit_Report__c', 
-                                  'Avidia_Review_Status__c',
-                                  component.find("AvidiaReviewStatus"));
     },
 
     updateReviewStatus : function(component, event, helper) {

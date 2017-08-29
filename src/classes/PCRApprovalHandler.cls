@@ -308,6 +308,8 @@ public without sharing class PCRApprovalHandler {
                     return APPROVED;
                 } else if (creditScore >= creditMinimum && DTIafter <= 40) {
                     return APPROVED;
+                } else if (creditScore >= creditMinimum && DTIafter > 40) {
+                    return PENDINGREVIEW;
                 } else {
                     return DECLINED;
                 }
@@ -530,13 +532,10 @@ public without sharing class PCRApprovalHandler {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
             Decimal interestRate = product.Loan_Interest_Rate__c / 100;
-            if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 1') {
-                paymentNumerator = leadRecord.Loan_Principal__c * 0.7 * interestRate / 12;
-            } else if (product.Program__c == 'MSLP' && leadRecord.Income_Support__c == 'Category 2') {
-                paymentNumerator = leadRecord.Loan_Principal__c * 0.8 * interestRate / 12;
-            } else {
-                paymentNumerator = leadRecord.Loan_Principal__c * interestRate / 12;
-            }
+            // IBLS is based on household income. Even if we use joint income, we don't know 
+            // if the customer will get IBLS, so don't base DTI After on IBLS
+            paymentNumerator = leadRecord.Loan_Principal__c * interestRate / 12;
+
             paymentDenominatorVar1 = ( 1 + interestRate/12);
             paymentDenominatorVar2 = (-1 * product.Loan_Term__c);
             paymentDenominatorVar3 = Math.pow(paymentDenominatorVar1, paymentDenominatorVar2);
