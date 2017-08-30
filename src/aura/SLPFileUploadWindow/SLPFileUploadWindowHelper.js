@@ -37,8 +37,8 @@
         $A.util.addClass(component.find("saveButton"), 'noDisplay');
         var MAXFILE_SIZE = 4500000;
         var CHUNKFILE_SIZE = 400000; 
-        var fileInput = component.find("file").getElement();
-    	var file = fileInput.files[0];
+      	var fileInput = component.find("file").getElement();
+        var file = fileInput.files[0];
         if (file === undefined) {
             component.set("v.errorText", 'Please Select a File');
             this.addErrorMessaging(component);
@@ -51,23 +51,20 @@
             return;
         } 
         var self = this;
-        var fr = new FileReader();
-        fr.onload = function() {
-            var fileContents = fr.result;
-            var base64Mark = 'base64,';
-            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
-            fileContents = fileContents.substring(dataStart);
-            if (file.size > CHUNKFILE_SIZE) {
-				self.startSpinner(component);
-                var fromPos = 0;
-        		var toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);
-                var attachID = 'none';
-                self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);
-            } else {
-            	self.upload(component, file, fileContents, fileType, parentId);
-            }
-        };
-        fr.readAsDataURL(file);
+        var fr = component.get("v.fileReader");
+        var fileContents = fr.result;
+        var base64Mark = 'base64,';
+        var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
+        fileContents = fileContents.substring(dataStart);
+        if (file.size > CHUNKFILE_SIZE) {
+			  self.startSpinner(component);
+              var fromPos = 0;
+        	  var toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);
+              var attachID = 'none';
+              self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);
+        } else {
+              self.upload(component, file, fileContents, fileType, parentId);
+        }
     },
     
     upload: function(component, file, fileContents, fileType, parentId) {

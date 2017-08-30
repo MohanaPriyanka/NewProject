@@ -113,8 +113,8 @@
         $A.enqueueAction(checkForPtoFile);
     },
 
-    MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
-    saveFile : function(component, event) {
+  //  MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
+  /*  saveFile : function(component, event) {
         var fileInput = event.getSource().get("v.files")[0];
 
         var file = fileInput;
@@ -140,6 +140,7 @@
 
         fr.readAsDataURL(file);
     },
+    */
         
     openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
       var body = component.get("v.body");  
@@ -168,7 +169,7 @@
        );       
     },
     
-    upload: function(component, file, fileContents) {
+ /*   upload: function(component, file, fileContents) {
         var action = component.get("c.savePTODocumentation");
         action.setParams({
             parentId: component.get("v.customerInformation.Id"),
@@ -181,7 +182,7 @@
         component.set("v.ptoFileName", file.name);
         component.set("v.ptoFileAttached", true);
     },
-
+*/
     openInterconnectionModal : function(component, event, helper) {
         $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open');
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');

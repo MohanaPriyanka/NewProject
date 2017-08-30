@@ -1,6 +1,6 @@
 ({
     doInit : function(component, event, helper) {
-	var closeButton = component.find("closeButton");
+		var closeButton = component.find("closeButton");
         $A.util.addClass(closeButton, 'noDisplay');
 
         //The following block of code retrieves the user's license type to determine what to display on the UI
@@ -62,7 +62,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : label});
-	completeLoanDisbursals.setCallback(this,function(resp) {
+		completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -72,7 +72,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : label});
-	incompleteLoanDisbursals.setCallback(this,function(resp) {
+		incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             } else {
@@ -108,7 +108,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : loanId});
-	completeLoanDisbursals.setCallback(this,function(resp) {
+		completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -119,7 +119,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : loanId});
-	incompleteLoanDisbursals.setCallback(this,function(resp) {
+		incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             }
@@ -146,24 +146,24 @@
         component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);
     },
 
-    setEquipmentAsInterconnected : function(component, event, helper) {
+/*   setEquipmentAsInterconnected : function(component, event, helper) {
         var source = event.getSource();
         component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));
     },
-
+*/
     setEquipmentCommonwealthProgram : function(component, event, helper) {
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));
     },
 
-    setInterconnectedTrue : function(component, event, helper) {
+ /*   setInterconnectedTrue : function(component, event, helper) {
         component.set("v.equipmentUpdate.Interconnected__c", "true");
     },
 
     setInterconnectedFalse : function(component, event, helper) {
         component.set("v.equipmentUpdate.Interconnected__c", "false");
     },
-
+*/
     setCwProgramTrue : function(component, event, helper) {
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "true");
     },
@@ -263,10 +263,10 @@
         helper.saveCustomerData(component, event, helper);
     },
 
-    savePtoDoc : function(component, event, helper) {
+  /*  savePtoDoc : function(component, event, helper) {
         helper.saveFile(component, event);
     },
-
+*/
     openCustomerModal : function(component, event, helper) {
         helper.openCustomerModal(component, event, helper);
     },
@@ -502,8 +502,12 @@
     handleAfterFileUpload : function(component, event, helper) {
         var newResiEquip = event.getParam("residentialEquipment");
         var oppId = event.getParam("opportunityID");
-        if (oppId != null) {
-        	var actionOppUpdate = component.get("c.updateOpportunity");
+        if (oppId === 'notOpp') {
+            component.set("v.equipmentUpdate", newResiEquip);
+        	helper.saveCustomerData(component, event, helper);
+        	helper.refreshPartnerTasks(component);
+        } else {
+            var actionOppUpdate = component.get("c.updateOpportunity");
             actionOppUpdate.setParams({
                 "opportunityUpdateId" : oppId
             });
@@ -515,10 +519,6 @@
                 }
             });
             $A.enqueueAction(actionOppUpdate);
-        } else {
-            component.set("v.equipmentUpdate", newResiEquip);
-        	helper.saveCustomerData(component, event, helper);
-        	helper.refreshPartnerTasks(component);
         }                                  
     },
 })
