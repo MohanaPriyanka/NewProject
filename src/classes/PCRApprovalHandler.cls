@@ -79,7 +79,7 @@ public without sharing class PCRApprovalHandler {
 
         PCRApprovalHandler pcrAH = new PCRApprovalHandler();
         List<LASERCA__Personal_Credit_Report__c> pcrs = 
-            [SELECT Id, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c, 
+            [SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c, 
              LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
              LASERCA__Credit_Score_TransUnion__c, Adjusted_Income__c, Annual_Income_From_Lead__c,
              DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
@@ -106,8 +106,6 @@ public without sharing class PCRApprovalHandler {
         List<LASERCA__Personal_Credit_Report__c> oldPCRs = new List<LASERCA__Personal_Credit_Report__c>();
         Datetime d1 = DateTime.now();
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            System.debug(LoggingLevel.ERROR, 'for pcr: ' + pcr.LASERCA__Credit_Score_TransUnion__c + 
-                         ' datediff is: ' + (d1.getTime() - pcr.CreatedDate.getTime())/1000);
             if ((d1.getTime() - pcr.CreatedDate.getTime())/1000 > 10 || noDelay) {
                 oldPCRs.add(pcr);
             }   
@@ -119,10 +117,6 @@ public without sharing class PCRApprovalHandler {
     }
 
     private void onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
-        System.debug(LoggingLevel.ERROR, 'Running onBeforeUpdate on ' + newPCR.size() + ' PCRs'); 
-        if (newPCR.size() == 1) {
-            System.debug(LoggingLevel.ERROR, newPCR[0]); 
-        }
         List<String> leadlist = new List<String>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         List<Lead> leadstoUpdate = new List<Lead>();
@@ -140,7 +134,7 @@ public without sharing class PCRApprovalHandler {
         List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                                    Income_Support__c,
+                                    Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                                     Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                                     Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
                                     FROM Lead 
@@ -163,9 +157,11 @@ public without sharing class PCRApprovalHandler {
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
                     Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
-                Decimal monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Annual_Income_From_Lead__c:pcr.Adjusted_Income__c)/12;
+                Decimal monthlyIncome = 
+                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
                 if (pcr.LASERCA__Contact__c != NULL) {
-                    monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Co_Applicant_Income__c:pcr.Adjusted_Income__c)/12;
+                    monthlyIncome = 
+                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
                     creditScore = Math.max(creditScore,
                                            Integer.valueOf(LoanServicer.nullToZero(ld.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
                 }
@@ -317,7 +313,6 @@ public without sharing class PCRApprovalHandler {
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
     }
 
-    // 
     @TestVisible
     public class CreditResultSummary {
         public String bestStatus;

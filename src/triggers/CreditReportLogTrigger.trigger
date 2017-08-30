@@ -4,7 +4,6 @@
  *************************************************************************************/
 
 trigger CreditReportLogTrigger on LASERCA__Credit_Report_Log__c (after insert, after update) {
-    System.debug(LoggingLevel.ERROR, 'CreditReportLogTrigger Update: ' + Trigger.isUpdate + ' Before: ' + Trigger.isBefore);
     if (Trigger.isAfter && Trigger.isUpdate) {
         PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap, Trigger.oldMap);
     } else if (Trigger.isAfter && Trigger.isInsert) {

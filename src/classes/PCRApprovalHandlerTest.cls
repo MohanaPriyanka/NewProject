@@ -187,7 +187,6 @@ private class PCRApprovalHandlerTest {
                                            LASERCA__Monthly_Payment__c = 200,
                                            LASERCA__Account_Balance__c = 1000);
         inserttradeacct.add(tradeacctcoAppLead2);
-        System.debug(LoggingLevel.ERROR, 'Inserting Trade Accounts');
         insert inserttradeacct;
 
         System.debug(LoggingLevel.ERROR, '5. SOQL Queries: ' + Limits.getQueries());
@@ -205,7 +204,6 @@ private class PCRApprovalHandlerTest {
         for (LASERCA__Personal_Credit_Report__c pcrToFinish : insertpcrlist) {
             crls.add(getCRL(pcrToFinish));
         }
-        System.debug(LoggingLevel.ERROR, 'Inserting CRLs');
         insert crls;
 
         pcrAB.Solar_Loan_Manual_Decline__c = True;
@@ -434,7 +432,6 @@ private class PCRApprovalHandlerTest {
              FROM LASERCA__Personal_Credit_Report__c
              WHERE LASERCA__Lead__c = :lead.Id
              LIMIT 1];
-        System.debug(LoggingLevel.ERROR, pcr.DTI_After_Notes__c);
         System.assertEquals(PCRApprovalHandler.PENDINGREVIEW, pcr.Solar_Loan_Approval_Status__c);
     }
 

@@ -4,7 +4,6 @@
  *************************************************************************************/
 
 trigger PCRApprovalTrigger on LASERCA__Personal_Credit_Report__c (before update, before insert, after insert, after update) {
-    System.debug(LoggingLevel.ERROR, 'PCRApprovalTrigger Update: ' + Trigger.isUpdate + ' Before: ' + Trigger.isBefore);
     MapPCRtoLeadHandler mapPCRtoLeadHandler = new MapPCRtoLeadHandler(Trigger.isExecuting, Trigger.size);
     ProductAssignmentHandler productAssignmentHandler = new ProductAssignmentHandler(Trigger.isExecuting, Trigger.size);    
 
