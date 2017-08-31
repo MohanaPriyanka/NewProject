@@ -32,6 +32,11 @@
     	} else if (fieldName.includes("__r[0]")) {
             var childObjectList = fieldName.split("[0].");  
             if (record[childObjectList[0]] == null) {
+                //set a key value of the record object to complete so that the user can search for the assign complete value.
+                var objectRecord = component.get("v.objectRecord");
+                objectRecord["partnerTaskNullValue"] = "Complete";
+                component.set["v.objectRecord", objectRecord];
+
                 outputValue.set("v.value", "Complete"); 
             } else {
                 outputValue.set("v.value", record[childObjectList[0]]["0"][childObjectList[1]]);
