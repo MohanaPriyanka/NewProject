@@ -1,0 +1,17 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true" extends="c:BlueWaveParent" access="global">
+	<aura:registerEvent name="searchEvent" type="c:BlueWaveSearchEvent"/>   
+	<div aura:id = "searchBar">
+		<div class="slds-form-element slds-lookup" data-select="single">
+			<label class="slds-form-element__label proximaNovaDataStream"><b>BlueWave Search</b></label>
+			<div class="slds-form-element__control">
+				<div class="slds-input-has-icon slds-input-has-icon--right ">
+					<ui:inputText aura:id="searchInput"
+								  class="slds-lookup__search-input slds-input" 
+								  placeholder="Enter text"
+								  value=""
+								  change="{!c.searchEvent}"/>       
+					</div>       
+				</div>
+			</div> 
+		</div>  	
+	</aura:component>

@@ -18,4 +18,12 @@
         sortTableEvt.setParams({ sortField: sortField }); 
         sortTableEvt.fire();       
     },
+
+    setRowValues : function(component, record, fieldName) {
+        var outputValue = this.setOutputValueId(component);
+        var fieldIsSecure = this.handleFieldSecurity(component, fieldName);
+        if (fieldName != null && fieldIsSecure) {
+            this.handleNullChildAndCrossRelationalFields(component, outputValue, record, fieldName);
+        }
+    },         
 })

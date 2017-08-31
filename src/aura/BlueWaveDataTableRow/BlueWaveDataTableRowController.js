@@ -7,14 +7,14 @@
         	helper.setRowValues(component, record, fieldName);
         	helper.setColor(component, fieldName);
         } else {
-			helper.setButtonLabels(component);       
-            helper.setButtonEvents(component);   	
+			helper.setButtonAttribute(component, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");       
+            helper.setButtonAttribute(component, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")    	
         }
     },
 
     recordChange: function(component, event, helper) {
-    	helper.setButtonLabels(component);                        
-        helper.setButtonEvents(component);      
+    	helper.setButtonAttribute(component, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");                     
+        helper.setButtonAttribute(component, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")     
     },    
 
     executeAction: function(component, event, helper) {

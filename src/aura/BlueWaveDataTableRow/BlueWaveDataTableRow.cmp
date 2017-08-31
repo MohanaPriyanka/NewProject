@@ -9,12 +9,15 @@
     <aura:attribute name="colorCode" type="String" />
     <aura:attribute name="fieldType" type="String" />   
     <aura:attribute name="buttonConditionalField" type="String" />
-    <aura:attribute name="buttonConditionalsLabelMap" type="Map"/> 
-    <aura:attribute name="buttonConditionalsEventMap" type="Map"/>    
+    <aura:attribute name="buttonConditionalLabelMap" type="Map"/> 
+    <aura:attribute name="buttonConditionalEventMap" type="Map"/>    
     <aura:attribute name="allButtonLabels" type="String"/>  
     <aura:attribute name="allButtonEvents" type="String"/>  
     <aura:attribute name="buttonLabel" type="String"/>  
-    <aura:attribute name="buttonEventId" type="String"/>          
+    <aura:attribute name="buttonEventId" type="String"/>     
+    <aura:attribute name="profileSecurityMap" type="Map"/>   
+    <aura:attribute name="licenseType" type="String"/>  
+
     <aura:if isTrue="{!v.fieldName != 'Action'}">
       <div style="{!'color:' + v.colorCode}">    
          <aura:if isTrue="{!v.fieldType == 'String'}">    

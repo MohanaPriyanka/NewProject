@@ -25,8 +25,8 @@ public without sharing class SLPAllCustomersHandler {
   @AuraEnabled
   public static List<Loan__c> getAllCustomers (String searchValue) {
     List<Loan__c> loanList = new List<Loan__c>();
-    String loanQuery = 'SELECT Id, Name, Product__r.Name, Requested_Loan_Amount__c, Commencement_Datee__c, Acquisition_Status__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name,' + 
-    					'Product__r.ProductCode, Partner__r.Name, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
+    String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name,' + 
+    					         'Product__r.ProductCode, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
     loanQuery += '      FROM Loan__c' ;
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
     if (profile.LicenseType != 'Executive') {

@@ -1,12 +1,14 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:registerEvent name="sortTable" type="c:BlueWaveDataTableSortEvent"/>	
 	<aura:attribute name="label" type="String"/>
 	<aura:attribute name="headerMap" type="Map"/>	
 	<aura:attribute name="fieldName" type="String"/>	
-	<aura:attribute type="Boolean" name="sortAsc" />
-	<aura:attribute type="Boolean" name="sortArrow" />
-	<aura:attribute type="String" name="sortField" />	
-	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-	<aura:registerEvent name="sortTable" type="c:BlueWaveDataTableSortEvent"/>
+	<aura:attribute name="sortAsc" type="Boolean"/>
+	<aura:attribute name="sortArrow" type="Boolean" />
+	<aura:attribute name="sortField" type="String" />	
+	<aura:attribute name="profileSecurityMap" type="Map"/>
+	<aura:attribute name="licenseType" type="String"/> 
 
 	<th class="slds-is-sortable slds-text-title_caps" scope="col">
 		<a name="{!v.fieldName}" class="" onclick="{!c.sortTable}">

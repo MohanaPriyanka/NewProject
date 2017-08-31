@@ -7,6 +7,16 @@
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
+    public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
+    static {
+            profile = SLPUserHelper.getPartnerProfile();
+    }
+
+    @AuraEnabled
+    public static String getLicenseType() {
+        return profile.LicenseType;
+    }
+
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
     @AuraEnabled 

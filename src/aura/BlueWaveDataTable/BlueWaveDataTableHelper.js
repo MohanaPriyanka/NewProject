@@ -1,4 +1,30 @@
 ({
+    handleFieldSecurity : function(component) {
+        var licenseType = component.get("v.licenseType");
+        this.removeItemsFromTable(component, "recordFieldNames", licenseType);
+        this.removeItemsFromTable(component, "headerLabels", licenseType);
+    },       
+
+    removeItemsFromTable : function(component, attribute, licenseType) {
+        var profileSecurityMap = component.get("v.profileSecurityMap");        
+        var list = component.get("v." + attribute);
+        var updatedList = list.slice();
+        var removedList = [];
+        if (profileSecurityMap != null) {
+            if (profileSecurityMap[licenseType] != null) {
+                var privateFields = profileSecurityMap[licenseType];
+                for (i=0; i<list.length; i++) {
+                    var index = updatedList.indexOf(list[i]); 
+                    if (privateFields.includes(list[i])) {
+                        this.removeItemFromList(index, updatedList, removedList);
+                    }
+                }
+                component.set("v." + attribute, updatedList);
+            }
+        }
+    },   
+
+
     setHeaderMap : function(component) {
         var headerMap = {};
         var headerLabels = component.get("v.headerLabels");
@@ -9,7 +35,7 @@
             headerMap[label] = fieldNames[i];
         }  
         component.set("v.headerMap", headerMap);
-    },      
+    },   
 
 	handleNullValuesInSort : function(component, recordList, removedList, sortField) {
         var updatedList = recordList.slice();
@@ -20,23 +46,23 @@
                 var crossRelationalField = sortField.split(".");
                 var objectRecord = crossRelationalField[0].replace("__r", "__c");
                 if (record[objectRecord] == null) {
-                	this.removeNullRecordsFromList(index, updatedList, removedList)              
+                	this.removeItemFromList(index, updatedList, removedList)              
                 }                                   
             } else if (sortField.includes("__r[0]")) {
                 var childObjectList = sortField.split("[0]."); 
                 if (record[childObjectList[0]] == null || record[childObjectList[0]]["0"][childObjectList[1]] == null) {
-                	this.removeNullRecordsFromList(index, updatedList, removedList);
+                	this.removeItemFromList(index, updatedList, removedList);
                 }                           
             } else {
                 if (record[sortField] == null) {
-                	this.removeNullRecordsFromList(index, updatedList, removedList);
+                	this.removeItemFromList(index, updatedList, removedList);
                 }                                                   
             }
         }
         return [removedList, updatedList];
 	}, 
 
-	removeNullRecordsFromList : function(index, updatedList, removedList) {
+	removeItemFromList : function(index, updatedList, removedList) {
 		var currentRemovedList = updatedList.splice(index, 1);
 		if (currentRemovedList.length > 0) {
 			for (j=0; j < currentRemovedList.length; j++) {

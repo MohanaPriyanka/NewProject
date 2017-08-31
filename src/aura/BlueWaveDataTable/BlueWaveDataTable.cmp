@@ -1,10 +1,10 @@
-<!-- add the option to query in the table -->
-<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true" extends="c:BlueWaveParent" access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/>   
+  <aura:handler name="change" value="{!v.licenseType}" action="{!c.applySecurity}" />
   <aura:attribute name="name" type="String"/> 
   <aura:attribute name="headerLabels" type="String[]"/>
-  <aura:attribute name="tableRecords" type="Loan__c[]"/>
+  <aura:attribute name="tableRecords" type="Object[]"/>
   <aura:attribute name="recordFieldNames" type="String[]"/>
   <aura:attribute name="headerMap" type="Map"/>
   <aura:attribute name="colorMap" type="Map"/>  
@@ -13,10 +13,12 @@
   <aura:attribute name="sortArrow" type="Boolean"/>
   <aura:attribute name="sortField" type="String" />
   <aura:attribute name="buttonConditionalField" type="String" />
-  <aura:attribute name="buttonConditionalsLabelMap" type="Map"/> 
-  <aura:attribute name="buttonConditionalsEventMap" type="Map"/>
+  <aura:attribute name="buttonConditionalLabelMap" type="Map"/> 
+  <aura:attribute name="buttonConditionalEventMap" type="Map"/>
   <aura:attribute name="allButtonLabels" type="String"/>  
   <aura:attribute name="allButtonEvents" type="String"/> 
+  <aura:attribute name="profileSecurityMap" type="Map"/> 
+  <aura:attribute name="licenseType" type="String"/> 
   <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
   	<thead>
   		<tr class="slds-text-heading--label proximaNovaDataBlue">		
@@ -24,7 +26,9 @@
           <aura:iteration items="{!v.headerLabels}" var="label">
             <c:BlueWaveDataTableHeader label="{!label}" 
                                        headerMap="{!v.headerMap}" 
-                                       sortField="{!v.sortField}"/>
+                                       sortField="{!v.sortField}"
+                                       profileSecurityMap="{!v.profileSecurityMap}"
+                                       licenseType="{!v.licenseType}"/>
           </aura:iteration>
         </aura:if>
       </tr>					
@@ -43,8 +47,10 @@
                                             allButtonLabels="{!v.allButtonLabels}"
                                             allButtonEvents="{!v.allButtonEvents}"
                                             buttonConditionalField="{!v.buttonConditionalField}"
-                                            buttonConditionalsLabelMap="{!v.buttonConditionalsLabelMap}"
-                                            buttonConditionalsEventMap="{!v.buttonConditionalsEventMap}"/>
+                                            buttonConditionalLabelMap="{!v.buttonConditionalLabelMap}"
+                                            buttonConditionalEventMap="{!v.buttonConditionalEventMap}"
+                                            profileSecurityMap="{!v.profileSecurityMap}"
+                                            licenseType="{!v.licenseType}"/>
 							   </b>
   						</span>
   					</th>

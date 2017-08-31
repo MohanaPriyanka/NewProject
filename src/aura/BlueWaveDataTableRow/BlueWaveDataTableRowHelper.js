@@ -1,16 +1,20 @@
 ({
     setRowValues : function(component, record, fieldName) {
-    	var fieldType = component.get("v.fieldType");
-    	if (fieldType === "Currency") {
-    		var outputValue = component.find("outputCurrencyId");
-    	} else {
-    		var outputValue = component.find("outputTextId");    		
-    	}
-    	
+        var outputValue = this.setOutputValueId(component);
         if (fieldName != null) {
         	this.handleNullChildAndCrossRelationalFields(component, outputValue, record, fieldName);
         }
-    },  
+    },          
+
+    setOutputValueId : function(component, record, fieldName) {
+        var fieldType = component.get("v.fieldType");
+        if (fieldType === "Currency") {
+            var outputValue = component.find("outputCurrencyId");
+        } else {
+            var outputValue = component.find("outputTextId");           
+        }
+        return outputValue;
+    },      
 
     handleNullChildAndCrossRelationalFields : function(component, outputValue, record, fieldName) {
     	if (fieldName.includes("__r.")) {
@@ -65,41 +69,62 @@
         }
     },   
 
-    setButtonLabels : function(component) {
+    setButtonAttribute : function(component, attribute, conditionalMapAttribute, allAttribute) {
         var record = component.get("v.objectRecord");
         var conditionalField = component.get("v.buttonConditionalField");
-        var conditionalFieldMap = component.get("v.buttonConditionalsLabelMap");
-        var allButtonLabels = component.get("v.allButtonLabels");  
+        var conditionalMap = component.get("v." + conditionalMapAttribute);
+        var allButtonAttribute = component.get("v." + allAttribute);  
 
-        if (allButtonLabels != null) {
-            component.set("v.buttonLabel", allButtonLabels);
-        } else {
-            if (conditionalField != null) {
-                if (conditionalFieldMap[record[conditionalField]] != null) {
-                    component.set("v.buttonLabel", conditionalFieldMap[record[conditionalField]]);  
+        if (conditionalField != null) {
+            if (conditionalField.includes("__r.")) {
+                var crossRelationalField = conditionalField.split(".");
+                if (record[crossRelationalField[0]] != null) {
+                    if (record[crossRelationalField[0]][crossRelationalField[1]] != null) {
+                        if (conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]] != null) {
+                            component.set("v." + attribute, conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]]);                         
+                        } else {
+                            this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);
+                        }  
+                    } else {
+                        this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);     
+                    }
                 } else {
-                    component.set("v.buttonLabel", null);  
+                    this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute); 
                 }
-            } 
-        }  
-    }, 
-
-    setButtonEvents : function(component) {
-        var record = component.get("v.objectRecord");
-        var conditionalField = component.get("v.buttonConditionalField");
-        var conditionalFieldMap = component.get("v.buttonConditionalsEventMap");
-        var allButtonEvents = component.get("v.allButtonEvents");  
-
-        if (allButtonEvents != null) {
-            component.set("v.buttonEventId", allButtonEvents);
-        } else {
-            if (conditionalField != null) {
-                if (conditionalFieldMap[record[conditionalField]] != null) {
-                    component.set("v.buttonEventId", conditionalFieldMap[record[conditionalField]]);  
+            } else if (conditionalField.includes("__r[0]")) {
+                var childObjectList = conditionalField.split("[0]."); 
+                if (record[childObjectList[0]] != null ) {
+                    if (record[childObjectList[0]]["0"][childObjectList[1]]!= null) {
+                        if (conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]) {
+                            component.set("v." + attribute, conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]);
+                        } else {
+                            this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);   
+                        }
+                    } else {
+                        this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);
+                    }
                 } else {
-                    component.set("v.buttonEventId", null);  
-                }
-            } 
-        }  
-    },                  
+                    this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);
+                } 
+            } else if (conditionalMap[record[conditionalField]] != null) {
+                component.set("v." + attribute, conditionalMap[record[conditionalField]]);  
+            } else {
+                this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);
+            }
+        } else {
+            this.setNonConditionalButtonAttribute(component, attribute,allButtonAttribute);
+        }
+    },  
+
+    setNonConditionalButtonAttribute : function(component, attribute, allAttribute) {
+        if (allAttribute != null) {
+            component.set("v." + attribute, allAttribute);
+        } else {
+            component.set("v." + attribute, null); 
+        } 
+    },           
+
+
 })
+
+

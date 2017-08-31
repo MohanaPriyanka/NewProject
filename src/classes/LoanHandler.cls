@@ -44,8 +44,8 @@ public without sharing class LoanHandler{
             leadIds.add(leadRecord.Id);
         }
         for (Lead newLead : updatedLeads) {
-            if (newLead.Status == 'Pending Information'
-                && oldLeadMap.get(newLead.Id).Status != 'Pending Information'
+            if (newLead.Status == 'Pre-Qualified'
+                && oldLeadMap.get(newLead.Id).Status != 'Pre-Qualified'
                 && newLead.Product_Line__c == 'Residential Loan') {
                 leadsToCreateLoanAndEquipment.add(newLead);
             }
