@@ -22,6 +22,8 @@ public without sharing class PCRApprovalHandler {
     private static EmailTemplate standardEmailTemplate;
     private static EmailTemplate denialEmailTemplate;
     private static OrgWideEmailAddress infoEmailAddress;
+    @TestVisible
+    private static Boolean alreadyRan = false;
 
     public PCRApprovalHandler() {
         if (doerEmailTemplate == null) {
@@ -50,7 +52,71 @@ public without sharing class PCRApprovalHandler {
         }
     }
 
-    public void OnBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
+    // Use alreadyRan to make sure we don't run the trigger twice
+    public static Boolean alreadyRan() {
+        if (!alreadyRan) {
+            alreadyRan = true;
+            return false;
+        }
+        return true;
+    }
+
+    public static void calcDTIAndEmailIfComplete(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, 
+                                                 Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+        Set<Id> pcrIds = new Set<Id>();
+        if (triggerOldMap == null) {
+            for (Id newId : triggerNewMap.keySet()) {
+                pcrIds.add(triggerNewMap.get(newId).LASERCA__Personal_Credit_Report__c);
+            }
+        } else {
+            for (Id oldId : triggerOldMap.keySet()) {
+                if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
+                    triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
+                    pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
+                }
+            }
+        }
+
+        PCRApprovalHandler pcrAH = new PCRApprovalHandler();
+        List<LASERCA__Personal_Credit_Report__c> pcrs = 
+            [SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c, 
+             LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
+             LASERCA__Credit_Score_TransUnion__c, Adjusted_Income__c, Annual_Income_From_Lead__c,
+             DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
+             Adjusted_Monthly_Personal_Debt__c, DOER_Application__c, 
+             Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
+             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c, PreApproval_Form__c, 
+             LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
+             Continue_Loan_Application_Link__c, PCR_Lead_ID__c, Partner_Email__c,
+             Credit_Denial_Email_Sent__c
+             FROM LASERCA__Personal_Credit_Report__c
+             WHERE Id = :pcrIds];
+        pcrAH.onBeforeUpdate(pcrs);
+        update pcrs;
+    }
+
+    // Since we want updates to happen in real-time (to support the Loan Underwriting page), this method checks that
+    // the update happens out of the insert cycle (by making sure the PCR it's 10 seconds old)
+    @TestVisible
+    private static boolean noDelay = false;
+    public static void calcDTIAndEmailOnlyOld(List<LASERCA__Personal_Credit_Report__c> newPCR) {
+        if (alreadyRan) {
+            return;
+        }
+        List<LASERCA__Personal_Credit_Report__c> oldPCRs = new List<LASERCA__Personal_Credit_Report__c>();
+        Datetime d1 = DateTime.now();
+        for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
+            if ((d1.getTime() - pcr.CreatedDate.getTime())/1000 > 10 || noDelay) {
+                oldPCRs.add(pcr);
+            }   
+        }
+        if (!oldPCRs.isEmpty()) {
+            PCRApprovalHandler pcrAH = new PCRApprovalHandler();
+            pcrAH.onBeforeUpdate(oldPCRs);
+        }
+    }
+
+    private void onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
         List<String> leadlist = new List<String>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         List<Lead> leadstoUpdate = new List<Lead>();
@@ -68,7 +134,7 @@ public without sharing class PCRApprovalHandler {
         List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                                    Income_Support__c,
+                                    Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                                     Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                                     Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
                                     FROM Lead 
@@ -91,9 +157,11 @@ public without sharing class PCRApprovalHandler {
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
                     Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
-                Decimal monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Annual_Income_From_Lead__c:pcr.Adjusted_Income__c)/12;
+                Decimal monthlyIncome = 
+                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
                 if (pcr.LASERCA__Contact__c != NULL) {
-                    monthlyIncome = (pcr.Adjusted_Income__c==null?pcr.Co_Applicant_Income__c:pcr.Adjusted_Income__c)/12;
+                    monthlyIncome = 
+                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
                     creditScore = Math.max(creditScore,
                                            Integer.valueOf(LoanServicer.nullToZero(ld.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
                 }
@@ -245,7 +313,6 @@ public without sharing class PCRApprovalHandler {
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
     }
 
-    // 
     @TestVisible
     public class CreditResultSummary {
         public String bestStatus;
