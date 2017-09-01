@@ -18,7 +18,7 @@
         recordList = [];
         removedList = returnLists[0];
         recordList = returnLists[1];
-
+        
         helper.sortRecords(component, recordList, currentOrder, sortField);
         helper.addNullValuesToRecordList(component, recordList, removedList, currentOrder);
         helper.setComponentSortAttributes(component, recordList, currentOrder, sortField);

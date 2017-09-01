@@ -4,7 +4,6 @@
         var searchEvt = $A.get("e.c:BlueWaveSearchEvent");
         searchEvt.setParams({searchText: searchText}); 
         searchEvt.fire();         
-        console.log(searchText);
     },  
 })
 

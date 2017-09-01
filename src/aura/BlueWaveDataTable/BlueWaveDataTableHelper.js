@@ -80,6 +80,21 @@
             	return t1? 0: (currentOrder?-1:1)*(t2?1:-1);
         	}
         });
+        // recordList.sort(function(a,b) {
+        //     if (a[sortField] == null) {
+        //         return -1
+        //     } else {
+        //         var upperA = a[sortField].toUpperCase();
+        //         var upperB = b[sortField].toUpperCase();
+        //         if (upperA < upperB) {
+        //             return -1;
+        //         }
+        //         if (upperA > upperB) {
+        //             return 1
+        //         }
+        //         return 0;
+        //     }
+        // });        
 	},	
 
 	addNullValuesToRecordList : function(component, recordList, removedList, currentOrder) {

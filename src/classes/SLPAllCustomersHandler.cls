@@ -36,7 +36,7 @@ public without sharing class SLPAllCustomersHandler {
       loanQuery += '    AND Name LIKE \'' + '%' + String.escapeSingleQuotes(searchValue) + '%' + '\'' ;
     }
     loanQuery += '      ORDER BY createdDate DESC';
-    loanQuery += '      LIMIT 5';
+    loanQuery += '      LIMIT 10';
     for(Loan__c loanRecord : Database.query(loanQuery)){
       loanList.add(loanRecord);
     }
