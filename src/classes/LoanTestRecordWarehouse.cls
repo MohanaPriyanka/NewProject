@@ -54,10 +54,13 @@ public class LoanTestRecordWarehouse {
         productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate725.Program__c = 'MSLP';
+        productLoanMATerm20Rate725.Originator__c = 'Avidia';
+        Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
+        productLoanRI.Originator__c = 'Avidia';
 
         return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-                productLoanMATerm20Rate725};
+                productLoanMATerm20Rate725, productLoanRI};
     }
 
     public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
@@ -488,6 +491,7 @@ public class LoanTestRecordWarehouse {
                             Loan_Tranche_Type__c = 'Standard',
                             Program__c = 'BlueWave Solar Loan',
                             Debt_To_Income_Maximum__c = 50,
+                            Originator__c = 'BlueWave',
                             isActive = TRUE);
     }
 }
