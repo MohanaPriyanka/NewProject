@@ -35,10 +35,10 @@
     },
 
     checkAvidiaOriginated : function(component, event, helper) {
-        var actionGetOriginator = component.get("c.getOriginator");
-        actionGetOriginator.setStorable();
-        actionGetOriginator.setParams({"state": component.get("v.newLead.LASERCA__Home_State__c")});
-        actionGetOriginator.setCallback(this,function(resp) {
+        var actionGetLender = component.get("c.getLenderOfRecord");
+        actionGetLender.setStorable();
+        actionGetLender.setParams({"state": component.get("v.newLead.LASERCA__Home_State__c")});
+        actionGetLender.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 if (resp.getReturnValue().includes("Avidia")) {
                     component.set("v.avidiaOriginated", true);
@@ -49,7 +49,7 @@
                 helper.logError("SLPAddCustomerController", "getOriginator", resp.getError());
             }
         });
-        $A.enqueueAction(actionGetOriginator);
+        $A.enqueueAction(actionGetLender);
     },
 
     addCustomer : function(component, event, helper) {

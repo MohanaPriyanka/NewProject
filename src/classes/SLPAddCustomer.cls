@@ -200,17 +200,17 @@ public without sharing class SLPAddCustomer {
     }    
 
     @AuraEnabled
-    public static String getOriginator(String state) {
-        List<AggregateResult> products = [SELECT Originator__c
+    public static String getLenderOfRecord(String state) {
+        List<AggregateResult> products = [SELECT Lender_of_Record__c
                                           FROM Product2
                                           WHERE IsActive = true
                                           AND Product_Type__c = 'Residential Loan'
                                           AND State__c = : state
-                                          GROUP BY Originator__c
-                                          ORDER BY Originator__c];
+                                          GROUP BY Lender_of_Record__c
+                                          ORDER BY Lender_of_Record__c];
         String result = '';
         for (AggregateResult p : products) {
-            result += (String) p.get('Originator__c');
+            result += (String) p.get('Lender_of_Record__c');
         }
         return result;
     }

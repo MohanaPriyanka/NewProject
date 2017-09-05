@@ -1171,6 +1171,6 @@ public without sharing class SLPControllersTestclass {
         System.assertEquals(7, products.size());
 
         System.assertEquals(new List<String>{'MA', 'RI'}, SLPAddCustomer.getActiveStates());
-        System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getOriginator('MA'));
+        System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
     }
 }
