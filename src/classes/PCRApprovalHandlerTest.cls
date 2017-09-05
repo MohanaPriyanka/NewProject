@@ -69,6 +69,9 @@ private class PCRApprovalHandlerTest {
         insertleads.add(leadAI);
         Lead leadAJ = getLead(100000, 30000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAJ);
+        Lead leadAK = getLead(100000, 30000, productVar.Id, false, true, partner.Id);
+        leadAK.Co_Applicant_First_Name__c = 'Jordan';
+        insertleads.add(leadAK);
         Lead coAppLead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
         coAppLead.Co_Applicant_Income__c = 2000;
         insertleads.add(coAppLead);
@@ -124,6 +127,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrAJ = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAJ.Id,
                                                                                           LASERCA__Credit_Score_TransUnion__c = '678');
         insertpcrlist.add(pcrAJ);
+        LASERCA__Personal_Credit_Report__c pcrAK = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAK.Id,
+                                                                                          LASERCA__Credit_Score_TransUnion__c = '');
+        insertpcrlist.add(pcrAK);
         LASERCA__Personal_Credit_Report__c pcrCoAppLead =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
                                                    LASERCA__Lead__c = coAppLead.Id);
@@ -252,6 +258,9 @@ private class PCRApprovalHandlerTest {
                 System.assertEquals('Unqualified', creditreport.LASERCA__Lead__r.Status);
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '815') {
                 System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '' || creditreport.LASERCA__Credit_Score_TransUnion__c == '0') {
+                System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
+                System.assertEquals(FALSE, creditreport.Credit_Denial_Email_Sent__c);
             } else if (creditreport.Name == 'PCR Primary with Co App.Joey') {
                 System.assertEquals(9.6, creditreport.DTI_Before__c.setScale(1));
             } else if (creditreport.Name == 'PCR Co App.Joey') {
