@@ -73,28 +73,26 @@
 
 	sortRecords : function(component, recordList, currentOrder, sortField) {
         recordList.sort(function(a,b) {
-        	if (a[sortField] == null) {
+            if (sortField.includes("__r.")) {
+                var crossRelationalField = sortField.split(".");
+                var objectRecord = crossRelationalField[0].replace("__r", "__c");
+                var sortValueA = a[objectRecord];
+                var sortValueB = b[objectRecord];
+            } else if (sortField.includes("__r[0]")) {
+                var childObjectList = sortField.split("[0]."); 
+                var sortValueA = a[childObjectList[0]]["0"][childObjectList[1]]
+                var sortValueB = b[childObjectList[0]]["0"][childObjectList[1]]
+            } else {
+                var sortValueA = a[sortField];
+                var sortValueB = b[sortField];
+            }           
+        	if (sortValueA == null) {
         		return -1;
         	} else {
-            	var t1 = a[sortField] == b[sortField], t2 = a[sortField] < b[sortField];
+            	var t1 = sortValueA ==sortValueB, t2 = sortValueA <sortValueB;
             	return t1? 0: (currentOrder?-1:1)*(t2?1:-1);
         	}
-        });
-        // recordList.sort(function(a,b) {
-        //     if (a[sortField] == null) {
-        //         return -1
-        //     } else {
-        //         var upperA = a[sortField].toUpperCase();
-        //         var upperB = b[sortField].toUpperCase();
-        //         if (upperA < upperB) {
-        //             return -1;
-        //         }
-        //         if (upperA > upperB) {
-        //             return 1
-        //         }
-        //         return 0;
-        //     }
-        // });        
+        });     
 	},	
 
 	addNullValuesToRecordList : function(component, recordList, removedList, currentOrder) {
