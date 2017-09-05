@@ -1,19 +1,4 @@
-({
-    closeWindow : function(component) {
-        $A.util.removeClass(component.find("greyout"), 'slds-backdrop_open'); 
-        $A.util.addClass(component.find("greyout"), 'slds-backdrop_hide');  
-        $A.util.removeClass(component.find("smallWindow"), 'slds-fade-in-open'); 
-        $A.util.addClass(component.find("smallWindow"), 'slds-fade-in-hide');  
-    },
-    
-    greyOutUpload : function(component) {
-        $A.util.removeClass(component.find("uploadButton"), 'blueBackground'); 
-        $A.util.addClass(component.find("uploadButton"), 'greyBackground'); 
-        $A.util.removeClass(component.find("uploadIcon"), 'border'); 
-        $A.util.addClass(component.find("uploadIcon"), 'greyborder'); 
-    },
-    
-    checkDateField : function(component, helper, dateValue) {
+({  checkDateField : function(component, helper, dateValue) {
         var errorMessage = "";
         if (helper.invalidField(component, dateValue, null, false, false, false, "date")) {
             $A.util.addClass(component.find("inputDate"), 'shake slds-has-error'); 
@@ -21,18 +6,7 @@
         }
         return errorMessage;
     },
-    
-    addErrorMessaging : function(component) {
-	   $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
-       $A.util.addClass(component.find("uploadButton"), 'shake'); 
-       $A.util.removeClass(component.find("saveButton"), 'noDisplay');
-    },
-    
-    removeErrorMessaging : function(component) {
-		$A.util.addClass(component.find("errorTextLine"), 'noDisplay');
-        $A.util.removeClass(component.find("inputDate"), 'shake slds-has-error'); 
-    },
-    
+        
     saveFile : function(component, event, fileType, parentId) {
         $A.util.addClass(component.find("saveButton"), 'noDisplay');
         var MAXFILE_SIZE = 4500000;
@@ -63,11 +37,11 @@
               var attachID = 'none';
               self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);
         } else {
-              self.upload(component, file, fileContents, fileType, parentId);
+              self.uploadSmallFile(component, file, fileContents, fileType, parentId);
         }
     },
     
-    upload: function(component, file, fileContents, fileType, parentId) {
+    uploadSmallFile : function(component, file, fileContents, fileType, parentId) {
         var newFileName = component.get("v.fileName");
         var action = component.get("c.saveTheFile");   
         var self = this;
@@ -89,11 +63,8 @@
         action.setCallback(this,function(resp) {       
           if(resp.getState() == "SUCCESS"){  
               self.fileUploadSuccess(component);
-              console.log(resp.getReturnValue());
           } else {
-			  component.set("v.errorText", "There has been an error uploading your document.");
-              $A.util.addClass(component.find("windowBody"), 'noDisplay');
-              $A.util.addClass(component.find("headerText"), 'noDisplay'); 
+			 self.fileUploadError(component);
           }
         });
         $A.enqueueAction(action); 
@@ -115,12 +86,13 @@
             fileName: newFileName,
             base64Data: encodeURIComponent(chunk), 
             contentType: file.type,
+            fileType: fileType,
             description: descriptionValue,
             fileId : attachID,
         });
         var self = this;
         action.setCallback(this, function(a) {
-            console.log(a.getReturnValue());
+          if(a.getState() == "SUCCESS"){ 
             attachID = a.getReturnValue();
             fromPos = toPos;
             toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);    
@@ -129,8 +101,10 @@
             } else {
            		$A.util.addClass(component.find("spinner"), 'noDisplay'); 
                 self.fileUploadSuccess(component);
-                console.log(a.getReturnValue());
             }
+          } else {
+              self.fileUploadError(component);
+          }
         });
         $A.enqueueAction(action); 
     },
@@ -150,5 +124,35 @@
        $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
     },
     
+    fileUploadError : function (component) {
+       component.set("v.errorText", "There has been an error uploading your document.");
+       $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
+       $A.util.addClass(component.find("windowBody"), 'noDisplay');
+       $A.util.addClass(component.find("headerText"), 'noDisplay'); 
+    },       
+  
+  	closeWindow : function(component) {
+        $A.util.removeClass(component.find("greyout"), 'slds-backdrop_open'); 
+        $A.util.addClass(component.find("greyout"), 'slds-backdrop_hide');  
+        $A.util.removeClass(component.find("smallWindow"), 'slds-fade-in-open'); 
+        $A.util.addClass(component.find("smallWindow"), 'slds-fade-in-hide');  
+    },
     
+    greyOutUpload : function(component) {
+        $A.util.removeClass(component.find("uploadButton"), 'blueBackground'); 
+        $A.util.addClass(component.find("uploadButton"), 'greyBackground'); 
+        $A.util.removeClass(component.find("uploadIcon"), 'border'); 
+        $A.util.addClass(component.find("uploadIcon"), 'greyborder'); 
+    },
+    
+    addErrorMessaging : function(component) {
+	   $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
+       $A.util.addClass(component.find("uploadButton"), 'shake'); 
+       $A.util.removeClass(component.find("saveButton"), 'noDisplay');
+    },
+    
+    removeErrorMessaging : function(component) {
+		$A.util.addClass(component.find("errorTextLine"), 'noDisplay');
+        $A.util.removeClass(component.find("inputDate"), 'shake slds-has-error'); 
+    },
 })

@@ -14,11 +14,11 @@
         if (component.get("v.dateLabel") != 'hide') {
             var dateValue =  component.get("v.dateValue");
             errors = helper.checkDateField(component, helper, dateValue);   
-        }
-        if (errors != "") {
-            component.set("v.errorText" , errors);
-            $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
-            return;
+        	if (errors != "") {
+                component.set("v.errorText" , errors);
+                $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
+                return;
+        	}
         }
         helper.removeErrorMessaging(component);
         var fileType = component.get("v.fileName");

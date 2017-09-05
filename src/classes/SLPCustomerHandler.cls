@@ -163,7 +163,22 @@ public without sharing class SLPCustomerHandler {
     }
     update disbursalList;
   }
-
+    
+  @AuraEnabled
+  public static void updateOpportunity (String opportunityUpdateId) {
+      Opportunity oppToUpdate = [SELECT Id, Name, Update_Dummy__c, Partner_Sales_Agreement_Status__c
+                                 FROM Opportunity
+                                 WHERE Id = : opportunityUpdateId];
+      if (oppToUpdate.Update_Dummy__c) {
+         oppToUpdate.Update_Dummy__c = False; 
+         oppToUpdate.Partner_Sales_Agreement_Status__c = 'Completed';
+      } else {
+         oppToUpdate.Update_Dummy__c = True;
+         oppToUpdate.Partner_Sales_Agreement_Status__c = 'Completed';
+      }
+      update oppToUpdate;
+  }
+    
   //the saveCustomerInformation method allows the user to enter in the customer's system information/commencement date to the SLP and save it to SF
   @AuraEnabled
   public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan) {

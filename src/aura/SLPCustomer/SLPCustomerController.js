@@ -260,7 +260,11 @@
     },
 
     saveEquipmentInformation : function(component, event, helper) {
-        helper.saveCustomerData(component, event, helper);
+        helper.saveDataPreActionFormatting(component, event, helper);
+        var isSuccess = helper.saveCustomerData(component, event, helper);
+        if (isSuccess === 'SUCCESS') {
+            helper.saveDataSuccessFormatting(component, event, helper);
+        }
     },
 
   /*  savePtoDoc : function(component, event, helper) {
@@ -456,7 +460,6 @@
         console.log(component.get("v.customerInformation"));
         var equipmentId = component.get("v.customerInformation.Id");
         var equipmentObject = component.get("v.equipmentUpdate");
-        console.log(equipmentId);
         var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
         var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
@@ -464,8 +467,6 @@
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
-        // Some forms (Non-MA Interconnection, Mech installation) use the Lead ID 
-        // field on the Opportunity to find the Opportunity to update
         switch (taskName) {
             case 'Provide all System Information':
             case 'Provide All System Information':
@@ -505,7 +506,7 @@
         if (oppId === 'notOpp') {
             component.set("v.equipmentUpdate", newResiEquip);
         	helper.saveCustomerData(component, event, helper);
-        	helper.refreshPartnerTasks(component);
+            helper.refreshPartnerTasks(component);
         } else {
             var actionOppUpdate = component.get("c.updateOpportunity");
             actionOppUpdate.setParams({

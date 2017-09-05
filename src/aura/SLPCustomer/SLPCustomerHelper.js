@@ -13,14 +13,25 @@
         evt.fire();
     },
     
-    saveCustomerData : function(component, event, helper) {
-    	this.startSpinner(component, "srecSaveSpinner");
+    saveDataPreActionFormatting : function(component, event, helper) {
+        this.startSpinner(component, "srecSaveSpinner");
         this.startSpinner(component, "customerInformationSpinner");
         $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
         $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
-
+    },
+    
+    saveDataSuccessFormatting : function(component, event, helper) {
+        this.stopSpinner(component, "srecSaveSpinner");
+        this.stopSpinner(component, "customerInformationSpinner");
+        $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
+    },
+    
+    saveCustomerData : function(component, event, helper) {
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
         var loanUpdateVar = component.get("v.loanUpdate");
@@ -36,12 +47,7 @@
 
         saveAction.setCallback(this, function(resp) {
             if (resp.getState() == "SUCCESS") {
-                this.stopSpinner(component, "srecSaveSpinner");
-                this.stopSpinner(component, "customerInformationSpinner");
-                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
+              	return 'SUCCESS';
             } else {
                 $A.log("Errors", resp.getError());
             }
@@ -57,7 +63,6 @@
                 $A.log("Errors", resp.getError());
             }
         });
-
 		$A.enqueueAction(saveAction)
         $A.enqueueAction(customerInformationAction);
     },
@@ -146,27 +151,24 @@
       var body = component.get("v.body");  
       component.set("v.body", []);  
       $A.createComponent(
-      "c:SLPFileUploadWindow", 
+      	"c:SLPFileUploadWindow", 
       	{"dateLabel": dateLabelString,
       	"windowHeader": windowHeaderString,
         "fileParentId": parentId,
         "resiEquipment" : equipmentObject,
         "fileName": nameFile }, 
                        
-          function(newButton, status, errorMessage){
+       	function(newButton, status, errorMessage){
           if (status === "SUCCESS") {
             var body = component.get("v.body");
             body.push(newButton);
             component.set("v.body", body);
           }
-          else if (status === "INCOMPLETE") {
-            console.log("No response from server or client is offline.")
-          }
-          else if (status === "ERROR") {
+          else {
             console.log("Error: " + errorMessage);
           }
-         }
-       );       
+       	}
+      );       
     },
     
  /*   upload: function(component, file, fileContents) {
