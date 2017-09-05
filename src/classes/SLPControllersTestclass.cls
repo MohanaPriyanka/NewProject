@@ -1169,5 +1169,8 @@ public without sharing class SLPControllersTestclass {
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true];
         System.assertEquals(7, products.size());
+
+        System.assertEquals(new List<String>{'MA', 'RI'}, SLPAddCustomer.getActiveStates());
+        System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getOriginator('MA'));
     }
 }
