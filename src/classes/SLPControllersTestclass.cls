@@ -119,7 +119,7 @@ public without sharing class SLPControllersTestclass {
                                                          WHERE LASERCA__Lead__c = :leadList[0].Id];
         System.assertEquals(pcrs.size(), 1);
 
-        System.assertEquals(SLPAddCustomer.checkCreditStatus(leadList[0]), 'Unqualified');
+        System.assertEquals(SLPAddCustomer.checkCreditStatus(leadList[0]), 'Pending Credit Review');
     }
 
     @isTest static void testAlertsHandlerUser() {
