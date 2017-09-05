@@ -61,7 +61,7 @@ public without sharing class SLPAddCustomer {
 
         update updatedLead;
         return updatedLead;
-    }
+    } 
 
     // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
     // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
@@ -159,9 +159,9 @@ public without sharing class SLPAddCustomer {
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        if (productProgram == 'bwsl') {
+        if (productProgram == 'BlueWave Solar Loan') {
           startApplicationUrl = bwslUrl;       
-        } else if (productProgram == 'mslp') {
+        } else if (productProgram == 'MSLP') {
           startApplicationUrl = mslpUrl;       
         }        
         String htmlBody = template.HtmlValue;

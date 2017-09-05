@@ -1,11 +1,7 @@
 ({
-    doInit: function(component, event, helper) {
-     
-    },    
-
     openEmailCustomerModal: function(component, event, helper) {
-        var actionGetPartnerRecord = component.get("c.getPartnerRecord");        
-        actionGetPartnerRecord.setCallback(this,function(resp){
+        var action = component.get("c.getPartnerRecord");        
+        action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.partnerRecord", resp.getReturnValue());
                 if (resp.getReturnValue().State__c === 'MA') {
@@ -21,11 +17,11 @@
                 helper.logError("SLPSendApplicationEmailController", "openEmailCustomerModal", resp.getError());
             }
         });    
-        $A.enqueueAction(actionGetPartnerRecord);    
+        $A.enqueueAction(action);    
+
         var modalToggle = event.getParam("openModal");    
         if (modalToggle == "openModal") {                                        
-            $A.util.removeClass(component.find('emailCustomerModal'), 'slds-fade-in-hide');
-            $A.util.addClass(component.find('emailCustomerModal'), 'slds-fade-in-open');     
+            helper.openModal(component);   
         }           
     },   
 
@@ -43,46 +39,42 @@
 
         emailButton.set("v.disabled",false);
         emailButton.set("v.label","Send");
-        
+
         var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
         evtCustomerWindow.setParams({"closeModal": "closeModal"});
         evtCustomerWindow.fire();         
     },    
 
-    emailModalSelectMSLP: function(component, event, helper) {
-        helper.setWindowToMSLP(component);
-    },             
+    changeProductProgram: function(component, event, helper) {
+        var newLead = component.get("v.newLead");
+        if (newLead.Product_Program__c === "BlueWave Solar Loan") {
+            helper.setWindowToMSLP(component);
+        } else if (newLead.Product_Program__c === "MSLP") {
+            helper.setWindowToBWSL(component);
+        }
+    },                                
 
-    emailModalSelectBWSL: function(component, event, helper) {
-        helper.setWindowToBWSL(component);                                       
-    },                    
+    createLeadAndSendApplication : function(component, event, helper) {  
+        var newLead = component.get("v.newLead");
+        //check for errors in the form's inputs      
+        var errors = helper.errorsInForm(component, helper, newLead);
+        if (errors == null) {
+            helper.removeButtonsAndShowSpinner(component, event, helper);  
+            helper.emailApplication(component, event, helper, newLead);
+        } else {
+            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
+            return;
+        }          
 
-    sendCustomerApplication : function(component, event, helper) {
-        var partnerRecord = component.get("v.partnerRecord");    
-        $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
-        helper.startSpinner(component, "emailSpinner");
+        var actionCreateLead = component.get("c.addNewLeadRecord");   
+        actionCreateLead.setParams({newLead : newLead});  
+        actionCreateLead.setCallback(this,function(resp){ 
+            if (resp.getState() == 'SUCCESS') {  
 
-        var productProgram = component.get("v.productProgram");
-        var customerEmail = component.get("v.customerEmail");
-        var actionSendApp = component.get("c.sendApplication");    
-
-        actionSendApp.setParams({customerEmail : customerEmail,
-          productProgram : productProgram});  
-
-        actionSendApp.setCallback(this,function(resp){ 
-            if (resp.getState() == 'SUCCESS') {
-                helper.stopSpinner(component, "emailSpinner");
-                $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-                helper.disableButton(component, 'sendEmailButton', 'Email Sent!');       
-                if (partnerRecord.State__c == "MA") {
-                    component.find('emailMSLP').set("v.value", null);
-                }
-                component.find('emailBWSL').set("v.value", null);                  
             } else {
-                helper.logError("SLPSendApplicationEmailEvent", "sendCustomerApplication", resp.getError());
-                $A.log("Errors", resp.getError());                      
+
             }
         });                                                   
-        $A.enqueueAction(actionSendApp);               
-    },   
+        $A.enqueueAction(actionCreateLead);             
+    },            
 })
