@@ -441,16 +441,13 @@
     },
 
     handleTaskAction : function(component, event, helper) {
-        console.log(component.get("v.customerInformation"));
         var equipmentId = component.get("v.customerInformation.Id");
         var equipmentObject = component.get("v.equipmentUpdate");
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
-        var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
+
         switch (taskName) {
             case 'Provide all System Information':
             case 'Provide All System Information':

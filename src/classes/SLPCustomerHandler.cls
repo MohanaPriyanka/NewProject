@@ -60,19 +60,6 @@ public without sharing class SLPCustomerHandler {
       return equipmentList.get(0);
   }
 
- /* @AuraEnabled
-  public static Attachment getDescribedFile (String parentId, String description) {
-      System.debug('The description is ' + description);
-      Attachment[] describedFile = SLPFileHandler.getDescribedFile(parentId, description);
-      if (!describedFile.isEmpty()) {
-        System.debug('check');
-        return describedFile.get(0);
-      } else {
-        System.debug('check');
-        return null;
-      }
-  }
-*/
   //the getLoanCustomerTasks returns the list of tasks for the customer window
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
@@ -257,16 +244,7 @@ public without sharing class SLPCustomerHandler {
   public static SLPortal_Settings__c getSLPortalSettings() {
     return SLPortal_Settings__c.getall().values()[0];
   }
-/*
-  @AuraEnabled
-  public static void savePTODocumentation(Id parentId, String fileName, String base64Data, String contentType) {
-    Boolean updateDummy;
-    String attachmentId = SLPFileHandler.saveTheFile(parentId, fileName, base64Data, contentType, 'PTO Documentation');
-    Residential_Equipment__c equipment = [SELECT Id, Interconnection_Update_Dummy__c FROM Residential_Equipment__c WHERE Id = :parentId];
-    equipment.Interconnection_Update_Dummy__c = !equipment.Interconnection_Update_Dummy__c;
-    update equipment;
-  }
-*/
+
   @AuraEnabled
   public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();
