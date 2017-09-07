@@ -54,6 +54,11 @@
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
+        var downpayment = component.get("v.downpayment");
+        if (!downpayment) {
+            downpayment = 0;
+        }
+        lead.Requested_Loan_Amount__c = lead.System_Cost__c - downpayment;
         var errors = helper.errorsInForm(component, helper, lead);
         if (errors != null) {
             helper.logError("SLPAddCustomerController", "addCustomer", errors);
@@ -238,6 +243,11 @@
     updateCustomer : function(component, event, helper) {
         var actionUpdate = component.get("c.updateLeadRecord");
         var leadToUpdate = component.get("v.newLead");
+        var downpayment = component.get("v.downpayment");
+        if (!downpayment) {
+            downpayment = 0;
+        }
+        leadToUpdate.Requested_Loan_Amount__c = leadToUpdate.System_Cost__c - downpayment;
         var errors = helper.errorsInForm(component, helper, leadToUpdate);
         if (errors != null) {
             helper.logError("SLPAddCustomerController", "updateLeadRecord", errors);

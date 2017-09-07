@@ -12,6 +12,7 @@
   <aura:attribute name="productProgram" type="String" />
   <aura:attribute name="customerEmail" type="String" />
   <aura:attribute name="avidiaOriginated" type="Boolean" />
+  <aura:attribute name="downpayment" type="Decimal"/>
   <aura:attribute name="newLead" type="Lead"
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
@@ -189,20 +190,32 @@
             <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Loan Information </h3></b> </div>
             <div class="slds-form-element__group">
               <div class="slds-form-element__row">
+                <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
+                  <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b></label>
+                  <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />
+                </div>
+                <div class="slds-form-element slds-p-horizontal--small animated">
+                </div>
+              </div>
+              <div class="slds-form-element__row">
+                <div aura:id="downpayment" class="slds-form-element slds-p-horizontal--small animated">
+                  <label class="slds-form-element__label proximaNovaBlue"><b>Downpayment</b></label>
+                  <ui:inputCurrency aura:id="downpayment" class="slds-input" value="{!v.downpayment}" required="true"/>
+                </div>
+                <div class="slds-form-element slds-p-horizontal--small animated">
+                </div>
+              </div>
+              <div class="slds-form-element__row">
                 <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
-                  <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b>&nbsp;
-                    <c:BlueWaveInputToolTip popoverText="Please provide us with the total value in which this
-                                                         applicant is applying to finance. Keep in mind, this
-                                                         may not be the total system cost, as some customers
-                                                         place down payments on their systems."/>
-                  </label>
+                  <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
                   <div class="slds-form-element__control">
-                    <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />
+                    <ui:inputCurrency aura:id="loanAmount"
+                                      class="slds-input"
+                                      value="{!if(v.downpayment!=null,v.newLead.System_Cost__c - v.downpayment,v.newLead.System_Cost__c)}"
+                                      disabled="true"/>
                   </div>
                 </div>
-                <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
-                  <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
-                  <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />
+                <div class="slds-form-element slds-p-horizontal--small animated">
                 </div>
               </div>
             </div>
