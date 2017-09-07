@@ -94,4 +94,59 @@ public with sharing class LoanUnderwritingTest {
         System.assertEquals('INQUIRIES IMPACTED THE CREDIT SCORE', LoanUnderwriting.getFifthDetail(s));
         Test.stopTest();
     }
+
+    static testMethod void testBlueWaveParentStateConversion() {
+        Test.startTest();
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Alabama'), 'AL');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Alaska'), 'AK');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Arizona'), 'AZ');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Arkansas'), 'AR');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('California'), 'CA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Colorado'), 'CO');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Connecticut'), 'CT');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Delaware'), 'DE');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Florida'), 'FL');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Georgia'), 'GA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Hawaii'), 'HI');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Idaho'), 'ID');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Illinois'), 'IL');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Indiana'), 'IN');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Iowa'), 'IA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Kansas'), 'KS');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Kentucky'), 'KY');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Louisiana'), 'LA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Maine'), 'ME');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Maryland'), 'MD');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Massachusetts'), 'MA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Michigan'), 'MI');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Minnesota'), 'MN');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Mississippi'), 'MS');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Missouri'), 'MO');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Montana'), 'MT');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Nebraska'), 'NE');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Nevada'), 'NV');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('New Hampshire'), 'NH');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('New Jersey'), 'NJ');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('New Mexico'), 'NM');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('New York'), 'NY');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('North Carolina'), 'NC');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('North Dakota'), 'ND');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Ohio'), 'OH');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Oklahoma'), 'OK');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Oregon'), 'OR');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Pennsylvania'), 'PA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Rhode Island'), 'RI');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('South Carolina'), 'SC');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('South Dakota'), 'SD');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Tennessee'), 'TN');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Texas'), 'TX');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Utah'), 'UT');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Vermont'), 'VT');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Virginia'), 'VA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Washington'), 'WA');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('West Virginia'), 'WV');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Wisconsin'), 'WI');
+          System.assertEquals(BlueWaveParent.convertStateToAbbreviation('Wyoming'), 'WY');
+        Test.stopTest();
+    }    
 }
