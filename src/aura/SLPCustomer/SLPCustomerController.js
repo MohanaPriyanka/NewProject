@@ -146,24 +146,11 @@
         component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);
     },
 
-/*   setEquipmentAsInterconnected : function(component, event, helper) {
-        var source = event.getSource();
-        component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));
-    },
-*/
     setEquipmentCommonwealthProgram : function(component, event, helper) {
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));
     },
 
- /*   setInterconnectedTrue : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Interconnected__c", "true");
-    },
-
-    setInterconnectedFalse : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Interconnected__c", "false");
-    },
-*/
     setCwProgramTrue : function(component, event, helper) {
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "true");
     },
@@ -234,6 +221,7 @@
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
+            "opportunityUpdateId" : ''
         });
 
         saveAction.setCallback(this, function(resp) {
@@ -267,10 +255,6 @@
         }
     },
 
-  /*  savePtoDoc : function(component, event, helper) {
-        helper.saveFile(component, event);
-    },
-*/
     openCustomerModal : function(component, event, helper) {
         helper.openCustomerModal(component, event, helper);
     },

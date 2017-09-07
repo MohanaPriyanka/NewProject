@@ -60,7 +60,7 @@ public without sharing class SLPCustomerHandler {
       return equipmentList.get(0);
   }
 
-  @AuraEnabled
+ /* @AuraEnabled
   public static Attachment getDescribedFile (String parentId, String description) {
       System.debug('The description is ' + description);
       Attachment[] describedFile = SLPFileHandler.getDescribedFile(parentId, description);
@@ -72,7 +72,7 @@ public without sharing class SLPCustomerHandler {
         return null;
       }
   }
-
+*/
   //the getLoanCustomerTasks returns the list of tasks for the customer window
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
@@ -217,14 +217,16 @@ public without sharing class SLPCustomerHandler {
     leadRecord.Update_Dummy__c = !leadRecord.Update_Dummy__c;
     update leadRecord;
 
-    if (opportunityUpdateId != NULL) {
-      Opportunity oppToUpdate = [SELECT Id, Name, Update_Dummy__c
-                                FROM Opportunity
-                                WHERE Id = : opportunityUpdateId ];
-                         
-      oppToUpdate.Update_Dummy__c = !oppToUpdate.Update_Dummy__c;
-      oppToUpdate.Partner_Sales_Agreement_Status__c = 'Completed';
-      update oppToUpdate;
+    if (opportunityUpdateId != null) {
+      if (opportunityUpdateId.length() == 15 || opportunityUpdateId.length() == 18) {
+        Opportunity oppToUpdate = [SELECT Id, Name, Update_Dummy__c
+                                  FROM Opportunity
+                                  WHERE Id = : opportunityUpdateId ];
+                           
+        oppToUpdate.Update_Dummy__c = !oppToUpdate.Update_Dummy__c;
+        oppToUpdate.Partner_Sales_Agreement_Status__c = 'Completed';
+        update oppToUpdate;
+      }
     }
   }
 
@@ -255,7 +257,7 @@ public without sharing class SLPCustomerHandler {
   public static SLPortal_Settings__c getSLPortalSettings() {
     return SLPortal_Settings__c.getall().values()[0];
   }
-
+/*
   @AuraEnabled
   public static void savePTODocumentation(Id parentId, String fileName, String base64Data, String contentType) {
     Boolean updateDummy;
@@ -264,7 +266,7 @@ public without sharing class SLPCustomerHandler {
     equipment.Interconnection_Update_Dummy__c = !equipment.Interconnection_Update_Dummy__c;
     update equipment;
   }
-
+*/
   @AuraEnabled
   public static Boolean getAnyUnseenLeads () {
     List<Lead> leadsNotViewedByAdminList = new List<Lead>();

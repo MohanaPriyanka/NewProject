@@ -43,6 +43,7 @@
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
+            "opportunityUpdateId" : ''
         });
 
         saveAction.setCallback(this, function(resp) {
@@ -95,58 +96,6 @@
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
 
-    getDescribedFile: function(component, description) {
-        var checkForPtoFile = component.get("c.getDescribedFile");
-        var parentId = component.get("v.customerInformation.Id");
-
-        checkForPtoFile.setParams({
-            "parentId" : parentId,
-            "description" : description,
-        });
-
-        checkForPtoFile.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if (resp.getReturnValue() != null) {
-                    component.set("v.ptoFileAttached", true);
-                    component.set("v.ptoFileName", resp.getReturnValue().Name);
-                }
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(checkForPtoFile);
-    },
-
-  //  MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
-  /*  saveFile : function(component, event) {
-        var fileInput = event.getSource().get("v.files")[0];
-
-        var file = fileInput;
-        
-        if (file.size > this.MAX_FILE_SIZE) {
-            alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-                  'Selected file size: ' + file.size);
-            return;
-        }
-        
-        var fr = new FileReader();
-
-        var self = this;
-        fr.onload = function() {
-            var fileContents = fr.result;
-            var base64Mark = 'base64,';
-            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
-
-            fileContents = fileContents.substring(dataStart);
-            
-            self.upload(component, file, fileContents);
-        };
-
-        fr.readAsDataURL(file);
-    },
-    */
-        
     openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
       var body = component.get("v.body");  
       component.set("v.body", []);  
@@ -171,20 +120,6 @@
       );       
     },
     
- /*   upload: function(component, file, fileContents) {
-        var action = component.get("c.savePTODocumentation");
-        action.setParams({
-            parentId: component.get("v.customerInformation.Id"),
-            fileName: file.name,
-            base64Data: encodeURIComponent(fileContents),
-            contentType: file.type
-        });
-
-        $A.enqueueAction(action);
-        component.set("v.ptoFileName", file.name);
-        component.set("v.ptoFileAttached", true);
-    },
-*/
     openInterconnectionModal : function(component, event, helper) {
         $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open');
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
