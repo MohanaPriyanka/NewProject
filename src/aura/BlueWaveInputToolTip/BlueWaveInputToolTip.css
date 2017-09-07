@@ -2,8 +2,17 @@
     position: relative;
     display: inline-block;
 }
-
+/*
 .THIS .slds-popover {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: calc(50% - 25px);
+    display: none;
+    white-space: normal;
+    background-color: rgb(22, 50, 92);
+}*/
+
+.THIS .slds-popover__right {
     position: absolute;
     bottom: calc(100% + 14px);
     left: calc(50% - 25px);
@@ -12,7 +21,25 @@
     background-color: rgb(22, 50, 92);
 }
 
-.THIS.anchor:hover .slds-popover {
+
+.THIS .slds-popover__left {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    right: calc(50% - 25px);
+    display: none;
+    white-space: normal;
+    background-color: rgb(22, 50, 92);
+}
+
+/*.THIS.anchor:hover .slds-popover {
+    display: block;
+}*/
+
+.THIS.anchor:hover .slds-popover__right  {
+    display: block;
+}
+
+.THIS.anchor:hover .slds-popover__left  {
     display: block;
 }
 
