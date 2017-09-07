@@ -1,6 +1,6 @@
 ({
     doInit : function(component, event, helper) {
-		var closeButton = component.find("closeButton");
+        var closeButton = component.find("closeButton");
         $A.util.addClass(closeButton, 'noDisplay');
 
         //The following block of code retrieves the user's license type to determine what to display on the UI
@@ -23,7 +23,7 @@
         var customerPage = component.find("customerPage");
         $A.util.removeClass(customerPage, 'noDisplayBar');
 
-		//retrieve the loan Id to set the record for the component to display.
+        //retrieve the loan Id to set the record for the component to display.
         var label = event.getParam("customerLoanId");
 
         //retrieve the customer's full information to display in the component
@@ -62,7 +62,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : label});
-		completeLoanDisbursals.setCallback(this,function(resp) {
+        completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -72,7 +72,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : label});
-		incompleteLoanDisbursals.setCallback(this,function(resp) {
+        incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             } else {
@@ -108,7 +108,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : loanId});
-		completeLoanDisbursals.setCallback(this,function(resp) {
+        completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -119,7 +119,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : loanId});
-		incompleteLoanDisbursals.setCallback(this,function(resp) {
+        incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             }
@@ -317,7 +317,7 @@
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
         helper.closeSystemInformationSaved(component);
-		helper.refreshPartnerTasks(component);
+        helper.refreshPartnerTasks(component);
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
     },
 
@@ -361,17 +361,17 @@
 
         var mechDate = component.get("v.customerInformation.Mechanical_Installation_Date__c");
         if (mechDate != null) {
-        	component.set("v.equipmentUpdate.Mechanical_Installation_Date__c", mechDate);
+            component.set("v.equipmentUpdate.Mechanical_Installation_Date__c", mechDate);
         }
 
         var interconnectDate = component.get("v.customerInformation.Interconnection_Date__c");
         if (interconnectDate != null) {
-        	component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
+            component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
         }
 
         var commencementDate = component.get("v.customerInformation.Loan__r.Commencement_Datee__c");
         if (commencementDate != null) {
-        	component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
+            component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
         }
 
         var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
@@ -401,12 +401,12 @@
 
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if (mechInstallCheck != null) {
-        	component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
+            component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
         }
 
         var interconnectChange = component.get("v.customerInformation.Interconnected__c");
         if (interconnectChange != null) {
-        	component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
+            component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
         }
 
         var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
@@ -473,7 +473,7 @@
                     break;
                 } else {
                     helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation");
-                	return;
+                    return;
                 }
             case 'Provide Sales Agreement':
               helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement");
@@ -489,7 +489,7 @@
         var oppId = event.getParam("opportunityID");
         if (oppId === 'notOpp') {
             component.set("v.equipmentUpdate", newResiEquip);
-        	helper.saveCustomerData(component, event, helper);
+            helper.saveCustomerData(component, event, helper);
             helper.refreshPartnerTasks(component);
         } else {
             var actionOppUpdate = component.get("c.updateOpportunity");
