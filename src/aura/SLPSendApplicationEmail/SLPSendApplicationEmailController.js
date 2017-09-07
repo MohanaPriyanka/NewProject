@@ -20,17 +20,18 @@
         $A.enqueueAction(action);    
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
-        helper.addRemoveElements(component, 'emailForm', 'emailConfirmation');
+        $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  
+        $A.util.removeClass(component.find('emailForm'), 'noDisplay'); 
 
         var modalToggle = event.getParam("openModal");    
         if (modalToggle == "openModal") {                                        
-            helper.openModal(component);   
+            helper.openModal(component, "emailCustomerModal");   
         }           
     },   
 
     closeEmailCustomerModal: function(component, event, helper) {
-        closeModal(component, 'emailCustomerModal'); 
-        helper.enableButton(component.find('sendEmailButton', 'Send'));
+        helper.closeModal(component, 'emailCustomerModal'); 
+        helper.enableButton(component, 'sendEmailButton', 'Send');
 
         var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
         evtCustomerWindow.setParams({"closeModal": "closeModal"});
@@ -48,10 +49,11 @@
 
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");
+        var downPayment = component.get("v.downPayment");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
             helper.removeButtonsAndShowSpinner(component, event, helper);  
-            helper.emailApplication(component, event, helper, newLead);
+            helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
             return;

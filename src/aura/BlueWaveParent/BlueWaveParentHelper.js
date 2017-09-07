@@ -210,11 +210,6 @@
         var modal = component.find(modalId);
         $A.util.addClass(modal, 'slds-fade-in-open');
         $A.util.removeClass(modal, 'slds-fade-in-hide');  
-    },   
-
-    addRemoveElements : function(component, displayElement, removeElement) {
-        $A.util.addClass(component.find(removeElement), 'slds-fade-in-open');
-        $A.util.removeClass(component.find(displayElement), 'slds-fade-in-hide');  
-    },                
+    },                 
 })
 

@@ -33,9 +33,11 @@
         this.startSpinner(component, "emailSpinner");  
     }, 
 
-    emailApplication : function(component, event, helper, newLead) {
+    emailApplication : function(component, event, helper, downPayment, newLead) {
         var action = component.get("c.sendApplication");   
-        action.setParams({newLead : newLead});  
+        var loanAmount = newLead.System_Cost__c - downPayment;
+        action.setParams({newLead : newLead,
+                          loanAmount : loanAmount});  
         action.setCallback(this,function(resp){ 
             if (resp.getState() == 'SUCCESS') {
                 helper.handleSuccessfulEmail(component, helper);              
@@ -48,7 +50,8 @@
     },        
 
     handleSuccessfulEmail : function(component, helper) {
-        helper.addRemoveElements(component, 'emailConfirmation', 'emailForm');
+        $A.util.addClass(component.find('emailForm'), 'noDisplay');         
+        $A.util.removeClass(component.find('emailConfirmation'), 'noDisplay');  
         $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
 
         helper.stopSpinner(component, "emailSpinner");
