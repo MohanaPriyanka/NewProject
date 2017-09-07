@@ -32,7 +32,9 @@ public without sharing class SLPAddCustomer {
                           WHERE Name = : recordType
                           AND SobjectType = 'Lead' 
                           LIMIT 1];
-
+        if (newLead.LASERCA__Home_State__c.length() > 2) {
+            newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
+        }
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Email_Re_Enter__c = newLead.Email;
