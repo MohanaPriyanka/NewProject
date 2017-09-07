@@ -33,16 +33,20 @@
     doneButton : function(component, event, helper) {
         var docType = component.get("v.fileName");
         var newDate = component.get("v.dateValue");
+        var oppID = '';
         if (docType === 'Mechanical Installation Documentation') {
           component.set("v.resiEquipment.Mechanically_Installed__c", true); 
           component.set("v.resiEquipment.Mechanical_Installation_Date__c", newDate);
         } else if (docType === 'Interconnection Documentation') {
           component.set("v.resiEquipment.Interconnected__c", true); 
           component.set("v.resiEquipment.Interconnection_Date__c", newDate);
-        } 
+        } else if (docType === 'Sales Agreement') {
+            oppID = component.get("v.fileParentId");
+        }
         var evtCustomerPage = $A.get("e.c:SLPafterFileUpload");
         	evtCustomerPage.setParams({
-                "residentialEquipment" : component.get("v.resiEquipment")
+                "residentialEquipment" : component.get("v.resiEquipment"),
+                "opportunityID" : oppID
         	});
         evtCustomerPage.fire();         
         helper.closeWindow(component);

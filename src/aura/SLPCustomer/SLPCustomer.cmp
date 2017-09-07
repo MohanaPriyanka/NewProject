@@ -23,6 +23,7 @@
   <aura:attribute name="vendorIdLabel" type="String"/>
   <aura:attribute name="interconnectionTaskStatus" type="String"/>
   <aura:attribute name="parentId" type="Id"/>
+  <aura:attribute name="oppId" type="String" default=""/>
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>
   <aura:handler event="c:SLPafterFileUpload" action="{!c.handleAfterFileUpload}"/> 
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}"/>

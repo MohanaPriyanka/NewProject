@@ -484,23 +484,9 @@
     handleAfterFileUpload : function(component, event, helper) {
         var newResiEquip = event.getParam("residentialEquipment");
         var oppId = event.getParam("opportunityID");
-        if (oppId === 'notOpp') {
-            component.set("v.equipmentUpdate", newResiEquip);
-            helper.saveCustomerData(component, event, helper);
-            helper.refreshPartnerTasks(component);
-        } else {
-            var actionOppUpdate = component.get("c.updateOpportunity");
-            actionOppUpdate.setParams({
-                "opportunityUpdateId" : oppId
-            });
-            actionOppUpdate.setCallback(this, function(resp) {
-                if (resp.getState() == "SUCCESS") {
-                   helper.refreshPartnerTasks(component);
-                } else {
-                   $A.log("Errors", resp.getError());
-                }
-            });
-            $A.enqueueAction(actionOppUpdate);
-        }                                  
+        component.set("v.equipmentUpdate", newResiEquip);
+        component.set("v.oppId", oppId);
+        helper.saveCustomerData(component, event, helper);
+        helper.refreshPartnerTasks(component)                               
     },
 })
