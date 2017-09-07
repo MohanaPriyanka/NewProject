@@ -24,7 +24,7 @@
     'FirstName': 'Cole',
     'LastName': 'Swain',
     'LASERCA__Home_State__c': 'MA',
-    'Email': 'colemswain@gmail.com',
+    'Email': 'cswain@bluewavesolar.com',
     'Product_Program__c': '',
     'Requested_Loan_Amount__c':'15000',
     'System_Cost__c':'15000',    
@@ -39,77 +39,118 @@
             <span class="slds-assistive-text">Send Email</span>
           </button>
           <h2 class="slds-text-heading--medium proximaNovaWhite"> Send Application</h2>
-        </div>                
-        <div class="slds-modal__content slds-p-around--medium">
-          <div class="slds-tabs--default">
-            <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-              <ul class="slds-tabs--default__nav">
-                <li aura:id="mslpEmailInput" class="slds-tabs--default__item">
-                  <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">MCEC Solar Loan Program</a>
-                </li>
-                <li aura:id="bwslEmailInput" class="slds-tabs--default__item">
-                  <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">BlueWave Solar Loan</a>
-                </li>
-              </ul>    
-            </aura:if>
-            <fieldset class="slds-form--compound slds-m-top_small">
-              <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
-              <div class="slds-form-element__group">
-                <div class="slds-form-element__row">
-                  <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-                    <label class="slds-form-element__label proximaNovaBlue  "> <b>First Name</b> </label>
-                    <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
-                  </div> 
-                  <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-                    <label class="slds-form-element__label proximaNovaBlue"> <b>Last Name</b></label>
-                    <ui:inputText aura:id="lastName" class="slds-input" value="{!v.newLead.LastName}"/>          
-                  </div>   
-                </div>
-              </div>
-            </fieldset>            
-            <fieldset class="slds-form--compound slds-m-top_small">
-              <div class="slds-form-element__group">
-                <div class="slds-form-element__row">
-                  <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
-                    <label class="slds-form-element__label proximaNovaBlue"> <b>Email Address</b> </label>
-                    <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
-                  </div>                 
-                  <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small animated">
-                    <label class="slds-form-element__label proximaNovaBlue"><b>Home State</b></label>
-                    <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" > 
-                      <ui:inputSelectOption text="Select"/>                        
-                      <ui:inputSelectOption text="MA"/>
-                      <ui:inputSelectOption text="NC"/>   
-                      <ui:inputSelectOption text="RI"/>                
-                      <ui:inputSelectOption text="SC"/>      
-                    </ui:inputSelect>
-                  </div>                    
-                </div>
-              </div>
-            </fieldset>     
-            <fieldset class="slds-form--compound">
-              <div class="slds-form-element__group">
-                <div class="slds-form-element__row">
-                  <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
-                    <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b>&nbsp;
-                    <c:BlueWaveInputToolTip popoverText="Please provide us with the total value in which this 
-                     applicant is applying to finance. Keep in mind, this 
-                     may not be the total system cost, as some customers 
-                     place down payments on their systems."/>
-                   </label>
-                   <div class="slds-form-element__control">
-                    <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />     
+        </div>  
+        <div aura:id="emailForm">              
+          <div class="slds-modal__content slds-p-around--medium">
+            <div class="slds-tabs--default">
+              <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
+                <ul class="slds-tabs--default__nav">
+                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item">
+                    <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">MCEC Solar Loan Program</a>
+                  </li>
+                  <li aura:id="bwslEmailInput" class="slds-tabs--default__item">
+                    <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">BlueWave Solar Loan</a>
+                  </li>
+                </ul>    
+              </aura:if>                          
+              <fieldset class="slds-form--compound slds-m-top_small">
+                <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
+                      <label class="slds-form-element__label proximaNovaBlue"> <b>Email Address</b> </label>
+                      <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
+                    </div>                 
+                    <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small animated">
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Home State</b></label>
+                      <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" > 
+                        <ui:inputSelectOption text="Select"/>                        
+                        <ui:inputSelectOption text="Alabama "/>
+                        <ui:inputSelectOption text="Alaska "/>
+                        <ui:inputSelectOption text="Arizona "/>
+                        <ui:inputSelectOption text="Arkansas "/>
+                        <ui:inputSelectOption text="California "/>
+                        <ui:inputSelectOption text="Colorado "/>
+                        <ui:inputSelectOption text="Connecticut "/>
+                        <ui:inputSelectOption text="Delaware "/>
+                        <ui:inputSelectOption text="Florida "/>
+                        <ui:inputSelectOption text="Georgia "/>
+                        <ui:inputSelectOption text="Hawaii "/>
+                        <ui:inputSelectOption text="Idaho "/>
+                        <ui:inputSelectOption text="Illinois"/>
+                        <ui:inputSelectOption text="Indiana "/>
+                        <ui:inputSelectOption text="Iowa "/>
+                        <ui:inputSelectOption text="Kansas "/>
+                        <ui:inputSelectOption text="Kentucky "/>
+                        <ui:inputSelectOption text="Louisiana "/>
+                        <ui:inputSelectOption text="Maine "/>
+                        <ui:inputSelectOption text="Maryland "/>
+                        <ui:inputSelectOption text="Massachusetts "/>
+                        <ui:inputSelectOption text="Michigan "/>
+                        <ui:inputSelectOption text="Minnesota "/>
+                        <ui:inputSelectOption text="Mississippi "/>
+                        <ui:inputSelectOption text="Missouri "/>
+                        <ui:inputSelectOption text="Montana"/>
+                        <ui:inputSelectOption text="Nebraska "/>
+                        <ui:inputSelectOption text="Nevada "/>
+                        <ui:inputSelectOption text="New Hampshire "/>
+                        <ui:inputSelectOption text="New Jersey "/>
+                        <ui:inputSelectOption text="New Mexico "/>
+                        <ui:inputSelectOption text="New York "/>
+                        <ui:inputSelectOption text="North Carolina "/>
+                        <ui:inputSelectOption text="North Dakota "/>
+                        <ui:inputSelectOption text="Ohio "/>
+                        <ui:inputSelectOption text="Oklahoma "/>
+                        <ui:inputSelectOption text="Oregon "/>
+                        <ui:inputSelectOption text="Pennsylvania"/>
+                        <ui:inputSelectOption text="Rhode Island "/>
+                        <ui:inputSelectOption text="South Carolina "/>
+                        <ui:inputSelectOption text="South Dakota "/>
+                        <ui:inputSelectOption text="Tennessee "/>
+                        <ui:inputSelectOption text="Texas "/>
+                        <ui:inputSelectOption text="Utah "/>
+                        <ui:inputSelectOption text="Vermont "/>
+                        <ui:inputSelectOption text="Virginia "/>
+                        <ui:inputSelectOption text="Washington "/>
+                        <ui:inputSelectOption text="West Virginia "/>
+                        <ui:inputSelectOption text="Wisconsin "/>
+                        <ui:inputSelectOption text="Wyoming"/>
+                      </ui:inputSelect>
+                    </div>                    
                   </div>
-                </div>      
-                <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
-                  <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
-                  <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
-                </div>             
+                </div>
+              </fieldset>     
+              <fieldset class="slds-form--compound">
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b>&nbsp;
+                      <c:BlueWaveInputToolTip popoverText="Please provide us with the total value in which this 
+                       applicant is applying to finance. Keep in mind, this 
+                       may not be the total system cost, as some customers 
+                       place down payments on their systems."/>
+                     </label>
+                     <div class="slds-form-element__control">
+                      <ui:inputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}" required="true"  />     
+                    </div>
+                  </div>      
+                  <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
+                    <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b></label>
+                    <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"  />   
+                  </div>             
+                </div>
               </div>
-            </div>
-          </fieldset>                    
+            </fieldset>                    
+          </div>           
         </div>
       </div>
+      <div aura:id="emailConfirmation" class="noDisplay">
+        <div class="slds-modal__content slds-p-around--medium">        
+          <div class="slds-align--absolute-center ">
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The email has been sent, thank you! </b></p>
+          </div>   
+        </div>
+      </div>        
       <div class="slds-modal__footer">
        <div aura:id="sendEmailModalButtons">
         <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>

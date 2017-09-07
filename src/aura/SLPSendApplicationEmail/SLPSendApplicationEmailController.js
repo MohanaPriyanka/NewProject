@@ -19,6 +19,9 @@
         });    
         $A.enqueueAction(action);    
 
+        //reset the modal so that the email confirmation gets removed and the form gets displayed
+        helper.addRemoveElements(component, 'emailForm', 'emailConfirmation');
+
         var modalToggle = event.getParam("openModal");    
         if (modalToggle == "openModal") {                                        
             helper.openModal(component);   
@@ -26,19 +29,8 @@
     },   
 
     closeEmailCustomerModal: function(component, event, helper) {
-        var partnerRecord = component.get("v.partnerRecord");
-        var emailButton = component.find('sendEmailButton');
-        if (partnerRecord.State__c == "MA") {
-            component.find('emailMSLP').set("v.value", null);        
-        }
-        component.find('emailBWSL').set("v.value", null);
-
-        var modal = component.find('emailCustomerModal');
-        $A.util.removeClass(modal, 'slds-fade-in-open');
-        $A.util.addClass(modal, 'slds-fade-in-hide');  
-
-        emailButton.set("v.disabled",false);
-        emailButton.set("v.label","Send");
+        closeModal(component, 'emailCustomerModal'); 
+        helper.enableButton(component.find('sendEmailButton', 'Send'));
 
         var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
         evtCustomerWindow.setParams({"closeModal": "closeModal"});
@@ -56,7 +48,6 @@
 
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");
-        //check for errors in the form's inputs      
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
             helper.removeButtonsAndShowSpinner(component, event, helper);  
@@ -64,17 +55,6 @@
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
             return;
-        }          
-
-        var actionCreateLead = component.get("c.addNewLeadRecord");   
-        actionCreateLead.setParams({newLead : newLead});  
-        actionCreateLead.setCallback(this,function(resp){ 
-            if (resp.getState() == 'SUCCESS') {  
-
-            } else {
-
-            }
-        });                                                   
-        $A.enqueueAction(actionCreateLead);             
+        }                      
     },            
 })

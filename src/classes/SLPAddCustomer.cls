@@ -132,7 +132,7 @@ public without sharing class SLPAddCustomer {
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     
     @AuraEnabled 
-    public static String sendApplication (String customerEmail, String productProgram) {
+    public static String sendApplication (Lead newLead) {
         String startApplicationUrl;
         String customerName;
         String mslpUrl;
@@ -142,7 +142,7 @@ public without sharing class SLPAddCustomer {
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
 
-        emailList.add(customerEmail);
+        emailList.add(newLead.Email);
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];    
@@ -150,37 +150,31 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
+        mslpUrlParametersMap.put('544', String.valueof(newLead.Requested_Loan_Amount__c));
+        mslpUrlParametersMap.put('574', String.valueof(newLead.LASERCA__Home_State__c));        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
+        bwslUrlParametersMap.put('544', String.valueof(newLead.Requested_Loan_Amount__c));
+        bwslUrlParametersMap.put('574', String.valueof(newLead.LASERCA__Home_State__c));
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        if (productProgram == 'BlueWave Solar Loan') {
+        if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
           startApplicationUrl = bwslUrl;       
-        } else if (productProgram == 'MSLP') {
+        } else if (newLead.Product_Program__c == 'MSLP') {
           startApplicationUrl = mslpUrl;       
         }        
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
 
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setHtmlBody(htmlBody);
-        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
-                                           FROM OrgWideEmailAddress
-                                           WHERE Address = 'customercare@bluewavesolar.com'  
-                                           LIMIT 1]) {
-          mail.setOrgWideEmailAddressId(senderEmail.Id); 
-        }  
-        String emailSubject = 'BlueWave Solar Loan - Start your application here'; 
-        mail.setSubject(emailSubject);
-        mail.setToAddresses(emailList);
-        //mail.setTargetObjectId(lead.Id);
-        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});        
+        MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;
       }     
 }

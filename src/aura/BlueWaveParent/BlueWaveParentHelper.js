@@ -172,6 +172,12 @@
         button.set("v.label", replacementText);    
     }, 
 
+    enableButton : function(component, buttonId, text) {
+        var button = component.find(buttonId);
+        button.set("v.disabled", false);
+        button.set("v.label", text);    
+    },     
+
     logError : function(className, methodName, errorMessage) {
         var appEvent = $A.get("e.c:ApexCallbackError");
         appEvent.setParams({"className" : className,
@@ -192,6 +198,23 @@
         var evt = spinner.get("e.toggle");
         evt.setParams({ isVisible : false });
         evt.fire();
-    },         
+    },           
+
+    closeModal : function(component, modalId) {
+        var modal = component.find(modalId);
+        $A.util.removeClass(modal, 'slds-fade-in-open');
+        $A.util.addClass(modal, 'slds-fade-in-hide');  
+    },   
+
+    openModal : function(component, modalId) {
+        var modal = component.find(modalId);
+        $A.util.addClass(modal, 'slds-fade-in-open');
+        $A.util.removeClass(modal, 'slds-fade-in-hide');  
+    },   
+
+    addRemoveElements : function(component, displayElement, removeElement) {
+        $A.util.addClass(component.find(removeElement), 'slds-fade-in-open');
+        $A.util.removeClass(component.find(displayElement), 'slds-fade-in-hide');  
+    },                
 })
 
