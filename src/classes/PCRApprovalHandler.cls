@@ -16,8 +16,8 @@ public without sharing class PCRApprovalHandler {
     public static final String APPROVED = 'Approved';
     public static final String READYFORCREDITCHECK = 'Ready for Credit Check';
     public static final String PENDINGCREDITREVIEW = 'Pending Credit Review';
-    public static final String UNQUALIFIED = 'Unqualified';
-    
+    public static final String UNQUALIFIED = 'Unqualified'; 
+
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
     private static EmailTemplate denialEmailTemplate;
@@ -121,6 +121,7 @@ public without sharing class PCRApprovalHandler {
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         List<Lead> leadstoUpdate = new List<Lead>();
         List<Product2> products;
+        Boolean hasCoApp = FALSE;
 
         for (LASERCA__Personal_Credit_Report__c pcrForLead: newPCR) {
             if (pcrForLead.LASERCA__Lead__c == NULL && pcrForLead.Lead_from_Contact__c != NULL) {
@@ -136,7 +137,8 @@ public without sharing class PCRApprovalHandler {
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                     Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                                     Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                                    Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
+                                    Co_Applicant_First_Name__c, CoApplicant_Contact__c,
+                                    Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c 
                                     FROM Lead 
                                     WHERE Id  IN : leadlist];
         for (Lead lead : relatedLeads) {
@@ -201,6 +203,10 @@ public without sharing class PCRApprovalHandler {
                     }
                 }
 
+                if (creditScore == 0 || creditScore == NULL) {
+                    creditSummary.bestStatus = PENDINGREVIEW;
+                }
+
                 if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
                     pcr.Solar_Loan_Manual_Approval__c) {
                     pcr.Solar_Loan_Approval_Status__c = APPROVED;
@@ -220,6 +226,10 @@ public without sharing class PCRApprovalHandler {
                     pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
                     setLeadStatus(pcr.Solar_Loan_Approval_Status__c, ld);
                     leadsToUpdate.add(ld);
+                }
+
+                if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) { 
+                    hasCoApp = TRUE;
                 }
 
                 // SEND PREAPPROVAL EMAIL 
@@ -265,7 +275,8 @@ public without sharing class PCRApprovalHandler {
                             pcr.Last_Name_from_Lead__c != NULL &&
                             pcr.Email_from_Lead__c != NULL &&
                             pcr.Solar_Loan_Approval_Status__c == DECLINED &&
-                            declinedFromFICO ){
+                            declinedFromFICO &&
+                            !hasCoApp){
                         
                         String htmlbody = denialEmailTemplate.HtmlValue;
                         htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
@@ -284,7 +295,11 @@ public without sharing class PCRApprovalHandler {
     }
 
     private Boolean deniedBecauseFICO (Integer creditScore, Integer creditMinimum) {
-        return (creditScore < creditMinimum);
+        if (creditScore < 300 || creditScore == NULL) {
+            return (FALSE);
+        } else {
+            return (creditScore < creditMinimum);
+        }
     } 
 
     private void setLeadStatus(String approval, Lead lead) {
