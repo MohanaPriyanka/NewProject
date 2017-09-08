@@ -35,6 +35,11 @@
     },
 
     checkAvidiaOriginated : function(component, event, helper) {
+        if (component.get("v.newLead.LASERCA__Home_State__c") === 'MA') {
+            component.set("v.newLead.DOER_Solar_Loan__c",true);
+        } else {
+            component.set("v.newLead.DOER_Solar_Loan__c",false);
+        }        
         var actionGetLender = component.get("c.getLenderOfRecord");
         actionGetLender.setStorable();
         actionGetLender.setParams({"state": component.get("v.newLead.LASERCA__Home_State__c")});
@@ -151,7 +156,8 @@
     navigateCreditStatus : function(component, event, helper) {
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
-          "url": '/slpcreditstatus?leadId=' + component.get("v.newLead.Id")
+                "url": '/slpcreditstatus?leadId=' + component.get("v.newLead.Id") +
+                    '&leadName=' + encodeURIComponent(component.get("v.newLead.FirstName") + ' ' + component.get("v.newLead.LastName"))
         });
         urlEvent.fire();
     },

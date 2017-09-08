@@ -95,7 +95,7 @@
          {!v.body}
         </div>
         <div aura:id = "productTable" class="noDisplay">
-          <h1 class="proximaNovaBrand">Continue Application for {!v.customerName}</h1>
+          <h1 class="proximaNovaBrand">Continue application for {!v.customerName}</h1>
           <br/>
           <div class="slds-text-longform">
             <aura:if isTrue="{!v.srecCustomer}">
