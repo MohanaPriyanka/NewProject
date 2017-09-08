@@ -192,7 +192,7 @@ public without sharing class BlueWaveParent {
             else if(stateName == 'Pennsylvania') {
                 abbreviation = 'PA';            
             }
-            else if(stateName == 'RhodeIsland') {
+            else if(stateName == 'Rhode Island') {
                 abbreviation = 'RI';            
             }
             else if(stateName == 'South Carolina') {
