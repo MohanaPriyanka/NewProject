@@ -12,7 +12,7 @@
   <aura:attribute name="productProgram" type="String" />
   <aura:attribute name="customerEmail" type="String" />
   <aura:attribute name="avidiaOriginated" type="Boolean" />
-  <aura:attribute name="downpayment" type="Decimal"/>
+  <aura:attribute name="downPayment" type="Decimal"/>
   <aura:attribute name="newLead" type="Lead"
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
@@ -198,9 +198,9 @@
                 </div>
               </div>
               <div class="slds-form-element__row">
-                <div aura:id="downpayment" class="slds-form-element slds-p-horizontal--small animated">
-                  <label class="slds-form-element__label proximaNovaBlue"><b>Downpayment</b></label>
-                  <ui:inputCurrency aura:id="downpayment" class="slds-input" value="{!v.downpayment}" required="true"/>
+                <div aura:id="downPayment" class="slds-form-element slds-p-horizontal--small animated">
+                  <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment</b></label>
+                  <ui:inputCurrency aura:id="downPayment" class="slds-input" value="{!v.downPayment}" required="true"/>
                 </div>
                 <div class="slds-form-element slds-p-horizontal--small animated">
                 </div>
@@ -211,7 +211,7 @@
                   <div class="slds-form-element__control">
                     <ui:inputCurrency aura:id="loanAmount"
                                       class="slds-input"
-                                      value="{!if(v.downpayment!=null,v.newLead.System_Cost__c - v.downpayment,v.newLead.System_Cost__c)}"
+                                      value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"
                                       disabled="true"/>
                   </div>
                 </div>
