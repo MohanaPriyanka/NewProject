@@ -766,7 +766,7 @@ public without sharing class SLPControllersTestclass {
         equipmentId = String.valueOf(equipmentList.get(0).Id);
         Test.startTest();
         System.runAs(partnerUser) {
-            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
+            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0),'');
         }
         Test.stopTest();
     }
@@ -807,7 +807,7 @@ public without sharing class SLPControllersTestclass {
         equipmentId = String.valueOf(equipmentList.get(0).Id);
         Test.startTest();
         System.runAs(partnerUser) {
-            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
+            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0), '');
         }
         Test.stopTest();
     }
@@ -1069,16 +1069,18 @@ public without sharing class SLPControllersTestclass {
         attach.ParentId=equipment.id;
         attach.Description = 'PTO Documentation';
         attach.OwnerId = partnerUser.Id;
-        insert attach;
 
         Test.startTest();
 
         System.runAs(partnerUser) {
             SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
-            Attachment describedFile = SLPCustomerHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
-            System.assertEquals(describedFile.Description, 'PTO Documentation');
+            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
+            List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
+            List<Attachment> recordedFile = SLPFileHandler.getRecordFiles(equipment.Id);
+            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', describedFile.get(0).Id);
+            System.assertEquals(describedFile.get(0).Description, 'PTO Documentation');
+            System.assertEquals(recordedFile.get(0).Description, 'PTO Documentation');
         }
-        Test.stopTest();
     }
 
     @isTest static void testSLPAddCoApplicant() {

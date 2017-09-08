@@ -1,6 +1,6 @@
 ({
     doInit : function(component, event, helper) {
-	var closeButton = component.find("closeButton");
+        var closeButton = component.find("closeButton");
         $A.util.addClass(closeButton, 'noDisplay');
 
         //The following block of code retrieves the user's license type to determine what to display on the UI
@@ -23,7 +23,7 @@
         var customerPage = component.find("customerPage");
         $A.util.removeClass(customerPage, 'noDisplayBar');
 
-	//retrieve the loan Id to set the record for the component to display.
+        //retrieve the loan Id to set the record for the component to display.
         var label = event.getParam("customerLoanId");
 
         //retrieve the customer's full information to display in the component
@@ -62,7 +62,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : label});
-	completeLoanDisbursals.setCallback(this,function(resp) {
+        completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -72,7 +72,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : label});
-	incompleteLoanDisbursals.setCallback(this,function(resp) {
+        incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             } else {
@@ -108,7 +108,7 @@
 
         var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
         completeLoanDisbursals.setParams({loanId : loanId});
-	completeLoanDisbursals.setCallback(this,function(resp) {
+        completeLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.completeDisbursalList", resp.getReturnValue());
             } else {
@@ -119,7 +119,7 @@
 
         var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
         incompleteLoanDisbursals.setParams({loanId : loanId});
-	incompleteLoanDisbursals.setCallback(this,function(resp) {
+        incompleteLoanDisbursals.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 component.set("v.incompleteDisbursalList", resp.getReturnValue());
             }
@@ -146,22 +146,9 @@
         component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);
     },
 
-    setEquipmentAsInterconnected : function(component, event, helper) {
-        var source = event.getSource();
-        component.set("v.equipmentUpdate.Interconnected__c",  source.get("v.value"));
-    },
-
     setEquipmentCommonwealthProgram : function(component, event, helper) {
         var source = event.getSource();
         component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));
-    },
-
-    setInterconnectedTrue : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Interconnected__c", "true");
-    },
-
-    setInterconnectedFalse : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Interconnected__c", "false");
     },
 
     setCwProgramTrue : function(component, event, helper) {
@@ -234,6 +221,7 @@
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
+            "opportunityUpdateId" : ''
         });
 
         saveAction.setCallback(this, function(resp) {
@@ -260,58 +248,11 @@
     },
 
     saveEquipmentInformation : function(component, event, helper) {
-        helper.startSpinner(component, "srecSaveSpinner");
-        helper.startSpinner(component, "customerInformationSpinner");
-        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
-        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
-
-	var equipmentUpdateVar = component.get("v.equipmentUpdate");
-        var equipmentIdVar = component.get("v.customerInformation.Id");
-        var loanUpdateVar = component.get("v.loanUpdate");
-        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
-
-        var saveAction = component.get("c.saveCustomerInformation");
-        saveAction.setParams({
-            "equipmentFromComponent" : equipmentUpdateVar,
-            "equipmentId" : equipmentIdVar,
-            "loanId" : loanUpdateIdVar,
-            "loan" : loanUpdateVar,
-        });
-
-        saveAction.setCallback(this, function(resp) {
-            if (resp.getState() == "SUCCESS") {
-                helper.stopSpinner(component, "srecSaveSpinner");
-                helper.stopSpinner(component, "customerInformationSpinner");
-                $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
-                $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-        var customerInformationAction = component.get("c.getCustomerInformation");
-        customerInformationAction.setParams({loanId : loanUpdateIdVar})
-        customerInformationAction.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.customerInformation", resp.getReturnValue());
-                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-	$A.enqueueAction(saveAction);
-
-        $A.enqueueAction(customerInformationAction);
-        helper.getProgressBarDataMethod(component, event, helper);
-    },
-
-    savePtoDoc : function(component, event, helper) {
-        helper.saveFile(component, event);
+        helper.saveDataPreActionFormatting(component, event, helper);
+        var isSuccess = helper.saveCustomerData(component, event, helper);
+        if (isSuccess === 'SUCCESS') {
+            helper.saveDataSuccessFormatting(component, event, helper);
+        }
     },
 
     openCustomerModal : function(component, event, helper) {
@@ -376,27 +317,7 @@
         $A.util.removeClass(component.find('generalSystemInformationModal'), 'slds-fade-in-open');
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
         helper.closeSystemInformationSaved(component);
-
-        var i;
-        var partnerTaskList = component.get("c.getLoanCustomerTasks");
-        var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
-        partnerTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerTaskList", resp.getReturnValue());
-                for (i=0; i<resp.getReturnValue().length; i++) {
-                    if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
-                    } else {
-                        continue;
-                    }
-                }
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(partnerTaskList);
-
+        helper.refreshPartnerTasks(component);
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
     },
 
@@ -440,17 +361,17 @@
 
         var mechDate = component.get("v.customerInformation.Mechanical_Installation_Date__c");
         if (mechDate != null) {
-        	component.set("v.equipmentUpdate.Mechanical_Installation_Date__c", mechDate);
+            component.set("v.equipmentUpdate.Mechanical_Installation_Date__c", mechDate);
         }
 
         var interconnectDate = component.get("v.customerInformation.Interconnection_Date__c");
         if (interconnectDate != null) {
-        	component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
+            component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
         }
 
         var commencementDate = component.get("v.customerInformation.Loan__r.Commencement_Datee__c");
         if (commencementDate != null) {
-        	component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
+            component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
         }
 
         var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
@@ -480,12 +401,12 @@
 
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if (mechInstallCheck != null) {
-        	component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
+            component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
         }
 
         var interconnectChange = component.get("v.customerInformation.Interconnected__c");
         if (interconnectChange != null) {
-        	component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
+            component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
         }
 
         var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
@@ -520,56 +441,52 @@
     },
 
     handleTaskAction : function(component, event, helper) {
-        console.log(component.get("v.customerInformation"));
         var equipmentId = component.get("v.customerInformation.Id");
-        var leadId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
+        var equipmentObject = component.get("v.equipmentUpdate");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
-        var leadUpdateDummy = component.get("v.customerInformation.Loan__r.Lead__r.Update_Dummy__c");
-        var oppUpdateDummy = component.get("v.customerInformation.Loan__r.Opportunity__r.Update_Dummy__c");
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
-        // Some forms (Non-MA Interconnection, Mech installation) use the Lead ID 
-        // field on the Opportunity to find the Opportunity to update
+
         switch (taskName) {
             case 'Provide all System Information':
             case 'Provide All System Information':
                 helper.openCustomerModal(component, event, helper);
                 return;
+                
             case 'Mechanical Installation':
-                urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381585'
-                               + '?tfa_814=' + leadId
-                               + '&tfa_828=' + !equipmentUpdateDummy
-                               + '&tfa_821=' + equipmentId});
-                break;
+                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, equipmentObject, "Mechanical Installation Documentation");
+                return;
+
             case 'Interconnection':
             case 'Report Interconnection to MCEC':
                 if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
                     urlEvent.setParams(
+                    // THIS NEEDS TO STAY IN FORM ASSEMBLY FOR NOW
                        {'url': 'https://forms.bluewaverenewables.com/381637'
                                + '?tfa_117=' + equipmentId
                                + '&tfa_118=' + !equipmentUpdateDummy
                                + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381589'
-                               + '?tfa_814=' + leadId
-                               + '&tfa_828=' + !equipmentUpdateDummy
-                               + '&tfa_821=' + equipmentId});
-                    break;
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation");
+                    return;
                 }
             case 'Provide Sales Agreement':
-                urlEvent.setParams(
-                       {'url': 'https://forms.bluewaverenewables.com/381606'
-                               + '?tfa_814=' + oppId
-                               + '&tfa_828=' + !oppUpdateDummy});
-                break;
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement");
+              return;
             default:
-                break;
+              break;
         }
         urlEvent.fire();
     },
+    
+    handleAfterFileUpload : function(component, event, helper) {
+        var newResiEquip = event.getParam("residentialEquipment");
+        var oppId = event.getParam("opportunityID");
+        component.set("v.equipmentUpdate", newResiEquip);
+        component.set("v.oppId", oppId);
+        helper.saveCustomerData(component, event, helper);
+        helper.refreshPartnerTasks(component)                               
+    },
 })
-
