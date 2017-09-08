@@ -79,19 +79,6 @@
                           onclick="{!c.navigate}" 
                           class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li>
-      <li class="slds-context-bar__item">
-        <lightning:button aura:id="slpcreditstatus"
-                          label="Pending Customers" 
-                          onclick="{!c.navigate}" 
-                          class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
-      </li> 
-      <li class="slds-context-bar__item">
-        <lightning:button aura:id="slpcustomer"
-                          label="Customers" 
-                          onclick="{!c.navigate}" 
-                          class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
-      </li>
-
       <!-- aura:if doesn't render the menu item properly as a button, so add 
            noDisplay and have doInit remove the class for Executives -->
       <li aura:id="disbursalsMenuItem" class="slds-context-bar__item noDisplay">
