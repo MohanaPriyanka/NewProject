@@ -76,7 +76,7 @@ public without sharing class BlueWaveParent {
         update a;
     }    
 
-    public static String convertStateToAbbreviation(String stateName) {
+    public static String convertStateToAbbreviation(String stateName ) {
         String abbreviation;
             if(stateName ==  'Alabama') {
                 abbreviation = 'AL';            
@@ -231,5 +231,162 @@ public without sharing class BlueWaveParent {
                 abbreviation = stateName;  
             }    
         return abbreviation;   
+    }      
+
+    public static String convertAbbreviationToState(String abbreviation) {
+        String stateName;
+            if(abbreviation  ==  'AL') {
+                stateName = 'Alabama';            
+            }
+            else if(abbreviation == 'AK') {
+                stateName = 'Alaska';            
+            }
+            else if(abbreviation == 'AZ') {
+                stateName = 'Arizona';            
+            }
+            else if(abbreviation == 'AR') {
+                stateName = 'Arkansas';            
+            }
+            else if(abbreviation == 'CA') {
+                stateName = 'California';            
+            }
+            else if(abbreviation == 'CO') {
+                stateName = 'Colorado';            
+            }
+            else if(abbreviation == 'CT') {
+                stateName = 'Connecticut';            
+            }
+            else if(abbreviation == 'DE') {
+                stateName = 'Delaware';            
+            }
+            else if(abbreviation == 'FL') {
+                stateName = 'Florida';            
+            }
+            else if(abbreviation == 'GA') {
+                stateName = 'Georgia';            
+            }
+            else if(abbreviation == 'HI') {
+                stateName = 'Hawaii';            
+            }
+            else if(abbreviation == 'ID') {
+                stateName = 'Idaho';            
+            }
+            else if(abbreviation == 'IL') {
+                stateName = 'Illinois';            
+            }
+            else if(abbreviation == 'IN') {
+                stateName = 'Indiana';            
+            }
+            else if(abbreviation == 'IA') {
+                stateName = 'Iowa';            
+            }
+            else if(abbreviation == 'KS') {
+                stateName = 'Kansas';            
+            }
+            else if(abbreviation == 'KY') {
+                stateName = 'Kentucky';            
+            }
+            else if(abbreviation == 'LA') {
+                stateName = 'Louisiana';            
+            }
+            else if(abbreviation == 'ME') {
+                stateName = 'Maine';            
+            }
+            else if(abbreviation == 'MD') {
+                stateName = 'Maryland';            
+            }
+            else if(abbreviation == 'MA') {
+                stateName = 'Massachusetts';            
+            }
+            else if(abbreviation == 'MI') {
+                stateName = 'Michigan';            
+            }
+            else if(abbreviation == 'MN') {
+                stateName = 'Minnesota';            
+            }
+            else if(abbreviation == 'MS') {
+                stateName = 'Mississippi';            
+            }
+            else if(abbreviation == 'MO') {
+                stateName = 'Missouri';            
+            }
+            else if(abbreviation == 'MT') {
+                stateName = 'Montana';            
+            }
+            else if(abbreviation == 'NE') {
+                stateName = 'Nebraska';            
+            }
+            else if(abbreviation == 'NV') {
+                stateName = 'Nevada';            
+            }
+            else if(abbreviation == 'NH') {
+                stateName = 'New Hampshire';            
+            }
+            else if(abbreviation == 'NJ') {
+                stateName = 'New Jersey';            
+            }
+            else if(abbreviation == 'NM') {
+                stateName = 'New Mexico';            
+            }
+            else if(abbreviation == 'NY') {
+                stateName = 'New York';            
+            }
+            else if(abbreviation == 'NC') {
+                stateName = 'North Carolina';            
+            }
+            else if(abbreviation == 'ND') {
+                stateName = 'North Dakota';            
+            }
+            else if(abbreviation == 'OH') {
+                stateName = 'Ohio';            
+            }
+            else if(abbreviation == 'OK') {
+                stateName = 'Oklahoma';            
+            }
+            else if(abbreviation == 'OR') {
+                stateName = 'Oregon';            
+            }
+            else if(abbreviation == 'PA') {
+                stateName = 'Pennsylvania';            
+            }
+            else if(abbreviation == 'RI') {
+                stateName = 'Rhode Island';            
+            }
+            else if(abbreviation == 'SC') {
+                stateName = 'South Carolina';            
+            }
+            else if(abbreviation == 'SD') {
+                stateName = 'South Dakota';            
+            }
+            else if(abbreviation == 'TN') {
+                stateName = 'Tennessee';            
+            }
+            else if(abbreviation == 'TX') {
+                stateName = 'Texas';            
+            }
+            else if(abbreviation == 'UT') {
+                stateName = 'Utah';            
+            }
+            else if(abbreviation == 'VT') {
+                stateName = 'Vermont';            
+            }
+            else if(abbreviation == 'VA') {
+                stateName = 'Virginia';            
+            }
+            else if(abbreviation == 'WA') {
+                stateName = 'Washington';            
+            }
+            else if(abbreviation == 'WV') {
+                stateName = 'West Virginia';            
+            }
+            else if(abbreviation == 'WI') {
+                stateName = 'Wisconsin';            
+            }
+            else if(abbreviation == 'WY') {
+                stateName = 'Wyoming';            
+            } else {
+                stateName = stateName ;  
+            }    
+        return stateName;   
     }      
 }
