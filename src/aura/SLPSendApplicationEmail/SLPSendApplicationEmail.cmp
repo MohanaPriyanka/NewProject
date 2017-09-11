@@ -123,7 +123,7 @@
                   </div>      
                   <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small animated">
                     <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment on System</b>&nbsp;
-                        <c:BlueWaveInputToolTip placement="left" popoverText="If the customer has made a down payment on their system, 
+                        <c:BlueWaveInputToolTip placementLeft="true" popoverText="If the customer has made a down payment on their system, 
                           please enter its value here. The applicant's requested loan amount will be the difference of 
                           the total system cost and this down payment."/>
                     </label>
