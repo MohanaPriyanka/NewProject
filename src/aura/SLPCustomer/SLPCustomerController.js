@@ -221,7 +221,6 @@
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
-            "opportunityUpdateId" : ''
         });
 
         saveAction.setCallback(this, function(resp) {
@@ -462,7 +461,7 @@
             case 'Report Interconnection to MCEC':
                 if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
                     urlEvent.setParams(
-                    // THIS NEEDS TO STAY IN FORM ASSEMBLY FOR NOW
+                    //SREC Form - more than a simple file upload (openUploadWindow), should be its own window or SREC onboarding component
                        {'url': 'https://forms.bluewaverenewables.com/381637'
                                + '?tfa_117=' + equipmentId
                                + '&tfa_118=' + !equipmentUpdateDummy
