@@ -11,7 +11,7 @@
     The original author has more examples:
     https://github.com/pozil/sfdc-ui-popover
 -->
-  <aura:attribute name="placementLeft" type="String" default="false"/>
+  <aura:attribute name="placementLeft" type="Boolean" default="false"/>
   <aura:attribute access="global"
                   name="popoverBody"
                   type="Aura.Component[]"
@@ -30,30 +30,15 @@
         {!v.body}
       </aura:set>
     </aura:if>
-    <aura:if isTrue="{!v.placementLeft}">
-      <div class="slds-popover slds-popover__left slds-nubbin--bottom-right" role="dialog">
-        <div class="slds-popover__body proximaNovaWhite">
-          <aura:if isTrue="{!empty(v.popoverText)}">
-            {!v.popoverBody}
-            <aura:set attribute="else">
-              {!v.popoverText}
-            </aura:set>
-          </aura:if>
-        </div>
-      </div>
-      <aura:set attribute="else">
-        <div class="slds-popover slds-popover__right slds-nubbin--bottom-left" role="dialog">
-          <div class="slds-popover__body proximaNovaWhite">
-            <aura:if isTrue="{!empty(v.popoverText)}">
-              {!v.popoverBody}
-              <aura:set attribute="else">
-                {!v.popoverText}
-              </aura:set>
-            </aura:if>
-          </div>
-        </div>
-      </aura:set>
-    </aura:if>    
+
+    <div class="{!'slds-popover ' + if(v.placementLeft,'slds-popover__right slds-nubbin--bottom-left','slds-popover__left slds-nubbin--bottom-right')}" role="dialog">
+      <aura:if isTrue="{!empty(v.popoverText)}">
+        {!v.popoverBody}
+        <aura:set attribute="else">
+          {!v.popoverText}
+        </aura:set>
+      </aura:if>
+    </div>
   </div>
 </aura:component>
 
