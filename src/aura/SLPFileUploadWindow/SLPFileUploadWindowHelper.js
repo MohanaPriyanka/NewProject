@@ -9,8 +9,8 @@
         
     saveFile : function(component, event, fileType, parentId) {
         $A.util.addClass(component.find("saveButton"), 'noDisplay');
-        self.startSpinner(component);
         var MAXFILE_SIZE = 4500000;
+        var CHUNKFILE_SIZE = 400000; 
       	var fileInput = component.find("file").getElement();
         var file = fileInput.files[0];
         if (file === undefined) {
@@ -25,6 +25,7 @@
             return;
         } 
         var self = this;
+        self.startSpinner(component);
         var fr = component.get("v.fileReader");
         var fileContents = fr.result;
         var base64Mark = 'base64,';
@@ -99,7 +100,12 @@
                 })
             )
        } else if (fileName === 'Sales Agreement') {
-            var salesCheck = self.saveObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', true);
+            var salesCheck = self.saveObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed');
+            salesCheck.then(
+                $A.getCallback(function(result) {
+                    var salesDummy = self.saveObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
+                })
+            )
        }
        $A.util.removeClass(component.find("successText"), 'noDisplay'); 
        $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
