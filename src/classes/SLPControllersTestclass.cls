@@ -766,7 +766,7 @@ public without sharing class SLPControllersTestclass {
         equipmentId = String.valueOf(equipmentList.get(0).Id);
         Test.startTest();
         System.runAs(partnerUser) {
-            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0),'');
+            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
         }
         Test.stopTest();
     }
@@ -807,7 +807,7 @@ public without sharing class SLPControllersTestclass {
         equipmentId = String.valueOf(equipmentList.get(0).Id);
         Test.startTest();
         System.runAs(partnerUser) {
-            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0), '');
+            SLPCustomerHandler.saveCustomerInformation(equipmentList.get(0), equipmentId, loanId, loanList.get(0));
         }
         Test.stopTest();
     }

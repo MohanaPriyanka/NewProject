@@ -34,7 +34,6 @@
     saveCustomerData : function(component, event, helper) {
 		var equipmentUpdateVar = component.get("v.equipmentUpdate");
         var equipmentIdVar = component.get("v.customerInformation.Id");
-        var opportunityId = component.get("v.oppId");
         var loanUpdateVar = component.get("v.loanUpdate");
         var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
 
@@ -44,7 +43,6 @@
             "equipmentId" : equipmentIdVar,
             "loanId" : loanUpdateIdVar,
             "loan" : loanUpdateVar,
-            "opportunityUpdateId" : opportunityId
         });
 
         saveAction.setCallback(this, function(resp) {
