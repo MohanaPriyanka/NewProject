@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
- * 
- * Description: The SLPAddCustomer class serves as a controller for the SLPAddCustomer Lightning component bundle. It allows the user to 
+ *
+ * Description: The SLPAddCustomer class serves as a controller for the SLPAddCustomer Lightning component bundle. It allows the user to
  * add new customers to the database.
  *
  * Tested By: SLPControllerTestclass
@@ -27,10 +27,10 @@ public without sharing class SLPAddCustomer {
             productProgram = 'BlueWave Solar Loan';
         }
 
-        leadRecordType = [SELECT Id 
-                          FROM RecordType 
+        leadRecordType = [SELECT Id
+                          FROM RecordType
                           WHERE Name = : recordType
-                          AND SobjectType = 'Lead' 
+                          AND SobjectType = 'Lead'
                           LIMIT 1];
         if (newLead.LASERCA__Home_State__c.length() > 2) {
             newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
@@ -82,17 +82,17 @@ public without sharing class SLPAddCustomer {
             return(Integer.valueOf(systemProperties[0].Credit_Check_Timeout__c));
         } else {
             return(60000);
-        }          
+        }
     }
 
     @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
         Lead lead = [SELECT Id, Status, LASTMODIFIEDDATE,
                      (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
-                      FROM LASERCA__Credit_Report_Logs__r 
+                      FROM LASERCA__Credit_Report_Logs__r
                       ORDER BY CREATEDDATE DESC),
-                     (SELECT id, Solar_Loan_Approval_Status__c 
-                      FROM LASERCA__Personal_Credit_Reports__r 
+                     (SELECT id, Solar_Loan_Approval_Status__c
+                      FROM LASERCA__Personal_Credit_Reports__r
                       ORDER BY CREATEDDATE DESC LIMIT 1)
                      FROM Lead
                      WHERE Id = :leadToQuery.Id];
@@ -123,7 +123,7 @@ public without sharing class SLPAddCustomer {
         } else {
             return(s);
         }
-    }        
+    }
 
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
     //state to determine if the add a customer page should allow the user to submit MSLP applications
@@ -139,7 +139,7 @@ public without sharing class SLPAddCustomer {
         String customerName;
         String mslpUrl;
         String bwslUrl;
-        Boolean updateDummy;  
+        Boolean updateDummy;
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
@@ -178,5 +178,36 @@ public without sharing class SLPAddCustomer {
 
         MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;
-      }     
+    }
+
+    @AuraEnabled
+    public static List<String> getActiveStates() {
+        List<AggregateResult> activeProducts = [SELECT State__c
+                                                FROM Product2
+                                                WHERE IsActive = true
+                                                AND Product_Type__c = 'Residential Loan'
+                                                GROUP BY State__c
+                                                ORDER BY State__c];
+        List<String> options = new List<String>();
+        for (AggregateResult p : activeProducts) {
+            options.add((String) p.get('State__c'));
+        }
+        return options;
+    }    
+
+    //@AuraEnabled
+    //public static String getLenderOfRecord(String state) {
+    //    List<AggregateResult> products = [SELECT Lender_of_Record__c
+    //                                      FROM Product2
+    //                                      WHERE IsActive = true
+    //                                      AND Product_Type__c = 'Residential Loan'
+    //                                      AND State__c = : state
+    //                                      GROUP BY Lender_of_Record__c
+    //                                      ORDER BY Lender_of_Record__c];
+    //    String result = '';
+    //    for (AggregateResult p : products) {
+    //        result += (String) p.get('Lender_of_Record__c');
+    //    }
+    //    return result;
+    //}
 }
