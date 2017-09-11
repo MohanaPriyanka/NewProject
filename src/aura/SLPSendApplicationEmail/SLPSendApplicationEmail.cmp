@@ -86,7 +86,7 @@
                     <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small animated">
                       <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
                      <div class="slds-form-element__control">
-                      <ui:outputCurrency aura:id="loanAmount" class="slds-input" value="{!v.newLead.Requested_Loan_Amount__c}"/>     
+                      <ui:outputCurrency aura:id="loanAmount" class="slds-input" value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"/>     
                     </div>
                   </div>                             
                 </div>
