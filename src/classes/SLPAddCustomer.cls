@@ -139,6 +139,7 @@ public without sharing class SLPAddCustomer {
         String customerName;
         String mslpUrl;
         String bwslUrl;
+        String stateName;
         Boolean updateDummy;
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
@@ -149,12 +150,14 @@ public without sharing class SLPAddCustomer {
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];    
 
+        stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);                                  
+
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
         mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
         mslpUrlParametersMap.put('544', String.valueof(loanAmount));
-        mslpUrlParametersMap.put('574', String.valueof(newLead.LASERCA__Home_State__c));        
+        mslpUrlParametersMap.put('574', stateName);        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
@@ -163,7 +166,7 @@ public without sharing class SLPAddCustomer {
         bwslUrlParametersMap.put('529', emailList.get(0));
         bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
         bwslUrlParametersMap.put('544', String.valueof(loanAmount));
-        bwslUrlParametersMap.put('574', String.valueof(newLead.LASERCA__Home_State__c));
+        bwslUrlParametersMap.put('574', stateName);
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
