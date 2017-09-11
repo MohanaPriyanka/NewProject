@@ -153,7 +153,7 @@ public without sharing class SLPCustomerHandler {
     
   //the saveCustomerInformation method allows the user to enter in the customer's system information/commencement date to the SLP and save it to SF
   @AuraEnabled
-  public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan, String opportunityUpdateId) {
+  public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan) {
     String nameVar;
     Integer i;
     String fieldType;
@@ -204,17 +204,6 @@ public without sharing class SLPCustomerHandler {
     leadRecord.Update_Dummy__c = !leadRecord.Update_Dummy__c;
     update leadRecord;
 
-    if (opportunityUpdateId != null) {
-      if (opportunityUpdateId.length() == 15 || opportunityUpdateId.length() == 18) {
-        Opportunity oppToUpdate = [SELECT Id, Name, Update_Dummy__c
-                                  FROM Opportunity
-                                  WHERE Id = : opportunityUpdateId ];
-                           
-        oppToUpdate.Update_Dummy__c = !oppToUpdate.Update_Dummy__c;
-        oppToUpdate.Partner_Sales_Agreement_Status__c = 'Completed';
-        update oppToUpdate;
-      }
-    }
   }
 
   @AuraEnabled

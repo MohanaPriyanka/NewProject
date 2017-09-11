@@ -9,8 +9,8 @@
         
     saveFile : function(component, event, fileType, parentId) {
         $A.util.addClass(component.find("saveButton"), 'noDisplay');
+        self.startSpinner(component);
         var MAXFILE_SIZE = 4500000;
-        var CHUNKFILE_SIZE = 400000; 
       	var fileInput = component.find("file").getElement();
         var file = fileInput.files[0];
         if (file === undefined) {
@@ -30,45 +30,11 @@
         var base64Mark = 'base64,';
         var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
         fileContents = fileContents.substring(dataStart);
-        if (file.size > CHUNKFILE_SIZE) {
-			  self.startSpinner(component);
-              var fromPos = 0;
-        	  var toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);
-              var attachID = 'none';
-              self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);
-        } else {
-              self.uploadSmallFile(component, file, fileContents, fileType, parentId);
-        }
-    },
-    
-    uploadSmallFile : function(component, file, fileContents, fileType, parentId) {
-        var newFileName = component.get("v.fileName");
-        var action = component.get("c.saveTheFile");   
-        var self = this;
-        var descriptionValue = "";
-        if (fileType === 'Interconnection Documentation') {
-            descriptionValue = 'PTO Documentation';
-        } else {
-            descriptionValue = fileType;
-        }
-        action.setParams({
-            parentId: parentId,
-            fileName: newFileName,
-            base64Data: encodeURIComponent(fileContents), 
-            contentType: file.type,
-            fileType: fileType,
-            description : descriptionValue
-        }); 
-        
-        action.setCallback(this,function(resp) {       
-          if(resp.getState() == "SUCCESS"){  
-              self.fileUploadSuccess(component);
-          } else {
-			 self.fileUploadError(component);
-          }
-        });
-        $A.enqueueAction(action); 
-    },         
+        var fromPos = 0;
+        var toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);
+        var attachID = 'none';
+        self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);
+    },    
         
     uploadLargeFile : function (component, file, fileContents, fileType, parentId, attachID, fromPos, toPos) {
         var newFileName = component.get("v.fileName");
@@ -100,7 +66,7 @@
             	self.uploadLargeFile(component, file, fileContents, fileType, parentId, attachID, fromPos, toPos);  
             } else {
            		$A.util.addClass(component.find("spinner"), 'noDisplay'); 
-                self.fileUploadSuccess(component);
+                self.fileUploadSuccess(component, parentId, newFileName);
             }
           } else {
               self.fileUploadError(component);
@@ -115,13 +81,59 @@
        $A.util.addClass(component.find("inputDate"), 'noDisplay'); 
     },
       
-    fileUploadSuccess : function (component) {
+    fileUploadSuccess : function (component, parentId, fileName) {
+       var self = this;
+       var newDate = component.get("v.dateValue");
+       if (fileName === 'Mechanical Installation Documentation') {
+            var mechDate = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Mechanical_Installation_Date__c', newDate);
+            mechDate.then(
+                $A.getCallback(function(result) {
+                    var mechCheck = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Mechanically_Installed__c', true);
+                })
+            )
+       } else if (fileName === 'Interconnection Documentation') {
+            var interDate = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate);
+            interDate.then(
+                $A.getCallback(function(result) {
+                    var interCheck = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true);
+                })
+            )
+       } else if (fileName === 'Sales Agreement') {
+            var salesCheck = self.saveObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', true);
+       }
        $A.util.removeClass(component.find("successText"), 'noDisplay'); 
        $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
        $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
        $A.util.addClass(component.find("headerText"), 'noDisplay'); 
        $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
        $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
+    },
+  	// this is the exact same as the BlueWave Parent - ideally this section will be removed.
+    saveObject : function(component, id, objectName, field, value) {
+      return new Promise(function(resolve, reject) {
+          var sobj = new Object();
+          sobj = {'sobjectType': objectName,
+                  'Id': id};
+          sobj[field] = value;
+          var action = component.get("c.updateSObject");
+          action.setParams({"sobj": sobj});
+          action.setCallback(this, function(resp) {
+              if (resp.getState() === "SUCCESS") {3
+                  var retVal = resp.getReturnValue();
+                  resolve(retVal);
+              } else if (resp.getState() === "ERROR") {
+                  var appEvent = $A.get("e.c:ApexCallbackError");
+                  appEvent.setParams({"className" : "BlueWaveParentHelper",
+                                      "methodName" : "updateSObject",
+                                      "errors" : resp.getError()});
+                  appEvent.fire();
+                  reject(resp.getError());
+              } else {
+                  reject(Error("Unknown error"));
+              }
+          });
+          $A.enqueueAction(action);
+      });
     },
     
     fileUploadError : function (component) {
@@ -154,5 +166,11 @@
     removeErrorMessaging : function(component) {
 		$A.util.addClass(component.find("errorTextLine"), 'noDisplay');
         $A.util.removeClass(component.find("inputDate"), 'shake slds-has-error'); 
+    },
+  
+    firePartnerTaskRefresh : function(component, helper) {
+	 	var evtCustomerPage = $A.get("e.c:SLPafterFileUpload");
+        evtCustomerPage.fire(); 
+        helper.closeWindow(component);
     },
 })

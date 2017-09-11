@@ -482,11 +482,6 @@
     },
     
     handleAfterFileUpload : function(component, event, helper) {
-        var newResiEquip = event.getParam("residentialEquipment");
-        var oppId = event.getParam("opportunityID");
-        component.set("v.equipmentUpdate", newResiEquip);
-        component.set("v.oppId", oppId);
-        helper.saveCustomerData(component, event, helper);
         helper.refreshPartnerTasks(component)                               
     },
 })
