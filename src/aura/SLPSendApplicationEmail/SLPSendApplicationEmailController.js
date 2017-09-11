@@ -19,6 +19,8 @@
         });    
         $A.enqueueAction(action);    
 
+        helper.getDataFromServer(component, "getActiveStates", ["activeStates"]);
+
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  
         $A.util.removeClass(component.find('emailForm'), 'noDisplay'); 
@@ -45,7 +47,14 @@
         } else if (newLead.Product_Program__c === "MSLP") {
             helper.setWindowToBWSL(component);
         }
-    },                                
+    },         
+
+    calculateLoanAmount: function(component, event, helper) {
+        var systemCost = component.get("v.newLead.System_Cost__c");
+        var downPayment = component.get("v.downPayment");
+        var loanAmount = systemCost + downPayment;
+        component.set("v.newLead.Requested_Loan_Amount__c", loanAmount);
+    },                               
 
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");

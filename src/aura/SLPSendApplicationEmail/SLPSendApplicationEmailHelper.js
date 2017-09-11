@@ -7,9 +7,7 @@
             errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";                          
         } else {
             helper.setInputToCorrect(component, "stateElement" );
-        }     
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Requested_Loan_Amount__c, "loanAmountElement", "shake", null, false, false, false, "Please enter this Applicant's requested loan amount", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, false, false, false, "Please enter this Applicant's system installation cost", "standard");                
+        }                   
         console.log(errorMessage);
         if (errorMessage.length > 0) {
             return errorMessage;
@@ -61,7 +59,7 @@
         component.set('v.newLead.LastName', null);          
         component.set('v.newLead.Email', null);          
         component.set('v.newLead.LASERCA__Home_State__c', null);          
-        component.set('v.newLead.Requested_Loan_Amount__c', null);   
+        component.set('v.downPayment', null);   
         component.set('v.newLead.System_Cost__c', null);   
     },                 
 })
