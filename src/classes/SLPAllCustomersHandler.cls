@@ -26,7 +26,7 @@ public without sharing class SLPAllCustomersHandler {
   public static List<Loan__c> getAllCustomers (String searchValue) {
     List<Loan__c> loanList = new List<Loan__c>();
     String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, Total_Funds_Disbursed__c, Sales_Agent__r.Name,' + 
-    					         'Product__r.ProductCode, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
+    					         'Product__r.ProductCode, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
     loanQuery += '      FROM Loan__c' ;
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
     if (profile.LicenseType != 'Executive') {
