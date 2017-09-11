@@ -18,6 +18,8 @@
             }
         });    
         $A.enqueueAction(action);    
+        
+        helper.getDataFromServer(component, "getActiveStates", ["activeStates"]);
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  

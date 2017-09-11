@@ -14,6 +14,21 @@
         $A.enqueueAction(action); 
     },
 
+    getDataFromServer : function(component, methodName, setAttribute) {
+        var action = component.get("c." + methodName);        
+        action.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                for (i=0; i<setAttribute.length; i++) {
+                    component.set("v." + setAttribute[i], resp.getReturnValue());
+                }
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(action);  
+    },    
+
     saveSObject : function(component, id, objectName, field, value) {
         return new Promise(function(resolve, reject) {
             var sobj = new Object();
