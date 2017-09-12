@@ -15,30 +15,30 @@
     <div aura:id="BWDataTableTabs" class="">
       <ul class="slds-tabs_default__nav" role="tablist">
         <c:BlueWaveInputToolTip popoverText="Use this tab to apply for the BlueWave Solar Loan">
-          <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue">
+          <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
             <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
               <b>Applications</b>
             </a>
           </li>
         </c:BlueWaveInputToolTip>           
-        <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
-          <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
+        <c:BlueWaveInputToolTip popoverText="Use this tab to view all qualified customers that have not been fully disbursed and still require additional action ">
+          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
             <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
               <b>Customers In Process</b>
             </a>
           </li>
         </c:BlueWaveInputToolTip>   
         <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
-          <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
+          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
             <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
               <b>Completed Customers</b>
             </a>
           </li>
         </c:BlueWaveInputToolTip>      
         <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
-          <li aura:id="mslpAppTab" class="slds-tabs_default__item proximaNovaBlue">
+          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
             <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
-              <b>Unqualified Applicants</b>
+              <b>Declined Applicants</b>
             </a>
           </li>
         </c:BlueWaveInputToolTip>            

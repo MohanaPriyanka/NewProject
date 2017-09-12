@@ -11,7 +11,9 @@
     float:left;
     
 }
-
+.THIS .nimbusBackground {
+    background-color: #DFDFE0;
+}
 .THIS .boxCenter {
     width:30%;
     float:left;
