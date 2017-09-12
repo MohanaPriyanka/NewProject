@@ -2,7 +2,7 @@
 public without sharing class SLPControllersTestclass {
     @testSetup public static void setupTestUser(){
         Test.startTest();
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
         Account accountRecord = new Account(Name = 'BlueWave Customer Care');
         insert accountRecord;
@@ -851,11 +851,17 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testDashboardHandlerExec() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        User partnerUser = [SELECT Id, Contact.Sales_Representative__r.Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         List<Decimal> dashboardWidgetsList = new List<Decimal>();
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
         Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c];
         String alertId;
+
+        List<Partner_Alert_Filter__c> partnerAlertFilterList = 
+            [SELECT Id, Name, Partner__r.Name 
+             FROM Partner_Alert_Filter__c
+             WHERE Sales_Representative__c = :partnerUser.Contact.Sales_Representative__r.Id];
+        System.assertEquals(0, partnerAlertFilterList.size());
 
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
@@ -865,13 +871,12 @@ public without sharing class SLPControllersTestclass {
             Importance__c = '1');
         insert partnerAlert;
 
-        Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
-            Name = 'BlueWave Customer Care',
-            Partner__c = partnerRecord.Id,
-            Partner_Alert__c = partnerAlert.Id);
-        insert partnerAlertFilter;
+        partnerAlertFilterList = 
+            [SELECT Id, Name, Partner__r.Name 
+             FROM Partner_Alert_Filter__c
+             WHERE Sales_Representative__c = :partnerUser.Contact.Sales_Representative__r.Id];
 
-        List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
+        System.assertEquals(1, partnerAlertFilterList.size());
 
         Test.startTest();
         System.runAs(partnerUser) {
