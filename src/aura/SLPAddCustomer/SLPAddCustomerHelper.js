@@ -135,5 +135,25 @@
         $A.util.removeClass(component.find("energyHistoryElement"), animation);
         $A.util.removeClass(component.find("ssnElement"), animation);        
     },      
-
+        
+    getStates : function(component, event, helper) {
+        var actionGetActiveStates = component.get("c.getActiveStates");
+        actionGetActiveStates.setStorable();
+        actionGetActiveStates.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                var opts=[{"class": "optionClass",
+                           label: "Select",
+                           value: ""}];
+                for (var i=0;i< resp.getReturnValue().length;i++) {
+                    opts.push({"class": "optionClass",
+                               label: resp.getReturnValue()[i],
+                               value: resp.getReturnValue()[i]});
+                }
+                component.find("state").set("v.options", opts);
+            } else {
+                helper.logError("SLPAddCustomerController", "doInit", resp.getError());
+            }
+        });
+        $A.enqueueAction(actionGetActiveStates);
+    },
 })

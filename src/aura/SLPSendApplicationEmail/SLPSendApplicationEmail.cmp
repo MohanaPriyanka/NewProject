@@ -1,79 +1,118 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAddCustomer" access="global">
-  <aura:attribute name="partnerRecord" type="Object" />
-  <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>  
-  <aura:attribute name="productProgram" type="String" />
-  <aura:attribute name="customerEmail" type="String" />
-  <ltng:require styles="{!$Resource.animations}" />    
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCustomer" access="global">
+  <ltng:require styles="{!$Resource.animations}" /> 
   <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.openEmailCustomerModal}" />  
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/>     
-    
-  <style>
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataStream {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #00b2a9;
-    }
-    .proximaNovaDataBlue {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #266092;
-    }        
-    .proximaNovaDataMountaintop {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #7C98AB;
-    }         
-    .proximaNovaWhite {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #FFFFFF;
-    }  
-             
-  </style>     
-      <aura:handler name="init" value="{!this}" action="{!c.doInit}" />         
-      <div id="emailCustomerModal" aura:id="emailCustomerModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-hide box">
-        <div aura:id="emailCustomerModal2" class="slds-modal__container">
-          <div class="slds-modal__header blueBackground">
-            <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
-              <span class="slds-assistive-text">Send Email</span>
-            </button>
-            <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite "> Send Application</h2>
-          </div>                
+  <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>  
+  <aura:attribute name="partnerRecord" type="Object" />
+  <aura:attribute name="activeStates" type="List" />
+  <aura:attribute name="productProgram" type="String" />
+  <aura:attribute name="downPayment" type="Decimal" />
+  <aura:attribute name="customerEmail" type="String" />    
+  <aura:attribute name="newLead" type="Lead" 
+    default="{ 'sobjectType' : 'Lead',
+    'FirstName': '',
+    'LastName': '',
+    'LASERCA__Home_State__c': '',
+    'Email': '',
+    'Product_Program__c': '',
+    'Requested_Loan_Amount__c':'',
+    'System_Cost__c':'',    
+    'DOER_Solar_Loan__c':'',
+    'Pre_Approval_Form__c':'true',
+    'Unfinished_Lead__c':'true',
+    }"/>  
+    <div id="emailCustomerModal" aura:id="emailCustomerModal" class="slds-modal slds-fade-in-hide box">
+      <div aura:id="emailCustomerModal2" class="slds-modal__container">
+        <div class="slds-modal__header blueBackground">
+          <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
+            <span class="slds-assistive-text">Send Email</span>
+          </button>
+          <h2 class="slds-text-heading--medium proximaNovaWhite"> Send Application</h2>
+        </div>  
+        <div aura:id="emailForm">              
           <div class="slds-modal__content slds-p-around--medium">
             <div class="slds-tabs--default">
-              <ul class="slds-tabs--default__nav" role="tablist">
-                <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item" role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="-1" aria-selected="true" onclick="{!c.emailModalSelectMSLP}">MCEC Solar Loan Program</a></li>
-                </aura:if>
-                <li aura:id="bwslEmailInput" class="slds-tabs--default__item " role="presentation"><a class="slds-tabs--default__link proximaNovaDataBlue" role="tab" tabindex="0" aria-selected="false"  onclick="{!c.emailModalSelectBWSL}">BlueWave Solar Loan</a></li>
-                </ul>
               <aura:if isTrue="{!v.partnerRecord.State__c == 'MA'}">
-                <div id="mslpEmailInput" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-2__item">
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label proximaNovaDataStream" >Enter the Applicants's email address</label>
-                    <ui:inputText aura:id="emailMSLP" class="slds-input" value="{!v.customerEmail}" />          
-                  </div> 
+                <ul class="slds-tabs--default__nav">
+                  <li aura:id="mslpEmailInput" class="slds-tabs--default__item">
+                    <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">MCEC Solar Loan Program</a>
+                  </li>
+                  <li aura:id="bwslEmailInput" class="slds-tabs--default__item">
+                    <a class="slds-tabs--default__link proximaNovaDataBlue" onclick="{!c.changeProductProgram}">BlueWave Solar Loan</a>
+                  </li>
+                </ul>    
+              </aura:if>                          
+              <fieldset class="slds-form--compound slds-m-top_small">
+                <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <label class="slds-form-element__label proximaNovaBlue"> <b>Email Address</b> </label>
+                      <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
+                    </div>                 
+                    <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Home State</b></label>
+                      <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" > 
+                        <ui:inputSelectOption text="Select"/> 
+                        <aura:iteration items="{!v.activeStates}" var="state">
+                          <ui:inputSelectOption text="{!state}"/>
+                        </aura:iteration>
+                      </ui:inputSelect>
+                    </div>                    
+                  </div>
                 </div>
-              </aura:if>              
-              <div id="bwslEmailInput" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
-                <div class="slds-form-element slds-p-horizontal--small">
-                  <label class="slds-form-element__label proximaNovaDataStream" >Enter the Applicant's email address</label>
-                  <ui:inputText aura:id="emailBWSL" class="slds-input" value="{!v.customerEmail}" />          
-                </div> 
+              </fieldset>     
+              <fieldset class="slds-form--compound">
+                <div class="slds-form-element__group">
+                  <div class="slds-form-element__row">
+                    <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b>&nbsp;
+                        <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
+                                                             The applicant's requested loan amount is the difference between 
+                                                             total system cost and down payment."/>
+                     </label>
+                     <div class="slds-form-element__control">
+                      <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true" keyup="{!c.calculateLoanAmount}"/>     
+                    </div>
+                  </div>      
+                  <div aura:id="downPaymentElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                    <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment on System</b>&nbsp;
+                        <c:BlueWaveInputToolTip placementLeft="true" popoverText="If the customer has made a down payment on their system, 
+                          please enter its value here. The applicant's requested loan amount will be the difference of 
+                          the total system cost and this down payment."/>
+                    </label>
+                    <ui:inputCurrency aura:id="downPayment" class="slds-input" value="{!v.downPayment}" required="true" keyup="{!c.calculateLoanAmount}"/>   
+                  </div>
+                </div>
+                <div class="slds-form-element__row">
+                    <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
+                     <div class="slds-form-element__control">
+                      <ui:outputCurrency aura:id="loanAmount" class="slds-input" value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"/>     
+                    </div>
+                  </div>                             
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="slds-modal__footer">
-           <div aura:id="sendEmailModalButtons">
-            <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>
-            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.sendCustomerApplication}" label="Send"></lightning:button>
-          </div>
-          <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+            </fieldset>                    
+          </div>           
         </div>
       </div>
-    </div>	
+      <div aura:id="emailConfirmation" class="noDisplay">
+        <div class="slds-modal__content slds-p-around--medium">        
+          <div class="slds-align--absolute-center ">
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The email has been sent, thank you! </b></p>
+          </div>   
+        </div>
+      </div>        
+      <div class="slds-modal__footer">
+       <div aura:id="sendEmailModalButtons">
+        <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>
+        <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"></lightning:button>
+      </div>
+      <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>            
+    </div>
+  </div>
+</div>	
 </aura:component>
+
+

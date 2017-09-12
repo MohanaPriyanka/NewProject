@@ -27,11 +27,12 @@
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
                 if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                 }
             }
         };
         var leadId = getUrlParameter('leadId');
+        var leadName = getUrlParameter('leadName');
         if ($A.util.isUndefinedOrNull(leadId)) {
             var action = component.get("c.getLeads");        
             action.setCallback(this,function(resp){ 
@@ -47,6 +48,7 @@
             // Lead ID is set from the AddCustomer Component, so we want to lead
             // this component with just that lead. We also want to disable the back button
             component.set("v.leadId", leadId);
+            component.set("v.customerName", leadName);
             helper.getProductsHelper(component, event, helper);
             $A.util.addClass(component.find("creditStatusBackButton"),"noDisplay");
         }
