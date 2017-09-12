@@ -66,10 +66,10 @@
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
                     <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
-                      <label class="slds-form-element__label proximaNovaBlue"><b>Total Cost of System</b>&nbsp;
-                        <c:BlueWaveInputToolTip popoverText="Please provide BlueWave with the total cost of the system being installed, 
-                          inclusive of down payments. If there is a down payment, it will be deducted by entering it in the next field. 
-                          The applicant's requested loan amount will be the difference of this total system cost and the down payment."/>
+                      <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b>&nbsp;
+                        <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
+                                                             The applicant's requested loan amount is the difference between 
+                                                             total system cost and down payment."/>
                      </label>
                      <div class="slds-form-element__control">
                       <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true" keyup="{!c.calculateLoanAmount}"/>     
