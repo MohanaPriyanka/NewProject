@@ -447,16 +447,11 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
         List<ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c, Reason_for_Recurring_Stop__c,
                                                                 Account_Bill__r.Bill_Number__c, Account_Bill__r.Name, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
-        system.debug(orderlist);
-        system.debug(systemBillListtwo);
-        // Two customers - Nick and Jordan, each with 2 billing periods. Jordan is subscribed two both Barrett P1 and P2, Nick is only on P2
-        // Charge Date of 25 = order linked to Barrett P2
-
+        
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '25') {
                 system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);  
                 system.assertEquals(87.7521, cho.ChargentOrders__Charge_Amount__c); 
-                system.debug(cho.ChargentOrders__Charge_Amount__c); 
             } else if (cho.ChargentOrders__Charge_Date__c == '30') {
                 system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
                 system.assertEquals(437.701, cho.ChargentOrders__Charge_Amount__c);

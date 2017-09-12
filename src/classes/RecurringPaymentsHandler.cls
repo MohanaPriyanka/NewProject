@@ -12,6 +12,14 @@
 
 
 global class RecurringPaymentsHandler Implements Schedulable {
+
+
+    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
+        orderToStop.ChargentOrders__Charge_Amount__c = 0;
+        orderToStop.ChargentOrders__Payment_Status__c = 'Stopped';
+        orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
+        return orderToStop;
+    }
   
     global void execute(SchedulableContext sc){
        
@@ -66,24 +74,16 @@ global class RecurringPaymentsHandler Implements Schedulable {
                     if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
                         newchargeamount = aggregateSbMap.get(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
                         recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount;
+                    } else {
+                        recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id); 
                     }
-                    else{
-                        recurOrder.ChargentOrders__Charge_Amount__c = 0;
-                        recurOrder.ChargentOrders__Payment_Status__c = 'Stopped';
-                        recurOrder.Reason_for_Recurring_Stop__c  = 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id; 
-                     }
                 } else {
-                        recurOrder.ChargentOrders__Charge_Amount__c = 0;
-                        recurOrder.ChargentOrders__Payment_Status__c = 'Stopped';
-                        recurOrder.Reason_for_Recurring_Stop__c  = 'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey; 
+                        recurOrder = setChargentOrderToStopped(recurOrder,  'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey); 
                 }
-            }
-            else {
-                recurOrder.ChargentOrders__Charge_Amount__c = 0;
-                recurOrder.ChargentOrders__Payment_Status__c = 'Stopped';
-                recurOrder.Reason_for_Recurring_Stop__c  = 'Order was not linked to Account Bill and/or Entity, cannot find next in series'; 
+            } else {
+                recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series'); 
             }
         }
         update ordersList;
     }
-}
+}   
