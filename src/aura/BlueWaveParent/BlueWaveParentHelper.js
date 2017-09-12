@@ -44,6 +44,21 @@
         $A.enqueueAction(action); 
     },
 
+    getDataFromServer : function(component, methodName, setAttribute) {
+        var action = component.get("c." + methodName);        
+        action.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                for (i=0; i<setAttribute.length; i++) {
+                    component.set("v." + setAttribute[i], resp.getReturnValue());
+                }
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });        
+        $A.enqueueAction(action);  
+    },    
+
     saveSObject : function(component, id, objectName, field, value) {
         return new Promise(function(resolve, reject) {
             var sobj = new Object();
@@ -202,6 +217,12 @@
         button.set("v.label", replacementText);    
     }, 
 
+    enableButton : function(component, buttonId, text) {
+        var button = component.find(buttonId);
+        button.set("v.disabled", false);
+        button.set("v.label", text);    
+    },     
+
     logError : function(className, methodName, errorMessage) {
         var appEvent = $A.get("e.c:ApexCallbackError");
         appEvent.setParams({"className" : className,
@@ -280,7 +301,6 @@
         }
     },    
 
-
     executeSearch : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableListAttribute) {         
         var originalRecords = component.get("v." + originalRecordsAttribute);
         component.set("v." + recordsAttribute, originalRecords);
@@ -315,7 +335,33 @@
         } else {
             componenet.set("v." + recordsAttribute, originalRecords);
         }
-    },            
+    },     
+
+    startSpinner : function(component, name) {
+        var spinner = component.find(name);
+        var evt = spinner.get("e.toggle");
+        evt.setParams({ isVisible : true });
+        evt.fire();
+    },
+
+    stopSpinner : function(component, spinnerName) {
+        var spinner = component.find(spinnerName);
+        var evt = spinner.get("e.toggle");
+        evt.setParams({ isVisible : false });
+        evt.fire();
+    },           
+
+    closeModal : function(component, modalId) {
+        var modal = component.find(modalId);
+        $A.util.removeClass(modal, 'slds-fade-in-open');
+        $A.util.addClass(modal, 'slds-fade-in-hide');  
+    },   
+
+    openModal : function(component, modalId) {
+        var modal = component.find(modalId);
+        $A.util.addClass(modal, 'slds-fade-in-open');
+        $A.util.removeClass(modal, 'slds-fade-in-hide');  
+    },                 
 })
 
 
