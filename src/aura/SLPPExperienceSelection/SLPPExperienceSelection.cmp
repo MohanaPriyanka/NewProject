@@ -4,7 +4,8 @@
   <aura:attribute name="alertPrompt" type="Boolean" />
   <aura:registerEvent name="headerDisplay" type="c:SLPLandingPageEvent"/>     
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-  <div aura:id = "disbursalWidgets" class="main2">        
+  
+  <div aura:id = "experienceSelection" class="main2">        
     <aura:if isTrue="{!v.alertPrompt}" >
       <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
         aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">

@@ -25,6 +25,7 @@ public with sharing class PartnerAlertHandler {
                 executiveList.add(user);                
             }
         }
+        System.debug('The executive list is ' + executiveList);
         for (Partner_Alert__c partnerAlert : partnerAlerts) {
             if (partnerAlert.Audience__c.Contains('Users')) {
                 for (User userRecord : userList) {
@@ -53,7 +54,9 @@ public with sharing class PartnerAlertHandler {
                 }
             }
             if (partnerAlert.Audience__c.Contains('Executives')) {
+                System.debug('Check executives');
                 for (User userRecord : executiveList) {
+                    System.debug('THe user is ' + userRecord);
                     alertName = userRecord.Contact.Sales_Representative__r.Name + ' - ' + partnerAlert.Name + ' - ' + today;
                     if (alertName.length() >= 80) {
                         alertName = alertName.subString(0, 80);

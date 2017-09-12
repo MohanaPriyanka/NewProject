@@ -4,39 +4,12 @@
   <aura:attribute name="systemsContracted" type="Decimal"  />
   <aura:attribute name="fundsDisbursed" type="Decimal"  />
   <aura:attribute name="fundsPending" type="Decimal"  />
-  <aura:attribute name="partnerAlerts" type="Object" />
-  <aura:attribute name="alertPrompt" type="Boolean" />
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:handler event="c:SLPDashboardEvent" action="{!c.removeDisplay}" />
   <aura:handler event="c:SLPCustomerEvent" action="{!c.showDisplay}" />
 
   <aura:if isTrue="{!v.licenseType}">
     <div aura:id = "disbursalWidgets" class="main2">
-      <aura:if isTrue="{!v.alertPrompt}" >
-        <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id"
-         aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt">
-         <div class="slds-modal__container">
-          <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
-            <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlerts[0].Name}</h2>
-          </div>
-          <div class="slds-modal__content slds-p-around--medium">
-            <p>{!v.partnerAlerts[0].Date__c}</p>
-            <br></br>
-            <p>{!v.partnerAlerts[0].Body__c}</p>
-          </div>
-          <div class="slds-modal__footer slds-theme--default">
-            <ui:button aura:id="importantAlertButton"
-             class="slds-button--brand box"
-             label="Okay"
-             press="{!c.acknowledgeAlert}"/>
-             <ui:button aura:id="importantAlertButton"
-               class="slds-button--brand box"
-               label="Remind me later"
-               press="{!c.closeAlert}"/>
-             </div>
-           </div>
-         </div>
-       </aura:if>
        <br></br>
        <div class="clearfix ">
         <div class="boxAnim">
