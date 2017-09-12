@@ -24,6 +24,7 @@
   <aura:attribute name="interconnectionTaskStatus" type="String"/>
   <aura:attribute name="parentId" type="Id"/>
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>
+  <aura:handler event="c:SLPafterFileUpload" action="{!c.handleAfterFileUpload}"/> 
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -87,7 +88,6 @@
                            'Commencement_Datee__c': '',
                            'Requested_Loan_Amount__c':'',
                            }"/>
-
   <!-- main issues inclue the ability to break out subTasks within the task
        table. The tasks break out for each task with subTasks,
        filtering them by task type has been proven difficult due to
@@ -948,6 +948,7 @@
           </aura:iteration>
         </tbody>
       </table>
+     {!v.body}
     </div>
     <aura:if isTrue="{!v.licenseType}">
       <div>

@@ -1,0 +1,68 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm"  controller="SLPFileHandler" access="global">    
+<aura:attribute name="dateLabel" type="String" default="Date:"/>
+<aura:attribute name="dateValue" type="Date" default=""/>
+<aura:attribute name="windowHeader" type="String" default="Upload a Document:"/> 
+<aura:attribute name="fileParentId" type="String" default=""/>
+<aura:attribute name="fileName" type="String" default="Sales Agreement"/>   
+<aura:attribute name="fileReader" type="Object" />
+<aura:attribute name="buttonText" type="String" default="Select File"/>
+<aura:attribute name="errorText" type="String" default=""/>
+<aura:attribute name="resiEquipment" type="Residential_Equipment__c"/>
+<aura:registerEvent name="afterFileUpload" type="c:SLPafterFileUpload"/>  
+    
+<div>
+  <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header blueBackground">
+        <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeWindow}" size="small" alternativeText="close" />
+        <h2 aura:id="headerText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_medium slds-hyphenate proximaNovaWhite"><ui:outputText value="{!v.windowHeader}"/></h2>
+      </header>
+       <div aura:id="windowBody" class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <h2 aura:id="errorTextLine" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_x-small slds-hyphenate redcolor noDisplay"><ui:outputText value="{!v.errorText}"/></h2>
+        <div class="slds-form slds-form_compound">
+         <fieldset class="slds-form-element"> 
+          <div aura:id="rowOne" class="slds-form-element__row">
+            <aura:if isTrue="{!v.dateLabel == 'hide'}">
+              <aura:set attribute="else">
+                <div aura:id="inputDate" class="slds-form-element fortyWidth">
+              		<label class="slds-form-element__label"><b><ui:outputText value="{!v.dateLabel}"/></b></label>
+                    <c:BlueWaveDate aura:id="dateVal" value="{!v.dateValue}"/>
+            	</div> 
+              </aura:set>
+            </aura:if>
+          </div>
+         <div aura:id="spinner" class="noDisplay">
+          <div class="slds-form-element">
+           <br></br>
+            <div class="slds-spinner_container">
+              <div role="status" class="slds-spinner slds-spinner--medium">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+             </div>
+            </div>
+          </div>
+          <br></br>
+          <br></br>
+          <div class="slds-align--absolute-center">Uploading... </div>
+         </div>
+         </fieldset>
+        </div>
+        <div class="slds-file-selector slds-file-selector_files">
+         <input aura:id="file" type="file" onchange="{!c.filePreview}" class="slds-file-selector__input slds-assistive-text" accept=".jpg,.png,.pdf" id="file-upload-input-01" aria-describedby="file-selector-id">
+         </input>
+         <label aura:id="uploadButton" name="clickAreaForUpload" class="slds-file-selector__body slds-button slds-button--neutral tealBackground" for="file-upload-input-01">
+             <lightning:Icon aura:id="uploadIcon" class="border" iconName="utility:upload" variant="bare" size="x-small" alternativeText="upload"/>
+             <span class="slds-text-body_regular whiteText"><ui:outputText value="{!v.buttonText}"/></span>
+         </label>
+        </div>     
+       </div>
+      <footer aura:id="windowFooter" class="slds-modal__footer">
+       <h2 aura:id="successText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_x-small proximaNovaWhite blueText noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
+       <div><ui:button aura:id="saveButton" label="Save" class="slds-button slds-button--neutral slds-align--absolute-center blueBackground" press="{!c.fileUpload}"/></div>
+       <div aura:id="doneButton" class="noDisplay"><br></br><ui:button label="Done" class="slds-button slds-button--neutral slds-align--absolute-center blueBackground" press="{!c.doneButton}"/></div>
+      </footer>
+    </div>
+  </section>
+  <div aura:id="greyout" class="slds-backdrop slds-backdrop_open"></div>
+</div>
+</aura:component>
