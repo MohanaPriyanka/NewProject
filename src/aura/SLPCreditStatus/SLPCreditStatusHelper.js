@@ -1,13 +1,19 @@
 ({
     getProductsHelper : function(component, event, helper) {
         var source = event.getSource();
-        var leadId = source.get("v.class");
+        var leadId = source.get("v.class").Id;
         if (!$A.util.isUndefinedOrNull(component.get("v.leadId"))) {
             leadId = component.get("v.leadId");
         }
         var action = component.get("c.getCustomerProducts"); 
 
         component.set("v.leadId", leadId);
+        component.set("v.customerName", source.get("v.class").Name);
+        if (source.get("v.class").LASERCA__Home_State__c === 'MA') {
+            component.set("v.srecCustomer", true);
+        } else {
+            component.set("v.srecCustomer", false);
+        }
 
         action.setParams({leadId : leadId});
 
