@@ -1,60 +1,34 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCreditStatus" access="global">
-  <ltng:require styles="{!$Resource.animations}" />
-  <aura:attribute name="allCustomers" type="Object"  />   
-  <aura:attribute name="allProducts" type="Object"  />   
-  <aura:attribute name="noAvailableProducts" type="Boolean" default="false"/>     
-  <aura:attribute name="leadId" type="String" />
-  <aura:attribute name="productId" type="String" />  
-  <aura:attribute name="product" type="Object" />    
-  <aura:attribute name="loanTerm" type="Integer" />    
-  <aura:attribute name="formId" type="String" />    
-  <aura:attribute name="selectedCustomer" type="Object"  />   
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCreditStatus" extends="c:BlueWaveForm" access="global">
+  <ltng:require styles="{!$Resource.animations}"/>
+  <aura:attribute name="allCustomers" type="Object"/>
+  <!-- Set when the Continue Application button is pressed -->
+  <aura:attribute name="customerName" type="String"/>
+  <aura:attribute name="srecCustomer" type="Boolean"/>
+  <aura:attribute name="allProducts" type="Object"/>
+  <aura:attribute name="noAvailableProducts" type="Boolean" default="false"/>
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="productId" type="String"/>
+  <aura:attribute name="product" type="Object"/>
+  <aura:attribute name="loanTerm" type="Integer"/>
+  <aura:attribute name="formId" type="String"/>
+  <aura:attribute name="selectedCustomer" type="Object"/>
   <aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
-  <aura:registerEvent name="setNavBarPendingCustomerAlert" type="c:SLPNavigationBarAlertEvent"/>   
-  <aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <ltng:require styles="{!$Resource.animations}" />    
-  
-  <style>
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataGreenSmall {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #32CD32;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataStream {
-    font-family: proximaNovaFont;   
-    font-size:100%;
-    color: #00b2a9;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataBlue {
-    font-family: proximaNovaFont;   
-    font-size:95%;
-    color: #266092;
-    }          
-  </style>    
-  <aura:if isTrue="{!v.noAvailableProducts}"> 
+  <aura:registerEvent name="setNavBarPendingCustomerAlert" type="c:SLPNavigationBarAlertEvent"/>
+  <aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <ltng:require styles="{!$Resource.animations}"/>
+
+  <aura:if isTrue="{!v.noAvailableProducts}">
     <div class="slds-align_absolute-center proximaNovaDataBlue"> <b> There are currently no available products for this customer </b> </div>
     <br></br>
-    <br></br>    
-    <div aura:id="creditStatusBackButton" class="slds-align_absolute-center"> 
+    <br></br>
+    <div aura:id="creditStatusBackButton" class="slds-align_absolute-center">
       <ui:button label="Back"
        class="slds-button--brand"
        labelClass="label"
-       press="{!c.exitProductSelection}"/> 
-     </div>          
-     <aura:set attribute="else">    
+       press="{!c.exitProductSelection}"/>
+     </div>
+     <aura:set attribute="else">
        <div aura:id = "allCustomers" class="">
          <div aura:id = "customerSearchBar" class="">
            <div class="slds-form-element slds-lookup" data-select="single">
@@ -62,22 +36,22 @@
              <div class="slds-form-element__control">
               <div class="slds-input-has-icon slds-input-has-icon--right ">
                 <ui:inputText aura:id="customerSearch"
-                 class="slds-lookup__search-input slds-input" 
+                 class="slds-lookup__search-input slds-input"
                  placeholder="Search Name"
                  value=""
-                 change="{!c.searchCustomers}"/>           
-               </div>       
+                 change="{!c.searchCustomers}"/>
+               </div>
              </div>
-           </div> 
+           </div>
          </div>
-         <br></br>      
-         <div aura:id = "customerTable" class="main2"> 
+         <br></br>
+         <div aura:id = "customerTable" class="main2">
           <br></br>
           <div>
             <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
               <thead>
                 <tr class="slds-text-heading--label proximaNovaDataMountain " >
-                  <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>   
+                  <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>
                   <th scope="col"><span class="slds-truncate"><b>Pre-Qualification Status</b></span></th>
                 </tr>
               </thead>
@@ -85,43 +59,62 @@
                 <aura:iteration items="{!v.allCustomers}" var="Customer">
                   <tr>
                     <th scope="row"> <b>{!Customer.Name}</b> </th>
-                    <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                                                                 
+                    <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">
                       <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Status}</b> </th>
                       <aura:set attribute="else">
                         <th scope="row" class="proximaNovaDataMountain"> <b>{!Customer.Status}</b> </th>
-                      </aura:set>                             
-                    </aura:if>                                
+                      </aura:set>
+                    </aura:if>
                     <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
                     <th>
-                     <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">                                            
-                        <ui:button label="Select Product"
-                                     class="{!Customer.Id}"
+                     <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">
+                        <ui:button label="Continue Application"
+                                     class="{!Customer}"
                                      labelClass="label"
-                                     press="{!c.getProducts}"/>    
+                                     press="{!c.getProducts}"/>
                        <aura:set attribute="else">
-                        <aura:if isTrue="{!Customer.Status == 'Unqualified'}">                                            
+                        <aura:if isTrue="{!Customer.Status == 'Unqualified'}">
                          <ui:button label="Add Co-Signer"
                                     labelClass="label"
                                         class="{!Customer}"
-                                  press="{!c.openAddCoApplicant}"/>   
+                                  press="{!c.openAddCoApplicant}"/>
                          <aura:set attribute="else">
                           <th></th>
                          </aura:set>
                         </aura:if>
-                       </aura:set>                                                         
-                     </aura:if>  
+                       </aura:set>
+                     </aura:if>
                     </th>
-                  </tr>                                      
-                </aura:iteration>          
+                  </tr>
+                </aura:iteration>
               </tbody>
-            </table>     
+            </table>
           </div>
         </div>
-        <div aura:id="popUpCoAppWindow" class=""> 
+        <div aura:id="popUpCoAppWindow" class="">
          {!v.body}
         </div>
         <div aura:id = "productTable" class="noDisplay">
-          <h2> Please select the product you would like to apply for and click one of the options that appear.</h2>
+          <h1 class="proximaNovaBrand">Continue application for {!v.customerName}</h1>
+          <br/>
+          <div class="slds-text-longform">
+            <aura:if isTrue="{!v.srecCustomer}">
+              This applicant needs to complete the application process
+              by providing additional income and debt information,
+              selecting their SREC option, and acknowledging electronic
+              loan disbursal. To continue:
+              <aura:set attribute="else">
+                This applicant needs to complete the application
+                process by providing additional income and debt
+                information and acknowledging electronic loan
+                disbursal. To continue:
+              </aura:set>
+            </aura:if>
+            <ol>
+              <li>Select the loan the applicant is applying for</li>
+              <li>Email the application or continue the application in a new tab</li>
+            </ol>
+          </div>
           <hr></hr>
           <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
             <thead>
@@ -134,9 +127,9 @@
                   <th scope="row"> <b>{!product.Name}</b> </th>
                   <th> <div class="slds-form-element">
                     <label class="slds-checkbox--toggle slds-grid">
-                      <ui:inputCheckBox aura:id="productSelect" 
+                      <ui:inputCheckBox aura:id="productSelect"
                         class="{!product.Id}"
-                        name="{!product.Loan_Term__c}" 
+                        name="{!product.Loan_Term__c}"
                         value=""
                         change="{!c.updateProductSelection}"/>
                         <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
@@ -144,32 +137,32 @@
                         </span>
                       </label>
                     </div>
-                  </th>                    
-                </tr>                    
-              </aura:iteration>          
+                  </th>
+                </tr>
+              </aura:iteration>
             </tbody>
-          </table>  
-          <br></br> 
-          <div aura:id="incomeFormButton" class="floatRight noDisplay"> 
-            <ui:button label="Submit Income Documentation"
-             class="slds-button--brand"
-             labelClass="label"
-             press="{!c.navigate}"/> 
-           </div>  
-           <div aura:id="customerEmailButton" class="floatRightPadding noDisplay"> 
-            <ui:button label="Email Customer Income Documentation Form"
-             class="slds-button--brand"
-             labelClass="label"
-             press="{!c.sendCustomerApplication}"/> 
-           </div>      
-           <div aura:id="creditStatusBackButton" class=""> 
+          </table>
+          <br></br>
+          <div aura:id="incomeFormButton" class="floatRight noDisplay">
+            <ui:button label="Continue Application (new tab)"
+                       class="slds-button--brand"
+                       labelClass="label"
+                       press="{!c.navigate}"/>
+          </div>
+          <div aura:id="customerEmailButton" class="floatRightPadding noDisplay">
+            <ui:button label="Continue Application (email)"
+                       class="slds-button--brand"
+                       labelClass="label"
+                       press="{!c.sendCustomerApplication}"/>
+          </div>
+          <div aura:id="creditStatusBackButton" class="">
             <ui:button label="Back"
-             class="slds-button--brand"
-             labelClass="label"
-             press="{!c.exitProductSelection}"/> 
-           </div>           
-         </div>        
-       </div>  
+                       class="slds-button--brand"
+                       labelClass="label"
+                       press="{!c.exitProductSelection}"/>
+          </div>
+         </div>
+       </div>
      </aura:set>
-   </aura:if>      
+   </aura:if>
  </aura:component>
