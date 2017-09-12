@@ -1,10 +1,13 @@
+/*************************************************************************************
+ * Created By: Cole Swain
+ * 
+ * Description: Creates Partner Alert Filters when new Partner Alerts are created
+ *
+ * Tested By: SLPControllersTestclass
+ *************************************************************************************/
 public with sharing class PartnerAlertHandler {
     
-    public void OnAfterInsert(Partner_Alert__c[] newPartnerAlerts){
-        createPartnerAlertFilters(newPartnerAlerts);
-    }
-
-    public string createPartnerAlertFilters (Partner_Alert__c[] partnerAlerts){
+    public static String createPartnerAlertFilters (Partner_Alert__c[] partnerAlerts){
         Date today = Date.today();
         String alertName;
         List<User> userList = new List<User>();
@@ -13,7 +16,7 @@ public with sharing class PartnerAlertHandler {
         List<Partner_Alert_Filter__c> partnerAlertFilterList = new List<Partner_Alert_Filter__c>();
         for (User user : [SELECT Id, UserRole.Name, Contact.Sales_Representative__r.Id, Contact.Sales_Representative__r.Name
                           FROM User
-                          WHERE Profile.Name = 'Partner Community User (Custom)']) {
+                          WHERE Profile.Name IN ('Partner Community User (Custom)', 'Partner Community Login User (Custom)')]) {
             if (user.UserRole.Name.Contains('User')) {
                 userList.add(user);                
             } else if (user.UserRole.Name.Contains('Manager')) {

@@ -1,7 +1,13 @@
-trigger partnerAlertTrigger on Partner_Alert__c (before insert, before update, after insert, after update) {
-    PartnerAlertHandler partnerAlertHandler = new PartnerAlertHandler();
-    
+/*************************************************************************************
+ * Created By:  Cole Swain
+ *
+ * Description: Creates Partner Alerts
+ *
+ * Test: SLPControllersTestclass
+ *************************************************************************************/
+
+trigger partnerAlertTrigger on Partner_Alert__c (after insert) {
     if(Trigger.isInsert && Trigger.isAfter){        
-        partnerAlertHandler .OnAfterInsert(Trigger.new);
+        PartnerAlertHandler.createPartnerAlertFilters(Trigger.new);
     }
 }

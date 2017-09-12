@@ -32,7 +32,9 @@ public without sharing class SLPAddCustomer {
                           WHERE Name = : recordType
                           AND SobjectType = 'Lead'
                           LIMIT 1];
-
+        if (newLead.LASERCA__Home_State__c.length() > 2) {
+            newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
+        }
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Email_Re_Enter__c = newLead.Email;
@@ -61,7 +63,7 @@ public without sharing class SLPAddCustomer {
 
         update updatedLead;
         return updatedLead;
-    }
+    } 
 
     // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
     // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
@@ -127,60 +129,57 @@ public without sharing class SLPAddCustomer {
     //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled
     public static Partner__c getPartnerRecord() {
-        return [SELECT Id, Name, Logo__c, State__c, Default_Application__c
-                FROM Partner__c
-                WHERE Id = : profile.partnerId LIMIT 1];
-    }
-    @AuraEnabled
-    public static String sendApplication (String customerEmail, String productProgram) {
+        return [SELECT Id, Name, Logo__c, State__c, Default_Application__c 
+                FROM Partner__c 
+                WHERE Id = : profile.partnerId LIMIT 1];       
+    }     
+    @AuraEnabled 
+    public static String sendApplication (Lead newLead, Decimal loanAmount) {
         String startApplicationUrl;
         String customerName;
         String mslpUrl;
         String bwslUrl;
+        String stateName;
         Boolean updateDummy;
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
 
-        emailList.add(customerEmail);
-        EmailTemplate template = [SELECT Id, HtmlValue, Body
-                                  FROM EmailTemplate
-                                  WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];
+        emailList.add(newLead.Email);
+        EmailTemplate template = [SELECT Id, HtmlValue, Body 
+                                  FROM EmailTemplate 
+                                  WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];    
+
+        stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);                                  
 
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
+        mslpUrlParametersMap.put('544', String.valueof(loanAmount));
+        mslpUrlParametersMap.put('574', stateName);        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
+        bwslUrlParametersMap.put('544', String.valueof(loanAmount));
+        bwslUrlParametersMap.put('574', stateName);
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        if (productProgram == 'bwsl') {
-          startApplicationUrl = bwslUrl;
-        } else if (productProgram == 'mslp') {
-          startApplicationUrl = mslpUrl;
-        }
+        if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
+          startApplicationUrl = bwslUrl;       
+        } else if (newLead.Product_Program__c == 'MSLP') {
+          startApplicationUrl = mslpUrl;       
+        }        
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
 
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setHtmlBody(htmlBody);
-        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address
-                                           FROM OrgWideEmailAddress
-                                           WHERE Address = 'customercare@bluewavesolar.com'
-                                           LIMIT 1]) {
-          mail.setOrgWideEmailAddressId(senderEmail.Id);
-        }
-        String emailSubject = 'BlueWave Solar Loan - Start your application here';
-        mail.setSubject(emailSubject);
-        mail.setToAddresses(emailList);
-        //mail.setTargetObjectId(lead.Id);
-        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+        MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;
     }
 

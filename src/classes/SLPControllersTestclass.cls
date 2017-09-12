@@ -2,7 +2,7 @@
 public without sharing class SLPControllersTestclass {
     @testSetup public static void setupTestUser(){
         Test.startTest();
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
         Account accountRecord = new Account(Name = 'BlueWave Customer Care');
         insert accountRecord;
@@ -851,11 +851,17 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testDashboardHandlerExec() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        User partnerUser = [SELECT Id, Contact.Sales_Representative__r.Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         List<Decimal> dashboardWidgetsList = new List<Decimal>();
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
         Partner__c partnerRecord = [SELECT Id, Name, Logo__c FROM Partner__c];
         String alertId;
+
+        List<Partner_Alert_Filter__c> partnerAlertFilterList = 
+            [SELECT Id, Name, Partner__r.Name 
+             FROM Partner_Alert_Filter__c
+             WHERE Sales_Representative__c = :partnerUser.Contact.Sales_Representative__r.Id];
+        System.assertEquals(0, partnerAlertFilterList.size());
 
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
@@ -865,13 +871,12 @@ public without sharing class SLPControllersTestclass {
             Importance__c = '1');
         insert partnerAlert;
 
-        Partner_Alert_Filter__c partnerAlertFilter = new Partner_Alert_Filter__c(
-            Name = 'BlueWave Customer Care',
-            Partner__c = partnerRecord.Id,
-            Partner_Alert__c = partnerAlert.Id);
-        insert partnerAlertFilter;
+        partnerAlertFilterList = 
+            [SELECT Id, Name, Partner__r.Name 
+             FROM Partner_Alert_Filter__c
+             WHERE Sales_Representative__c = :partnerUser.Contact.Sales_Representative__r.Id];
 
-        List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name FROM Partner_Alert_Filter__c];
+        System.assertEquals(1, partnerAlertFilterList.size());
 
         Test.startTest();
         System.runAs(partnerUser) {
@@ -1002,11 +1007,31 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
         String emailTest;
+        Lead newLead = new Lead(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            LASERCA__Home_Address__c = '55 Boston St.',
+            LASERCA__Home_City__c = 'Boston',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_Zip__c = '02052',
+            Email = 'colemswain@gmail.com',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Requested_Loan_Amount__c = 25000,
+            Annual_Income_Currency__c = 150000,
+            Credit_Check_Acknowledged__c = true,
+            Privacy_Policy_Acknowledged__c = true,
+            Automatic_Product_Assignment__c = true,
+            Loan_Term__c = 120,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Pre_Approval_Form__c = true,
+            Unfinished_Lead__c = true,
+            Utility_Bill_Access_Acknowledged__c = true
+            );
+
         Test.startTest();
 
         System.runAs(partnerUser) {
-            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'mslp');
-            SLPAddCustomer.sendApplication('colemswain@gmail.com', 'bwsl');
+            SLPAddCustomer.sendApplication(newLead, 25000);
         }
         Test.stopTest();
     }
@@ -1069,16 +1094,18 @@ public without sharing class SLPControllersTestclass {
         attach.ParentId=equipment.id;
         attach.Description = 'PTO Documentation';
         attach.OwnerId = partnerUser.Id;
-        insert attach;
 
         Test.startTest();
 
         System.runAs(partnerUser) {
             SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
-            Attachment describedFile = SLPCustomerHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
-            System.assertEquals(describedFile.Description, 'PTO Documentation');
+            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
+            List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
+            List<Attachment> recordedFile = SLPFileHandler.getRecordFiles(equipment.Id);
+            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', describedFile.get(0).Id);
+            System.assertEquals(describedFile.get(0).Description, 'PTO Documentation');
+            System.assertEquals(recordedFile.get(0).Description, 'PTO Documentation');
         }
-        Test.stopTest();
     }
 
     @isTest static void testSLPAddCoApplicant() {

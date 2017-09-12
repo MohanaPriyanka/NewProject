@@ -60,19 +60,6 @@ public without sharing class SLPCustomerHandler {
       return equipmentList.get(0);
   }
 
-  @AuraEnabled
-  public static Attachment getDescribedFile (String parentId, String description) {
-      System.debug('The description is ' + description);
-      Attachment[] describedFile = SLPFileHandler.getDescribedFile(parentId, description);
-      if (!describedFile.isEmpty()) {
-        System.debug('check');
-        return describedFile.get(0);
-      } else {
-        System.debug('check');
-        return null;
-      }
-  }
-
   //the getLoanCustomerTasks returns the list of tasks for the customer window
   @AuraEnabled
   public static List<Partner_Task__c> getLoanCustomerTasks(String loanId) {
@@ -163,7 +150,7 @@ public without sharing class SLPCustomerHandler {
     }
     update disbursalList;
   }
-
+    
   //the saveCustomerInformation method allows the user to enter in the customer's system information/commencement date to the SLP and save it to SF
   @AuraEnabled
   public static void saveCustomerInformation(Residential_Equipment__c equipmentFromComponent, String equipmentId, String loanId, Loan__c loan) {
@@ -177,6 +164,7 @@ public without sharing class SLPCustomerHandler {
                                                     Loan__r.Sales_Agent__r.Id, Loan__r.Sales_Agent__r.Name, Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, Annual_Production_kWh_kW__c, Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, System_Size_Differs__c, Type_of_Inverter__c, Type_of_Module__c, Unique_ID__c
                                                 FROM Residential_Equipment__c
                                                 WHERE Id = : equipmentId];
+
     if(String.isNotBlank(equipmentFromComponent.Module_Manufacturer__c)
       && String.isNotBlank(equipmentFromComponent.Inverter_Manufacturer__c)){
         nameVar = equipmentRecord.Loan__r.Name + ' ' + equipmentFromComponent.Module_Manufacturer__c + '/' + equipmentFromComponent.Inverter_Manufacturer__c;
@@ -199,6 +187,7 @@ public without sharing class SLPCustomerHandler {
     Loan__c loanRecord = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c
                           FROM Loan__c
                           WHERE Id = : loanId];
+
     if(loan.Commencement_Datee__c != null){
       loanRecord.Commencement_Datee__c = loan.Commencement_Datee__c;
     }
@@ -211,8 +200,10 @@ public without sharing class SLPCustomerHandler {
     Lead leadRecord = [SELECT Id, Update_Dummy__c, Requested_Loan_Amount__c
                        FROM Lead
                        WHERE Id = : equipmentRecord.Lead__r.Id];
+
     leadRecord.Update_Dummy__c = !leadRecord.Update_Dummy__c;
     update leadRecord;
+
   }
 
   @AuraEnabled
@@ -241,15 +232,6 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static SLPortal_Settings__c getSLPortalSettings() {
     return SLPortal_Settings__c.getall().values()[0];
-  }
-
-  @AuraEnabled
-  public static void savePTODocumentation(Id parentId, String fileName, String base64Data, String contentType) {
-    Boolean updateDummy;
-    String attachmentId = SLPFileHandler.saveTheFile(parentId, fileName, base64Data, contentType, 'PTO Documentation');
-    Residential_Equipment__c equipment = [SELECT Id, Interconnection_Update_Dummy__c FROM Residential_Equipment__c WHERE Id = :parentId];
-    equipment.Interconnection_Update_Dummy__c = !equipment.Interconnection_Update_Dummy__c;
-    update equipment;
   }
 
   @AuraEnabled
