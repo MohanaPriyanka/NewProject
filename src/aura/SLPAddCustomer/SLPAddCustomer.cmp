@@ -424,7 +424,7 @@
         </div>
         <div aura:id="creditResultUnqualified" class="noDisplay">
           <ui:outputText class="slds-align--absolute-center marginAround"
-                         value="This application cannot be pre-qualified. You can wait 1-2 buisness days for a full credit review, or add a co-signer now."/>
+                         value="This application cannot be pre-qualified. You can wait 1-2 business days for a full credit review, or add a co-signer now."/>
           <div class="center">
             <ui:button aura:id="addCoApplicant"
                        class="box proximaNovaBlue marginAround"

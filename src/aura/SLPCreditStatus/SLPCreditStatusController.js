@@ -119,7 +119,8 @@
                         var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
-                        var lastName = lead.LastName;     
+                        var lastName = lead.LastName;   
+                        var appType = lead.Application_Type__c;       
 
                         if(updateDummy == true){
                             updateDummy = false;
@@ -140,6 +141,7 @@
                             + '&' + 'tfa_1287=' + loanTerm     
                             + '&' + 'tfa_1372=' + firstName     
                             + '&' + 'tfa_1373=' + lastName
+                            + '&' + 'tfa_1370=' + appType
                             + '&' + 'tfa_1181=true' 
                             + '&' + 'tfa_1375=' + 'SLPortal - Phase 2 Application 381610'      
                         });
@@ -157,7 +159,13 @@
                         var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
-                        var lastName = lead.LastName;                    
+                        var lastName = lead.LastName; 
+                        var appType = lead.Application_Type__c; 
+                        if (appType === 'Joint' || appType === 'Jointly')  {
+                            appType = 'Jointly with another applicant';
+                        } else {
+                            appType = 'Individually';
+                        }              
                         if(updateDummy == true){
                             updateDummy = false;
                         }else{
@@ -166,15 +174,16 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually'  
-                            + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_154=Massachusetts'  
+                            + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 
                             + '&' + 'tfa_1179=' + productId 
                             + '&' + 'tfa_81=' + zip     
                             + '&' + 'tfa_1287=' + loanTerm   
                             + '&' + 'tfa_94=' + address 
-                            + '&' + 'tfa_390=' + income   
+                            + '&' + 'tfa_390=' + income 
+                            + '&' + 'tfa_572=' + appType   
                             + '&' + 'tfa_1181=true'  
                             + '&' + 'tfa_1310=' + 'SLPortal - Phase 2 Application 381607'      
 
