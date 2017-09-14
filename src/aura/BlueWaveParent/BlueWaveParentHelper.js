@@ -14,11 +14,11 @@
         $A.enqueueAction(action);   
     }, 
     
-    getDataFromServer : function(component, methodName, setAttribute) {
+    callApexMethod : function(component, methodName, setAttribute, setStorable) {
         var action = component.get("c." + methodName);        
         action.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                for (i=0; i<setAttribute.length; i++) {
+               for (i=0; i<setAttribute.length; i++) {
                     component.set("v." + setAttribute[i], resp.getReturnValue());
                 }
             }
@@ -26,7 +26,11 @@
                 $A.log("Errors", resp.getError());
             }
         });        
-        $A.enqueueAction(action);  
+        $A.enqueueAction(action);
+
+        if (setStorable) {
+            action.setStorable;
+        }          
     },
 
     getPicklistOptions : function(component, objectName, fieldName, inputSelect) {
@@ -43,21 +47,6 @@
         });
         $A.enqueueAction(action); 
     },
-
-    getDataFromServer : function(component, methodName, setAttribute) {
-        var action = component.get("c." + methodName);        
-        action.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                for (i=0; i<setAttribute.length; i++) {
-                    component.set("v." + setAttribute[i], resp.getReturnValue());
-                }
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(action);  
-    },    
 
     saveSObject : function(component, id, objectName, field, value) {
         return new Promise(function(resolve, reject) {
@@ -169,7 +158,6 @@
     },
     
     uploadChunk : function(component, file, fileContents, parentId, fromPos, toPos, attachId, resolveCallback, rejectCallback) {
-        console.log('uploadChunk fromPos: ' + fromPos + ' toPos: ' + toPos + ' of: ' + fileContents.length);
         var action = component.get("c.saveTheChunk"); 
         var chunk = fileContents.substring(fromPos, toPos);
 

@@ -2,13 +2,18 @@
     doInit : function(component, event, helper) {
         var record = component.get('v.objectRecord');
         var fieldName = component.get('v.fieldName');
+        var conditionalField = component.get("v.conditionalColorField");
         if (fieldName != 'Action') {
         	helper.setFieldType(component, fieldName);        
         	helper.setRowValues(component, record, fieldName);
-        	helper.setColor(component, fieldName);
+            if (conditionalField != null) {
+                helper.setColorAttributeConditionalField(component, conditionalField, fieldName, "colorCode", "conditionalColorMap", "columnColorMap");
+            } else {
+                helper.setColorAttributeColumn(component, fieldName);
+            }
         } else {
-			helper.setButtonAttribute(component, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");       
-            helper.setButtonAttribute(component, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")    	
+			helper.setButtonAttribute(component, conditionalField, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");       
+            helper.setButtonAttribute(component, conditionalField, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")    	
         }
     },
 

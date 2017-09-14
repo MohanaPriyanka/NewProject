@@ -42,10 +42,4 @@
             $A.util.addClass(modalBackground, 'slds-backdrop--hide');    
         }
     },  
-         
-    setPendingCustomersAlert: function(component, event, helper) {
-        var pendingCustomersButton = component.find("slpcreditstatus");      
-        pendingCustomersButton.set("v.iconName", null);
-        pendingCustomersButton.set("v.iconPosition", null)                 
-    },    
 })

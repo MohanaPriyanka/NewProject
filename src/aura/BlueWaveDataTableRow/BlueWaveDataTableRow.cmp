@@ -4,7 +4,9 @@
     <aura:registerEvent name="buttonEvent" type="c:BlueWaveDataTableButtonEvent"/>          
     <aura:attribute name="objectRecord" type="Object" />
     <aura:attribute name="fieldName" type="String" />
-    <aura:attribute name="colorMap" type="Map" />
+    <aura:attribute name="conditionalColorField" type="String"/>   
+    <aura:attribute name="conditionalColorMap" type="Map"/>      
+    <aura:attribute name="columnColorMap" type="Map" />
     <aura:attribute name="fieldTypeMap" type="Map" />
     <aura:attribute name="colorCode" type="String" />
     <aura:attribute name="fieldType" type="String" />   

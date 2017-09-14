@@ -3,56 +3,102 @@
   <aura:handler name="change" value="{!v.allCustomers}" action="{!c.setSearchableValues}" /> 
   <aura:handler name="buttonEvent" event="c:BlueWaveDataTableButtonEvent" action="{!c.executeTableButtonActions}"/>    
   <aura:handler event="c:BlueWaveSearchEvent" action="{!c.executeSearch}"/>
+  <aura:attribute name="licenseType" type="String"/>    
   <aura:attribute name="runSetSearchable" type="Boolean" default="true" />   
   <aura:attribute name="allCustomers" type="Object"  /> 
+  <aura:attribute name="completedLoans" type="Object"  /> 
+  <aura:attribute name="loansInProcess" type="Object"  />     
   <aura:attribute name="allCustomersSearchableValues" type="Object"  /> 
-  <aura:attribute name="originalAllCustomers" type="Object"  />
-  <aura:attribute name="licenseType" type="String"  />      
+  <aura:attribute name="originalAllCustomers" type="Object"/>
+
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="allLeads" type="Object"/>
+  <aura:attribute name="pendingApplications" type="Object"  /> 
+  <aura:attribute name="declinedApplicants" type="Object"  /> 
+
   <aura:attribute name="sortAsc" type="Boolean" />
   <aura:attribute name="sortArrow" type="Boolean" />
   <aura:attribute name="sortField" type="String"/>
-  <div aura:id="BWDataTableAllCustomers" class="box">
-    <div aura:id="BWDataTableTabs" class="">
-      <ul class="slds-tabs_default__nav" role="tablist">
-        <c:BlueWaveInputToolTip popoverText="Use this tab to apply for the BlueWave Solar Loan">
-          <li aura:id="bwslAppTab" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
-            <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToBWSL}" role="tab">
-              <b>Applications</b>
-            </a>
-          </li>
-        </c:BlueWaveInputToolTip>           
-        <c:BlueWaveInputToolTip popoverText="Use this tab to view all qualified customers that have not been fully disbursed and still require additional action ">
-          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
-            <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
-              <b>Customers In Process</b>
-            </a>
-          </li>
-        </c:BlueWaveInputToolTip>   
-        <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
-          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
-            <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
-              <b>Completed Customers</b>
-            </a>
-          </li>
-        </c:BlueWaveInputToolTip>      
-        <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
-          <li aura:id="" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
-            <a class="slds-tabs_default__link" onclick="{!c.changeApplicationToMSLP}" role="tab">
-              <b>Declined Applicants</b>
-            </a>
-          </li>
-        </c:BlueWaveInputToolTip>            
-      </ul>    
-    </div>  
-    <c:BlueWaveDataTable name = "BWDataTableAllCustomers"
-                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
-                         tableRecords="{!v.allCustomers}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
-                         fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                         colorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
-                         allButtonLabels="View"
-                         allButtonEvents="openCustomerWindow"
-                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
-   </div>                           
+  <aura:attribute name="selectedTable" type="String"/>  
+  <div aura:id="BWDataTableTabs" class="">
+    <ul class="slds-tabs_default__nav" role="tablist">
+      <c:BlueWaveInputToolTip popoverText="Applications consist of all applicants who have had an application sent to them or have begun an application, but have not yet been Pre-Qualified.">
+        <li aura:id="applications" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToApplications}" role="tab">
+            <b>Applications</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>         
+      <c:BlueWaveInputToolTip popoverText="Use this tab to view all qualified customers that have not been fully disbursed and still require additional action ">
+        <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
+            <b>Customers In Process</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>   
+      <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
+        <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
+            <b>Completed Customers</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>      
+      <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
+        <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
+            <b>Declined Applicants</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>            
+    </ul>    
+  </div>  
+  <div class="box">
+  <aura:if isTrue="{!v.selectedTable == 'applications'}">  
+      <c:BlueWaveDataTable name = "BWDataTableApplications"
+                           headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                           tableRecords="{!v.pendingApplications}" 
+                           recordFieldNames="['Name', 'Status', 'Action']"
+                           fieldTypeMap="{Name: 'String'}"
+                           conditionalColorField="Status"                           
+                           conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
+                           buttonConditionalField="Status"
+                           buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application'}"
+                           buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication'}"
+                           allButtonLabels=""
+                           allButtonEvents=""/>
+ </aura:if>    
+  <aura:if isTrue="{!v.selectedTable == 'customersInProcess'}">  
+      <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
+                           headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                           tableRecords="{!v.loansInProcess}" 
+                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                           fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                           columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                           allButtonLabels="View"
+                           allButtonEvents="openCustomerWindow"
+                           profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+ </aura:if>  
+  <aura:if isTrue="{!v.selectedTable == 'completedCustomers'}">  
+      <c:BlueWaveDataTable name = "BWDataTableApplications"
+                           headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                           tableRecords="{!v.completedLoans}" 
+                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                           fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                           columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                           allButtonLabels="View"
+                           allButtonEvents="openCustomerWindow"
+                           profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+ </aura:if>
+  <aura:if isTrue="{!v.selectedTable == 'declinedApplicants'}">  
+      <c:BlueWaveDataTable name = "BWDataTableDeclinedApplicants"
+                           headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                           tableRecords="{!v.declinedApplicants}" 
+                           recordFieldNames="['Name', 'Status', 'Action']"
+                           fieldTypeMap="{Name: 'String'}"
+                           columnColorMap="{'Status': '#00B2A9'}"
+                           allButtonLabels="Add Co-Signer"
+                           allButtonEvents="changeTableToApplications"/>
+ </aura:if>  
+ </div>  
 </aura:component>
   

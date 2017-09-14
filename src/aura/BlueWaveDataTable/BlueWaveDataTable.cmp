@@ -7,7 +7,9 @@
   <aura:attribute name="tableRecords" type="Object[]"/>
   <aura:attribute name="recordFieldNames" type="String[]"/>
   <aura:attribute name="headerMap" type="Map"/>
-  <aura:attribute name="colorMap" type="Map"/>  
+  <aura:attribute name="conditionalColorField" type="String"/>   
+  <aura:attribute name="conditionalColorMap" type="Map"/>     
+  <aura:attribute name="columnColorMap" type="Map"/>  
   <aura:attribute name="fieldTypeMap" type="Map"/>
   <aura:attribute name="sortAsc" type="Boolean"/>
   <aura:attribute name="sortArrow" type="Boolean"/>
@@ -42,7 +44,9 @@
 							   <b>
 								    <c:BlueWaveDataTableRow objectRecord="{!record}" 
                                             fieldName="{!fieldName}" 
-                                            colorMap="{!v.colorMap}"
+                                            conditionalColorField="{!v.conditionalColorField}"
+                                            conditionalColorMap="{!v.conditionalColorMap}"
+                                            columnColorMap="{!v.columnColorMap}"
                                             fieldTypeMap="{!v.fieldTypeMap}"
                                             allButtonLabels="{!v.allButtonLabels}"
                                             allButtonEvents="{!v.allButtonEvents}"

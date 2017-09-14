@@ -6,7 +6,6 @@
 <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />   
 <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" /> 
 <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.closeEmailCustomerModal}" /> 
-<aura:handler event="c:SLPNavigationBarAlertEvent" action="{!c.setPendingCustomersAlert}" />          
 <style>
     @font-face {
     font-family: proximaNovaFont;
