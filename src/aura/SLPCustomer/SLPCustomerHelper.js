@@ -105,15 +105,16 @@
         customerInformationAction.setParams({loanId : loanId})
         customerInformationAction.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
+                console.log("checkS");
+                console.log(resp.getReturnValue());
                 component.set("v.customerInformation", resp.getReturnValue());
                 component.set("v.customer", resp.getReturnValue());
             } else {
+                console.log("check");
                 $A.log("Errors", resp.getError());
             }
         });
         $A.enqueueAction(customerInformationAction);
-
-        var i;
         var i;
         var partnerTaskList = component.get("c.getLoanCustomerTasks");
         var componentCustomerId = component.get("v.customer");
