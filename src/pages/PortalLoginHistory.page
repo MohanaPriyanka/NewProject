@@ -1,0 +1,103 @@
+<apex:page controller="PortalLoginHistoryController" showHeader="true" sidebar="true">
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <apex:pageBlock>
+    <apex:form>
+      <apex:pageBlockSection columns="1">
+        <apex:outputText value="Logins since {0,date, MMM dd',' YYYY}">
+          <apex:param value="{!beginDate}" />
+        </apex:outputText>
+      </apex:pageBlockSection>
+      <apex:pageBlockSection columns="1">
+        <apex:inputCheckbox label="Show Detail, Hide Charts" value="{!showDetail}">
+          <apex:actionsupport event="onchange" rerender="UserTable" oncomplete="drawChart()"/>
+        </apex:inputCheckbox>
+      </apex:pageBlockSection>
+      <apex:pageBlockSection columns="1">
+        <apex:inputCheckbox label="Show Login Profiles, Hide Full Profiles" value="{!showLoginProfile}">
+          <apex:actionsupport event="onchange" rerender="UserTable" oncomplete="drawChart()"/>
+        </apex:inputCheckbox>
+      </apex:pageBlockSection>
+    </apex:form>
+    <apex:outputPanel id="UserTable">
+      <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+           if ('{!NOT(showDetail)}') {
+              var idx;
+              var users = JSON.parse('{!usersAsJSON}')
+              for (idx in users) {
+                 var user = users[idx];
+                 var data = new google.visualization.DataTable();
+                 data.addColumn('date', 'Login Date');
+                 data.addColumn('number', 'Success');
+                 data.addColumn('number', 'Unsuccessful');
+                 var log;
+                 for (log in user.logins) {
+                    var login = user.logins[log];
+                    data.addRow([new Date(login.loginDate), login.success, login.unsuccessful]);
+                 }
+                 var options = {legend:{position:'none'}};
+                 var chart = new google.visualization.LineChart(document.getElementById('chart for ' + user.name));
+                 chart.draw(data, options);
+              }
+           }
+        }
+      </script>  
+      <table class="list">
+        <thead>
+          <tr class="headerRow">
+            <td>Name</td>
+            <td>Profile Name</td>
+            <td>Successful Logins</td>
+            <td>Detail</td>
+          </tr>
+        </thead>
+        <tbody>
+          <apex:repeat value="{!users}" var="user">
+            <tr>
+              <td>{!user.name}</td>
+              <td>{!user.profileName}</td>
+              <td>{!user.totalSuccesses}</td>
+              <td>
+                <apex:variable var="x" value="" rendered="{!IF(showDetail==false,true,false)}">
+                  <div id="chart for {!user.name}" style="width: 600px; height: 100px;"/>
+                </apex:variable>
+                <apex:variable var="x" value="" rendered="{!IF(showDetail==true,true,false)}">
+                  <table class="list" id="LoginTable">
+                    <thead>
+                      <tr class="headerRow">
+                        <td>Date</td>
+                        <td>Success</td>
+                        <td>Wrong Community</td>
+                        <td>Locked Out</td>
+                        <td>Wrong Password</td>
+                        <td>Inactive</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <apex:repeat value="{!user.loginHistory}" var="login">
+                        <tr>
+                          <td>
+                            <apex:outputText value="{0, date, MM/DD/YY}">
+                              <apex:param value="{!login.loginDate}"/>
+                            </apex:outputText>
+                          </td>
+                          <td>{!login.success}</td>
+                          <td>{!login.noAccess}</td>
+                          <td>{!login.passwordLockout}</td>
+                          <td>{!login.invalidPassword}</td>
+                          <td>{!login.inactive}</td>
+                        </tr>
+                      </apex:repeat>
+                    </tbody>
+                  </table>
+                </apex:variable>
+              </td>              
+            </tr>
+          </apex:repeat>
+        </tbody>
+      </table>
+    </apex:outputPanel>
+  </apex:pageBlock>
+</apex:page>
