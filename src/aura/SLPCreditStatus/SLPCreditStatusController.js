@@ -27,11 +27,12 @@
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
                 if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                 }
             }
         };
         var leadId = getUrlParameter('leadId');
+        var leadName = getUrlParameter('leadName');
         if ($A.util.isUndefinedOrNull(leadId)) {
             var action = component.get("c.getLeads");        
             action.setCallback(this,function(resp){ 
@@ -47,6 +48,7 @@
             // Lead ID is set from the AddCustomer Component, so we want to lead
             // this component with just that lead. We also want to disable the back button
             component.set("v.leadId", leadId);
+            component.set("v.customerName", leadName);
             helper.getProductsHelper(component, event, helper);
             $A.util.addClass(component.find("creditStatusBackButton"),"noDisplay");
         }
@@ -135,7 +137,8 @@
                         var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
-                        var lastName = lead.LastName;     
+                        var lastName = lead.LastName;   
+                        var appType = lead.Application_Type__c;       
 
                         if(updateDummy == true){
                             updateDummy = false;
@@ -156,6 +159,7 @@
                             + '&' + 'tfa_1287=' + loanTerm     
                             + '&' + 'tfa_1372=' + firstName     
                             + '&' + 'tfa_1373=' + lastName
+                            + '&' + 'tfa_1370=' + appType
                             + '&' + 'tfa_1181=true' 
                             + '&' + 'tfa_1375=' + 'SLPortal - Phase 2 Application 381610'      
                         });
@@ -173,7 +177,13 @@
                         var requestedLoanAmount = lead.Requested_Loan_Amount__c;
                         var updateDummy = lead.Update_Dummy;
                         var firstName = lead.FirstName;
-                        var lastName = lead.LastName;                    
+                        var lastName = lead.LastName; 
+                        var appType = lead.Application_Type__c; 
+                        if (appType === 'Joint' || appType === 'Jointly')  {
+                            appType = 'Jointly with another applicant';
+                        } else {
+                            appType = 'Individually';
+                        }              
                         if(updateDummy == true){
                             updateDummy = false;
                         }else{
@@ -182,15 +192,16 @@
                         var leadId = lead.Id;                         
                         var urlEvent = $A.get("e.force:navigateToURL");
                         urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually'  
-                            + '&' + 'tfa_154=Massachusetts&tfa_526=' + leadId 
+                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_154=Massachusetts'  
+                            + '&' + 'tfa_526=' + leadId 
                             + '&' + 'tfa_1180=' + updateDummy
                             + '&' + 'tfa_63=' + city 
                             + '&' + 'tfa_1179=' + productId 
                             + '&' + 'tfa_81=' + zip     
                             + '&' + 'tfa_1287=' + loanTerm   
                             + '&' + 'tfa_94=' + address 
-                            + '&' + 'tfa_390=' + income   
+                            + '&' + 'tfa_390=' + income 
+                            + '&' + 'tfa_572=' + appType   
                             + '&' + 'tfa_1181=true'  
                             + '&' + 'tfa_1310=' + 'SLPortal - Phase 2 Application 381607'      
 

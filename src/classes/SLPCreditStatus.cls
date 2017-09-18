@@ -119,7 +119,7 @@ public without sharing class SLPCreditStatus {
     Boolean updateDummy;
     Lead lead = [SELECT Id, Name, Product_Line__c, Product_Program__c, LASERCA__Home_State__c, LASER_Credit_Score__c, LASERCA__Home_Address__c,
                         LASERCA__Home_City__c, LASERCA__Home_Zip__c, Annual_Income_Currency__c, Requested_Loan_Amount__c, Update_Dummy__c, FirstName,
-                        LastName, Partner_Email__c, Email, Partner_Lookup__r.Name
+                        LastName, Partner_Email__c, Email,Application_Type__c, Partner_Lookup__r.Name
                         FROM Lead
                         WHERE Id = : leadId
                         LIMIT 1];  
@@ -142,19 +142,28 @@ public without sharing class SLPCreditStatus {
                                 + '&' + 'tfa_1312=' + lead.LASERCA__Home_City__c 
                                 + '&' + 'tfa_1179=' + product.Id 
                                 + '&' + 'tfa_1313=' + lead.LASERCA__Home_Zip__c     
-                                + '&' + 'tfa_1287=' + loanTerm     
+                                + '&' + 'tfa_1287=' + loanTerm  
+                                + '&' + 'tfa_1370=' + lead.Application_Type__c 
                                 + '&' + 'tfa_1375=' + 'SLPortal - Emailed Customer Phase 2 Application 381610'
                                 + '&' + 'tfa_1372=' + lead.FirstName     
                                 + '&' + 'tfa_1373=' + lead.LastName;       
 
     } else if (product.Program__c == 'MSLP') {
-      continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_572=Individually' 
-                                + '&' + 'tfa_154=Massachusetts&tfa_526=' + lead.Id 
+      String appType = lead.Application_Type__c;
+      if (appType=='Joint' || appType=='Jointly'){
+        appType = 'Jointly with another applicant';
+      } else {
+        appType = 'Individually';
+      }
+
+      continueApplicationUrl = 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_154=Massachusetts' 
+                                + '&' + 'tfa_526=' + lead.Id 
                                 + '&' + 'tfa_1180=' + updateDummy
                                 + '&' + 'tfa_390=' + lead.Annual_Income_Currency__c 
                                 + '&' + 'tfa_63=' + lead.LASERCA__Home_City__c 
                                 + '&' + 'tfa_1179=' + product.Id 
-                                + '&' + 'tfa_81=' + lead.LASERCA__Home_Zip__c     
+                                + '&' + 'tfa_81=' + lead.LASERCA__Home_Zip__c 
+                                + '&' + 'tfa_572=' + appType     
                                 + '&' + 'tfa_1287=' + loanTerm     
                                 + '&' + 'tfa_1310=' + 'SLPortal - Emailed Customer Phase 2 Application 381607'                                     
                                 + '&' + 'tfa_94=' + lead.LASERCA__Home_Address__c ;        

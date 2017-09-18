@@ -13,6 +13,75 @@
         evt.fire();
     },
     
+    saveDataPreActionFormatting : function(component, event, helper) {
+        this.startSpinner(component, "srecSaveSpinner");
+        this.startSpinner(component, "customerInformationSpinner");
+        $A.util.addClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeSrecModalButton"), 'noDisplay');
+    },
+    
+    saveDataSuccessFormatting : function(component, event, helper) {
+        this.stopSpinner(component, "srecSaveSpinner");
+        this.stopSpinner(component, "customerInformationSpinner");
+        $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("saveSrecModalButton"), 'noDisplay');
+        $A.util.removeClass(component.find("closeSrecModalButton"), 'noDisplay');
+    },
+    
+    saveCustomerData : function(component, event, helper) {
+		var equipmentUpdateVar = component.get("v.equipmentUpdate");
+        var equipmentIdVar = component.get("v.customerInformation.Id");
+        var loanUpdateVar = component.get("v.loanUpdate");
+        var loanUpdateIdVar = component.get("v.customerInformation.Loan__r.Id");
+
+        var saveAction = component.get("c.saveCustomerInformation");
+        saveAction.setParams({
+            "equipmentFromComponent" : equipmentUpdateVar,
+            "equipmentId" : equipmentIdVar,
+            "loanId" : loanUpdateIdVar,
+            "loan" : loanUpdateVar,
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() == "SUCCESS") {
+              	return 'SUCCESS';
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanUpdateIdVar})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.customerInformation", resp.getReturnValue());
+                var mslpVar = resp.getReturnValue().DOER_Solar_Loann__c;
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+		$A.enqueueAction(saveAction)
+        $A.enqueueAction(customerInformationAction);
+    },
+    
+    refreshPartnerTasks : function (component) {
+     	var i;
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : componentCustomerId.Loan__r.Id});
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(partnerTaskList);
+    },
+    
     getGenericPage: function(page, component) { 
         $A.util.addClass(component.find('SrecInterconnectionPage'), 'noDisplay');                           
         $A.util.addClass(component.find('SrecGeneratorPage'), 'noDisplay'); 
@@ -26,71 +95,30 @@
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
 
-    getDescribedFile: function(component, description) {
-        var checkForPtoFile = component.get("c.getDescribedFile");
-        var parentId = component.get("v.customerInformation.Id");
-
-        checkForPtoFile.setParams({
-            "parentId" : parentId,
-            "description" : description,
-        });
-
-        checkForPtoFile.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if (resp.getReturnValue() != null) {
-                    component.set("v.ptoFileAttached", true);
-                    component.set("v.ptoFileName", resp.getReturnValue().Name);
-                }
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(checkForPtoFile);
-    },
-
-    MAX_FILE_SIZE: 750 000, /* 1 000 000 * 3/4 to account for base64 */
-    saveFile : function(component, event) {
-        var fileInput = event.getSource().get("v.files")[0];
-
-        var file = fileInput;
-        
-        if (file.size > this.MAX_FILE_SIZE) {
-            alert('File size cannot exceed ' + this.MAX_FILE_SIZE + ' bytes.\n' +
-                  'Selected file size: ' + file.size);
-            return;
-        }
-        
-        var fr = new FileReader();
-
-        var self = this;
-        fr.onload = function() {
-            var fileContents = fr.result;
-            var base64Mark = 'base64,';
-            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
-
-            fileContents = fileContents.substring(dataStart);
-            
-            self.upload(component, file, fileContents);
-        };
-
-        fr.readAsDataURL(file);
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
+      var body = component.get("v.body");  
+      component.set("v.body", []);  
+      $A.createComponent(
+      	"c:SLPFileUploadWindow", 
+      	{"dateLabel": dateLabelString,
+      	"windowHeader": windowHeaderString,
+        "fileParentId": parentId,
+        "resiEquipment" : equipmentObject,
+        "fileName": nameFile }, 
+                       
+       	function(newButton, status, errorMessage){
+          if (status === "SUCCESS") {
+            var body = component.get("v.body");
+            body.push(newButton);
+            component.set("v.body", body);
+          }
+          else {
+            console.log("Error: " + errorMessage);
+          }
+       	}
+      );       
     },
     
-    upload: function(component, file, fileContents) {
-        var action = component.get("c.savePTODocumentation");
-        action.setParams({
-            parentId: component.get("v.customerInformation.Id"),
-            fileName: file.name,
-            base64Data: encodeURIComponent(fileContents),
-            contentType: file.type
-        });
-
-        $A.enqueueAction(action);
-        component.set("v.ptoFileName", file.name);
-        component.set("v.ptoFileAttached", true);
-    },
-
     openInterconnectionModal : function(component, event, helper) {
         $A.util.addClass(component.find('srecInformationModal'), 'slds-fade-in-open');
         $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
@@ -152,7 +180,7 @@
         $A.util.removeClass(component.find("closeCustomerModalButton"), 'noDisplay');
         $A.util.addClass(component.find("systemInformationInputs"), 'noDisplay');
         $A.util.removeClass(component.find("systemInformationSubmitConfirmation"), 'noDisplay');
-    },    
+    }, 
 
     closeSystemInformationSaved : function(component, event, helper) {
         $A.util.removeClass(component.find("systemInformationInputs"), 'noDisplay');

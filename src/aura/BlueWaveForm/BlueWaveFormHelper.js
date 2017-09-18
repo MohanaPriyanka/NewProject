@@ -68,6 +68,5 @@
 
     setInputToCorrect : function(component, fieldId) {
         $A.util.removeClass(component.find(fieldId), 'slds-has-error'); 
-    },   
-   
+    },     
 })

@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
- * 
- * Description: The SLPAddCustomer class serves as a controller for the SLPAddCustomer Lightning component bundle. It allows the user to 
+ *
+ * Description: The SLPAddCustomer class serves as a controller for the SLPAddCustomer Lightning component bundle. It allows the user to
  * add new customers to the database.
  *
  * Tested By: SLPControllerTestclass
@@ -27,12 +27,14 @@ public without sharing class SLPAddCustomer {
             productProgram = 'BlueWave Solar Loan';
         }
 
-        leadRecordType = [SELECT Id 
-                          FROM RecordType 
+        leadRecordType = [SELECT Id
+                          FROM RecordType
                           WHERE Name = : recordType
-                          AND SobjectType = 'Lead' 
+                          AND SobjectType = 'Lead'
                           LIMIT 1];
-
+        if (newLead.LASERCA__Home_State__c.length() > 2) {
+            newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
+        }
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Email_Re_Enter__c = newLead.Email;
@@ -61,7 +63,7 @@ public without sharing class SLPAddCustomer {
 
         update updatedLead;
         return updatedLead;
-    }
+    } 
 
     // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
     // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
@@ -80,17 +82,17 @@ public without sharing class SLPAddCustomer {
             return(Integer.valueOf(systemProperties[0].Credit_Check_Timeout__c));
         } else {
             return(60000);
-        }          
+        }
     }
 
     @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
         Lead lead = [SELECT Id, Status, LASTMODIFIEDDATE,
                      (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
-                      FROM LASERCA__Credit_Report_Logs__r 
+                      FROM LASERCA__Credit_Report_Logs__r
                       ORDER BY CREATEDDATE DESC),
-                     (SELECT id, Solar_Loan_Approval_Status__c 
-                      FROM LASERCA__Personal_Credit_Reports__r 
+                     (SELECT id, Solar_Loan_Approval_Status__c
+                      FROM LASERCA__Personal_Credit_Reports__r
                       ORDER BY CREATEDDATE DESC LIMIT 1)
                      FROM Lead
                      WHERE Id = :leadToQuery.Id];
@@ -121,7 +123,7 @@ public without sharing class SLPAddCustomer {
         } else {
             return(s);
         }
-    }        
+    }
 
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
     //state to determine if the add a customer page should allow the user to submit MSLP applications
@@ -132,55 +134,83 @@ public without sharing class SLPAddCustomer {
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     
     @AuraEnabled 
-    public static String sendApplication (String customerEmail, String productProgram) {
+    public static String sendApplication (Lead newLead, Decimal loanAmount) {
         String startApplicationUrl;
         String customerName;
         String mslpUrl;
         String bwslUrl;
-        Boolean updateDummy;  
+        String stateName;
+        Boolean updateDummy;
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
 
-        emailList.add(customerEmail);
+        emailList.add(newLead.Email);
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];    
 
+        stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);                                  
+
         mslpUrlParametersMap.put('648', (String)profile.partnerId);
         mslpUrlParametersMap.put('649', (String)profile.salesRepId);
         mslpUrlParametersMap.put('529', emailList.get(0));
+        mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
+        mslpUrlParametersMap.put('544', String.valueof(loanAmount));
+        mslpUrlParametersMap.put('574', stateName);        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
         bwslUrlParametersMap.put('649', (String)profile.salesRepId);
         bwslUrlParametersMap.put('529', emailList.get(0));
+        bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
+        bwslUrlParametersMap.put('544', String.valueof(loanAmount));
+        bwslUrlParametersMap.put('574', stateName);
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        if (productProgram == 'bwsl') {
+        if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
           startApplicationUrl = bwslUrl;       
-        } else if (productProgram == 'mslp') {
+        } else if (newLead.Product_Program__c == 'MSLP') {
           startApplicationUrl = mslpUrl;       
         }        
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
 
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setHtmlBody(htmlBody);
-        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
-                                           FROM OrgWideEmailAddress
-                                           WHERE Address = 'customercare@bluewavesolar.com'  
-                                           LIMIT 1]) {
-          mail.setOrgWideEmailAddressId(senderEmail.Id); 
-        }  
-        String emailSubject = 'BlueWave Solar Loan - Start your application here'; 
-        mail.setSubject(emailSubject);
-        mail.setToAddresses(emailList);
-        //mail.setTargetObjectId(lead.Id);
-        MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});        
+        MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;
-      }     
+    }
+
+    @AuraEnabled
+    public static List<String> getActiveStates() {
+        List<AggregateResult> activeProducts = [SELECT State__c
+                                                FROM Product2
+                                                WHERE IsActive = true
+                                                AND Product_Type__c = 'Residential Loan'
+                                                GROUP BY State__c
+                                                ORDER BY State__c];
+        List<String> options = new List<String>();
+        for (AggregateResult p : activeProducts) {
+            options.add((String) p.get('State__c'));
+        }
+        return options;
+    }    
+
+    @AuraEnabled
+    public static String getLenderOfRecord(String state) {
+        List<AggregateResult> products = [SELECT Lender_of_Record__c
+                                          FROM Product2
+                                          WHERE IsActive = true
+                                          AND Product_Type__c = 'Residential Loan'
+                                          AND State__c = : state
+                                          GROUP BY Lender_of_Record__c
+                                          ORDER BY Lender_of_Record__c];
+        String result = '';
+        for (AggregateResult p : products) {
+            result += (String) p.get('Lender_of_Record__c');
+        }
+        return result;
+    }
 }

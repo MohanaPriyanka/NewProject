@@ -130,6 +130,16 @@ Static testMethod void RecurringPaymentsHandlerTestClass() {
             Recurring_Billing__c = True);       
         insert accountB;      
 
+        Account accountC = new Account(name = 'Account C',
+            RecordTypeId = '012j00000010Ha3',
+            Recurring_Billing__c = True);       
+        insert accountC;   
+
+        Account accountD = new Account(name = 'Account D',
+            RecordTypeId = '012j00000010Ha3',
+            Recurring_Billing__c = True);       
+        insert accountD;  
+
         Utility_Account_Log__c ualog = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Name = '0000234',
                                                                                                                  Account__c = accountA.Id,
                                                                                                                  Annual_Cost_of_Electricity__c = 10000,
@@ -234,7 +244,26 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                 Date__c = myDateFeb
                 );
                 
-        insert productionupdateB2;           
+        insert productionupdateB2;     
+        productionupdateA2.Generate_Bills__c = TRUE;
+        productionupdateB2.Generate_Bills__c = TRUE;
+        update productionupdateA2;
+        update productionupdateB2;   
+
+        Account_Bill__c noSystemBills = new Account_Bill__c ( Name='Account Bill Cancelled',
+                                                                    Bill_Number__c = 1, 
+                                                                    Parent_Account__c = AccountC.Id) ;
+        insert noSystemBills;
+
+        Account_Bill__c noSystemBillsSecondMonth = new Account_Bill__c ( Name='Account Bill Cancelled',
+                                                                    Bill_Number__c = 2, 
+                                                                    Parent_Account__c = AccountC.Id) ;
+        insert noSystemBillsSecondMonth;
+
+        Account_Bill__c accountBillCancelled = new Account_Bill__c ( Name='Account Bill Cancelled',
+                                                                    Bill_Number__c = 1, 
+                                                                    Parent_Account__c = AccountD.Id) ;
+        insert accountBillCancelled;
   
         List<System_Bill__c> systemBillList = [SELECT Id, Name, Waive_Late_Fees__c, Account_Bill__c, Total_Due__c, Due_This_Month__c, 
                                                 Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c 
@@ -308,9 +337,72 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                         insert orderA2;
 
                     }
-
                 }
+
+            ChargentOrders__ChargentOrder__c orderNotLinkedToAccountBill  = new ChargentOrders__ChargentOrder__c(
+                                                                                          ChargentOrders__Gateway__c = chGatewaytwo.Id,
+                                                                                          ChargentOrders__Shipping_Name__c = entitytwo.id,
+                                                                                          ChargentOrders__Billing_First_Name__c = 'Jordan',
+                                                                                          ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+                                                                                          ChargentOrders__Subtotal__c = 555.44,
+                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
+                                                                                          ChargentOrders__Card_Type__c = 'Visa',
+                                                                                          ChargentOrders__Card_Number__c = '411111111111',
+                                                                                          ChargentOrders__Card_Security_Code__c = '999',
+                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
+                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
+                                                                                          ChargentOrders__Card_Last_4__c = '1111',
+                                                                                          ChargentOrders__Payment_Status__c = 'Recurring',
+                                                                                          ChargentOrders__Payment_Frequency__c = 'Monthly',
+                                                                                          ChargentOrders__Payment_Start_Date__c = system.today(),
+                                                                                          ChargentOrders__Charge_Date__c = '15'); 
+            insert orderNotLinkedToAccountBill;
+
+            ChargentOrders__ChargentOrder__c orderNoSystemBills  = new ChargentOrders__ChargentOrder__c(
+                                                                                          Account_Bill__c = accountBillCancelled.Id,
+                                                                                          ChargentOrders__Gateway__c = chGatewaytwo.Id,
+                                                                                          ChargentOrders__Shipping_Name__c = entitytwo.id,
+                                                                                          ChargentOrders__Billing_First_Name__c = 'Jordan',
+                                                                                          ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+                                                                                          ChargentOrders__Subtotal__c = 555.44,
+                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
+                                                                                          ChargentOrders__Card_Type__c = 'Visa',
+                                                                                          ChargentOrders__Card_Number__c = '411111111111',
+                                                                                          ChargentOrders__Card_Security_Code__c = '999',
+                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
+                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
+                                                                                          ChargentOrders__Card_Last_4__c = '1111',
+                                                                                          ChargentOrders__Payment_Status__c = 'Recurring',
+                                                                                          ChargentOrders__Payment_Frequency__c = 'Monthly',
+                                                                                          ChargentOrders__Payment_Start_Date__c = system.today(),
+                                                                                          ChargentOrders__Charge_Date__c = '15'); 
+            insert orderNoSystemBills;
                 
+            ChargentOrders__ChargentOrder__c orderCancelledCustomer  = new ChargentOrders__ChargentOrder__c(
+                                                                                          Account_Bill__c = noSystemBills.Id,
+                                                                                          ChargentOrders__Gateway__c = chGatewaytwo.Id,
+                                                                                          ChargentOrders__Shipping_Name__c = entitytwo.id,
+                                                                                          ChargentOrders__Billing_First_Name__c = 'Jordan',
+                                                                                          ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
+                                                                                          ChargentOrders__Subtotal__c = 555.44,
+                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
+                                                                                          ChargentOrders__Card_Type__c = 'Visa',
+                                                                                          ChargentOrders__Card_Number__c = '411111111111',
+                                                                                          ChargentOrders__Card_Security_Code__c = '999',
+                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
+                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
+                                                                                          ChargentOrders__Card_Last_4__c = '1111',
+                                                                                          ChargentOrders__Payment_Status__c = 'Recurring',
+                                                                                          ChargentOrders__Payment_Frequency__c = 'Monthly',
+                                                                                          ChargentOrders__Payment_Start_Date__c = system.today(),
+                                                                                          ChargentOrders__Charge_Date__c = '15'); 
+            insert orderCancelledCustomer;
 
         List<System_Bill__c> updatedsystemBillList = [SELECT Id, Late_Fees__c, Recurring_Payment_ID__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, Shared_Solar_System__c, Property_Account_ID__c FROM System_Bill__c];
 
@@ -333,7 +425,10 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
         );
 
         insert productionupdateC2;
-
+        productionupdateC1.Generate_Bills__c = TRUE;
+        productionupdateC2.Generate_Bills__c = TRUE;
+        update productionupdateC1;
+        update productionupdateC2;
 
         Test.startTest();    
 
@@ -349,22 +444,22 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
                                                 ORDER BY Bill_Number__c DESC];
 
 
-        List<ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c,
+        List<ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c, Reason_for_Recurring_Stop__c,
                                                                 Account_Bill__r.Bill_Number__c, Account_Bill__r.Name, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
-
+        
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
-
             if (cho.ChargentOrders__Charge_Date__c == '25') {
                 system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);  
                 system.assertEquals(87.7521, cho.ChargentOrders__Charge_Amount__c); 
-                system.debug(cho.ChargentOrders__Charge_Amount__c); 
-            }
-            else if (cho.ChargentOrders__Charge_Date__c == '30') {
+            } else if (cho.ChargentOrders__Charge_Date__c == '30') {
                 system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
                 system.assertEquals(437.701, cho.ChargentOrders__Charge_Amount__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '15') {
+                system.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
+                system.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
+                system.assertNotEquals(NULL, cho.Reason_for_Recurring_Stop__c);
             }
         }
-
 }
 }
