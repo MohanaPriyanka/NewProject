@@ -35,10 +35,14 @@
                  var log;
                  for (log in user.logins) {
                     var login = user.logins[log];
-                    data.addRow([new Date(login.loginDate), login.success, login.unsuccessful]);
+                    data.addRow([new Date(login.loginDate), 
+                                 (login.success===0?null:login.success), 
+                                 (login.unsuccessful===0?null:login.unsuccessful)]);
                  }
-                 var options = {legend:{position:'none'}};
-                 var chart = new google.visualization.LineChart(document.getElementById('chart for ' + user.name));
+                 var options = {legend:{position:'none'},
+                                dataOpacity:.5,
+                                pointSize:5};
+                 var chart = new google.visualization.ScatterChart(document.getElementById('chart for ' + user.name));
                  chart.draw(data, options);
               }
            }

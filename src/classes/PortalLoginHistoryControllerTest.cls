@@ -4,6 +4,7 @@ public with sharing class PortalLoginHistoryControllerTest {
         PageReference portalLoginHistory = Page.PortalLoginHistory;
         Test.setCurrentPage(portalLoginHistory);
         ApexPages.currentPage().getParameters().put('isTest', 'TRUE');
+        ApexPages.currentPage().getParameters().put('dayRange', '45');
 
         PortalLoginHistoryController plhc = new PortalLoginHistoryController();
 

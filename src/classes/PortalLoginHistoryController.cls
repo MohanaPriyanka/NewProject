@@ -17,11 +17,15 @@ public without sharing class PortalLoginHistoryController {
         if (ApexPages.currentPage().getParameters().get('isTest') != null) {
             isTest = true;
         }
+        if (ApexPages.currentPage().getParameters().get('dayRange') != null) {
+            beginDate = DateTime.now() - Integer.valueOf(ApexPages.currentPage().getParameters().get('dayRange'));
+        } else {
+            beginDate = DateTime.now() - 30;
+        }
 
         userLoginMap = new Map<String, UserHistory>();
         showDetail = false;
         showLoginProfile = false;
-        beginDate = DateTime.now() - 30;
         List<AggregateResult> loginHistory =
             [SELECT UserId, Status, DAY_ONLY(convertTimezone(LoginTime)) date, COUNT(id) cnt
              FROM LoginHistory
@@ -34,7 +38,7 @@ public without sharing class PortalLoginHistoryController {
         for (AggregateResult ar : loginHistory) {
             userIds.add((Id) ar.get('UserId'));
         }
-        Map<Id, User> userMap = new Map<Id, User>([SELECT Id, FirstName, LastName, Profile.Name
+        Map<Id, User> userMap = new Map<Id, User>([SELECT Id, Name, FirstName, LastName, Profile.Name
                                                    FROM User
                                                    WHERE Id = : userIds
                                                    AND Profile.Name like 'Partner Community%'
