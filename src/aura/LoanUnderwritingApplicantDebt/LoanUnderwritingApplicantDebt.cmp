@@ -56,33 +56,6 @@
                                        checked="{!tradeAcct.Exclude_From_Rollup__c}"
                                        onchange="{!c.updateExclude}"/>
                     </div>
-                    <div class="slds-form-element slds-size--1-of-1">
-                      <div class="slds-form-element__icon slds-align-middle">
-                        <button class="slds-button slds-button_icon slds-button slds-button_icon"
-                                aria-describedby="help"
-                                title="Help"
-                                name="{!tradeAcct.Id}"
-                                onmouseenter="{!c.display}"
-                                onmouseleave="{!c.displayOut}">
-                          <lightning:icon iconName="utility:info" size="xx-small"/>
-                        </button>
-                      </div>
-                    </div>
-                    <div id="{!tradeAcct.Id + '_help'}"
-                         class="toggle slds-popover slds-popover_tooltip slds-nubbin_bottom-left"
-                         role="tooltip"
-                         style="position: absolute; bottom: 30px; left: 30px;">
-                      <div class="slds-popover__body">
-                        <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
-                          <div class="slds-col slds-size--1-of-1">
-                            Loan Type: <ui:outputText value="{!tradeAcct.LASERCA__Credit_Loan_Type__c}"/>
-                          </div>
-                          <div class="slds-col slds-size--1-of-1">
-                            Ownership Type: <ui:outputText value="{!tradeAcct.LASERCA__Account_Ownership_Type__c}"/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </td>
                 <td>
