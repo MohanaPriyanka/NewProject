@@ -78,7 +78,7 @@
         var record = component.get("v.objectRecord");
         var conditionalMap = component.get("v." + conditionalMapAttribute);
         var defaultValue = component.get("v." + defaultAttribute);  
-        if (conditionalField === fieldName) {
+        if (conditionalField === fieldName && conditionalField != null) {
             this.setConditionalOrDefaultAttribute(component, attribute, record, conditionalField, conditionalMap, defaultValue);
         }
     },      
@@ -87,51 +87,52 @@
         var record = component.get("v.objectRecord");
         var conditionalMap = component.get("v." + conditionalMapAttribute);
         var defaultValue = component.get("v." + defaultAttribute);  
-
         this.setConditionalOrDefaultAttribute(component, attribute, record, conditionalField, conditionalMap, defaultValue);
     },  
 
     setConditionalOrDefaultAttribute : function(component, attribute, record, conditionalField, conditionalMap, defaultValue) {
-        if (conditionalField != null) {
-            if (conditionalField.includes("__r.")) {
-                var crossRelationalField = conditionalField.split(".");
-                if (record[crossRelationalField[0]] != null) {
-                    if (record[crossRelationalField[0]][crossRelationalField[1]] != null) {
-                        if (conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]] != null) {
-                            component.set("v." + attribute, conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]]);                         
+        if (record != null) {
+            if (conditionalField != null) {
+                if (conditionalField.includes("__r.")) {
+                    var crossRelationalField = conditionalField.split(".");
+                    if (record[crossRelationalField[0]] != null) {
+                        if (record[crossRelationalField[0]][crossRelationalField[1]] != null) {
+                            if (conditionalMap != null && conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]] != null) {
+                                component.set("v." + attribute, conditionalMap[record[crossRelationalField[0]][crossRelationalField[1]]]);                         
+                            } else {
+                                this.setAttributeToDefaultValue(component, attribute, defaultValue);
+                            }  
+                        } else {
+                            this.setAttributeToDefaultValue(component, attribute, defaultValue);     
+                        }
+                    } else {
+                        this.setAttributeToDefaultValue(component, attribute, defaultValue); 
+                    }
+                } else if (conditionalField.includes("__r[0]")) {
+                    var childObjectList = conditionalField.split("[0]."); 
+                    if (record[childObjectList[0]] != null ) {
+                        if (record[childObjectList[0]]["0"][childObjectList[1]]!= null) {
+                            if (conditionalMap != null && conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]) {
+                                component.set("v." + attribute, conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]);
+                            } else {
+                                this.setAttributeToDefaultValue(component, attribute, defaultValue);   
+                            }
                         } else {
                             this.setAttributeToDefaultValue(component, attribute, defaultValue);
-                        }  
-                    } else {
-                        this.setAttributeToDefaultValue(component, attribute, defaultValue);     
-                    }
-                } else {
-                    this.setAttributeToDefaultValue(component, attribute, defaultValue); 
-                }
-            } else if (conditionalField.includes("__r[0]")) {
-                var childObjectList = conditionalField.split("[0]."); 
-                if (record[childObjectList[0]] != null ) {
-                    if (record[childObjectList[0]]["0"][childObjectList[1]]!= null) {
-                        if (conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]) {
-                            component.set("v." + attribute, conditionalMap[record[childObjectList[0]]["0"][childObjectList[1]]]);
-                        } else {
-                            this.setAttributeToDefaultValue(component, attribute, defaultValue);   
                         }
                     } else {
                         this.setAttributeToDefaultValue(component, attribute, defaultValue);
-                    }
+                    } 
+                } else if (conditionalMap[record[conditionalField]] != null) {
+                    component.set("v." + attribute, conditionalMap[record[conditionalField]]);  
                 } else {
                     this.setAttributeToDefaultValue(component, attribute, defaultValue);
-                } 
-            } else if (conditionalMap[record[conditionalField]] != null) {
-                component.set("v." + attribute, conditionalMap[record[conditionalField]]);  
+                }
             } else {
                 this.setAttributeToDefaultValue(component, attribute, defaultValue);
             }
-        } else {
-            this.setAttributeToDefaultValue(component, attribute, defaultValue);
         }
-    },    
+    },           
 
     setAttributeToDefaultValue : function(component, attribute, defaultValue) {
         if (defaultValue != null) {

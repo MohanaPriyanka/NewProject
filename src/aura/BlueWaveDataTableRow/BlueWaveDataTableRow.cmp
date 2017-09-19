@@ -1,4 +1,4 @@
-<aura:component extensible="true"  access="global">
+<aura:component extensible="true" access="global">
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
     <aura:handler name="change" value="{!v.objectRecord}" action="{!c.recordChange}" />   
     <aura:registerEvent name="buttonEvent" type="c:BlueWaveDataTableButtonEvent"/>          

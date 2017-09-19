@@ -74,7 +74,7 @@
     <ul class="slds-grid">
       <li class="slds-context-bar__item">
         <lightning:button aura:id="slpdashboard"
-                          label="Dashboard"
+                          label="Customers"
                           onclick="{!c.navigate}" 
                           class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
       </li>

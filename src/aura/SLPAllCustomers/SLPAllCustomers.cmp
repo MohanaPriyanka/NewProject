@@ -1,25 +1,46 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAllCustomersHandler" access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <aura:handler name="change" value="{!v.allCustomers}" action="{!c.setSearchableValues}" /> 
+
+  <aura:handler name="change" value="{!v.completedLoans}" action="{!c.setSearchableCompletedLoans}" /> 
+  <aura:handler name="change" value="{!v.loansInProcess}" action="{!c.setSearchableLoansInProcess}" />   
+  <aura:handler name="change" value="{!v.pendingApplications}" action="{!c.setSearchablePendingApplications}" /> 
+  <aura:handler name="change" value="{!v.declinedApplicants}" action="{!c.setSearchableDeclinedApplicants}" />  
+
   <aura:handler name="buttonEvent" event="c:BlueWaveDataTableButtonEvent" action="{!c.executeTableButtonActions}"/>    
-  <aura:handler event="c:BlueWaveSearchEvent" action="{!c.executeSearch}"/>
-  <aura:attribute name="licenseType" type="String"/>    
-  <aura:attribute name="runSetSearchable" type="Boolean" default="true" />   
-  <aura:attribute name="allCustomers" type="Object"  /> 
-  <aura:attribute name="completedLoans" type="Object"  /> 
-  <aura:attribute name="loansInProcess" type="Object"  />     
-  <aura:attribute name="allCustomersSearchableValues" type="Object"  /> 
-  <aura:attribute name="originalAllCustomers" type="Object"/>
+  <aura:handler event="c:BlueWaveSearchEvent" action="{!c.executeSearch}"/> 
+  
+  <aura:attribute name="licenseType" type="String"/> 
 
-  <aura:attribute name="leadId" type="String"/>
-  <aura:attribute name="allLeads" type="Object"/>
-  <aura:attribute name="pendingApplications" type="Object"  /> 
-  <aura:attribute name="declinedApplicants" type="Object"  /> 
+  <aura:attribute name="completedLoans" type="Object"/> 
+  <aura:attribute name="originalCompletedLoans" type="Object"/>
+  <aura:attribute name="completedLoansSearchableValues" type="Object"/>
+  <aura:attribute name="runSetSearchableCompletedLoans" type="Boolean" default="true" />     
+  <aura:attribute name="completedLoansSearchSelected" type="Boolean"/>
 
+  <aura:attribute name="loansInProcess" type="Object"  />
+  <aura:attribute name="originalLoansInProcess" type="Object"/> 
+  <aura:attribute name="loansInProcessSearchableValues" type="Object"/>        
+  <aura:attribute name="runSetSearchableLoansInProcess" type="Boolean" default="true" /> 
+  <aura:attribute name="loansInProcessSearchSelected" type="Boolean"/>    
+
+  <aura:attribute name="pendingApplications" type="Object"/> 
+  <aura:attribute name="originalPendingApplications" type="Object"/>
+  <aura:attribute name="pendingApplicationsSearchableValues" type="Object"/>  
+  <aura:attribute name="runSetSearchablePendingApplications" type="Boolean" default="true" />     
+  <aura:attribute name="pendingApplicationsSearchSelected" type="Boolean"/> 
+
+  <aura:attribute name="declinedApplicants" type="Object"/> 
+  <aura:attribute name="originalDeclinedApplicants" type="Object"/>
+  <aura:attribute name="declinedSearchableValues" type="Object"/>  
+  <aura:attribute name="runSetSearchableDeclinedApplicants" type="Boolean" default="true"/> 
+  <aura:attribute name="declinedApplicantsSearchSelected" type="Boolean"/>     
+    
   <aura:attribute name="sortAsc" type="Boolean" />
   <aura:attribute name="sortArrow" type="Boolean" />
   <aura:attribute name="sortField" type="String"/>
+
   <aura:attribute name="selectedTable" type="String"/>  
+
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
       <c:BlueWaveInputToolTip popoverText="Applications consist of all applicants who have had an application sent to them or have begun an application, but have not yet been Pre-Qualified.">
@@ -32,72 +53,76 @@
       <c:BlueWaveInputToolTip popoverText="Use this tab to view all qualified customers that have not been fully disbursed and still require additional action ">
         <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
-            <b>Customers In Process</b>
+            <b>In Process</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>   
       <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
         <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
-            <b>Completed Customers</b>
+            <b>Completed</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>      
       <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
         <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
-            <b>Declined Applicants</b>
+            <b>Declined</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>            
     </ul>    
   </div>  
   <div class="box">
-  <aura:if isTrue="{!v.selectedTable == 'applications'}">  
-      <c:BlueWaveDataTable name = "BWDataTableApplications"
-                           headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
-                           tableRecords="{!v.pendingApplications}" 
-                           recordFieldNames="['Name', 'Status', 'Action']"
-                           fieldTypeMap="{Name: 'String'}"
-                           conditionalColorField="Status"                           
-                           conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
-                           buttonConditionalField="Status"
-                           buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application'}"
-                           buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication'}"
-                           allButtonLabels=""
-                           allButtonEvents=""/>
+  <aura:if isTrue="{!or(v.selectedTable == 'applications', v.pendingApplicationsSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableApplications"
+                         headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                         tableRecords="{!v.pendingApplications}" 
+                         recordFieldNames="['Name', 'Status', 'Action']"
+                         fieldTypeMap="{Name: 'String'}"
+                         conditionalColorField="Status"                           
+                         conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
+                         buttonConditionalField="Status"
+                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application'}"
+                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication'}"
+                         allButtonLabels=""
+                         allButtonEvents=""/>
+ <br></br>
  </aura:if>    
-  <aura:if isTrue="{!v.selectedTable == 'customersInProcess'}">  
-      <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
-                           headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
-                           tableRecords="{!v.loansInProcess}" 
-                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
-                           fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                           columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
-                           allButtonLabels="View"
-                           allButtonEvents="openCustomerWindow"
-                           profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+  <aura:if isTrue="{!or(v.selectedTable == 'customersInProcess', v.loansInProcessSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
+                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                         tableRecords="{!v.loansInProcess}" 
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         allButtonLabels="View"
+                         allButtonEvents="openCustomerWindow"
+                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+ <br></br>
  </aura:if>  
-  <aura:if isTrue="{!v.selectedTable == 'completedCustomers'}">  
-      <c:BlueWaveDataTable name = "BWDataTableApplications"
-                           headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
-                           tableRecords="{!v.completedLoans}" 
-                           recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
-                           fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                           columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
-                           allButtonLabels="View"
-                           allButtonEvents="openCustomerWindow"
-                           profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+  <aura:if isTrue="{!or(v.selectedTable == 'completedCustomers', v.completedLoansSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableApplications"
+                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                         tableRecords="{!v.completedLoans}" 
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         allButtonLabels="View"
+                         allButtonEvents="openCustomerWindow"
+                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+ <br></br>
  </aura:if>
-  <aura:if isTrue="{!v.selectedTable == 'declinedApplicants'}">  
-      <c:BlueWaveDataTable name = "BWDataTableDeclinedApplicants"
-                           headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
-                           tableRecords="{!v.declinedApplicants}" 
-                           recordFieldNames="['Name', 'Status', 'Action']"
-                           fieldTypeMap="{Name: 'String'}"
-                           columnColorMap="{'Status': '#00B2A9'}"
-                           allButtonLabels="Add Co-Signer"
-                           allButtonEvents="changeTableToApplications"/>
+  <aura:if isTrue="{!or(v.selectedTable == 'declinedApplicants', v.declinedApplicantsSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableDeclinedApplicants"
+                         headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                         tableRecords="{!v.declinedApplicants}" 
+                         recordFieldNames="['Name', 'Status', 'Action']"
+                         fieldTypeMap="{Name: 'String'}"
+                         columnColorMap="{'Status': '#00B2A9'}"
+                         allButtonLabels="Add Co-Signer"
+                         allButtonEvents="changeTableToApplications"/>
+ <br></br>
  </aura:if>  
  </div>  
 </aura:component>

@@ -113,9 +113,10 @@ public without sharing class SLPAllCustomersHandler {
       leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' )';
     } else {
       //if a lead is selected, query for that lead
-      leadQuery += ' AND Id  =  \'' + leadId +  '\' ';      
+      leadQuery += '  AND Id  =  \'' + leadId +  '\' ';      
     }
-    leadQuery += ' ORDER BY Status ASC, createdDate DESC, Name DESC'; 
+    leadQuery += '    ORDER BY Status ASC, createdDate DESC, Name DESC'; 
+    //leadQuery += '    LIMIT 10';
     for(Lead leadRecord : Database.query(leadQuery)){
       leadList.add(leadRecord);
     }

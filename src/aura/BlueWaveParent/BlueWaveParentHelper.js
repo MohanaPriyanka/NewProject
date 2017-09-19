@@ -13,7 +13,7 @@
         });    
         $A.enqueueAction(action);   
     }, 
-    
+
     callApexMethod : function(component, methodName, setAttribute, setStorable) {
         var action = component.get("c." + methodName);        
         action.setCallback(this,function(resp){ 
@@ -46,7 +46,7 @@
             inputSelect.set("v.options", opts);
         });
         $A.enqueueAction(action); 
-    },
+    },   
 
     saveSObject : function(component, id, objectName, field, value) {
         return new Promise(function(resolve, reject) {
@@ -219,8 +219,9 @@
         appEvent.fire();
     }, 
 
-    setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute) {   
-        if (component.get("v.runSetSearchable")) {
+    setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute, runSetSearchable) {   
+        console.log(runSetSearchable);
+        if (runSetSearchable) {
             var searchObject = {};
             var records = component.get("v." + recordsAttribute);
             component.set("v." + originalRecordsAttribute, records);
@@ -289,7 +290,8 @@
         }
     },    
 
-    executeSearch : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableListAttribute) {         
+    executeSearch : function(component, event, helper, searchText, recordsAttribute, originalRecordsAttribute, searchableListAttribute) {         
+        console.log(recordsAttribute);
         var originalRecords = component.get("v." + originalRecordsAttribute);
         component.set("v." + recordsAttribute, originalRecords);
         var records = component.get("v." + recordsAttribute);
@@ -297,15 +299,15 @@
         var searchText = event.getParam("searchText");
         var noSearchResult = -1;
         var resultList = [];
-        if (searchText != "") {
+        if (records != null && records.length > 0) {
             for (i=0; i<records.length; i++) {
                 var record = records[i];
                 if (record.Id in searchableList) {
                     var valueList = searchableList[record.Id];
                     for (j=0; j<valueList.length; j++) {
                         var fieldValueUpperCase = valueList[j].toUpperCase();
-                        var searchTextUppderCase = searchText.toUpperCase();                        
-                        if (fieldValueUpperCase.search(searchTextUppderCase) != noSearchResult) {
+                        var searchTextUpperCase = searchText.toUpperCase();                        
+                        if (fieldValueUpperCase.search(searchTextUpperCase) != noSearchResult) {
                             if (resultList.indexOf(record) > -1) {
                                 continue;
                             } else {
@@ -315,14 +317,15 @@
                     }
                 }
             }
-            if (resultList.length > 0) {
+            if (resultList != null && resultList.length > 0) {
+                console.log(resultList);
                 component.set("v." + recordsAttribute, resultList);
+                console.log(resultList);
+                return true;
             } else {
-                component.set("v." + recordsAttribute, null);
-            }            
-        } else {
-            componenet.set("v." + recordsAttribute, originalRecords);
-        }
+                return false;
+            }   
+        }         
     },     
 
     startSpinner : function(component, name) {
