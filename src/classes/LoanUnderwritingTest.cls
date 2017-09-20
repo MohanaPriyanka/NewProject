@@ -21,6 +21,7 @@ public with sharing class LoanUnderwritingTest {
         LASERCA__Personal_Credit_Report__c pcr = 
             LoanUnderwriting.getPCRDebt(retrievedLead.lead.Personal_Credit_Report__r.Id);
         System.assertEquals(1, pcr.LASERCA__Trade_Accounts__r.size());
+        System.assertEquals('Notes', pcr.Adjusted_DTI_Notes__c);
 
         String[] avidiaReviewStatusOptions = BlueWaveParent.getpicklistFields('LASERCA__Personal_Credit_Report__c', 
                                                                               'Avidia_Review_Status__c');

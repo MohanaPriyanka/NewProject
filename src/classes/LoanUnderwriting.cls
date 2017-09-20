@@ -27,6 +27,7 @@ global without sharing class LoanUnderwriting {
                             Personal_Credit_Report__r.Name,
                             Personal_Credit_Report__r.DTI_Before__c,
                             Personal_Credit_Report__r.DTI_After__c,
+                            Personal_Credit_Report__r.Adjusted_DTI_Notes__c,
                             Personal_Credit_Report__r.Avidia_Review_Status__c,
                             Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c,
                             Personal_Credit_Report__r.Adverse_Credit_Notice_1__c,
@@ -55,6 +56,7 @@ global without sharing class LoanUnderwriting {
                             Personal_Credit_Report_Co_Applicant__r.Name,
                             Personal_Credit_Report_Co_Applicant__r.DTI_Before__c,
                             Personal_Credit_Report_Co_Applicant__r.DTI_After__c,
+                            Personal_Credit_Report_Co_Applicant__r.Adjusted_DTI_Notes__c,
                             Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                             Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c,
                             Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c,
@@ -180,7 +182,7 @@ global without sharing class LoanUnderwriting {
     public static LASERCA__Personal_Credit_Report__c getPCRDebt(Id pcrId) {
         List<LASERCA__Personal_Credit_Report__c> pcrList =
             [SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c, Adjusted_Monthly_Personal_Debt__c,
-             DTI_Before__c, DTI_After__c,
+             DTI_Before__c, DTI_After__c, Adjusted_DTI_Notes__c,
              (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
               LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
               FROM LASERCA__Trade_Accounts__r

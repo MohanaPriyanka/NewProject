@@ -29,10 +29,11 @@
       <div class="lightCell slds-col slds-size--1-of-1">
         Adjusted Annual Income Notes:
         <br></br>
-	<ui:inputText aura:id="AdjustmentComments"
-                      class="slds-size--1-of-1"
-                      value="{!v.pcr.Adjustments_Comments__c}"
-                      change="{!c.saveIncomeNotes}"/>
+	<ui:inputTextArea aura:id="AdjustmentComments"
+                          rows="3"
+                          class="slds-size--1-of-1"
+                          value="{!v.pcr.Adjustments_Comments__c}"
+                          change="{!c.saveIncomeNotes}"/>
       </div> 
     </div>
     <aura:if isTrue="{!if(v.isCoApp,false,true)}">
