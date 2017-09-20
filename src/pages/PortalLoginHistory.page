@@ -8,12 +8,12 @@
         </apex:outputText>
       </apex:pageBlockSection>
       <apex:pageBlockSection columns="1">
-        <apex:inputCheckbox label="Show Detail, Hide Charts" value="{!showDetail}">
+        <apex:inputCheckbox label="Show Detail Only" value="{!showDetail}">
           <apex:actionsupport event="onchange" rerender="UserTable" oncomplete="drawChart()"/>
         </apex:inputCheckbox>
       </apex:pageBlockSection>
       <apex:pageBlockSection columns="1">
-        <apex:inputCheckbox label="Show Login Profiles, Hide Full Profiles" value="{!showLoginProfile}">
+        <apex:inputCheckbox label="Show Login Profiles Only" value="{!showLoginProfile}">
           <apex:actionsupport event="onchange" rerender="UserTable" oncomplete="drawChart()"/>
         </apex:inputCheckbox>
       </apex:pageBlockSection>
