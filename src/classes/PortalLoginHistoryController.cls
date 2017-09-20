@@ -49,10 +49,13 @@ public without sharing class PortalLoginHistoryController {
         }
 
         for (AggregateResult ar : loginHistory) {
-            UserHistory uh = userLoginMap.get((String) userMap.get((Id) ar.get('UserId')).Name);
-            uh.addLogin(new Login((String) ar.get('status'),
-                                   (Date) ar.get('date'),
-                                   (Integer) ar.get('cnt')));
+            User communityUser = userMap.get((Id) ar.get('UserId'));
+            if (communityUser != null) {
+                UserHistory uh = userLoginMap.get(communityUser.Name);
+                uh.addLogin(new Login((String) ar.get('status'),
+                                      (Date) ar.get('date'),
+                                      (Integer) ar.get('cnt')));
+            }
         }
 
         if (isTest) {
