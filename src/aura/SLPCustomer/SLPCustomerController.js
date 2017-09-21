@@ -439,13 +439,27 @@
         }
     },
 
+    openAdditionalFileUpload : function(component, event, helper) {
+        var oppId = component.get("v.customerInformation.Opportunity__r.Id");
+        
+        // If the lead is converted, attach to the account. Otherwise, attach to the lead
+        if (oppId === null || oppId === undefined) {
+           var parentId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
+        } else {
+        	var parentId = oppId;
+        }
+        helper.openUploadWindow(component,"hideAndFileOption","Upload Miscellaneous Documents", parentId, component.get("v.equipmentUpdate"), "Additional Doc", "");
+        
+    },
+
     handleTaskAction : function(component, event, helper) {
         var equipmentId = component.get("v.customerInformation.Id");
         var equipmentObject = component.get("v.equipmentUpdate");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
-        var taskName = event.getSource().get("v.class");
+        var taskName = event.getSource().get("v.class");        
+        var taskHelpText = event.getSource().get("v.labelClass");
 
         switch (taskName) {
             case 'Provide all System Information':
@@ -454,7 +468,7 @@
                 return;
                 
             case 'Mechanical Installation':
-                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, equipmentObject, "Mechanical Installation Documentation");
+                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, equipmentObject, "Mechanical Installation Documentation", taskHelpText);
                 return;
 
             case 'Interconnection':
@@ -468,11 +482,11 @@
                                + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation");
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation", taskHelpText);
                     return;
                 }
             case 'Provide Sales Agreement':
-              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement");
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement", taskHelpText);
               return;
             default:
               break;

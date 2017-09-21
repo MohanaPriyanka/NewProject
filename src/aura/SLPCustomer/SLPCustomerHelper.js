@@ -94,19 +94,20 @@
 
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
-
-    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
+    
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile, helpText){
       var body = component.get("v.body");  
       component.set("v.body", []);  
       $A.createComponent(
-      	"c:SLPFileUploadWindow", 
-      	{"dateLabel": dateLabelString,
-      	"windowHeader": windowHeaderString,
+        "c:SLPFileUploadWindow", 
+        {"dateLabel": dateLabelString,
+        "windowHeader": windowHeaderString,
         "fileParentId": parentId,
         "resiEquipment" : equipmentObject,
-        "fileName": nameFile }, 
+        "fileName": nameFile ,
+        "helpText": helpText }, 
                        
-       	function(newButton, status, errorMessage){
+        function(newButton, status, errorMessage){
           if (status === "SUCCESS") {
             var body = component.get("v.body");
             body.push(newButton);
@@ -115,7 +116,7 @@
           else {
             console.log("Error: " + errorMessage);
           }
-       	}
+        }
       );       
     },
     

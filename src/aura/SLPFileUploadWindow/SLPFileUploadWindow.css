@@ -25,6 +25,10 @@
     color:#266092;
 }
 
+.THIS .greyText {
+    color:#A9A9A9;
+}
+
 .THIS .shake {
   -webkit-animation-duration: 1.0s;
   -webkit-animation-delay: 0s;
@@ -37,12 +41,20 @@
 
 .THIS .fortyWidth {
  	width: 40%;
+    float: left;
 }
 
 .THIS .border {
     border-style: solid;
     border-width: 6px;
     border-color:#00AFA9;
+    border-radius: 2px;
+}
+
+.THIS .whiteBorder {
+    border-style: solid;
+    border-width: 6px;
+    border-color:#FFFFFF;
     border-radius: 2px;
 }
 
@@ -64,4 +76,9 @@
     float:right;
     color:#FFFFFF;
     margin-right:3%;
+}
+
+.THIS .removeButton {
+    color:#FFFFFF;
+    float:left;
 }

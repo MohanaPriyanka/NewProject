@@ -1,5 +1,13 @@
 public class SLPFileHandler {
     @AuraEnabled
+    public static List<String> possibleFileTypes () { 
+        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
+        String customSetting = slpSettings[0].Types_of_Documents_Available_for_Upload__c; 
+        List<String> docList = customSetting.split(',' , 10);
+        return docList;
+    }
+
+    @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) { 
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         

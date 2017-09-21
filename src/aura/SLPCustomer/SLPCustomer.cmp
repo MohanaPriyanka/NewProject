@@ -108,6 +108,11 @@
         <h1>{!v.customer.Loan__r.Name}</h1>
       </div>
       <div class="slds-align-right">
+        <ui:button aura:id="additionalFileUpload"
+                   class="slds-button--brand"
+                   labelClass="proximaNova95"
+                   label="Upload Files"
+                   press="{!c.openAdditionalFileUpload}"/>
         <ui:button aura:id="customerInformationButton"
                    class="slds-button--brand"
                    labelClass="proximaNova95"
@@ -940,7 +945,7 @@
                   <ui:button aura:id="viewButton"
                              label="{!task.Action_Label__c}"
                              class="{!task.Name}"
-                             labelClass="{!task.Id}"
+                             labelClass="{!task.Help_Text__c}"
                              press="{!c.handleTaskAction}"/>
                 </aura:if>
               </th>
