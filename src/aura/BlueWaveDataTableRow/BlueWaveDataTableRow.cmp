@@ -13,8 +13,8 @@
     <aura:attribute name="buttonConditionalField" type="String" />
     <aura:attribute name="buttonConditionalLabelMap" type="Map"/> 
     <aura:attribute name="buttonConditionalEventMap" type="Map"/>    
-    <aura:attribute name="allButtonLabels" type="String"/>  
-    <aura:attribute name="allButtonEvents" type="String"/>  
+    <aura:attribute name="defaultButtonLabels" type="String"/>  
+    <aura:attribute name="defaultButtonEvents" type="String"/>  
     <aura:attribute name="buttonLabel" type="String"/>  
     <aura:attribute name="buttonEventId" type="String"/>     
     <aura:attribute name="profileSecurityMap" type="Map"/>   

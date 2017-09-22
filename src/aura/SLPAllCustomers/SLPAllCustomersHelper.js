@@ -38,9 +38,9 @@
         return true;
     },   
 
-    changeTable : function(component, tabId, recordsId, originalRecordsId) {        
+    changeTable : function(component, tabId, recordsId, originalRecordsId) {      
+        component.set("v." + recordsId, component.get("v." + originalRecordsId));      
         this.selectTab(component, tabId); 
-        component.set("v." + recordsId, component.get("v." + originalRecordsId));
         this.clearSearchSelections(component);
     },                
 })

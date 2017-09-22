@@ -220,7 +220,6 @@
     }, 
 
     setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute, runSetSearchable) {   
-        console.log(runSetSearchable);
         if (runSetSearchable) {
             var searchObject = {};
             var records = component.get("v." + recordsAttribute);
@@ -291,7 +290,6 @@
     },    
 
     executeSearch : function(component, event, helper, searchText, recordsAttribute, originalRecordsAttribute, searchableListAttribute) {         
-        console.log(recordsAttribute);
         var originalRecords = component.get("v." + originalRecordsAttribute);
         component.set("v." + recordsAttribute, originalRecords);
         var records = component.get("v." + recordsAttribute);
@@ -318,9 +316,7 @@
                 }
             }
             if (resultList != null && resultList.length > 0) {
-                console.log(resultList);
                 component.set("v." + recordsAttribute, resultList);
-                console.log(resultList);
                 return true;
             } else {
                 return false;

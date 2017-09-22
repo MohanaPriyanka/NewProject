@@ -24,6 +24,13 @@
         }
     },   
 
+    setRecordCount : function(component, recordList) {
+        var recordCount = component.get("v.numberOfRecordsPerPage");
+        var trimmedRecordList = recordList.slice(0, recordCount);
+        component.set("v.tableRecords", trimmedRecordList);
+        // debugger;
+        console.log(component.get("v.tableRecords"));
+    }, 
 
     setHeaderMap : function(component) {
         var headerMap = {};
@@ -89,10 +96,10 @@
         	if (sortValueA == null) {
         		return -1;
         	} else {
-            	var t1 = sortValueA ==sortValueB, t2 = sortValueA <sortValueB;
+            	var t1 = sortValueA == sortValueB, t2 = sortValueA < sortValueB;
             	return t1? 0: (currentOrder?-1:1)*(t2?1:-1);
         	}
-        });     
+        });
 	},	
 
 	addNullValuesToRecordList : function(component, recordList, removedList, currentOrder) {
@@ -108,8 +115,19 @@
 	},	
 
 	setComponentSortAttributes : function(component, recordList, currentOrder, sortField) {
-        component.set("v.sortAsc", currentOrder);
-        component.set("v.tableRecords", recordList);
+        component.set("v.sortedRecords", recordList);
         component.set("v.sortField", sortField);
 	},	
+
+    returnToPageOne : function(component) {
+        var recordList = component.get("v.sortedRecords");
+        var recordsPerPage = component.get("v.numberOfRecordsPerPage");  
+        var trimmedRecordList = recordList.slice(0, recordsPerPage);
+        $A.util.addClass(component.find('previousPageButton'), 'noDisplay');   
+        $A.util.removeClass(component.find('nextPageButton'), 'noDisplay');  
+        $A.util.removeClass(component.find('tableNavCenterGridclass'), 'center');               
+        $A.util.addClass(component.find('tableNavCenterGridclass'), 'centerWithoutPreviousPage');    
+        component.set("v.currentPage", 1);
+        component.set("v.tableRecords", trimmedRecordList);
+    },      
 })

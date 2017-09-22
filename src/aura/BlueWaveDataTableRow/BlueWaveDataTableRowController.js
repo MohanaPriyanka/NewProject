@@ -14,15 +14,15 @@
                 helper.setColorAttributeColumn(component, fieldName);
             }
         } else {
-			helper.setButtonAttribute(component, conditionalButtonField, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");       
-            helper.setButtonAttribute(component, conditionalButtonField, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")    	
+			helper.setButtonAttribute(component, conditionalButtonField, "buttonLabel", "buttonConditionalLabelMap", "defaultButtonLabels");       
+            helper.setButtonAttribute(component, conditionalButtonField, "buttonEventId", "buttonConditionalEventMap", "defaultButtonEvents")    	
         }
     },
 
     recordChange: function(component, event, helper) {
         var conditionalButtonField = component.get("v.buttonConditionalField");
-    	helper.setButtonAttribute(component, conditionalButtonField, "buttonLabel", "buttonConditionalLabelMap", "allButtonLabels");                     
-        helper.setButtonAttribute(component, conditionalButtonField, "buttonEventId", "buttonConditionalEventMap", "allButtonEvents")     
+    	helper.setButtonAttribute(component, conditionalButtonField, "buttonLabel", "buttonConditionalLabelMap", "defaultButtonLabels");                     
+        helper.setButtonAttribute(component, conditionalButtonField, "buttonEventId", "buttonConditionalEventMap", "defaultButtonEvents")     
     },    
 
     executeAction: function(component, event, helper) {

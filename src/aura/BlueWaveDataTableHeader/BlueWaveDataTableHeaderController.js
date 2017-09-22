@@ -15,7 +15,8 @@
 
         var sortField = event.currentTarget.name;
         var sortTableEvt = component.getEvent("sortTable");
-        sortTableEvt.setParams({ sortField: sortField }); 
+        sortTableEvt.setParams({ sortField: sortField,
+                                 sortAsc : newOrder }); 
         sortTableEvt.fire();       
     },
 
