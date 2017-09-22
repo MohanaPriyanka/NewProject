@@ -1084,6 +1084,11 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
 
+        SLPortal_Settings__c portalSetting = new SLPortal_Settings__c(  Name='SLPortal Settings',
+            SREC_Opt_In_Quarters__c= 'Q1 2017,Q2 2017,Q3 2017,Q4 2017,Q1 2018,Q2 2018',
+            Types_of_Documents_Available_for_Upload__c='Paystub, Tax Return (2015), MCEC Technical Confirmation, Home Owners Insurance');
+        insert portalSetting;
+
         Residential_Equipment__c equipment = new Residential_Equipment__c(Name = 'testEquipment', OwnerId = partnerUser.Id);
         insert equipment;
 
@@ -1098,6 +1103,7 @@ public without sharing class SLPControllersTestclass {
         Test.startTest();
 
         System.runAs(partnerUser) {
+            SLPFileHandler.possibleFileTypes();
             SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
             SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
             List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');

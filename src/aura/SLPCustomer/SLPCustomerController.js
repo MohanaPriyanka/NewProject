@@ -441,15 +441,12 @@
 
     openAdditionalFileUpload : function(component, event, helper) {
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
-        
-        // If the lead is converted, attach to the account. Otherwise, attach to the lead
         if (oppId === null || oppId === undefined) {
            var parentId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
         } else {
-        	var parentId = oppId;
+           var parentId = oppId;
         }
         helper.openUploadWindow(component,"hideAndFileOption","Upload Miscellaneous Documents", parentId, component.get("v.equipmentUpdate"), "Additional Doc", "");
-        
     },
 
     handleTaskAction : function(component, event, helper) {
@@ -458,7 +455,7 @@
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
-        var taskName = event.getSource().get("v.class");        
+        var taskName = event.getSource().get("v.class");
         var taskHelpText = event.getSource().get("v.labelClass");
 
         switch (taskName) {

@@ -6,9 +6,62 @@
         }
         return errorMessage;
     },
+  
+  	saveFileToList : function(component) {
+    	var self = this;
+        self.removeErrorMessaging(component);
+       	self.greyOutSelection(component);
+        var fileInput = component.find("file").getElement();
+     	var numberOfFiles = fileInput.files.length; 
+     	var MAXFILE_SIZE = 4500000;
+     	var fileStep;
+      	for (fileStep = 0; fileStep < numberOfFiles; fileStep++) {
+       		var file = fileInput.files[fileStep];
+            if (file === undefined) {
+                component.set("v.errorText", 'Please Select a File');
+                self.addErrorMessaging(component);
+                return;
+            }
+            else if (file.size > MAXFILE_SIZE) {
+                component.set("v.errorText", 'File size cannot exceed ' + MAXFILE_SIZE + ' bytes.\n' +
+                  'Selected file size: ' + file.size);
+                self.addErrorMessaging(component);
+                return;
+            }
+            var fr = new FileReader();
+        	fr.readAsDataURL(file);
+			component.get("v.fileReader").push(fr);
+            component.get("v.fileList").push(file);
+      	}
+        var newFileList = component.get("v.fileList");
+        component.set("v.fileList", newFileList);
+        var numberOpen = newFileList.length;
+        if (numberOpen === 4) {
+           $A.util.addClass(component.find("fileUploadBox"), 'noDisplay'); 
+           return;        	
+        } 
+  	},
+  
+  	removeFileFromList : function(component, fileToRemove) {
+        var newList= component.get("v.fileList");
+        var newListReader = component.get("v.fileReader");
+        var numberOfFiles = newList.length; 
+        var fileStep;
+        for (fileStep = 0; fileStep < numberOfFiles; fileStep++) {
+            var file = newList[fileStep];
+            if (file.name === fileToRemove) {
+                var toDeleteLocation = fileStep;
+                $A.util.removeClass(component.find("fileUploadBox"), 'noDisplay'); 
+            } 
+        }
+        newList.splice(toDeleteLocation, 1);
+        newListReader.splice(toDeleteLocation, 1);
+        component.set("v.fileList", newList);
+        component.set("v.fileReader", newListReader);
+  	},
         
-    saveFile : function(component, event, fileType, parentId) {
-        $A.util.addClass(component.find("saveButton"), 'noDisplay');
+    saveFilesToServer : function(component, event, fileType, parentId) {
+   		$A.util.addClass(component.find("saveButton"), 'noDisplay');
         var self = this;
         var MAXFILE_SIZE = 4500000;
         var CHUNKFILE_SIZE = 400000; 
@@ -22,9 +75,7 @@
         var numberOfFiles = fr.length; 
         self.startSpinner(component);
         var fileStep;
-        console.log(fileInput);
-        console.log(fr);
-		for (fileStep = 0; fileStep < numberOfFiles; fileStep++) {
+        for (fileStep = 0; fileStep < numberOfFiles; fileStep++) {
             var file = fileInput[fileStep];
             var fileContents = fr[fileStep].result;
             var base64Mark = 'base64,';
@@ -76,7 +127,7 @@
         });
         $A.enqueueAction(action); 
     },
-    
+  
     startSpinner : function (component) {
        $A.util.removeClass(component.find("spinner"), 'noDisplay'); 
        $A.util.addClass(component.find("helpTextLine"), 'noDisplay'); 
@@ -110,11 +161,19 @@
                     var salesDummy = self.saveObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
                 })
             )
-       } else if (fileName === 'MCEC Technical Confirmation') {
-         	console.log("MCEC");
+       } else if (fileName === 'MCEC Technical Confirmation') { 
+          /* this is tricky
+             var techConfirm = self.saveObject(component, parentId, 'Lead', 'Update_Dummy__c', true);
+            techConfirm.then(            
+                var techConfirm = self.saveObject(component, parentId, 'Lead', 'Update_Dummy__c', false);
+			); 
+            */
        } else if (fileName === 'Home Owners Insurance') {
-         	console.log("Insurance");
+            var homeOwners = self.saveObject(component, parentId, 'Opportunity', 'Homeowner_s_Insurance_Status__c', 'Received: in QC');
+            homeOwners.then();
        }
+        
+        
        $A.util.removeClass(component.find("successText"), 'noDisplay'); 
        $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
        $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
@@ -153,7 +212,7 @@
     fileUploadError : function (component) {
        component.set("v.errorText", "There has been an error uploading your document.");
        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
-       $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+       $A.util.addClass(component.find("spinner"), 'noDisplay');
        $A.util.addClass(component.find("headerText"), 'noDisplay'); 
     },       
   
@@ -165,7 +224,9 @@
     },
     
     greyOutSelection : function(component) {
-        component.find("inputFileType").set("v.disabled","true");
+        if (component.get("v.dateLabel") === 'hideAndFileOption') {
+            component.find("inputFileType").set("v.disabled","true");
+        }
     },
     
     addErrorMessaging : function(component) {
