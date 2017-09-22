@@ -1,5 +1,5 @@
 ({
-    setRowValues : function(component, record, fieldName) {
+    setRowValues : function(component, record, fieldName, nullValueMap) {
         var outputValue = this.setOutputValueId(component);
         if (fieldName != null) {
         	this.handleNullChildAndCrossRelationalFields(component, outputValue, record, fieldName);
@@ -16,7 +16,7 @@
         return outputValue;
     },      
 
-    handleNullChildAndCrossRelationalFields : function(component, outputValue, record, fieldName) {
+    handleNullChildAndCrossRelationalFields : function(component, outputValue, record, fieldName, nullValueMap) {
     	if (fieldName.includes("__r.")) {
             var crossRelationalField = fieldName.split(".");                
     		var objectRecord = crossRelationalField[0].replace("__r", "__c");
@@ -34,10 +34,9 @@
             if (record[childObjectList[0]] == null) {
                 //set a key value of the record object to complete so that the user can search for the assign complete value.
                 var objectRecord = component.get("v.objectRecord");
-                objectRecord["partnerTaskNullValue"] = "Complete";
                 component.set["v.objectRecord", objectRecord];
-
-                outputValue.set("v.value", "Complete"); 
+                console.log(nullValueMap);
+                // outputValue.set("v.value", nullValueMap[fieldName]); 
             } else {
                 outputValue.set("v.value", record[childObjectList[0]]["0"][childObjectList[1]]);
             }

@@ -6,8 +6,8 @@
         var conditionalButtonField = component.get("v.buttonConditionalField");
 
         if (fieldName != 'Action') {
-        	helper.setFieldType(component, fieldName);        
-        	helper.setRowValues(component, record, fieldName);
+        	helper.setFieldType(component, fieldName);     
+        	helper.setRowValues(component, record, fieldName, component.get("v.nullValueMap"));
             if (conditionalColorField != null) {
                 helper.setColorAttributeConditionalField(component, conditionalColorField, fieldName, "colorCode", "conditionalColorMap", "columnColorMap");
             } else {

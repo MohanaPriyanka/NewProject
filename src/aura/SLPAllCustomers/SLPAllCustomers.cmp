@@ -113,7 +113,8 @@
                          columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
                          defaultButtonLabels="View"
                          defaultButtonEvents="openCustomerWindow"
-                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"
+                         nullValueMap="{Partner_Tasks__r[0].Name: 'Complete', Partner_Tasks__r[0].Owner__c: 'Yo'}"/>
  <br></br>
  </aura:if>
   <aura:if isTrue="{!or(v.selectedTable == 'declinedApplicants', v.declinedApplicantsSearchSelected)}">  
