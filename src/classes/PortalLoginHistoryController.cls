@@ -8,7 +8,8 @@
 
 public without sharing class PortalLoginHistoryController {
     private Map<String, UserHistory> userLoginMap;
-    public Datetime beginDate {get;set;}
+    public Date beginDate {get;set;}
+    public Date today {get;set;}
     public Boolean showDetail {get;set;}
     public Boolean showLoginProfile {get;set;}
     private Boolean isTest = false;
@@ -18,10 +19,12 @@ public without sharing class PortalLoginHistoryController {
             isTest = true;
         }
         if (ApexPages.currentPage().getParameters().get('dayRange') != null) {
-            beginDate = DateTime.now() - Integer.valueOf(ApexPages.currentPage().getParameters().get('dayRange'));
+            beginDate = DateTime.now().date() - Integer.valueOf(ApexPages.currentPage().getParameters().get('dayRange'));
         } else {
-            beginDate = DateTime.now() - 30;
+            beginDate = DateTime.now().date() - 30;
         }
+        // It's easier to convert to local timezone here instead of javascript
+        today = DateTime.now().date();
 
         userLoginMap = new Map<String, UserHistory>();
         showDetail = false;
@@ -71,12 +74,12 @@ public without sharing class PortalLoginHistoryController {
                           LastName = last + ' ' + i,
                           Profile = profiles[Math.mod(i, profiles.size())]);
         UserHistory uh = new UserHistory(u);
-        for (Integer j = 0; j < 30; j++) {
+        for (Integer j = 0; j < Math.round(Math.random()*15); j++) {
             uh.addLogin(new Login('Success',
-                                  (beginDate + j).date(),
+                                  (DateTime.now() - j).date(),
                                   Math.round(Math.random()*10)));
             uh.addLogin(new Login('Invalid Password',
-                                  (beginDate + j).date(),
+                                  (DateTime.now() - j).date(),
                                   Math.round(Math.random()*5)));
         }
         return uh;
@@ -143,9 +146,9 @@ public without sharing class PortalLoginHistoryController {
             UserHistory compareToUH = (UserHistory) compareTo;
 
             Integer returnValue = 0;
-            if (this.totalSuccesses > compareToUH.totalSuccesses) {
+            if (this.totalSuccesses < compareToUH.totalSuccesses) {
                 returnValue = 1;
-            } else if (this.totalSuccesses < compareToUH.totalSuccesses) {
+            } else if (this.totalSuccesses > compareToUH.totalSuccesses) {
                 returnValue = -1;
             }
 

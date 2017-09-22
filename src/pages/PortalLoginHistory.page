@@ -22,6 +22,11 @@
       <script type="text/javascript">
         google.load("visualization", "1", {packages:["corechart"]});
         google.setOnLoadCallback(drawChart);
+        Date.prototype.addDays = function(days) {
+          var dat = new Date(this.valueOf());
+          dat.setDate(dat.getDate() + days);
+          return dat;
+        }
         function drawChart() {
            if ('{!NOT(showDetail)}') {
               var idx;
@@ -33,17 +38,24 @@
                  data.addColumn('number', 'Success');
                  data.addColumn('number', 'Unsuccessful');
                  var log;
+                 var hasLogins = false;
                  for (log in user.logins) {
+                    hasLogins = true;
                     var login = user.logins[log];
-                    data.addRow([new Date(login.loginDate), 
+                    var loginDate = new Date(login.loginDate);
+                    data.addRow([loginDate.addDays(1), 
                                  (login.success===0?null:login.success), 
                                  (login.unsuccessful===0?null:login.unsuccessful)]);
                  }
-                 var options = {legend:{position:'none'},
-                                dataOpacity:.5,
-                                pointSize:5};
-                 var chart = new google.visualization.ScatterChart(document.getElementById('chart for ' + user.name));
-                 chart.draw(data, options);
+                 if (hasLogins) {
+                    var options = {legend:{position:'none'},
+                                   dataOpacity:.5,
+                                   pointSize:5,
+                                   hAxis: {viewWindow: {min: new Date('{!beginDate}'),
+                                                        max: (new Date('{!today}')).addDays(1)}}};
+                    var chart = new google.visualization.ScatterChart(document.getElementById('chart for ' + user.name));
+                    chart.draw(data, options);
+                 }
               }
            }
         }
@@ -83,7 +95,7 @@
                       <apex:repeat value="{!user.loginHistory}" var="login">
                         <tr>
                           <td>
-                            <apex:outputText value="{0, date, MM/DD/YY}">
+                            <apex:outputText value="{0, date, MM/dd/YY}">
                               <apex:param value="{!login.loginDate}"/>
                             </apex:outputText>
                           </td>
