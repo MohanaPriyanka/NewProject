@@ -33,7 +33,7 @@ private class AccountInfoControllerTest {
         insert c;  
                   
         User u = new User(alias = 'testDash', email='testdash@test.test', emailencodingkey='UTF-8', lastname='testDashboard', languagelocalekey='en_US', localesidkey='en_US', profileid = p, country='United States',IsActive =true, ContactId = c.Id, timezonesidkey='America/New_York', username='testdashboard@test.test');
-        insert u;
+        Util.insertSObj(u);
         Shared_Solar_System__c ss = new Shared_Solar_System__c();
         insert ss; 
         Product_Profile__c pp = new Product_Profile__c(Shared_Solar_System__c = ss.Id, Profile_Type__c = 'Community Solar', My_Current_Balance__c = 100);
