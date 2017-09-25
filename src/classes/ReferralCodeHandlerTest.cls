@@ -42,7 +42,7 @@ private class ReferralCodeHandlerTest {
 
         Lead newLoanLead = new Lead(FirstName = 'Cole2', LastName = 'Swain', Company = 'BlueWave',
                                     Product_Line__c = 'Residential Loan', Status = 'contacted',
-                                    Custom_Id__c = newBSST3.Id, Parcel_zip__c = '02052') ;
+                                    Custom_Id__c = ((String) newBSST3.Id).left(15), Parcel_zip__c = '02052') ;
         newLeadList.add(newLoanLead);
 
         Lead newLoanLead2 = new Lead(FirstName = 'Matthew', LastName = 'Swain', Company = 'BlueWave',

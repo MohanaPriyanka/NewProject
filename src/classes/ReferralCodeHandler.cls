@@ -38,6 +38,7 @@ public with sharing class ReferralCodeHandler {
                                 WHERE Custom_Id__c IN :leadReferralCodeList
                                 OR Id IN :leadReferralCodeList]) {
             partnerMap.put(partner.Custom_Id__c, partner);
+            partnerMap.put(((String) partner.Id).left(15), partner);
             partnerMap.put(partner.Id, partner);
         }
         for (Contact contact : [SELECT Id, Custom_Id__c, Email
