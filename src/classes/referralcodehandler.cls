@@ -48,7 +48,7 @@ public with sharing class ReferralCodeHandler {
 
         for (lead leadRecord : leads) {
             BSST__c holderPartner = partnerMap.get('holder');
-            if (leadRecord.Custom_Id__c == null) {
+            if (leadRecord.Custom_Id__c == null && holderPartner != null) {
                 leadRecord.Partner_Lookup__c = holderPartner.Partner__r.Id;
                 leadRecord.Bs_sales_id__c = holderPartner.Id;
                 leadRecord.Partner_Email__c = holderPartner.Email__c;
@@ -62,7 +62,7 @@ public with sharing class ReferralCodeHandler {
                     Contact contact = contactReferralMap.get(leadRecord.Custom_Id__c);
                     leadRecord.Customer_referral__c = contact.Id;
                     leadRecord.Referral_email__c = contact.Email;
-                } else if (leadRecord.Product_Line__c == 'Community Solar') {
+                } else if (leadRecord.Product_Line__c == 'Community Solar' && holderPartner != null) {
                     leadRecord.Partner_Lookup__c = holderPartner.Partner__r.Id;
                     leadRecord.Bs_sales_id__c = holderPartner.Id;
                     leadRecord.Partner_Email__c = holderPartner.Email__c;
