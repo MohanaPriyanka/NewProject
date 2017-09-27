@@ -6,7 +6,6 @@ public with sharing class ChargentOrderCreationhandler {
 
     for(Opportunity oppOld : oldOppList){
         oldvaluesmap.put(oppOld.id, oppOld);
-        accountIds.add(oppOld.AccountId);
     }
     
     ChargentBase__Gateway__c gateway  = [SELECT Name, Id, Shared_Solar_System__c, Entity_ID__c
