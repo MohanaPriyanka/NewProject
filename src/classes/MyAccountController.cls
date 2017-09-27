@@ -90,7 +90,7 @@ public without sharing class MyAccountController {
                 for (Decimal carryOverBalanceLoopVar : carryOverBalanceList) {
                   totalBalance = totalBalance + carryOverBalanceLoopVar;
                 }
-            return totalBalance;
+                return totalBalance;
             } else {
                 for (Account_Bill__c propertyAccountBills : [SELECT Id, Name, Bill_Number__c, Carry_Over_Balance__c
                                                              FROM Account_Bill__c
