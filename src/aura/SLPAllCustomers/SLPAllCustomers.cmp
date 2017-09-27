@@ -126,9 +126,12 @@
                          fieldTypeMap="{Name: 'String'}"
                          columnColorMap="{'Status': '#00B2A9'}"
                          defaultButtonLabels="Add Co-Signer"
-                         defaultButtonEvents="changeTableToApplications"/>
+                         defaultButtonEvents="addCoSigner"/>
  <br></br>
  </aura:if>  
  </div>  
+ <div aura:id="popUpCoAppWindow" class="">
+    {!v.body}
+ </div>
 </aura:component>
   

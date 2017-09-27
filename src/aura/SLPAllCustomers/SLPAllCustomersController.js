@@ -114,10 +114,23 @@
                     '&leadName=' + encodeURIComponent(record.FirstName + ' ' + record.LastName)
                 });
                 urlEvent.fire(); 
-                break;                    
+                break;    
+            case 'addCoSigner':       
+               $A.createComponent(
+                  "c:SLPAddCoApplicant", 
+                   {"mainApplicant" : record.Id}, 
+                function(newButton, status, errorMessage){
+                    if (status === "SUCCESS") {
+                        var body = component.get("v.body");
+                        body.push(newButton);
+                        component.set("v.body", body);
+                    } else  {
+                        helper.logError("SLPCreditStatusController", "openAddCoApplicant", resp.getError());
+                    }
+                }   
+            )                             
         }  
     },    
-
     changeTableToCompletedCustomers : function(component, event, helper) {   
         helper.changeTable(component, "completedCustomers", "completedLoans", "originalCompletedLoans");                  
     },    
