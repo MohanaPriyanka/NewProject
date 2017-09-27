@@ -1,21 +1,5 @@
 ({
 	doInit : function(component, event, helper) {
-        var actionAlerts = component.get("c.getPartnerAlerts");        
-        actionAlerts.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if (resp.getReturnValue() != null) {
-                    if(resp.getReturnValue().length > 0){
-                        component.set("v.partnerAlerts", resp.getReturnValue());
-                        component.set("v.alertPrompt", true);
-                    }
-                }
-            }    
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionAlerts);  
-
         var actionDashboardWidgets = component.get("c.getDashboardWidgets");        
         actionDashboardWidgets.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
