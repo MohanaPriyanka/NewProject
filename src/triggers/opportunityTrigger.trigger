@@ -6,6 +6,6 @@ trigger opportunityTrigger on opportunity (before insert, after insert, before u
         loanAction.createDisbursalsFromOpportunity(Trigger.new, Trigger.old);
     }
     if(Trigger.isUpdate && Trigger.isBefore){
-        ChargentOrderCreationhandler.ChargentOrderCreation(Trigger.new, Trigger.old);
+        ChargentOrderCreationhandler.createChargentOrder(Trigger.new, Trigger.old);
     }    
 }
