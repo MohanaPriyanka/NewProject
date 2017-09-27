@@ -92,7 +92,7 @@
         } else {
             component.set("v." + recordsAttribute, originalRecords);
             helper.clearSearchSelections(component, null); 
-            this.changeTableToApplications(component, event, helper); // this should be the most recently clicked before the search
+            this.changeTableToApplications(component, event, helper); 
         }
     },    
 
