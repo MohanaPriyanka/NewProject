@@ -8,10 +8,10 @@ Static testMethod void ChargentOrderCreationhandlertest (){
                                                                         Class__c = 'Class 2',
                                                                         Value_of_Net_Metering_Credit__c = 0.1848,
                                                                         Sizing_Rate__c = TRUE);
-        Insert eversizeNMC;
+        insert eversizeNMC;
 
         Entity__c entityOne = new Entity__c ( Name = 'BlueWave ProjectCo');
-        Insert entityOne;
+        insert entityOne;
         
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
                                                                     Service_Territory__c = 'SEMA',
@@ -32,7 +32,7 @@ Static testMethod void ChargentOrderCreationhandlertest (){
 
         Account accountA = new Account(name = 'Account A',
             RecordTypeId = '012j00000010Ha3');       
-        Insert accountA;  
+        insert accountA;  
 
         ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'BW Community Solar Payments Account Gateway',
                                                                            ChargentBase__Merchant_ID__c = '235986',
@@ -68,12 +68,12 @@ Static testMethod void ChargentOrderCreationhandlertest (){
         Test.StartTest();
         
         for (ChargentOrders__ChargentOrder__c choOrder : orderList) {
-            System.assertEquals(choOrder.ChargentOrders__Bank_Name__c,'Bank of America');
-            System.assertEquals(choOrder.ChargentOrders__Bank_Routing_Number__c,'129383578');
-            System.assertEquals(choOrder.ChargentOrders__Bank_Account_Type__c,'Checking');
-            System.assertEquals(choOrder.ChargentOrders__Bank_Account_Number__c,'123456790');
-            System.assertEquals(choOrder.ChargentOrders__Bank_Account_Name__c,'Jordan Pentaleri');
-            System.assertEquals(choOrder.ChargentOrders__Gateway__c,chGateway.Id);
+            System.assertEquals('Bank of America', choOrder.ChargentOrders__Bank_Name__c);
+            System.assertEquals('129383578', choOrder.ChargentOrders__Bank_Routing_Number__c);
+            System.assertEquals('Checking', choOrder.ChargentOrders__Bank_Account_Type__c);
+            System.assertEquals('123456790', choOrder.ChargentOrders__Bank_Account_Number__c);
+            System.assertEquals('Jordan Pentaleri', choOrder.ChargentOrders__Bank_Account_Name__c);
+            System.assertEquals(chGateway.Id, choOrder.ChargentOrders__Gateway__c);
         }
 
         Test.StopTest();

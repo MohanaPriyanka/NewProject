@@ -29,7 +29,7 @@ public with sharing class ChargentOrderCreationhandler {
                                                           ChargentOrders__Bank_Account_Type__c = opp.ACH_Account_Type__c,
                                                           ChargentOrders__Bank_Account_Number__c = opp.ACH_Account_Number__c,
                                                           ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c);
-            Insert orderA;  
+            insert orderA;  
             accountids.add(opp.AccountId);
             opp.ACH_Bank_Name__c = 'removed';
             opp.ACH_Bank_Routing_Number__c = 'removed';
