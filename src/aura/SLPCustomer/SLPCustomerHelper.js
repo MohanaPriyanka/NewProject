@@ -95,7 +95,7 @@
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
 
-    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile, helpText){
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, oppId, nameFile, helpText){
       var body = component.get("v.body");  
       component.set("v.body", []);  
       $A.createComponent(
@@ -103,7 +103,7 @@
       	{"dateLabel": dateLabelString,
       	"windowHeader": windowHeaderString,
         "fileParentId": parentId,
-        "resiEquipment" : equipmentObject,
+        "oppId" : oppId,
         "helpText" : helpText,
         "fileName": nameFile }, 
                        

@@ -10,7 +10,7 @@
         });
         $A.enqueueAction(actionGetDocsAvailable);
     },
-    
+
     filePreview : function(component, event, helper) {
        	helper.saveFileToList(component);
    	},
@@ -32,9 +32,12 @@
         	}
         }
         helper.removeErrorMessaging(component);
-        var fileType = component.get("v.fileName");
-        var parentId = component.get("v.fileParentId"); 
-        helper.saveFilesToServer(component, event, fileType, parentId);
+        var parentId = component.get("v.fileParentId");  // record to link to   
+        var fileInput = component.get("v.fileList"); //file list
+        var newFileName = component.get("v.fileName"); // 'mechanical install'
+        var fr = component.get("v.fileReader");
+        var numberOfFiles = fr.length; 
+        helper.saveFilesToServer(component, event, parentId, 0, fileInput, newFileName, fr, numberOfFiles, helper);
     },
     
     closeWindow : function(component, event, helper) {

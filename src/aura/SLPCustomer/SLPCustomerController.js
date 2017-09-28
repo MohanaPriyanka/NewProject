@@ -465,7 +465,7 @@
                 return;
                 
             case 'Mechanical Installation':
-                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, equipmentObject, "Mechanical Installation Documentation", taskHelpText);
+                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, oppId, "Mechanical Installation Documentation", taskHelpText);
                 return;
 
             case 'Interconnection':
@@ -479,11 +479,11 @@
                                + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, equipmentObject, "Interconnection Documentation", taskHelpText);
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, "Interconnection Documentation", taskHelpText);
                     return;
                 }
             case 'Provide Sales Agreement':
-              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, equipmentObject ,"Sales Agreement", taskHelpText);
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId ,"Sales Agreement", taskHelpText);
               return;
             default:
               break;

@@ -4,11 +4,11 @@
 <aura:attribute name="dateValue" type="Date" default=""/>
 <aura:attribute name="windowHeader" type="String" default="Upload a Document:"/> 
 <aura:attribute name="fileParentId" type="String" default=""/>
+<aura:attribute name="oppId" type="String" default=""/>
 <aura:attribute name="fileName" type="String" default=""/>   
 <aura:attribute name="fileReader" type="Object[]" />
 <aura:attribute name="buttonText" type="String" default="Select File"/>
 <aura:attribute name="errorText" type="String" default=""/>
-<aura:attribute name="resiEquipment" type="Residential_Equipment__c"/>
 <aura:attribute name="helpText" type="String" default=""/>
 <aura:attribute name="fileList" type="Object[]" />
 <aura:attribute name="fileTypes" type="String[]" default=""/>
@@ -65,7 +65,7 @@
           </div>
           <br></br>
           <br></br>
-          <div class="slds-align--absolute-center">Uploading... </div>
+          <div class="slds-align--absolute-center">Uploading Documents... </div>
          </div>
          </fieldset>
         </div>
