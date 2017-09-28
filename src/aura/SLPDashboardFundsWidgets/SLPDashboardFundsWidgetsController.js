@@ -30,46 +30,6 @@
         $A.enqueueAction(actionLicenseType);                         
         
 	},
-
-    acknowledgeAlert : function(component, event, helper) { 
-        var partnerAlertId = component.get("v.partnerAlerts[0].Id");
-        var actionAcknowledgeAlert = component.get("c.acknowledgePartnerAlert");
-        
-        actionAcknowledgeAlert.setParams({partnerAlertId : partnerAlertId});
-        actionAcknowledgeAlert.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                var alert = component.find("partnerAlert");    
-                $A.util.addClass(alert, 'noDisplay');            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });            
-        $A.enqueueAction(actionAcknowledgeAlert); 
-
-        $A.get('e.force:refreshView').fire();          
-    },     
-
-    closeAlert : function(component, event, helper) {
-
-        var partnerAlertId = component.get("v.partnerAlerts[0].Id");
-        var actionRemindLater = component.get("c.partnerAlertRemindLater");
-        
-        actionRemindLater.setParams({partnerAlertId : partnerAlertId});
-        actionRemindLater.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                var alert = component.find("partnerAlert");    
-                $A.util.addClass(alert, 'noDisplay');            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });            
-        $A.enqueueAction(actionRemindLater); 
-
-
-        var alert = component.find("partnerAlert");    
-        $A.util.addClass(alert, 'noDisplay');   
-        $A.get('e.force:refreshView').fire();          
-    },         
     
     removeDisplay : function(component, event, helper) {
     	var widgetsToggle = component.find("disbursalWidgets");

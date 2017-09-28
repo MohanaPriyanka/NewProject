@@ -5,7 +5,6 @@
  *
  * Test: SLPControllersTestclass
  *************************************************************************************/
-
 trigger partnerAlertTrigger on Partner_Alert__c (after insert) {
     if(Trigger.isInsert && Trigger.isAfter){        
         PartnerAlertHandler.createPartnerAlertFilters(Trigger.new);

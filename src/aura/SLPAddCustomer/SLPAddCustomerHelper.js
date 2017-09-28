@@ -105,16 +105,12 @@
     showMSLPApplication : function(component) {
         $A.util.removeClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.addClass(component.find("mslpAppTab"), 'slds-has-focus'); 
-        $A.util.removeClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.removeClass(component.find("avidiaFooter"), 'noDisplay');
         $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');    
     },     
 
     showBWSLApplication : function(component) {
         $A.util.addClass(component.find("bwslAppTab"), 'slds-has-focus');      
         $A.util.removeClass(component.find("mslpAppTab"), 'slds-has-focus');
-        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');  
-        $A.util.addClass(component.find("avidiaFooter"), 'noDisplay');    
         $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');     
     },         
 

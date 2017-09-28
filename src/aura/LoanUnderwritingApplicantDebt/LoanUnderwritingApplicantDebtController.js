@@ -3,14 +3,6 @@
         helper.initHelper(component, event, helper);
     },
 
-    display : function(component, event, helper) {
-        helper.toggleHelper(component, event);
-    },
-
-    displayOut : function(component, event, helper) {
-        helper.toggleHelper(component, event);
-    },
-
     updateExclude : function(component, event, helper) {
         var srcElement = event.getSource();
         var savePromise = helper.saveSObject(component,
