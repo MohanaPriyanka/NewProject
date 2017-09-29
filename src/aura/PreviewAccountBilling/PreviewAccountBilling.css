@@ -1,3 +1,7 @@
 .THIS .buttonCSS{
       background-color: #85C1E9;
 }
+
+.THIS .noDisplay{
+     display: none; 
+}
