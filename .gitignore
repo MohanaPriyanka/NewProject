@@ -235,4 +235,6 @@ debug/
 #*#
 
 # ant
+build.xml
 build.properties
+ant-salesforce.jar

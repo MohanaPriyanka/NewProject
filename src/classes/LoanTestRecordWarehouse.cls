@@ -202,7 +202,6 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_3__c = '001',
                                                                                             LASERCA__Code_4__c = '001',
                                                                                             LASERCA__Credit_Score_TransUnion__c = '710',
-                                                                                            Adjusted_DTI_Notes__c = 'Notes',
                                                                                             LASERCA__TransUnion_Score_Factor__c = 
                                                                                             '039 - SERIOUS DELINQUENCY\n' +
                                                                                             '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +

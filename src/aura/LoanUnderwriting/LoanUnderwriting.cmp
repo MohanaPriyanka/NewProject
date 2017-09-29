@@ -117,7 +117,7 @@
       </div>
     </div>
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class="{!'slds-col slds-p-right_small ' + if(v.hasCoApp,'slds-size--1-of-2','slds-size--1-of-1')}">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantCredit lead="{!v.lead}" 
                                            isCoApp="false"
                                            pcr="{!v.lead.Personal_Credit_Report__r}" 
@@ -142,27 +142,30 @@
       </div>
     </div>
     <div class="slds-grid slds-wrap slds-p-top_small slds-grid_align-center">
-      <div class = "lightCell slds-col slds-size--1-of-1">
-        <aura:if isTrue="{!v.hasCoApp}">
-          Adjusted Combined DTI After:
-          <aura:set attribute="else">Adjusted DTI After:</aura:set>
-        </aura:if>
-        <br></br>
-        <ui:inputNumber value="{!v.lead.Personal_Credit_Report__r.Adjusted_DTI__c}"
-                        size="3"
-                        change="{!c.updateAdjustedDTI}"/>%
-      </div> 
-      <div class = "lightCell slds-col slds-size--1-of-1">
-        Adjusted DTI After Notes:
-        <br></br>
-	<ui:inputTextArea class="slds-size--1-of-1"
-                          rows="3"
+      <div>
+        <div class = "slds-grid slds-wrap slds-grid--vertical-stretch">
+          <div class = "lightCell slds-col slds-size--1-of-1">
+            <aura:if isTrue="{!v.hasCoApp}">
+              Adjusted Combined DTI After:
+              <aura:set attribute="else">Adjusted DTI After:</aura:set>
+            </aura:if>
+            <br></br>
+            <ui:inputNumber value="{!v.lead.Personal_Credit_Report__r.Adjusted_DTI__c}"
+                            size="3"
+                            change="{!c.updateAdjustedDTI}"/>%
+          </div> 
+          <div class = "lightCell slds-col slds-size--1-of-1">
+            Adjusted DTI After Notes:
+            <br></br>
+	    <ui:inputText class="slds-size--1-of-1"
                           value="{!v.lead.Personal_Credit_Report__r.Adjusted_DTI_Notes__c}"
                           change="{!c.saveDTINotes}"/>
-      </div> 
+          </div> 
+        </div>
+      </div>
     </div>
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class="{!'slds-col slds-p-right_small ' + if(v.hasCoApp,'slds-size--1-of-2','slds-size--1-of-1')}">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantDTI pcr="{!v.lead.Personal_Credit_Report__r}"/>
       </div>
       <aura:if isTrue="{!v.hasCoApp}">
@@ -180,7 +183,7 @@
     </div>
     <aura:if isTrue="{!v.lead != null}">
       <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class="{!'slds-col slds-p-right_small ' + if(v.hasCoApp,'slds-size--1-of-2','slds-size--1-of-1')}">
+        <div class="slds-col slds-size--1-of-2 slds-p-right_small">
           <c:LoanUnderwritingApplicantDebt pcr="{!v.lead.Personal_Credit_Report__r}"/>
         </div>
         <aura:if isTrue="{!v.hasCoApp}">
@@ -198,7 +201,7 @@
       </div>
     </div>
     <div class="slds-grid slds-wrap slds-p-top_small">
-      <div class="{!'slds-col slds-p-right_small ' + if(v.hasCoApp,'slds-size--1-of-2','slds-size--1-of-1')}">
+      <div class="slds-col slds-size--1-of-2 slds-p-right_small">
         <c:LoanUnderwritingApplicantIncome lead="{!v.lead}" 
                                            pcr="{!v.lead.Personal_Credit_Report__r}" 
                                            isCoApp="false"/>
