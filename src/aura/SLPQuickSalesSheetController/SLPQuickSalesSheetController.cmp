@@ -151,6 +151,15 @@
                   	</td>
                  </tr>
                 </aura:if> 
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="TLP">Total Loan Payments
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="TLP Value"><ui:outputCurrency value="{!v.calculatedQSS.Total_Loan_Payments__c}"/></div>
+                  </td>
+                </tr>  
               </tbody>
              </table>
              <footer class="slds-card__footer">
