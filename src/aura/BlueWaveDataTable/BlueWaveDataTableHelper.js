@@ -28,8 +28,6 @@
         var recordCount = component.get("v.numberOfRecordsPerPage");
         var trimmedRecordList = recordList.slice(0, recordCount);
         component.set("v.tableRecords", trimmedRecordList);
-        // debugger;
-        console.log(component.get("v.tableRecords"));
     }, 
 
     setHeaderMap : function(component) {

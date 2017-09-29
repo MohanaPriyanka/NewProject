@@ -40,7 +40,6 @@
   <aura:attribute name="sortField" type="String"/>
 
   <aura:attribute name="selectedTable" type="String"/>  
-
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
       <c:BlueWaveInputToolTip popoverText="Applications consist of all applicants who have had an application sent to them or have begun an application, but have not yet been Pre-Qualified. Double click to view all.">

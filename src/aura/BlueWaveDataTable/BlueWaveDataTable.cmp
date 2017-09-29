@@ -2,7 +2,6 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/> 
   <aura:handler name="change" value="{!v.licenseType}" action="{!c.applySecurity}" />    
-  <aura:handler name="change" value="{!v.tableRecords}" action="{!c.checkChange}" />    
   <aura:attribute name="name" type="String"/> 
   <aura:attribute name="currentPage" type="Integer" default="1"/>   
   <aura:attribute name="numberOfRecordsPerPage" type="Integer"/> 
