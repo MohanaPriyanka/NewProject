@@ -49,21 +49,21 @@
           </a>
         </li>
       </c:BlueWaveInputToolTip>         
-      <c:BlueWaveInputToolTip popoverText="In Process consists of all qualified customers that have not been fully disbursed and still require additional action. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Use this tab to view all qualified customers that have not been fully disbursed and still require additional action. Double click to view all.">
         <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
             <b>In Process</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>   
-      <c:BlueWaveInputToolTip popoverText="Completed consists of all customers that have been fully processed and are complete. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
         <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
             <b>Completed</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>      
-      <c:BlueWaveInputToolTip popoverText="Declined consists of all customers that did not meet BlueWave's credit criteria. These customers can still have a Co-Signer added to their application. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Use this tab for the Massachusetts Solar Loan Program run by the Massachusetts Clean Energy Center (MCEC)">
         <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
             <b>Declined</b>
