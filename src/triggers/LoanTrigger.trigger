@@ -7,6 +7,7 @@
 */
 
 trigger LoanTrigger on Loan__c (before insert, before update, after insert, after update) {
+    DisbursalHandler disbursalHandler = new DisbursalHandler();
     List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
     if (systemProperties.size() > 0 &&
         systemProperties[0].Disable_LoanTrigger__c) {
@@ -31,6 +32,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
 
         if (Trigger.isUpdate && Trigger.isAfter) {
             servicer.upsertLoanPayments();
+            disbursalHandler.updateDisbursalAmounts(Trigger.newMap, Trigger.oldMap);
         }
     }
 }
