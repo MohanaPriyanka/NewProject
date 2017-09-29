@@ -160,7 +160,7 @@ Static testMethod void TestBillCreationandPayment(){
         User u = new User(alias = 'testDash', email='testdash@test.test', emailencodingkey='UTF-8', lastname='testDashboard', 
                           languagelocalekey='en_US', localesidkey='en_US', profileid = p, country='United States', 
                           IsActive =true, ContactId = c.Id, timezonesidkey='America/New_York', username='testdashboard@test.test');
-        insert u;
+        Util.insertSObj(u);
 // Create Leads
         Lead lead = (Lead)TestFactory.createSObject(new Lead(LastName = 'Chan',
                                                              FirstName = 'Joey',
