@@ -5,7 +5,6 @@
         var actionGetLoans = component.get("c.getAllCustomers");        
         actionGetLoans.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                console.log(resp.getReturnValue());
                 component.set("v.loansInProcess", resp.getReturnValue().loansInProcess);
                 component.set("v.completedLoans", resp.getReturnValue().completedLoans);
                 component.set("v.allCustomers", resp.getReturnValue().allLoans);
@@ -22,7 +21,6 @@
         var actionGetLeads = component.get("c.getLeads");        
         actionGetLeads.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                console.log(resp.getReturnValue());
                 component.set("v.pendingApplications", resp.getReturnValue().pendingApplications);
                 component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);
                 helper.selectTab(component, 'applications'); 
