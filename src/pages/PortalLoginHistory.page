@@ -1,7 +1,7 @@
 <apex:page controller="PortalLoginHistoryController" showHeader="true" sidebar="true">
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <apex:pageBlock>
-    <apex:form>
+  <apex:pageBlock >
+    <apex:form >
       <apex:pageBlockSection columns="1">
         <apex:outputText value="Logins since {0,date, MMM dd',' YYYY}">
           <apex:param value="{!beginDate}" />
