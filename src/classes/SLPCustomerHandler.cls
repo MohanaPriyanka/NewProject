@@ -68,7 +68,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static List<Disbursal__c> getCompleteLoanDisbursals(String loanId, String searchValue) {
     List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-    String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
+    String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Disbursal_Method__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
     disbursalQuery += '      FROM Disbursal__c' ;
     disbursalQuery += '      WHERE Status__c = \'' + 'Complete' + '\' ' ;
     disbursalQuery += '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
@@ -92,7 +92,7 @@ public without sharing class SLPCustomerHandler {
   @AuraEnabled
   public static List<Disbursal__c> getIncompleteLoanDisbursals(String loanId, String searchValue) {
     List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-    String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
+    String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Disbursal_Method__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
     disbursalQuery += '      FROM Disbursal__c' ;
     disbursalQuery += '      WHERE Status__c = \'' + 'Not yet disbursed' + '\' ' ;
     disbursalQuery += '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
