@@ -20,7 +20,7 @@ public class LoanHandlerTestClass {
     @isTest static void testLoanHandlerCreateLoan() {
         // The insertion of the lead sets it as qualified due to the credit reports inserted with it.
 
-        for (Lead leadRecordAssertion : [SELECT Id, Name, DOER_Solar_Loan__c, (SELECT Id, Product__r.Name, Technology_Platform_Fee__c FROM Loans__r), 
+        for (Lead leadRecordAssertion : [SELECT Id, Name, DOER_Solar_Loan__c, (SELECT Id, Product__r.Name FROM Loans__r), 
                                          (SELECT Id FROM Partner_Tasks__r), 
                                          (SELECT Id FROM Residential_Equipment__r) 
                                          FROM Lead
@@ -29,11 +29,6 @@ public class LoanHandlerTestClass {
             System.AssertEquals(1, leadRecordAssertion.Loans__r.size());
             //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
             System.AssertEquals(8, leadRecordAssertion.Partner_Tasks__r.size());     
-
-            //Assert that Platform Fee got mapped from Lead
-            for(Loan__c lond: leadRecordAssertion.Loans__r){
-                System.assertEquals(lond.Technology_Platform_Fee__c, 1750);
-            }
         }    
         //Assert that the equipment record mapped to the loan on creation
         for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
