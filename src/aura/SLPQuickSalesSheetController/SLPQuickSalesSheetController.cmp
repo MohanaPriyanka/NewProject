@@ -160,7 +160,7 @@
                 <div class="smallText">+Estimated</div>
   			</footer> 
             <div class="slds-align--absolute-center"> 
-              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when its generated.">            
+              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
               <ui:button aura:id="documentCreatebutton"
                   label="Generate Loan Summary Sheet"
                   class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard noDisplay"
@@ -200,7 +200,7 @@
               <div class="slds-text-align_center"><b>Download</b></div>
             </div>
             <div class="slds-form-element">
-              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when its generated.">            
+              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
               <lightning:button aura:id="submitQSSbutton"
                   name="submitUpfront"
                   label="Generate Loan Summary Sheet"
