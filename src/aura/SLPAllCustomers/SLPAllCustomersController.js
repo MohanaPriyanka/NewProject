@@ -8,6 +8,8 @@
                 component.set("v.loansInProcess", resp.getReturnValue().loansInProcess);
                 component.set("v.completedLoans", resp.getReturnValue().completedLoans);
                 component.set("v.allCustomers", resp.getReturnValue().allLoans);
+                component.set("v.originalLoansInProcess", resp.getReturnValue().loansInProcess);
+                component.set("v.originalCompletedLoans", resp.getReturnValue().completedLoans);
                 component.set("v.originalAllCustomers", resp.getReturnValue().allLoans);
             }
             else {
@@ -23,6 +25,8 @@
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.pendingApplications", resp.getReturnValue().pendingApplications);
                 component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);
+                component.set("v.originalPendingApplications", resp.getReturnValue().pendingApplications);
+                component.set("v.originalDeclinedApplicants", resp.getReturnValue().declinedApplicants);                
                 helper.selectTab(component, 'applications'); 
                 helper.clearSearchSelections(component);   
             }
@@ -58,7 +62,7 @@
         helper.setSearchableValues(component, event, helper, "declinedApplicants", "originalDeclinedApplicants", "declinedSearchableValues", component.get("v.runSetSearchableDeclinedApplicants"));
         // set the runSetSearchable to false here so that the list doesn't get set twice. If it doesn't get set to false, the execute search updates the record list and thus runs the setSearchable method again.
         component.set("v.runSetSearchableDeclinedApplicants", false);
-    },            
+    },                 
     
     executeSearch : function(component, event, helper) {   
         var searchSuccess = false;

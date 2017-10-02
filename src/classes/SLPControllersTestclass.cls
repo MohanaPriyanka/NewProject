@@ -456,7 +456,6 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
 
         List<Lead> leadList = new List<Lead>();
-        List<Loan__c> loanReturnList = new List<Loan__c>();
         List<Product2> productList = new List<Product2>();
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
 
@@ -485,12 +484,9 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
+        SLPAllCustomersHandler.LoanRecords LoanRecords = new SLPAllCustomersHandler.LoanRecords();
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            LoanRecords = SLPAllCustomersHandler.getAllCustomers();
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
@@ -544,6 +540,7 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanReturnList = new List<Loan__c>();
         List<Product2> productList = new List<Product2>();
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+        SLPAllCustomersHandler.LoanRecords LoanRecords = new SLPAllCustomersHandler.LoanRecords();
 
         String loanId;
         String nullString = null;
@@ -570,12 +567,8 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            LoanRecords = SLPAllCustomersHandler.getAllCustomers();
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
