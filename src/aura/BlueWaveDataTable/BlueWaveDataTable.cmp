@@ -1,0 +1,91 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true" extends="c:BlueWaveParent" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+  <aura:handler name="sortTable" event="c:BlueWaveDataTableSortEvent" action="{!c.sortTable}"/> 
+  <aura:handler name="change" value="{!v.licenseType}" action="{!c.applySecurity}" />    
+  <aura:attribute name="name" type="String"/> 
+  <aura:attribute name="currentPage" type="Integer" default="1"/>   
+  <aura:attribute name="numberOfRecordsPerPage" type="Integer"/> 
+  <aura:attribute name="showAllRecords" type="Boolean"/>   
+  <aura:attribute name="headerLabels" type="String[]"/>
+  <aura:attribute name="headerMap" type="Map"/>
+  <aura:attribute name="recordFieldNames" type="String[]"/>
+  <aura:attribute name="tableRecords" type="Object[]"/>
+  <aura:attribute name="originalRecords" type="Object[]"/>
+  <aura:attribute name="sortedRecords" type="Object[]"/>  
+  <aura:attribute name="conditionalColorField" type="String"/>   
+  <aura:attribute name="conditionalColorMap" type="Map"/>     
+  <aura:attribute name="columnColorMap" type="Map"/>  
+  <aura:attribute name="fieldTypeMap" type="Map"/>
+  <aura:attribute name="sortField" type="String" />
+  <aura:attribute name="buttonConditionalField" type="String" />
+  <aura:attribute name="buttonConditionalLabelMap" type="Map"/> 
+  <aura:attribute name="buttonConditionalEventMap" type="Map"/>
+  <aura:attribute name="nullValueMap" type="Map"/>
+  <aura:attribute name="defaultButtonLabels" type="String"/>  
+  <aura:attribute name="defaultButtonEvents" type="String"/>
+  <aura:attribute name="profileSecurityMap" type="Map"/> 
+  <aura:attribute name="licenseType" type="String"/> 
+  <table class="slds-table slds-table_bordered slds-table--striped slds-scrollable box">
+    <thead>
+      <tr class="slds-text-heading--label proximaNovaDataBlue">   
+        <aura:if isTrue="{!v.headerMap != null}">
+          <aura:iteration items="{!v.headerLabels}" var="label">
+            <c:BlueWaveDataTableHeader label="{!label}" 
+                                       headerMap="{!v.headerMap}" 
+                                       sortField="{!v.sortField}"
+                                       profileSecurityMap="{!v.profileSecurityMap}"
+                                       licenseType="{!v.licenseType}"/>
+          </aura:iteration>
+        </aura:if>
+      </tr>         
+    </thead>
+    <tbody>
+      <aura:iteration items="{!v.tableRecords}" var="record">
+        <tr>
+          <aura:iteration items="{!v.recordFieldNames}" var="fieldName">
+            <th scope="col">
+              <span class="slds-truncate">
+                 <b>
+                    <c:BlueWaveDataTableRow objectRecord="{!record}" 
+                                            fieldName="{!fieldName}" 
+                                            conditionalColorField="{!v.conditionalColorField}"
+                                            conditionalColorMap="{!v.conditionalColorMap}"
+                                            columnColorMap="{!v.columnColorMap}"
+                                            fieldTypeMap="{!v.fieldTypeMap}"
+                                            defaultButtonLabels="{!v.defaultButtonLabels}"
+                                            defaultButtonEvents="{!v.defaultButtonEvents}"
+                                            buttonConditionalField="{!v.buttonConditionalField}"
+                                            buttonConditionalLabelMap="{!v.buttonConditionalLabelMap}"
+                                            buttonConditionalEventMap="{!v.buttonConditionalEventMap}"
+                                            profileSecurityMap="{!v.profileSecurityMap}"
+                                            licenseType="{!v.licenseType}"
+                                            nullValueMap="{!v.nullValueMap}"/>
+                 </b>
+              </span>
+            </th>
+          </aura:iteration>
+        </tr>
+      </aura:iteration>
+    </tbody>
+  </table>
+  <div class="slds-grid">
+    <div class="slds-col">
+      <button aura:id="previousPageButton" class="slds-button slds-button_icon slds-float_left slds-m-top_x-small" onclick="{!c.previousPage}">
+        <lightning:icon iconName="utility:chevronleft" size="x-small"/>  
+        <b> Previous </b>
+      </button>  
+    </div>
+    <div aura:id="tableNavCenterGridclass" class="slds-col center">
+      <button aura:id="showAllRecordsButton" class="slds-button slds-button_icon slds-m-top_x-small" onclick="{!c.showAllRecords}">
+        <b> Show All </b>
+      </button>       
+    </div>
+    <div class="slds-col">
+      <button aura:id="nextPageButton" class="slds-button slds-button_icon slds-float_right slds-m-top_x-small" onclick="{!c.nextPage}">
+        <b> Next </b>
+        <lightning:icon iconName="utility:chevronright" size="x-small"/>  
+      </button>              
+    </div>    
+  </div>  
+</aura:component>
+

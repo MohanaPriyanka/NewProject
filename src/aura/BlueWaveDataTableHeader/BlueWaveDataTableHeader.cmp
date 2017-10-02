@@ -1,0 +1,40 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true"  access="global">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:registerEvent name="sortTable" type="c:BlueWaveDataTableSortEvent"/>	
+	<aura:attribute name="label" type="String"/>
+	<aura:attribute name="headerMap" type="Map"/>	
+	<aura:attribute name="fieldName" type="String"/>	
+	<aura:attribute name="sortAsc" type="Boolean"/>
+	<aura:attribute name="sortArrow" type="Boolean" />
+	<aura:attribute name="sortField" type="String" />	
+	<aura:attribute name="profileSecurityMap" type="Map"/>
+	<aura:attribute name="licenseType" type="String"/> 
+
+	<th class="slds-is-sortable slds-text-title_caps" scope="col">
+		<a name="{!v.fieldName}" class="" onclick="{!c.sortTable}">
+			<span class="slds-assistive-text">Sort </span>
+			<span class="slds-truncate" title="{!v.label}">{!v.label}</span>
+			<aura:if isTrue="{!v.sortField == v.fieldName}">
+				<div aura:id="sortArrow" class="slds-icon_container ">
+					<aura:if isTrue="{!v.sortAsc}">
+						<lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+						<aura:set attribute="else">
+							<lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+						</aura:set>
+					</aura:if>
+				</div>
+			</aura:if>
+			<aura:set attribute="else">
+				<div aura:id="sortArrow2" class="slds-icon_container noDisplay">
+					<aura:if isTrue="{!v.sortAsc}">
+						<lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowup" size="xx-small"></lightning:icon>
+						<aura:set attribute="else">
+							<lightning:icon class="slds-p-left_xx-small" iconName="utility:arrowdown" size="xx-small"></lightning:icon>
+						</aura:set>
+					</aura:if>
+				</div>				
+			</aura:set>
+			<span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+		</a>      
+	</th>     	
+</aura:component>

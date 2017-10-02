@@ -16,72 +16,23 @@
         });
         $A.enqueueAction(actionLicenseType);
         component.set("v.vendorIdLabel", "Unique Identifier");
-    },
 
-    openCustomerWindow : function(component, event, helper) {
-        //remove the noDisplayBar class from the Component - brining the page to display.
-        var customerPage = component.find("customerPage");
-        $A.util.removeClass(customerPage, 'noDisplayBar');
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
 
-        //retrieve the loan Id to set the record for the component to display.
-        var label = event.getParam("customerLoanId");
-
-        //retrieve the customer's full information to display in the component
-        var customerInformationAction = component.get("c.getCustomerInformation");
-        customerInformationAction.setParams({loanId : label})
-        customerInformationAction.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.customerInformation", resp.getReturnValue());
-                component.set("v.customer", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(customerInformationAction);
-
-        var i;
-        var i;
-        var partnerTaskList = component.get("c.getLoanCustomerTasks");
-        var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : label});
-        partnerTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerTaskList", resp.getReturnValue());
-                for (i=0; i<resp.getReturnValue().length; i++) {
-                    if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
-                    } else {
-                        continue;
-                    }
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                 }
-            } else {
-                $A.log("Errors", resp.getError());
             }
-        });
-        $A.enqueueAction(partnerTaskList);
+        };
+        var leadId = getUrlParameter('loanId');
 
-        var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
-        completeLoanDisbursals.setParams({loanId : label});
-        completeLoanDisbursals.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.completeDisbursalList", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-        var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
-        incompleteLoanDisbursals.setParams({loanId : label});
-        incompleteLoanDisbursals.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.incompleteDisbursalList", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-
-        $A.enqueueAction(completeLoanDisbursals);
-        $A.enqueueAction(incompleteLoanDisbursals);
+        helper.openCustomerWindow(component, event, helper, getUrlParameter('loanId'), )
     },
 
     exitCustomerWindow : function(component, event, helper) {
