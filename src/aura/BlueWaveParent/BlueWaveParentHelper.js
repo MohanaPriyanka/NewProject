@@ -219,6 +219,8 @@
         appEvent.fire();
     }, 
 
+    //setSearchableValues sets the component's searchable attribute with map of lists all of which hold each text field queried on the record.
+    //this makes it easier to search through as the system only has to check if each value in the map holds the text, if so, return the keyValue.
     setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute, runSetSearchable) {   
         if (runSetSearchable) {
             var searchObject = {};

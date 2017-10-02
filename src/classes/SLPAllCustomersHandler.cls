@@ -23,9 +23,6 @@ public without sharing class SLPAllCustomersHandler {
 
   public class LoanRecords {      
     @AuraEnabled
-    public Loan__c[] allLoans {get;set;}
-
-    @AuraEnabled
     public Loan__c[] loansInProcess {get;set;}
 
     @AuraEnabled
@@ -33,7 +30,6 @@ public without sharing class SLPAllCustomersHandler {
 
 
     public LoanRecords() { 
-      allLoans = new List<Loan__c>();
       loansInProcess = new List<Loan__c>();    
       completedLoans = new List<Loan__c>();                                   
     }       
@@ -72,7 +68,6 @@ public without sharing class SLPAllCustomersHandler {
       loanQuery += '    AND Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';
     }
     loanQuery += '      ORDER BY createdDate DESC';
-    loanQuery += '      LIMIT 10';
     for(Loan__c loanRecord : Database.query(loanQuery)){
       loanList.add(loanRecord);
     }
@@ -83,7 +78,6 @@ public without sharing class SLPAllCustomersHandler {
       } else {
         LoanRecords.loansInProcess.add(loan);
       }
-      LoanRecords.allLoans.add(loan);
     }
     return LoanRecords;
   }

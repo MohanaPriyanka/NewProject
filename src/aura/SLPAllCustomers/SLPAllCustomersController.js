@@ -7,10 +7,6 @@
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.loansInProcess", resp.getReturnValue().loansInProcess);
                 component.set("v.completedLoans", resp.getReturnValue().completedLoans);
-                component.set("v.allCustomers", resp.getReturnValue().allLoans);
-                component.set("v.originalLoansInProcess", resp.getReturnValue().loansInProcess);
-                component.set("v.originalCompletedLoans", resp.getReturnValue().completedLoans);
-                component.set("v.originalAllCustomers", resp.getReturnValue().allLoans);
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -24,9 +20,7 @@
         actionGetLeads.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.pendingApplications", resp.getReturnValue().pendingApplications);
-                component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);
-                component.set("v.originalPendingApplications", resp.getReturnValue().pendingApplications);
-                component.set("v.originalDeclinedApplicants", resp.getReturnValue().declinedApplicants);                
+                component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);               
                 helper.selectTab(component, 'applications'); 
                 helper.clearSearchSelections(component);   
             }
