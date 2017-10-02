@@ -46,7 +46,7 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                  LocaleSidKey = 'en_US',
                                  EmailEncodingKey = 'ISO-8859-1',
                                  LanguageLocaleKey = 'en_US');
-        insert new List<User>{communityUser, communityUser2};         
+        Util.insertSObjs(new List<User>{communityUser, communityUser2});
 
         Account propertyAcc = new Account(Name = 'Property Account',
                                           Parent_Account__c = parentAccount.Id,

@@ -45,7 +45,7 @@ private class ChatterAnswersAuthProviderRegTest {
           
             
             
-            insert(newUser);
+            Util.insertSObj(newUser);
             
             
             Auth.UserData updateUserData = new Auth.UserData('testId', 'updatedFirst', 'updatedLast',

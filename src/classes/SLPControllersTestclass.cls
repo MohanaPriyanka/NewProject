@@ -47,7 +47,6 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecord.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='tropicole34@aol.com');
-        Insert userRecord;
 
         User executiveRecord = new User(
             FirstName = 'Executive',
@@ -64,7 +63,7 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecordExec.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='colematthewswain@gmail.com');
-        Insert executiveRecord;
+        Util.insertSobjs(new List<User>{userRecord, executiveRecord});
         Test.stopTest();
     }
 
