@@ -84,7 +84,8 @@
                               class="slds-input"
                               labelClass="slds-form-element__label"
                               value="{!v.quicksalessheet.Send_to_Email__c}"
-                              required="false"/>
+                              required="false">
+                </ui:inputText>
               </div>
             </div>
             <br></br>
@@ -158,11 +159,13 @@
                 <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
                 <div class="smallText">+Estimated</div>
   			</footer> 
-            <div class="slds-form-element"> 
+            <div class="slds-align--absolute-center"> 
+              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
               <ui:button aura:id="documentCreatebutton"
-                  label="Create Document"
+                  label="Generate Loan Summary Sheet"
                   class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard noDisplay"
                   press="{!c.clickCreateDocument}"/>
+              </c:BlueWaveInputToolTip>
             </div>
             </article>  
             <div aura:id="spinnerandtext">
@@ -197,16 +200,21 @@
               <div class="slds-text-align_center"><b>Download</b></div>
             </div>
             <div class="slds-form-element">
+              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
               <lightning:button aura:id="submitQSSbutton"
                   name="submitUpfront"
                   label="Generate Loan Summary Sheet"
                   class="slds-button slds-button--brand bwcolorforcard"
-                  onclick="{!c.clickCreateQSS}"/>              
+                  onclick="{!c.clickCreateQSS}"/>
+              </c:BlueWaveInputToolTip>
+              &nbsp;
+              <c:BlueWaveInputToolTip popoverText="Use this button to preview monthly payments and tax credits before generating a document.">            
               <lightning:button aura:id="viewLoanData"
                   name="submitTable"
                   label="View Loan Data"
-                  class="slds-button slds-button--brand bwcolorforcard"
+                  class="slds-button slds-button--brand bwcolorforcard padding"
                   onclick="{!c.clickCreateQSS}"/>
+              </c:BlueWaveInputToolTip>
            	</div>      
           </form>
       </fieldset>
