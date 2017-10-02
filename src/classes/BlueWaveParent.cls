@@ -7,13 +7,9 @@
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
-    public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
-    static {
-            profile = SLPUserHelper.getPartnerProfile();
-    }
-
     @AuraEnabled
     public static String getLicenseType() {
+        SLPUserHelper.PartnerProfile profile = SLPUserHelper.getPartnerProfile();
         return profile.LicenseType;
     }
 

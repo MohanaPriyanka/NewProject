@@ -38,7 +38,6 @@
   <aura:attribute name="sortAsc" type="Boolean" />
   <aura:attribute name="sortArrow" type="Boolean" />
   <aura:attribute name="sortField" type="String"/>
-
   <aura:attribute name="selectedTable" type="String"/>  
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
@@ -76,7 +75,7 @@
   <aura:if isTrue="{!or(v.selectedTable == 'applications', v.pendingApplicationsSearchSelected)}">  
     <c:BlueWaveDataTable name = "BWDataTableApplications"
                          headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
-                         numberOfRecordsPerPage="5"
+                         numberOfRecordsPerPage="50"
                          tableRecords="{!v.pendingApplications}" 
                          recordFieldNames="['Name', 'Status', 'Action']"
                          fieldTypeMap="{Name: 'String'}"
@@ -92,7 +91,7 @@
   <aura:if isTrue="{!or(v.selectedTable == 'customersInProcess', v.loansInProcessSearchSelected)}">  
     <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
-                         numberOfRecordsPerPage="5"
+                         numberOfRecordsPerPage="50"
                          tableRecords="{!v.loansInProcess}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
@@ -105,7 +104,7 @@
   <aura:if isTrue="{!or(v.selectedTable == 'completedCustomers', v.completedLoansSearchSelected)}">  
     <c:BlueWaveDataTable name = "BWDataTableApplications"
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Status','Loan Amount', 'Funded', 'Action']" 
-                         numberOfRecordsPerPage="5"
+                         numberOfRecordsPerPage="50"
                          tableRecords="{!v.completedLoans}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
@@ -119,7 +118,7 @@
   <aura:if isTrue="{!or(v.selectedTable == 'declinedApplicants', v.declinedApplicantsSearchSelected)}">  
     <c:BlueWaveDataTable name = "BWDataTableDeclinedApplicants"
                          headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
-                         numberOfRecordsPerPage="5"
+                         numberOfRecordsPerPage="50"
                          tableRecords="{!v.declinedApplicants}" 
                          recordFieldNames="['Name', 'Status', 'Action']"
                          fieldTypeMap="{Name: 'String'}"
