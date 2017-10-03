@@ -14,7 +14,7 @@
   <aura:attribute name="completedLoans" type="Object"/> 
   <aura:attribute name="originalCompletedLoans" type="Object"/>
   <aura:attribute name="completedLoansSearchableValues" type="Object"/>
-  <aura:attribute name="runSetSearchableCompletedLoans" type="Boolean" default="true" />     
+  <aura:attribute name="runSetSearchableCompletedLoans" type="Boolean" default="true"/>     
   <aura:attribute name="completedLoansSearchSelected" type="Boolean"/>
 
   <aura:attribute name="loansInProcess" type="Object"  />

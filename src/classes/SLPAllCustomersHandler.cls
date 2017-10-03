@@ -8,7 +8,7 @@ public without sharing class SLPAllCustomersHandler {
  * and loan information. It returns disubrsal information, updates disbursals 
  * as confirmed and returns equipment information.
  *
- * Tested By: 
+ * Tested By: SLPControllersTestclass
  *************************************************************************************/
 
   public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
@@ -82,9 +82,8 @@ public without sharing class SLPAllCustomersHandler {
     return LoanRecords;
   }
 
-  //The getLeads method loads the leads for the credit status page on doInIt and also submits the selected lead into the continue appliation stage.
   @AuraEnabled 
-  public static LeadRecords getLeads (String leadId) {
+  public static LeadRecords getLeads () {
     LeadRecords LeadRecords = new LeadRecords();
     List<Lead> leadList = new List<Lead>();
     String leadQuery = 'SELECT Id, Name, Firstname, createdDate, LastName, Pre_Qualification_Status__c, System_Cost__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c, Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c, Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, CoApplicant_Contact__c, Joint_Applicant_Type__c, Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c' ;
@@ -96,8 +95,6 @@ public without sharing class SLPAllCustomersHandler {
       //if the user is not an executive, only show that user's leads
       leadQuery += ' AND bs_Sales_ID__r.Id  =  \'' + profile.salesRepId +  '\' ';
     }    
-    if (leadId == null) {
-      //If no lead is selected show all of the leads
       leadQuery += '  AND (Status = \'' + 'Unfinished' + '\' ' ;
       leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' ';
       leadQuery += '  OR Status = \'' + 'Pre-Qualified' + '\' ' ;
@@ -105,12 +102,8 @@ public without sharing class SLPAllCustomersHandler {
       leadQuery += '  OR Status = \'' + 'Not Interested' + '\' ';
       leadQuery += '  OR Status = \'' + 'Unqualified' + '\' ' ;
       leadQuery += '  OR Status = \'' + 'Ready for Credit Check' + '\' )';
-    } else {
-      //if a lead is selected, query for that lead
-      leadQuery += '  AND Id  =  \'' + leadId +  '\' ';      
-    }
-    leadQuery += '    ORDER BY createdDate DESC, Name DESC'; 
-    //leadQuery += '    LIMIT 10';
+      leadQuery += '  ORDER BY createdDate DESC, Name DESC'; 
+      
     for(Lead leadRecord : Database.query(leadQuery)){
       leadList.add(leadRecord);
     }

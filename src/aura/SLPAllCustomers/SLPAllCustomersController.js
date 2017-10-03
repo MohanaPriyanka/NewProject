@@ -67,19 +67,15 @@
             if(helper.executeSearch(component, event, helper, searchText, "pendingApplications", "originalPendingApplications", "pendingApplicationsSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "pendingApplicationsSearchSelected", "applications", selectedTabs, doNotClearSelectionList);          
             }
-
             if (helper.executeSearch(component, event, helper, searchText, "loansInProcess", "originalLoansInProcess", "loansInProcessSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "loansInProcessSearchSelected", "customersInProcess", selectedTabs, doNotClearSelectionList);
             }
-
             if(helper.executeSearch(component, event, helper, searchText, "completedLoans", "originalCompletedLoans", "completedLoansSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "completedLoansSearchSelected", "completedCustomers", selectedTabs, doNotClearSelectionList);
             } 
-
             if(helper.executeSearch(component, event, helper, searchText, "declinedApplicants", "originalDeclinedApplicants", "declinedSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "declinedApplicantsSearchSelected", "declinedApplicants", selectedTabs, doNotClearSelectionList);
             }
-
             if (!searchSuccess) {
                 alert("No records found");
                 return;
