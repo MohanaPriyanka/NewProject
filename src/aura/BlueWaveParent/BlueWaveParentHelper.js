@@ -296,7 +296,6 @@
         component.set("v." + recordsAttribute, originalRecords);
         var records = component.get("v." + recordsAttribute);
         var searchableList = component.get("v." + searchableListAttribute);
-        var searchText = event.getParam("searchText");
         var noSearchResult = -1;
         var resultList = [];
         if (records != null && records.length > 0) {
