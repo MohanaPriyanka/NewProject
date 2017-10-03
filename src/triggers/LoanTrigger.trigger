@@ -16,7 +16,6 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
         LoanServicer servicer = new LoanServicer(Trigger.new, Trigger.oldMap, Trigger.IsInsert);
     
         if (Trigger.isInsert && Trigger.isBefore) {
-            loanHandler.mapLateCategory();
         }
 
         if (Trigger.isInsert && Trigger.isAfter) {
@@ -25,7 +24,6 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
         }
 
         if (Trigger.isUpdate && Trigger.isBefore) {
-            loanHandler.mapLateCategory();
             servicer.validateLoanChange();
         }
 
