@@ -1040,9 +1040,5 @@
         </div>
       </div>
     </aura:if>
-    <div>
-      <br></br>
-      <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
-    </div>
   </div>
 </aura:component>

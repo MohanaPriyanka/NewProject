@@ -59,11 +59,13 @@
     },                 
     
     executeSearch : function(component, event, helper) {   
+        debugger;
         var searchSuccess = false;
         var searchText = event.getParam("searchText");
         var doNotClearSelectionList = [];
         var selectedTabs = [];
-        if (searchText != "") {
+        console.log(searchText);
+        if (searchText != null) {
             if(helper.executeSearch(component, event, helper, searchText, "pendingApplications", "originalPendingApplications", "pendingApplicationsSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "pendingApplicationsSearchSelected", "applications", selectedTabs, doNotClearSelectionList);          
             }

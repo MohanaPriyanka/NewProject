@@ -476,11 +476,6 @@ public without sharing class SLPControllersTestclass {
         }
         update leadList;
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
@@ -555,11 +550,6 @@ public without sharing class SLPControllersTestclass {
         for (Lead leadRecord : leadList) {
             leadRecord.Unfinished_Lead__c = false;
             leadRecord.Status = 'Pending Information';
-        }
-        update leadList;
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
         }
         update leadList;
 
@@ -1047,28 +1037,6 @@ public without sharing class SLPControllersTestclass {
 
         System.runAs(partnerUser) {
             SLPCreditStatus.viewPreQualifiedRecords();
-        }
-        Test.stopTest();
-    }
-
-    @isTest static void testGetAnyUnseenRecordsExec() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
-        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
-        Test.startTest();
-
-        System.runAs(partnerUser) {
-            SLPCustomerHandler.getAnyUnseenLeads();
-        }
-        Test.stopTest();
-    }
-
-    @isTest static void testGetAnyUnseenRecordsUser() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
-        Test.startTest();
-
-        System.runAs(partnerUser) {
-            SLPCustomerHandler.getAnyUnseenLeads();
         }
         Test.stopTest();
     }
