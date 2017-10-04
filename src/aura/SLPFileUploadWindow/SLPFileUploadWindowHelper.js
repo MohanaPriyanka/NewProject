@@ -86,7 +86,6 @@
         var fileUploadPromise = self.uploadChunk(component, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStepPlusOne, numberOfFiles);
        	fileUploadPromise.then(
             $A.getCallback(function(result) {
-                console.log(result);
                 self.handlePromiseResult(component, result, fileInput, fr, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStepPlusOne, numberOfFiles, helper);
             }),
             $A.getCallback(function() {
@@ -98,7 +97,6 @@
     },    
 
     handlePromiseResult : function (component, result, fileInput, fr, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStep, numberOfFiles, helper) {
-	    console.log(result);
 	    var self = this;
 	    if (result === 'continueToNextFile' ) {
 	        self.saveFilesToServer(component, event, parentId, fileStep, fileInput, newFileName, fr, numberOfFiles, helper);
@@ -131,7 +129,6 @@
             } else {
                 descriptionValue = newFileName;
             }
-            console.log(descriptionValue);
             action.setParams({
     			parentId: parentId,
                 fileName: newFileName,
@@ -210,11 +207,9 @@
             if (parentId.substring(0,3) === '00Q') {
                 actionOne = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', true);
                 actionTwo = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', false);
-                console.log(parentId);
             } else if (oppId != undefined || oppId != NULL) {
                 actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
                 actionTwo = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', false);
-                console.log(parentId);
             } else {
                 $A.util.addClass(component.find("spinner"), 'noDisplay'); 
                 component.set("v.errorText", 'Error: Not Linked to a Lead or Opp');
