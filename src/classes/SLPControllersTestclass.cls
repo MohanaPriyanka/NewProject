@@ -486,7 +486,9 @@ public without sharing class SLPControllersTestclass {
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
+            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
@@ -566,12 +568,13 @@ public without sharing class SLPControllersTestclass {
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
+            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
     }
-
     @isTest static void testCustomerHandlerPartTwoExec() {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
 
@@ -605,8 +608,7 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
+
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
         }
