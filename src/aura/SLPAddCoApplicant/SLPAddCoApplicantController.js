@@ -71,7 +71,7 @@
     },
 
     doneRedirect : function(component, event, helper) {
-        window.location.href = "/slportal/s/slpcreditstatus";
+        window.location.href = "/slportal/s/slpdashboard";
     },
     
 })
