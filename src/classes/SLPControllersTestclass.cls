@@ -134,7 +134,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Managers',
             Importance__c = '1');
         insert partnerAlert;
@@ -171,7 +171,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Executives',
             Importance__c = '1');
         insert partnerAlert;
@@ -816,7 +816,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -860,7 +860,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -1202,4 +1202,3 @@ public without sharing class SLPControllersTestclass {
         System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
     }
 }
-
