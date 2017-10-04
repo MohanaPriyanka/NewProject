@@ -2,18 +2,24 @@
 	<aura:registerEvent name="searchEvent" type="c:BlueWaveSearchEvent"/>   
 	<div aura:id = "searchBar">
 		<div class="slds-form-element slds-lookup" data-select="single">
-			<label class="slds-form-element__label proximaNovaDataStream"><b>Search</b> &nbsp;
-			<c:BlueWaveInputToolTip popoverText="You can search any kind of text in the customer's record - i.e name, system cost, product, etc. Push enter to execute your search."/>
-			</label>
 			<div class="slds-form-element__control">
-				<div class="slds-input-has-icon slds-input-has-icon--right ">
-					<ui:inputText aura:id="searchInput"
-								  class="slds-lookup__search-input slds-input" 
-								  placeholder="Enter text"
-								  value=""
-								  change="{!c.searchEvent}"/>       
-					</div>       
-				</div>
-			</div> 
-		</div>  	
-	</aura:component>
+				<div class="slds-grid">
+				  	<div class="slds-col">
+						<ui:inputText aura:id="searchInput"
+								  	  		class="slds-lookup__search-input slds-input" 
+								  	 		  placeholder="Search"
+									  	    value=""
+								  	      keyup="{!c.searchEventOnEnter}"
+								  	      updateOn="keyup"/>				  	
+				 	</div>
+				  	<div class="slds-col slds-m-left_small">
+							<button aura:id="searchButton" onclick="{!c.searchEventOnClick}" class="slds-button slds-button_stateful slds-button_neutral slds-button--brand slds-m-top_xxx-small" aria-live="assertive">
+								<lightning:icon class="whiteIcon" iconName="utility:search" size="x-small"/>  
+							</button>				
+							<lightning:spinner aura:id="searchSpinner" class="noDisplay" variant="brand" size="small"/>							  							         
+						</div>				  	
+			    </div>
+			</div>					
+		</div> 
+	</div>  	
+</aura:component>

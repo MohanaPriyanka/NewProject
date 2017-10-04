@@ -1,2 +1,15 @@
-.THIS {
+ .THIS .whiteIcon svg{ 
+ 	fill: white; 
+ }
+.THIS .noDisplay {
+    display: none;
+}
+.THIS .slds-spinner_container {
+    position: absolute;
+    background-color: transparent;
+}
+.THIS .slds-spinner {
+	position: absolute;
+    left: 61%;
+    top: 50%;
 }
