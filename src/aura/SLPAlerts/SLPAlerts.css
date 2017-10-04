@@ -192,9 +192,14 @@
 	padding-top:1.5%;
 }
 
-.THIS .paddingLeft {
-	margin-left:5%;
+.THIS .paddingBoth {
+    margin-left:5%;
+    margin-right:5%;
 }
+.THIS .wordwrap {
+    word-wrap: break-word;
+}
+
 
 .THIS .center a {
     background-color: #216093  ;
