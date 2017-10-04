@@ -1,6 +1,7 @@
 ({
     //make it so the users tab defaults to where they left off.
     doInit : function(component, event, helper) {
+        component.set("v.loadingSpinner", true);
         helper.getLicenseType(component);
         var actionGetLoans = component.get("c.getAllCustomers");        
         actionGetLoans.setCallback(this,function(resp){ 
@@ -23,6 +24,7 @@
                 component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);               
                 helper.selectTab(component, 'applications'); 
                 helper.clearSearchSelections(component);   
+                component.set("v.loadingSpinner", false);                 
             }
             else {
                 $A.log("Errors", resp.getError());
@@ -59,13 +61,11 @@
     },                 
     
     executeSearch : function(component, event, helper) {   
-        debugger;
         var searchSuccess = false;
         var searchText = event.getParam("searchText");
         var doNotClearSelectionList = [];
         var selectedTabs = [];
-        console.log(searchText);
-        if (searchText != null) {
+        if (searchText != "") {
             if(helper.executeSearch(component, event, helper, searchText, "pendingApplications", "originalPendingApplications", "pendingApplicationsSearchableValues")) {
                 searchSuccess = helper.handleSearchResultDisplay(component, "pendingApplicationsSearchSelected", "applications", selectedTabs, doNotClearSelectionList);          
             }
@@ -86,9 +86,7 @@
                 helper.clearSearchSelections(component, doNotClearSelectionList);
             }
         } else {
-            component.set("v." + recordsAttribute, originalRecords);
-            helper.clearSearchSelections(component, null); 
-            this.changeTableToApplications(component, event, helper); 
+            helper.changeTable(component, "applications", "pendingApplications", "originalPendingApplications");
         }
     },    
 
@@ -127,16 +125,16 @@
             )                             
         }  
     },    
-    changeTableToCompletedCustomers : function(component, event, helper) {   
-        helper.changeTable(component, "completedCustomers", "completedLoans", "originalCompletedLoans");                  
+    changeTableToCompletedCustomers : function(component, event, helper) { 
+        helper.changeTable(component, "completedCustomers", "completedLoans", "originalCompletedLoans");    
     },    
 
     changeTableToCustomersInProcess : function(component, event, helper) {   
-        helper.changeTable(component, "customersInProcess", "loansInProcess", "originalLoansInProcess");                  
+        helper.changeTable(component, "customersInProcess", "loansInProcess", "originalLoansInProcess");                
     },      
 
     changeTableToApplications : function(component, event, helper) {   
-        helper.changeTable(component, "applications", "pendingApplications", "originalPendingApplications");                  
+        helper.changeTable(component, "applications", "pendingApplications", "originalPendingApplications");    
     },        
 
     changeTableToDeclinedApplicants : function(component, event, helper) {  
