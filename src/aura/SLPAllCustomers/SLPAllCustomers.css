@@ -10,8 +10,11 @@
 .THIS .noDisplay {
     display: none;
 }
-
-
 .THIS .slds-is-active {
     background-color: #DFDFE0;
+}
+.THIS .slds-spinner {
+	position: absolute;
+    left: 50%;
+    top: 150%;
 }

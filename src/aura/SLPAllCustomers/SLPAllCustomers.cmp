@@ -39,6 +39,8 @@
   <aura:attribute name="sortArrow" type="Boolean" />
   <aura:attribute name="sortField" type="String"/>
   <aura:attribute name="selectedTable" type="String"/>  
+  <aura:attribute name="loadingSpinner" type="Boolean"/>  
+
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
       <c:BlueWaveInputToolTip popoverText="Applications consist of all applicants who have had an application sent to them or have begun an application, but have not yet been Pre-Qualified. Double click to view all.">
@@ -71,7 +73,7 @@
       </c:BlueWaveInputToolTip>            
     </ul>    
   </div>  
-  <div class="box">
+  <div aura:id="customerTables" class="box">
   <aura:if isTrue="{!or(v.selectedTable == 'applications', v.pendingApplicationsSearchSelected)}">  
     <c:BlueWaveDataTable name = "BWDataTableApplications"
                          headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
@@ -127,6 +129,12 @@
                          defaultButtonEvents="addCoSigner"/>
  <br></br>
  </aura:if>  
+  <aura:if isTrue="{!v.loadingSpinner}">  
+    <div role="status" class="slds-spinner slds-spinner_medium">
+      <div class="slds-spinner__dot-a"></div>
+      <div class="slds-spinner__dot-b"></div>
+    </div>
+  </aura:if>  
  </div>  
  <div aura:id="popUpCoAppWindow" class="">
     {!v.body}
