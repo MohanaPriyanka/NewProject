@@ -397,7 +397,7 @@
         } else {
            var parentId = oppId;
         }
-        helper.openUploadWindow(component,"hideAndFileOption","Upload Miscellaneous Documents", parentId, component.get("v.equipmentUpdate"), "Additional Doc", "");
+        helper.openUploadWindow(component,"hideAndFileOption","Upload Documents", parentId, component.get("v.equipmentUpdate"), "Additional Doc", "");
     },
 
     handleTaskAction : function(component, event, helper) {

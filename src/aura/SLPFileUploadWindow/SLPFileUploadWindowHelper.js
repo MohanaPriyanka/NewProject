@@ -10,19 +10,17 @@
   	saveFileToList : function(component) {
     	var self = this;
         self.removeErrorMessaging(component);
-        self.greyOutSelection(component);
         var fileInput = component.find("file").getElement();
      	var numberOfFiles = fileInput.files.length; 
      	var MAXFILE_SIZE = 4500000;
      	var fileStep;
         for (fileStep = 0; fileStep < numberOfFiles; fileStep++) {
        	    var file = fileInput.files[fileStep];
-            if (file === undefined) {
-                component.set("v.errorText", 'Please Select a File');
+            if (file === undefined || component.get("v.fileName") == 'Select File Type') {
+                component.set("v.errorText", 'Please Select a File Type');
                 self.addErrorMessaging(component);
                 return;
-            }
-            else if (file.size > MAXFILE_SIZE) {
+            } else if (file.size > MAXFILE_SIZE) {
                 component.set("v.errorText", 'File size cannot exceed ' + MAXFILE_SIZE + ' bytes.\n' +
                   'Selected file size: ' + file.size);
                 self.addErrorMessaging(component);
@@ -33,6 +31,7 @@
 			component.get("v.fileReader").push(fr);
             component.get("v.fileList").push(file);
       	}
+        self.greyOutSelection(component);
         var newFileList = component.get("v.fileList");
         component.set("v.fileList", newFileList);
         var numberOpen = newFileList.length;
@@ -43,6 +42,7 @@
   	},
   
   	removeFileFromList : function(component, fileToRemove) {
+        var self = this;
         var newList= component.get("v.fileList");
         var newListReader = component.get("v.fileReader");
         var numberOfFiles = newList.length; 
@@ -58,6 +58,10 @@
         newListReader.splice(toDeleteLocation, 1);
         component.set("v.fileList", newList);
         component.set("v.fileReader", newListReader);
+        var newFileList = component.get("v.fileList");
+        if(newFileList === undefined || newFileList.length === 0){
+           self.unGreyOutSelection(component);       
+        } 
   	},
 
     saveFilesToServer : function(component, event, parentId, fileStep, fileInput, newFileName, fr, numberOfFiles, helper) {
@@ -77,12 +81,11 @@
         fileContents = fileContents.substring(dataStart);
         var fromPos = 0;
         var toPos = Math.min(fileContents.length, fromPos + CHUNKFILE_SIZE);
-        var attachID = 'none';
+        var attachID = '';
         var fileStepPlusOne = fileStep + 1;
         var fileUploadPromise = self.uploadChunk(component, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStepPlusOne, numberOfFiles);
        	fileUploadPromise.then(
             $A.getCallback(function(result) {
-                console.log(result);
                 self.handlePromiseResult(component, result, fileInput, fr, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStepPlusOne, numberOfFiles, helper);
             }),
             $A.getCallback(function() {
@@ -94,10 +97,9 @@
     },    
 
     handlePromiseResult : function (component, result, fileInput, fr, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStep, numberOfFiles, helper) {
-	    console.log(result);
 	    var self = this;
 	    if (result === 'continueToNextFile' ) {
-	        self.saveFilesToServer(component, event, parentId, fileStep, fileInput, newFileName, fr, numberOfFiles);
+	        self.saveFilesToServer(component, event, parentId, fileStep, fileInput, newFileName, fr, numberOfFiles, helper);
 	    } else if (result === 'lastFileCompleted' ) {
 			self.fileUploadSuccess(component, parentId, newFileName, helper);
 	    } else if (result != undefined) {
@@ -119,7 +121,7 @@
     uploadChunk : function (component, newFileName, file, fileContents, parentId, attachID, fromPos, toPos, fileStep, numberOfFiles) {
         return new Promise(function(resolve, reject) {
             var CHUNKFILE_SIZE = 400000; 
-            var action = component.get("c.saveTheChunk"); 
+            var action = component.get("c.saveTheChunkWithDescription"); 
             var chunk = fileContents.substring(fromPos, toPos);
             var descriptionValue = file.name;
             if (newFileName === 'Interconnection Documentation') {
@@ -168,92 +170,73 @@
     },
       
     fileUploadSuccess : function (component, parentId, fileName, helper) {
-        $A.util.addClass(component.find("spinner"), 'noDisplay'); 
-        var self = this;
         var newDate = component.get("v.dateValue");
         var oppId = component.get("v.oppId");
+        var self = this;
+        var actionOne;
+        var actionTwo;
+        var actionThree;
+        var actionFour;
 
+        // if the file type needs something specific, do it here, otherwise update the update dummy
         if (fileName === 'Mechanical Installation Documentation') {
-            var mechDate = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Mechanical_Installation_Date__c', newDate);
-            mechDate.then(
-                $A.getCallback(function(result) {
-                    var mechCheck = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Mechanically_Installed__c', true);
-                })
-            )
+            actionOne = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Mechanical_Installation_Date__c', newDate);
+            actionTwo = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Mechanically_Installed__c', true);
             if (oppId != undefined || oppId != NULL) {
-                var oppMechDate = self.saveObject(component, oppId, 'Opportunity', 'Mechanical_Install_Date_From_RE__c', newDate);
-                oppMechDate.then(
-                    $A.getCallback(function(result) {
-                        var oppMechCheck = self.saveObject(component, oppId, 'Opportunity', 'Mechanically_Installed__c', true);
-                    })
-                )
+                actionThree = helper.saveSObject(component, oppId, 'Opportunity', 'Mechanical_Install_Date_From_RE__c', newDate);
+                actionFour = helper.saveSObject(component, oppId, 'Opportunity', 'Mechanically_Installed__c', true);
             }
         } else if (fileName === 'Interconnection Documentation') {
-            var interDate = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate);
-            interDate.then(
-                $A.getCallback(function(result) {
-                    console.log(interDate);
-                    var interCheck = self.saveObject(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true);
-                })
-            )
+            actionOne = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate);
+            actionTwo = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true);
             if (oppId != undefined || oppId != NULL) {
-                var oppInterDate = self.saveObject(component, oppId, 'Opportunity', 'Interconnection_Date_From_RE__c', newDate);
-                oppInterDate.then(
-                    $A.getCallback(function(result) {
-                        var oppInterCheck = self.saveObject(component, oppId, 'Opportunity', 'Interconnected__c', true);
-                    })
-                )
+                actionThree = helper.saveSObject(component, oppId, 'Opportunity', 'Interconnection_Date_From_RE__c', newDate);
+                actionFour = helper.saveSObject(component, oppId, 'Opportunity', 'Interconnected__c', true);
             } 
         } else if (fileName === 'Sales Agreement') {
-            var salesCheck = self.saveObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed');
-            salesCheck.then(
-                $A.getCallback(function(result) {
-                    var salesDummy = self.saveObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
-                })
-            )
-        } else if (fileName === 'MCEC Technical Confirmation') { 
-            if (parentId.substring(0,3) === '00Q') {
-                var techConfirm = self.saveObject(component, parentId, 'Lead', 'Update_Dummy__c', true);
-            }
+            if (oppId != undefined || oppId != NULL) {
+                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed');
+                actionTwo = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
+                actionThree = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', false);
+            } 
         } else if (fileName === 'Home Owners Insurance') {
-            var homeOwners = self.saveObject(component, parentId, 'Opportunity', 'Homeowner_s_Insurance_Status__c', 'Received: in QC');
-        }
-
-        $A.util.removeClass(component.find("successText"), 'noDisplay'); 
-        $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
-        $A.util.addClass(component.find("headerText"), 'noDisplay'); 
-        $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
-        $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
+            if (oppId != undefined || oppId != NULL) {
+                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Homeowner_s_Insurance_Status__c', 'Received: in QC');
+            } 
+        } else { 
+            if (parentId.substring(0,3) === '00Q') {
+                actionOne = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', true);
+                actionTwo = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', false);
+            } else if (oppId != undefined || oppId != NULL) {
+                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
+                actionTwo = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', false);
+            } else {
+                $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+                component.set("v.errorText", 'Error: Not Linked to a Lead or Opp');
+                self.addErrorMessaging(component);
+                $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
+                return;
+            }
+        } 
+        actionOne.then(
+            $A.getCallback(function(result) {
+                $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+                $A.util.removeClass(component.find("successText"), 'noDisplay'); 
+                $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
+                $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
+                $A.util.addClass(component.find("headerText"), 'noDisplay'); 
+                $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
+                $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
+            }) ,
+            $A.getCallback(function() {
+                $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+                component.set("v.errorText", 'File Uploaded without Updating Record');
+                self.addErrorMessaging(component);
+                $A.util.addClass(component.find("saveButton"), 'noDisplay');
+                return;
+            })
+        );
     },
-
-  	// this is the exact same as the BlueWave Parent - ideally this section will be removed. 
-    saveObject : function(component, id, objectName, field, value) {
-      return new Promise(function(resolve, reject) {
-          var sobj = new Object();
-          sobj = {'sobjectType': objectName,
-                  'Id': id};
-          sobj[field] = value;
-          var action = component.get("c.updateSObject");
-          action.setParams({"sobj": sobj});
-          action.setCallback(this, function(resp) {
-              if (resp.getState() === "SUCCESS") {3
-                  var retVal = resp.getReturnValue();
-                  resolve(retVal);
-              } else if (resp.getState() === "ERROR") {
-                  var appEvent = $A.get("e.c:ApexCallbackError");
-                  appEvent.setParams({"className" : "BlueWaveParentHelper",
-                                      "methodName" : "updateSObject",
-                                      "errors" : resp.getError()});
-                  appEvent.fire();
-                  reject(resp.getError());
-              } else {
-                  reject(Error("Unknown error"));
-              }
-          });
-          $A.enqueueAction(action);
-      });
-    }, 
     
     fileUploadError : function (component) {
         component.set("v.errorText", "There has been an error uploading your document.");
@@ -272,6 +255,12 @@
     greyOutSelection : function(component) {
         if (component.get("v.dateLabel") === 'hideAndFileOption') {
             component.find("inputFileType").set("v.disabled","true");
+        }
+    },
+
+    unGreyOutSelection : function(component) {
+        if (component.get("v.dateLabel") === 'hideAndFileOption') {
+            component.find("inputFileType").set("v.disabled","false");
         }
     },
     
