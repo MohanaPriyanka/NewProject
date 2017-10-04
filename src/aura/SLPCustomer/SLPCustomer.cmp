@@ -111,7 +111,7 @@
         <ui:button aura:id="additionalFileUpload"
                    class="slds-button--brand"
                    labelClass="proximaNova95"
-                   label="Upload Files"
+                   label="Upload Applicant Files"
                    press="{!c.openAdditionalFileUpload}"/>
         <ui:button aura:id="customerInformationButton"
                    class="slds-button--brand"

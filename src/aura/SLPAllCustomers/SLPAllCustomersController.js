@@ -112,7 +112,7 @@
             case 'addCoSigner':       
                $A.createComponent(
                   "c:SLPAddCoApplicant", 
-                   {"mainApplicant" : record.Id}, 
+                   {"mainApplicant" : record}, 
                 function(newButton, status, errorMessage){
                     if (status === "SUCCESS") {
                         var body = component.get("v.body");
