@@ -223,6 +223,10 @@
     //this makes it easier to search through as the system only has to check if each value in the map holds the text, if so, return the keyValue.
     setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute, runSetSearchable) {   
         if (runSetSearchable) {
+            var i;
+            var j;
+            var l;
+            var m;            
             var searchObject = {};
             var records = component.get("v." + recordsAttribute);
             component.set("v." + originalRecordsAttribute, records);
