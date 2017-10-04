@@ -10,6 +10,7 @@
         var list = component.get("v." + attribute);
         var updatedList = list.slice();
         var removedList = [];
+        var i;
         if (profileSecurityMap != null) {
             if (profileSecurityMap[licenseType] != null) {
                 var privateFields = profileSecurityMap[licenseType];
@@ -34,6 +35,7 @@
         var headerMap = {};
         var headerLabels = component.get("v.headerLabels");
         var fieldNames = component.get("v.recordFieldNames");
+        var i;
 
         for (i=0; i < headerLabels.length; i++) {
             var label = headerLabels[i];
@@ -44,6 +46,7 @@
 
 	handleNullValuesInSort : function(component, recordList, removedList, sortField) {
         var updatedList = recordList.slice();
+        var i;
         for (i=0; i < recordList.length; i++) {
             var record = recordList[i];
             var index = updatedList.indexOf(record);            
@@ -69,6 +72,7 @@
 
 	removeItemFromList : function(index, updatedList, removedList) {
 		var currentRemovedList = updatedList.splice(index, 1);
+        var j;
 		if (currentRemovedList.length > 0) {
 			for (j=0; j < currentRemovedList.length; j++) {
 				removedList.push(currentRemovedList[j]);
@@ -101,6 +105,7 @@
 	},	
 
 	addNullValuesToRecordList : function(component, recordList, removedList, currentOrder) {
+        var i;
         if (removedList.length > 0) {
         	for (i=0; i < removedList.length; i++) {
         		if (currentOrder) {
