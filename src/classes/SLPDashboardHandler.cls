@@ -69,7 +69,7 @@ public without sharing class SLPDashboardHandler {
     public static List<Partner_Alert__c> getPartnerAlerts() {
         List<Partner_Alert__c> partnerAlertList = new List<Partner_Alert__c>();
         Date today = Date.today();
-        for (Partner_Alert__c partnerAlert : [SELECT Id, Name, Body__c, Importance__c, Active__c, Date__c, 
+        for (Partner_Alert__c partnerAlert : [SELECT Id, Name, Importance__c, Active__c, Date__c, Alert_Body__c, 
                                                   (SELECT Id, Partner__r.Name, Partner__r.Id, Partner_Alert__r.Name, Sales_Representative__r.Id
                                                   FROM Partner_Alert_Filters__r
                                                   WHERE Acknowledged__c = false

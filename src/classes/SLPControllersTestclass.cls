@@ -134,7 +134,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Managers',
             Importance__c = '1');
         insert partnerAlert;
@@ -171,7 +171,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Executives',
             Importance__c = '1');
         insert partnerAlert;
@@ -484,12 +484,9 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
@@ -528,8 +525,6 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
         }
@@ -569,12 +564,9 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
@@ -822,7 +814,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -866,7 +858,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -1083,6 +1075,11 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
 
+        SLPortal_Settings__c portalSetting = new SLPortal_Settings__c(  Name='SLPortal Settings',
+            SREC_Opt_In_Quarters__c= 'Q1 2017,Q2 2017,Q3 2017,Q4 2017,Q1 2018,Q2 2018',
+            Types_of_Documents_Available_for_Upload__c='Paystub, Tax Return (2015), MCEC Technical Confirmation, Home Owners Insurance');
+        insert portalSetting;
+
         Residential_Equipment__c equipment = new Residential_Equipment__c(Name = 'testEquipment', OwnerId = partnerUser.Id);
         insert equipment;
 
@@ -1097,6 +1094,7 @@ public without sharing class SLPControllersTestclass {
         Test.startTest();
 
         System.runAs(partnerUser) {
+            SLPFileHandler.possibleFileTypes();
             SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
             SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
             List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
