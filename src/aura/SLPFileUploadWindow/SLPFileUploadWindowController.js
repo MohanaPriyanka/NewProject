@@ -1,9 +1,12 @@
 ({    
     doInit : function(component, event, helper) {
-        var actionGetDocsAvailable = component.get("c.possibleFileTypes");
+        var actionGetDocsAvailable = component.get("c.getSLPortalCustomSetting");
         actionGetDocsAvailable.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
-                component.set("v.fileTypes", resp.getReturnValue());
+                var slpSettings = resp.getReturnValue();
+                var customSetting = slpSettings[0].Types_of_Documents_Available_for_Upload__c; 
+                var docList = customSetting.split(',');
+                component.set("v.fileTypes", docList);
             } else {
                 $A.log("Errors", resp.getError());
             }
@@ -32,9 +35,9 @@
         	}
         }
         helper.removeErrorMessaging(component);
-        var parentId = component.get("v.fileParentId");  // record to link to   
-        var fileInput = component.get("v.fileList"); //file list
-        var newFileName = component.get("v.fileName"); // 'mechanical install'
+        var parentId = component.get("v.fileParentId");  
+        var fileInput = component.get("v.fileList"); 
+        var newFileName = component.get("v.fileName"); 
         var fr = component.get("v.fileReader");
         var numberOfFiles = fr.length; 
         helper.saveFilesToServer(component, event, parentId, 0, fileInput, newFileName, fr, numberOfFiles, helper);

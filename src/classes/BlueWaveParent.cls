@@ -3,7 +3,7 @@
  * Description: Controller for BlueWaveParent super component that can be used for all
  *              custom lightning components
  *
- * Tested By: LoanUnderwritingTest
+ * Tested By: LoanUnderwritingTest / SLPControllersTestclass
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
@@ -11,6 +11,7 @@ public without sharing class BlueWaveParent {
 
     @AuraEnabled 
     public static void updateSObject(SObject sobj) {
+       system.debug(sobj);
         update sobj;
     }
 
@@ -35,29 +36,39 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled
-    public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) {
+    public static List<SLPortal_Settings__c> getSLPortalCustomSetting() { 
+        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
+        return slpSettings;
+    }
+
+    @AuraEnabled
+    public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
         Attachment a = new Attachment();
         a.parentId = parentId;
- 
         a.Body = EncodingUtil.base64Decode(base64Data);
         a.Name = fileName;
         a.ContentType = contentType;
-        
+        a.Description = description;
         insert a;
-        
         return a.Id;
     }
 
     @AuraEnabled
     public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) {
+        String description = '';
+        Id fileUploaded = saveTheChunkWithDescription(parentId, fileName, base64Data, contentType, description, fileId);
+        return fileUploaded;
+    }
+
+    @AuraEnabled
+    public static Id saveTheChunkWithDescription(Id parentId, String fileName, String base64Data, String contentType, String description, String fileId) {
         if (fileId == '') {
-            fileId = saveTheFile(parentId, fileName, base64Data, contentType);
+            fileId = saveTheFile(parentId, fileName, base64Data, contentType, description);
         } else {
             appendToFile(fileId, base64Data);
         }
-        
         return Id.valueOf(fileId);
     }    
 
@@ -70,7 +81,7 @@ public without sharing class BlueWaveParent {
             WHERE Id = :fileId
             ];
         
-     	String existingBody = EncodingUtil.base64Encode(a.Body);
+        String existingBody = EncodingUtil.base64Encode(a.Body);
         a.Body = EncodingUtil.base64Decode(existingBody + base64Data); 
         
         update a;

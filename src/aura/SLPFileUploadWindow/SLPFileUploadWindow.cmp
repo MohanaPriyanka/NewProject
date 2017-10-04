@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm"  controller="SLPFileHandler" access="global">    
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm"  controller="BlueWaveParent" access="global">    
 <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 <aura:attribute name="dateLabel" type="String" default="Date:"/>
 <aura:attribute name="dateValue" type="Date" default=""/>
@@ -36,6 +36,7 @@
                               class="slds-input"
                               disabled=""
                               value="{!v.fileName}">
+                  <ui:inputSelectOption text="Select File Type" label="Select File Type"/> 
                   <aura:iteration items="{!v.fileTypes}" var="fileNameOption">
                     <ui:inputSelectOption text="{!fileNameOption}" label="{!fileNameOption}"/> 
                   </aura:iteration>

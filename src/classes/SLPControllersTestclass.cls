@@ -47,6 +47,7 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecord.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='tropicole34@aol.com');
+        Insert userRecord;
 
         User executiveRecord = new User(
             FirstName = 'Executive',
@@ -63,7 +64,7 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecordExec.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='colematthewswain@gmail.com');
-        Util.insertSobjs(new List<User>{userRecord, executiveRecord});
+        Insert executiveRecord;
         Test.stopTest();
     }
 
@@ -1102,14 +1103,16 @@ public without sharing class SLPControllersTestclass {
         Test.startTest();
 
         System.runAs(partnerUser) {
-            SLPFileHandler.possibleFileTypes();
-            SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
-            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
-            List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
-            List<Attachment> recordedFile = SLPFileHandler.getRecordFiles(equipment.Id);
-            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', describedFile.get(0).Id);
-            System.assertEquals(describedFile.get(0).Description, 'PTO Documentation');
-            System.assertEquals(recordedFile.get(0).Description, 'PTO Documentation');
+            List<SLPortal_Settings__c> customSetting = BlueWaveParent.getSLPortalCustomSetting();
+            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', '');
+            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', newFileId);
+
+            List<Attachment> attachList = [SELECT Id, Body
+                                            FROM Attachment
+                                            WHERE Id = : newFileId];
+
+            System.Assert(attachList.size()>0);
+            System.AssertEquals(customSetting.size(), 1);
         }
     }
 
