@@ -19,7 +19,7 @@ public with sharing class ProductAssignmentHandler {
     public List<Product2> getProductRecords(){
        List<Product2> productList = new List<Product2>();                                   
         //query for all of the products that are active | NOTE: will need to add queried fields as new product variations come into the system. Look for a way to return all fields.
-        for(Product2 productRecord : [SELECT Id, Name, Program__c,IsActive, Loan_Financing_Fee_Terms__c, Loan_Term__c, Technology_Platform_Fee__c,
+        for(Product2 productRecord : [SELECT Id, Name, Program__c,IsActive, Loan_Financing_Fee_Terms__c, Loan_Term__c,
                                         Product_Type__c, State__c, Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c
                                         FROM Product2 
                                         WHERE isActive = TRUE]){
@@ -62,9 +62,6 @@ public with sharing class ProductAssignmentHandler {
                                     //assign the product to the lead
                                     if(leadRecord.DOER_Solar_Loan__c == true && productRecord.Program__c == 'MSLP'){
                                         leadRecord.Product__c = productRecord.Id;
-                                        if (productRecord.Technology_Platform_Fee__c != 0 && productRecord.Technology_Platform_Fee__c != null){
-                                            LeadRecord.Technology_Platform_Fee__c = (productRecord.Technology_Platform_Fee__c)/100 * leadRecord.Requested_Loan_Amount__c;
-                                        } else {LeadRecord.Technology_Platform_Fee__c = 0;}
                                         if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
                                             leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.Requested_Loan_Amount__c * .05, 1250);
                                             //leadRecord.Loan_Principal__c = leadRecord.Requested_Loan_Amount__c + leadRecord.Loan_Financing_Fee__c;
@@ -77,10 +74,7 @@ public with sharing class ProductAssignmentHandler {
                                         }
                                     }
                                     if (leadRecord.DOER_Solar_Loan__c == false && productRecord.Program__c != 'MSLP'){
-                                        leadRecord.Product__c = productRecord.Id;  
-                                        if (productRecord.Technology_Platform_Fee__c != 0 && productRecord.Technology_Platform_Fee__c != null){
-                                            LeadRecord.Technology_Platform_Fee__c = (productRecord.Technology_Platform_Fee__c)/100 * leadRecord.Requested_Loan_Amount__c;
-                                        } else {LeadRecord.Technology_Platform_Fee__c = 0;}      
+                                        leadRecord.Product__c = productRecord.Id;      
                                         if(productRecord.Loan_Financing_Fee_Terms__c == 'Maximum (5%, $1,250)'){
                                             leadRecord.Loan_Financing_Fee__c = Math.Max(leadRecord.Requested_Loan_Amount__c * .05, 1250);
                                             //leadRecord.Loan_Principal__c = leadRecord.Requested_Loan_Amount__c + leadRecord.Loan_Financing_Fee__c;
