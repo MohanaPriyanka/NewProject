@@ -9,6 +9,7 @@
     },
 
     selectTabs: function(component, selectedTabs) {
+        var k;
         $A.util.removeClass(component.find('customersInProcess'), 'slds-is-active');   
         $A.util.removeClass(component.find('applications'), 'slds-is-active');   
         $A.util.removeClass(component.find('declinedApplicants'), 'slds-is-active');   
