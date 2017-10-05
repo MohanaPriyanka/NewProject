@@ -1,7 +1,8 @@
 ({
     searchEventOnClick : function(component, event, helper) {    
         $A.util.addClass(component.find('searchButton'), "noDisplay");   
-        $A.util.removeClass(component.find('searchSpinner'), "noDisplay");  
+        $A.util.removeClass(component.find('searchSpinner'), "noDisplay"); 
+        $A.util.addClass(component.find('clearSearchButton'), "noDisplay");                   
     	setTimeout(function() {
 	        var searchText = component.find('searchInput').get("v.value");
 	        var searchEvt = $A.get("e.c:BlueWaveSearchEvent");
@@ -15,7 +16,8 @@
     searchEventOnEnter : function(component, event) {    
 		if (event.getParams().keyCode == 13) {    	
 	        $A.util.addClass(component.find('searchButton'), "noDisplay");   
-	        $A.util.removeClass(component.find('searchSpinner'), "noDisplay");   
+	        $A.util.removeClass(component.find('searchSpinner'), "noDisplay");  
+	        $A.util.addClass(component.find('clearSearchButton'), "noDisplay");          
 	    	setTimeout(function() {
 		        var searchText = component.find('searchInput').get("v.value");
 		        var searchEvt = $A.get("e.c:BlueWaveSearchEvent");
