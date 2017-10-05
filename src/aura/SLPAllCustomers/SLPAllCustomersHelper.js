@@ -20,6 +20,7 @@
     },
 
     clearSearchSelections: function(component, selectionsToNotClear) {
+        var j;
         component.set("v.completedLoansSearchSelected", false);
         component.set("v.loansInProcessSearchSelected", false);
         component.set("v.pendingApplicationsSearchSelected", false);
