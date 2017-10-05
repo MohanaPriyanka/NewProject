@@ -15,7 +15,8 @@
     }, 
 
     callApexMethod : function(component, methodName, setAttribute, setStorable) {
-        var action = component.get("c." + methodName);        
+        var action = component.get("c." + methodName);   
+        var i;     
         action.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
                for (i=0; i<setAttribute.length; i++) {
@@ -108,6 +109,7 @@
     // Assumes callbackFunc takes a component as an argument - not sure if that will always work...
     uploadFiles : function(component, files, parentId, callbackFunc) {
         ltg = this;
+        var i;
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
                 if (file.size > ltg.MAX_FILE_SIZE) {
@@ -302,6 +304,8 @@
         var searchableList = component.get("v." + searchableListAttribute);
         var noSearchResult = -1;
         var resultList = [];
+        var i;
+        var j;
         if (records != null && records.length > 0) {
             for (i=0; i<records.length; i++) {
                 var record = records[i];
