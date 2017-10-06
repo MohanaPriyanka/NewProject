@@ -43,28 +43,28 @@
 
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
-      <c:BlueWaveInputToolTip popoverText="Applications consist of all applicants who have had an application sent to them, and/or have begun an application, and are now pending review or are pre-qualified. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Applicants who have begun an application but have not yet been qualified or declined.">
         <li aura:id="applications" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToApplications}" role="tab">
             <b>Applications</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>         
-      <c:BlueWaveInputToolTip popoverText="Customers in process consist of all qualified customers that have not been fully disbursed and still require additional action. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Qualified customers that have not been fully disbursed and require additional action.">
         <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
             <b>In Process</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>   
-      <c:BlueWaveInputToolTip popoverText="Completed customers consist of all customers that have been fully processed and are complete. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Customers that have been fully disbursed and are complete.">
         <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
             <b>Completed</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>      
-      <c:BlueWaveInputToolTip popoverText="Declined customers consist of all customers that did not meet BlueWave's credit criteria. These customers can still have a Co-Signer added to their application. Double click to view all.">
+      <c:BlueWaveInputToolTip popoverText="Customers that did not meet BlueWave's credit criteria. They can add a Co-Signer to their application if they haven't already.">
         <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
             <b>Declined</b>
