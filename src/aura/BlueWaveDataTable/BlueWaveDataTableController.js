@@ -5,8 +5,9 @@
         var records = component.get("v.tableRecords"); 
         component.set("v.originalRecords", records);
         component.set("v.sortedRecords", records);
-        helper.setRecordCount(component, records);
-
+        if (component.get("v.recordsPerPage") < component.get("v.originalRecords").length) {
+            helper.setRecordCount(component, records);
+        }
         $A.util.addClass(component.find('previousPageButton'), 'noDisplay');   
         $A.util.removeClass(component.find('tableNavCenterGridclass'), 'center');               
         $A.util.addClass(component.find('tableNavCenterGridclass'), 'centerWithoutPreviousPage');      
