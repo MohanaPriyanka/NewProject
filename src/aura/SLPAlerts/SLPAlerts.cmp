@@ -60,32 +60,32 @@
                      press="{!c.closeAlert}"/>
         </div>
       </div>
+    </div>
 
-      <div aura:id = "alertsTable" class="main2"> 
-        <br></br>
-        <div>
-          <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
-            <thead>
-              <tr class="slds-text-heading--label proximaNovaDataBlue " >
-                <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>   
-                <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                   
-              </tr>
-            </thead>
-            <tbody>
-              <aura:iteration items="{!v.partnerAlerts}" var="alert">
-                <tr>
-                  <th scope="row"> <b>{!alert.Name}</b> </th>
-                  <th scope="row"> <b>{!alert.Date__c}</b> </th>                                      
-                  <th><ui:button label="View"
-                                 class="{!alert.Id}"
-                                 labelClass="label"
-                                 press="{!c.openAlert}"/>   </th>                       
-                </tr>                    
-              </aura:iteration>          
-            </tbody>
-          </table>
-        </div>
-      </div>   
-    </div>         
-  </div>
+    <div aura:id = "alertsTable" class="main2"> 
+      <br></br>
+      <div>
+        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+          <thead>
+            <tr class="slds-text-heading--label proximaNovaDataBlue " >
+              <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                   
+            </tr>
+          </thead>
+          <tbody>
+            <aura:iteration items="{!v.partnerAlerts}" var="alert">
+              <tr>
+                <th scope="row"> <b>{!alert.Name}</b> </th>
+                <th scope="row"> <b>{!alert.Date__c}</b> </th>                                      
+                <th><ui:button label="View"
+                               class="{!alert.Id}"
+                               labelClass="label"
+                               press="{!c.openAlert}"/>   </th>                       
+              </tr>                    
+            </aura:iteration>          
+          </tbody>
+        </table>
+      </div>
+    </div>   
+  </div>         
 </aura:component>
