@@ -210,6 +210,6 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static SLPortal_Settings__c getSLPortalSettings() {
-    return SLPortal_Settings__c.getall().values()[0];
+      return BlueWaveParent.getSLPortalCustomSetting()[0];
   }
 }
