@@ -13,28 +13,7 @@
                 $A.log("Errors", resp.getError());
             }
         });    
-        $A.enqueueAction(actionLicenseType);
-
-        var actionGetUnseenPreQualRecords = component.get("c.getAnyUnseenLeads");        
-        actionGetUnseenPreQualRecords.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                if (resp.getReturnValue() == true) {
-                    var pendingCustomersButton = component.find("slpcreditstatus");   
-                    pendingCustomersButton.set("v.iconName","utility:record");
-                    $A.util.addClass(pendingCustomersButton, "animated pulse ");   
-
-                    pendingCustomersButton.set("v.iconPosition","right");                 
-                } else {
-                    var pendingCustomersButton = component.find("slpcreditstatus");                       
-                    pendingCustomersButton.set("v.iconName",null);
-                    pendingCustomersButton.set("v.iconPosition",null);                    
-                }
-            }    
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionGetUnseenPreQualRecords);                  
+        $A.enqueueAction(actionLicenseType);              
     },
 
     hideDisplay : function(component, event, helper) {
@@ -63,10 +42,4 @@
             $A.util.addClass(modalBackground, 'slds-backdrop--hide');    
         }
     },  
-         
-    setPendingCustomersAlert: function(component, event, helper) {
-        var pendingCustomersButton = component.find("slpcreditstatus");      
-        pendingCustomersButton.set("v.iconName", null);
-        pendingCustomersButton.set("v.iconPosition", null)                 
-    },    
 })

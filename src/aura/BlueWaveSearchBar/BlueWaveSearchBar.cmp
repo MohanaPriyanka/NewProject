@@ -1,0 +1,30 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extensible="true" extends="c:BlueWaveParent" access="global">
+  <aura:registerEvent name="searchEvent" type="c:BlueWaveSearchEvent"/>   
+  <div aura:id = "searchBar">
+    <div class="slds-form-element slds-lookup" data-select="single">
+      <div class="slds-form-element__control">
+	<div class="slds-grid">
+	  <div class="slds-col">
+	    <ui:inputText   aura:id="searchInput"
+			    class="slds-lookup__search-input slds-input" 
+			    placeholder="Search"
+			    value=""
+			    keyup="{!c.searchEventOnEnter}"
+			    updateOn="keyup"/>				  	
+	  </div>
+	  <div class="slds-col slds-m-left_small">
+	    <a aura:id="clearSearchButton" onclick="{!c.clearSearch}" class="noDisplay">
+	      <lightning:icon class="slds-m-right_x-small" iconName="utility:clear" size="xx-small"/> 
+	    </a>
+	    <button aura:id="searchButton" onclick="{!c.searchEventOnClick}" 
+                    class="slds-button slds-button_stateful slds-button_neutral slds-button--brand slds-m-top_xxx-small" 
+                    aria-live="assertive">
+	      <lightning:icon class="whiteIcon" iconName="utility:search" size="x-small"/>  
+	    </button>				
+	    <lightning:spinner aura:id="searchSpinner" class="noDisplay" variant="brand" size="small"/>
+	  </div>			
+	</div>
+      </div>					
+    </div> 
+  </div>  	
+</aura:component>

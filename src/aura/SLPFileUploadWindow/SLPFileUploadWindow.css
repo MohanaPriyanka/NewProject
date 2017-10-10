@@ -35,10 +35,6 @@
   color: #FF0000;
 }
 
-.THIS .fortyWidth {
- 	width: 40%;
-}
-
 .THIS .border {
     border-style: solid;
     border-width: 6px;
@@ -58,6 +54,11 @@
     margin-left:2%;
     margin-right:2%;
     margin-bottom:5%;
+}
+
+.THIS .removeButton {
+     color:#FFFFFF;
+     float:left;
 }
 
 .THIS .closeButton {

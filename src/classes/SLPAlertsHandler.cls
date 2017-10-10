@@ -6,7 +6,7 @@ public without sharing class SLPAlertsHandler {
     @AuraEnabled 
     public static List<Partner_Alert__c> getPartnerAlerts (String partnerId) {
         List<Partner_Alert__c> alertList = new List<Partner_Alert__c>();
-        for (Partner_Alert__c partnerAlert : [SELECT Id, Name, Body__c, Date__c, 
+        for (Partner_Alert__c partnerAlert : [SELECT Id, Name, Date__c, Alert_Body__c, 
                                                     (SELECT Id, Name, Acknowledged__c, Partner__r.Name, Sales_Representative__r.Id 
                                                     FROM Partner_Alert_Filters__r)
                                                 FROM Partner_Alert__c
@@ -24,7 +24,7 @@ public without sharing class SLPAlertsHandler {
     @AuraEnabled 
     public static Partner_Alert__c getPartnerAlert (String alertId) {
         List<Partner_Alert__c> alertList = new List<Partner_Alert__c>();
-        Partner_Alert__c partnerAlert = [SELECT Id, Name, Body__c, Date__c
+        Partner_Alert__c partnerAlert = [SELECT Id, Name, Date__c, Alert_Body__c
                                             FROM Partner_Alert__c
                                             WHERE Id = : alertId];      
         return partnerAlert;        

@@ -19,7 +19,7 @@
         });    
         $A.enqueueAction(action);    
 
-        helper.getDataFromServer(component, "getActiveStates", ["activeStates"]);
+        helper.callApexMethod(component, "getActiveStates", ["activeStates"]);
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  
@@ -64,7 +64,7 @@
             helper.removeButtonsAndShowSpinner(component, event, helper);  
             helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
-            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
+            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
         }                      
     },            
