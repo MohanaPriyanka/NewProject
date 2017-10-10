@@ -213,11 +213,12 @@
         button.set("v.label", text);
     },
 
-    logError : function(className, methodName, errorMessage) {
+    logError : function(className, methodName, errorMessage, developerInfo) {
         var appEvent = $A.get("e.c:ApexCallbackError");
         appEvent.setParams({"className" : className,
                             "methodName" : methodName,
-                            "errors" : errorMessage});
+                            "errors" : errorMessage,
+                            "developerInfo" : developerInfo});
         appEvent.fire();
     },
 

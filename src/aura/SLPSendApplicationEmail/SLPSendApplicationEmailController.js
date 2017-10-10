@@ -64,7 +64,7 @@
             helper.removeButtonsAndShowSpinner(component, event, helper);  
             helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
-            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
+            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
         }                      
     },            

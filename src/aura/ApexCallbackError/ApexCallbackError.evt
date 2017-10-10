@@ -2,4 +2,5 @@
     <aura:attribute name="className" type="String" access="global"/>
     <aura:attribute name="methodName" type="String" access="global"/>
     <aura:attribute name="errors" type="Object[]" access="global"/>
+    <aura:attribute name="developerInfo" type="Object" access="global"/>
 </aura:event>

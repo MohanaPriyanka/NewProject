@@ -40,7 +40,7 @@
             if (resp.getState() == 'SUCCESS') {
                 helper.handleSuccessfulEmail(component, helper);              
             } else {
-                helper.logError("SLPSendApplicationEmailEvent", "sendCustomerApplication", resp.getError());
+                helper.logError("SLPSendApplicationEmailEvent", "sendCustomerApplication", resp.getError(), newLead);
                 $A.log("Errors", resp.getError());                      
             }
         });                                                   
