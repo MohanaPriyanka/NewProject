@@ -88,20 +88,20 @@
 }
 
 .THIS .alertBoxCenter {
-    width:50%;
-    background-color:#216093;
-    border:2px solid #7c98ad  ;
-    border-radius:5px;
-    box-shadow: 0 4px 8px 0 #7c98ad  , 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  width:50%;
+  background-color:#216093;
+  border:2px solid #7c98ad  ;
+  border-radius:5px;
+  box-shadow: 0 4px 8px 0 #7c98ad  , 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 
 .THIS .noDisplay {
-    display: none;
+  display: none;
 }
 
 .THIS.noDisplayBar {
-    display: none;
+  display: none;
 }
 
 .THIS .fadeIn {
@@ -111,6 +111,11 @@
         -ms-animation: fadein 3s; /* Internet Explorer */
          -o-animation: fadein 3s; /* Opera < 12.1 */
             animation: fadein 3s;
+}
+
+.THIS .partnerAlertRTE li {
+  display: list-item;
+  list-style-type: disc;
 }
 
 @keyframes fadein {
