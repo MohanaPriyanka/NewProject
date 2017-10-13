@@ -44,8 +44,8 @@
               </aura:if>                          
               <fieldset class="slds-form--compound slds-m-top_small">
                 <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
-                <div class="slds-form-element__group">
-                  <div class="slds-form-element__row">
+                <div class="slds-form-element__group s">
+                  <div class="slds-form-element__row slds-size_1-of-2 ">
                     <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
                       <label class="slds-form-element__label proximaNovaBlue"> <b>Email Address</b> </label>
                       <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
@@ -64,7 +64,7 @@
               </fieldset>     
               <fieldset class="slds-form--compound">
                 <div class="slds-form-element__group">
-                  <div class="slds-form-element__row">
+                  <div class="slds-form-element__row slds-size_1-of-2 ">
                     <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
                       <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b>&nbsp;
                         <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
