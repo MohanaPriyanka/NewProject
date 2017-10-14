@@ -95,7 +95,71 @@
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
 
-    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, equipmentObject, nameFile){
+    openCustomerWindow : function(component, event, helper, loanId) {
+        //remove the noDisplayBar class from the Component - brining the page to display.
+        var customerPage = component.find("customerPage");
+        $A.util.removeClass(customerPage, 'noDisplayBar');
+
+        //retrieve the customer's full information to display in the component
+        var customerInformationAction = component.get("c.getCustomerInformation");
+        customerInformationAction.setParams({loanId : loanId})
+        customerInformationAction.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                console.log("checkS");
+                console.log(resp.getReturnValue());
+                component.set("v.customerInformation", resp.getReturnValue());
+                component.set("v.customer", resp.getReturnValue());
+            } else {
+                console.log("check");
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(customerInformationAction);
+        var i;
+        var partnerTaskList = component.get("c.getLoanCustomerTasks");
+        var componentCustomerId = component.get("v.customer");
+        partnerTaskList.setParams({loanId : loanId});
+        partnerTaskList.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.partnerTaskList", resp.getReturnValue());
+                for (i=0; i<resp.getReturnValue().length; i++) {
+                    if (resp.getReturnValue()[i].Name == "Interconnection") {
+                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
+                    } else {
+                        continue;
+                    }
+                }
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(partnerTaskList);
+
+        var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
+        completeLoanDisbursals.setParams({loanId : loanId});
+        completeLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.completeDisbursalList", resp.getReturnValue());
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
+        var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
+        incompleteLoanDisbursals.setParams({loanId : loanId});
+        incompleteLoanDisbursals.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.incompleteDisbursalList", resp.getReturnValue());
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
+        $A.enqueueAction(completeLoanDisbursals);
+        $A.enqueueAction(incompleteLoanDisbursals);
+    },    
+
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, oppId, nameFile, helpText){
       var body = component.get("v.body");  
       component.set("v.body", []);  
       $A.createComponent(
@@ -103,7 +167,8 @@
       	{"dateLabel": dateLabelString,
       	"windowHeader": windowHeaderString,
         "fileParentId": parentId,
-        "resiEquipment" : equipmentObject,
+        "oppId" : oppId,
+        "helpText" : helpText,
         "fileName": nameFile }, 
                        
        	function(newButton, status, errorMessage){

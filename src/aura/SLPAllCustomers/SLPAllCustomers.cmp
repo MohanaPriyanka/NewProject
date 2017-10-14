@@ -1,84 +1,149 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
-	<aura:attribute name="allCustomers" type="Object"  /> 
-  <aura:attribute name="licenseType" type="Boolean"  />       
-	<aura:registerEvent name="openCustomer" type="c:SLPAllCustomersEvent"/>
-	<aura:handler event="c:SLPCustomerEvent" action="{!c.closeCustomerWindow}" />         
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-    <style>
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataStream {
-            font-family: proximaNovaFont;   
-     		font-size:100%;
-      		color: #00b2a9;
-        }
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataBlue {
-            font-family: proximaNovaFont;   
-        font-size:100%;
-          color: #266092;
-        }        
-    </style>    
-   <div aura:id = "allCustomers" class="">
-   <div class="slds-form-element slds-lookup" data-select="single">
-   <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Customer Search</b></label>
-       <div class="slds-form-element__control">
-          <div class="slds-input-has-icon slds-input-has-icon--right ">
-              <ui:inputText aura:id="customerSearch"
-                     class="slds-lookup__search-input slds-input" 
-                     placeholder="Search Name"
-                     value=""
-                     change="{!c.searchCustomers}"/>       
-         </div>       
-      </div>
-  </div> 
-  <br></br>
-    <div aura:id = "customerTable" class="main2"> 
-		<br></br>
-      <div>
-        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
-          <thead>
-            <tr class="slds-text-heading--label proximaNovaBWBlueTable " >
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Customer</b></span></th>  
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Sales Agent</b></span></th>  
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Product</b></span></th>
-			        <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Status</b></span></th>                
-              <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>System Cost</b></span></th>
-              <aura:if isTrue="{!v.licenseType}">
-                <th scope="col"><span class="slds-truncate proximaNovaDataBlue"><b>Funded</b></span></th>
-              </aura:if>             
-              </tr>
-          </thead>
-          <tbody>
- 			<aura:iteration items="{!v.allCustomers}" var="Customer">
-              		<tr>
-                		<th scope="row"> <b>{!Customer.Name}</b> </th>
-                    <th scope="row"> <b>{!Customer.Sales_Agent__r.Name}</b> </th>                    
-                    <th scope="row"> <b>{!Customer.Product__r.Name}</b> </th>
-                    <aura:if isTrue="{!Customer.Partner_Tasks__r[0] == null}">
-                      <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Acquisition_Status__c}</b> </th>
-                    <aura:set attribute="else">
-              		    <th scope="row" class="proximaNovaDataStream"> <b>{!Customer.Partner_Tasks__r[0].Name}</b> </th>
-                    </aura:set>
-                    </aura:if>
-                    <th scope="row"> <ui:outputCurrency class="" value="{!Customer.Requested_Loan_Amount__c}" /></th>
-                    <aura:if isTrue="{!v.licenseType}">           
-                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
-                    </aura:if>          	                      
-            		    <th><ui:button label="View"
-                       class="{!Customer.Id}"
-                       labelClass="label"
-                       press="{!c.openCustomerWindow}"/>   </th>                       
-                    </tr>                    
-            </aura:iteration>          
-          </tbody>
-        </table>
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAllCustomersHandler" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:handler name="change" value="{!v.completedLoans}" action="{!c.setSearchableCompletedLoans}" /> 
+  <aura:handler name="change" value="{!v.loansInProcess}" action="{!c.setSearchableLoansInProcess}" />   
+  <aura:handler name="change" value="{!v.pendingApplications}" action="{!c.setSearchablePendingApplications}" /> 
+  <aura:handler name="change" value="{!v.declinedApplicants}" action="{!c.setSearchableDeclinedApplicants}" />  
+
+  <aura:handler name="buttonEvent" event="c:BlueWaveDataTableButtonEvent" action="{!c.executeTableButtonActions}"/>    
+  <aura:handler event="c:BlueWaveSearchEvent" action="{!c.executeSearch}"/> 
+  
+  <aura:attribute name="licenseType" type="String"/> 
+
+  <aura:attribute name="completedLoans" type="Object"/> 
+  <aura:attribute name="originalCompletedLoans" type="Object"/>
+  <aura:attribute name="completedLoansSearchableValues" type="Object"/>
+  <aura:attribute name="runSetSearchableCompletedLoans" type="Boolean" default="true"/>     
+  <aura:attribute name="completedLoansSearchSelected" type="Boolean"/>
+
+  <aura:attribute name="loansInProcess" type="Object"  />
+  <aura:attribute name="originalLoansInProcess" type="Object"/> 
+  <aura:attribute name="loansInProcessSearchableValues" type="Object"/>        
+  <aura:attribute name="runSetSearchableLoansInProcess" type="Boolean" default="true" /> 
+  <aura:attribute name="loansInProcessSearchSelected" type="Boolean"/>    
+
+  <aura:attribute name="pendingApplications" type="Object"/> 
+  <aura:attribute name="originalPendingApplications" type="Object"/>
+  <aura:attribute name="pendingApplicationsSearchableValues" type="Object"/>  
+  <aura:attribute name="runSetSearchablePendingApplications" type="Boolean" default="true" />     
+  <aura:attribute name="pendingApplicationsSearchSelected" type="Boolean"/> 
+
+  <aura:attribute name="declinedApplicants" type="Object"/> 
+  <aura:attribute name="originalDeclinedApplicants" type="Object"/>
+  <aura:attribute name="declinedSearchableValues" type="Object"/>  
+  <aura:attribute name="runSetSearchableDeclinedApplicants" type="Boolean" default="true"/> 
+  <aura:attribute name="declinedApplicantsSearchSelected" type="Boolean"/>     
+    
+  <aura:attribute name="sortAsc" type="Boolean" />
+  <aura:attribute name="sortArrow" type="Boolean" />
+  <aura:attribute name="sortField" type="String"/>
+  <aura:attribute name="selectedTable" type="String"/>  
+  <aura:attribute name="loadingSpinner" type="Boolean"/>  
+
+  <div aura:id="BWDataTableTabs" class="">
+    <ul class="slds-tabs_default__nav" role="tablist">
+      <c:BlueWaveInputToolTip popoverText="Applicants who have begun an application but have not yet been qualified or declined.">
+        <li aura:id="applications" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToApplications}" role="tab">
+            <b>Applications</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>         
+      <c:BlueWaveInputToolTip popoverText="Qualified customers that have not been fully disbursed and require additional action.">
+        <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
+            <b>In Process</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>   
+      <c:BlueWaveInputToolTip popoverText="Customers that have been fully disbursed and are complete.">
+        <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
+            <b>Completed</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>      
+      <c:BlueWaveInputToolTip popoverText="Customers that did not meet BlueWave's credit criteria. They can add a Co-Signer to their application if they haven't already.">
+        <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+          <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
+            <b>Declined</b>
+          </a>
+        </li>
+      </c:BlueWaveInputToolTip>            
+    </ul>    
+  </div>  
+  <aura:if isTrue="{!v.loadingSpinner}">  
+    <div role="status" class="slds-spinner slds-spinner_medium">
+      <div class="slds-spinner__dot-a"></div>
+      <div class="slds-spinner__dot-b"></div>
     </div>
-    </div>
-</div>         
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+  </aura:if>    
+  <div aura:id="customerTables" class="box">
+  <aura:if isTrue="{!or(v.selectedTable == 'applications', v.pendingApplicationsSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableApplications"
+                         headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                         numberOfRecordsPerPage="50"
+                         tableRecords="{!v.pendingApplications}" 
+                         recordFieldNames="['Name', 'Status', 'Action']"
+                         fieldTypeMap="{Name: 'String'}"
+                         conditionalColorField="Status"                           
+                         conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
+                         buttonConditionalField="Status"
+                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application'}"
+                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication'}"
+                         defaultButtonLabels=""
+                         defaultButtonEvents=""/>
+ <br></br>
+ </aura:if>    
+  <aura:if isTrue="{!or(v.selectedTable == 'customersInProcess', v.loansInProcessSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
+                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                         numberOfRecordsPerPage="50"
+                         tableRecords="{!v.loansInProcess}" 
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         defaultButtonLabels="View"
+                         defaultButtonEvents="openCustomerWindow"
+                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
+ <br></br>
+ </aura:if>  
+  <aura:if isTrue="{!or(v.selectedTable == 'completedCustomers', v.completedLoansSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableApplications"
+                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status','Loan Amount', 'Funded', 'Action']" 
+                         numberOfRecordsPerPage="50"
+                         tableRecords="{!v.completedLoans}" 
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         defaultButtonLabels="View"
+                         defaultButtonEvents="openCustomerWindow"
+                         profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"
+                         nullValueMap="{'Partner_Tasks__r[0].Name': 'Complete'}"/>
+ <br></br>
+ </aura:if>
+  <aura:if isTrue="{!or(v.selectedTable == 'declinedApplicants', v.declinedApplicantsSearchSelected)}">  
+    <c:BlueWaveDataTable name = "BWDataTableDeclinedApplicants"
+                         headerLabels="['Customer', 'Pre-Qualification Status', 'Action']" 
+                         numberOfRecordsPerPage="50"
+                         tableRecords="{!v.declinedApplicants}" 
+                         recordFieldNames="['Name', 'Status', 'Action']"
+                         fieldTypeMap="{Name: 'String'}"
+                         columnColorMap="{'Status': '#00B2A9'}"
+                         defaultButtonLabels="Add Co-Signer"
+                         defaultButtonEvents="addCoSigner"/>
+ <br></br>
+ </aura:if>  
+ </div>  
+ <div aura:id="popUpCoAppWindow" class="">
+    {!v.body}
+ </div>
 </aura:component>
+  

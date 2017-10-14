@@ -16,7 +16,7 @@
           <div class="slds-modal__content slds-p-around--medium">
             <p>{!v.partnerAlerts[0].Date__c}</p>
             <br></br>
-            <p>{!v.partnerAlerts[0].Body__c}</p>
+            <p><ui:outputRichText value="{!v.partnerAlerts[0].Alert_Body__c}" class="partnerAlertRTE" /></p>
           </div>
           <div class="slds-modal__footer slds-theme--default">
             <ui:button aura:id="importantAlertButton"

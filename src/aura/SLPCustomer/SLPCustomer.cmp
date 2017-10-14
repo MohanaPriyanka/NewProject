@@ -108,6 +108,11 @@
         <h1>{!v.customer.Loan__r.Name}</h1>
       </div>
       <div class="slds-align-right">
+        <ui:button aura:id="additionalFileUpload"
+                   class="slds-button--brand"
+                   labelClass="proximaNova95"
+                   label="Upload Applicant Files"
+                   press="{!c.openAdditionalFileUpload}"/>
         <ui:button aura:id="customerInformationButton"
                    class="slds-button--brand"
                    labelClass="proximaNova95"
@@ -940,7 +945,7 @@
                   <ui:button aura:id="viewButton"
                              label="{!task.Action_Label__c}"
                              class="{!task.Name}"
-                             labelClass="{!task.Id}"
+                             labelClass="{!task.Help_Text__c}"
                              press="{!c.handleTaskAction}"/>
                 </aura:if>
               </th>
@@ -972,6 +977,7 @@
                     <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>
                     <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
                     <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
+                    <th scope="col"><span class="slds-truncate"><b>Method</b></span></th>
                     <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>
                   </tr>
                 </thead>
@@ -981,6 +987,7 @@
                       <th scope="row"> <b>{!disbursal.Name}</b> </th>
                       <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}"/></th>
                       <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
+                      <th scope="row"> <b>{!disbursal.Disbursal_Method__c}</b> </th>                      
                       <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>
                       <td> <div class="slds-form-element">
                           <label class="slds-checkbox--toggle slds-grid">
@@ -1033,9 +1040,5 @@
         </div>
       </div>
     </aura:if>
-    <div>
-      <br></br>
-      <button type="button" class="slds-button slds-button--brand" onclick="{! c.exitCustomerWindow }">Back</button>
-    </div>
   </div>
 </aura:component>
