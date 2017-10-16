@@ -97,25 +97,8 @@
         component.set("v.equipmentUpdate.SREC_Opt_In_Calendar_Quarter__c", srecOptInCQ);
     },
 
-    setEquipmentCommonwealthProgram : function(component, event, helper) {
-        var source = event.getSource();
-        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c",  source.get("v.value"));
-    },
-
-    setCwProgramTrue : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "true");
-    },
-
-    setCwProgramFalse : function(component, event, helper) {
-        component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", "false");
-    },
-
     setFacilitySector : function(component, event, helper) {
         component.set("v.equipmentUpdate.MA_Facility_Sector__c", event.currentTarget.value);
-    },
-
-    setFacilityType : function(component, event, helper) {
-        component.set("v.equipmentUpdate.MA_Facility_Type__c", event.currentTarget.value);
     },
 
     setAutoPTSFalse : function(component, event, helper) {
@@ -324,11 +307,6 @@
             component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
         }
 
-        var solarMeterReadDate = component.get("v.customerInformation.Initial_Solar_Meter_Reading_Date__c");
-        if (solarMeterReadDate != null) {
-            component.set("v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c", solarMeterReadDate);
-        }
-
         var contractExecutionDate = component.get("v.customerInformation.Contract_Execution_Date__c");
         if (contractExecutionDate != null) {
             component.set("v.equipmentUpdate.Contract_Execution_Date__c", contractExecutionDate);
@@ -344,11 +322,6 @@
             component.set("v.equipmentUpdate.Generator_Installation_Date__c", generatorInstallationDate);
         }
 
-        var generatorOnlineDate = component.get("v.customerInformation.Generator_Energized_Online_Date__c");
-        if (generatorOnlineDate != null) {
-            component.set("v.equipmentUpdate.Generator_Energized_Online_Date__c", generatorOnlineDate);
-        }
-
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if (mechInstallCheck != null) {
             component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);
@@ -359,16 +332,6 @@
             component.set("v.equipmentUpdate.Interconnected__c", interconnectChange);
         }
 
-        var commonwealthSolarRebateProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
-        if (interconnectChange != null) {
-            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonwealthSolarRebateProgram);
-        }
-
-        var maFacilityType = component.get("v.customerInformation.MA_Facility_Type__c");
-        if (maFacilityType != null) {
-            component.set("v.equipmentUpdate.MA_Facility_Type__c", maFacilityType);
-        }
-
         var maFacilitySector = component.get("v.customerInformation.MA_Facility_Sector__c");
         if (maFacilitySector != null) {
             component.set("v.equipmentUpdate.MA_Facility_Sector__c", maFacilitySector);
@@ -377,11 +340,6 @@
         var autoReportingVendor = component.get("v.customerInformation.Remote_Monitoring_System_Vendor__c");
         if (autoReportingVendor != null) {
             component.set("v.equipmentUpdate.Remote_Monitoring_System_Vendor__c", autoReportingVendor);
-        }
-
-        var commonWealthProgram = component.get("v.customerInformation.Commonwealth_Solar_Rebate_Program__c");
-        if (commonWealthProgram != null) {
-            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", commonWealthProgram);
         }
 
         var autoReport = component.get("v.customerInformation.Auto_Reporting_to_PTS__c");
