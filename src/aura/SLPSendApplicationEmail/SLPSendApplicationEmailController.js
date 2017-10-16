@@ -49,13 +49,6 @@
         }
     },         
 
-    calculateLoanAmount: function(component, event, helper) {
-        var systemCost = component.get("v.newLead.System_Cost__c");
-        var downPayment = component.get("v.downPayment");
-        var loanAmount = systemCost + downPayment;
-        component.set("v.newLead.Requested_Loan_Amount__c", loanAmount);
-    },                               
-
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
