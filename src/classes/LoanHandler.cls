@@ -200,7 +200,7 @@ public without sharing class LoanHandler{
                     equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
             if (newEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c
-                && !oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
+                != oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
                     equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
         }
