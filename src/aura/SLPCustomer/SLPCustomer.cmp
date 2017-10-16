@@ -95,7 +95,7 @@
        button on the dashboard page -->
 
   <div aura:id = "customerPage" class="noDisplayBar">
-    <div aura:id="customerName" class="main2 proximaNovaBrand slds-grid">
+    <div aura:id="customerName" class="main2 slds-grid">
       <div class="proximaNovaBrand slds-col slds-align-left">
         <h1>{!v.customer.Loan__r.Name}</h1>
       </div>
