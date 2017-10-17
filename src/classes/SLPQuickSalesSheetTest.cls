@@ -39,7 +39,7 @@ public without sharing class SLPQuickSalesSheetTest{
                                    LocaleSidKey = 'en_US',
                                    EmailEncodingKey = 'ISO-8859-1',
                                    LanguageLocaleKey = 'en_US');
-    insert communityUser;
+    Util.insertSObj(communityUser);
        
     Product2 productRecord = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
                                                   Family = 'Solar Loan',

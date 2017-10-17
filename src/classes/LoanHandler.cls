@@ -200,7 +200,7 @@ public without sharing class LoanHandler{
                     equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
             if (newEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c
-                && !oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
+                != oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
                     equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
         }
@@ -1142,7 +1142,7 @@ public without sharing class LoanHandler{
             }
         }
         for (Residential_Equipment__c equipmentLoopVar : equipmentList) {
-            List<String> fieldNames = new List<String>{'Annual_Production_kWh_kW__c', 'Interconnected__c', 'Interconnection_Date__c',  'Estimated_On_Site_Behind_the_Meter_Load__c',  'Percentage_of_System_Shaded__c',  'SREC_Opt_In_Calendar_Quarter__c',  'Generator_Type__c',  'MA_Facility_Sector__c',  'MA_Facility_Type__c',  'Generator_Nameplate_Capacity__c',  'Contract_Execution_Date__c',  'Generator_Interconnection_Date__c',  'Generator_Installation_Date__c',  'Generator_Energized_Online_Date__c',  'Module_Manufacturer__c',  'Module_Model_Number__c',  'Module_Power_Rating__c',  'Number_of_Modules__c',  'Module_Array_Mounting_Type__c',  'Module_Array_Azimuth__c',  'Module_Array_Tilt__c',  'Module_Mounting_Location__c',  'Inverter_Manufacturer__c',  'Inverter_Model_Number__c',  'Remote_Monitoring_System_Vendor__c',  'Remote_Monitorin_Systegm_Identifier__c',  'Number_of_Meters__c',  'Solar_Meter_Manufacturer__c',  'Solar_Meter_Model__c',    'Solar_Meter_Serial_Number__c',  'Initial_Solar_Meter_Reading__c',  'Initial_Solar_Meter_Reading_Date__c'};
+            List<String> fieldNames = new List<String>{'Annual_Production_kWh_kW__c', 'Interconnected__c', 'Interconnection_Date__c',  'Percentage_of_System_Shaded__c',  'SREC_Opt_In_Calendar_Quarter__c',  'Generator_Type__c',  'MA_Facility_Sector__c',  'Generator_Nameplate_Capacity__c',  'Contract_Execution_Date__c',  'Generator_Interconnection_Date__c',  'Generator_Installation_Date__c',  'Generator_Energized_Online_Date__c',  'Module_Manufacturer__c',  'Module_Model_Number__c',  'Module_Power_Rating__c',  'Number_of_Modules__c',  'Module_Array_Mounting_Type__c',  'Module_Array_Azimuth__c',  'Module_Array_Tilt__c',  'Module_Mounting_Location__c',  'Inverter_Manufacturer__c',  'Inverter_Model_Number__c',  'Number_of_Meters__c',  'Solar_Meter_Manufacturer__c',  'Solar_Meter_Model__c',    'Solar_Meter_Serial_Number__c'};
             Boolean nullOrBlankResult = checkNullOrBlankField(equipmentList.get(0), fieldNames);
             if (equipmentLoopVar.State__c == 'MA') {
                 if (nullOrBlankResult && ptoDocumentProvided) {
@@ -1283,47 +1283,5 @@ public without sharing class LoanHandler{
             }
         }
         update disbursalsToUpdate;
-    }
-
-    // Called from before insert and before update from Loan Trigger
-    // Tested by MapLateCategoryTest
-    public void mapLateCategory() {
-        Set<String> loanMonths = new Set<String>();
-        Set<String> loanYears = new Set<String>();
-        Set<String> loanNames = new Set<String>();
-
-        for (Loan__c l : (List<Loan__c>) Trigger.new) {
-            if (l.name != null) {
-                loanNames.add(l.name);
-            }
-            if (l.monthLT__c != null) {
-                loanMonths.add(l.monthLT__c);
-            }
-            if (l.yearLT__c != null) {
-                loanYears.add(l.yearLT__c);
-            }
-        }
-
-        if (loanNames.size() > 0 && loanMonths.size() > 0 && loanYears.size() > 0) {
-            Map<String, Loan_Payment__c > loanPayMap = new Map<String, Loan_Payment__c>();
-
-            for (Loan_Payment__c loanPayQuery : [SELECT id, name, month__c, year2__c, loan_name__c, late_category__c
-                                                 FROM Loan_Payment__c
-                                                 WHERE loan_name__c IN :loanNames
-                                                 AND month__c IN :loanMonths
-                                                 AND year2__c IN :loanYears]) {
-                loanPayMap.put(loanPayQuery.Loan_Name__c,loanPayQuery);
-            }
-
-            for (Loan__c lf : (List<Loan__c>) Trigger.new) {
-                if ((Trigger.isInsert || Trigger.isUpdate ||
-                     ((Map<Id, Loan__c>) Trigger.oldMap).get(lf.Id).monthLT__c != lf.monthLT__c)
-                    && loanPayMap.containsKey(lf.name)) {
-                    lf.late_category__c = loanPayMap.get(lf.name).late_category__c;
-                } else {
-                    lf.late_category__c = null;
-                }
-            }
-        }
     }
 }

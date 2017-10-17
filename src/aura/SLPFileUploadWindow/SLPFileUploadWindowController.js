@@ -1,17 +1,31 @@
 ({    
+    doInit : function(component, event, helper) {
+        var actionGetDocsAvailable = component.get("c.getSLPortalCustomSetting");
+        actionGetDocsAvailable.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                var slpSettings = resp.getReturnValue();
+                var customSetting = slpSettings[0].Types_of_Documents_Available_for_Upload__c; 
+                var docList = customSetting.split(',');
+                component.set("v.fileTypes", docList);
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(actionGetDocsAvailable);
+    },
+
     filePreview : function(component, event, helper) {
-    	var fileInput = component.find("file").getElement();
-        var file = fileInput.files[0];
-        var fr = new FileReader();
-        fr.readAsDataURL(file);
-        component.set("v.buttonText", file.name);
-        component.set("v.fileReader", fr);
-		helper.greyOutUpload(component);
+       	helper.saveFileToList(component);
+   	},
+    
+    removeFile : function(component, event, helper) {
+		var fileToRemove = event.getSource().get("v.name");
+        helper.removeFileFromList(component, fileToRemove);
     },
    
     fileUpload : function(component, event, helper) {
         var errors = "";
-        if (component.get("v.dateLabel") != 'hide') {
+        if (component.get("v.dateLabel") != 'hide' && component.get("v.dateLabel") != 'hideAndFileOption') {
             var dateValue =  component.get("v.dateValue");
             errors = helper.checkDateField(component, helper, dateValue);   
         	if (errors != "") {
@@ -21,9 +35,12 @@
         	}
         }
         helper.removeErrorMessaging(component);
-        var fileType = component.get("v.fileName");
-        var parentId = component.get("v.fileParentId"); 
-        helper.saveFile(component, event, fileType, parentId);
+        var parentId = component.get("v.fileParentId");  
+        var fileInput = component.get("v.fileList"); 
+        var newFileName = component.get("v.fileName"); 
+        var fr = component.get("v.fileReader");
+        var numberOfFiles = fr.length; 
+        helper.saveFilesToServer(component, event, parentId, 0, fileInput, newFileName, fr, numberOfFiles, helper);
     },
     
     closeWindow : function(component, event, helper) {

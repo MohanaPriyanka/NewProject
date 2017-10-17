@@ -1,0 +1,38 @@
+<aura:component extensible="true" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <aura:handler name="change" value="{!v.objectRecord}" action="{!c.recordChange}" />
+  <aura:registerEvent name="buttonEvent" type="c:BlueWaveDataTableButtonEvent"/>
+  <aura:attribute name="objectRecord" type="Object" />
+  <aura:attribute name="fieldName" type="String" />
+  <aura:attribute name="conditionalColorField" type="String"/>
+  <aura:attribute name="conditionalColorMap" type="Map"/>
+  <aura:attribute name="columnColorMap" type="Map" />
+  <aura:attribute name="fieldTypeMap" type="Map" />
+  <aura:attribute name="colorCode" type="String" />
+  <aura:attribute name="fieldType" type="String" />
+  <aura:attribute name="buttonConditionalField" type="String" />
+  <aura:attribute name="buttonConditionalLabelMap" type="Map"/>
+  <aura:attribute name="buttonConditionalEventMap" type="Map"/>
+  <aura:attribute name="defaultButtonLabels" type="String"/>
+  <aura:attribute name="defaultButtonEvents" type="String"/>
+  <aura:attribute name="nullValueMap" type="Map"/>
+  <aura:attribute name="buttonLabel" type="String"/>
+  <aura:attribute name="buttonEventId" type="String"/>
+  <aura:attribute name="profileSecurityMap" type="Map"/>
+  <aura:attribute name="licenseType" type="String"/>
+  <aura:if isTrue="{!v.fieldName != 'Action'}">
+    <div style="{!'color:' + v.colorCode}">
+      <aura:if isTrue="{!v.fieldType == 'String'}">
+        <ui:outputText aura:Id="outputTextId"/>
+      </aura:if>
+      <aura:if isTrue="{!v.fieldType == 'Currency'}">
+        <ui:outputCurrency aura:Id="outputCurrencyId"/>
+      </aura:if>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.fieldName == 'Action'}">
+    <ui:button label="{!v.buttonLabel}"
+               labelClass="label"
+               press="{!c.executeAction}"/>
+  </aura:if>
+</aura:component>

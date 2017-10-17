@@ -1,67 +1,145 @@
 ({
-	doInit : function(component, event, helper) {
-        //The following block of code retrieves the user's license type to determine what to display on the UI
-        var actionLicenseType = component.get("c.getLicenseType");        
-        actionLicenseType.setCallback(this,function(resp){
+    //make it so the users tab defaults to where they left off.
+    doInit : function(component, event, helper) {
+        component.set("v.loadingSpinner", true);
+        helper.getLicenseType(component);
+        var actionGetLoans = component.get("c.getAllCustomers");        
+        actionGetLoans.setCallback(this,function(resp){ 
             if(resp.getState() == 'SUCCESS') {
-                if(resp.getReturnValue().length > 0){
-                    if(resp.getReturnValue() == 'Executive')
-                    component.set("v.licenseType", true);
-                }
-            }    
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });    
-        $A.enqueueAction(actionLicenseType);   
-                
-        var action = component.get("c.getAllCustomers");        
-        action.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.allCustomers", resp.getReturnValue());
+                component.set("v.loansInProcess", resp.getReturnValue().loansInProcess);
+                component.set("v.completedLoans", resp.getReturnValue().completedLoans);
             }
             else {
                 $A.log("Errors", resp.getError());
             }
-        });        
-        $A.enqueueAction(action);     
-              
-	},
-    
-    searchCustomers : function(component, event, helper) {            
-        var input = component.find("customerSearch");
-        var customerName = input.get("v.value");           
-        var action = component.get("c.getAllCustomers");     
-        
-        action.setParams({searchValue : customerName});
-        
-        action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.allCustomers", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(action);        
-    },
-    
-    openCustomerWindow : function(component, event, helper) {          
-        var allCustomers = component.find("allCustomers");   
-        $A.util.addClass(allCustomers, 'noDisplayBar');
-        
-        var source = event.getSource();
-        var customerLoanId = source.get("v.class");
-        var evtCustomerWindow = $A.get("e.c:SLPAllCustomersEvent");
-        evtCustomerWindow.setParams({"customerLoanId": customerLoanId});
-        evtCustomerWindow.fire(); 
-	    //}   
-    },
-    
 
-    closeCustomerWindow : function(component, event, helper) {             
-        var allCustomers = component.find("allCustomers");   
-        $A.util.removeClass(allCustomers, 'noDisplayBar');           
-    },     
+        });        
+        $A.enqueueAction(actionGetLoans);  
+        actionGetLoans.setStorable();                  
 
+        var actionGetLeads = component.get("c.getLeads");        
+        actionGetLeads.setCallback(this,function(resp){ 
+            if(resp.getState() == 'SUCCESS') {
+                component.set("v.pendingApplications", resp.getReturnValue().pendingApplications);
+                component.set("v.declinedApplicants", resp.getReturnValue().declinedApplicants);               
+                helper.selectTab(component, 'applications'); 
+                helper.clearSearchSelections(component);   
+                component.set("v.loadingSpinner", false);                 
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+
+        });        
+        $A.enqueueAction(actionGetLeads);                    
+        actionGetLeads.setStorable();                  
+    },
+
+    setSearchableCompletedLoans : function(component, event, helper) {   
+        helper.setSearchableValues(component, event, helper, "completedLoans", "originalCompletedLoans", "completedLoansSearchableValues", component.get("v.runSetSearchableCompletedLoans"));
+        // set the runSetSearchable to false here so that the list doesn't get set twice. If it doesn't get set to false, the execute search updates the record list and thus runs the setSearchable method again.
+        component.set("v.runSetSearchableCompletedLoans", false);
+    },
+
+    setSearchableLoansInProcess : function(component, event, helper) {   
+        helper.setSearchableValues(component, event, helper, "loansInProcess", "originalLoansInProcess", "loansInProcessSearchableValues", component.get("v.runSetSearchableLoansInProcess"));
+        // set the runSetSearchable to false here so that the list doesn't get set twice. If it doesn't get set to false, the execute search updates the record list and thus runs the setSearchable method again.
+        component.set("v.runSetSearchableLoansInProcess", false);
+    
+    },
+
+    setSearchablePendingApplications : function(component, event, helper) {   
+        helper.setSearchableValues(component, event, helper, "pendingApplications", "originalPendingApplications", "pendingApplicationsSearchableValues", component.get("v.runSetSearchablePendingApplications"));
+        // set the runSetSearchable to false here so that the list doesn't get set twice. If it doesn't get set to false, the execute search updates the record list and thus runs the setSearchable method again.
+        component.set("v.runSetSearchablePendingApplications", false);
+    },
+
+    setSearchableDeclinedApplicants : function(component, event, helper) {   
+        helper.setSearchableValues(component, event, helper, "declinedApplicants", "originalDeclinedApplicants", "declinedSearchableValues", component.get("v.runSetSearchableDeclinedApplicants"));
+        // set the runSetSearchable to false here so that the list doesn't get set twice. If it doesn't get set to false, the execute search updates the record list and thus runs the setSearchable method again.
+        component.set("v.runSetSearchableDeclinedApplicants", false);
+    },                 
+    
+    executeSearch : function(component, event, helper) {   
+        var searchSuccess = false;
+        var searchText = event.getParam("searchText");
+        var doNotClearSelectionList = [];
+        var selectedTabs = [];
+        if (searchText != "") {
+            if(helper.executeSearch(component, event, helper, searchText, "pendingApplications", "originalPendingApplications", "pendingApplicationsSearchableValues")) {
+                searchSuccess = helper.handleSearchResultDisplay(component, "pendingApplicationsSearchSelected", "applications", selectedTabs, doNotClearSelectionList);          
+            }
+            if (helper.executeSearch(component, event, helper, searchText, "loansInProcess", "originalLoansInProcess", "loansInProcessSearchableValues")) {
+                searchSuccess = helper.handleSearchResultDisplay(component, "loansInProcessSearchSelected", "customersInProcess", selectedTabs, doNotClearSelectionList);
+            }
+            if(helper.executeSearch(component, event, helper, searchText, "completedLoans", "originalCompletedLoans", "completedLoansSearchableValues")) {
+                searchSuccess = helper.handleSearchResultDisplay(component, "completedLoansSearchSelected", "completedCustomers", selectedTabs, doNotClearSelectionList);
+            } 
+            if(helper.executeSearch(component, event, helper, searchText, "declinedApplicants", "originalDeclinedApplicants", "declinedSearchableValues")) {
+                searchSuccess = helper.handleSearchResultDisplay(component, "declinedApplicantsSearchSelected", "declinedApplicants", selectedTabs, doNotClearSelectionList);
+            }
+            if (!searchSuccess) {
+                alert("No records found");
+                return;
+            } else {
+                helper.selectTabs(component, selectedTabs);
+                helper.clearSearchSelections(component, doNotClearSelectionList);
+            }
+        } else {
+            helper.changeTable(component, "applications", "pendingApplications", "originalPendingApplications");
+        }
+    },    
+
+    executeTableButtonActions : function(component, event, helper) {        
+       var buttonEventId = event.getParam("buttonEventId");
+       var record = event.getParam("record");
+        switch (buttonEventId) {
+            case 'openCustomerWindow':
+                var urlEvent = $A.get("e.force:navigateToURL");
+                urlEvent.setParams({
+                    "url": '/slpcustomer?loanId=' + record.Id
+                });
+                urlEvent.fire(); 
+                break;
+            case 'continueApplication':
+                var urlEvent = $A.get("e.force:navigateToURL");
+                urlEvent.setParams({
+                    "url": '/slpcreditstatus?leadId=' + record.Id +
+                    '&leadName=' + encodeURIComponent(record.FirstName + ' ' + record.LastName)
+                });
+                urlEvent.fire(); 
+                break;    
+            case 'addCoSigner':       
+               $A.createComponent(
+                  "c:SLPAddCoApplicant", 
+                   {"mainApplicant" : record}, 
+                function(newButton, status, errorMessage){
+                    if (status === "SUCCESS") {
+                        var body = component.get("v.body");
+                        body.push(newButton);
+                        component.set("v.body", body);
+                    } else  {
+                        helper.logError("SLPCreditStatusController", "openAddCoApplicant", resp.getError());
+                    }
+                }   
+            )                             
+        }  
+    },    
+    changeTableToCompletedCustomers : function(component, event, helper) { 
+        helper.changeTable(component, "completedCustomers", "completedLoans", "originalCompletedLoans");    
+    },    
+
+    changeTableToCustomersInProcess : function(component, event, helper) {   
+        helper.changeTable(component, "customersInProcess", "loansInProcess", "originalLoansInProcess");                
+    },      
+
+    changeTableToApplications : function(component, event, helper) {   
+        helper.changeTable(component, "applications", "pendingApplications", "originalPendingApplications");    
+    },        
+
+    changeTableToDeclinedApplicants : function(component, event, helper) {  
+        helper.changeTable(component, "declinedApplicants", "declinedApplicants", "originalDeclinedApplicants");                  
+    },        
 })
+
+

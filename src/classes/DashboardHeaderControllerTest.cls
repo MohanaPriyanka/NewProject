@@ -1,7 +1,7 @@
 @isTest
-private class DashboardHeaderControllerTest {
-	private static testMethod void testDashboard() {
-		Id p = [select id from profile where name='Community Solar Community User'].id;
+    private class DashboardHeaderControllerTest {
+    private static testMethod void testDashboard() {
+        Id p = [select id from profile where name='Community Solar Community User'].id;
        
         Account a = new Account(name ='TestDashboard') ;
         insert a; 
@@ -14,10 +14,10 @@ private class DashboardHeaderControllerTest {
         insert ss; 
         Product_Profile__c pp = new Product_Profile__c(Shared_Solar_System__c = ss.Id, Profile_Type__c = 'Community Solar', My_Current_Balance__c=100);
         insert pp;
-        insert u;
-        system.runAs(u) {
-			DashboardHeaderController.hasBill();
-			DashboardHeaderController.getName();
+        Util.insertSObj(u);
+        System.runAs(u) {
+            DashboardHeaderController.hasBill();
+            DashboardHeaderController.getName();
         }
-	}
+    }
 }

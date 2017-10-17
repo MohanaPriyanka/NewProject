@@ -66,7 +66,7 @@
         lead.Requested_Loan_Amount__c = lead.System_Cost__c - downPayment;
         var errors = helper.errorsInForm(component, helper, lead);
         if (errors != null) {
-            helper.logError("SLPAddCustomerController", "addCustomer", errors);
+            helper.logError("SLPAddCustomerController", "addCustomer", errors, lead);
             return;
         }
 
@@ -87,7 +87,7 @@
             } else {
                 helper.stopSpinner(component, "leadSpinner");
                 $A.util.removeClass(component.find("SubmitButton"), 'noDisplay');
-                helper.logError("SLPAddCustomerController", "addCustomer", "We've encountered an issue while trying to add this applicant. Please verify that all of the applicant's information has been entered in correctly and try again. If the issue persists, please call (888) 817-2703 for support");
+                helper.logError("SLPAddCustomerController", "addCustomer", "We've encountered an issue while trying to add this applicant. Please verify that all of the applicant's information has been entered in correctly and try again. If the issue persists, please call (888) 817-2703 for support", lead);
             }
         });
         $A.enqueueAction(Action);

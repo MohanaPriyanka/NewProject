@@ -15,9 +15,15 @@
                       messageText);
 
                 var action = component.get("c.logNow");
+                var devInfo = JSON.stringify(event.getParam("developerInfo"),
+                                             function replacer(key, value) {
+                                                 var blacklist = ['LASERCA__SSN__c']
+                                                 return blacklist.indexOf(key) === -1 ? value : undefined
+                                             },
+                                             2);
                 action.setParams({className : event.getParam("className"),
                             methodName : event.getParam("methodName"),
-                            message : messageText});
+                            message : messageText + "\n\n" + (devInfo?devInfo:'')});
                 action.setCallback(this, function(resp){});
                 $A.enqueueAction(action);                
             }

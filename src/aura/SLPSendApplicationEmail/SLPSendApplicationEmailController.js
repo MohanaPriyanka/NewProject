@@ -19,7 +19,7 @@
         });    
         $A.enqueueAction(action);    
 
-        helper.getDataFromServer(component, "getActiveStates", ["activeStates"]);
+        helper.callApexMethod(component, "getActiveStates", ["activeStates"]);
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  
@@ -49,13 +49,6 @@
         }
     },         
 
-    calculateLoanAmount: function(component, event, helper) {
-        var systemCost = component.get("v.newLead.System_Cost__c");
-        var downPayment = component.get("v.downPayment");
-        var loanAmount = systemCost + downPayment;
-        component.set("v.newLead.Requested_Loan_Amount__c", loanAmount);
-    },                               
-
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
@@ -64,7 +57,7 @@
             helper.removeButtonsAndShowSpinner(component, event, helper);  
             helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
-            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors);
+            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
         }                      
     },            

@@ -47,7 +47,6 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecord.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='tropicole34@aol.com');
-        Insert userRecord;
 
         User executiveRecord = new User(
             FirstName = 'Executive',
@@ -64,7 +63,7 @@ public without sharing class SLPControllersTestclass {
             ContactId = contactRecordExec.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='colematthewswain@gmail.com');
-        Insert executiveRecord;
+        Util.insertSobjs(new List<User>{userRecord, executiveRecord});
         Test.stopTest();
     }
 
@@ -135,7 +134,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Managers',
             Importance__c = '1');
         insert partnerAlert;
@@ -172,7 +171,7 @@ public without sharing class SLPControllersTestclass {
         Partner_Alert__c partnerAlert = new Partner_Alert__c(
             Name = 'Test Alert',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Audience__c = 'Executives',
             Importance__c = '1');
         insert partnerAlert;
@@ -477,20 +476,14 @@ public without sharing class SLPControllersTestclass {
         }
         update leadList;
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
+            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
         }
         Test.stopTest();
@@ -529,8 +522,6 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
         }
@@ -551,7 +542,6 @@ public without sharing class SLPControllersTestclass {
         Loan__c loanRecord;
         Residential_Equipment__c equipmentRecord;
 
-        Test.startTest();
         productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
         insert productList;
 
@@ -562,22 +552,66 @@ public without sharing class SLPControllersTestclass {
         }
         update leadList;
 
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
+        Test.startTest();
 
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
         System.runAs(partnerUser) {
-            loanReturnList = SLPCustomerHandler.getAllCustomers('Test');
-            loanReturnList.clear();
-            loanReturnList = SLPCustomerHandler.getAllCustomers(nullString);
+            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
+            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
+            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
+            System.assertNotEquals(null, equipmentRecord);
         }
+        equipmentRecord.Interconnection_Update_Dummy__c = !equipmentRecord.Interconnection_Update_Dummy__c;// should be false -> true
+        System.debug(LoggingLevel.ERROR, equipmentRecord);
+        update equipmentRecord;
+        partnerTaskList = [SELECT Id, Status__c FROM Partner_Task__c WHERE Name = 'Interconnection' AND Loan__c = :loanId];
+        System.assertNotEquals('Complete', partnerTaskList[0].Status__c);
+        equipmentRecord.Annual_Production_kWh_kW__c = 12;
+        equipmentRecord.Interconnected__c = TRUE;
+        equipmentRecord.Interconnection_Date__c = Date.today();
+        equipmentRecord.Percentage_of_System_Shaded__c = 10;
+        equipmentRecord.SREC_Opt_In_Calendar_Quarter__c = 'Q4\' 2017';
+        equipmentRecord.Generator_Type__c = 'Photovoltaic';
+        equipmentRecord.MA_Facility_Sector__c = 'Residential';
+        equipmentRecord.Generator_Nameplate_Capacity__c = 12;
+        equipmentRecord.Contract_Execution_Date__c = Date.today();
+        equipmentRecord.Generator_Interconnection_Date__c = Date.today();
+        equipmentRecord.Generator_Installation_Date__c = Date.today();
+        equipmentRecord.Generator_Energized_Online_Date__c = Date.today();
+        equipmentRecord.Module_Manufacturer__c = 'MM';
+        equipmentRecord.Module_Model_Number__c = 'MM MMN';
+        equipmentRecord.Module_Power_Rating__c = 'MPR';
+        equipmentRecord.Number_of_Modules__c = 1;
+        equipmentRecord.Module_Array_Mounting_Type__c = 'MAMT';
+        equipmentRecord.Module_Array_Azimuth__c = '12';
+        equipmentRecord.Module_Array_Tilt__c = 12;
+        equipmentRecord.Module_Mounting_Location__c = 'MML';
+        equipmentRecord.Inverter_Manufacturer__c = 'IM';
+        equipmentRecord.Inverter_Model_Number__c = 'IMN';
+        equipmentRecord.Remote_Monitoring_System_Vendor__c = 'RMSV';
+        equipmentRecord.Remote_Monitorin_Systegm_Identifier__c = 'RMSUI';
+        equipmentRecord.Number_of_Meters__c = 1;
+        equipmentRecord.Solar_Meter_Manufacturer__c = 'SMM';
+        equipmentRecord.Solar_Meter_Model__c = 'SMM';
+        equipmentRecord.Solar_Meter_Serial_Number__c = 'SMSN';
+        update equipmentRecord;
+        Attachment attach = new Attachment();
+        attach.Name='Unit Test Attachment';
+        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+        attach.Body=bodyBlob;
+        attach.ParentId=equipmentRecord.id;
+        attach.Description = 'PTO Documentation';
+        attach.OwnerId = partnerUser.Id;
+        insert attach;
+        equipmentRecord.Interconnection_Update_Dummy__c = !equipmentRecord.Interconnection_Update_Dummy__c; // should be true -> false
+        update equipmentRecord;
+        partnerTaskList = [SELECT Id, Status__c FROM Partner_Task__c WHERE Name = 'Interconnection' AND Loan__c = :loanId];
+        System.assertEquals('Complete', partnerTaskList[0].Status__c);
+
         Test.stopTest();
     }
 
@@ -614,8 +648,7 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
         update loanList;
-        System.debug('the re is ' + partnerUser.Partner_ID__c + partnerUser.Sales_Representative_Id__c);
-        System.debug('the re is ' + [SELECT Id, Name, Loan__r.Partner__r.Id, Loan__r.Sales_Agent__r.Id  FROM Residential_Equipment__c  ]);
+
         System.runAs(partnerUser) {
             partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanId);
         }
@@ -823,7 +856,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -867,7 +900,7 @@ public without sharing class SLPControllersTestclass {
             Name = 'Test Alert',
             Audience__c = 'Users; Executives',
             Active__c = true,
-            Body__c = 'Test',
+            Alert_Body__c = 'Test',
             Importance__c = '1');
         insert partnerAlert;
 
@@ -1058,31 +1091,14 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();
     }
 
-    @isTest static void testGetAnyUnseenRecordsExec() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
-        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
-        Test.startTest();
-
-        System.runAs(partnerUser) {
-            SLPCustomerHandler.getAnyUnseenLeads();
-        }
-        Test.stopTest();
-    }
-
-    @isTest static void testGetAnyUnseenRecordsUser() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
-        Test.startTest();
-
-        System.runAs(partnerUser) {
-            SLPCustomerHandler.getAnyUnseenLeads();
-        }
-        Test.stopTest();
-    }
-
     @isTest static void testSLPFileHandler() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
+
+        SLPortal_Settings__c portalSetting = new SLPortal_Settings__c(  Name='SLPortal Settings',
+            SREC_Opt_In_Quarters__c= 'Q1 2017,Q2 2017,Q3 2017,Q4 2017,Q1 2018,Q2 2018',
+            Types_of_Documents_Available_for_Upload__c='Paystub, Tax Return (2015), MCEC Technical Confirmation, Home Owners Insurance');
+        insert portalSetting;
 
         Residential_Equipment__c equipment = new Residential_Equipment__c(Name = 'testEquipment', OwnerId = partnerUser.Id);
         insert equipment;
@@ -1098,13 +1114,16 @@ public without sharing class SLPControllersTestclass {
         Test.startTest();
 
         System.runAs(partnerUser) {
-            SLPFileHandler.saveTheFile((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation');
-            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'none');
-            List<Attachment> describedFile = SLPFileHandler.getDescribedFile((String)equipment.Id, 'PTO Documentation');
-            List<Attachment> recordedFile = SLPFileHandler.getRecordFiles(equipment.Id);
-            SLPFileHandler.saveTheChunk((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', describedFile.get(0).Id);
-            System.assertEquals(describedFile.get(0).Description, 'PTO Documentation');
-            System.assertEquals(recordedFile.get(0).Description, 'PTO Documentation');
+            List<SLPortal_Settings__c> customSetting = BlueWaveParent.getSLPortalCustomSetting();
+            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', '');
+            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', newFileId);
+
+            List<Attachment> attachList = [SELECT Id, Body
+                                            FROM Attachment
+                                            WHERE Id = : newFileId];
+
+            System.Assert(attachList.size()>0);
+            System.AssertEquals(customSetting.size(), 1);
         }
     }
 

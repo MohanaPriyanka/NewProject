@@ -18,7 +18,7 @@
                     // clear doesn't need to trigger any messages, but we need to differentiate clear from an error ie. null
                 } 
              } else { 
-                helper.logError("SLPAddCoApplicant", "checkForCoApps", resp.getError());
+                helper.logError("SLPAddCoApplicant", "checkForCoApps", response.getError());
              }
          }); 
                                  
@@ -43,7 +43,7 @@
                     $A.util.removeClass(component.find("emailErrorText"), 'noDisplay'); 
                 }
             } else { 
-                helper.logError("SLPAddCoApplicant", "sendCoAppEmail", resp.getError());
+                helper.logError("SLPAddCoApplicant", "sendCoAppEmail", response.getError());
             }
          });                           
          $A.enqueueAction(actionSendLink);          
@@ -71,7 +71,7 @@
     },
 
     doneRedirect : function(component, event, helper) {
-        window.location.href = "/slportal/s/slpcreditstatus";
+        window.location.href = "/slportal/s/slpdashboard";
     },
     
 })

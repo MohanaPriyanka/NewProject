@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" access="global">
+    <aura:attribute name="buttonEventId" type="String"/>	
+    <aura:attribute name="record" type="Object"/>
+</aura:event>
