@@ -581,6 +581,7 @@ public without sharing class SLPControllersTestclass {
         equipmentRecord.Contract_Execution_Date__c = Date.today();
         equipmentRecord.Generator_Interconnection_Date__c = Date.today();
         equipmentRecord.Generator_Installation_Date__c = Date.today();
+        equipmentRecord.Generator_Energized_Online_Date__c = Date.today();
         equipmentRecord.Module_Manufacturer__c = 'MM';
         equipmentRecord.Module_Model_Number__c = 'MM MMN';
         equipmentRecord.Module_Power_Rating__c = 'MPR';

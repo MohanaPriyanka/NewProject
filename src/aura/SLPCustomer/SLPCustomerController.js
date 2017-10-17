@@ -322,6 +322,11 @@
             component.set("v.equipmentUpdate.Generator_Installation_Date__c", generatorInstallationDate);
         }
 
+        var generatorOnlineDate = component.get("v.customerInformation.Generator_Energized_Online_Date__c");
+        if (generatorOnlineDate != null) {
+            component.set("v.equipmentUpdate.Generator_Energized_Online_Date__c", generatorOnlineDate);
+        }
+
         var mechInstallCheck = component.get("v.customerInformation.Mechanically_Installed__c");
         if (mechInstallCheck != null) {
             component.set("v.equipmentUpdate.Mechanically_Installed__c", mechInstallCheck);

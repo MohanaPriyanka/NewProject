@@ -68,6 +68,7 @@
                            'Contract_Execution_Date__c' : '',
                            'Generator_Installation_Date__c' : '',
                            'Generator_Interconnection_Date__c' : '',
+                           'Generator_Energized_Online_Date__c' : '',
                            'Generator_Type__c' : '',
                            'Generator_Nameplate_Capacity__c' : '',
                            'Annual_Production_kWh_kW__c' : '' ,
@@ -696,6 +697,11 @@
                     <label class="slds-form-element__label" for="input-03">Generator Interconnection Date</label>
                     <ui:inputDate aura:id="interconnectDate" class="slds-input"
                                   value="{!v.equipmentUpdate.Generator_Interconnection_Date__c}" format="MM/DD/YYYY"/>
+                  </div>
+                  <div class="slds-form-element slds-p-horizontal--small">
+                    <label class="slds-form-element__label" for="input-03">Generator Energized/Online Date</label>
+                    <ui:inputDate aura:id="energizedDate" class="slds-input"
+                                  value="{!v.equipmentUpdate.Generator_Energized_Online_Date__c}" format="MM/DD/YYYY"/>
                   </div>
                 </div>
               </div>
