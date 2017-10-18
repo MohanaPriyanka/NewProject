@@ -171,16 +171,19 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                                  Date__c = billingDate1,
                                                  Parent_Account__c = propertyAcc.Id,
                                                  Bill_Number__c = 1,
+                                                 Published__c = true,
                                                  Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
         Account_Bill__c abFebA = new Account_Bill__c(Name = propertyAcc.Name,
                                                  Date__c = billingDate2,
                                                  Parent_Account__c = propertyAcc.Id,
                                                  Bill_Number__c = 2,
+                                                 Published__c = true,
                                                  Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));        
         Account_Bill__c abFebB = new Account_Bill__c(Name = propertyAcc2.Name,
                                                  Date__c = billingDate2,
                                                  Parent_Account__c = propertyAcc2.Id,
                                                  Bill_Number__c = 1,
+                                                 Published__c = true,
                                                  Unique_ID__c = propertyAcc2.Id + ' ' + DateTime.newInstance(billingDate2.year(), billingDate2.month(), billingDate2.day()).format('yyyy-MM'));        
         insert new List<Account_Bill__c>{abJanA, abFebA, abFebB};                                                     
 
@@ -409,14 +412,6 @@ Public without sharing class CommunitySolarCustomerPortalTest {
             List<Account> menuLabelRespList = new List<Account>(MyAccountController.getMenuLabelList());
             System.assertEquals(menuLabelRespList.get(0).Id, customerAccountMap.get('Property Account').Id);
 
-            //test the getMyBill() method
-            Decimal billRespPrAcc = MyAccountController.getMyBill(
-            String.valueOf(customerAccountMap.get('Property Account').Id));
-            System.assertEquals(billRespPrAcc, 231);
-          
-            Decimal billRespAll = MyAccountController.getMyBill('All');
-            System.assertEquals(billRespAll, 231);
-
             //test the getSystemBills() method
             List <AggregateResult> systemBillPrAccRespList = new List <AggregateResult>(MyAccountController.getSystemBills(
             String.valueOf(customerAccountMap.get('Property Account').Id).subString(0,15)));
@@ -457,11 +452,6 @@ Public without sharing class CommunitySolarCustomerPortalTest {
             System.assertEquals(firstab2, secondab2);
             System.assertNotEquals(firstentity2, secondentity2);
 
-            //test the getMyParentAccountId() method
-            Id parentAccountId = MyAccountController.getMyParentAccountId(
-            String.valueOf(customerAccountMap.get('Parent Account').Id));
-            System.assertEquals(parentAccountId, String.valueOf(customerAccountMap.get('Parent Account').Id));
-
             //test the getAccountBills() method
             List<Account_Bill__c> accountBillPrAccRespList = new List<Account_Bill__c>(MyAccountController.getAccountBills(
             String.valueOf(customerAccountMap.get('Property Account').Id)));
@@ -480,23 +470,9 @@ Public without sharing class CommunitySolarCustomerPortalTest {
             String referralCode = MyAccountController.getCode();
             System.assertEquals(referralCode, 'bluewaveFLast');
 
-            //test the getOpportunyIds() method
-            List <Opportunity> opportunityRespList = new List <Opportunity>(MyAccountController.getOpportunityIds());
-            system.assertEquals(opportunityRespList.size(), 2);
-
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');
-
-            //test the getPaymentFormCheck method for User 1
-            Boolean paymentFormCheckResp = MyAccountController.getPaymentFormCheck();
-            System.assertEquals(paymentFormCheckResp, false);
-          }
-          System.runAs(userMap.get('communityuser2@test.com')){
-          //test the getPaymentFormCheck method for User 2
-            Boolean paymentFormCheckResp = MyAccountController.getPaymentFormCheck();
-            System.assertEquals(paymentFormCheckResp, true);
           }
         Test.stopTest();    
-
     }
 }
