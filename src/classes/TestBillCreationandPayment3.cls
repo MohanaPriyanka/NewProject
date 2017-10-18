@@ -338,11 +338,31 @@
              Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
              Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
              Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Shared_Solar_System__c, Property_Account_ID__c, Adjustments__c, Bill_Date__c, Due_Date__c,
+             Property_Account__r.Directions_To_Write_Paper_Check__c,
+             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
+             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Waive_Late_Fees__c,
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
              FROM System_Bill__c];
 
-        system.debug(updatedsystemBillList);
+        String oldCheckAddressField; 
+        String propertyAccountId;
+
+        for (System_Bill__c editBill : updatedsystemBillList) {
+          if (editBill.Bill_Number__c == 9) {
+              oldCheckAddressField = editBill.Property_Account__r.Directions_To_Write_Paper_Check__c;
+              propertyAccountId = editBill.Property_Account__r.Id;
+              editBill.Refund_This_Balance__c = True;
+              editBill.Amount_to_Add__c = 10;
+              update editBill;
+          }
+        }
+
+        Account propertyAccount = [SELECT Id, Name, Directions_To_Write_Paper_Check__c
+                                  FROM Account
+                                  WHERE Id = : propertyAccountId];
+
+        System.assertNotEquals(oldCheckAddressField, propertyAccount.Directions_To_Write_Paper_Check__c);
 
         List <UASB__c> uablist = 
             [SELECT Id, Name, Bill_Date__c, System_Bill__r.Bill_Number__c, 
