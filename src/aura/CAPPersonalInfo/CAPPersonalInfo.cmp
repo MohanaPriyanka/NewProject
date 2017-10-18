@@ -1,0 +1,28 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:attribute name="page" type="String"/>
+  <aura:attribute name="leadId" type="Id"/>
+  <aura:attribute name="leadEmail" type="String"/>
+  <aura:attribute name="STAGENAME" type="String" default="NAV_Personal_Information"/>
+  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+
+  <lightning:spinner aura:id="mySpinner" class="slds-hide"/>
+
+  <!-- INDIVIDUAL OR JOINT -->
+  <aura:if isTrue="{!v.page == 'IndividualOrJoint'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            <h1>Personal Information Page!</h1>
+            <!-- {!$Label.c.PI_Individual_or_Joint} -->
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="confirmSubmit" label="Next" onclick="{!c.finishStage}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+  <!-- / INDIVIDUAL OR JOINT -->
+
+</aura:component>

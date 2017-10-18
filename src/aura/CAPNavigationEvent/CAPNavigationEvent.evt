@@ -1,0 +1,7 @@
+<aura:event type="APPLICATION" description="Event fired when a application stage is completed or initiated">
+  <aura:attribute name="lead" type="Lead" required="true"/>
+  <aura:attribute name="stageName" type="String" required="true"
+                  description="The name of the stage that is either just completed or to be visited"/>
+  <aura:attribute name="eventType" type="String" required="true"
+                  description="Either COMPLETED or INITIATED"/>
+</aura:event>

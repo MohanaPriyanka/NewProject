@@ -1,6 +1,8 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="NavHeaderController">
-  <aura:attribute name="userName" type="String"  />
-  <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />         
+  <aura:attribute name="userName" type="String"/>
+  <aura:attribute name="link" type="String" default="/slportal/s/slpdashboard"/>
+  <aura:attribute name="showLogout" type="Boolean" default="true"/>
+  <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
 
@@ -21,28 +23,30 @@
     }  
   </style> 
   <div aura:id="header" class="header gradLeftRight ">
-    <a href="/slportal/s/slpdashboard">
+    <a href="{!v.link}">
       <div class="w3-container">
         <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
       </div>
     </a>
-    <div class="user">
-      <div class="slds-dropdown-trigger">
-        <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
-          <lightning:icon iconName="utility:down" size="small"/>  
-          <span class="slds-assistive-text">Options</span>
-        </button>
-        <div class="slds-dropdown slds-dropdown_right slds-dropdown_small">
-          <ul class="slds-dropdown__list" role="menu">
-            <li class="slds-dropdown__item" role="presentation">
-              <a href="/slportal/secur/logout.jsp" role="menuitem" tabindex="0" >
-               <span class="slds-truncate proximaNovaDataStream" title="Table View"><b>Logout</b></span>
-               <lightning:icon iconName="utility:logout" size="small"/>  
-             </a>
-           </li>
-         </ul>
-       </div>
-     </div>
-   </div>
+    <aura:if isTrue="{!v.showLogout}">
+      <div class="user">
+        <div class="slds-dropdown-trigger">
+          <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
+            <lightning:icon iconName="utility:down" size="small"/>  
+            <span class="slds-assistive-text">Options</span>
+          </button>
+          <div class="slds-dropdown slds-dropdown_right slds-dropdown_small">
+            <ul class="slds-dropdown__list" role="menu">
+              <li class="slds-dropdown__item" role="presentation">
+                <a href="/apply/secur/logout.jsp" role="menuitem" tabindex="0" >
+                  <span class="slds-truncate proximaNovaDataStream" title="Table View"><b>Logout</b></span>
+                  <lightning:icon iconName="utility:logout" size="small"/>  
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aura:if>
  </div>
 </aura:component>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>NAV_Complete</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Complete</shortDescription>
+        <value>Complete</value>
+    </labels>
+    <labels>
+        <fullName>NAV_Credit_Check</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Credit Check</shortDescription>
+        <value>Credit Check</value>
+    </labels>
+    <labels>
+        <fullName>NAV_Getting_Started</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Getting Started</shortDescription>
+        <value>Getting Started</value>
+    </labels>
+    <labels>
+        <fullName>NAV_Income_Documentation</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Income Documentation</shortDescription>
+        <value>Income Documentation</value>
+    </labels>
+    <labels>
+        <fullName>NAV_Personal_Information</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Personal Information</shortDescription>
+        <value>Personal Information</value>
+    </labels>
+    <labels>
+        <fullName>NAV_SREC_and_Disbursals</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SREC and Disbursals</shortDescription>
+        <value>SREC and Disbursals</value>
+    </labels>
+    <labels>
+        <fullName>START_Email_Confirmation_Instruction</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email Confirmation Instruction</shortDescription>
+        <value>Enter the email associated with this loan application to confirm your identity and continue the application</value>
+    </labels>
+    <labels>
+        <fullName>START_Lets_Get_Started</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lets Get Started</shortDescription>
+        <value>Let&apos;s get started! Your installer has set your financing with:</value>
+    </labels>
+    <labels>
+        <fullName>Type</fullName>
+        <categories>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Type</shortDescription>
+        <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</value>
+    </labels>
+</CustomLabels>
