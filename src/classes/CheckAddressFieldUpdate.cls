@@ -55,10 +55,13 @@ public class CheckAddressFieldUpdate {
             }
         }
 
+        List<BW_Address__c> bwAddress = BW_Address__c.getall().values();
+        String defaultAddress = 'BlueWave ' + bwAddress[0].Address_Line_One__c +' '+ bwAddress[0].Address_Line_Two__c; 
+
         for (Id acctId : acctToFieldMap.keySet()) {
             accountMap.get(acctId).Directions_to_Write_Paper_Check__c = acctToFieldMap.get(acctId);
             if(accountMap.get(acctId).Send_Checks_Address__c == null) {
-                accountMap.get(acctId).Send_Checks_Address__c = 'BlueWave 137 Newbury St, 4th Floor, Boston, MA 02114';
+                accountMap.get(acctId).Send_Checks_Address__c = defaultAddress;
             } 
         }
 
