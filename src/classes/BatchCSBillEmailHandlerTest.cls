@@ -1,5 +1,5 @@
 @isTest
-private class BatchCSBillEmailHandlerTestclass {
+private class BatchCSBillEmailHandlerTest {
 
     @testSetup public static void setupTestData(){
         Integer i;
@@ -38,6 +38,16 @@ private class BatchCSBillEmailHandlerTestclass {
             BatchCSBillEmailHandler uca = new BatchCSBillEmailHandler ();
             Id batchId = Database.executeBatch(uca, 50);
         Test.StopTest();
+
+        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
+            JobItemsProcessed,
+            TotalJobItems, CreatedBy.Email
+            FROM AsyncApexJob
+            WHERE Id = : batchId];
+
+        System.assertEquals(0, job.NumberOfErrors);
+        System.assertEquals('Completed', job.Status);
+        System.assertEquals(1, job.TotalJobItems);
     }
 
     static testMethod void testCreateLink () {
