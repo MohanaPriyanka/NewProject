@@ -13,7 +13,6 @@
        			var totalOutstandingBalance = 0;
        			var totalSavings = 0;
        			var totalProduction = 0;
-       			console.log(accountBillList);
         		if (accountBillList === undefined || accountBillList.length === 0) {
         			component.set("v.myBill", 0);
         			component.set("v.mySavings", 0);

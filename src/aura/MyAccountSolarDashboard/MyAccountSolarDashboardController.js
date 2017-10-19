@@ -18,7 +18,6 @@
             }
         });    
         $A.enqueueAction(actionGetPropertyAccounts);
-        console.log("HELLO!");
         helper.refreshAccountMetrics(component, 'All');
     }
 })
