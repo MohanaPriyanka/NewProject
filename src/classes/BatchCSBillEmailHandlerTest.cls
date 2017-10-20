@@ -23,7 +23,7 @@ private class BatchCSBillEmailHandlerTest {
 
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
         
-        for (i=0;i<50;i++) {
+        for (i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (   
                                         Name = 'Bill' + i,
                                         Parent_Account__c = propertyAccount.Id,
@@ -37,21 +37,22 @@ private class BatchCSBillEmailHandlerTest {
 
     static testMethod void testSendEmails () {
         Test.StartTest();
-            BatchCSBillEmailHandler uca = new BatchCSBillEmailHandler ();
-            Id batchId = Database.executeBatch(uca, 50);
+        APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
+        insert congaConduct;
+        congaConduct.Emails_Sent__c = true;
+        update congaConduct;
         Test.StopTest();
 
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
             JobItemsProcessed,
             TotalJobItems, CreatedBy.Email
-            FROM AsyncApexJob
-            WHERE Id = : batchId];
+            FROM AsyncApexJob LIMIT 1];
 
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
 
-        System.assertEquals(50, MessagingService.emailsSent.size());
+        System.assertEquals(9, MessagingService.emailsSent.size());
     }
 
     static testMethod void testCreateLink () {

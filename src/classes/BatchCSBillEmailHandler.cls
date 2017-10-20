@@ -94,7 +94,6 @@
     }
 
     public void finish(Database.BatchableContext bc){
-        if(!Test.isRunningTest()){
             AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
                             JobItemsProcessed,
                             TotalJobItems, CreatedBy.Email
@@ -113,6 +112,7 @@
                                 + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed
                                 + '  ' + concatenatedErrorMessage ;
             List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
+        if(!Test.isRunningTest()){
             MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
         }
     } 
