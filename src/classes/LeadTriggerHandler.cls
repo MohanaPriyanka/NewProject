@@ -1,6 +1,7 @@
 public with sharing class LeadTriggerHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
+    public static Boolean firstRun = true;
     
     public LeadTriggerHandler(boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
@@ -11,8 +12,10 @@ public with sharing class LeadTriggerHandler {
         if(    updatedLeads.size() == 1 
             && updatedLeads[0].IsConverted && oldLeads[0].IsConverted == false
             && updatedLeads[0].convertedAccountId != null
-            && updatedLeads[0].Product_Line__c == 'Community Solar'){
+            && updatedLeads[0].Product_Line__c == 'Community Solar'
+            && firstRun){
             customerSubscriptionProcess(updatedLeads[0]);
+            firstRun = false;
         }
     }
     private Opportunity leadConvertMapping(Lead lead, Opportunity opp){

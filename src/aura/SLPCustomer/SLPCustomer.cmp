@@ -49,7 +49,6 @@
                            'Mechanically_Installed__c': '',
                            'Interconnected__c':'',
                            'SREC_Opt_In_Calendar_Quarter__c':'',
-                           'Commonwealth_Solar_Rebate_Program__c': '',
                            'Module_Power_Rating__c' : '',
                            'Number_of_Modules__c' : '',
                            'Module_Array_Mounting_Type__c' : '',
@@ -65,11 +64,6 @@
                            'Solar_Meter_Manufacturer__c' : '',
                            'Solar_Meter_Model__c' : '',
                            'Solar_Meter_Serial_Number__c' : '',
-                           'Initial_Solar_Meter_Reading__c' : '',
-                           'Initial_Solar_Meter_Reading_Date__c' : '',
-                           'CEC_Production_Tracking_System_ID_Number__c' : '',
-                           'PowerClerk_Application_ID__c' : '',
-                           'Estimated_On_Site_Behind_the_Meter_Load__c' : '',
                            'Percentage_of_System_Shaded__c' : '',
                            'Contract_Execution_Date__c' : '',
                            'Generator_Installation_Date__c' : '',
@@ -78,7 +72,6 @@
                            'Generator_Type__c' : '',
                            'Generator_Nameplate_Capacity__c' : '',
                            'Annual_Production_kWh_kW__c' : '' ,
-                           'MA_Facility_Type__c' : '' ,
                            'MA_Facility_Sector__c' : '',
                            'Auto_Reporting_to_PTS__c' : '',
                            'GE_Serial_Number__c' : ''
@@ -103,7 +96,7 @@
        button on the dashboard page -->
 
   <div aura:id = "customerPage" class="noDisplayBar">
-    <div aura:id="customerName" class="main2 proximaNovaBrand slds-grid">
+    <div aura:id="customerName" class="main2 slds-grid">
       <div class="proximaNovaBrand slds-col slds-align-left">
         <h1>{!v.customer.Loan__r.Name}</h1>
       </div>
@@ -387,57 +380,6 @@
                 </div>
               </fieldset>
               <div class="slds-size_1-of-2">
-                <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                  <label class="slds-form-element__label" for="autoPts">
-                    Has {!v.customer.Loan__r.Name} applied for funding through the Commonwealth Solar
-                    Rebate Program after 01/01/2010?
-                  </label>
-                  <aura:if isTrue="{!v.customerInformation.Commonwealth_Solar_Rebate_Program__c}">
-                    <div class="slds-form-element__control">
-                      <div class="slds-radio--button-group">
-                        <span class="slds-button slds-radio--button">
-                          <input type="radio" id="cwProgramYes" name="cwProgram"
-                                 checked="true" onclick="{!c.setCwProgramTrue}"/>
-                          <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth"
-                                 for="cwProgramYes">
-                            <span class="slds-radio_faux">Yes</span>
-                          </label>
-                        </span>
-                        <span class="slds-button slds-radio--button">
-                          <input type="radio" id="cwProgramNo" name="cwProgram" checked="false"
-                                 onclick="{!c.setCwProgramFalse}"/>
-                          <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth"
-                                 for="cwProgramNo">
-                            <span class="slds-radio_faux">No</span>
-                          </label>
-                        </span>
-                      </div>
-                    </div>
-                    <aura:set attribute="else">
-                      <div class="slds-form-element__control">
-                        <div class="slds-radio--button-group">
-                          <span class="slds-button slds-radio--button">
-                            <input type="radio" id="cwProgramYes2" name="cwProgram2" checked="false"
-                                   onclick="{!c.setCwProgramTrue}"/>
-                            <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth"
-                                   for="cwProgramYes2">
-                              <span class="slds-radio_faux">Yes</span>
-                            </label>
-                          </span>
-                          <span class="slds-button slds-radio--button">
-                            <input type="radio" id="cwProgramNo2" name="cwProgram2" checked="true"
-                                   onclick="{!c.setCwProgramFalse}"/>
-                            <label class="slds-radio--button__label alignCenter interconnectModalButtonWidth"
-                                   for="cwProgramNo2">
-                              <span class="slds-radio_faux">No</span>
-                            </label>
-                          </span>
-                        </div>
-                      </div>
-                    </aura:set>
-                  </aura:if>
-                </div>
-                <hr></hr>
                 <div>
                   <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
                     <aura:if isTrue="{!v.ptoFileAttached}">
@@ -495,39 +437,6 @@
                             <option>Residential</option>
                             <option>Commercial</option>
                             <option>Government</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div aura:id="maFacilityType" class="inputWidth25">
-                    <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                      <label class="slds-form-element__label" for="maFacilityType ">MA Facility Type</label>
-                      <div class="slds-form-element__control">
-                        <div class="slds-select_container">
-                          <select id="maFacilityType" class="slds-select"
-                                  onchange="{!c.setFacilityType}"
-                                  value="{!v.equipmentUpdate.MA_Facility_Type__c}">
-                            <option>Select</option>
-                            <option>Agricultural</option>
-                            <option>College/University</option>
-                            <option>Commercial/Office</option>
-                            <option>Community Solar</option>
-                            <option>Hospital/Health Care</option>
-                            <option>Industrial</option>
-                            <option>Mixed Use (commercial and residential)</option>
-                            <option>Religious</option>
-                            <option>Restaurant/Food Service</option>
-                            <option>Retail</option>
-                            <option>School (K-12)</option>
-                            <option>Federal</option>
-                            <option>Municipal – K-12 School</option>
-                            <option>Municipal / Government / Public</option>
-                            <option>State</option>
-                            <option>State – College / University</option>
-                            <option>Multi-family residential (4 or more dwellings units per building)</option>
-                            <option>Residential (3 or fewer dwelling units per building)</option>
-                            <option>Other</option>
                           </select>
                         </div>
                       </div>
@@ -754,48 +663,12 @@
                                   value="{!v.equipmentUpdate.Solar_Meter_Serial_Number__c}"
                                   placeholder="{!v.customerInformation.Solar_Meter_Serial_Number__c}"/>
                   </div>
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading</label>
-                    <ui:inputText aura:id="meterReadingOne" class="slds-input"
-                                  value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading__c}"
-                                  placeholder="{!v.customerInformation.Initial_Solar_Meter_Reading__c}"/>
-                  </div>
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">Initial Solar Meter Reading Date</label>
-                    <ui:inputDate aura:id="meterReadingDateOne" class="slds-input"
-                                  value="{!v.equipmentUpdate.Initial_Solar_Meter_Reading_Date__c}"
-                                  format="MM/DD/YYYY"/>
-                  </div>
                 </div>
               </div>
             </fieldset>
             <fieldset aura:id="SrecMiscPage" class="slds-form--compound noDisplay">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">
-                      CEC Production Tracking System ID Number
-                    </label>
-                    <ui:inputText aura:id="cecTrackingId" class="slds-input"
-                                  value="{!v.equipmentUpdate.CEC_Production_Tracking_System_ID_Number__c}"
-                                  placeholder="{!v.customerInformation.CEC_Production_Tracking_System_ID_Number__c}"/>
-                  </div>
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">PowerClerk Application ID</label>
-                    <ui:inputText aura:id="powerClerkAppId" class="slds-input"
-                                  value="{!v.equipmentUpdate.PowerClerk_Application_ID__c}"
-                                  placeholder="{!v.customerInformation.PowerClerk_Application_ID__c}"/>
-                  </div>
-                </div>
-                <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small">
-                    <label class="slds-form-element__label" for="input-03">
-                      Estimated On-Site Behind the Meter Load
-                    </label>
-                    <ui:inputNumber aura:id="estMeterLoad" class="slds-input"
-                                    value="{!v.equipmentUpdate.Estimated_On_Site_Behind_the_Meter_Load__c}"
-                                    placeholder="{!v.customerInformation.Estimated_On_Site_Behind_the_Meter_Load__c}"/>
-                  </div>
                   <div class="slds-form-element slds-p-horizontal--small">
                     <label class="slds-form-element__label" for="input-03">Percentage of System Shaded</label>
                     <ui:inputText aura:id="percentShaded" class="slds-input"

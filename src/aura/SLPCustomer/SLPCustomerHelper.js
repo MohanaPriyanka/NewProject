@@ -231,7 +231,6 @@
             $A.util.removeClass(component.find("vendorUniqueId"), 'noDisplay');
             component.set("v.equipmentUpdate.Interconnected__c  ", customerInformation.Interconnected__c);
             component.set("v.equipmentUpdate.Auto_Reporting_to_PTS__c", customerInformation.Auto_Reporting_to_PTS__c);
-            component.set("v.equipmentUpdate.Commonwealth_Solar_Rebate_Program__c", customerInformation.Commonwealth_Solar_Rebate_Program__c);
             component.find("srecInterconnectionToggle").set("v.checked", "true");
         }
     },

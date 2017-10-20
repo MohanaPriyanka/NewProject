@@ -32,8 +32,11 @@
     }, 
 
     emailApplication : function(component, event, helper, downPayment, newLead) {
-        var action = component.get("c.sendApplication");   
-        var loanAmount = newLead.System_Cost__c - downPayment;
+        var action = component.get("c.sendApplication");
+        var loanAmount = newLead.System_Cost__c;
+        if (downPayment) {
+            loanAmount = loanAmount - downPayment;
+        }
         action.setParams({newLead : newLead,
                           loanAmount : loanAmount});  
         action.setCallback(this,function(resp){ 

@@ -108,8 +108,7 @@
     // http://peterknolle.com/file-upload-lightning-component/
     // Assumes callbackFunc takes a component as an argument - not sure if that will always work...
     uploadFiles : function(component, files, parentId, callbackFunc) {
-        ltg = this;
-        var i;
+        var ltg = this;
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
                 if (file.size > ltg.MAX_FILE_SIZE) {
