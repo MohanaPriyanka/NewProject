@@ -69,6 +69,9 @@ Static testMethod void TestBillCreationandPayment(){
         
         system.debug(ngridLZU);
 
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
+
 // Create Shared Solar Systems 
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',

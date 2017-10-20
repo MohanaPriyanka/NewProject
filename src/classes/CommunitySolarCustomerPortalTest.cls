@@ -19,6 +19,8 @@ Public without sharing class CommunitySolarCustomerPortalTest {
                                   Active_Communities_User__c = true);        
         insert new List<Contact>{con, con2};
 
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
         //the user has to be insert after the contact because it is a community user and can't be inserted without a contact.
         Profile communityProfile = 
             [SELECT Id from Profile WHERE Name = 'Community Solar Community User'];
