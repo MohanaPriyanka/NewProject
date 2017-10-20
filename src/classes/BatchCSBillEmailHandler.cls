@@ -91,18 +91,20 @@ public without sharing class BatchCSBillEmailHandler implements
                             FROM AsyncApexJob
                             WHERE Id = :bc.getJobId()];
 
-        String concatenatedErrorMessage = 'Email Errors: ';
-        if (finalErrorList != NULL) {
-            for (Messaging.SendEmailError error : finalErrorList) {
-                concatenatedErrorMessage = concatenatedErrorMessage + error.getMessage();
+        if(!Test.isRunningTest()){
+            String concatenatedErrorMessage = 'Email Errors: ';
+            if (finalErrorList != NULL) {
+                for (Messaging.SendEmailError error : finalErrorList) {
+                    concatenatedErrorMessage = concatenatedErrorMessage + error.getMessage();
+                }
             }
-        }
 
-        String emailBody = 'CS Bill Emails Have Been Sent! Job Id: '+ job.Id 
-                            + '  Errors: ' + job.NumberOfErrors 
-                            + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed
-                            + '  ' + concatenatedErrorMessage ;
-        List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
-        MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);              
+            String emailBody = 'CS Bill Emails Have Been Sent! Job Id: '+ job.Id 
+                                + '  Errors: ' + job.NumberOfErrors 
+                                + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed
+                                + '  ' + concatenatedErrorMessage ;
+            List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
+            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
+        }
     } 
 }

@@ -20,6 +20,8 @@ private class BatchCSBillEmailHandlerTest {
 
         propertyAccount.Send_Bills_Contact__c = contactOne.Id;
         update propertyAccount;
+
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
         
         for (i=0;i<50;i++) {
             Account_Bill__c abOne = new Account_Bill__c (   
@@ -48,6 +50,8 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
+
+        System.assertEquals(50, MessagingService.emailsSent.size());
     }
 
     static testMethod void testCreateLink () {
