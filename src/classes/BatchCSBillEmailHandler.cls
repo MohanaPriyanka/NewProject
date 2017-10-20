@@ -94,13 +94,13 @@
     }
 
     public void finish(Database.BatchableContext bc){
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
+        if(!Test.isRunningTest()){
+            AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
                             JobItemsProcessed,
                             TotalJobItems, CreatedBy.Email
                             FROM AsyncApexJob
                             WHERE Id = :bc.getJobId()];
 
-        if(!Test.isRunningTest()){
             String concatenatedErrorMessage = 'Email Errors: ';
             if (finalErrorList != NULL) {
                 for (Messaging.SendEmailError error : finalErrorList) {
