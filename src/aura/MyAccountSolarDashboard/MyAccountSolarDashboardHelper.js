@@ -8,7 +8,7 @@
       
         actionGetAccountBills.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
-                accountBillList = resp.getReturnValue();       	
+                var accountBillList = resp.getReturnValue();       	
        			var abStep;
        			var totalOutstandingBalance = 0;
        			var totalSavings = 0;
