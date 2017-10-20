@@ -1,4 +1,13 @@
-public without sharing class BatchCSBillEmailHandler implements
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * This class is fired by the conga conductor record, when an user has QCed the 
+ + * pdf bills created by Conga. When the pdf is created, it marks Ready_For_Email_Send__c 
+ + * and this class sends the bill pdfs by email in a batch (100s of records at once)
+ + * 
+ + * Tested By: BatchCSBillEmailHandlerTest
+ + *************************************************************************************/
+
+ public without sharing class BatchCSBillEmailHandler implements
     Database.Batchable<sObject>, Database.Stateful { 
 
     List<SObject> sObjectList = new List<SObject>();

@@ -1,3 +1,12 @@
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * This class updates the fields on the account that are pulled into print and 
+ + * email bills whenever the Account Bill is updated (System Bill is child object
+ + * and when it updates, it triggers an update of the Account Bill as well)
+ + * 
+ + * Tested By: TestBillCreationandPayment3
+ + *************************************************************************************/
+
 public class CheckAddressFieldUpdate {
     public void updateCheckAddressFromAccountBill (List<Account_Bill__c> accountBillList) {
     // if Triggered by AB, find other ABs get the max one and pass that through
