@@ -78,6 +78,8 @@ public class CSCPChartHandlerTest {
 
 		insert new List <Entity__c>{entityone, entitytwo};
 
+		insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
 		Shared_Solar_System__c sss1 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
 			Service_Territory__c = 'WCMA',
