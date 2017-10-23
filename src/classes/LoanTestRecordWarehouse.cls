@@ -470,7 +470,7 @@ public class LoanTestRecordWarehouse {
 
     }
 
-    private static Product2 getDefaultProduct(String state, Decimal interestRate, Integer term, Integer platformFee,
+    public static Product2 getDefaultProduct(String state, Decimal interestRate, Integer term, Integer platformFee,
                                        String creditMin, String creditMax, Id capitalPool) {
         String interestRateString = interestRate.stripTrailingZeros() + '%';
         return new Product2(Name = 'BlueWave Solar Loan - ' + state + ' - ' + term + ' Year Term - ' + interestRateString,
