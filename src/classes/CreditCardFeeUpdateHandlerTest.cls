@@ -106,6 +106,8 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
 // create Parent Accounts
 
         Account accountA = new Account(name = 'Account A',
