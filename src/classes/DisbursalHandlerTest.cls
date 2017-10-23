@@ -148,7 +148,6 @@ public class DisbursalHandlerTest {
 
 	        opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 28000;
 	        update opportunityRecord.Loans__r.get(0);
-            System.debug(opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c);
 
 	        List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
 	        									   FROM Disbursal__c 
@@ -156,7 +155,6 @@ public class DisbursalHandlerTest {
 	        									   ORDER BY Disbursal_Sequence__c];
 
 	        for (Disbursal__c disbursal : disbursalRecords) {
-                System.debug(disbursal.Amount__c);
 	        	totalAmount = totalAmount + disbursal.Amount__c;
 	        }
 

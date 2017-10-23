@@ -123,7 +123,6 @@ public class DisbursalHandler {
         if(dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c') ||
             dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c') || 
             dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c')) {
-            System.debug('check');
             for (Loan__c loan : [SELECT Id, Opportunity__r.Id, 
                                     (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c, Type__c 
                                     FROM Disbursals__r)
@@ -165,7 +164,6 @@ public class DisbursalHandler {
                     }
                 }
             }
-            System.debug(disbursalsToUpdate);
             update disbursalsToUpdate;
         }
     }
@@ -180,7 +178,6 @@ public class DisbursalHandler {
     }    
 
     public Disbursal__c updateDisbursalValues (Disbursal__c disbursal, Loan__c loan, Opportunity updatedOpportunity, Opportunity oldOpportunity, String disbursalDateField, String disbursalMethodField, String disbursalMethod) {
-        System.debug(disbursal.Type__c);
         if (updatedOpportunity.get(disbursalDateField) != null && updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField)) {
             disbursal.Status__c = 'Complete';
             disbursal.Disbursal_Method__c = disbursalMethod;
