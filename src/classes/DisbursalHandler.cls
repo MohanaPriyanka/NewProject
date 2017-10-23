@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:  Cole Swain
  * Description: This is the handler for the Disbursal object.
- * Test: Nothing yet
+ * Test: DisbursalHandlerTest
  *************************************************************************************/
 public class DisbursalHandler {
 
@@ -130,28 +130,27 @@ public class DisbursalHandler {
                                  WHERE Opportunity__r.Id = : updatedOpportunity.Id]) {
                 if (!loan.Disbursals__r.isEmpty()) {
                     for (Disbursal__c disbursal : loan.Disbursals__r) {
-                        //if (updatedOpportunity.DOER_Solar_Loan__c) {
-                            if (updatedOpportunity.Disbursal_Type_Contract__c == 'ACH Disbursal') {
-                                disbursalMethodContract = 'ACH';
-                            } else if (updatedOpportunity.Disbursal_Type_Contract__c == 'Check Disbursal') {
-                                disbursalMethodContract = 'Check';
-                            } else {
-                                disbursalMethodContract = null;
-                            }
-                            if (updatedOpportunity.Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
-                                disbursalMethodInterconnect = 'ACH';
-                            } else if (updatedOpportunity.Disbursal_Type_Interconnect__c == 'Check Disbursal') {
-                                disbursalMethodInterconnect = 'Check';
-                            } else {
-                                disbursalMethodInterconnect = null;
-                            }
-                            if (updatedOpportunity.Disbursal_Type_Mech_Completion__c == 'ACH') {
-                                disbursalMethodMechInstall = 'ACH';
-                            } else if (updatedOpportunity.Disbursal_Type_Mech_Completion__c == 'Check') {
-                                disbursalMethodMechInstall = 'Check';
-                            } else {
-                                disbursalMethodMechInstall = null;
-                            }                            
+                        if (updatedOpportunity.Disbursal_Type_Contract__c == 'ACH Disbursal') {
+                            disbursalMethodContract = 'ACH';
+                        } else if (updatedOpportunity.Disbursal_Type_Contract__c == 'Check Disbursal') {
+                            disbursalMethodContract = 'Check';
+                        } else {
+                            disbursalMethodContract = null;
+                        }
+                        if (updatedOpportunity.Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
+                            disbursalMethodInterconnect = 'ACH';
+                        } else if (updatedOpportunity.Disbursal_Type_Interconnect__c == 'Check Disbursal') {
+                            disbursalMethodInterconnect = 'Check';
+                        } else {
+                            disbursalMethodInterconnect = null;
+                        }
+                        if (updatedOpportunity.Disbursal_Type_Mech_Completion__c == 'ACH') {
+                            disbursalMethodMechInstall = 'ACH';
+                        } else if (updatedOpportunity.Disbursal_Type_Mech_Completion__c == 'Check') {
+                            disbursalMethodMechInstall = 'Check';
+                        } else {
+                            disbursalMethodMechInstall = null;
+                        }                            
                         if (disbursal.Type__c == 'Contract Signature') {
                             disbursalsToUpdate.add(updateDisbursalValues(Disbursal, Loan, updatedOpportunity, oldOpportunity,  
                                 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c', disbursalMethodContract));
