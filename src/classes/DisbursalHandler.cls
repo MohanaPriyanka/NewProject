@@ -123,6 +123,7 @@ public class DisbursalHandler {
         if(dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c') ||
             dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c') || 
             dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c')) {
+            System.debug('check');
             for (Loan__c loan : [SELECT Id, Opportunity__r.Id, 
                                     (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c, Type__c 
                                     FROM Disbursals__r)
@@ -164,28 +165,22 @@ public class DisbursalHandler {
                     }
                 }
             }
+            System.debug(disbursalsToUpdate);
             update disbursalsToUpdate;
         }
     }
 
     public Boolean dibursalMethodOrDateIsChanged (Opportunity updatedOpportunity, Opportunity oldOpportunity, String disbursalDateField, String disbursalMethodField) {
-        if (disbursalMethodField != null) {
-            if (updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField) ||
-                updatedOpportunity.get(disbursalMethodField) != oldOpportunity.get(disbursalMethodField)) {
-                return true;
-            } else {
-                return false;
-            }
+        if (updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField) ||
+            updatedOpportunity.get(disbursalMethodField) != oldOpportunity.get(disbursalMethodField)) {
+            return true;
         } else {
-            if (updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField)) {
-                return true;
-            } else {
-                return false;
-            }            
+            return false;
         }
     }    
 
     public Disbursal__c updateDisbursalValues (Disbursal__c disbursal, Loan__c loan, Opportunity updatedOpportunity, Opportunity oldOpportunity, String disbursalDateField, String disbursalMethodField, String disbursalMethod) {
+        System.debug(disbursal.Type__c);
         if (updatedOpportunity.get(disbursalDateField) != null && updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField)) {
             disbursal.Status__c = 'Complete';
             disbursal.Disbursal_Method__c = disbursalMethod;
@@ -213,12 +208,15 @@ public class DisbursalHandler {
         Integer i;
         Decimal oldAmount;
         Decimal newAmount;
+        Decimal nextAmount;
         Decimal minimumSequenceCount = 0;
         Decimal changeInLoanAmount = newMap.get(loanRecord.Id).Requested_Loan_Amount__c - oldMap.get(loanRecord.Id).Requested_Loan_Amount__c;
         Decimal differenceInCompletedDisbursals = 0;
         Disbursal__c nextDisbursal;
         Disbursal__c disbursal;
         DisbursalStructure disbursalStructure = getDisbursalStructure(loanRecord);   
+        DateTime now = System.now();
+        Date today = date.newInstance(now.year(), now.month(), now.day());
 
         for (i=0;i<loanRecord.Disbursals__r.size();i++) {
             disbursal = loanRecord.Disbursals__r.get(i);
@@ -242,12 +240,16 @@ public class DisbursalHandler {
                     name = disbursal.Name;
                 } else {
                     newAmount =  newMap.get(loanRecord.Id).Requested_Loan_Amount__c * disbursal.Disbursal_Percentage__c /100;
-                    disbursal.Adjustments__c = 'Adjusted from ' +  disbursal.Amount__c + ' to '+ newAmount;                    
+                    disbursal.Adjustments__c = 'Adjusted from ' +  disbursal.Amount__c + ' to '+ newAmount + ' ' + today;                    
                     disbursal.Amount__c = newAmount;
                     disbursalsToUpdate.add(disbursal);
                 }
             }           
-        }         
+        }  
+        nextAmount = loanRecord.Requested_Loan_Amount__c * nextDisbursal.Disbursal_Percentage__c/100 + differenceInCompletedDisbursals;
+        nextDisbursal.Adjustments__c = 'Adjusted from ' +  nextDisbursal.Amount__c + ' to '+ nextAmount + ' ' + today; 
+        nextDisbursal.Amount__c = nextAmount;
+        disbursalsToUpdate.add(nextDisbursal);       
         return disbursalsToUpdate;
     }
 

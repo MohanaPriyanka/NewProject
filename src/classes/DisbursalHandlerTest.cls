@@ -113,11 +113,9 @@ public class DisbursalHandlerTest {
 	        								 FROM Opportunity];
 	        opportunityRecord.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
 	        opportunityRecord.Disbursal_Type_Contract__c = 'ACH Disbursal';
-	        update opportunityRecord;
 
 	        opportunityRecord.Disbursal_2_Mechanical_Install_Checkbox__c = myDate;
             opportunityRecord.Disbursal_Type_Mech_Completion__c = 'ACH';            
-	        update opportunityRecord;        
 
 	        opportunityRecord.Disbursal_3_Full_Install_Checkbox__c = myDate;
 	        opportunityRecord.Disbursal_Type_Interconnect__c = 'ACH Disbursal';
@@ -150,6 +148,7 @@ public class DisbursalHandlerTest {
 
 	        opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 28000;
 	        update opportunityRecord.Loans__r.get(0);
+            System.debug(opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c);
 
 	        List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
 	        									   FROM Disbursal__c 
@@ -157,13 +156,14 @@ public class DisbursalHandlerTest {
 	        									   ORDER BY Disbursal_Sequence__c];
 
 	        for (Disbursal__c disbursal : disbursalRecords) {
+                System.debug(disbursal.Amount__c);
 	        	totalAmount = totalAmount + disbursal.Amount__c;
 	        }
 
-	        System.assertEquals(disbursalRecords.get(0).Status__c, 'Complete');
-	        System.assertEquals(disbursalRecords.get(0).Amount__c, 9000);
-	        System.assertEquals(disbursalRecords.get(1).Amount__c, 16200);
-	        System.assertEquals(disbursalRecords.get(2).Amount__c, 2800);
+	        System.assertEquals('Complete', disbursalRecords.get(0).Status__c);
+	        System.assertEquals(9000, disbursalRecords.get(0).Amount__c);
+	        System.assertEquals(16200, disbursalRecords.get(1).Amount__c);
+	        System.assertEquals(2800, disbursalRecords.get(2).Amount__c);
 	        System.assertEquals(28000, totalAmount);
 	        Test.stopTest();                
     }        
