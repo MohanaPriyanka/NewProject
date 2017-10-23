@@ -1,0 +1,72 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" extends="c:CAPParent">
+  <aura:attribute name="stageIndex" type="Integer" default="0"/>
+  <!-- Set when handling the NavigationEvent -->
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+
+  <aura:registerEvent name="CAPNavigationEvent" type="c:CAPNavigationEvent"/>
+
+  <div class="slds-path">
+    <div class="slds-grid slds-path__track">
+      <div class="slds-grid slds-path__scroller-container">
+        <div class="slds-path__scroller" role="application">
+          <ul class="slds-path__nav" role="listbox">
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==0?'slds-is-current slds-is-active':
+                       'slds-is-active')}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Getting_Started" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Getting_Started}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==1?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>1?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Personal_Information" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Personal_Information}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==2?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>2?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Credit_Check" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Credit_Check}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==3?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>3?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Income_Documentation" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Income_Documentation}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==4?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>4?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_SREC_and_Disbursals" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_SREC_and_Disbursals}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' + 
+                       (v.stageIndex==5?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>5?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Complete" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Complete}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</aura:component>

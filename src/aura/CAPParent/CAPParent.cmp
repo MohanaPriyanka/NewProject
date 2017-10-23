@@ -1,0 +1,4 @@
+<aura:component extensible="true" abstract="true" extends="c:BlueWaveForm">
+  <aura:attribute name="leadRecord" type="Lead"/>
+  {!v.body}
+</aura:component>
