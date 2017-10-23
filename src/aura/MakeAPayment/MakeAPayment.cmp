@@ -132,7 +132,12 @@
                 <th scope="row"> {!accountBill.Date__c} </th>
                 <th scope="row"> {!accountBill.Bill_Due_Date__c} </th> 
                 <th scope="row"> 
-                  <a href="{!accountBill.Link_To_File__c}" target="_blank">View Statement</a> 
+                  <aura:if isTrue="{!accountBill.Link_To_File__c != NULL}"> 
+                    <a href="{!accountBill.Link_To_File__c}" target="_blank">View Statement</a> 
+                    <aura:set attribute="else">
+                      Statement
+                    </aura:set>
+                  </aura:if>
                 </th>
                 <th scope="row"><ui:outputCurrency value="{!accountBill.Total_Due_Minus_Payment_Plan__c}" /></th>
                 <th scope="row"><ui:outputCurrency value="{!accountBill.Balance_Net_Late_Payments__c}" /></th>    
