@@ -55,10 +55,10 @@ public class CheckAddressFieldUpdate {
             if (accountToABMap.containsKey((Id)lineItem.get('abID'))) {
                 Id accountId = accountToABMap.get((Id)lineItem.get('abID'));
                 if ( !acctToFieldMap.containsKey(accountId)) {
-                    checkLine = 'If you would like to pay by check, please make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + (Decimal)lineItem.get('TotalDue');
+                    checkLine = 'If you would like to pay by check, please make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' +  ((Decimal)lineItem.get('TotalDue')).setScale(2);
                     acctToFieldMap.put(accountId , checkLine );
                 } else {
-                    checkLine = 'You are receiving credits from multiple projects. ' + acctToFieldMap.get(accountId) + ' and make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + (Decimal)lineItem.get('TotalDue');
+                    checkLine = 'You are receiving credits from multiple projects. ' + acctToFieldMap.get(accountId) + ' and make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + ((Decimal)lineItem.get('TotalDue')).setScale(2);
                     acctToFieldMap.put(accountId , checkLine); 
                 }
             }
