@@ -30,7 +30,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
 
         if (Trigger.isUpdate && Trigger.isAfter) {
             servicer.upsertLoanPayments();
-            disbursalHandler.updateDisbursalAmounts(Trigger.newMap, Trigger.oldMap);
+            disbursalHandler.updateDisbursalAmountsOnRLAChange(Trigger.newMap, Trigger.oldMap);
         }
     }
 }

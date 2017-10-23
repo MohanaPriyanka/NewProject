@@ -106,17 +106,6 @@ public without sharing class LoanHandler{
             if (newOpp.Partner_Sales_Agreement_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Partner_Sales_Agreement_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 uploadedSalesAgreementCustomerOppIds.add(newOpp.Id);
             }
-            if (newOpp.Disbursal_1_Contract_Signature_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_1_Contract_Signature_Checkbox__c ||
-                newOpp.Disbursal_Type_Contract__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Contract__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
-            if (newOpp.Disbursal_3_Full_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_3_Full_Install_Checkbox__c ||
-                newOpp.Disbursal_Type_Interconnect__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Interconnect__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
-            if (newOpp.Disbursal_2_Mechanical_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
             if (newOpp.Update_Dummy__c != oldOpportunityMap.get(newOpp.Id).Update_Dummy__c) {
                 validateSalesAgreementList.add(newOpp);
                 oppLeadIdsList.add(newOpp.Lead_Id__c);
@@ -1221,67 +1210,5 @@ public without sharing class LoanHandler{
             }
         }
         update equipmentUpdateList;
-    }
-
-    public void updateDisbursalRecords (Map<Id, Opportunity> updatedOppMap, Map<Id, Opportunity> oldOppMap) {
-        String disbursalMethodContract;
-        String disbursalMethodMechInstall;
-        String disbursalMethodInterconnect;
-        List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();
-        for (Loan__c loan : [SELECT Id, Opportunity__r.Id, (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c FROM Disbursals__r)
-                             FROM Loan__c
-                             WHERE Opportunity__r.Id IN : updatedOppMap.KeySet()]) {
-            if (!loan.Disbursals__r.isEmpty()) {
-                for (Disbursal__c disbursal : loan.Disbursals__r) {
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).DOER_Solar_Loan__c) {
-                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'ACH Disbursal') {
-                            disbursalMethodContract = 'ACH';
-                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'Check Disbursal') {
-                            disbursalMethodContract = 'Check';
-                        } else {
-                            disbursalMethodContract = null;
-                        }
-                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
-                            disbursalMethodInterconnect = 'ACH';
-                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'Check Disbursal') {
-                            disbursalMethodInterconnect = 'Check';
-                        } else {
-                            disbursalMethodInterconnect = null;
-                        }
-                    } else {
-                        disbursalMethodContract = 'ACH';
-                        disbursalMethodMechInstall = 'ACH';
-                        disbursalMethodInterconnect = 'ACH';
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c ||
-                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c) {
-                        if (disbursal.Name.Contains('Contract Signature')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Disbursal_Method__c = disbursalMethodContract;
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c ||
-                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c) {
-                        if (disbursal.Name.Contains('Interconnection')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Disbursal_Method__c = disbursalMethodInterconnect;
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
-                        if (disbursal.Name.Contains('Mechanical Installation')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c;
-                            disbursal.Disbursal_Method__c = disbursalMethodMechInstall;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                }
-            }
-        }
-        update disbursalsToUpdate;
     }
 }

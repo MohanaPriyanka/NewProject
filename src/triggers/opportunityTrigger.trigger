@@ -5,6 +5,7 @@ trigger opportunityTrigger on opportunity (before insert, after insert, before u
     if(Trigger.isUpdate && Trigger.isAfter){
         loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
         disbursalHandler.createDisbursalsFromOpportunity(Trigger.newMap, Trigger.oldMap);
+        disbursalHandler.updateDisbursalsOnOpportunityUpdate(Trigger.new, Trigger.old);
     }
     if(Trigger.isUpdate && Trigger.isBefore){
          ChargentOrderCreationhandler.createChargentOrder(Trigger.new, Trigger.old);
