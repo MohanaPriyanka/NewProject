@@ -12,6 +12,8 @@ private class ProductProfileUpdateBatchTest {
                                                              Electricity_Provider__c = 'Meralco',
                                                              Company = 'Cloud Jedi'));
         insert lead;
+        
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
         Utility_NMC_Tariff__c nmcRate =  (Utility_NMC_Tariff__c)TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 1,
                                                                                                                     Name = 'Meralco Territory Class 2',
