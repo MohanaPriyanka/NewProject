@@ -200,9 +200,6 @@ public without sharing class SLPControllersTestclass {
         Map<String, Lead> leadMap = new Map<String, Lead>();
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
 
-        List<Product2> productList = LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
-        insert productList;
-
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
 
         for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName,
@@ -292,8 +289,7 @@ public without sharing class SLPControllersTestclass {
             );
         insert newLead;
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -357,8 +353,7 @@ public without sharing class SLPControllersTestclass {
             );
         insert newLead;
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -426,8 +421,7 @@ public without sharing class SLPControllersTestclass {
             );
         insert newLead;
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadReturnList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -466,8 +460,7 @@ public without sharing class SLPControllersTestclass {
         Residential_Equipment__c equipmentRecord;
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -504,8 +497,7 @@ public without sharing class SLPControllersTestclass {
         Residential_Equipment__c equipmentRecord;
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -542,8 +534,8 @@ public without sharing class SLPControllersTestclass {
         Loan__c loanRecord;
         Residential_Equipment__c equipmentRecord;
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+        Test.startTest();
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -551,8 +543,6 @@ public without sharing class SLPControllersTestclass {
             leadRecord.Status = 'Pending Information';
         }
         update leadList;
-
-        Test.startTest();
 
         List<Loan__c> loanList = [SELECT Id FROM Loan__c];
         loanId = String.valueOf(loanList.get(0).Id);
@@ -563,58 +553,9 @@ public without sharing class SLPControllersTestclass {
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanId);
-            System.assertNotEquals(null, equipmentRecord);
         }
-        equipmentRecord.Interconnection_Update_Dummy__c = !equipmentRecord.Interconnection_Update_Dummy__c;// should be false -> true
-        System.debug(LoggingLevel.ERROR, equipmentRecord);
-        update equipmentRecord;
-        partnerTaskList = [SELECT Id, Status__c FROM Partner_Task__c WHERE Name = 'Interconnection' AND Loan__c = :loanId];
-        System.assertNotEquals('Complete', partnerTaskList[0].Status__c);
-        equipmentRecord.Annual_Production_kWh_kW__c = 12;
-        equipmentRecord.Interconnected__c = TRUE;
-        equipmentRecord.Interconnection_Date__c = Date.today();
-        equipmentRecord.Percentage_of_System_Shaded__c = 10;
-        equipmentRecord.SREC_Opt_In_Calendar_Quarter__c = 'Q4\' 2017';
-        equipmentRecord.Generator_Type__c = 'Photovoltaic';
-        equipmentRecord.MA_Facility_Sector__c = 'Residential';
-        equipmentRecord.Generator_Nameplate_Capacity__c = 12;
-        equipmentRecord.Contract_Execution_Date__c = Date.today();
-        equipmentRecord.Generator_Interconnection_Date__c = Date.today();
-        equipmentRecord.Generator_Installation_Date__c = Date.today();
-        equipmentRecord.Generator_Energized_Online_Date__c = Date.today();
-        equipmentRecord.Module_Manufacturer__c = 'MM';
-        equipmentRecord.Module_Model_Number__c = 'MM MMN';
-        equipmentRecord.Module_Power_Rating__c = 'MPR';
-        equipmentRecord.Number_of_Modules__c = 1;
-        equipmentRecord.Module_Array_Mounting_Type__c = 'MAMT';
-        equipmentRecord.Module_Array_Azimuth__c = '12';
-        equipmentRecord.Module_Array_Tilt__c = 12;
-        equipmentRecord.Module_Mounting_Location__c = 'MML';
-        equipmentRecord.Inverter_Manufacturer__c = 'IM';
-        equipmentRecord.Inverter_Model_Number__c = 'IMN';
-        equipmentRecord.Remote_Monitoring_System_Vendor__c = 'RMSV';
-        equipmentRecord.Remote_Monitorin_Systegm_Identifier__c = 'RMSUI';
-        equipmentRecord.Number_of_Meters__c = 1;
-        equipmentRecord.Solar_Meter_Manufacturer__c = 'SMM';
-        equipmentRecord.Solar_Meter_Model__c = 'SMM';
-        equipmentRecord.Solar_Meter_Serial_Number__c = 'SMSN';
-        update equipmentRecord;
-        Attachment attach = new Attachment();
-        attach.Name='Unit Test Attachment';
-        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
-        attach.Body=bodyBlob;
-        attach.ParentId=equipmentRecord.id;
-        attach.Description = 'PTO Documentation';
-        attach.OwnerId = partnerUser.Id;
-        insert attach;
-        equipmentRecord.Interconnection_Update_Dummy__c = !equipmentRecord.Interconnection_Update_Dummy__c; // should be true -> false
-        update equipmentRecord;
-        partnerTaskList = [SELECT Id, Status__c FROM Partner_Task__c WHERE Name = 'Interconnection' AND Loan__c = :loanId];
-        System.assertEquals('Complete', partnerTaskList[0].Status__c);
-
         Test.stopTest();
     }
-
     @isTest static void testCustomerHandlerPartTwoExec() {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
 
@@ -630,8 +571,7 @@ public without sharing class SLPControllersTestclass {
         Residential_Equipment__c equipmentRecord;
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -666,8 +606,7 @@ public without sharing class SLPControllersTestclass {
         String loanId;
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
 
@@ -719,8 +658,7 @@ public without sharing class SLPControllersTestclass {
         String loanId;
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
 
@@ -769,8 +707,7 @@ public without sharing class SLPControllersTestclass {
         String equipmentId;
         Residential_Equipment__c equipment;
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -814,8 +751,7 @@ public without sharing class SLPControllersTestclass {
         Residential_Equipment__c equipment;
 
 
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -936,8 +872,7 @@ public without sharing class SLPControllersTestclass {
         List<Lead> leadUpdateList = new List<Lead>();
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -976,8 +911,7 @@ public without sharing class SLPControllersTestclass {
         List<Lead> leadUpdateList = new List<Lead>();
 
         Test.startTest();
-        productList = LoanTestRecordWarehouse.getLoanHandlerProductRecords();
-        insert productList;
+
 
         leadList = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
         for (Lead leadRecord : leadList) {
@@ -1212,7 +1146,7 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testOrigination() {
-        insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true];
         System.assertEquals(7, products.size());
 

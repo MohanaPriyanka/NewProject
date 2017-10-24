@@ -102,15 +102,20 @@ public class DisbursalHandler {
         }
         for (Loan__c loanRecord : [SELECT Id, Name, Requested_Loan_Amount__c, Total_Funds_Disbursed__c, Partner__r.Name, Sales_Agent__r.Id, Partner__r.Id, Product__r.Disbursal_Terms__c,
                                     (SELECT Id, Amount__c, Status__c, Disbursal_Percentage__c, Disbursal_Sequence__c, Name, Adjustments__c
-                                    FROM Disbursals__r
-                                    ORDER BY Disbursal_Sequence__c)
+                                     FROM Disbursals__r
+                                     ORDER BY Disbursal_Sequence__c)
                                    FROM Loan__c
                                    WHERE Id IN : updatedLoans]) {
-            for (Disbursal__c disbursal : calculateNextDisbursalAfterRLAChange(loanRecord, newMap, oldMap)) {
-                disbursalsToUpdate.add(disbursal);
+            if (!loanRecord.Disbursals__r.isEmpty()) {
+                List<Disbursal__c> disbursalList = new List<Disbursal__c>(calculateNextDisbursalAfterRLAChange(loanRecord, newMap, oldMap));
+                for (Disbursal__c disbursal : disbursalList) {
+                    disbursalsToUpdate.add(disbursal);
+                }
             }
         }
-        update disbursalsToUpdate;
+        if (!disbursalsToUpdate.isEmpty()) {
+            update disbursalsToUpdate;
+        }
     }      
 
     public void updateDisbursalsOnOpportunityUpdate (List<Opportunity> updatedOppList, List<Opportunity> oldOppList) { 
@@ -207,14 +212,11 @@ public class DisbursalHandler {
         Decimal newAmount;
         Decimal nextAmount;
         Decimal minimumSequenceCount = 0;
-        Decimal changeInLoanAmount = newMap.get(loanRecord.Id).Requested_Loan_Amount__c - oldMap.get(loanRecord.Id).Requested_Loan_Amount__c;
         Decimal differenceInCompletedDisbursals = 0;
         Disbursal__c nextDisbursal;
         Disbursal__c disbursal;
-        DisbursalStructure disbursalStructure = getDisbursalStructure(loanRecord);   
         DateTime now = System.now();
-        Date today = date.newInstance(now.year(), now.month(), now.day());
-
+        Date today = Date.newInstance(now.year(), now.month(), now.day());
         for (i=0;i<loanRecord.Disbursals__r.size();i++) {
             disbursal = loanRecord.Disbursals__r.get(i);
             oldAmount = disbursal.Amount__c;
@@ -237,14 +239,14 @@ public class DisbursalHandler {
                     name = disbursal.Name;
                 } else {
                     newAmount =  newMap.get(loanRecord.Id).Requested_Loan_Amount__c * disbursal.Disbursal_Percentage__c /100;
-                    disbursal.Adjustments__c = 'Adjusted from ' +  disbursal.Amount__c + ' to '+ newAmount + ' ' + today;                    
+                    disbursal.Adjustments__c = 'Adjusted from ' +  disbursal.Amount__c + ' to '+ newAmount + ' on ' + today;                    
                     disbursal.Amount__c = newAmount;
                     disbursalsToUpdate.add(disbursal);
                 }
             }           
         }  
         nextAmount = loanRecord.Requested_Loan_Amount__c * nextDisbursal.Disbursal_Percentage__c/100 + differenceInCompletedDisbursals;
-        nextDisbursal.Adjustments__c = 'Adjusted from ' +  nextDisbursal.Amount__c + ' to '+ nextAmount + ' ' + today; 
+        nextDisbursal.Adjustments__c = 'Adjusted from ' +  nextDisbursal.Amount__c + ' to '+ nextAmount + ' on ' + today; 
         nextDisbursal.Amount__c = nextAmount;
         disbursalsToUpdate.add(nextDisbursal);       
         return disbursalsToUpdate;

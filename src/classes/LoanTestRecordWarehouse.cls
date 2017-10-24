@@ -17,8 +17,53 @@ public class LoanTestRecordWarehouse {
         return partnerSetupList;
     }
 
-    public static List<Product2> getLoanProductsVariableInterestRatesandTerms () {
+    //public static List<Product2> getLoanProductsVariableInterestRatesandTerms () {
 
+    //    Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
+    //                                            Total_Capital__c = 10000000,
+    //                                            Investor__c = 'The Bank',
+    //                                            Pool_Type__c = 'Revolving Credit Line');
+    //    insert capitalPool;
+
+    //    Date myDate = Date.newInstance(2015, 2, 17);
+    //    Date codDate = Date.newInstance(2015, 4, 17);
+    //    Date codDateTwo = Date.newInstance(2015, 7, 17);
+
+    //    Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
+    //        Name = 'Avidia 1',
+    //        Tranche_Cap__c = 1000000,
+    //        Tranche_Type__c = 'Standard',
+    //        State__c = 'MA',
+    //        Stage__c = 'Open',
+    //        Loan_Data__c = capitalPool.id);
+    //    insert loanTrancheMA;
+
+    //    Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
+    //        Name = 'Tranche Assignment Pending',
+    //        Tranche_Type__c = 'Holding',
+    //        Stage__c = 'Closed',
+    //        Loan_Data__c = capitalPool.id);
+    //    insert loanTranchePending;
+
+    //    Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
+    //    Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', 6.99, 10, 5, '700', '749', capitalPool.Id);
+    //    Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '680', '699', capitalPool.Id);
+    //    Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
+    //    Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
+    //    Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '680', '699', capitalPool.Id);
+    //    productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
+    //    productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+    //    productLoanMATerm20Rate725.Program__c = 'MSLP';
+    //    productLoanMATerm20Rate725.Lender_of_Record__c = 'Avidia';
+    //    Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
+    //    productLoanRI.Lender_of_Record__c = 'Avidia';
+
+    //    return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
+    //            productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
+    //            productLoanMATerm20Rate725, productLoanRI};
+    //}
+
+    public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
                                                 Investor__c = 'The Bank',
@@ -58,12 +103,11 @@ public class LoanTestRecordWarehouse {
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
 
-        return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
+        List<Product2> productList = new List<Product2>();
+        Insert new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-                productLoanMATerm20Rate725, productLoanRI};
-    }
+                productLoanMATerm20Rate725, productLoanRI};        
 
-    public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
         Partner__c partner = new Partner__c(Name = 'Partner');
         insert partner;
 
@@ -84,7 +128,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
+                                                Product__c = productLoanMATerm10Rate699.Id,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -102,7 +146,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
+                                                Product__c = productLoanMATerm10Rate725.Id,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -120,7 +164,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 240,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
+                                                Product__c = productLoanMATerm20Rate699.Id,
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
@@ -140,7 +184,7 @@ public class LoanTestRecordWarehouse {
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = null,
+                                                Product__c = productLoanMATerm20Rate725.Id,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
         Lead coApplicantLead = new lead(FirstName = 'coApplicantLead',
@@ -160,7 +204,7 @@ public class LoanTestRecordWarehouse {
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 1000,
-                                                Product__c = null,
+                                                Product__c = productLoanMATerm10Rate699.Id,
                                                 Automatic_Product_Assignment__c = false,
                                                 Status = 'Ready for Credit Check');
 
@@ -272,7 +316,7 @@ public class LoanTestRecordWarehouse {
         return leadList;
     }
 
-    public static List<Product2> getLoanHandlerProductRecords () {
+    public static List<Lead> getLoanHandlerLeadRecords () {
 
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
@@ -339,11 +383,9 @@ public class LoanTestRecordWarehouse {
                                                 Program__c = 'MSLP',
                                                 isActive = TRUE);
 
+        insert productRecord;
+        insert productRecordMSLP;
 
-        return new List<Product2>{productRecord, productRecordMSLP};
-    }
-
-    public static List<Lead> getLoanHandlerLeadRecords () {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
 
@@ -365,7 +407,7 @@ public class LoanTestRecordWarehouse {
                                     Partner_Lookup__c = partner.Id,
                                     Bs_Sales_ID__c = salesRep.Id,
                                     Annual_Income_Currency__c = 150000,
-                                    Product__c = null,
+                                    Product__c = productRecord.Id,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
@@ -388,7 +430,7 @@ public class LoanTestRecordWarehouse {
                                     Bs_Sales_ID__c = salesRep.Id,
                                     Loan_Term__c = 120,
                                     Annual_Income_Currency__c = 150000,
-                                    Product__c = null,
+                                    Product__c = productRecord.Id,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
@@ -411,7 +453,7 @@ public class LoanTestRecordWarehouse {
                                        Bs_Sales_ID__c = salesRep.Id,
                                        Loan_Term__c = 120,
                                        Annual_Income_Currency__c = 150000,
-                                       Product__c = null,
+                                       Product__c = productRecordMSLP.Id,
                                        Automatic_Product_Assignment__c = true,
                                        Product_Program__c = 'MSLP',
                                        Status = 'Ready for Credit Check',
