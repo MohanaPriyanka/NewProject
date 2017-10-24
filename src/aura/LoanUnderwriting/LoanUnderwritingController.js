@@ -84,5 +84,17 @@
         var parentId = component.get("v.lead.Id");
         helper.uploadFiles(component, files, parentId, helper.getLead);
     },
-
+       
+    takeSnapshot : function(component, event, helper) {
+        var action = component.get("c.renderPDFAndAttach");
+        action.setParams({"leadId" : component.get("v.leadId")});
+        action.setCallback(this,function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                helper.getLead(component);
+            } else {
+                console.log(resp.getError());
+            }
+        });
+        $A.enqueueAction(action);
+    }
 })

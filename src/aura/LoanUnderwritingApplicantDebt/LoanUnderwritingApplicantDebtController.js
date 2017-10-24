@@ -28,7 +28,7 @@
                                              srcElement.get("v.class"),
                                              'LASERCA__Trade_Accounts__c',
                                              'LASERCA__Monthly_Payment__c',
-                                             srcElement.elements[0].value);
+                                             srcElement.get("v.value"));
         savePromise.then(
             $A.getCallback(function(result) {
                 return(helper.initHelper(component, event));

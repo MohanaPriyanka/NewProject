@@ -1,21 +1,11 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">  
-  <aura:attribute name="myBill" type="Decimal"  />
-  <aura:attribute name="account" type="Object" />        
-  <aura:attribute name="accountId" type="String"  />
-  <aura:attribute name="parentAccountId" type="String"  />  
-  <aura:attribute name="paymentURL" type="String"  />
-  <aura:attribute name="userMessage" type="String"  />
-  <aura:attribute name="userOutputMessage" type="String"  />
-  <aura:attribute name="menuOutputMessage" type="String" />
-  <aura:attribute name="menuLabels" type="Account" />
-  <aura:attribute name="Opportunitys" type="Object" />   
-  <aura:attribute name="SystemBills" type="Decimal" />
-  <aura:attribute name="SystemBillsId" type="Id" />
-  <aura:attribute name="AccountBills" type="Object" />
-  <aura:attribute name="statementId" type="String" />
-  <aura:attribute name="statementIdMap" type="Map" />    
-  <aura:attribute name="PaymentLogs" type="Object" />     
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="myBill" type="Decimal"  />  
+  <aura:attribute name="menuLabels" type="Account" />
+  <aura:attribute name="SystemBills" type="Decimal" />
+  <aura:attribute name="AccountBills" type="Object" /> 
+  <aura:attribute name="PaymentLogs" type="Object" />    
+  <aura:attribute name="paymentURL" type="String" /> 
   <style type="text/css">
         @font-face {
             font-family: proximaNovaFont;
@@ -62,10 +52,6 @@
     </div>       
   <br></br> 
   <br></br>
-
- <!--<div aura:id="menuMessage" class="hide">
-    Menu Output: <ui:outputText aura:id="menuOutput" value="{!v.SystemBills[0]}"/>
-  </div>-->
 <section class="slds-clearfix">      
     <br /><br />
     <b><h3 class="proximaNova"> Current Balance Due: </h3></b>           
@@ -120,31 +106,9 @@
             
                 target="_blank">
         <div aura:id="paymentButton" class="proximaNovaWhite notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Make a payment</div>
-        </a>
-   		<a href="{!'https://forms.bluewaverenewables.com/381563?tfa365=' + v.accountId + '&amp;' +                      
-                      'tfa_370=' + v.Opportunitys[0].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_387=' + v.Opportunitys[0].Id + '&amp;' + 
-                      'tfa_371=' + v.Opportunitys[1].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_389=' + v.Opportunitys[1].Id + '&amp;' + 
-                      'tfa_373=' + v.Opportunitys[2].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_391=' + v.Opportunitys[2].Id + '&amp;' +  
-                      'tfa_375=' + v.Opportunitys[3].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_393=' + v.Opportunitys[3].Id + '&amp;' +  
-                      'tfa_377=' + v.Opportunitys[4].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_395=' + v.Opportunitys[4].Id + '&amp;' +  
-                      'tfa_379=' + v.Opportunitys[5].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_397=' + v.Opportunitys[5].Id + '&amp;' +  
-                      'tfa_381=' + v.Opportunitys[6].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_399=' + v.Opportunitys[6].Id + '&amp;' +  
-                      'tfa_383=' + v.Opportunitys[7].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_401=' + v.Opportunitys[7].Id + '&amp;' +  
-                      'tfa_385=' + v.Opportunitys[8].Shared_Solar_System__r.Id + '&amp;' + 
-                      'tfa_403=' + v.Opportunitys[8].Id + '&amp;'}" 
-           target="_blank">
-            <div aura:id="autoPaymentFormButton" class="proximaNovaWhite noDisplay notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Enter Payment Details</div>
-        </a>           
+        </a>         
     </div>
-    <b><h3 aura:id="recurringNotification" class="proximaNova noDisplay"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-SUN-4100 </h3>   </b>          
+    <b><h3 aura:id="recurringNotification" class="proximaNova noDisplay"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100 </h3></b>          
 	<br></br>
     <br></br>
     <b><h3 class="proximaNova"> My Statements: </h3>   </b> 
@@ -156,11 +120,9 @@
               <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>              
               <th scope="col"><span class="slds-truncate"><b>Statement Date</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Due Date</b></span></th>
-              <!--<th scope="col"><span class="slds-truncate "><b>Last Payment Date</b></span></th>-->
               <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>   
-              <!--<th scope="col"><div class="slds-truncate" title="View"><b>View Statement</b></div></th>-->
             </tr>
           </thead>
           <tbody>
@@ -169,30 +131,17 @@
                 <th scope="row"> {!accountBill.Parent_Account__r.Name} </th>                
                 <th scope="row"> {!accountBill.Date__c} </th>
                 <th scope="row"> {!accountBill.Bill_Due_Date__c} </th> 
-                <!--<th scope="row"> {!accountBill.Date_c} </th>-->   
-                <th scope="row"> {!accountBill.Activity_Type__c} </th>
+                <th scope="row"> 
+                  <aura:if isTrue="{!accountBill.Link_To_File__c != NULL}"> 
+                    <a href="{!accountBill.Link_To_File__c}" target="_blank">View Statement</a> 
+                    <aura:set attribute="else">
+                      Statement
+                    </aura:set>
+                  </aura:if>
+                </th>
                 <th scope="row"><ui:outputCurrency value="{!accountBill.Total_Due_Minus_Payment_Plan__c}" /></th>
-                <th scope="row"><ui:outputCurrency value="{!accountBill.Balance_Net_Late_Payments__c}" /></th>     
-             <td>                  
-               <!--<form class="account-form" onSubmit="{!c.navigateToStatement}" >
-              	<input type='hidden' value="{!accountBill.Id}" class="account-name" />-->
-                <!-- BELOW IS THE NAVIGAT TO STATEMENT BUTTON
-						<ui:button label="View"
-                            class="{!accountBill.Id}"
-                         labelClass="label"
-                         press="{!c.navigateToStatement}" />-->
-              	<!--<lightning:button label="View"
-                  				class = "{!accountBill.Id}"
-                                iconName="utility:page"
-                                iconPosition="left"
-                                variant= "brand"
-                                onClick = "{!c.navigateToStatement}"
-                                />             -->                                                
-              <!-- </form>
-             <div><a href="{!'https://c.na16.content.force.com/servlet/servlet.FileDownload?file=' + v.statementId }"               
-                target="_blank"><div class="proximaNovaWhite notification box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);">View Statement (Coming Soon)</div></a></div>  -->
-                 </td>
-                 </tr>
+                <th scope="row"><ui:outputCurrency value="{!accountBill.Balance_Net_Late_Payments__c}" /></th>    
+              </tr>
             </aura:iteration>
           </tbody>
         </table>
@@ -208,7 +157,6 @@
               <th scope="col"><span class="slds-truncate"><b>Solar Project</b></span></th>   
               <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
-              <!--<th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>-->                  
             </tr>
           </thead>
           <tbody>
@@ -219,33 +167,11 @@
                 <th scope="row"> {!paymentLog.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name} </th>                   
                 <th scope="row"> {!paymentLog.ChargentOrders__Type__c} </th>
                 <th scope="row"><ui:outputCurrency value="{!paymentLog.Negative_Amount__c}" /></th>
-                <!--<th scope="row"><ui:outputCurrency value="{!paymentLog.System_Bill_Remaining_Balance__c}" /></th>-->                    
               </tr>
             </aura:iteration>
           </tbody>
         </table>          
-      <br></br>
-            <!--<h2 class="bwblue"> Due Date</h2>            
-                <div><h2 class="paymentDueDate "><ui:outputCurrency value="{!v.paymentDueDate}" /></h2><br /><br /><br /><br /> </div>
-            <h2 class="bwblue"> This Month's Savings</h2>            
-                <div><h2 class="savings "><ui:outputCurrency value="{!v.savings}" /></h2><br /><br /><br /><br /> </div>
-            <h2 class="bwblue"> Previous Overdue Balance </h2>            
-                <div><h2 class="previousOverdueBalance "><ui:outputCurrency value="{!v.previousOverdueBalance}" /></h2><br /><br /><br /><br /> </div>
-            <h2 class="bwblue"> Due this Month</h2>            
-                <div><h2 class="myDueThisMonth "><ui:outputCurrency value="{!v.myDueThisMonth}" /></h2><br /><br /><br /><br /> </div>             
-           <h2 class="bwblue"> Your Payment </h2>            
-                <div><h2 class="paymentAmount "><ui:outputCurrency value="{!v.paymentAmount}" /></h2><br /><br /><br /><br /> </div>
-            <h2 class="bwblue"> This Month's Net Metering Credits</h2>            
-                <div><h2 class="netMeteringCreditsAllocated "><ui:outputCurrency value="{!v.netMeteringCreditsAllocated}" /></h2><br /><br /><br /><br /> </div>
-            <h2 class="bwblue"> Date of Last Payment </h2>            
-                    <div><h2 class="dateOfLastPayment "><ui:outputCurrency value="{!v.dateOfLastPayment}" /></h2><br /><br /><br /><br /> </div> -->                 
-                     
-                <!--<iframe height="1000px" id="theIframe" scrolling="false" frameborder="false" name="theIframe" src="{!'https://forms.bluewaverenewables.com/381491?tfa_10=' + v.myBill + '&amp;' + 'tfa_96=' + v.myAccountBillId}" width="50%"></iframe>-->
-                </div>  
-                <!--<div class="subtext"><h3>Who is First Associates?</h3>
-                    <h4>First Associates is BlueWave’s trusted billing partner. When you click “Pay My Bill” you will be re-directed to your First Associates login page where you can login to your account using the credentials provided to you in your billing package.</h4>
-                </div>-->
-             
-      </section>
-    </div>
+      </div>          
+    </section>
+  </div>
 </aura:component>

@@ -37,6 +37,8 @@ public class CustomerCommunicationHandlerTest{
                                                             Maximum_Subscription_Assemblage__c = 25);
      insert sss1;
 
+    insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
     // FIRST ACCOUNT
     Account accountA = new Account( name = 'Account A');       
     Insert accountA; 

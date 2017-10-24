@@ -1,24 +1,11 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountSolarDashboardController">
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
     <aura:attribute name="myBill" type="Decimal"  />
     <aura:attribute name="mySavings" type="Decimal"  />
-    <!--<aura:attribute name="myConsumption" type="Decimal"  />-->
     <aura:attribute name="myProduction" type="Decimal" />
-    <!--<aura:attribute name="paymentURL" type="String"  />-->
   	<aura:attribute name="menuLabels" type="Account" />  
     <aura:handler event="c:DashboardMenu" action="{!c.dashboardMenuOutput}" />       
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
-    <!--<ui:menu >       
-        <ui:menuList class=" " 
-                     aura:id="actionMenu" 
-                     visible="true"
-                     closeOnClickOutside="false"
-                     curtain="false"                    >
-          <ui:actionMenuItem aura:id="All" label="All" click="{!c.accountMenuOutput}" disabled="false" hideMenuAfterSelected="false" />
-          <aura:iteration items="{!v.menuLabels}" var="menuLabel">
-            <ui:actionMenuItem aura:id="{!menuLabel.Id}" label="{!menuLabel.Id}" body="{!menuLabel.Name}" click="{!c.accountMenuOutput}" disabled="false"/>
-          </aura:iteration> 
-        </ui:menuList>
-    </ui:menu>-->
+
  <style type="text/css">
         @font-face {
             font-family: proximaNovaFont;
@@ -42,25 +29,9 @@
                     <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ui:outputCurrency value="{!v.mySavings}" class="proximaNova green"/></h1><br />
 
                     <h3 class="center proximaNova"><a href="myaccount">Pay My Bill</a><br />
-                        <!--<a href="{!v.paymentURL}"><img src="http://bluewaverenewables.com/wp-content/uploads/2015/09/Home-Solar-Loan.png" /></a>--></h3>	        
+                  </h3>	        
                 </div>
-		    	</div>
-           <!-- <div class="main2">    
-  		<ui:menu class=""  >       
-        	<ui:menuList class="" 
-                     aura:id="actionMenu" 
-                     visible="true"
-                     closeOnClickOutside="false"
-                     curtain="false"                    >
-          	<ui:actionMenuItem aura:id="All" label="All" click="{!c.dashboardMenuOutput}" disabled="false" hideMenuAfterSelected="false" />
-          	<aura:iteration items="{!v.menuLabels}" var="menuLabel">
-            	<ui:actionMenuItem aura:id="{!menuLabel.Id}" label="{!menuLabel.Id}" body="{!menuLabel.Name}" click="{!c.dashboardMenuOutput}" disabled="false"/>
-          	</aura:iteration> 
-        	</ui:menuList>
-    	</ui:menu> 
-        </div> -->
-                       
-
+		    	</div>   
 		    <div class="navsectionright">
                 <a href="mysolar"><div class="headertop"><div class="navtext"><h2>My Solar</h2></div><h2><div class="navarrow">&gt;</div></h2></div></a>
                 <div class="bottomsection proximaNova"><h2>My Production</h2>
@@ -69,16 +40,10 @@
 		            
                     <h2>My Consumption</h2>
 		            &nbsp;&nbsp;&nbsp;this month
-                    <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--<ui:outputNumber value="{!v.myConsumption}" format="###,###,### kWh" class="green"/>--> <i>Coming Soon</i></h1><br />
-                    <h3 class="center proximaNova"><a href="mysolar">View my savings</a>
-                    <!--<a href="mysolar"><img src="http://bluewaverenewables.com/wp-content/uploads/2015/09/Home-Solar-Loan.png" /></a>--></h3>
+                    <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Coming Soon</i></h1><br />
+                    <h3 class="center proximaNova"><a href="mysolar">View my savings</a></h3>
 		        </div>
 	    	</div>
         </div>            
-        <!--<div class="refer">
-            <h3 class="center">
-                <a href="myaccount#friend">Refer a Friend</a><br />
-                <a href="myaccount#friend"><img src="http://bluewaverenewables.com/wp-content/uploads/2015/09/Home-Solar-Loan.png" /></a></h3>
-    	</div>-->
     </div>
 </aura:component>

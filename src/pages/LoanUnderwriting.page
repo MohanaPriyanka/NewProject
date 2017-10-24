@@ -1,33 +1,580 @@
-<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
-  <apex:includeLightning />
-  <apex:slds />
-  <style>  
-    div.padded {  
-    padding-top: 20px;
-    padding-right: 10px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    background-color: #005fb2;
-    }  
-  </style>  
-  <div id="logger"/>
-  <div class="slds-scope padded" id="lightning"/>
-  <script>
-    var leadId = "{!$CurrentPage.parameters.leadId}";
-    $Lightning.use("c:LoanUnderwritingApp", function()
-    {
-        $Lightning.createComponent("c:LightningErrorHandler", 
-                                   '', 
-                                   "logger", 
-                                   function(cmp){});
-    });
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false" controller="LoanUnderwriting" renderAs="{!renderAs}">
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+      <style>  
+            body {
+               font-family: 'Arial Unicode MS';
+            }
+            table {
+               border-collapse: collapse;
+               table-layout: fixed;
+               width: 100%
+            }
 
-    $Lightning.use("c:LoanUnderwritingApp", function()
-    {
-        $Lightning.createComponent("c:LoanUnderwriting",
-                                   {"leadId": leadId}, 
-                                   "lightning", 
-                                   function(cmp){});
-    });
-  </script>        
+            table, th, td {
+               border: 1px solid black;
+            }
+
+            th, td {
+               padding: 5px;
+               text-align: left;
+            }
+      </style>  
+    </head>
+    <body>
+      <div id="logger"/>
+      <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!IF(renderAs != 'pdf','true','false')}">
+        <apex:includeLightning />
+        <apex:slds />
+        <div class="slds-scope" style="padding-top: 20px; padding-right: 10px; padding-bottom: 20px; padding-left: 10px; background-color: #005fb2" id="lightning"/>
+        <script>
+          var leadId = "{!$CurrentPage.parameters.leadId}";
+          $Lightning.use("c:LoanUnderwritingApp", function()
+          {
+              $Lightning.createComponent("c:LightningErrorHandler", 
+                                         '', 
+                                         "logger", 
+                                         function(cmp){});
+          });
+
+          $Lightning.use("c:LoanUnderwritingApp", function()
+          {
+              $Lightning.createComponent("c:LoanUnderwriting",
+                                         {"leadId": leadId}, 
+                                         "lightning", 
+                                         function(cmp){});
+          });
+        </script>
+      </apex:variable>
+      <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!IF(renderAs = 'pdf','true','false')}">
+        <apex:form>
+          <div>
+            <div>
+              <div style="padding-bottom: 10px">
+                <h1>
+                  <apex:outputText value="{!lead.lead.Name}"/>
+                </h1>
+                <apex:pageBlock rendered="{!lead.lead.Product__r != null}">
+                  <div>
+                    <span>
+                      <apex:outputText value="{!lead.lead.Product__r.Name}"/>
+                      (Min FICO: <apex:outputText value="{!lead.lead.Product__r.Credit_Minimum__c}"/>
+                      <apex:outputText value=", Max DTI: {!lead.lead.Product__r.Debt_To_Income_Maximum__c}%"
+                                       rendered="{!lead.lead.Product__r.Debt_To_Income_Maximum__c != null}"/>)
+                    </span>
+                  </div>
+                </apex:pageBlock>
+              </div>
+            </div>
+
+            <div>
+              <table>
+                <tr>
+                  <td colspan="6">
+                    Avidia Review Status:&nbsp;
+                    <strong>
+                      <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}"/>
+                    </strong>
+                  </td>
+                </tr>
+                <tr valign="top">
+                  <td>
+                    Loan Amount:<br/>
+                    <apex:outputText value="{0, Number, Currency}">
+                      <apex:param value="{!lead.lead.Requested_Loan_Amount__c}"/>
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    Payment Amount:<br/>
+                    <apex:outputText value="{0, Number, Currency}">
+                      <apex:param value="{!lead.lead.Monthly_Payment__c}"/>
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    System Cost:<br/>
+                    <apex:outputText value="{0, Number, Currency}">
+                      <apex:param value="{!lead.lead.System_Cost__c}"/>
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="Max FICO:" rendered="{!hasCoApp}"/>
+                    <apex:outputText value="FICO:" rendered="{!NOT(hasCoApp)}"/>
+                    <br/>
+                    <apex:outputText value="{!bestFICO}"/>
+                  </td>
+                  <td>
+                    <apex:outputText value="Combined DTI After:" rendered="{!hasCoApp}"/>
+                    <apex:outputText value="DTI After:" rendered="{!NOT(hasCoApp)}"/>
+                    <br/>
+                    <apex:outputText value="{0, Number, 0.00}%" rendered="{!bestDTI != null}">
+                      <apex:param value="{!bestDTI}"/>
+                    </apex:outputText>
+                  </td>
+                  <td>
+                    <apex:outputText value="Combined Income:" rendered="{!hasCoApp}"/>
+                    <apex:outputText value="Income:" rendered="{!NOT(hasCoApp)}"/>
+                    <br/>
+                    <apex:outputText value="{0, Number, Currency}">
+                      <apex:param value="{!combinedIncome}"/>
+                    </apex:outputText>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <p/>
+          <div>
+            <table style="border: 0px">
+              <tr>
+                <td style="border: 0px; text-align: center">
+                  <b>Main Applicant: <apex:outputText value="{!lead.lead.Name}"/></b>
+                </td>
+                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px; text-align: center">
+                    <b>Co-Applicant:
+                      <apex:outputText value="{!lead.lead.Co_Applicant_First_Name__c}"/>&nbsp;
+                      <apex:outputText value="{!lead.lead.Co_Applicant_Last_Name__c}"/></b>
+                  </td>
+                </apex:variable>
+              </tr>
+            </table>
+          </div>
+
+          <p/>
+
+          <div style="text-align: center; border-bottom: solid;">
+            Credit
+          </div>
+          <p/>
+          <div>
+            <table style="border: 0px">
+              <tr valign="top">
+                <td style="border: 0px">
+                  <table>
+                    <tr>
+                      <td colspan="2">
+                        Credit Report:<br/>
+                        <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Name}"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        FICO:<br/>
+                        <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c}"/>
+                      </td>
+                      <td>
+                        Adverse Credit Notice Sent:<br/>
+                        <apex:outputField value="{!lead.lead.Manual_Credit_Decline__c}"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <table style="border: 0px">
+                          <tr>
+                            <td>
+                              Code/Detail
+                            </td>
+                            <td>
+                              Adverse Credit Notice
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Code__c}"/>:&nbsp;
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Detail_1__c}"/>
+                            </td>
+                            <td>
+                              <apex:outputText style="font-size: small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_1__c}"/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Code_2__c}"/>:&nbsp;
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Detail_2__c}"/>
+                            </td>
+                            <td>
+                              <apex:outputText style="font-size: small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_2__c}"/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Code_3__c}"/>:&nbsp;
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Detail_3__c}"/>
+                            </td>
+                            <td>
+                              <apex:outputText style="font-size: small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.Adverse_Credit_Notice_3__c}"/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Code_4__c}"/>:&nbsp;
+                              <apex:outputText style="font-size: x-small;"
+                                               value="{!lead.lead.Personal_Credit_Report__r.LASERCA__Detail_4__c}"/>
+                            </td>
+                            <td>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!primaryFifthCode != null}">
+                                <apex:outputText style="font-size: x-small;" value="{!primaryFifthCode}"/>:&nbsp;
+                                <apex:outputText style="font-size: x-small;" value="{!primaryFifthDetail}"/>
+                              </apex:variable>
+                            </td>
+                            <td>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px">
+                    <table>
+                      <tr>
+                        <td colspan="2">
+                          Credit Report:<br/>
+                          <apex:outputText value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Name}"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          FICO:<br/>
+                          <apex:outputText value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c}"/>
+                        </td>
+                        <td>
+                          Adverse Credit Notice Sent:<br/>
+                          <apex:outputField value="{!lead.lead.Co_App_Manual_Credit_Decline__c}"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <table style="border: 0px">
+                            <tr>
+                              <td>
+                                Code: Detail
+                              </td>
+                              <td>
+                                Adverse Credit Notice
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c}"/>:&nbsp;
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_1__c}"/>
+                              </td>
+                              <td>
+                                <apex:outputText style="font-size: small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c}"/>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c}"/>:&nbsp;
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c}"/>
+                              </td>
+                              <td>
+                                <apex:outputText style="font-size: small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c}"/>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c}"/>:&nbsp;
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c}"/>
+                              </td>
+                              <td>
+                                <apex:outputText style="font-size: small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c}"/>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_4__c}"/>:&nbsp;
+                                <apex:outputText style="font-size: x-small;"
+                                                 value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_4__c}"/>
+                              </td>
+                              <td>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!coAppFifthCode != null}">
+                                  <apex:outputText style="font-size: x-small;" value="{!coAppFifthCode}"/>:&nbsp;
+                                  <apex:outputText style="font-size: x-small;" value="{!coAppFifthDetail}"/>
+                                </apex:variable>
+                              </td>
+                              <td>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </apex:variable>
+              </tr>
+            </table>
+          </div>
+          <!-- CREDIT -->
+
+          <div style="text-align: center; border-bottom: solid;">
+            DTI
+          </div>
+          <p/>
+          <div>
+            Adjusted Combined DTI After:&nbsp;<br/>
+            <apex:outputText value="{0, number, 0.00}">
+              <apex:param value="{!lead.lead.Personal_Credit_Report__r.Adjusted_DTI__c}"/>
+            </apex:outputText>%<br/>
+            Adjusted DTI After Notes:<br/>
+            <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Adjusted_DTI_Notes__c}"/><br/>
+            <table style="border: 0px">
+              <tr valign="top">
+                <td style="border: 0px">
+                  <table>
+                    <tr>
+                      <td>
+                        DTI Before:<br/>
+                        <apex:outputText value="{0, number, 0.00}">
+                          <apex:param value="{!primaryPCR.DTI_Before__c}"/>
+                        </apex:outputText>%<br/>
+                      </td>
+                      <td>
+                        DTI After:<br/>
+                        <apex:outputText value="{0, number, 0.00}">
+                          <apex:param value="{!primaryPCR.DTI_After__c}"/>
+                        </apex:outputText>%<br/>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px">
+                    <table>
+                      <tr>
+                        <td>
+                          DTI Before:<br/>
+                          <apex:outputText value="{0, number, 0.00}">
+                            <apex:param value="{!coAppPCR.DTI_Before__c}"/>
+                          </apex:outputText>%<br/>
+                        </td>
+                        <td>
+                          DTI After:<br/>
+                          <apex:outputText value="{0, number, 0.00}">
+                            <apex:param value="{!coAppPCR.DTI_After__c}"/>
+                          </apex:outputText>%<br/>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </apex:variable>
+              </tr>
+            </table>
+          </div>
+          <!-- DTI -->
+
+          <div style="text-align: center; border-bottom: solid;">
+            Debt
+          </div>
+          <p/>
+          <div>
+            <table style="border: 0px">
+              <tr valign="top">
+                <td style="border: 0px">
+                  <table>
+                    <tr>
+                      <td colspan="3">
+                        Monthly Personal Debt<br/>
+                        <apex:outputText value="{0, Number, Currency}">
+                          <apex:param value="{!primaryPCR.Adjusted_Monthly_Personal_Debt__c}"/>
+                        </apex:outputText>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        ACCOUNT NAME
+                      </td>
+                      <td>
+                        BALANCE
+                      </td>
+                      <td>
+                        MONTHLY PAYMENT
+                      </td>
+                    </tr>
+                    <apex:repeat value="{!primaryPCR.LASERCA__Trade_Accounts__r}" var="tradeAccount">
+                      <tr>
+                        <td>
+                          <apex:outputText value="{!tradeAccount.Name}"/>
+                          <apex:variable var="hasCoApp" value="{!hasCoApp}" 
+                                         rendered="{!tradeAccount.Exclude_From_Rollup__c}">
+                            &nbsp;(excluded)
+                          </apex:variable>
+                        </td>
+                        <td>
+                          <apex:outputText value="{0, Number, Currency}">
+                            <apex:param value="{!tradeAccount.LASERCA__Account_Balance__c}"/>
+                          </apex:outputText>
+                        </td>
+                        <td>
+                          <apex:outputText value="{0, Number, Currency}">
+                            <apex:param value="{!tradeAccount.LASERCA__Monthly_Payment__c}"/>
+                          </apex:outputText>
+                        </td>
+                      </tr>
+                    </apex:repeat>
+                  </table>
+                </td>
+                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px">
+                    <table>
+                      <tr>
+                        <td colspan="3">
+                          Monthly Personal Debt<br/>
+                          <apex:outputText value="{0, Number, Currency}">
+                            <apex:param value="{!coAppPCR.Adjusted_Monthly_Personal_Debt__c}"/>
+                          </apex:outputText>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          ACCOUNT NAME
+                        </td>
+                        <td>
+                          BALANCE
+                        </td>
+                        <td>
+                          MONTHLY PAYMENT
+                        </td>
+                      </tr>
+                      <apex:repeat value="{!coAppPCR.LASERCA__Trade_Accounts__r}" var="tradeAccount">
+                        <tr>
+                          <td>
+                            <apex:outputText value="{!tradeAccount.Name}"/>
+                            <apex:variable var="hasCoApp" value="{!hasCoApp}" 
+                                           rendered="{!tradeAccount.Exclude_From_Rollup__c}">
+                              &nbsp;(excluded)
+                            </apex:variable>
+                          </td>
+                          <td>
+                            <apex:outputText value="{0, Number, Currency}">
+                              <apex:param value="{!tradeAccount.LASERCA__Account_Balance__c}"/>
+                            </apex:outputText>
+                          </td>
+                          <td>
+                            <apex:outputText value="{0, Number, Currency}">
+                              <apex:param value="{!tradeAccount.LASERCA__Monthly_Payment__c}"/>
+                            </apex:outputText>
+                          </td>
+                        </tr>
+                      </apex:repeat>
+                    </table>
+                  </td>
+                </apex:variable>
+              </tr>
+            </table>
+          </div>
+          <!-- Debt -->
+
+          <p/>
+
+          <div style="text-align: center; border-bottom: solid;">
+            Income
+          </div>
+          <p/>
+          <div>
+            <table style="border: 0px">
+              <tr valign="top">
+                <td style="border: 0px">
+                  <table>
+                    <tr>
+                      <td>
+                        Reported Annual Income:<br/>
+                        <apex:outputText value="{0, Number, Currency}">
+                          <apex:param value="{!lead.lead.Annual_Income_Currency__c}"/>
+                        </apex:outputText>
+                      </td>
+                      <td>
+                        Adjusted Annual Income:<br/>
+                        <apex:outputText value="{0, Number, Currency}">
+                          <apex:param value="{!lead.lead.Personal_Credit_Report__r.Adjusted_Income__c}"/>
+                        </apex:outputText>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        Adjusted Annual Income Notes:<br/>
+                        <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Adjustments_Comments__c}"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Employed for more than 1 year?<br/>
+                        <apex:outputText value="{!lead.lead.Employed_for_more_than_one_year__c}"/>
+                      </td>
+                      <td>
+                        Employed for more than 6 months?<br/>
+                        <apex:outputText value="{!lead.lead.Employed_for_more_than_six_months__c}"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        Lived at residence more than 6 months?:<br/>
+                        <apex:outputText value="{!lead.lead.lived_residence_six_months__c}"/>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px">
+                    <table>
+                      <tr>
+                        <td>
+                          Reported Annual Income:<br/>
+                          <apex:outputText value="{0, Number, Currency}">
+                            <apex:param value="{!lead.lead.Co_Applicant_Income__c}"/>
+                          </apex:outputText>
+                        </td>
+                        <td>
+                          Adjusted Annual Income:<br/>
+                          <apex:outputText value="{0, Number, Currency}">
+                            <apex:param value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c}"/>
+                          </apex:outputText>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          Adjusted Annual Income Notes:<br/>
+                          <apex:outputText value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.Adjustments_Comments__c}"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </apex:variable>
+              </tr>
+            </table>
+          </div>
+          <!-- INCOME -->
+        </apex:form>
+      </apex:variable>
+    </body>
+  </html>
 </apex:page>
