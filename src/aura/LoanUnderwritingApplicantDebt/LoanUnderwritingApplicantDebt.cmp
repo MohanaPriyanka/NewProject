@@ -25,19 +25,19 @@
     </div>
     <div class="slds-grid slds-wrap">
       <div class="darkCell slds-col slds-size--1-of-1">
-        <table class="slds-table slds-table_striped">
+        <table class="slds-table slds-table_striped" style="border: 0px; table-layout: auto">
           <thead>
-            <tr class="slds-text-title_caps">
-              <th scope="col">
+            <tr>
+              <th scope="col" style="border: 0px">
                 <div class="slds-truncate" title="Exclude">Exclude</div>
               </th>
-              <th scope="col">
+              <th scope="col" style="border: 0px">
                 <div class="slds-truncate" title="Account Name">Account Name</div>
               </th>
-              <th scope="col">
+              <th scope="col" style="border: 0px">
                 <div class="slds-truncate" title="Account Balance">Balance</div>
               </th>
-              <th scope="col">
+              <th scope="col" style="border: 0px">
                 <div class="slds-truncate" title="Monthly Payment">Monthly Payment</div>
               </th>
             </tr>
@@ -45,7 +45,7 @@
           <tbody>
             <aura:iteration items="{!v.tradeAccounts}" var="tradeAcct">
               <tr>
-                <td>
+                <td style="border: 0px">
                   <div class="slds-grid">
                     <div class="slds-size--1-of-1">
                       <lightning:input type="checkbox" 
@@ -58,18 +58,18 @@
                     </div>
                   </div>
                 </td>
-                <td>
+                <td style="border: 0px">
                   <div>
                     <ui:outputURL value="{!'/' + tradeAcct.Id}" 
                                   label="{!tradeAcct.Name}" target="_blank"/>
                   </div>
                 </td>
-                <td>
+                <td style="border: 0px">
                   <div>
                     <ui:outputCurrency value="{!tradeAcct.LASERCA__Account_Balance__c}"/>
                   </div>
                 </td>
-                <td>
+                <td style="border: 0px">
                   <div>
                     <ui:inputCurrency class="{!tradeAcct.Id}"
                                       value="{!tradeAcct.LASERCA__Monthly_Payment__c}"

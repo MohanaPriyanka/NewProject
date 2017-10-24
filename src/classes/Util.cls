@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: AccountInfoControllerTest
+ * Tested by: AccountInfoControllerTest, LoanUnderwritingTest (nullToZero)
  *************************************************************************************/
 public with sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
@@ -29,5 +29,14 @@ public with sharing class Util {
             }
         }
     }
+
+    public static Decimal nullToZero(Decimal value) {
+        return (value==null?0:value);
+    }
+
+    public static String nullToZero(String value) {
+        return (String.isBlank(value)?'0':value);
+    }    
+
     public class BWException extends Exception {}
 }
