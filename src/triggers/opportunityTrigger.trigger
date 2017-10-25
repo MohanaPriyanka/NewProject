@@ -8,6 +8,6 @@ trigger opportunityTrigger on opportunity (before insert, after insert, before u
         disbursalHandler.updateDisbursalsOnOpportunityUpdate(Trigger.new, Trigger.old);
     }
     if(Trigger.isUpdate && Trigger.isBefore){
-         ChargentOrderCreationhandler.createChargentOrder(Trigger.new, Trigger.old);
+        ChargentOrderCreationhandler.createChargentOrder(Trigger.new, Trigger.old);
     }    
 }
