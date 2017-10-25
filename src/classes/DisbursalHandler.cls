@@ -5,20 +5,6 @@
  *************************************************************************************/
 public class DisbursalHandler {
 
-    public class DisbursalStructure {      
-        public Integer disbursalCount;
-        public List<String> percentageList;
-        public List<String> nameList;
-        public List<String> typeList;
-
-        public DisbursalStructure() {
-            disbursalCount = 0;             
-            percentageList = new List<String>();
-            nameList = new List<String>();     
-            typeList = new List<String>();                                
-        }       
-    }   
-
     public void createDisbursalsFromOpportunity(Map<Id,Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         List<Loan__c> loanList = new List<Loan__c>();
         List<String> opportunityIdList = new List<String>();
@@ -39,56 +25,45 @@ public class DisbursalHandler {
                 loanList.add(opp.Loans__r);
             }
             for (Loan__c loanRecord : loanList) {
-                DisbursalStructure disbursalStrucutre = getDisbursalStructure(loanRecord);
-                disbursalsToInsert = createDisbursals(disbursalStrucutre, loanRecord);
+                for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
+                    disbursalsToInsert.add(disbursal);
+                }
             }
             upsert disbursalsToInsert Unique_ID__c;
         }
-    }
+    }   
 
-    public DisbursalStructure getDisbursalStructure (Loan__c loanRecord) {
-        DisbursalStructure disbursalStructure = new DisbursalStructure();
-        String disbursalTerms = loanRecord.Product__r.Disbursal_Terms__c;
-        List<String> disbursalSubStrings = disbursalTerms.split(',');
-        disbursalStructure.disbursalCount = 0;
+    public List<Disbursal__c> createDisbursalsFromDisbursalTermsField (Loan__c loanRecord) {
+        Integer count = 1;
+        List<Disbursal__c> disbursalList = new List<Disbursal__c>();       
+        List<String> disbursalSubStrings = loanRecord.Product__r.Disbursal_Terms__c.split(',');
         for (String subString : disbursalSubStrings) {
-            disbursalStructure.disbursalCount = disbursalStructure.disbursalCount + 1;
-            List<String> rate = subString.split('%');
-            disbursalStructure.percentageList.add(rate.get(0)); 
+            List<String> rateAndType = subString.split('%');
             String disbursalName = subString;
             if (disbursalName.length() >= 80) {
                 disbursalName = disbursalName.subString(0,80);
             }
-            disbursalStructure.typeList.add(rate.get(1));
-            disbursalStructure.nameList.add(disbursalName);
-        }
-        return disbursalStructure;
-    }    
-
-    public List<Disbursal__c> createDisbursals (DisbursalStructure disbursalStructure, Loan__c loanRecord) {
-        List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-        Integer i;
-        for (i=0; i < disbursalStructure.disbursalCount; i++) {
-            Decimal rate = Decimal.valueOf(disbursalStructure.percentageList.get(i).remove(' '));
-            rate = rate;
-            Disbursal__c disbursal = new Disbursal__c(
-                Name = disbursalStructure.nameList.get(i)  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
-                Unique_ID__c = loanRecord.Id + ' ' + disbursalStructure.nameList.get(i) + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                Loan__c = loanRecord.Id,
-                Disbursal_Sequence__c = i + 1,
-                Disbursal_Percentage__c = rate,
-                Partner__c = loanRecord.Partner__r.Id,
-                Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                Status__c = 'Not yet disbursed',
-                Amount__c = loanRecord.Requested_Loan_Amount__c * rate / 100,
-                Type__c = disbursalStructure.typeList.get(i),
-                Anticipated_Date__c = null,
-                Date_of_Disbursal__c = null
-            );
-            disbursalList.add(disbursal);
+            disbursalList.add(createDisbursal(Decimal.valueOf(rateAndType.get(0).remove(' ')), disbursalName, rateAndType.get(1), count, loanRecord));
+            count = count + 1;
         }
         return disbursalList;
-    }    
+    }        
+
+    public Disbursal__c createDisbursal (Decimal rate, String name, String disbursalType, Integer sequence, Loan__c loanRecord) {
+            Disbursal__c disbursal = new Disbursal__c(
+            Name = name  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+            Unique_ID__c = loanRecord.Id + ' ' + name + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
+            Loan__c = loanRecord.Id,
+            Disbursal_Sequence__c = sequence,
+            Disbursal_Percentage__c = rate,
+            Partner__c = loanRecord.Partner__r.Id,
+            Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
+            Status__c = 'Not yet disbursed',
+            Amount__c = loanRecord.Requested_Loan_Amount__c * rate / 100,
+            Type__c = disbursalType
+        );
+        return disbursal;
+    }  
 
     public void updateDisbursalAmountsOnRLAChange (Map<Id,Loan__c> newMap, Map<Id, Loan__c> oldMap) {
         List<Id> updatedLoans = new List<Id>();
@@ -157,13 +132,13 @@ public class DisbursalHandler {
                             disbursalMethodMechInstall = null;
                         }                            
                         if (disbursal.Type__c == 'Contract Signature') {
-                            disbursalsToUpdate.add(updateDisbursalValues(Disbursal, Loan, updatedOpportunity, oldOpportunity,  
+                            disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity,  
                                 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c', disbursalMethodContract));
                         } else if (disbursal.Type__c == 'Mechanical installation') {
-                            disbursalsToUpdate.add(updateDisbursalValues(Disbursal, Loan, updatedOpportunity, oldOpportunity, 
+                            disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity, 
                                 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c', disbursalMethodMechInstall));
                         } else if (disbursal.Type__c == 'Interconnection') {
-                            disbursalsToUpdate.add(updateDisbursalValues(Disbursal, Loan, updatedOpportunity, oldOpportunity,
+                            disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity,
                                 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c', disbursalMethodInterconnect));
                         }
                     }
