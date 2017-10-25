@@ -22,17 +22,12 @@ public with sharing class LoanServicerTest {
 
         Lead testLead = new Lead(FirstName = 'Test',
                                  LastName = 'Testerson',
+                                 Product_Line__c = 'Residential Loan',
                                  Company = 'Testco');
         insert testLead;
 
         Account account = new Account(Name = 'Testerson');
         insert account;
-
-        Opportunity opp = new Opportunity(AccountId = account.Id,
-                                          Name = 'Testerson Loan',
-                                          StageName = 'New',
-                                          CloseDate = Date.today().addYears(1));
-        insert opp;
 
         List<Product2> products = new List<Product2>();
         Product2 productLoanMATerm10Rate599 = 
@@ -72,6 +67,14 @@ public with sharing class LoanServicerTest {
                          isActive = TRUE);
         products.add(mslp20Yr);
         insert products;
+
+        Opportunity opp = new Opportunity(AccountId = account.Id,
+                                          Product__c = productLoanMATerm10Rate599.Id,
+                                          Name = 'Testerson Loan',
+                                          Product_Line__c = 'Residential Loan',
+                                          StageName = 'New',
+                                          CloseDate = Date.today().addYears(1));
+        insert opp;        
     }
 
     static testMethod void testLoanCreationAndUpdate() {
@@ -84,10 +87,12 @@ public with sharing class LoanServicerTest {
         
         Loan_Traunch__c loanTraunch = [SELECT Id FROM Loan_Traunch__c WHERE Name = 'Tranche Assignment Pending' LIMIT 1];
         Lead testLead = [SELECT Id FROM Lead WHERE LastName = 'Testerson' LIMIT 1];
-        Opportunity opp = [SELECT Id FROM Opportunity WHERE Name = 'Testerson Loan' LIMIT 1];
+        Opportunity opp = [SELECT Id, StageName, Contract_Status__c, BlueWave_Signature_Status__c FROM Opportunity WHERE Name = 'Testerson Loan' LIMIT 1];
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Partner' LIMIT 1];
 
         Test.startTest();
+
+
         Loan__c loan = new Loan__c(Product__c = ma10Yr.Id,
                                    Lead__c = testLead.Id,
                                    Partner__c = partner.Id,
@@ -97,8 +102,17 @@ public with sharing class LoanServicerTest {
                                    Financing_Fee__c = 2015.85,
                                    Commencement_Datee__c = Date.today());
         insert loan;
+
+        opp.Contract_Status__c = 'Completed';
+        opp.BlueWave_Signature_Status__c = 'Completed';
+        opp.Disable_Emails__c = true;
+        update opp;
         
         checkLoan(loan, ma10YrJSON, 120);
+
+        //set opportunity stage to new to allow for RLA change without tripping over custom setting in loan servicer that doesn't allow RLA change when stage is complete.
+        opp.StageName = 'New';
+        update opp;
 
         Product2 mslp20Yr = [SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
                              FROM Product2

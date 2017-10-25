@@ -106,17 +106,6 @@ public without sharing class LoanHandler{
             if (newOpp.Partner_Sales_Agreement_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Partner_Sales_Agreement_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 uploadedSalesAgreementCustomerOppIds.add(newOpp.Id);
             }
-            if (newOpp.Disbursal_1_Contract_Signature_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_1_Contract_Signature_Checkbox__c ||
-                newOpp.Disbursal_Type_Contract__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Contract__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
-            if (newOpp.Disbursal_3_Full_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_3_Full_Install_Checkbox__c ||
-                newOpp.Disbursal_Type_Interconnect__c != oldOpportunityMap.get(newOpp.Id).Disbursal_Type_Interconnect__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
-            if (newOpp.Disbursal_2_Mechanical_Install_Checkbox__c != oldOpportunityMap.get(newOpp.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
-                updateDisbursalRecords(updatedOpportunityMap, oldOpportunityMap);
-            }
             if (newOpp.Update_Dummy__c != oldOpportunityMap.get(newOpp.Id).Update_Dummy__c) {
                 validateSalesAgreementList.add(newOpp);
                 oppLeadIdsList.add(newOpp.Lead_Id__c);
@@ -411,12 +400,7 @@ public without sharing class LoanHandler{
                 }
             }
             for (Loan__c loanRecord : newLoanList) {
-                    for(Loan_Traunch__c trancheRecord : trancheRecordList) {
-                    //Error messages must be put in place
-                    //if (trancheRecord.Available_Capital__c <= oppRecord.Loan_Amount_Financed__c) {
-                    //    //trancheRecord.addError('There is not enough capital available in the tranches' , false);
-                    //    Apexpages.addMessage(new ApexPages.Message(ApexPages.Severity.INFO,''+'There is not enough capital available in the tranches' ));
-                    //}
+                for(Loan_Traunch__c trancheRecord : trancheRecordList) {
                     if (trancheRecord.State__c == loanRecord.State__c &&
                         trancheRecord.Loan_Data__r.Id == loanProductMap.get(loanRecord.Id).Loan_Capital_Pool__r.Id &&
                         trancheRecord.Tranche_Type__c == loanProductMap.get(loanRecord.Id).Loan_Tranche_type__c) {
@@ -435,154 +419,6 @@ public without sharing class LoanHandler{
         catch(exception e) {
             return null;
         }
-    }
-
-    public void createDisbursalsFromOpportunity(List<Opportunity> updatedOppList, List<Opportunity> oldOppList) {
-        List<Loan__c> loanList = new List<Loan__c>();
-        List<String> disbursalOppList = new List<String>();
-
-        Map<Id, Opportunity> newOppMap = (Map<Id,Opportunity>) Trigger.newMap;
-        Map<Id, Opportunity> oldOppMap = (Map<Id,Opportunity>) Trigger.oldMap;
-
-        for (Opportunity oppRecord : updatedOppList) {
-            if (newOppMap.get(oppRecord.Id).StageName == 'Complete'
-                && oldOppMap.get(oppRecord.Id).StageName != 'Complete'
-                && newOppMap.get(oppRecord.Id).Product_Line__c == 'Residential Loan') {
-                    disbursalOppList.add(newOppMap.get(oppRecord.Id).Id);
-            }
-        }
-        if (disbursalOppList.size() > 0) {
-            for(Opportunity opp : [SELECT Id, Name, (SELECT Id, Name FROM Loans__r)
-                                    FROM Opportunity
-                                    WHERE Id IN : disbursalOppList]) {
-                loanList.add(opp.Loans__r);
-            }
-            createDisbursals(loanList);
-        }
-    }
-
-    public void createDisbursals(List<Loan__c> newLoanList) {
-        List<Disbursal__c> disbursalInsertList = new List<Disbursal__c>();
-        Decimal requestedLoanAmount;
-        String disbursalName;
-        for (Loan__c loanRecord : [SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name,
-                                    Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id
-                                    FROM Loan__c
-                                    WHERE Id IN : newLoanList]) {
-            // make this code more efficient by creating fields on the product that allow the user to select :
-            // Number of dibursals - disubrsals percentage intervals. Parse the text by commas.
-            // Example :
-            //      Disbursal_Count__c = 3
-            //      Disbursal Setup = .30, .60, .10
-            if (loanRecord.Opportunity__r.StageName == 'Complete') {
-                if (loanRecord.Requested_Loan_Amount__c != null && loanRecord.Requested_Loan_Amount__c > 0) {
-                    requestedLoanAmount = loanRecord.Requested_Loan_Amount__c;
-                } else {
-                    requestedLoanAmount = loanRecord.Opportunity__r.Requested_Loan_Amount__c;
-                }
-                if (loanRecord.Product__r.Disbursal_Terms__c == '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection') {
-
-                    disbursalName = '30% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    if (disbursalName.length() >= 80) {
-                        disbursalName = disbursalName.subString(0,80);
-                    }
-
-                    Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '30% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                        Loan__c = loanRecord.Id,
-                        Disbursal_Sequence__c = 1,
-                        Disbursal_Percentage__c = 0.3,
-                        Partner__c = loanRecord.Partner__r.Id,
-                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                        Status__c = 'Not yet disbursed',
-                        Amount__c = requestedLoanAmount * 0.30,
-                        Type__c = 'Contract Signature',
-                        Anticipated_Date__c = null,
-                        Date_of_Disbursal__c = null);
-
-                    disbursalInsertList.add(disbursal1);
-                    disbursalName = '60% Mechanical Installation' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    if (disbursalName.length() >= 80) {
-                    disbursalName = disbursalName.subString(0,80);
-                    }
-                    Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '60% Mechanical Installation' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                        Loan__c = loanRecord.Id,
-                        Disbursal_Sequence__c = 2,
-                        Partner__c = loanRecord.Partner__r.Id,
-                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                        Disbursal_Percentage__c = 0.6,
-                        Status__c = 'Not yet disbursed',
-                        Amount__c = requestedLoanAmount * 0.60,
-                        Type__c = 'Mechanical Installation',
-                        Anticipated_Date__c = null,
-                        Date_of_Disbursal__c = null);
-
-                    disbursalInsertList.add(disbursal2);
-                    disbursalName = '10% Interconnection'  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    if (disbursalName.length() >= 80) {
-                    disbursalName = disbursalName.subString(0,80);
-                    }
-                    Disbursal__c disbursal3 = new Disbursal__c(
-                        Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '10% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                        Loan__c = loanRecord.Id,
-                        Disbursal_Sequence__c = 3,
-                        Partner__c = loanRecord.Partner__r.Id,
-                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                        Disbursal_Percentage__c = 0.1,
-                        Status__c = 'Not yet disbursed',
-                        Amount__c = requestedLoanAmount * 0.10,
-                        Type__c = 'Interconnection',
-                        Anticipated_Date__c = null,
-                        Date_of_Disbursal__c = null);
-                     disbursalInsertList.add(disbursal3);
-                }
-                if (loanRecord.Product__r.Disbursal_Terms__c == '35% Contract Signature, 65% Interconnection') {
-                    disbursalName = '35% Contract Signature' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    if (disbursalName.length() >= 80) {
-                    disbursalName = disbursalName.subString(0,80);
-                    }
-                    Disbursal__c disbursal1 = new Disbursal__c(
-                        Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '35% Contract Signature' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                        Loan__c = loanRecord.Id,
-                        Disbursal_Sequence__c = 1,
-                        Partner__c = loanRecord.Partner__r.Id,
-                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                        Disbursal_Percentage__c = 0.35,
-                        Status__c = 'Not yet disbursed',
-                        Amount__c = requestedLoanAmount * 0.35,
-                        Type__c = 'Contract Signature',
-                        Anticipated_Date__c = null,
-                        Date_of_Disbursal__c = null);
-
-                    disbursalInsertList.add(disbursal1);
-                    disbursalName = '65% Interconnection' + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name;
-                    if (disbursalName.length() >= 80) {
-                    disbursalName = disbursalName.subString(0,80);
-                    }
-                    Disbursal__c disbursal2 = new Disbursal__c(
-                        Name = disbursalName,
-                        Unique_ID__c = loanRecord.Id + ' ' + '65% Interconnection' + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
-                        Loan__c = loanRecord.Id,
-                        Disbursal_Sequence__c = 2,
-                        Partner__c = loanRecord.Partner__r.Id,
-                        Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
-                        Disbursal_Percentage__c = 0.65,
-                        Status__c = 'Not yet disbursed',
-                        Amount__c = requestedLoanAmount * 0.65,
-                        Type__c = 'Interconnection',
-                        Anticipated_Date__c = null,
-                        Date_of_Disbursal__c = null);
-                     disbursalInsertList.add(disbursal2);
-                }
-                disbursalName = null;
-            }
-        }
-        upsert disbursalInsertList Unique_ID__c ;
     }
 
     public void createLoanPartnerTasks(List<Loan__c> newLoanList) {
@@ -1374,67 +1210,5 @@ public without sharing class LoanHandler{
             }
         }
         update equipmentUpdateList;
-    }
-
-    public void updateDisbursalRecords (Map<Id, Opportunity> updatedOppMap, Map<Id, Opportunity> oldOppMap) {
-        String disbursalMethodContract;
-        String disbursalMethodMechInstall;
-        String disbursalMethodInterconnect;
-        List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();
-        for (Loan__c loan : [SELECT Id, Opportunity__r.Id, (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c FROM Disbursals__r)
-                             FROM Loan__c
-                             WHERE Opportunity__r.Id IN : updatedOppMap.KeySet()]) {
-            if (!loan.Disbursals__r.isEmpty()) {
-                for (Disbursal__c disbursal : loan.Disbursals__r) {
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).DOER_Solar_Loan__c) {
-                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'ACH Disbursal') {
-                            disbursalMethodContract = 'ACH';
-                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c == 'Check Disbursal') {
-                            disbursalMethodContract = 'Check';
-                        } else {
-                            disbursalMethodContract = null;
-                        }
-                        if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'ACH Disbursal') {
-                            disbursalMethodInterconnect = 'ACH';
-                        } else if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c == 'Check Disbursal') {
-                            disbursalMethodInterconnect = 'Check';
-                        } else {
-                            disbursalMethodInterconnect = null;
-                        }
-                    } else {
-                        disbursalMethodContract = 'ACH';
-                        disbursalMethodMechInstall = 'ACH';
-                        disbursalMethodInterconnect = 'ACH';
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c ||
-                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Contract__c) {
-                        if (disbursal.Name.Contains('Contract Signature')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Disbursal_Method__c = disbursalMethodContract;
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_1_Contract_Signature_Checkbox__c;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c ||
-                        updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_Type_Interconnect__c) {
-                        if (disbursal.Name.Contains('Interconnection')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Disbursal_Method__c = disbursalMethodInterconnect;
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_3_Full_Install_Checkbox__c;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                    if (updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c != oldOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c) {
-                        if (disbursal.Name.Contains('Mechanical Installation')) {
-                            disbursal.Status__c = 'Complete';
-                            disbursal.Date_of_Disbursal__c = updatedOppMap.get(loan.Opportunity__r.Id).Disbursal_2_Mechanical_Install_Checkbox__c;
-                            disbursal.Disbursal_Method__c = disbursalMethodMechInstall;
-                            disbursalsToUpdate.add(disbursal);
-                        }
-                    }
-                }
-            }
-        }
-        update disbursalsToUpdate;
     }
 }
