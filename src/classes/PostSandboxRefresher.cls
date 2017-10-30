@@ -33,10 +33,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     };
 
     global static void disableEmails() {
-        // Map from SObject to List of Email Fields
-        Map<String, List<String>> soEmailFieldMap = findEmaiLFields();
-        // Invalidate Email fields found on SObjects
-        processEmailFields(soEmailFieldMap);
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+
+        if (o.IsSandbox || Test.isRunningTest()) {
+            // Map from SObject to List of Email Fields
+            Map<String, List<String>> soEmailFieldMap = findEmaiLFields();
+            // Invalidate Email fields found on SObjects
+            processEmailFields(soEmailFieldMap);
+        } else {
+            throw new Util.BWException('Don\'t disable emails in production this way');
+        }
     }
 
     private static Map<String, List<String>> findEmaiLFields() {
@@ -101,7 +107,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     if (String.isEmpty(email)) {
                         continue;
                     }
-                    record.put(field, email.replaceAll('\\W', '_') + '@disabled.diabled');
+                    record.put(field, email.replaceAll('@', '--at--') + '@disabled.disabled');
                 }
                 records.add(record);
             }
