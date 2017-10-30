@@ -16,7 +16,8 @@ public with sharing class PartnerAlertHandler {
         List<Partner_Alert_Filter__c> partnerAlertFilterList = new List<Partner_Alert_Filter__c>();
         for (User user : [SELECT Id, UserRole.Name, Contact.Sales_Representative__r.Id, Contact.Sales_Representative__r.Name
                           FROM User
-                          WHERE Profile.Name IN ('Partner Community User (Custom)', 'Partner Community Login User (Custom)')]) {
+                          WHERE Profile.Name IN ('Partner Community User (Custom)', 'Partner Community Login User (Custom)')
+                          AND IsActive = true]) {
             if (user.UserRole.Name.Contains('User')) {
                 userList.add(user);                
             } else if (user.UserRole.Name.Contains('Manager')) {

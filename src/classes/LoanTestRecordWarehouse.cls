@@ -17,53 +17,8 @@ public class LoanTestRecordWarehouse {
         return partnerSetupList;
     }
 
-    //public static List<Product2> getLoanProductsVariableInterestRatesandTerms () {
+    public static List<Product2> getLoanProductsVariableInterestRatesandTerms () {
 
-    //    Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-    //                                            Total_Capital__c = 10000000,
-    //                                            Investor__c = 'The Bank',
-    //                                            Pool_Type__c = 'Revolving Credit Line');
-    //    insert capitalPool;
-
-    //    Date myDate = Date.newInstance(2015, 2, 17);
-    //    Date codDate = Date.newInstance(2015, 4, 17);
-    //    Date codDateTwo = Date.newInstance(2015, 7, 17);
-
-    //    Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
-    //        Name = 'Avidia 1',
-    //        Tranche_Cap__c = 1000000,
-    //        Tranche_Type__c = 'Standard',
-    //        State__c = 'MA',
-    //        Stage__c = 'Open',
-    //        Loan_Data__c = capitalPool.id);
-    //    insert loanTrancheMA;
-
-    //    Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
-    //        Name = 'Tranche Assignment Pending',
-    //        Tranche_Type__c = 'Holding',
-    //        Stage__c = 'Closed',
-    //        Loan_Data__c = capitalPool.id);
-    //    insert loanTranchePending;
-
-    //    Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
-    //    Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', 6.99, 10, 5, '700', '749', capitalPool.Id);
-    //    Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '680', '699', capitalPool.Id);
-    //    Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
-    //    Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
-    //    Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '680', '699', capitalPool.Id);
-    //    productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
-    //    productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
-    //    productLoanMATerm20Rate725.Program__c = 'MSLP';
-    //    productLoanMATerm20Rate725.Lender_of_Record__c = 'Avidia';
-    //    Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
-    //    productLoanRI.Lender_of_Record__c = 'Avidia';
-
-    //    return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
-    //            productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-    //            productLoanMATerm20Rate725, productLoanRI};
-    //}
-
-    public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
                                                 Investor__c = 'The Bank',
@@ -103,10 +58,31 @@ public class LoanTestRecordWarehouse {
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
 
-        List<Product2> productList = new List<Product2>();
-        Insert new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
+        return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-                productLoanMATerm20Rate725, productLoanRI};        
+                productLoanMATerm20Rate725, productLoanRI};
+    }    
+
+    public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
+        Map<String, Id> productMap = new Map<String, Id>();
+        List<Product2> productsToInsert = new List<Product2>();
+        for (Product2 product : getLoanProductsVariableInterestRatesandTerms()) {
+            productsToInsert.add(product);
+            if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 5.99) {
+                productMap.put('productLoanMATerm10Rate599', product.Id);
+            } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 6.99) {
+                productMap.put('productLoanMATerm10Rate699', product.Id);
+            } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 7.25) {
+                productMap.put('productLoanMATerm10Rate725', product.Id);
+            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 5.99) {
+                productMap.put('productLoanMATerm20Rate599', product.Id);
+            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 6.99) {
+                productMap.put('productLoanMATerm20Rate699', product.Id);
+            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 7.25) {
+                productMap.put('productLoanMATerm20Rate725', product.Id);
+            }
+        }   
+        insert productsToInsert;
 
         Partner__c partner = new Partner__c(Name = 'Partner');
         insert partner;
@@ -128,7 +104,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = productLoanMATerm10Rate699.Id,
+                                                Product__c = productMap.get('productLoanMATerm10Rate699'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -146,7 +122,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = productLoanMATerm10Rate725.Id,
+                                                Product__c = productMap.get('productLoanMATerm10Rate725'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -164,7 +140,7 @@ public class LoanTestRecordWarehouse {
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Loan_Term__c = 240,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = productLoanMATerm20Rate699.Id,
+                                                Product__c = productMap.get('productLoanMATerm20Rate699'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
@@ -184,7 +160,7 @@ public class LoanTestRecordWarehouse {
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 150000,
-                                                Product__c = productLoanMATerm20Rate725.Id,
+                                                Product__c = productMap.get('productLoanMATerm20Rate725'),
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
         Lead coApplicantLead = new lead(FirstName = 'coApplicantLead',
@@ -204,13 +180,13 @@ public class LoanTestRecordWarehouse {
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 1000,
-                                                Product__c = productLoanMATerm10Rate699.Id,
+                                                Product__c = productMap.get('productLoanMATerm10Rate699'),
                                                 Automatic_Product_Assignment__c = false,
                                                 Status = 'Ready for Credit Check');
 
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725,
                                 leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead};
-        //
+
         Account coApplicantAccount = new Account( Name = 'CoapplicantAccount');
         insert coApplicantAccount;
 
@@ -316,7 +292,7 @@ public class LoanTestRecordWarehouse {
         return leadList;
     }
 
-    public static List<Lead> getLoanHandlerLeadRecords () {
+    public static void getLoanHandlerProductRecords () {
 
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
@@ -383,9 +359,22 @@ public class LoanTestRecordWarehouse {
                                                 Program__c = 'MSLP',
                                                 isActive = TRUE);
 
-        insert productRecord;
-        insert productRecordMSLP;
 
+        insert new List<Product2>{productRecord, productRecordMSLP};
+    }
+
+    public static List<Lead> getLoanHandlerLeadRecords () {
+        Map<String, Id> productMap = new Map<String, Id>();
+        getLoanHandlerProductRecords();
+        for (Product2 product : [SELECT Id, Name, Disbursal_Terms__c, Program__c, State__c, Family, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c, Technology_Platform_Fee__c, ProductCode, Credit_Minimum__c, Credit_Maximum__c FROM Product2]) {
+             if (product.Program__c == 'BlueWave Solar Loan') {
+                productMap.put('BWSL', product.Id);
+            } else if (product.Program__c == 'MSLP') {
+                productMap.put('MSLP', product.Id);
+            }           
+        }
+
+        System.debug([SELECT Id, Name, Disbursal_Terms__c FROM Product2]);
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
 
@@ -407,7 +396,7 @@ public class LoanTestRecordWarehouse {
                                     Partner_Lookup__c = partner.Id,
                                     Bs_Sales_ID__c = salesRep.Id,
                                     Annual_Income_Currency__c = 150000,
-                                    Product__c = productRecord.Id,
+                                    Product__c = productMap.get('BWSL'),
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
@@ -430,42 +419,44 @@ public class LoanTestRecordWarehouse {
                                     Bs_Sales_ID__c = salesRep.Id,
                                     Loan_Term__c = 120,
                                     Annual_Income_Currency__c = 150000,
-                                    Product__c = productRecord.Id,
+                                    Product__c = productMap.get('BWSL'),
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
                                     Viewed_by_Partner_Admin__c = false,
                                     Viewed_by_Partner_Agent__c = false);
         Lead leadRecordDOER = new Lead(FirstName = 'DOER',
-                                       LastName = 'Test',
-                                       Loan_Amount__c = 25000,
-                                       Company = 'Cole Swain',
-                                       LASERCA__Social_Security_Number__c = '000000001',
-                                       Retired__c = false,
-                                       Self_Employed__c = true,
-                                       Product_Line__c = 'Residential Loan',
-                                       DOER_Solar_Loan__c = true,
-                                       LASERCA__Home_State__c = 'MA',
-                                       Requested_Loan_Amount__c = 25000,
-                                       Custom_Id__c = 'test',
-                                       Unfinished_Lead__c = true,
-                                       Partner_Lookup__c = partner.Id,
-                                       Bs_Sales_ID__c = salesRep.Id,
-                                       Loan_Term__c = 120,
-                                       Annual_Income_Currency__c = 150000,
-                                       Product__c = productRecordMSLP.Id,
-                                       Automatic_Product_Assignment__c = true,
-                                       Product_Program__c = 'MSLP',
-                                       Status = 'Ready for Credit Check',
-                                       Technical_Approval_Verified__c = true,
-                                       Income_Verified__c = true,
-                                       Is_there_a_Partner_Record__c = true,
-                                       Viewed_by_Partner_Admin__c = false,
-                                       Viewed_by_Partner_Agent__c = false);
+                                   LastName = 'Test',
+                                   Loan_Amount__c = 25000,
+                                   Company = 'Cole Swain',
+                                   LASERCA__Social_Security_Number__c = '000000001',
+                                   Retired__c = false,
+                                   Self_Employed__c = true,
+                                   Product_Line__c = 'Residential Loan',
+                                   DOER_Solar_Loan__c = true,
+                                   LASERCA__Home_State__c = 'MA',
+                                   Requested_Loan_Amount__c = 25000,
+                                   Custom_Id__c = 'test',
+                                   Unfinished_Lead__c = true,
+                                   Partner_Lookup__c = partner.Id,
+                                   Bs_Sales_ID__c = salesRep.Id,
+                                   Loan_Term__c = 120,
+                                   Annual_Income_Currency__c = 150000,
+                                   Product__c = productMap.get('MSLP'),
+                                   Automatic_Product_Assignment__c = true,
+                                   Product_Program__c = 'MSLP',
+                                   Status = 'Ready for Credit Check',
+                                   Technical_Approval_Verified__c = true,
+                                   Income_Verified__c = true,
+                                   Is_there_a_Partner_Record__c = true,
+                                   Viewed_by_Partner_Admin__c = false,
+                                   Viewed_by_Partner_Agent__c = false);
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);
         Insert leadList;
+
+        System.debug(productMap.get('BWSL'));
 
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
