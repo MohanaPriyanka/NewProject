@@ -12,16 +12,25 @@
 
 public without sharing class FileDeliveryHandler {
 
-    public static void createDistribution (List<ContentVersion> newContent) {
-        List<ContentDistribution> distList = new List<ContentDistribution> ();
-            
-        Date todaysDate = System.Today();
-        Date expyDate = todaysDate.addDays(15);
+  public static void createDistribution (List<ContentVersion> newContent) {
+    List<ContentDistribution> distList = new List<ContentDistribution> ();
+    List<ContentDocumentLink> linkToCommList = new List<ContentDocumentLink> ();   
 
-        for (ContentVersion cont : newContent){
-          if (cont.Title == 'Loan Summary Sheet.pdf') {
+    Date todaysDate = System.Today();
+    Date expyDate = todaysDate.addDays(15);
+    String communityID;
+    if(!Test.isRunningTest()){
+        ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
+        for (ConnectApi.Community community : comm.communities) {
+            if (community.Name == 'BlueWave Member Portal'){
+                communityID = community.Id;
+            }
+        }
+    }
+    for (ContentVersion cont : newContent){
+        if (cont.Title == 'Loan Summary Sheet.pdf') {
             ContentDistribution cd = new ContentDistribution();
-            cd.Name = 'Loan Summary Sheet.pdf';
+            cd.Name = cont.Title;
             cd.ContentVersionId = cont.id;
             cd.PreferencesAllowOriginalDownload = true;
             cd.PreferencesAllowViewInBrowser = true;
@@ -29,23 +38,29 @@ public without sharing class FileDeliveryHandler {
             cd.ExpiryDate = expydate;
             cd.PreferencesExpires = true; 
             distList.add(cd); 
-          } else if (cont.Title == 'Community Solar Bill.pdf') {
-            ContentDistribution cd = new ContentDistribution();
-            cd.Name = 'Community Solar Bill';
-            cd.ContentVersionId = cont.id;
-            cd.PreferencesAllowViewInBrowser = true;
-            cd.PreferencesAllowPdfDownload = true;
-            cd.PreferencesExpires = false; 
-            distList.add(cd); 
-          }
-        }       
+        } else if (cont.Title.contains('Community Solar Bill')) {
+            if (!Test.isRunningTest()){
+                ContentDocumentLink cdl = new ContentDocumentLink();
+                cdl.LinkedEntityId = communityID;
+                cdl.Visibility = 'AllUsers';
+                cdl.ShareType = 'V';
+                cdl.ContentDocumentId = cont.ContentDocumentId;
+                linkToCommList.add(cdl);
+            } 
+        }
+    }       
+    if (distList.size() > 0) {
         insert distList;  
     }
-
-    public static void findRelatedObject (List<ContentDocumentLink> newShare) {
+    if (linkToCommList.size() > 0) {
+        insert linkToCommList;
+    }
+  }
+  
+  public static void findRelatedObject (List<ContentDocumentLink> newShare) {
         List<String> documentObjectList = new List<String>();
         Map<Id, Id> idToObjectMap = new Map<Id, Id>();
-        Map<Id, String> disABMap = new Map<Id, String>(); // Account Bill Id, url to File
+        Map<Id, ContentVersion> disABMap = new Map<Id, ContentVersion>(); // Account Bill Id, url to File
         Map<Id, String> disQSSMap = new Map<Id, String>();  // Sales Sheet Id, url to File
 
         for ( ContentDocumentLink link : newShare ){
@@ -53,12 +68,18 @@ public without sharing class FileDeliveryHandler {
             idToObjectMap.put(link.ContentDocumentId, link.LinkedEntityId); 
         }
 
-        for ( ContentDistribution distribution : [  SELECT Name, Id, DistributionPublicUrl, ContentDocumentId
+        for (ContentVersion file : [  SELECT Title, Id, ContentDocumentId
+                                        FROM ContentVersion
+                                        WHERE ContentDocumentId IN : documentObjectList] ) {
+            if (file.Title.contains('Community Solar Bill')) {
+                disABMap.put(idToObjectMap.get(file.ContentDocumentId), file);
+            }
+        }
+
+        for (ContentDistribution distribution : [  SELECT Name, Id, DistributionPublicUrl, ContentDocumentId
                                                     FROM ContentDistribution
                                                     WHERE ContentDocumentId IN : documentObjectList] ) {
-            if (distribution.Name == 'Community Solar Bill') {
-                disABMap.put(idToObjectMap.get(distribution.ContentDocumentId), distribution.DistributionPublicUrl);
-            } else if (distribution.Name == 'Loan Summary Sheet.pdf') {
+            if (distribution.Name == 'Loan Summary Sheet.pdf') {
                 disQSSMap.put(idToObjectMap.get(distribution.ContentDocumentId), distribution.DistributionPublicUrl);
             }
         }
@@ -70,9 +91,10 @@ public without sharing class FileDeliveryHandler {
         }
     }
 
-    public static void updateAccountBill (Map<Id, String> disABMap){
+  public static void updateAccountBill (Map<Id, ContentVersion> disABMap){
         Map<Id, Account_Bill__c> accountBillMap = new Map<Id, Account_Bill__c>();
-        for (Account_Bill__c accountBill : [SELECT Name, Id, Link_to_File__c
+        for (Account_Bill__c accountBill : [SELECT Name, Id, Bill_Attach_Document__c,
+                                            Bill_Attach_Version__c
                                             FROM Account_Bill__c
                                             WHERE Id IN : disABMap.keySet()] ) {
           accountBillMap.put(accountBill.Id, accountBill);
@@ -80,7 +102,8 @@ public without sharing class FileDeliveryHandler {
 
         if (accountBillMap.size() > 0) {
             for (Id acctBillID : disABMap.keySet()) {
-                accountBillMap.get(acctBillID).Link_to_File__c = disABMap.get(acctBillID); 
+                accountBillMap.get(acctBillID).Bill_Attach_Version__c = disABMap.get(acctBillID).Id; 
+                accountBillMap.get(acctBillID).Bill_Attach_Document__c = disABMap.get(acctBillID).ContentDocumentId; 
             }
             update accountBillMap.values();
         }

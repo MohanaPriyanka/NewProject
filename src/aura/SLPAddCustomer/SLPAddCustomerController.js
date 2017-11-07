@@ -3,11 +3,16 @@
         var actionPartnerRecord = component.get("c.getPartnerRecord");
         actionPartnerRecord.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerRecord", resp.getReturnValue());
-                if (resp.getReturnValue().State__c == 'MA') {
+                var partner = resp.getReturnValue();
+                component.set("v.partnerRecord", partner);
+                if (partner.Accounts__r[0] &&
+                    partner.Accounts__r[0].Disable_New_Loan_Applications_in_Portal__c) {
+                    component.set("v.disableOrigination", true);
+                }
+                if (partner.State__c == 'MA') {
                     component.set("v.newLead.DOER_Solar_Loan__c",true);
                     $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');
-                    if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
+                    if (partner.Default_Application__c != 'Massachusetts Solar Loan Program') {
                         component.set("v.newLead.DOER_Solar_Loan__c",false);
                         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');
                         helper.showBWSLApplication(component);
@@ -55,6 +60,7 @@
             }
         });
         $A.enqueueAction(actionGetLender);
+        helper.getAvailableProducts(component, event, helper);
     },
 
     addCustomer : function(component, event, helper) {
@@ -64,6 +70,10 @@
             downPayment = 0;
         }
         lead.Requested_Loan_Amount__c = lead.System_Cost__c - downPayment;
+        var availableProducts = component.get("v.availableProducts");
+        if (availableProducts.length === 1) {
+            lead.Product__c = availableProducts[0].Id;
+        }
         var errors = helper.errorsInForm(component, helper, lead);
         if (errors != null) {
             helper.logError("SLPAddCustomerController", "addCustomer", errors, lead);
@@ -74,13 +84,14 @@
         helper.startSpinner(component, "leadSpinner");
 
         lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
-        var Action = component.get("c.addNewLeadRecord");
-        Action.setParams({"newLead" : lead});
+        var action = component.get("c.addNewLeadRecord");
+        action.setParams({"newLead" : lead});
 
-        Action.setCallback(this, function(resp) {
+        action.setCallback(this, function(resp) {
             if (resp.getState() == "SUCCESS") {
                 component.set("v.newLead", resp.getReturnValue());
                 component.get("v.newLead").LASERCA__Birthdate__c = component.get("v.newLead").LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
+                component.set("v.selectedProductName", helper.getProductName(resp.getReturnValue().Product__c, availableProducts));
                 helper.removeAddCustomerForm(component);
                 helper.removeErrorAnimations(component, "shake");
                 helper.showCreditCheckPage(component);
@@ -90,7 +101,7 @@
                 helper.logError("SLPAddCustomerController", "addCustomer", "We've encountered an issue while trying to add this applicant. Please verify that all of the applicant's information has been entered in correctly and try again. If the issue persists, please call (888) 817-2703 for support", lead);
             }
         });
-        $A.enqueueAction(Action);
+        $A.enqueueAction(action);
     },
 
     checkCredit : function(component, event, helper) {
@@ -154,10 +165,11 @@
     },
 
     navigateCreditStatus : function(component, event, helper) {
+        sessionStorage.setItem('leadId', component.get("v.newLead.Id"));
+        sessionStorage.setItem('leadName', component.get("v.newLead.FirstName") + ' ' + component.get("v.newLead.LastName"));
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
-                "url": '/slpcreditstatus?leadId=' + component.get("v.newLead.Id") +
-                    '&leadName=' + encodeURIComponent(component.get("v.newLead.FirstName") + ' ' + component.get("v.newLead.LastName"))
+                "url": '/slpcreditstatus'
         });
         urlEvent.fire();
     },
@@ -176,66 +188,13 @@
         component.set("v.newLead.DOER_Solar_Loan__c",true);
         component.set("v.newLead.Product_Program__c",'MSLP');
         helper.showMSLPApplication(component);
+        helper.getAvailableProducts(component, event, helper);
     },
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);
         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');
         helper.showBWSLApplication(component);
-    },
-
-    openEmailCustomerModal : function(component, event, helper) {
-        var modalBackground = component.find('emailCustomerModalBackground');
-        $A.util.removeClass(modalBackground, 'slds-backdrop--hide');
-        $A.util.addClass(modalBackground, 'slds-backdrop--open');
-        var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
-        evtCustomerWindow.setParams({"openModal": "openModal"});
-        evtCustomerWindow.fire();
-    },
-
-    closeEmailCustomerModal: function(component, event, helper) {
-        var modalToggle = event.getParam("closeModal");
-        if (modalToggle == "closeModal") {
-            var modalBackground = component.find('emailCustomerModalBackground');
-            $A.util.removeClass(modalBackground, 'slds-backdrop--open');
-            $A.util.addClass(modalBackground, 'slds-backdrop--hide');
-        }
-    },
-
-    emailModalSelectMSLP: function(component, event, helper) {
-        $A.util.removeClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
-        $A.util.addClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav');
-        component.set("v.productProgram","mslp");
-    },
-
-    emailModalSelectBWSL: function(component, event, helper) {
-        $A.util.addClass(component.find('bwslEmailInput'), 'slds-tabs--scoped__nav');
-        $A.util.removeClass(component.find('mslpEmailInput'), 'slds-tabs--scoped__nav');
-        component.set("v.productProgram","bwsl");
-    },
-
-    sendCustomerApplication : function(component, event, helper) {
-        $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
-        helper.startSpinner(component, "emailSpinner");
-        var productProgram = component.get("v.productProgram");
-        var customerEmail = component.get("v.customerEmail");
-        var actionSendApp = component.get("c.sendApplication");
-
-        actionSendApp.setParams({customerEmail : customerEmail,
-          productProgram : productProgram});
-
-        actionSendApp.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
-                helper.stopSpinner(component, "emailSpinner");
-                $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-                var btn = event.getSource();
-                btn.set("v.disabled",true);
-                btn.set("v.label",'Email Sent!')
-            } else {
-                helper.logError("SLPAddCustomerController", "sendCustomerApplication", resp.getERror());
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(actionSendApp);
+        helper.getAvailableProducts(component, event, helper);
     },
 
     returnToEdit : function(component, event, helper) {
@@ -254,6 +213,10 @@
             downPayment = 0;
         }
         leadToUpdate.Requested_Loan_Amount__c = leadToUpdate.System_Cost__c - downPayment;
+        var availableProducts = component.get("v.availableProducts");
+        if (availableProducts.length === 1) {
+            leadToUpdate.Product__c = availableProducts[0].Id;
+        }
         var errors = helper.errorsInForm(component, helper, leadToUpdate);
         if (errors != null) {
             helper.logError("SLPAddCustomerController", "updateLeadRecord", errors);
@@ -274,6 +237,7 @@
                         helper.showCreditCheckPage(component);
                         helper.stopSpinner(component, "leadSpinner");
                         component.get("v.newLead").LASERCA__Birthdate__c = component.get("v.newLead").LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
+                        component.set("v.selectedProductName", helper.getProductName(resp.getReturnValue().Product__c, availableProducts));
                     } else {
                         $A.util.removeClass(component.find("EditButton"), 'noDisplay');
                         helper.stopSpinner(component, "leadSpinner");

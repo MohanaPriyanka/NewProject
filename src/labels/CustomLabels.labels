@@ -72,4 +72,12 @@
         <shortDescription>Type</shortDescription>
         <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</value>
     </labels>
+    <labels>
+        <fullName>SLP_Disabled</fullName>
+        <categories>Solar Loan Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Disabled Origination</shortDescription>
+        <value>This feature has been disabled. Please contact partnersupport@bluewavesolar.com for assistance.</value>
+    </labels>
 </CustomLabels>

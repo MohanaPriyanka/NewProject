@@ -8,23 +8,24 @@
         } else {
             helper.setInputToCorrect(component, "stateElement" );
         }                   
-        console.log(errorMessage);
+        if (lead.LASERCA__Home_State__c === 'MA') {
+            if (!lead.Product__c) {
+                helper.setInputToError(component, "productElement", "shake");
+                errorMessage = errorMessage + "Please select a Product" + "\n" + "\n";
+            } else {
+                helper.setInputToCorrect(component, "productElement" );
+            }
+        } else {
+            // If they haven't selected a product, don't include undefined in the lead, it results in 
+            // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
+            if (!lead.Product__c) {
+                delete lead['Product__c'];
+            }
+        }
         if (errorMessage.length > 0) {
             return errorMessage;
         } 
     }, 
-
-    setWindowToBWSL : function(component) {
-        component.set("v.newLead.Product_Program__c","BlueWave Solar Loan"); 
-        $A.util.removeClass(component.find('mslpEmailInput'), 'nimbusBackground'); 
-        $A.util.addClass(component.find('bwslEmailInput'), 'nimbusBackground');      
-    },    
-
-    setWindowToMSLP : function(component) {
-        component.set("v.newLead.Product_Program__c","MSLP");           
-        $A.util.removeClass(component.find('bwslEmailInput'), 'nimbusBackground');        
-        $A.util.addClass(component.find('mslpEmailInput'), 'nimbusBackground');      
-    },   
 
     removeButtonsAndShowSpinner : function(component, event, helper) {
         $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
@@ -64,5 +65,33 @@
         component.set('v.newLead.LASERCA__Home_State__c', null);          
         component.set('v.downPayment', null);   
         component.set('v.newLead.System_Cost__c', null);   
-    },                 
+        component.set('v.newLead.Product__c', null);
+        component.set('v.newLead.Product_Program__c', null);
+        component.set('v.availableProducts', null);
+    },
+
+    getAvailableProducts : function(component, event, helper) { 
+        var action = component.get("c.getProducts");
+        action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c")});
+        action.setCallback(this,function(resp){
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.availableProducts", resp.getReturnValue());
+            } else {
+                helper.logError("SLPSendApplicationEmailController", "availableProducts", resp.getError());
+            }
+        });    
+        $A.enqueueAction(action);    
+    },
+
+    getProductProgram : function(products, selectedId) {
+        if (selectedId) {
+            for (var p in products) {
+                if (selectedId === products[p].Id) {
+                    return products[p].Program__c;
+                }
+            }
+        } else {
+            return products[0].Program__c;
+        }
+    },
 })

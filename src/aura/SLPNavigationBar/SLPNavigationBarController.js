@@ -20,10 +20,6 @@
         var headerDisplay = component.find("header");
         $A.util.addClass(headerDisplay, 'noDisplayBar');   
     },
-
-    navigate : function(component, event, helper) {
-        window.location.href = "/slportal/s/" + event.getSource().getLocalId();
-    },
     
     openSendCustomerEmail: function(component, event, helper) {
         var modalBackground = component.find('emailCustomerModalBackground');

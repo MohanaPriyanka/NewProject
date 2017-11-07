@@ -17,6 +17,8 @@ public without sharing class PCRApprovalHandler {
     public static final String READYFORCREDITCHECK = 'Ready for Credit Check';
     public static final String PENDINGCREDITREVIEW = 'Pending Credit Review';
     public static final String UNQUALIFIED = 'Unqualified'; 
+    public static final String REVIEWEDAPPROVED = 'Reviewed - Approved'; 
+    public static final String REVIEWEDPREAPPROVED = 'Reviewed - PreApproved'; 
 
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
@@ -132,7 +134,7 @@ public without sharing class PCRApprovalHandler {
             }
         }
 
-        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, 
+        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Product__c,
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                     Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
@@ -187,6 +189,14 @@ public without sharing class PCRApprovalHandler {
                 pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_After__c = creditSummary.highestDTI;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
+
+                if (ld.Product__c == null) {
+                    if (creditSummary.bestStatus == APPROVED) {
+                        ld.Product__c = creditSummary.mostExpensiveQualifiedProduct;
+                    } else {
+                        ld.Product__c = creditSummary.leastExpensiveQualifiedProduct;
+                    }
+                }
 
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
 
@@ -338,6 +348,10 @@ public without sharing class PCRApprovalHandler {
         public Decimal loanPrincipal;
         public Integer creditScore;
         public Boolean doer;
+        public Id mostExpensiveQualifiedProduct;
+        public Decimal highestMonthlyPayment;
+        public Id leastExpensiveQualifiedProduct;
+        public Decimal lowestMonthlyPayment;
         public PCRApprovalHandler.ProductRepo repo;
         public List<PCRApprovalHandler.CreditStatusResult> resultList;
 
@@ -364,6 +378,20 @@ public without sharing class PCRApprovalHandler {
             }
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
+            }
+            if (result.dtiAfter <= dtiMaximum && 
+                creditScore >= creditMinimum) {
+                if (highestMonthlyPayment == null ||
+                    result.monthlyLoanPayment > highestMonthlyPayment) {
+                    highestMonthlyPayment = result.monthlyLoanPayment;
+                    mostExpensiveQualifiedProduct = result.productId;
+                }
+            } else {
+                if (lowestMonthlyPayment == null ||
+                    result.monthlyLoanPayment < lowestMonthlyPayment) {
+                    lowestMonthlyPayment = result.monthlyLoanPayment;
+                    leastExpensiveQualifiedProduct = result.productId;
+                }
             }
         }
 

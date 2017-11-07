@@ -129,7 +129,15 @@ public without sharing class SLPAddCustomer {
     //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled
     public static Partner__c getPartnerRecord() {
-        return [SELECT Id, Name, Logo__c, State__c, Default_Application__c 
+        RecordType partnerRT = [SELECT Id
+                                FROM RecordType
+                                WHERE Name = : 'Partner Account'
+                                AND SobjectType = 'Account'
+                                LIMIT 1];
+        return [SELECT Id, Name, Logo__c, State__c, Default_Application__c,
+                (SELECT Disable_New_Loan_Applications_in_Portal__c
+                 FROM Accounts__r
+                 WHERE RecordTypeId = :partnerRT.Id LIMIT 1)
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];       
     }     
@@ -159,6 +167,7 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('544', String.valueof(loanAmount));
         mslpUrlParametersMap.put('574', stateName);        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
+        mslpUrlParametersMap.put('796', newLead.Product__c);
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
@@ -168,6 +177,7 @@ public without sharing class SLPAddCustomer {
         bwslUrlParametersMap.put('544', String.valueof(loanAmount));
         bwslUrlParametersMap.put('574', stateName);
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
+        bwslUrlParametersMap.put('803', newLead.Product__c);
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
         if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
@@ -213,4 +223,15 @@ public without sharing class SLPAddCustomer {
         }
         return result;
     }
+ 
+    @AuraEnabled
+    public static List<Product2> getProducts(String state) {
+        List<Product2> products = [SELECT Id, Name, Program__c
+                                   FROM Product2
+                                   WHERE IsActive = true
+                                   AND Product_Type__c = 'Residential Loan'
+                                   AND State__c = : state];
+        return products;
+    }
 }
+

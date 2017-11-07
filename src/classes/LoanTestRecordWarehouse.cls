@@ -10,7 +10,7 @@ public class LoanTestRecordWarehouse {
         insert salesRep;
         partnerSetupList.add(salesRep.Id);
 
-        BSST__c salesRepExec = new BSST__c(Name = 'BlueWave Executive', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'executive@Sales.com');
+        BSST__c salesRepExec = new BSST__c(Name = 'BlueWave Executive', Partner__c = partner.Id, Custom_ID__c = 'exec', Email__c = 'executive@Sales.com');
         insert salesRepExec;
         partnerSetupList.add(salesRepExec.Id);
 
@@ -338,6 +338,7 @@ public class LoanTestRecordWarehouse {
                                                 Loan_Capital_Pool__c = capitalPool.Id,
                                                 Loan_Tranche_Type__c = 'Standard',
                                                 Program__c = 'BlueWave Solar Loan',
+                                                Lender_of_Record__c = 'BlueWave',
                                                 isActive = TRUE);
         Product2 productRecordMSLP = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
                                                 Family = 'Solar Loan',
@@ -357,6 +358,7 @@ public class LoanTestRecordWarehouse {
                                                 Loan_Capital_Pool__c = capitalPool.Id,
                                                 Loan_Tranche_Type__c = 'Standard',
                                                 Program__c = 'MSLP',
+                                                Lender_of_Record__c = 'BlueWave',
                                                 isActive = TRUE);
 
 

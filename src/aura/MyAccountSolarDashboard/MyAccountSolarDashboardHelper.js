@@ -23,8 +23,8 @@
 	       				totalSavings = totalSavings + accountBillList[abStep].Savings_Rollup__c;
 	       				totalProduction = totalProduction + accountBillList[abStep].Subscription_Production_kWh__c;
 	       			}
-	       			var roundedBalance = totalOutstandingBalance.toFixed(2);
-	       			var roundedSavings = totalSavings.toFixed(2);
+	       			var roundedBalance = totalOutstandingBalance;
+	       			var roundedSavings = totalSavings;
 	       			component.set("v.myBill", roundedBalance);
 	       			component.set("v.mySavings", roundedSavings);
 	       			component.set("v.myProduction", totalProduction);

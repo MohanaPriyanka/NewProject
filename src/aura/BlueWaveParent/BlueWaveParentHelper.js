@@ -359,6 +359,3 @@
         $A.util.removeClass(modal, 'slds-fade-in-hide');
     },
 })
-
-
-

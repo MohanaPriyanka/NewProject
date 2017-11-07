@@ -44,7 +44,7 @@
                     for (abStep = 0; abStep < accountBillList.length; abStep++) {
                         totalOutstandingBalance = totalOutstandingBalance + accountBillList[abStep].Balance_Net_Late_Payments__c;
                     }
-                    var roundedBalance = totalOutstandingBalance.toFixed(2);
+                    var roundedBalance = totalOutstandingBalance;
                     component.set("v.myBill", roundedBalance);
                 }
             }

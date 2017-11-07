@@ -1,20 +1,7 @@
 ({
     doInit : function(component, event, helper) {     
-        var getUrlParameter = function getUrlParameter(sParam) {
-            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
-
-            for (i = 0; i < sURLVariables.length; i++) {
-                sParameterName = sURLVariables[i].split('=');
-                if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-                }
-            }
-        };
-        var leadId = getUrlParameter('leadId');
-        var leadName = getUrlParameter('leadName');
+        var leadId = sessionStorage.getItem('leadId');
+        var leadName = sessionStorage.getItem('leadName');
         if ($A.util.isUndefinedOrNull(leadId)) {
             var action = component.get("c.getLeads");        
             action.setCallback(this,function(resp){ 
@@ -27,14 +14,29 @@
                 });        
             $A.enqueueAction(action);     
         } else {
-            // Lead ID is set from the AddCustomer Component, so we want to lead
-            // this component with just that lead. We also want to disable the back button
-            component.set("v.leadId", leadId);
-            component.set("v.customerName", leadName);
-            helper.getProductsHelper(component, event, helper);
-            $A.util.addClass(component.find("creditStatusBackButton"),"noDisplay");
+            // Lead ID is specified, getLeads returns a single lead
+            var action = component.get("c.getLeads");
+            action.setParams({leadId : leadId});
+            action.setCallback(this,function(resp) {
+                if (resp.getState() == 'SUCCESS') {
+                    component.set("v.allCustomers", resp.getReturnValue());
+                    var lead = resp.getReturnValue()[0];
+                    // Lead ID is set from the AddCustomer Component, so we want to
+                    // this component with just that lead. We also want to disable the back button
+                    component.set("v.leadId", leadId);
+                    component.set("v.customerName", leadName);
+                    helper.getProductsHelper(component, event, helper).then(
+                        $A.getCallback(function resolve(helper) {
+                            var selected = helper.qualifyingProductSelected(component, lead.Product__c);
+                            helper.toggleProductSelection(component, helper, lead.Product__c, lead.Product__r.Loan_Term__c, selected);
+                        }));
+                    $A.util.addClass(component.find("creditStatusBackButton"),"noDisplay");
+                } else {
+                    $A.log("Errors", resp.getError());
+                }
+            });        
+            $A.enqueueAction(action);
         }
-              
     },
     
     searchCustomers : function(component, event, helper) {            
@@ -60,48 +62,13 @@
     },        
 
     updateProductSelection : function(component, event, helper) { 
-        var actionGetProduct = component.get("c.getSelectedProduct"); 
-        var source = event.getSource();
-        var productId = source.get("v.class"); 
-        var productTerm = source.get("v.name");
-        var productValue = source.get("v.value");
-
-        actionGetProduct.setParams({productId : productId});
-
-        actionGetProduct.setCallback(this,function(resp){ 
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.product", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });        
-        $A.enqueueAction(actionGetProduct);    
-
-        var customerEmailButton = component.find("customerEmailButton");
-        var incomeFormButton = component.find("incomeFormButton");
-
-        if(productValue == true) {
-        component.set("v.productId", productId); 
-        component.set("v.loanTerm", productTerm);
-
-        $A.util.removeClass(customerEmailButton, 'noDisplay');
-        $A.util.removeClass(incomeFormButton, 'noDisplay');     
-
-        }else {
-        component.set("v.productId", null); 
-        component.set("v.loanTerm", 0);   
-
-        $A.util.addClass(customerEmailButton, 'noDisplay');
-        $A.util.addClass(incomeFormButton, 'noDisplay');     
-
-        }                 
+        helper.updateProductSelection(component, event, helper);
     },       
 
     navigate : function(component, event, helper) {
         var leadId = component.get("v.leadId");
-        var productId = component.get("v.product.Id");
-        var loanTerm = component.get("v.product.Loan_Term__c");
+        var productId = component.get("v.productId");
+        var loanTerm = component.get("v.loanTerm");
 
         var action = component.get("c.getLeads");         
         action.setParams({leadId : leadId});
@@ -205,7 +172,7 @@
      sendCustomerApplication : function(component, event, helper) {
         var leadId = component.get("v.leadId");
         var product = component.get("v.product");
-        var loanTerm = component.get("v.product.Loan_Term__c");        
+        var loanTerm = component.get("v.loanTerm");        
 
         var actionSendApp = component.get("c.sendApplication"); 
 

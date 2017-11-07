@@ -91,38 +91,40 @@
     },    
 
     executeTableButtonActions : function(component, event, helper) {        
-       var buttonEventId = event.getParam("buttonEventId");
-       var record = event.getParam("record");
+        var buttonEventId = event.getParam("buttonEventId");
+        var record = event.getParam("record");
         switch (buttonEventId) {
             case 'openCustomerWindow':
+                sessionStorage.setItem('loanId', record.Id);
                 var urlEvent = $A.get("e.force:navigateToURL");
                 urlEvent.setParams({
-                    "url": '/slpcustomer?loanId=' + record.Id
+                    "url": '/slpcustomer'
                 });
                 urlEvent.fire(); 
                 break;
             case 'continueApplication':
+                sessionStorage.setItem('leadId', record.Id);
+                sessionStorage.setItem('leadName', record.FirstName + ' ' + record.LastName);
                 var urlEvent = $A.get("e.force:navigateToURL");
                 urlEvent.setParams({
-                    "url": '/slpcreditstatus?leadId=' + record.Id +
-                    '&leadName=' + encodeURIComponent(record.FirstName + ' ' + record.LastName)
+                    "url": '/slpcreditstatus'
                 });
                 urlEvent.fire(); 
                 break;    
-            case 'addCoSigner':       
+            case 'addCoSigner':
                $A.createComponent(
                   "c:SLPAddCoApplicant", 
                    {"mainApplicant" : record}, 
-                function(newButton, status, errorMessage){
-                    if (status === "SUCCESS") {
-                        var body = component.get("v.body");
-                        body.push(newButton);
-                        component.set("v.body", body);
-                    } else  {
-                        helper.logError("SLPCreditStatusController", "openAddCoApplicant", resp.getError());
+                    function(newButton, status, errorMessage){
+                        if (status === "SUCCESS") {
+                            var body = component.get("v.body");
+                            body.push(newButton);
+                            component.set("v.body", body);
+                        } else  {
+                            helper.logError("SLPCreditStatusController", "openAddCoApplicant", resp.getError());
+                        }
                     }
-                }   
-            )                             
+                )
         }  
     },    
     changeTableToCompletedCustomers : function(component, event, helper) { 

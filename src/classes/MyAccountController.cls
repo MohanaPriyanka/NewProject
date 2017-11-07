@@ -89,7 +89,7 @@ public without sharing class MyAccountController {
         if(propertyAccountId == 'All' || propertyAccountId == null) {
             for(Account_Bill__c accountBillAll : [  SELECT Parent_Account__r.Name, Date__c, Activity_Type__c, 
                                                         Due_this_month__c, Total_Due_This_Month__c, Total_Due__c, 
-                                                        Carry_Over_Balance__c, Bill_number__c, Link_to_File__c,
+                                                        Carry_Over_Balance__c, Bill_number__c, Bill_Attach_Document__c,
                                                         Savings_Rollup__c, Subscription_Production_kWh__c,
                                                         Balance_Net_Late_Payments__c, Date_of_Last_Payment__c, 
                                                         Bill_Due_Date__c, Total_due_minus_payment_plan__c
@@ -106,7 +106,7 @@ public without sharing class MyAccountController {
                                                             Total_Due_This_Month__c, Total_due_minus_payment_plan__c,
                                                             Savings_Rollup__c, Subscription_Production_kWh__c, 
                                                             Total_Due__c, Bill_Due_Date__c, Carry_Over_Balance__c, 
-                                                            Bill_number__c, Link_to_File__c
+                                                            Bill_number__c, Bill_Attach_Document__c
                                                         FROM Account_Bill__c
                                                         WHERE Parent_Account__r.Id = : propertyAccountId
                                                         AND Published__c = true

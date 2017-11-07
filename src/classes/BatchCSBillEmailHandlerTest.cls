@@ -1,6 +1,5 @@
 @isTest
 private class BatchCSBillEmailHandlerTest {
-
     @testSetup public static void setupTestData(){
         Integer i;
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
@@ -28,7 +27,6 @@ private class BatchCSBillEmailHandlerTest {
                                         Name = 'Bill' + i,
                                         Parent_Account__c = propertyAccount.Id,
                                         Ready_for_Email_Send__c = true,
-                                        Link_to_File__c = 'https://bluewavesolar.com',
                                         Published__c = false);
             abList.add(abOne);
         }
@@ -74,13 +72,11 @@ private class BatchCSBillEmailHandlerTest {
         insert newLink;
         Test.StopTest();
 
-        List<ContentDistribution> distList = [  SELECT Name, ContentVersionId
-                                                FROM ContentDistribution];
-
-        Account_Bill__c abUpdated = [   SELECT Id, Link_to_File__c 
+        Account_Bill__c abUpdated = [   SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
                                         FROM Account_Bill__c 
                                         WHERE Id = : accountBill.Id];
-        system.AssertNotEquals('', abUpdated.Link_to_File__c);
-        system.AssertNotEquals(0, distList.size());
+        system.AssertNotEquals('', abUpdated.Bill_Attach_Version__c);
+        system.AssertNotEquals('', abUpdated.Bill_Attach_Document__c);
     }
+
 }

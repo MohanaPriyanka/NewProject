@@ -336,6 +336,12 @@ private class PCRApprovalHandlerTest {
              WHERE LASERCA__Credit_Score_TransUnion__c = '815'];
 
         System.assertEquals('Pre-Qualified', pcrAG.LASERCA__Lead__r.Status);
+
+        System.assertEquals(3, SLPCreditStatus.getCustomerProducts(leadAG.Id).size());
+        // This product should show up in the SLPCreditStatus.getCustomerProducts
+        leadAG.Product__c = mslp.id;
+        update leadAG;
+        System.assertEquals(4, SLPCreditStatus.getCustomerProducts(leadAG.Id).size());
     }
 
     static testMethod void testExclude() {

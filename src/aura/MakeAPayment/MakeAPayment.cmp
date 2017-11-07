@@ -132,8 +132,8 @@
                 <th scope="row"> {!accountBill.Date__c} </th>
                 <th scope="row"> {!accountBill.Bill_Due_Date__c} </th> 
                 <th scope="row"> 
-                  <aura:if isTrue="{!accountBill.Link_To_File__c != NULL}"> 
-                    <a href="{!accountBill.Link_To_File__c}" target="_blank">View Statement</a> 
+                  <aura:if isTrue="{!accountBill.Bill_Attach_Document__c != NULL}"> 
+                    <a href="{!'/s/myaccount?openFile=' + accountBill.Bill_Attach_Document__c}">View Statement</a> 
                     <aura:set attribute="else">
                       Statement
                     </aura:set>

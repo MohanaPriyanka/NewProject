@@ -3,15 +3,11 @@
         var action = component.get("c.getPartnerRecord");        
         action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerRecord", resp.getReturnValue());
-                if (resp.getReturnValue().State__c === 'MA') {
-                    if (resp.getReturnValue().Default_Application__c != 'Massachusetts Solar Loan Program') {
-                        helper.setWindowToBWSL(component);
-                    } else {
-                        helper.setWindowToMSLP(component);
-                    }                    
-                } else {
-                    helper.setWindowToBWSL(component);                                 
+                var partner = resp.getReturnValue();
+                component.set("v.partnerRecord", partner);
+                if (partner.Accounts__r[0] &&
+                    partner.Accounts__r[0].Disable_New_Loan_Applications_in_Portal__c) {
+                    component.set("v.disableOrigination", true);
                 }
             } else {
                 helper.logError("SLPSendApplicationEmailController", "openEmailCustomerModal", resp.getError());
@@ -32,28 +28,23 @@
     },   
 
     closeEmailCustomerModal: function(component, event, helper) {
-        helper.closeModal(component, 'emailCustomerModal'); 
-        helper.enableButton(component, 'sendEmailButton', 'Send');
+        helper.closeModal(component, 'emailCustomerModal');
+        if (!component.get("v.disableOrigination")) {
+            helper.enableButton(component, 'sendEmailButton', 'Send');
+        }
 
         var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
         evtCustomerWindow.setParams({"closeModal": "closeModal"});
         evtCustomerWindow.fire();         
     },    
 
-    changeProductProgram: function(component, event, helper) {
-        var newLead = component.get("v.newLead");
-        if (newLead.Product_Program__c === "BlueWave Solar Loan") {
-            helper.setWindowToMSLP(component);
-        } else if (newLead.Product_Program__c === "MSLP") {
-            helper.setWindowToBWSL(component);
-        }
-    },         
-
     createLeadAndSendApplication : function(component, event, helper) {  
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
+        var availableProducts = component.get("v.availableProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
+            newLead.Product_Program__c = helper.getProductProgram(availableProducts, newLead.Product__c);
             helper.removeButtonsAndShowSpinner(component, event, helper);  
             helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
@@ -61,4 +52,8 @@
             return;
         }                      
     },            
+
+    getAvailableProducts : function(component, event, helper) {
+        helper.getAvailableProducts(component, event, helper);
+    }
 })

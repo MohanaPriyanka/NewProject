@@ -16,7 +16,7 @@
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+
-        'Link_To_File__c, Credits_on_Bill_Period__c, '+
+        'Bill_Attach_Version__c, Credits_on_Bill_Period__c, '+
         'Parent_Account__r.Send_Bills_Contact__r.Email '+
         'FROM Account_Bill__c WHERE Ready_for_Email_Send__c = TRUE';
         return Database.getQueryLocator(query);
@@ -27,8 +27,14 @@
         List<Messaging.SendEmailError> errorList = new List<Messaging.SendEmailError>();
         List<Task> emailLogList = new List<Task>();
         List<String> addressList = new List<String>();
+        List<String> attachmentIds = new List<String>();
+        Map<String, String> attachIDMap = new Map<String, String>();
         String errorCode;
         String htmlBody;
+
+        for (Account_Bill__c bill : scope) {
+            attachIDMap.put(bill.Id, bill.Bill_Attach_Version__c);
+        }
 
         EmailTemplate template = [  SELECT Id, HtmlValue, Body, DeveloperName
                                     FROM EmailTemplate
@@ -46,21 +52,22 @@
             errorCode = '';
             htmlBody = originalHtmlbody;
             addressList.clear();
+            attachmentIds.clear();
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             if (acctBill.Parent_Account__r.Send_Bills_Contact__r.Email != NULL) {
-                if (acctBill.Link_To_File__c != NULL) {
+                if ( attachIDMap.containsKey(acctBill.Id) ) {
                     addressList.add(acctBill.Parent_Account__r.Send_Bills_Contact__r.Email);  
-                    htmlBody = htmlBody.replace('{!URL_TO_FILE}', acctBill.Link_To_File__c);
                     htmlBody = htmlBody.replace('{!AccountName}', acctBill.Property_Account_Name__c);
                     htmlBody = htmlBody.replace('{!Account_Bill_Property_Id}', acctBill.Property_Account_ID__c);
                     htmlBody = htmlBody.replace('{!Credits_Period}', acctBill.Credits_on_Bill_Period__c ); 
                     acctBill.Published__c = true;
                     acctBill.Ready_for_Email_Send__c = false;
+                    attachmentIds.add(attachIDMap.get(acctBill.Id));
                 } else {
                     addressList.add('communitysolar@bluewavesolar.com');
-                    errorCode = 'EMAIL SEND FAILED FOR: ' + acctBill.Id + ' because there was no link to the pdf file.';
+                    errorCode = 'EMAIL SEND FAILED FOR: ' + acctBill.Id + ' because there was no pdf file.';
                     htmlBody = errorCode;
-                }
+                } 
             } else {
                 addressList.add('communitysolar@bluewavesolar.com');
                 errorCode = 'EMAIL SEND FAILED FOR: ' + acctBill.Id + ' because no email was found on the Send Bills Contact';
@@ -69,7 +76,8 @@
             mail.setOrgWideEmailAddressId(senderEmail.Id); 
             mail.setSubject(acctBill.Property_Account_Name__c + ', Your Community Solar Share Has Posted');
             mail.setHtmlBody(htmlBody);
-            mail.setToAddresses(addressList);   
+            mail.setToAddresses(addressList);  
+            mail.setEntityAttachments(attachmentIds);
             emailstosend.add(mail);
             Task newTask = new Task(WhatId = acctBill.Id,
                                     Status = 'Completed');
@@ -82,13 +90,7 @@
         }
 
         List<Messaging.SendEmailResult> result = MessagingService.sendEmail(emailstosend);
-        for (Messaging.SendEmailResult rr: result){ 
-          if (!rr.IsSuccess()) {
-            for (Messaging.SendEmailError error: rr.getErrors()) {
-              finalErrorList.add(error);
-            }
-          } 
-        }
+
         update scope;
         insert emailLogList; 
     }
@@ -100,20 +102,12 @@
                             FROM AsyncApexJob
                             WHERE Id = :bc.getJobId()];
 
-            String concatenatedErrorMessage = 'Email Errors: ';
-            if (finalErrorList != NULL) {
-                for (Messaging.SendEmailError error : finalErrorList) {
-                    concatenatedErrorMessage = concatenatedErrorMessage + error.getMessage();
-                }
-            }
-
             String emailBody = 'CS Bill Emails Have Been Sent! Job Id: '+ job.Id 
                                 + '  Errors: ' + job.NumberOfErrors 
-                                + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed
-                                + '  ' + concatenatedErrorMessage ;
+                                + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
             List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
         if(!Test.isRunningTest()){
             MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
         }
-    } 
+    }  
 }

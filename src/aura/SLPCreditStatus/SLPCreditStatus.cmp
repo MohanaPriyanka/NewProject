@@ -125,13 +125,14 @@
               <aura:iteration items="{!v.allProducts}" var="product">
                 <tr>
                   <th scope="row"> <b>{!product.Name}</b> </th>
-                  <th> <div class="slds-form-element">
-                    <label class="slds-checkbox--toggle slds-grid">
-                      <ui:inputCheckBox aura:id="productSelect"
-                        class="{!product.Id}"
-                        name="{!product.Loan_Term__c}"
-                        value=""
-                        change="{!c.updateProductSelection}"/>
+                  <th> 
+                    <div class="slds-form-element">
+                      <label class="slds-checkbox--toggle slds-grid">
+                        <ui:inputCheckBox aura:id="productSelect"
+                                          class="{!product.Id}"
+                                          name="{!product.Loan_Term__c}"
+                                          value="{!product.Id == v.allCustomers[0].Product__c}"
+                                          change="{!c.updateProductSelection}"/>
                         <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
                           <span class="slds-checkbox--faux"></span>
                         </span>
