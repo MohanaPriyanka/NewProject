@@ -28,7 +28,14 @@
     },   
 
     closeEmailCustomerModal: function(component, event, helper) {
-        helper.closeModal(component, 'emailCustomerModal');
+        helper.closeModal(component, 'emailCustomerModal'); 
+        helper.enableButton(component, 'sendEmailButton', 'Send');
+        component.set("v.newLead.Email", null);
+        component.set("v.newLead.LASERCA__Home_State__c", null);
+        component.set("v.newLead.System_Cost__c", null);
+        helper.setInputToCorrect(component, 'systemCostElement');
+        helper.setInputToCorrect(component, 'emailAddressElement');
+  
         if (!component.get("v.disableOrigination")) {
             helper.enableButton(component, 'sendEmailButton', 'Send');
         }
