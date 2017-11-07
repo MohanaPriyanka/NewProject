@@ -167,7 +167,9 @@ public without sharing class SLPAddCustomer {
         mslpUrlParametersMap.put('544', String.valueof(loanAmount));
         mslpUrlParametersMap.put('574', stateName);        
         mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
-        mslpUrlParametersMap.put('796', newLead.Product__c);
+        if (newLead.Product__c != null) {
+            mslpUrlParametersMap.put('796', newLead.Product__c);
+        }
         mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
 
         bwslUrlParametersMap.put('648', (String)profile.partnerId);
@@ -177,7 +179,9 @@ public without sharing class SLPAddCustomer {
         bwslUrlParametersMap.put('544', String.valueof(loanAmount));
         bwslUrlParametersMap.put('574', stateName);
         bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
-        bwslUrlParametersMap.put('803', newLead.Product__c);
+        if (newLead.Product__c != null) {
+            bwslUrlParametersMap.put('803', newLead.Product__c);
+        }
         bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
         if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
