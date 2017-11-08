@@ -2,7 +2,7 @@
     errorsInForm : function(component, helper, lead) {
         var errorMessage = "";     
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, false, true, false, "Please provide this applicant's expected system cost.", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, true, true, false, "Please provide this applicant's expected system cost.", "standard");        
         
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");

@@ -68,23 +68,25 @@
       </aura:iteration>
     </tbody>
   </table>
-  <div class="slds-grid">
-    <div class="slds-col">
-      <button aura:id="previousPageButton" class="slds-button slds-button_icon slds-float_left slds-m-top_x-small" onclick="{!c.previousPage}">
-        <lightning:icon iconName="utility:chevronleft" size="x-small"/>
-        <b> Previous </b>
-      </button>
+  <aura:if isTrue="{!v.tableRecords.length > 0}">  
+    <div class="slds-grid">
+      <div class="slds-col">
+        <button aura:id="previousPageButton" class="slds-button slds-button_icon slds-float_left slds-m-top_x-small" onclick="{!c.previousPage}">
+          <lightning:icon iconName="utility:chevronleft" size="x-small"/>
+          <b> Previous </b>
+        </button>
+      </div>
+      <div aura:id="tableNavCenterGridclass" class="slds-col center">
+        <button aura:id="showAllRecordsButton" class="slds-button slds-button_icon slds-m-top_x-small" onclick="{!c.showAllRecords}">
+          <b> Show All </b>
+        </button>
+      </div>
+      <div class="slds-col">
+        <button aura:id="nextPageButton" class="slds-button slds-button_icon slds-float_right slds-m-top_x-small" onclick="{!c.nextPage}">
+          <b> Next </b>
+          <lightning:icon iconName="utility:chevronright" size="x-small"/>
+        </button>
+      </div>
     </div>
-    <div aura:id="tableNavCenterGridclass" class="slds-col center">
-      <button aura:id="showAllRecordsButton" class="slds-button slds-button_icon slds-m-top_x-small" onclick="{!c.showAllRecords}">
-        <b> Show All </b>
-      </button>
-    </div>
-    <div class="slds-col">
-      <button aura:id="nextPageButton" class="slds-button slds-button_icon slds-float_right slds-m-top_x-small" onclick="{!c.nextPage}">
-        <b> Next </b>
-        <lightning:icon iconName="utility:chevronright" size="x-small"/>
-      </button>
-    </div>
-  </div>
+  </aura:if>
 </aura:component>

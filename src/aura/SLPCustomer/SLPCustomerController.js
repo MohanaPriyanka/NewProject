@@ -18,7 +18,7 @@
         component.set("v.vendorIdLabel", "Unique Identifier");
         
         var leadId = sessionStorage.getItem('loanId');
-        helper.openCustomerWindow(component, event, helper, leadId, )
+        helper.openCustomerWindow(component, event, helper, leadId);
     },
 
     exitCustomerWindow : function(component, event, helper) {

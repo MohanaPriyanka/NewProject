@@ -203,6 +203,7 @@ public without sharing class PCRApprovalHandler {
                 if (creditSummary.bestStatus == APPROVED) {
                     if (conglomerate.contains('018') || 
                         conglomerate.contains('020') ||
+                        conglomerate.contains('A06') ||                        
                         conglomerate.contains('021') ||
                         conglomerate.contains('022') ||
                         conglomerate.contains('031') ||

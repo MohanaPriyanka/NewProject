@@ -115,7 +115,8 @@ public class DisbursalHandlerTest {
 	        opportunityRecord.Disbursal_Type_Contract__c = 'ACH Disbursal';
 
 	        opportunityRecord.Disbursal_2_Mechanical_Install_Checkbox__c = myDate;
-            opportunityRecord.Disbursal_Type_Mech_Completion__c = 'ACH';            
+            opportunityRecord.Disbursal_Type_Mech_Completion__c = 'ACH';
+            update opportunityRecord;            
 
 	        opportunityRecord.Disbursal_3_Full_Install_Checkbox__c = myDate;
 	        opportunityRecord.Disbursal_Type_Interconnect__c = 'ACH Disbursal';

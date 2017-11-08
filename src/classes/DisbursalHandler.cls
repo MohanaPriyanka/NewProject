@@ -131,13 +131,13 @@ public class DisbursalHandler {
                         } else {
                             disbursalMethodMechInstall = null;
                         }                            
-                        if (disbursal.Type__c == 'Contract Signature') {
+                        if (disbursal.Type__c == 'Contract Signature' && dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c')) {
                             disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity,  
                                 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c', disbursalMethodContract));
-                        } else if (disbursal.Type__c == 'Mechanical installation') {
+                        } else if (disbursal.Type__c == 'Mechanical installation' && dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c')) {
                             disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity, 
                                 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c', disbursalMethodMechInstall));
-                        } else if (disbursal.Type__c == 'Interconnection') {
+                        } else if (disbursal.Type__c == 'Interconnection' && dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c')) {
                             disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity,
                                 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c', disbursalMethodInterconnect));
                         }
