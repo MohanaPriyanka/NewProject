@@ -40,10 +40,8 @@ global class CustomerCommunicationHandler Implements Schedulable {
             for (Account act : billedacclist){
                 String contactid = act.Send_Bills_Contact__c;
                 if (contactid != null) {   
-                    Date maxDueDate = act.Last_Bill_Send_Date__c;
                     Date todaysDate = system.today();
-                    Date threeDaysAgo = maxDueDate - 3;
-                    system.debug(threeDaysAgo);
+                    Integer secondOfMonth = todaysDate.day();
 
                     String email;
                     String htmlbody; 
@@ -52,7 +50,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                     String dollar = String.valueof(act.Total_Outstanding_Balance__c);
                     String balance = '$' + dollar;   
 
-                    if(threeDaysAgo == todaysDate){ 
+                    if(secondOfMonth == 2){ 
                         htmlBody = templateMap.get('X3_Days_Bill_Due_Notice'); 
                         subject = 'Your Community Solar Bill Is Almost Due';
                     } else {
