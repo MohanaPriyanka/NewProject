@@ -96,7 +96,7 @@ public class CustomerCommunicationHandlerTest{
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 140000,
                 Total_System_NMCs__c = 34000,
-                Date__c = Date.today().addDays(-26)
+                Date__c = Date.today().addDays(-27)
         );
 
         Energy_Usage_Update__c productionupdate2 = new Energy_Usage_Update__c (
@@ -104,7 +104,6 @@ public class CustomerCommunicationHandlerTest{
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 140000,
                 Total_System_NMCs__c = 34000,
-                Date__c = Date.today().addDays(-34)
         );
 
         insert new List<Energy_Usage_Update__c>{productionupdate, productionupdate2};
@@ -139,7 +138,6 @@ public class CustomerCommunicationHandlerTest{
                                     Total_Outstanding_Balance__c, Total_Billed__c, 
                                     Send_Bills_Contact__c, Days_Past_Due__c
                                     FROM Account
-                                    WHERE Days_Past_Due__c > 0];
         System.debug(accountlist);
       //  System.AssertNotEquals(0, accountlist.size());
 
