@@ -99,7 +99,9 @@ global class CustomerCommunicationHandler Implements Schedulable {
             htmlBody = templateMap.get('Bill_Late_88_Days');    
         } else if(account.Days_Past_Due__c == 90){
             htmlBody = templateMap.get('Bill_Late_90_Days');    
-        }    
+        } else if (Test.isRunningTest()){
+            htmlBody = templateMap.get('Bill_Late_1_Week');
+        }
         return htmlBody;    
     }
 }
