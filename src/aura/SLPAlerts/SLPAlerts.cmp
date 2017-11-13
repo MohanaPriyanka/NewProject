@@ -1,68 +1,29 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPAlertsHandler" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="SLPAlertsHandler" access="global">
   <aura:attribute name="partnerAlerts" type="Object"  />   
   <aura:attribute name="partnerAlert" type="Object"  />   
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <style>
-            @font-face {
-            font-family: proximaNovaFont;
-            src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataGreenSmall {
-            font-family: proximaNovaFont;   
-        font-size:100%;
-          color: #32CD32;
-        }
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataGreenSmall {
-            font-family: proximaNovaFont;   
-        font-size:100%;
-          color: #32CD32;
-        }
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataStream {
-            font-family: proximaNovaFont;   
-        font-size:100%;
-          color: #00b2a9;
-        }
-        @font-face {
-        font-family: proximaNovaFont;
-        src: url('{!$Resource.ProximaNova}');
-        }
-        .proximaNovaDataBlue {
-            font-family: proximaNovaFont;   
-        font-size:90%;
-          color: #266092;
-        }            
-  </style>    
   <div aura:id = "allAlerts" class="">
 
-    <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" 
-         aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt noDisplay">
-      <div class="slds-modal__container">
-        <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
-          <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlert.Name}</h2>
-        </div>
-        <div class="slds-modal__content slds-p-around--medium">
-          <p>{!v.partnerAlert.Date__c}</p>
-          <br></br>
-          <p><ui:outputRichText value="{!v.partnerAlert.Alert_Body__c}" class="partnerAlertRTE"/></p>
-        </div>
-        <div class="slds-modal__footer slds-theme--default">
-          <ui:button aura:id="importantAlertButton"
-                     class="slds-button--brand box"
-                     label="Close"
-                     press="{!c.closeAlert}"/>
-        </div>
+    <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt noDisplay">
+     <div class="slds-modal__container">
+      <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
+        <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlert.Name}</h2>
       </div>
-    </div>
-
-    <div aura:id = "alertsTable" class="main2"> 
+      <div class="slds-modal__content slds-p-around--medium">
+        <p>{!v.partnerAlert.Date__c}</p>
+        <br></br>
+        <p><ui:outputRichText value="{!v.partnerAlert.Alert_Body__c}" class="partnerAlertRTE"/></p>
+      </div>
+      <div class="slds-modal__footer slds-theme--default">
+        <ui:button aura:id="importantAlertButton"
+                   class="slds-button--brand box"
+                   label="Close"
+                   press="{!c.closeAlert}"/>
+       </div>
+     </div>
+   </div>
+   <aura:if isTrue="{!v.partnerAlerts.length > 0}">     
+     <div aura:id = "alertsTable" class="main2"> 
       <br></br>
       <div>
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
@@ -78,14 +39,18 @@
                 <th scope="row"> <b>{!alert.Name}</b> </th>
                 <th scope="row"> <b>{!alert.Date__c}</b> </th>                                      
                 <th><ui:button label="View"
-                               class="{!alert.Id}"
-                               labelClass="label"
-                               press="{!c.openAlert}"/>   </th>                       
-              </tr>                    
-            </aura:iteration>          
-          </tbody>
-        </table>
-      </div>
-    </div>   
-  </div>         
+                 class="{!alert.Id}"
+                 labelClass="label"
+                 press="{!c.openAlert}"/>   </th>                       
+               </tr>                    
+             </aura:iteration>          
+           </tbody>
+         </table>
+       </div>
+     </div>   
+     <aura:set attribute="else">
+       <div class="slds-align_absolute-center proximaNovaBlue"><p><b> There are no current alerts.</b></p></div>
+     </aura:set>
+   </aura:if>  
+ </div>         
 </aura:component>

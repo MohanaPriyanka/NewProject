@@ -64,6 +64,12 @@
         } else {
             helper.setInputToCorrect(component, "stateElement" );
         }     
+        if (component.get("v.downPayment") < 0) {
+            helper.setInputToError(component, "downPaymentElement", "shake");
+            errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";                          
+        } else {
+            helper.setInputToCorrect(component, "downPaymentElement" );
+        }          
         if (lead.LASERCA__Home_State__c === 'MA') {
             if (!lead.Product__c) {
                 helper.setInputToError(component, "productElement", "shake");

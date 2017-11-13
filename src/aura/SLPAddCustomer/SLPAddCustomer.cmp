@@ -177,7 +177,7 @@
                     </div>
                   </div>
                   <div class="slds-form-element__row">
-                    <div aura:id="downPayment" class="slds-form-element slds-p-horizontal--small animated slds-size_1-of-2">
+                    <div aura:id="downPaymentElement" class="slds-form-element slds-p-horizontal--small animated slds-size_1-of-2">
                       <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment</b></label>
                       <ui:inputCurrency aura:id="downPayment" class="slds-input" value="{!v.downPayment}" required="true"/>
                     </div>
@@ -222,6 +222,9 @@
               <hr></hr>
               <fieldset class="slds-form--compound">
                 <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h3> Credit Information </h3></b> </div>
+                <div class="slds-form-element__label proximaNovaBlue slds-m-left_small slds-m-bottom_medium"> 
+                  If you currently have a <b>security freeze on your credit file, you will need to perform a temporary lift</b> on this security freeze before submitting an application in order for BlueWave to qualify you for a solar loan. Please <a href="https://www.advcredit.com/linked_docs/temporary_lift.pdf" target="_blank"> <u>click here</u></a> for more information on how to do so.
+                </div>             
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
                     <div aura:id="ssnElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-2">
@@ -256,7 +259,7 @@
               </fieldset>
               <hr></hr>
               <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <h3> <b>Acknowledgements and Privacy Policy </b></h3> </div>
-              <a href="http://bluewavesolar.com/about-us/privacy-policy/" target="_blank" class="slds-p-horizontal--small"> <b><u>Click here to view our Privacy Policy</u></b></a>
+              <a href="http://bluewavesolar.com/about-us/privacy-policy/" target="_blank" class="slds-p-horizontal--small"> <b class="slds-form-element__label proximaNovaBlue"><u>Click here to view our Privacy Policy</u></b></a>
               <fieldset class="slds-form--compound">
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
