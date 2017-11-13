@@ -65,9 +65,10 @@ public class LoanTestRecordWarehouse {
 
     public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
         Map<String, Id> productMap = new Map<String, Id>();
-        List<Product2> productsToInsert = new List<Product2>();
-        for (Product2 product : getLoanProductsVariableInterestRatesandTerms()) {
-            productsToInsert.add(product);
+        List<Product2> productsToInsert = getLoanProductsVariableInterestRatesandTerms();
+        insert productsToInsert;
+
+        for (Product2 product : productsToInsert) {
             if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 5.99) {
                 productMap.put('productLoanMATerm10Rate599', product.Id);
             } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 6.99) {
@@ -81,14 +82,14 @@ public class LoanTestRecordWarehouse {
             } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 7.25) {
                 productMap.put('productLoanMATerm20Rate725', product.Id);
             }
-        }   
-        insert productsToInsert;
+        }
 
         Partner__c partner = new Partner__c(Name = 'Partner');
         insert partner;
 
         BSST__c salesRep = new BSST__c(Name = 'SalesRep', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
         insert salesRep;
+
 
         List<Lead> leadList = new List<Lead>();
         Lead leadMALoanTerm10Rate699 = new lead(FirstName = 'leadMALoanTerm10Rate699',
@@ -375,8 +376,6 @@ public class LoanTestRecordWarehouse {
                 productMap.put('MSLP', product.Id);
             }           
         }
-
-        System.debug([SELECT Id, Name, Disbursal_Terms__c FROM Product2]);
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
 
@@ -458,7 +457,6 @@ public class LoanTestRecordWarehouse {
         leadList.add(leadRecordDOER);
         Insert leadList;
 
-        System.debug(productMap.get('BWSL'));
 
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',

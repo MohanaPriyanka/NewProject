@@ -193,15 +193,14 @@ public without sharing class SLPControllersTestclass {
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
         Test.startTest();
+        System.runAs(partnerUser) {         
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
             System.assertEquals(prod.Name, 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%');
         
             Lead leadRecord = leadMap.get('leadMALoanTerm10Rate699');            
-            leadRecord.Product__c = prod.Id;
-            update leadRecord;      
-        System.runAs(partnerUser) {      
+
             SLPCreditStatus.sendApplication(leadRecord.Id, 12);
             System.assertEquals(1, MessagingService.emailsSent.size());
 
