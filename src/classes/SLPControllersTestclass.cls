@@ -184,7 +184,7 @@ public without sharing class SLPControllersTestclass {
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
 
-        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName,
+        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c,
                           (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead
                           WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
@@ -193,12 +193,16 @@ public without sharing class SLPControllersTestclass {
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
         Test.startTest();
-        System.runAs(partnerUser) {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
             System.assertEquals(prod.Name, 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%');
-            SLPCreditStatus.sendApplication(leadMap.get('leadMALoanTerm10Rate699').Id, prod, 12);
+        
+            Lead leadRecord = leadMap.get('leadMALoanTerm10Rate699');            
+            leadRecord.Product__c = prod.Id;
+            update leadRecord;      
+        System.runAs(partnerUser) {      
+            SLPCreditStatus.sendApplication(leadRecord.Id, 12);
             System.assertEquals(1, MessagingService.emailsSent.size());
 
             productReturnList.clear();

@@ -171,13 +171,11 @@
 
      sendCustomerApplication : function(component, event, helper) {
         var leadId = component.get("v.leadId");
-        var product = component.get("v.product");
         var loanTerm = component.get("v.loanTerm");        
 
         var actionSendApp = component.get("c.sendApplication"); 
 
         actionSendApp.setParams({leadId : leadId,
-                          product : product,
                           loanTerm : loanTerm});        
         if (loanTerm > 0 ){
             actionSendApp.setCallback(this,function(resp){ 
