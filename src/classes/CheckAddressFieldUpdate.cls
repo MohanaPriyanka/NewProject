@@ -55,10 +55,10 @@ public class CheckAddressFieldUpdate {
             if (accountToABMap.containsKey((Id)lineItem.get('abID'))) {
                 Id accountId = accountToABMap.get((Id)lineItem.get('abID'));
                 if ( !acctToFieldMap.containsKey(accountId)) {
-                    checkLine = 'If you would like to pay by check, please make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' +  ((Decimal)lineItem.get('TotalDue')).setScale(2);
+                    checkLine = 'Make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' +  ((Decimal)lineItem.get('TotalDue')).setScale(2);
                     acctToFieldMap.put(accountId , checkLine );
                 } else {
-                    checkLine = 'You are receiving credits from multiple projects. ' + acctToFieldMap.get(accountId) + ' and make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + ((Decimal)lineItem.get('TotalDue')).setScale(2);
+                    checkLine = acctToFieldMap.get(accountId) + ', make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + ((Decimal)lineItem.get('TotalDue')).setScale(2);
                     acctToFieldMap.put(accountId , checkLine); 
                 }
             }
@@ -68,7 +68,11 @@ public class CheckAddressFieldUpdate {
         String defaultAddress = 'BlueWave ' + bwAddress[0].Address_Line_One__c +' '+ bwAddress[0].Address_Line_Two__c; 
 
         for (Id acctId : acctToFieldMap.keySet()) {
-            accountMap.get(acctId).Directions_to_Write_Paper_Check__c = acctToFieldMap.get(acctId);
+            if( acctToFieldMap.get(acctId).length() < 255) {
+                accountMap.get(acctId).Directions_to_Write_Paper_Check__c = acctToFieldMap.get(acctId);
+            } else {
+                accountMap.get(acctId).Directions_to_Write_Paper_Check__c = 'ERROR';
+            }
             if(accountMap.get(acctId).Send_Checks_Address__c == null) {
                 accountMap.get(acctId).Send_Checks_Address__c = defaultAddress;
             } 
