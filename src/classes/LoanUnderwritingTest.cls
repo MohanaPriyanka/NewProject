@@ -213,7 +213,7 @@ public with sharing class LoanUnderwritingTest {
         LoanUnderwriting lu = new LoanUnderwriting();
         System.assertEquals(false, lu.hasCoApp);
         System.assertEquals(710, lu.bestFICO);
-        System.assertEquals(.8, lu.bestDTI);
+        System.assertEquals(3, Math.round(lu.bestDTI));
 
         List<Attachment> attachments = [SELECT Id
                                         FROM Attachment
@@ -239,7 +239,7 @@ public with sharing class LoanUnderwritingTest {
         LoanUnderwriting lu = new LoanUnderwriting();
         System.assertEquals(true, lu.hasCoApp);
         System.assertEquals(760, lu.bestFICO);
-        System.assertEquals(300, lu.bestDTI);
+        System.assertEquals(462, Math.round(lu.bestDTI));
 
         List<Attachment> attachments = [SELECT Id
                                         FROM Attachment
