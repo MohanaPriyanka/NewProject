@@ -549,7 +549,7 @@ public without sharing class PCRApprovalHandler {
         } else if (creditReport.Adjusted_Income__c == null && !pcrIsCoApplicant(creditReport)){
             income = creditMetric.Lead.Annual_Income_Currency__c;                        
         } else if (creditReport.Adjusted_Income__c == null && pcrIsCoApplicant(creditReport)){
-            income = creditMetric.Lead.Co_Applicant_Income__c;                                               
+            income = Util.nullToZero(creditMetric.Lead.Co_Applicant_Income__c);
         }    
         return income;
     }
