@@ -95,15 +95,15 @@ public class DisbursalHandler {
 
     public void updateDisbursalsOnOpportunityUpdate (List<Opportunity> updatedOppList, List<Opportunity> oldOppList) { 
         Opportunity updatedOpportunity = updatedOppList.get(0);
-        Opportunity oldOpportunity = oldOppList.get(0); 
+        Opportunity oldOpportunity = oldOppList.get(0);
         String disbursalMethodContract;
         String disbursalMethodMechInstall;
         String disbursalMethodInterconnect;
-        List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();        
+        List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();
         if(dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c') ||
-            dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c') || 
+            dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_2_Mechanical_Install_Checkbox__c', 'Disbursal_Type_Mech_Completion__c') ||
             dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_3_Full_Install_Checkbox__c', 'Disbursal_Type_Interconnect__c')) {
-            for (Loan__c loan : [SELECT Id, Opportunity__r.Id, 
+            for (Loan__c loan : [SELECT Id, Opportunity__r.Id,
                                     (SELECT Id, Name, Status__c, Disbursal_Method__c, Date_of_Disbursal__c, Reason_For_Hold__c, Type__c 
                                     FROM Disbursals__r)
                                  FROM Loan__c
@@ -130,7 +130,7 @@ public class DisbursalHandler {
                             disbursalMethodMechInstall = 'Check';
                         } else {
                             disbursalMethodMechInstall = null;
-                        }                            
+                        }
                         if (disbursal.Type__c == 'Contract Signature' && dibursalMethodOrDateIsChanged(updatedOpportunity, oldOpportunity, 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c')) {
                             disbursalsToUpdate.add(updateDisbursalValues(disbursal, loan, updatedOpportunity, oldOpportunity,  
                                 'Disbursal_1_Contract_Signature_Checkbox__c', 'Disbursal_Type_Contract__c', disbursalMethodContract));
@@ -155,28 +155,23 @@ public class DisbursalHandler {
         } else {
             return false;
         }
-    }    
+    }
 
     public Disbursal__c updateDisbursalValues (Disbursal__c disbursal, Loan__c loan, Opportunity updatedOpportunity, Opportunity oldOpportunity, String disbursalDateField, String disbursalMethodField, String disbursalMethod) {
-        if (updatedOpportunity.get(disbursalDateField) != null && updatedOpportunity.get(disbursalDateField) != oldOpportunity.get(disbursalDateField)) {
+        Object newDate = updatedOpportunity.get(disbursalDateField);
+        Object oldDate = oldOpportunity.get(disbursalDateField);
+        if (newDate == null && oldDate != null ) {
+            disbursal.Status__c = 'Not yet disbursed';
+            disbursal.Date_of_Disbursal__c = null;
+        } else if (newDate != null && newDate != oldDate) {
             disbursal.Status__c = 'Complete';
-            disbursal.Disbursal_Method__c = disbursalMethod;
-            disbursal.Date_of_Disbursal__c = (Date)updatedOpportunity.get(disbursalDateField);
-        } else {
-            disbursal = setToNotYetDisbursed(disbursal);
-        }
+            disbursal.Date_of_Disbursal__c = (Date)newDate;
+        } 
         if (updatedOpportunity.get(disbursalMethodField) != oldOpportunity.get(disbursalMethodField)) {
             disbursal.Disbursal_Method__c = disbursalMethod;
         } 
         return disbursal;
-    }    
-
-    public Disbursal__c setToNotYetDisbursed (Disbursal__c disbursal) {
-        disbursal.Status__c = 'Not yet disbursed';
-        disbursal.Disbursal_Method__c = null;
-        disbursal.Date_of_Disbursal__c = null;
-        return disbursal;
-    }      
+    }
 
     public List<Disbursal__c> calculateNextDisbursalAfterRLAChange (Loan__c loanRecord, Map<Id,Loan__c> newMap, Map<Id, Loan__c> oldMap) {
         List<Disbursal__c> disbursalsToUpdate = new List<Disbursal__c>();
@@ -218,12 +213,12 @@ public class DisbursalHandler {
                     disbursal.Amount__c = newAmount;
                     disbursalsToUpdate.add(disbursal);
                 }
-            }           
-        }  
+            }
+        }
         nextAmount = loanRecord.Requested_Loan_Amount__c * nextDisbursal.Disbursal_Percentage__c/100 + differenceInCompletedDisbursals;
         nextDisbursal.Adjustments__c = 'Adjusted from ' +  nextDisbursal.Amount__c + ' to '+ nextAmount + ' on ' + today; 
         nextDisbursal.Amount__c = nextAmount;
-        disbursalsToUpdate.add(nextDisbursal);       
+        disbursalsToUpdate.add(nextDisbursal);
         return disbursalsToUpdate;
     }
 
