@@ -18,7 +18,6 @@ global class CustomerCommunicationHandler Implements Schedulable {
                                             Last_Bill_Send_Date__c, Do_not_Send_Bills__c,
                                             Recurring_Billing__c, Days_Past_Due__c, 
                                             RecordTypeId, Total_Outstanding_Balance__c, 
-                                            Max_Overdue_Send_Date__c,
                                             Total_Billed__c
                                         FROM Account 
                                         WHERE Total_Outstanding_Balance__c > 1
@@ -42,7 +41,7 @@ global class CustomerCommunicationHandler Implements Schedulable {
                 String contactid = act.Send_Bills_Contact__c;
                 if (contactid != null) {   
                     Date todaysDate = system.today();
-                    Date dueDate = act.Max_Overdue_Send_Date__c + 17;
+                    Date dueDate = act.Last_Bill_Send_Date__c + 17;
 
                     String email;
                     String htmlbody; 
