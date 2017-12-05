@@ -178,7 +178,7 @@
           <div class="slds-col_padded slds-size_1-of-1" aura:id="creditCheckElement">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.Credit_Check_Acknowledged__c}"
-                             label="I give BlueWave and it's affliates permission to access my credit history"
+                             label="{!$Label.c.PI_Credit_History}"
                              disabled="{!v.piLocked}"/>
           </div>
         </div>
@@ -187,12 +187,12 @@
             <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                               label="I acknowledge BlueWave's privacy policy and Avidia's privacy policy and accept their terms"
+                               label="{!$Label.c.PI_Privacy_Policy_Acknowledged_BW_Avidia}"
                                disabled="{!v.piLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
                                  checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                                 label="I acknowledge BlueWave's privacy policy and accept its terms"
+                                 label="{!$Label.c.PI_Privacy_Policy_Acknowledged_BW}"
                                  disabled="{!v.piLocked}"/>
               </aura:set>
             </aura:if>
@@ -205,7 +205,7 @@
           <div class="slds-col_padded slds-size_1-of-1">
             <lightning:input type="checkbox" 
                              checked="{!v.bankAffiliation}"
-                             label="I am currently employed by or have a service/business affiliation with a bank"
+                             label="{!$Label.c.PI_Bank_Affiliation}"
                              disabled="{!v.piLocked}"/>
           </div>
         </div>
@@ -214,7 +214,7 @@
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.Other_Bank_Executive__c}"
-                               label="I am an executive officer or director at a financial institution"
+                               label="{!$Label.c.PI_Bank_Executive}"
                                disabled="{!v.piLocked}"/>
             </div>
           </div>
@@ -222,7 +222,7 @@
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.Avidia_Service_Provider__c}"
-                               label="I am a service provider of Avidia Bank and provide this service:"
+                               label="{!$Label.c.PI_Bank_Service_Provider}"
                                disabled="{!v.piLocked}"/>
               <aura:if isTrue="{!v.lead.Avidia_Service_Provider__c}">
                 <ui:inputSelect aura:id="appType" class="slds-input" value="{!v.lead.Type_of_Avidia_Service_Provider__c}">
@@ -354,7 +354,7 @@
           <div class="slds-col_padded slds-size_1-of-1">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c}"
-                             label="I give BlueWave and it's affliates permission to access my credit history"
+                             label="{!$Label.c.PI_Credit_History}"
                              disabled="{!v.coAppLocked}"/>
           </div>
         </div>
@@ -363,12 +363,12 @@
             <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c}"
-                               label="I acknowledge BlueWave's privacy policy and Avidia's privacy policy and accept their terms"
+                               label="{!$Label.c.PI_Privacy_Policy_Acknowledged_BW_Avidia}"
                                disabled="{!v.coAppLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
                                  checked="{!v.lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c}"
-                                 label="I acknowledge BlueWave's privacy policy accept its terms"
+                                 label="{!$Label.c.PI_Privacy_Policy_Acknowledged_BW}"
                                  disabled="{!v.coAppLocked}"/>
               </aura:set>
             </aura:if>
@@ -381,7 +381,7 @@
           <div class="slds-col_padded slds-size_1-of-1">
             <lightning:input type="checkbox" 
                              checked="{!v.coAppBankAffiliation}"
-                             label="I am currently employed by or have a service/business affiliation with a bank"
+                             label="{!$Label.c.PI_Bank_Affiliation}"
                              disabled="{!v.coAppLocked}"/>
           </div>
         </div>
@@ -390,7 +390,7 @@
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.CoApplicant_Contact__r.Other_Bank_Executive__c}"
-                               label="I am an executive officer or director at a financial institution"
+                               label="{!$Label.c.PI_Bank_Executive}"
                                disabled="{!v.coAppLocked}"/>
             </div>
           </div>
@@ -398,7 +398,7 @@
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.CoApplicant_Contact__r.Avidia_Service_Provider__c}"
-                               label="I am a service provider of Avidia Bank and provide this service:"
+                               label="{!$Label.c.PI_Bank_Service_Provider}"
                                disabled="{!v.coAppLocked}"/>
               <aura:if isTrue="{!v.lead.CoApplicant_Contact__r.Avidia_Service_Provider__c}">
                 <ui:inputSelect aura:id="appType" class="slds-input" value="{!v.lead.CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c}">

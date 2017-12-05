@@ -89,6 +89,54 @@
         <value>Lastly, we need your Social Security Number and Date of Birth to run a credit check, and your annual income and debt to see if you will qualify for our loan.</value>
     </labels>
     <labels>
+        <fullName>PI_Credit_History</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Credit History</shortDescription>
+        <value>I give BlueWave and it's affliates permission to access my credit history</value>
+    </labels>
+    <labels>
+        <fullName>PI_Privacy_Policy_Acknowledged_BW_Avidia</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Privacy Policy for BlueWave and Avidia</shortDescription>
+        <value>I acknowledge BlueWave's privacy policy and Avidia's privacy policy and accept their terms</value>
+    </labels>
+    <labels>
+        <fullName>PI_Privacy_Policy_Acknowledged_BW</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Privacy Policy for BlueWave Only</shortDescription>
+        <value>I acknowledge BlueWave's privacy policy and accept its terms</value>
+    </labels>
+    <labels>
+        <fullName>PI_Bank_Affiliation</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Bank Affiliation</shortDescription>
+        <value>I am currently employed by or have a service/business affiliation with a bank</value>
+    </labels>
+    <labels>
+        <fullName>PI_Bank_Executive</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Bank Executive</shortDescription>
+        <value>I am an executive officer or director at a financial institution</value>
+    </labels>
+    <labels>
+        <fullName>PI_Bank_Service_Provider</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Bank Service Provider</shortDescription>
+        <value>I am a service provider of Avidia Bank and provide this service:</value>
+    </labels>
+    <labels>
         <fullName>Co_Applicant_PI_Next</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>

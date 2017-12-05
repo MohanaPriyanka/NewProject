@@ -143,7 +143,6 @@
             </aura:if>
           </aura:set>
         </aura:if>
-
         <div class="slds-align--absolute-center">
           <ui:spinner aura:id="creditSpinner" isVisible="false"/>
         </div>
@@ -151,7 +150,6 @@
              class="slds-align--absolute-center paddingTop1x5 noDisplay">
           <ui:outputText value="{!v.creditStatusText}"/>
         </div>
-
         <div aura:id="creditResultPass"
              class="noDisplay">
           <lightning:button aura:id="continueApplicationButton"
