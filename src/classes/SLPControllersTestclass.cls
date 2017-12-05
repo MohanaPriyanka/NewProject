@@ -375,12 +375,32 @@ public without sharing class SLPControllersTestclass {
         }
         update leadList;
 
+        leadList.get(0).Status = 'Qualified';
+        update leadList.get(0);
+
+        Database.leadConvert lc = new Database.leadConvert();
+        lc.setLeadId(leadList.get(0).id);
+
+        LeadStatus convertStatus = [SELECT Id, MasterLabel 
+                                    FROM LeadStatus 
+                                    WHERE IsConverted=true 
+                                    LIMIT 1];
+
+        lc.setConvertedStatus(convertStatus.MasterLabel);
+        Database.LeadConvertResult lcr = Database.convertLead(lc);
+        System.assert(lcr.isSuccess());
+
+        Opportunity opportunityRecord = [SELECT Id FROM Opportunity];
+        opportunityRecord.StageName = 'Expired';
+        update opportunityRecord;
+
         Loan__c loan = [SELECT Id FROM Loan__c LIMIT 1];
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(2, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(1, loanRecords.expiredApplicants.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
+            System.assertEquals(2, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loan.Id);
         }
 

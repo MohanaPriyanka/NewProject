@@ -78,7 +78,7 @@
           </a>
         </li>
       </c:BlueWaveInputToolTip>
-      <c:BlueWaveInputToolTip popoverText="Applicants that have expired.">
+      <c:BlueWaveInputToolTip popoverText="Applications that have expired.">
         <li aura:id="expiredApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToExpiredApplicants}" role="tab">
             <b>Expired</b>
