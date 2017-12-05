@@ -1,4 +1,15 @@
 <aura:component extensible="true" abstract="true" extends="c:BlueWaveForm">
-  <aura:attribute name="leadRecord" type="Lead"/>
+  <aura:handler event="aura:waiting" action="{!c.waiting}"/>
+  <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="page" type="String"/>
+  <aura:attribute name="STAGENAME" type="String"/>
+  <aura:attribute name="lenderOfRecord" type="String"/>
+
+  <aura:attribute name="waiting" type="Boolean" default="false"/>
+  <aura:attribute name="supressWaiting" type="Boolean" default="false"/>
+  <aura:if isTrue="{!and(v.waiting, not(v.supressWaiting))}">
+    <lightning:spinner alternativeText="Saving..." class="slds-is-relative" size="medium"/>
+  </aura:if>
   {!v.body}
 </aura:component>

@@ -1,13 +1,12 @@
 @isTest
-private class customIdSwapOppTestClass 
-{
+private class customIdSwapOppTestClass {
  
-Static testMethod void customIdSwap()
-{
-        Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-                                                Total_Capital__c = 10000000,
-                                                Investor__c = 'The Bank',
-                                                Pool_Type__c = 'Revolving Credit Line');
+    static testMethod void customIdSwap(){
+        Loan_Data__c capitalPool = new Loan_Data__c(
+            Name = 'Revolving Credit Line',
+            Total_Capital__c = 10000000,
+            Investor__c = 'The Bank',
+            Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
         Date myDate = Date.newInstance(2015, 2, 17);
@@ -28,12 +27,12 @@ Static testMethod void customIdSwap()
             Tranche_Type__c = 'Holding',
             Stage__c = 'Closed',
             Loan_Data__c = capitalPool.id);
-        insert loanTranchePending;                  
+        insert loanTranchePending;
 
-        partner__c partner = new partner__c(name = 'Partner');
+        Partner__c partner = new Partner__c(name = 'Partner');
         insert partner;
 
-        bsst__c newSalesId = new BSST__c (name = 'Cole Swain', partner__c = partner.id, custom_id__c = 'Cole 1');
+        bsst__c newSalesId = new BSST__c (name = 'Cole Swain', Partner__c = partner.id, Custom_Id__c = 'Cole 1');
         
         insert NewSalesId;  
              
@@ -52,7 +51,6 @@ Static testMethod void customIdSwap()
                                     Custom_Id__c = 'test',
                                     Loan_Term__c = 120,
                                     Partner_Lookup__c = partner.Id,
-                                    //Personal_Credit_Report__c = creditReportRecord.Id,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
@@ -66,24 +64,18 @@ Static testMethod void customIdSwap()
         update newLead;
         newLead.Status = 'Qualified';
         update newLead;
-        test.startTest();
+        Test.startTest();
         
-               database.leadConvert lc = new database.leadConvert();
-               lc.setLeadId(newLead.id);
- 
-               leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
-               lc.setConvertedStatus(convertStatus.MasterLabel);
- 
-               Database.LeadConvertResult lcr = Database.convertLead(lc);
-               System.assert(lcr.isSuccess());
- 
-               lc.setOpportunityName('Cole Swain');
- 
-        test.stopTest();
-               
-               opportunity opQuery = [SELECT Bs_sales_id__c, Custom_id__c FROM Opportunity];
-               //system.assertEquals(salesIdQuery.id, opQuery.bs_sales_id__c);
- 
- 
-}
+        Database.leadConvert lc = new Database.leadConvert();
+        lc.setLeadId(newLead.id);
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = true LIMIT 1];
+        lc.setConvertedStatus(convertStatus.MasterLabel);
+        Database.LeadConvertResult lcr = Database.convertLead(lc);
+        System.assert(lcr.isSuccess());
+        lc.setOpportunityName('Cole Swain');
+
+        Test.stopTest();
+
+        Opportunity opQuery = [SELECT Bs_sales_id__c, Custom_Id__c FROM Opportunity];
+    }
 }

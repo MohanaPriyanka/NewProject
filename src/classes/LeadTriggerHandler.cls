@@ -7,7 +7,13 @@ public with sharing class LeadTriggerHandler {
         m_isExecuting = isExecuting;
         BatchSize = size;
     }
-    public void OnAfterUpdate(Lead[] oldLeads, Lead[] updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
+    public void OnBeforeInsert(List<Lead> leadList){
+        updateLZUL(leadList, null);
+    }
+    public void OnBeforeUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
+        updateLZUL(updatedLeads, oldLeadMap);
+    }
+    public void OnAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
         //Check if lead got converted in this trigger instance (Changed from IsConverted = false into true)
         if(    updatedLeads.size() == 1 
             && updatedLeads[0].IsConverted && oldLeads[0].IsConverted == false
@@ -18,6 +24,36 @@ public with sharing class LeadTriggerHandler {
             firstRun = false;
         }
     }
+    
+    private void updateLZUL(List<Lead> leadList, Map<ID, Lead> oldLeadMap){
+        Set<String> zipCodeSet = new Set<String>();
+        for(Lead l : leadList){
+            if(l.Parcel_Zip__c != null){
+                zipCodeSet.add(l.Parcel_Zip__c);
+            }
+        }
+        if(zipCodeSet.size() > 0 ){
+            Map<String, Load_u__c> validLZU = new Map<String, Load_u__c>();
+            for (Load_u__c obj : [SELECT Id, Name, Load_Zone__c, LZ__c, Utility__c FROM Load_u__c WHERE Name IN : zipCodeSet] ){
+                validLZU.put(obj.Name, obj); 
+            }
+            for(Lead l : leadList){
+                if(oldLeadMap == null || oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c){
+                    if(validLZU.containsKey (l.Parcel_Zip__c)){
+                        l.LZU__c = validLZU.get (l.Parcel_Zip__c).Load_Zone__c;
+                        l.Load_Zone__c = validLZU.get (l.Parcel_Zip__c).LZ__c;
+                        l.Utility_1__c = validLZU.get(l.Parcel_Zip__c).Utility__c;
+                    }
+                }
+                else if(oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c && !validLZU.containsKey(l.Parcel_Zip__c)){
+                    l.LZU__c = null;
+                    l.Load_Zone__c = null;
+                    l.Utility_1__c = null;
+                }
+            }
+        }
+    }
+
     private Opportunity leadConvertMapping(Lead lead, Opportunity opp){
         opp.AccountId = lead.convertedAccountId;
         opp.Assessors_Parcel_Number__c = lead.Accessor_s_Parcel_Number__c;
@@ -233,56 +269,4 @@ public with sharing class LeadTriggerHandler {
 
     }
 
-
-
-/*
-    public void OnAfterInsert(Lead[] newLeads){
-    }
-        
-    public void OnBeforeInsert(Lead[] newLeads){
-    }
-    
-    
-    @future public static void OnAfterInsertAsync(Set<Id> newLeadIDs){
-    }
-    
-    public void OnBeforeUpdate(Lead[] oldLeads, Lead[] updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
-    }
-    
-    
-    @future public static void OnAfterUpdateAsync(Set<Id> updatedLeadIDs){
-    }
-    
-    public void OnBeforeDelete(Lead[] LeadsToDelete, Map<ID, Lead> LeadMap){
-        
-    }
-    
-    public void OnAfterDelete(Lead[] deletedLeads, Map<ID, Lead> LeadMap){
-        
-    }
-    
-    @future public static void OnAfterDeleteAsync(Set<Id> deletedLeadIDs){
-        
-    }
-    
-    public void OnUndelete(Lead[] restoredLeads){
-        
-    }
-    
-    public boolean IsTriggerContext{
-        get{ return m_isExecuting;}
-    }
-    
-    public boolean IsVisualforcePageContext{
-        get{ return !IsTriggerContext;}
-    }
-    
-    public boolean IsWebServiceContext{
-        get{ return !IsTriggerContext;}
-    }
-    
-    public boolean IsExecuteAnonymousContext{
-        get{ return !IsTriggerContext;}
-    }
-*/
 }

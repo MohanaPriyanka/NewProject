@@ -3,6 +3,7 @@
   <!-- Set when handling the NavigationEvent -->
   <aura:attribute name="lead" type="Lead"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:set attribute="supressWaiting" value="true"/>
 
   <aura:registerEvent name="CAPNavigationEvent" type="c:CAPNavigationEvent"/>
 

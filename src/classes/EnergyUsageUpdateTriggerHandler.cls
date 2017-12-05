@@ -204,9 +204,11 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         printCPULimit('Before Utility Account Bills upserted');
 
         //Create the Utility Account Bills
-        if(uabSet.size() > 0){
+        if (!Test.isRunningTest()) {
             // Upsert asynchronously to avoid CPU limit
             Database.executeBatch(new GenericBatchDMLOperation(new List<Utility_Account_Bill__c>(uabSet), 'Upsert'));
+        } else {
+            upsert new List<Utility_Account_Bill__c>(uabSet);
         }
     }                  
 }

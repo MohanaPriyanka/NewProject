@@ -1,68 +1,84 @@
 ({
-	checkFieldValidity : function(component, fieldValue, fieldId, animation, expectedLength, allowLetters, allowSpecialChars, allowSpaces, errorMessage, fieldType) {
-		if (this.invalidField(component, fieldValue, expectedLength, allowLetters, allowSpecialChars, allowSpaces, fieldType)) {
-			this.setInputToError(component, fieldId, animation);
-			return errorMessage + "\n" + "\n";                      
-		} else {
-			this.setInputToCorrect(component, fieldId);
-			return "";
-		}     
-	},       
+    // options:
+    // var options = {
+    //     'fieldValue' : null, (required)
+    //     'fieldId' : null, (required)
+    //     'animation' : null:,
+    //     'expectedLength' : null,
+    //     'allowLetters' : true,
+    //     'allowSpecialChars' : false,
+    //     'allowSpaces' : true,
+    //     'errorMessage' : null,
+    //     'fieldType' : 'standard'
+    // }
+    getFieldError : function(component, options) {
+        return this.checkFieldValidity(component, 
+                                       options.fieldValue,
+                                       options.fieldId,
+                                       options.hasOwnProperty('animation')?options.animation:'shake',
+                                       options.hasOwnProperty('expectedLength')?options.expectedLength:null,
+                                       options.hasOwnProperty('allowLetters')?options.allowLetters:true,
+                                       options.hasOwnProperty('allowSpecialChars')?options.allowSpecialChars:false,
+                                       options.hasOwnProperty('allowSpaces')?options.allowSpaces:true,
+                                       options.hasOwnProperty('errorMessage')?options.errorMessage:'Error with ' + options.fieldId,
+                                       options.hasOwnProperty('fieldType')?options.fieldType:'standard');
+    },
+
+    checkFieldValidity : function(component, fieldValue, fieldId, animation, expectedLength, allowLetters, allowSpecialChars, allowSpaces, errorMessage, fieldType) {
+	if (this.invalidField(component, fieldValue, expectedLength, allowLetters, allowSpecialChars, allowSpaces, fieldType)) {
+	    this.setInputToError(component, fieldId, animation);
+	    return errorMessage + "\n" + "\n";
+	} else {
+	    this.setInputToCorrect(component, fieldId);
+	    return "";
+	}
+    },
 
     invalidField : function(component, fieldValue, expectedLength, allowLetters, allowSpecialChars, allowSpaces, fieldType) {
     	var error;
     	var format;
-		if (fieldType === 'standard') {
-			if (fieldValue === '' || fieldValue === null || !fieldValue) {
-				error = true;
+	if (fieldType === 'standard') {
+	    if (fieldValue === '' || fieldValue === null || !fieldValue) {
+		return true;
             } else {
-                if (expectedLength > 0) {
-                    if (fieldValue.length != expectedLength) {
-                        error = true;
-                    }
-                }   	
-                if (!allowLetters) {
-                    if (!/^[0-9]+$/.test(fieldValue)) {
-                        error = true;
-                    }
+                if (expectedLength > 0 && fieldValue.length != expectedLength) {
+                    return true;
                 }
-                if (!allowSpecialChars && allowSpaces) {
-                    if (!/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
-                        error = true;
-                    }
+                if (!allowLetters && !/^[0-9]+$/.test(fieldValue)) {
+                    return true;
                 }
-                if (!allowSpecialChars && !allowSpaces) {
-                    if (!/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
-                        error = true;
-                    }
+                if (!allowSpecialChars && allowSpaces && !/^[a-zA-Z0-9- .\b]+$/.test(fieldValue)) {
+                    return true;
+                }
+                if (!allowSpecialChars && !allowSpaces && !/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
+                    return true;
                 }
             }
-		} else if (fieldType === 'email') {
-	        format = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	        if (format.test(fieldValue)) {
-	        	error = false;
-	        } else {
-	        	error = true;
-	        }
-		} else if (fieldType === 'date') {
-	        format = /^\d{2}\/\d{2}\/\d{4}$/;
-	        if (format.test(fieldValue)) {
-	        	error = false;
-	        } else {
-	        	error = true;
-	        }
-		}
-		if (error) {
-			return true;
-		} else {
-			return false;
-		}
+	} else if (fieldType === 'email') {
+	    format = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return !format.test(fieldValue);
+	} else if (fieldType === 'date') {
+	    format = /^\d{2}\/\d{2}\/\d{4}$/;
+            return !format.test(fieldValue);
+	} else if (fieldType === 'phone') {
+            format = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+            return !format.test(fieldValue);
+	} else if (fieldType === 'ssn') {
+            format = /^\d{3}[-]?\d{2}[-]?\d{4}$/;
+            return !format.test(fieldValue);
+	} else if (fieldType === 'currency') {
+            // Assumes a ui:inputCurrency field, so just check for a value, but could be 0
+	    return (fieldValue === '' || fieldValue === null);
+	} else if (fieldType === 'uncheckedCheckbox') {
+	    return (!fieldValue);
+        }
+	return false;
     },
 
     setInputToError : function(component, fieldId, animation) {
         $A.util.addClass(component.find(fieldId), 'slds-has-error'); 
         if (animation != null) {
-	        $A.util.addClass(component.find(fieldId), animation);          	
+	    $A.util.addClass(component.find(fieldId), animation);          	
         }
     },     
 

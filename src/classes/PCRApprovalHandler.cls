@@ -139,7 +139,7 @@ public without sharing class PCRApprovalHandler {
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                     Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                                     Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                                    Co_Applicant_First_Name__c, CoApplicant_Contact__c,
+                                    Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
                                     Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c 
                                     FROM Lead 
                                     WHERE Id  IN : leadlist];
@@ -224,7 +224,8 @@ public without sharing class PCRApprovalHandler {
                 } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
                            pcr.Solar_Loan_Manual_Decline__c) {
                     pcr.Solar_Loan_Approval_Status__c = DECLINED;
-                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
+                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW ||
+                           ld.Application_Type__c == 'Joint') {
                     pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
                 } else {
                     pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;

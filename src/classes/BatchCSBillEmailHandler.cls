@@ -7,12 +7,16 @@
  + * Tested By: BatchCSBillEmailHandlerTest
  + *************************************************************************************/
 
- public without sharing class BatchCSBillEmailHandler implements
-    Database.Batchable<sObject>, Database.Stateful { 
-
-    List<SObject> sObjectList = new List<SObject>();
-
+ public without sharing class BatchCSBillEmailHandler implements Database.Batchable<sObject> { 
     public List<Messaging.SendEmailError> finalErrorList;
+
+    public BatchCSBillEmailHandler(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
+        for (APXT_BPM__Conductor__c conductor : newList) {  
+            if (conductor.Emails_Sent__c && !oldMap.get(conductor.Id).Emails_Sent__c) {
+                Database.executeBatch(this, 10);
+            }
+        }
+    } 
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+

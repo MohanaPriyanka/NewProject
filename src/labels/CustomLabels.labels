@@ -65,6 +65,94 @@
         <value>Let&apos;s get started! Your installer has set your financing with:</value>
     </labels>
     <labels>
+        <fullName>PI_Individual_or_Joint</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Individual or Joint</shortDescription>
+        <value>Will this be an individual or join application? Common reasons to pick a joint application: low FICO, Debt to Income, shared ownership. Not sure? you can continue as an Invididual application and add a co-signer later if needed. We can check to see if you are pre-qualified for our loan in minutes, but will need 1-2 business days to check a joint application.</value>
+    </labels>
+    <labels>
+        <fullName>PI_Primary_PI_Next</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next, we need to gather some personal information:</value>
+    </labels>
+    <labels>
+        <fullName>PI_Primary_SSN</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSN Reason</shortDescription>
+        <value>Lastly, we need your Social Security Number and Date of Birth to run a credit check, and your annual income and debt to see if you will qualify for our loan.</value>
+    </labels>
+    <labels>
+        <fullName>Co_Applicant_PI_Next</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next, we need to gather your co-applicant's personal information:</value>
+    </labels>
+    <labels>
+        <fullName>Co_Signer_PI_Next</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next, we need to gather your co-signer's personal information:</value>
+    </labels>
+    <labels>
+        <fullName>Co_Applicant_SSN</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSN Reason</shortDescription>
+        <value>Lastly, we need {0}'s Social Security Number, date of birth, annual income, and unreported mortgage debt.</value>
+    </labels>
+    <labels>
+        <fullName>CC_Confirmation</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Credit Check Confirmation</shortDescription>
+        <value>You're ready to run a credit check on:</value>
+    </labels>
+    <labels>
+        <fullName>CC_Security_Freeze</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Security Freeze</shortDescription>
+        <value>If you have a credit freeze, you will need to perform a temporary lift before submitting an application. For more information, please click here:</value>
+    </labels>
+    <labels>
+        <fullName>ID_Employment_Question</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Employment Question</shortDescription>
+        <value>Are you employed? We'll ask about self-employment later.</value>
+    </labels>
+    <labels>
+        <fullName>ID_Paystub_Request</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Paystub Request</shortDescription>
+        <value>We'll need supporting income documentation for both applicants (if joint)</value>
+    </labels>
+    <labels>
+        <fullName>ID_Paystub_Details</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Paystub Details</shortDescription>
+        <value>Please upload your most recent paystubs (dated within the last 30 days)</value>
+    </labels>
+    <labels>
         <fullName>Type</fullName>
         <categories>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</categories>
         <language>en_US</language>

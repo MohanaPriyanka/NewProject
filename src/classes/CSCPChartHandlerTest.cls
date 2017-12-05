@@ -294,6 +294,8 @@ public class CSCPChartHandlerTest {
 			ChargentBase__Merchant_ID__c = '235986',
 			ChargentBase__Active__c = TRUE);
 		insert chGateway;  
+	    
+	    Date recurringDate = Date.newInstance(2016, 2, 17);	
 
 		ChargentOrders__ChargentOrder__c chOrder  = new ChargentOrders__ChargentOrder__c(
 			ChargentOrders__Account__c = propertyAcc.Id,
@@ -308,6 +310,8 @@ public class CSCPChartHandlerTest {
 			ChargentOrders__Payment_Method__c = 'Credit Card',
 			Account_Bill__c = ab.Id,
 			System_Bill__c = sb.Id,
+			ChargentOrders__Payment_Start_Date__c = recurringDate,
+			ChargentOrders__Payment_Frequency__c = 'Monthly',
 			ChargentOrders__Card_Type__c = 'Visa',
 			ChargentOrders__Card_Number__c = '411111111111',
 			ChargentOrders__Card_Security_Code__c = '999',

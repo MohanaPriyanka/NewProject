@@ -37,6 +37,7 @@ public without sharing class MyAccountController {
             List<Account_Bill__c> acctBillsParent = [SELECT Id, Name, Bill_Number__c
                                                       FROM Account_Bill__c
                                                       WHERE Account_ID__c = : u.Parent_Account_ID__c
+                                                      AND Published__c = true
                                                       ORDER BY Bill_Number__c];
             Integer j;
             List<Id> acctBillsParentIDs = new List<Id>(); 
@@ -52,7 +53,6 @@ public without sharing class MyAccountController {
                                                             WHERE Account_Bill__c IN : acctBillsParent
                                                             AND Account_Bill__r.Bill_Number__c = : maxBillNumber
                                                             AND Carry_Over_Balance__c > 0.01
-                                                            AND Account_Bill__r.Published__c = true
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListParent);
             }
@@ -60,6 +60,7 @@ public without sharing class MyAccountController {
             List<Account_Bill__c> acctBillsProperty = [ SELECT Id, Name
                                                         FROM Account_Bill__c
                                                         WHERE Parent_Account__r.Id = : propertyAccountId 
+                                                        AND Published__c = true
                                                         ORDER BY Bill_Number__c];
             Integer j;
             List<Id> acctBillsPropertyIds = new List<Id>(); 
@@ -74,7 +75,6 @@ public without sharing class MyAccountController {
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__r.Id IN : acctBillsPropertyIds
                                                             AND Carry_Over_Balance__c > 0.01
-                                                            AND Account_Bill__r.Published__c = true
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListProperty);
             }                                      
@@ -90,7 +90,7 @@ public without sharing class MyAccountController {
             for(Account_Bill__c accountBillAll : [  SELECT Parent_Account__r.Name, Date__c, Activity_Type__c, 
                                                         Due_this_month__c, Total_Due_This_Month__c, Total_Due__c, 
                                                         Carry_Over_Balance__c, Bill_number__c, Bill_Attach_Document__c,
-                                                        Savings_Rollup__c, Subscription_Production_kWh__c,
+                                                        Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
                                                         Balance_Net_Late_Payments__c, Date_of_Last_Payment__c, 
                                                         Bill_Due_Date__c, Total_due_minus_payment_plan__c
                                                     FROM Account_Bill__c
@@ -104,7 +104,7 @@ public without sharing class MyAccountController {
             for(Account_Bill__c accountBillProperty : [ SELECT Parent_Account__r.Name, Date__c, Activity_Type__c,
                                                             Due_this_month__c, Balance_Net_Late_Payments__c,
                                                             Total_Due_This_Month__c, Total_due_minus_payment_plan__c,
-                                                            Savings_Rollup__c, Subscription_Production_kWh__c, 
+                                                            Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
                                                             Total_Due__c, Bill_Due_Date__c, Carry_Over_Balance__c, 
                                                             Bill_number__c, Bill_Attach_Document__c
                                                         FROM Account_Bill__c

@@ -201,6 +201,10 @@ public with sharing class LoanUnderwritingTest {
         Test.stopTest();
     }
 
+    static testMethod void testGetStates() {
+        System.assertEquals(50, BlueWaveParent.getUSStates().size());
+    }
+
     static testMethod void testPDFGenerationForPrimary() {
         Lead lead = [SELECT Id, Name
                      FROM Lead

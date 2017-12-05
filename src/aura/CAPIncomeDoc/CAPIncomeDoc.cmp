@@ -1,0 +1,88 @@
+<aura:component controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:set attribute="STAGENAME" value="NAV_Income_Doc"/>
+  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:attribute name="employed" type="Boolean" default="false"/>
+  <aura:attribute name="paystubs" type="Object"/>
+  
+  <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            {!$Label.c.ID_Employment_Question}
+            <lightning:input type="checkbox" 
+                             checked="{!v.employed}"
+                             label="I'm employed and have paystubs to upload"/>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.getPayStubs}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'GetPayStubs'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            {!$Label.c.ID_Paystub_Request}
+            <lightning:input type="checkbox" 
+                             checked="{!v.Employed_for_more_than_one_year__c}"
+                             label="I've been with my current employer for longer than one year"/>
+          </div>
+          <div class="slds-form-element__control">
+            {!$Label.c.ID_Paystub_Details}
+            <!-- Winter '18 lightning:fileupload didn't work in community, maybe because it's a standalone app? -->
+            <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
+          </div>
+        </div>
+
+        <aura:if isTrue="{!not(empty(v.paystubs))}">
+          Uploaded paystubs:
+          <div class="slds-grid slds-wrap slds-p-top_small">
+            <div class="slds-col slds-size--1-of-1">
+              <table class="slds-table slds-table_striped">
+                <tbody>
+                  <aura:iteration items="{!v.paystubs}" var="attachment" >
+                    <tr>
+                      <td>
+                        <div>
+                          {!attachment}
+                        </div>
+                      </td>
+                    </tr>
+                  </aura:iteration> 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </aura:if>
+
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.askSelfEmployed}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            Are you or your co-applicant self-employed?
+            <lightning:input type="checkbox" 
+                             checked="{!v.employed}"
+                             label="I'm self employed"/>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="confirmSubmit" label="Next"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+</aura:component>

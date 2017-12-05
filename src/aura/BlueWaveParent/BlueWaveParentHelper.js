@@ -49,12 +49,29 @@
         $A.enqueueAction(action);
     },
 
-    saveSObject : function(component, id, objectName, field, value) {
+    getUSStates : function(component, attr) {
+        var action = component.get("c.getUSStates");
+        action.setStorable();
+        var opts=[];
+        action.setCallback(this, function(a) {
+            for (var i=0;i< a.getReturnValue().length;i++) {
+                opts.push(a.getReturnValue()[i]);
+            }
+            component.set(attr, opts);
+        });
+        $A.enqueueAction(action);
+    },
+
+    saveSObject : function(component, id, objectName, field, value, objToUpdate) {
         return new Promise(function(resolve, reject) {
             var sobj = new Object();
-            sobj = {'sobjectType': objectName,
-                    'Id': id};
-            sobj[field] = value;
+            if (!objToUpdate) {
+                sobj = {'sobjectType': objectName,
+                        'Id': id};
+                sobj[field] = value;
+            } else {
+                sobj = objToUpdate;
+            }
             var action = component.get("c.updateSObject");
             action.setParams({"sobj": sobj});
             action.setCallback(this, function(resp) {
@@ -65,7 +82,8 @@
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "BlueWaveParentHelper",
                                         "methodName" : "updateSObject",
-                                        "errors" : resp.getError()});
+                                        "errors" : resp.getError(),
+                                        "developerInfo" : sobj});
                     appEvent.fire();
                     reject(resp.getError());
                 } else {
@@ -88,7 +106,8 @@
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "BlueWaveParentHelper",
                                         "methodName" : "insertSObject",
-                                        "errors" : resp.getError()});
+                                        "errors" : resp.getError(),
+                                        "developerInfo" : sObject});
                     appEvent.fire();
                     reject(resp.getError());
                 } else {
@@ -107,7 +126,7 @@
     */
     // http://peterknolle.com/file-upload-lightning-component/
     // Assumes callbackFunc takes a component as an argument - not sure if that will always work...
-    uploadFiles : function(component, files, parentId, callbackFunc) {
+    uploadFiles : function(component, files, parentId, callbackFunc, description, helper) {
         var ltg = this;
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
@@ -126,10 +145,10 @@
 
                     fileContents = fileContents.substring(dataStart);
 
-                    ltg.upload(component, file, fileContents, parentId).then(
+                    ltg.upload(component, file, fileContents, parentId, description).then(
                         $A.getCallback(function resolve() {
                             if (callbackFunc) {
-                                callbackFunc(component);
+                                callbackFunc(component, helper);
                             }
                         }),
                         function(error) {
@@ -147,19 +166,19 @@
         }
     },
 
-    upload: function(component, file, fileContents, parentId) {
+    upload: function(component, file, fileContents, parentId, description) {
         var fromPos = 0;
         var toPos = Math.min(fileContents.length, fromPos + this.CHUNK_SIZE);
 
         // start with the initial chunk
         var ltg = this;
         return new Promise($A.getCallback(function(resolve, reject) {
-            ltg.uploadChunk(component, file, fileContents, parentId, fromPos, toPos, '', resolve, reject);
+            ltg.uploadChunk(component, file, fileContents, parentId, fromPos, toPos, '', resolve, reject, description);
         }));
     },
 
-    uploadChunk : function(component, file, fileContents, parentId, fromPos, toPos, attachId, resolveCallback, rejectCallback) {
-        var action = component.get("c.saveTheChunk");
+    uploadChunk : function(component, file, fileContents, parentId, fromPos, toPos, attachId, resolveCallback, rejectCallback, description) {
+        var action = component.get("c.saveTheChunkWithDescription");
         var chunk = fileContents.substring(fromPos, toPos);
 
         action.setParams({
@@ -167,7 +186,8 @@
             fileName: file.name,
             base64Data: encodeURIComponent(chunk),
             contentType: file.type,
-            fileId: attachId
+            fileId: attachId,
+            description: description?description:''
         });
 
         var self = this;

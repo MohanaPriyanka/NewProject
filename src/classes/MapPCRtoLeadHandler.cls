@@ -3,7 +3,7 @@
  * Tested By: PCRApprovalHandlerTest
  *************************************************************************************/
 
-public with sharing class MapPCRtoLeadHandler {
+public without sharing class MapPCRtoLeadHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
 
@@ -38,50 +38,53 @@ public with sharing class MapPCRtoLeadHandler {
             }
         }
 
-        if (leadids.size()>0) {
-            List<Lead> listleads = [SELECT id, Product_Line__c, Personal_Credit_Report__c, IsConverted
-                                    FROM Lead
-                                    WHERE id IN : leadids];
+        if (leadids.isEmpty()) {
+            return;
+        }
+            
+        Map<Id, Lead> leadMap = 
+            new Map<Id, Lead>([SELECT id, Product_Line__c, Personal_Credit_Report__c
+                               FROM Lead
+                               WHERE id IN : leadids
+                               AND IsConverted = false]);
 
-            for (i = 0; i < newPCR.size(); i++) {
-                String leadid = newPCR.get(i).LASERCA__Lead__c;
-                String contactid = newPCR.get(i).LASERCA__Contact__c;
-                Decimal monthlydebt = newPCR.get(i).LASERCA__Sum_of_monthly_Personal_Debt__c;
+        for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
+            String contactid = pcr.LASERCA__Contact__c;
+            Decimal monthlydebt = pcr.LASERCA__Sum_of_monthly_Personal_Debt__c;
+            Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
+            Lead leadFromContact = leadMap.get(pcr.Lead_from_Contact__c);
 
-                if (listleads.size()> 0) {
-                    if (newPCR.get(i).LASERCA__Lead__c != null && (monthlydebt != NULL || monthlydebt != 0)) {
-                        for (k = 0; k < listleads.size(); k++) {
-                            if (listleads.get(k).id == leadid && !listleads.get(k).IsConverted && contactid == null && 
-                                listleads.get(k).Product_Line__c == 'Residential Loan' && 
-                                listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id) {
-                                listleads.get(k).Personal_Credit_Report__c = newPCR.get(i).Id;
-                                listleads.get(k).Maximum_monthly_Disbursement__c = newPCR.get(i).Maximum_Disbursement_Monthly__c;
-                                listleads.get(k).Debt_income_status__c = newPCR.get(i).Approval_Status__c;
-                                leadupdatelist.add(listleads.get(k));
-                            }
-
-                            if (listleads.get(k).id == leadid && !listleads.get(k).IsConverted && contactid == null && 
-                                listleads.get(k).Product_Line__c == 'Community Solar' && 
-                                listleads.get(k).Personal_Credit_Report__c != newPCR.get(i).Id) {
-                                listleads.get(k).Personal_Credit_Report__c = newPCR.get(i).Id;
-                                listleads.get(k).FICO_score_approval__c = newPCR.get(i).Approval_Status__c;
-                                leadupdatelist.add(listleads.get(k));
-
-                            }
-
-                            if (listleads.get(k).id == newPCR.get(i).Lead_from_Contact__c && !listleads.get(k).IsConverted && 
-                                contactid != null) {
-                                listleads.get(k).Personal_Credit_Report_Co_Applicant__c = newPCR.get(i).id;
-                                leadupdatelist.add(listleads.get(k));
-                            }
-                        }
-                    }
-                }
-
-                if (leadupdatelist.size()>0) {
-                    update leadupdatelist;
-                }
+            if (monthlydebt == NULL || monthlydebt == 0) {
+                continue;
             }
+
+            if (lead != null && contactid == null && 
+                lead.Product_Line__c == 'Residential Loan' && 
+                lead.Personal_Credit_Report__c != pcr.Id) {
+                lead.Personal_Credit_Report__c = pcr.Id;
+                lead.Maximum_monthly_Disbursement__c = pcr.Maximum_Disbursement_Monthly__c;
+                lead.Debt_income_status__c = pcr.Approval_Status__c;
+                leadupdatelist.add(lead);
+            }
+
+            if (lead != null && contactid == null && 
+                lead.Product_Line__c == 'Community Solar' && 
+                lead.Personal_Credit_Report__c != pcr.Id) {
+
+                lead.Personal_Credit_Report__c = pcr.Id;
+                lead.FICO_score_approval__c = pcr.Approval_Status__c;
+                leadupdatelist.add(lead);
+
+            }
+
+            if (leadFromContact != null && contactid != null) {
+                leadFromContact.Personal_Credit_Report_Co_Applicant__c = pcr.id;
+                leadupdatelist.add(leadFromContact);
+            }
+        }
+
+        if (leadupdatelist.size()>0) {
+            update leadupdatelist;
         }
     }
 }

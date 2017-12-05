@@ -74,6 +74,7 @@ private class PCRApprovalHandlerTest {
         insertleads.add(leadAK);
         Lead coAppLead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
         coAppLead.Co_Applicant_Income__c = 2000;
+        coAppLead.Application_Type__c = 'Joint';
         insertleads.add(coAppLead);
         insert insertleads;
         Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
@@ -132,6 +133,7 @@ private class PCRApprovalHandlerTest {
         insertpcrlist.add(pcrAK);
         LASERCA__Personal_Credit_Report__c pcrCoAppLead =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
+                                                   LASERCA__Credit_Score_TransUnion__c = '820',
                                                    LASERCA__Lead__c = coAppLead.Id);
         insertpcrlist.add(pcrCoAppLead);
         insert insertpcrlist;
@@ -139,6 +141,7 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrCoAppContact =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Co App',
                                                    LASERCA__Lead__c = coAppLead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '821',
                                                    LASERCA__Contact__c = coApplicantContact.Id);
         insert pcrCoAppContact;
 
@@ -261,10 +264,11 @@ private class PCRApprovalHandlerTest {
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '' || creditreport.LASERCA__Credit_Score_TransUnion__c == '0') {
                 System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
                 System.assertEquals(FALSE, creditreport.Credit_Denial_Email_Sent__c);
-            } else if (creditreport.Name == 'PCR Primary with Co App.Joey') {
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '820') {
+                System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
                 System.assertEquals(9.6, creditreport.DTI_Before__c.setScale(1));
-            } else if (creditreport.Name == 'PCR Co App.Joey') {
-                System.assertEquals(240, creditreport.DTI_Before__c.setScale(1));
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '821') {
+                System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
             }
         }
     }
