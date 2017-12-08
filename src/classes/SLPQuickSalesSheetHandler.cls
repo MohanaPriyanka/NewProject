@@ -17,9 +17,7 @@ public without sharing class SLPQuickSalesSheetHandler{
 
     @AuraEnabled
     public static Quick_Sales_Sheet__c addNewQSS (Quick_Sales_Sheet__c newQSS, Boolean generateDoc) {
-        if(generateDoc) {
-            newQSS.Generate_Doc__c = TRUE;
-        }
+        newQSS.Generate_Doc__c = generateDoc;
         List<String> partnerlogotwo = SLPUserHelper.getPartnerLogo();
         newQSS.Partner_Logo_File_Name__c = partnerlogotwo.get(0);
         insert newQSS;
@@ -42,12 +40,8 @@ public without sharing class SLPQuickSalesSheetHandler{
 
     @AuraEnabled
     public static Quick_Sales_Sheet__c updateQSS (Quick_Sales_Sheet__c updatedQSS,  Boolean generateDoc, Boolean modifiedTax) {
-        if(generateDoc) {
-            updatedQSS.Generate_Doc__c = TRUE;
-        } 
-        if (modifiedTax) {
-            updatedQSS.Tax_Credit_Modified_by_Partner__c = TRUE;
-        }
+        updatedQSS.Generate_Doc__c = generateDoc;
+        updatedQSS.Tax_Credit_Modified_by_Partner__c = modifiedTax;
         update updatedQSS;
         return updatedQSS;
     }

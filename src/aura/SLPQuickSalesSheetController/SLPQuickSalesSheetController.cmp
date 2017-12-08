@@ -138,7 +138,7 @@
                       </th>
                       <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
                       <td>
-                        <div class="slds-truncate" title="ITC Value"> 
+                        <div class="slds-truncate"> 
                                 <ui:inputCurrency value="{!v.calculatedQSS.Modified_ITC__c}" 
                                               placeholder="{!v.calculatedQSS.ITC_Estimated__c}" 
                                               change="{!c.checkTaxCredit}"/>
@@ -154,7 +154,7 @@
                         </th>
                         <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
                         <td>
-                          <div class="slds-truncate" title="ITC Value"> 
+                          <div class="slds-truncate"> 
                             <ui:inputCurrency value="{!v.calculatedQSS.Modified_State_Tax_Credit__c}" 
                                               placeholder="{!v.calculatedQSS.State_Tax_Incentive__c}" 
                                               change="{!c.checkTaxCredit}"/>
@@ -202,6 +202,11 @@
                   </tr>
                 </tbody>
               </table>
+            <footer class="slds-card__footer">
+              <span class="slds-assistive-text">disclaimer</span>
+                  <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
+                  <div class="smallText">+Estimated</div>
+            </footer> 
             </article>
             <article class="slds-card">
               <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
@@ -276,11 +281,6 @@
                   </tr> 
                 </tbody>
               </table>
-            <footer class="slds-card__footer">
-              <span class="slds-assistive-text">disclaimer</span>
-                  <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
-                  <div class="smallText">+Estimated</div>
-            </footer> 
             <div class="slds-align--absolute-center"> 
               <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
                <lightning:button aura:id="documentCreatebutton"
