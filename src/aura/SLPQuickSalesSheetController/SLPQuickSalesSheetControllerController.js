@@ -76,7 +76,8 @@
         var actionCreateDocQss = component.get("c.updateQSS");
         
         actionCreateDocQss.setParams({
-            "updatedQSS" : qssToUpdate, 
+            "updatedQSS" : qssToUpdate,
+            "generateDoc" : true, 
         });
         
         actionCreateDocQss.setCallback(this,function(resp) {
