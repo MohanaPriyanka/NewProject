@@ -152,6 +152,7 @@
                           <div class="slds-truncate" title="State">State Tax Credit+  
                           </div>
                         </th>
+                        <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
                         <td>
                           <div class="slds-truncate" title="ITC Value"> 
                             <ui:inputCurrency value="{!v.calculatedQSS.Modified_State_Tax_Credit__c}" 
@@ -159,6 +160,7 @@
                                               change="{!c.checkTaxCredit}"/>
                           </div>
                         </td>
+                        </c:BlueWaveInputToolTip>
                       </tr>
                     </aura:if> 
                     <aura:set attribute="else">
