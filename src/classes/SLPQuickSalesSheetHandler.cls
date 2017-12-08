@@ -41,8 +41,13 @@ public without sharing class SLPQuickSalesSheetHandler{
     }
 
     @AuraEnabled
-    public static Quick_Sales_Sheet__c updateQSS (Quick_Sales_Sheet__c updatedQSS) {
-        updatedQSS.Generate_Doc__c = TRUE;
+    public static Quick_Sales_Sheet__c updateQSS (Quick_Sales_Sheet__c updatedQSS,  Boolean generateDoc, Boolean modifiedTax) {
+        if(generateDoc) {
+            updatedQSS.Generate_Doc__c = TRUE;
+        } 
+        if (modifiedTax) {
+            updatedQSS.Tax_Credit_Modified_by_Partner__c = TRUE;
+        }
         update updatedQSS;
         return updatedQSS;
     }
@@ -53,7 +58,8 @@ public without sharing class SLPQuickSalesSheetHandler{
         Quick_Sales_Sheet__c qss  = [   SELECT Link_to_File__c, Monthly_Payment_After_Buydown__c, Monthly_Payment__c,
                                         ITC_Estimated__c, Total_Loan_Payments__c, Loan_Payments__c, Loan_Amount__c,
                                         Interest_Only_Payments__c, Interest_Payment__c, State_Tax_Incentive_Bool__c,
-                                        State_Tax_Incentive__c
+                                        State_Tax_Incentive__c, Modified_State_Tax_Credit__c, Modified_ITC__c,
+                                        Product__c, Product__r.Name, System_Size__c, System_Cost__c, Down_Payment__c, Send_to_Email__c
                                         FROM Quick_Sales_Sheet__c 
                                         WHERE Id = : newlycreatedQSSid Limit 1];
 
