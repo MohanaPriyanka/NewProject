@@ -73,12 +73,14 @@
     clickCreateDocument : function(component, event, helper) {
         var qssToUpdate = component.get("v.calculatedQSS");
         var qssIdVarible = component.get("v.calculatedQSS.Id");
+        var modified = component.get("v.modifiedTaxIncentive");
         var actionCreateDocQss = component.get("c.updateQSS");
         component.set("v.calculatedQSS.Generate_Doc__c", true);
         
         actionCreateDocQss.setParams({
             "updatedQSS" : qssToUpdate,
             "generateDoc" : true, 
+            "modifiedTax" : modified
         });
         
         actionCreateDocQss.setCallback(this,function(resp) {
