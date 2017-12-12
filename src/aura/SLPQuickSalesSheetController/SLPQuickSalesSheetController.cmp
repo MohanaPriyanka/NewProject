@@ -101,23 +101,25 @@
                 <tbody>
                   <tr class="slds-hint-parent">
                     <th scope="row">
-                      <div class="slds-truncate" title="MP">Monthly Payment*
+                      <div class="slds-truncate" title="MP">Monthly Principal and Interest Payment (assuming tax savings applied)
                       </div>
                     </th>
                     <td>
                       <div class="slds-truncate" title="MP Value">
-                          <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/>
+                          <span class="slds-text-body_medium">
+                            <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/>
+                          *</span>
                       </div>
                     </td>
                   </tr>
                   <tr class="slds-hint-parent">
                     <th scope="row">
-                      <div class="slds-truncate" title="MPNB">Monthly Payment (no Buydown)
+                      <div class="slds-truncate" title="MPNB">Monthly Principal and Interest Payment (no tax savings applied)
                       </div>
                     </th>
                     <td>
                       <div class="slds-truncate" title="MPNB Value">
-                          <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/>
+                        <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/>
                       </div>
                     </td>
                   </tr>
@@ -133,13 +135,13 @@
                   <aura:if isTrue="{!v.modifiedTaxIncentive}"> 
                     <tr class="slds-hint-parent">
                       <th scope="row">
-                        <div class="slds-truncate" title="ITC">Federal Tax Credit+
+                        <div class="slds-truncate" title="ITC">Federal Tax Credit
                         </div>
                       </th>
                       <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
                       <td>
                         <div class="slds-truncate"> 
-                                <ui:inputCurrency value="{!v.calculatedQSS.Modified_ITC__c}" 
+                          <ui:inputCurrency value="{!v.calculatedQSS.Modified_ITC__c}" 
                                               placeholder="{!v.calculatedQSS.ITC_Estimated__c}" 
                                               change="{!c.checkTaxCredit}"/>
                         </div>
@@ -149,7 +151,7 @@
                     <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}"> 
                       <tr class="slds-hint-parent">
                         <th scope="row">
-                          <div class="slds-truncate" title="State">State Tax Credit+  
+                          <div class="slds-truncate" title="State">State Tax Credit  
                           </div>
                         </th>
                         <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
@@ -166,24 +168,28 @@
                     <aura:set attribute="else">
                       <tr class="slds-hint-parent">
                         <th scope="row">
-                          <div class="slds-truncate" title="ITC">Federal Tax Credit+
+                          <div class="slds-truncate" title="ITC">Federal Tax Credit
                           </div>
                         </th>
                         <td>
                           <div class="slds-truncate" title="ITC Value">
-                            <ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/>
+                            <span class="slds-text-body_medium">
+                              <ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/>
+                            *</span>
                           </div>
                         </td>
                       </tr> 
                     <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}"> 
                       <tr class="slds-hint-parent">
                         <th scope="row">
-                          <div class="slds-truncate" title="ITC">State Tax Credit+
+                          <div class="slds-truncate" title="ITC">State Tax Credit
                           </div>
                         </th>
                         <td>
                           <div class="slds-truncate" title="ITC Value">
-                            <ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/>
+                            <span class="slds-text-body_medium">
+                              <ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/>
+                            *</span>
                           </div>
                         </td>
                       </tr>
@@ -204,8 +210,8 @@
               </table>
             <footer class="slds-card__footer">
               <span class="slds-assistive-text">disclaimer</span>
-                  <div class="smallText">*Assuming you use Tax Credit to buydown loan</div>
-                  <div class="smallText">+Estimated</div>
+                  <div class="smallText">BlueWave is not the lender of record. We work with partners to provide loans to consumers.</div>
+                  <div class="smallText">*The tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for federal and state solar tax credits, and that you apply tax savings from these credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.</div>
             </footer> 
             </article>
             <article class="slds-card">
