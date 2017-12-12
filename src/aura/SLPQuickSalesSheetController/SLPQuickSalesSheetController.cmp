@@ -211,7 +211,7 @@
             <footer class="slds-card__footer">
               <span class="slds-assistive-text">disclaimer</span>
                   <div class="smallText">BlueWave is not the lender of record. We work with partners to provide loans to consumers.</div>
-                  <div class="smallText">*The tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for federal and state solar tax credits, and that you apply tax savings from these credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.</div>
+                  <div class="smallText">*The federal and state tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for the federal and state tax credits identified above, and that you apply savings from these tax credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.</div>
             </footer> 
             </article>
             <article class="slds-card">
