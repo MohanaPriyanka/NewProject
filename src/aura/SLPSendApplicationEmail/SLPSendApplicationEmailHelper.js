@@ -1,21 +1,21 @@
 ({
     errorsInForm : function(component, helper, lead) {
-        var errorMessage = "";     
+        var errorMessage = "";
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, true, true, false, "Please provide this applicant's expected system cost.", "standard");        
         
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
-            errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";                          
+            errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";
         } else {
             helper.setInputToCorrect(component, "stateElement" );
-        }          
+        }
         if (component.get("v.downPayment") < 0) {
             helper.setInputToError(component, "downPaymentElement", "shake");
-            errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";                          
+            errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";
         } else {
             helper.setInputToCorrect(component, "downPaymentElement" );
-        }                      
+        }
         if (lead.LASERCA__Home_State__c === 'MA') {
             if (!lead.Product__c) {
                 helper.setInputToError(component, "productElement", "shake");
@@ -32,12 +32,12 @@
         }
         if (errorMessage.length > 0) {
             return errorMessage;
-        } 
-    }, 
+        }
+    },
 
     removeButtonsAndShowSpinner : function(component, event, helper) {
         $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
-        this.startSpinner(component, "emailSpinner");  
+        this.startSpinner(component, "emailSpinner");
     }, 
 
     emailApplication : function(component, event, helper, downPayment, newLead) {
@@ -47,32 +47,32 @@
             loanAmount = loanAmount - downPayment;
         }
         action.setParams({newLead : newLead,
-                          loanAmount : loanAmount});  
-        action.setCallback(this,function(resp){ 
+                          loanAmount : loanAmount});
+        action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
-                helper.handleSuccessfulEmail(component, helper);              
+                helper.handleSuccessfulEmail(component, helper);
             } else {
                 helper.logError("SLPSendApplicationEmailEvent", "sendCustomerApplication", resp.getError(), newLead);
-                $A.log("Errors", resp.getError());                      
+                $A.log("Errors", resp.getError());
             }
-        });                                                   
-        $A.enqueueAction(action);   
-    },        
+        });
+        $A.enqueueAction(action);
+    },
 
     handleSuccessfulEmail : function(component, helper) {
-        $A.util.addClass(component.find('emailForm'), 'noDisplay');         
-        $A.util.removeClass(component.find('emailConfirmation'), 'noDisplay');  
+        $A.util.addClass(component.find('emailForm'), 'noDisplay');
+        $A.util.removeClass(component.find('emailConfirmation'), 'noDisplay');
         $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
 
         helper.stopSpinner(component, "emailSpinner");
-        helper.disableButton(component, 'sendEmailButton', 'Email Sent!');       
+        helper.disableButton(component, 'sendEmailButton', 'Email Sent!');
 
-        component.set('v.newLead.FirstName', null);          
-        component.set('v.newLead.LastName', null);          
-        component.set('v.newLead.Email', null);          
-        component.set('v.newLead.LASERCA__Home_State__c', null);          
-        component.set('v.downPayment', null);   
-        component.set('v.newLead.System_Cost__c', null);   
+        component.set('v.newLead.FirstName', null);
+        component.set('v.newLead.LastName', null);
+        component.set('v.newLead.Email', null);
+        component.set('v.newLead.LASERCA__Home_State__c', null);
+        component.set('v.downPayment', null);
+        component.set('v.newLead.System_Cost__c', null);
         component.set('v.newLead.Product__c', null);
         component.set('v.newLead.Product_Program__c', null);
         component.set('v.availableProducts', null);
@@ -87,10 +87,11 @@
             } else {
                 helper.logError("SLPSendApplicationEmailController", "availableProducts", resp.getError());
             }
-        });    
-        $A.enqueueAction(action);    
+        });
+        $A.enqueueAction(action);
     },
 
+    // selectedId might be a Product ID or "BlueWave Solar Loan" or "MSLP" for MA
     getProductProgram : function(products, selectedId) {
         if (selectedId) {
             for (var p in products) {
@@ -98,6 +99,7 @@
                     return products[p].Program__c;
                 }
             }
+            return selectedId;
         } else {
             return products[0].Program__c;
         }

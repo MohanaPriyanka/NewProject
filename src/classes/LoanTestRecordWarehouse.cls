@@ -1,3 +1,9 @@
+/*************************************************************************************
+ * Description: Common methods used for test data setup
+ * Used By: PCRApprovalHandlerTest, CAPControllerTest, LoanUnderwritingTest, 
+ *          SLPControllersTestclass, DisbursalHandlerTest, LoanHandlerTestClass, others?
+ *************************************************************************************/
+
 @isTest
 public class LoanTestRecordWarehouse {
     public static List<String> partnerSetup() {
@@ -18,6 +24,10 @@ public class LoanTestRecordWarehouse {
     }
 
     public static List<Product2> getLoanProductsVariableInterestRatesandTerms () {
+        if (System_Properties__c.getall().isEmpty()) {
+            insert new System_Properties__c(Name = 'System',
+                                            Flagged_Credit_Codes__c = '018,020,A06,021,022,031,034,040,039');
+        }
 
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
@@ -54,13 +64,25 @@ public class LoanTestRecordWarehouse {
         productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate725.Program__c = 'MSLP';
+        productLoanMATerm20Rate725.IBLS_Category__c = 'Category 1';
         productLoanMATerm20Rate725.Lender_of_Record__c = 'Avidia';
+        Product2 productLoanMATerm20Rate875 = getDefaultProduct('MA', 8.75, 20, 5, '680', '699', capitalPool.Id);
+        productLoanMATerm20Rate875.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
+        productLoanMATerm20Rate875.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productLoanMATerm20Rate875.Program__c = 'MSLP';
+        productLoanMATerm20Rate875.IBLS_Category__c = 'Category 2';
+        productLoanMATerm20Rate875.Lender_of_Record__c = 'Avidia';
+
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
 
         return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-                productLoanMATerm20Rate725, productLoanRI};
+                productLoanMATerm20Rate725, productLoanRI, productLoanMATerm20Rate875,
+                getJunctionRequired(productLoanMATerm10Rate599), getJunctionRequired(productLoanMATerm10Rate699),
+                getJunctionRequired(productLoanMATerm10Rate725), getJunctionRequired(productLoanMATerm20Rate599), 
+                getJunctionRequired(productLoanMATerm20Rate699), getJunctionRequired(productLoanMATerm20Rate725), 
+                getJunctionRequired(productLoanMATerm20Rate875), getJunctionRequired(productLoanRI)};
     }    
 
     public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
@@ -293,7 +315,7 @@ public class LoanTestRecordWarehouse {
         return leadList;
     }
 
-    public static void getLoanHandlerProductRecords () {
+    private static void getLoanHandlerProductRecords () {
 
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
@@ -527,5 +549,30 @@ public class LoanTestRecordWarehouse {
                             Debt_To_Income_Maximum__c = 50,
                             Lender_of_Record__c = 'BlueWave',
                             isActive = TRUE);
+    }
+
+    public static Product2 getJunctionRequired(Product2 prod) {
+        return getJunctionRequired(prod, true);
+    }
+
+    public static Product2 getJunctionRequired(Product2 prod, Boolean isActive) {
+        Product2 newProd = prod.clone(false, false, false, false);
+        newProd.isActive = isActive;
+        newProd.Hide_in_Requested_Product__c = true;
+        newProd.Maximum_Loan_Size__c = 40000;
+        newProd.Require_Junctions_to_Enable__c = true;
+        newProd.Credit_Maximum__c = '680';
+        newProd.Credit_Minimum__c = '650';
+        newProd.Debt_To_Income_Maximum__c = 45;
+        newProd.Loan_Interest_Rate__c = prod.Loan_Interest_Rate__c + .5;
+        String oldRate = String.valueOf(prod.Loan_Interest_Rate__c);
+        String newRate = String.valueOf(newProd.Loan_Interest_Rate__c);
+        newProd.Name = prod.Name.replace(oldRate, newRate) + ' (Low FICO)';
+        newProd.ProductCode = prod.ProductCode.replace(oldRate, newRate)  + ' (Low FICO)';
+        if (prod.Description != null) {
+            newProd.Description = prod.Description.replace(oldRate, newRate);
+        }
+        System.debug(newProd);
+        return newProd;
     }
 }
