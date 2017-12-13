@@ -49,8 +49,9 @@ public with sharing class CAPControllerTest {
 
     @isTest static void creditCheckTimeout() {
         System.assertEquals(CAPController.getCreditCheckTimeout(), 60000);
-        insert new System_Properties__c(Name = 'System', 
-                                        Credit_Check_Timeout__c = 30000);
+        System_Properties__c systemProperties = System_Properties__c.getall().values()[0];
+        systemProperties.Credit_Check_Timeout__c = 30000;
+        update systemProperties;
         System.assertEquals(CAPController.getCreditCheckTimeout(), 30000);
     }
 
