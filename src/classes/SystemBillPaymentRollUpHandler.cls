@@ -91,7 +91,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
                     Decimal maxbillnumber = 0;
 
                     systemBillCreatedDate = chTransaction.createdDate;
-                    Date dateOfLastPayment = date.newinstance(2017, 5, 13);
+                    Date dateOfLastPayment = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
                     for (System_Bill__c sbill : systemBills) {
                         if (sbill.Property_Account_ID__c == parentID && sbill.Entity_ID__c == entityId) {
