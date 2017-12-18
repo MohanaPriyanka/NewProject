@@ -16,6 +16,7 @@ public without sharing class CAPController {
                         lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
                         Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
                         Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c,
+                        Electronic_Disbursal_Authorized__c,
                         Product__c, Product__r.Lender_of_Record__c,
                         CoApplicant_Contact__c, CoApplicant_Contact__r.FirstName, CoApplicant_Contact__r.LastName,
                         CoApplicant_Contact__r.LASERCA__Home_Address__c, CoApplicant_Contact__r.Year_Employment__c,
@@ -31,6 +32,7 @@ public without sharing class CAPController {
                         Co_Applicant_Date_of_Birth__c,
                         Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,
                         Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
+                        SREC_Product__r.Name,
                 (SELECT Id, Name, Description from Attachments)
                 FROM Lead
                 WHERE Id = :leadId
