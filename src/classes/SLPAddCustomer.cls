@@ -154,7 +154,7 @@ public without sharing class SLPAddCustomer {
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
 
         emailList.add(newLead.Email);
-        emailList.add(String)profile.salesRepEmail;
+        emailList.add((String)profile.salesRepEmail);
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];
