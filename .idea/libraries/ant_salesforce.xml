@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ant-salesforce">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ant-salesforce.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

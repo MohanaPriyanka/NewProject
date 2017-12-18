@@ -7,32 +7,34 @@ public without sharing class CAPController {
     @AuraEnabled
     public static Lead getLead(Id leadId, String email) {
         Lead lead;
-        List<Lead> leadList  = [SELECT Id, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode, 
-                                Requested_Loan_Amount__c, System_Cost__c, LASERCA__SSN__c, Annual_Income_Currency__c, Status,
-                                Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c, 
-                                LASERCA__Pull_Credit_Report__c, CAP_Stage__c, Monthly_Mortgage_Tax_and_Insurance__c,
-                                LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c,
-                                lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
-                                Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c,
-                                Product__c, Product__r.Lender_of_Record__c, 
-                                CoApplicant_Contact__c, CoApplicant_Contact__r.FirstName, CoApplicant_Contact__r.LastName,
-                                CoApplicant_Contact__r.LASERCA__Home_Address__c, 
-                                CoApplicant_Contact__r.LASERCA__Home_City__c, CoApplicant_Contact__r.LASERCA__Home_State__c,
-                                CoApplicant_Contact__r.LASERCA__Home_Zip__c, CoApplicant_Contact__r.LASERCA__Co_Applicant_DOB__c,
-                                CoApplicant_Contact__r.Income__c, CoApplicant_Contact__r.Phone, CoApplicant_Contact__r.Email,
-                                CoApplicant_Contact__r.LASERCA__Social_Security_Number__c,
-                                CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
-                                CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
-                                CoApplicant_Contact__r.Other_Bank_Executive__c, CoApplicant_Contact__r.Avidia_Service_Provider__c,
-                                CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c,
-                                Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Phone__c, Co_Applicant_Email__c,
-                                Co_Applicant_Date_of_Birth__c, 
-                                Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,
-                                Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
-                                (SELECT Id, Name, Description from Attachments)
-                                FROM Lead 
-                                WHERE Id = :leadId 
-                                AND Email = :email LIMIT 1];
+        List<Lead> leadList  = [
+                SELECT Id, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
+                        Requested_Loan_Amount__c, System_Cost__c, LASERCA__SSN__c, Annual_Income_Currency__c, Status,
+                        Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
+                        LASERCA__Pull_Credit_Report__c, CAP_Stage__c, Monthly_Mortgage_Tax_and_Insurance__c,
+                        LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c,
+                        lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
+                        Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
+                        Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c,
+                        Product__c, Product__r.Lender_of_Record__c,
+                        CoApplicant_Contact__c, CoApplicant_Contact__r.FirstName, CoApplicant_Contact__r.LastName,
+                        CoApplicant_Contact__r.LASERCA__Home_Address__c, CoApplicant_Contact__r.Year_Employment__c,
+                        CoApplicant_Contact__r.LASERCA__Home_City__c, CoApplicant_Contact__r.LASERCA__Home_State__c,
+                        CoApplicant_Contact__r.LASERCA__Home_Zip__c, CoApplicant_Contact__r.LASERCA__Co_Applicant_DOB__c,
+                        CoApplicant_Contact__r.Income__c, CoApplicant_Contact__r.Phone, CoApplicant_Contact__r.Email,
+                        CoApplicant_Contact__r.LASERCA__Social_Security_Number__c,
+                        CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
+                        CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
+                        CoApplicant_Contact__r.Other_Bank_Executive__c, CoApplicant_Contact__r.Avidia_Service_Provider__c,
+                        CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c,
+                        Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Phone__c, Co_Applicant_Email__c,
+                        Co_Applicant_Date_of_Birth__c,
+                        Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,
+                        Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
+                (SELECT Id, Name, Description from Attachments)
+                FROM Lead
+                WHERE Id = :leadId
+                AND Email = :email LIMIT 1];
         if (leadList.size() > 0) {
             lead = leadList[0];
         }

@@ -2,17 +2,30 @@
   <aura:set attribute="STAGENAME" value="NAV_Income_Doc"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:attribute name="employed" type="Boolean" default="false"/>
+  <aura:attribute name="selfEmployed" type="Boolean" default="false"/>
+  <aura:attribute name="retired" type="Boolean" default="false"/>
+  <aura:attribute name="veteran" type="Boolean" default="false"/>
+  <aura:attribute name="alimony" type="Boolean" default="false"/>
   <aura:attribute name="paystubs" type="Object"/>
-  
+  <aura:attribute name="taxreturns" type="Object"/>
+  <aura:attribute name="retirementIncome" type="Object"/>
+  <aura:attribute name="veteranIncome" type="Object"/>
+  <aura:attribute name="otherIncome" type="Object"/>
+
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-            {!$Label.c.ID_Employment_Question}
+            <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
+              {!format($Label.c.ID_Joint_Employment_Question, v.lead.Joint_Applicant_Type__c)}
+              <aura:set attribute="else">
+                {!$Label.c.ID_Employment_Question}
+              </aura:set>
+            </aura:if>
             <lightning:input type="checkbox" 
                              checked="{!v.employed}"
-                             label="I'm employed and have paystubs to upload"/>
+                             label="Yes, there are employer paystubs to upload"/>
           </div>
         </div>
         <div class="slds-form-element__row slds-p-top--small">
@@ -29,16 +42,27 @@
           <div class="slds-form-element__control">
             {!$Label.c.ID_Paystub_Request}
             <lightning:input type="checkbox" 
-                             checked="{!v.Employed_for_more_than_one_year__c}"
+                             checked="{!v.lead.Year_Employment__c}"
                              label="I've been with my current employer for longer than one year"/>
           </div>
           <div class="slds-form-element__control">
             {!$Label.c.ID_Paystub_Details}
             <!-- Winter '18 lightning:fileupload didn't work in community, maybe because it's a standalone app? -->
-            <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleFilesChange}"/>
+            <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePaystubFiles}"/>
           </div>
+          <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+            <div class="slds-form-element__control">
+              {!$Label.c.ID_Joint_Paystub_Request}
+              <lightning:input type="checkbox"
+                               checked="{!v.lead.CoApplicant_Contact__r.Year_Employment__c}"
+                               label="I've been with my current employer for longer than one year"/>
+            </div>
+            <div class="slds-form-element__control">
+            {!$Label.c.ID_Joint_Paystub_Details}
+              <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePaystubFiles}"/>
+            </div>
+          </aura:if>
         </div>
-
         <aura:if isTrue="{!not(empty(v.paystubs))}">
           Uploaded paystubs:
           <div class="slds-grid slds-wrap slds-p-top_small">
@@ -59,9 +83,8 @@
             </div>
           </div>
         </aura:if>
-
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button label="Next" onclick="{!c.askSelfEmployed}"/>
+          <lightning:button label="Next" onclick="{!c.saveAndAskSelfEmployed}"/>
         </div>
       </form>
     </div>
@@ -72,17 +95,297 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-            Are you or your co-applicant self-employed?
-            <lightning:input type="checkbox" 
-                             checked="{!v.employed}"
+            <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+            {!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Applicant_Type__c)}
+              <aura:set attribute="else">
+                      {!$Label.c.ID_Self_Employment_Question}
+              </aura:set>
+            </aura:if>
+            <lightning:input type="checkbox"
+                             checked="{!v.selfEmployed}"
                              label="I'm self employed"/>
           </div>
         </div>
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button aura:id="confirmSubmit" label="Next"/>
+          <lightning:button aura:id="getTaxReturns" label="Next" onclick="{!c.getTaxReturns}"/>
         </div>
       </form>
     </div>
   </aura:if>
 
+  <aura:if isTrue="{!v.page == 'GetTaxReturns'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            {!$Label.c.ID_Tax_Request}
+          </div>
+          <div class="slds-form-element__control">
+          {!$Label.c.ID_Tax_Details}
+            <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
+                  {!$Label.c.ID_Tax_Two_Details}
+            <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
+          </div>
+          <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+            <div class="slds-form-element__control">
+                    {!format($Label.c.ID_Joint_Tax_Request, v.lead.Joint_Applicant_Type__c)}
+            </div>
+            <div class="slds-form-element__control">
+            {!format($Label.c.ID_Joint_Tax_Details, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
+                    {!format($Label.c.ID_Joint_Tax_Two_Details, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
+            </div>
+          </aura:if>
+        </div>
+        <aura:if isTrue="{!not(empty(v.taxreturns))}">
+          Uploaded Tax Returns:
+          <div class="slds-grid slds-wrap slds-p-top_small">
+            <div class="slds-col slds-size--1-of-1">
+              <table class="slds-table slds-table_striped">
+                <tbody>
+                <aura:iteration items="{!v.taxreturns}" var="attachment" >
+                  <tr>
+                    <td>
+                      <div>
+                              {!attachment}
+                      </div>
+                    </td>
+                  </tr>
+                </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveAndAskRetirement}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'RetirementQuestion'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+              {!format($Label.c.ID_Joint_Retirement_Question, v.lead.Applicant_Type__c)}
+              <aura:set attribute="else">
+                {!$Label.c.ID_Retirement_Question}
+              </aura:set>
+            </aura:if>
+            <lightning:input type="checkbox"
+                             checked="{!v.retired}"
+                             label="Yes, at least one of us received retirement income"/>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="getRetirementIncome" label="Next" onclick="{!c.getRetirementIncome}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'GetRetirementIncome'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">{!$Label.c.ID_Retirement_Request}</div>
+          <div class="slds-form-element__control">
+          {!$Label.c.ID_Pension}
+            <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePension}"/>
+                  {!$Label.c.ID_SSN}
+            <lightning:input type="file" label="Attach Social Security Letter" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleSSN}"/>
+                  {!$Label.c.ID_Bank_Statement}
+            <lightning:input type="file" label="Attach Bank Statement" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleBankStatement}"/>
+          </div>
+          <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+            <div class="slds-form-element__control">{!format($Label.c.ID_Joint_Retirement_Request, v.lead.Joint_Applicant_Type__c)}</div>
+            <div class="slds-form-element__control">
+            {!format($Label.c.ID_Joint_Pension, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePension}"/>
+                    {!format($Label.c.ID_Joint_SSN, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach Social Security Letter" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleSSN}"/>
+                    {!format($Label.c.ID_Joint_Bank_Statement, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach Bank Statement" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleBankStatement}"/>
+            </div>
+          </aura:if>
+        </div>
+        <aura:if isTrue="{!not(empty(v.retirementIncome))}">
+          Uploaded Retirement Documents:
+          <div class="slds-grid slds-wrap slds-p-top_small">
+            <div class="slds-col slds-size--1-of-1">
+              <table class="slds-table slds-table_striped">
+                <tbody>
+                <aura:iteration items="{!v.retirementIncome}" var="attachment" >
+                  <tr>
+                    <td>
+                      <div>
+                              {!attachment}
+                      </div>
+                    </td>
+                  </tr>
+                </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveAndAskVeteran}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'VeteranQuestion'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+          {!format($Label.c.ID_Veteran_Question, v.lead.Applicant_Type__c)}
+            <lightning:input type="checkbox"
+                             checked="{!v.veteran}"
+                             label="Yes, there is veteran or disability documentation to upload"/>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="getVeteranIncome" label="Next" onclick="{!c.getVeteranIncome}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'GetVeteranIncome'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">{!$Label.c.ID_Veteran_Request}</div>
+          <div class="slds-form-element__control">
+          {!$Label.c.ID_Veteran}
+            <lightning:input type="file" label="Attach veteran" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleVeteran}"/>
+          </div>
+          <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
+            <div class="slds-form-element__control">{!format($Label.c.ID_Joint_Veteran_Request, v.lead.Joint_Applicant_Type__c)}</div>
+            <div class="slds-form-element__control">
+            {!format($Label.c.ID_Joint_Veteran, v.lead.Joint_Applicant_Type__c)}
+              <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleVeteran}"/>
+            </div>
+          </aura:if>
+        </div>
+        <aura:if isTrue="{!not(empty(v.veteranIncome))}">
+          Uploaded Veteran or Disability Documents:
+          <div class="slds-grid slds-wrap slds-p-top_small">
+            <div class="slds-col slds-size--1-of-1">
+              <table class="slds-table slds-table_striped">
+                <tbody>
+                <aura:iteration items="{!v.veteranIncome}" var="attachment" >
+                  <tr>
+                    <td>
+                      <div>
+                              {!attachment}
+                      </div>
+                    </td>
+                  </tr>
+                </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveAndAskAlimony}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'AlimonyQuestion'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+          {!$Label.c.ID_Alimony_Question}
+            <lightning:input type="checkbox"
+                             checked="{!v.alimony}"
+                             label="Yes, I will use Alimony, Child Support, or Separate Maintenance Payments to repay this obligation"/>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="getAlimonyIncome" label="Next" onclick="{!c.getAlimonyIncome}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'GetAlimonyIncome'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">{!$Label.c.ID_Alimony_Request}</div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyAmount">
+              <label class="proximaNovaDataBlue">Monthly Income Amount</label>
+              <ui:inputCurrency value="{!v.lead.Monthly_Income__c}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyDetails">
+              <label class="proximaNovaDataBlue">Monthly Income Details</label>
+              <ui:inputText value="{!v.lead.Monthly_Income_Details__c}"/>
+            </div>
+          </div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyAmount2">
+              <label class="proximaNovaDataBlue">Monthly Income Amount</label>
+              <ui:inputCurrency value="{!v.lead.Monthly_Income_2__c}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyDetails2">
+              <label class="proximaNovaDataBlue">Monthly Income Details</label>
+              <ui:inputText value="{!v.lead.Monthly_Income_Details_2__c}"/>
+            </div>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveAndAskOther}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'OtherIncome'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+          {!$Label.c.ID_Other_Income}
+            <lightning:input type="file" label="Attach other income" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleOtherIncome}"/>
+          </div>
+        </div>
+        <aura:if isTrue="{!not(empty(v.otherIncome))}">
+          Other Income Documentation:
+          <div class="slds-grid slds-wrap slds-p-top_small">
+            <div class="slds-col slds-size--1-of-1">
+              <table class="slds-table slds-table_striped">
+                <tbody>
+                <aura:iteration items="{!v.otherIncome}" var="attachment" >
+                  <tr>
+                    <td>
+                      <div>
+                              {!attachment}
+                      </div>
+                    </td>
+                  </tr>
+                </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button aura:id="getOtherIncome" label="Next" onclick="{!c.finishStage}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
 </aura:component>
