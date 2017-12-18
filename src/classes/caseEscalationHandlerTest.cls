@@ -35,7 +35,10 @@ private class CaseEscalationHandlerTest {
 		Case caseTwo = new Case (
 			Subject = 'New Voice Message from PENTALERI, JORDAN (864) 421-7874 on 06/05/2017 at 08:25 AM' );
 
-        insert new List<Case>{caseOne, caseTwo};
+		Case caseThree = new Case (
+			Subject = '' );
+
+        insert new List<Case>{caseOne, caseTwo, caseThree};
 
 		Test.startTest();
 
