@@ -227,7 +227,9 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
-    <value>We'll need supporting income documentation for you</value>
+    <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
+      last 30 days)
+    </value>
   </labels>
   <labels>
     <fullName>ID_Paystub_Details</fullName>
@@ -243,7 +245,9 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
-    <value>We'll need supporting income documentation for your co-signer or co-applicant as well</value>
+    <value>We'll need supporting income documentation for your {0} as well. Please upload their most recent paystubs
+      (dated within the last 30 days)
+    </value>
   </labels>
   <labels>
     <fullName>ID_Joint_Paystub_Details</fullName>
@@ -275,7 +279,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need supporting income documentation for you</value>
+    <value>We'll need tax returns supporting your income. Please upload returns with all applicable schedules:</value>
   </labels>
   <labels>
     <fullName>ID_Tax_Details</fullName>
@@ -283,7 +287,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Prior Year Details</shortDescription>
-    <value>Please upload your tax returns from last year, with all applicable schedules</value>
+    <value>From last year</value>
   </labels>
   <labels>
     <fullName>ID_Tax_Two_Details</fullName>
@@ -291,7 +295,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Prior Year Details</shortDescription>
-    <value>Please upload your tax returns from two years ago, with all applicable schedules</value>
+    <value>From two years ago</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Tax_Request</fullName>
@@ -299,7 +303,9 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need supporting income documentation for your {0}</value>
+    <value>We'll need your {0}'s tax returns supporting their income. Please upload returns with all applicable
+      schedules:
+    </value>
   </labels>
   <labels>
     <fullName>ID_Joint_Tax_Details</fullName>
@@ -307,7 +313,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Tax Prior Year Details</shortDescription>
-    <value>Please upload your {0}'s tax returns from last year, with all applicable schedules</value>
+    <value>From last year</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Tax_Two_Details</fullName>
@@ -315,7 +321,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Tax Prior Year Details</shortDescription>
-    <value>Please upload your {0}'s tax returns from two years ago, with all applicable schedules</value>
+    <value>From two years ago</value>
   </labels>
   <labels>
     <fullName>ID_Retirement_Question</fullName>
@@ -339,7 +345,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Retirement Request</shortDescription>
-    <value>We'll need supporting income documentation for you</value>
+    <value>We'll need supporting income documentation for you. If applicable, please upload:</value>
   </labels>
   <labels>
     <fullName>ID_Pension</fullName>
@@ -347,7 +353,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Pension Details</shortDescription>
-    <value>Please upload your Pension Award, if applicable</value>
+    <value>Pension Award</value>
   </labels>
   <labels>
     <fullName>ID_SSN</fullName>
@@ -355,7 +361,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>SSN Details</shortDescription>
-    <value>Please upload your Social Security Letter, if applicable</value>
+    <value>Social Security Letter</value>
   </labels>
   <labels>
     <fullName>ID_Bank_Statement</fullName>
@@ -363,7 +369,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Bank Details</shortDescription>
-    <value>Please upload a Bank Statement showing direct deposits of Social Security, if applicable</value>
+    <value>Bank Statement showing direct deposits of Social Security</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Retirement_Request</fullName>
@@ -371,7 +377,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Retirement Request</shortDescription>
-    <value>We'll need supporting income documentation for your {0}</value>
+    <value>We'll need supporting income documentation for your {0} as well. If applicablt, please upload their:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Pension</fullName>
@@ -379,7 +385,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Pension Details</shortDescription>
-    <value>Please upload your {0}'s Pension Award, if applicable</value>
+    <value>Pension Award</value>
   </labels>
   <labels>
     <fullName>ID_Joint_SSN</fullName>
@@ -387,7 +393,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint SSN Details</shortDescription>
-    <value>Please upload your {0}'s Social Security Letter, if applicable</value>
+    <value>Social Security Letter</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Bank_Statement</fullName>
@@ -395,7 +401,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Bank Details</shortDescription>
-    <value>Please upload a Bank Statement showing your {0}'s direct deposits of Social Security, if applicable</value>
+    <value>Bank Statement showing direct deposits of Social Security</value>
   </labels>
   <labels>
     <fullName>ID_Veteran_Question</fullName>
@@ -411,15 +417,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Veteran Request</shortDescription>
-    <value>We'll need supporting income documentation for you</value>
-  </labels>
-  <labels>
-    <fullName>ID_Veteran</fullName>
-    <categories>Customer Application Portal</categories>
-    <language>en_US</language>
-    <protected>false</protected>
-    <shortDescription>Veteran Upload</shortDescription>
-    <value>Please upload your supporting documents of veteran status or disability</value>
+    <value>We'll need supporting documentation of veteran status or disability for you:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Veteran_Request</fullName>
@@ -427,15 +425,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Veteran Request</shortDescription>
-    <value>We'll need supporting income documentation for your {0}</value>
-  </labels>
-  <labels>
-    <fullName>ID_Joint_Veteran</fullName>
-    <categories>Customer Application Portal</categories>
-    <language>en_US</language>
-    <protected>false</protected>
-    <shortDescription>Joint Veteran Upload</shortDescription>
-    <value>Please upload your {0}'s supporting documents of veteran status or disability</value>
+    <value>We'll need supporting documentation of veteran status or disability for your {0}:</value>
   </labels>
   <labels>
     <fullName>ID_Alimony_Question</fullName>
