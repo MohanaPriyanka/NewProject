@@ -36,15 +36,16 @@ public with sharing class CaseEscalationHandler {
   
   public static void findContactFromVM (List<Case> newlyCreatedCase) {
     Map<String, Case> phoneMap = new Map<String, Case>(); 
-
     for (Case insertedCase : newlyCreatedCase) {
-      String subjectString = insertedCase.Subject;
-      if (subjectString.contains('New Voice Message')) {
-        Integer indexnum = subjectString.indexOf(' (');
-        String plainTextPhone = subjectString.substring(indexNum + 2, indexNum + 5) 
-                                + subjectString.substring(indexNum + 7, indexNum + 10)
-                                + subjectString.substring(indexNum + 11, indexNum + 15);
-        phoneMap.put(plainTextPhone, insertedCase);
+      if (insertedCase.Subject != null) {
+        String subjectString = insertedCase.Subject;
+        if (subjectString.contains('New Voice Message')) {
+          Integer indexnum = subjectString.indexOf(' (');
+          String plainTextPhone = subjectString.substring(indexNum + 2, indexNum + 5) 
+                                  + subjectString.substring(indexNum + 7, indexNum + 10)
+                                  + subjectString.substring(indexNum + 11, indexNum + 15);
+          phoneMap.put(plainTextPhone, insertedCase);
+        }
       }
     }
     if (phoneMap.size() > 0) {
