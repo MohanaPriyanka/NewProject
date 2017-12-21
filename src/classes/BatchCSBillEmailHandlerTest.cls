@@ -25,6 +25,7 @@ private class BatchCSBillEmailHandlerTest {
         for (i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (   
                                         Name = 'Bill' + i,
+                                        Bill_Number__c = i,
                                         Parent_Account__c = propertyAccount.Id,
                                         Ready_for_Email_Send__c = true,
                                         Published__c = false);
@@ -63,7 +64,7 @@ private class BatchCSBillEmailHandlerTest {
                                         FROM ContentVersion 
                                         WHERE Id = : csBillCV.Id]; 
 
-        Account_Bill__c accountBill = [  SELECT Id, Name, Link_to_File__c
+        Account_Bill__c accountBill = [  SELECT Id, Name
                                           FROM Account_Bill__c LIMIT 1];
 
         ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,

@@ -1,12 +1,29 @@
 ({
-    getParameterByName : function(cmp, event, paramName) {
-        var url = window.location.href;
-        paramName = paramName.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
+   login : function(component, event, helper) {
+        var action = component.get('c.getLead');
+        action.setParams({
+            "leadId": component.get('v.leadId'),
+            "email" : component.get('v.leadEmail')
+        });
+        action.setCallback(this, function(actionResult) {
+            if (actionResult.getReturnValue() != null) {
+                var lead = actionResult.getReturnValue();
+                if (lead.Product__c &&
+                    lead.Product__r.Lender_of_Record__c !== 'BlueWave') {
+                    helper.raiseNavEvent("LORCHANGE", {"lenderOfRecord": lead.Product__r.Lender_of_Record__c});
+                }
+                if (lead.CAP_Stage__c !== '') {
+                    component.set('v.page', '');
+                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CAP_Stage__c, "lead": lead});
+                } else {
+                    component.set('v.page', 'LoanConfirmation');
+                    component.set('v.lead', lead);
+                }
+            } else {
+                alert('Incorrect email address. Please verify your email address.');
+            }
+        });
 
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }    
+        $A.enqueueAction(action);
+    },
 })

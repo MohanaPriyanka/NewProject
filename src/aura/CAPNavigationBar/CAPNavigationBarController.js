@@ -8,24 +8,19 @@
             if (currentStageIndex < nextStageIndex) {
                 component.set("v.stageIndex", nextStageIndex);
             }
-            var stageChangeEvent = $A.get("e.c:CAPNavigationEvent");
-            stageChangeEvent.setParams({"stageName": nextStageName});
-            stageChangeEvent.setParams({"eventType": "INITIATED"});
-            stageChangeEvent.setParams({"lead": component.get("v.lead")});
-            stageChangeEvent.fire();
+            helper.raiseNavEvent("INITIATED", {"stageName": nextStageName, "lead": component.get("v.lead")});
         }
     },
 
     onStageClicked : function(component, event, helper) {
-        var stage = event.currentTarget.dataset.stage;
-        var stageIndex = helper.getStage(stage);
-        var maxIndex = helper.getStage(component.get("v.lead").CAP_Stage__c);
-        if (stageIndex <= maxIndex+1) {
-            var stageChangeEvent = $A.get("e.c:CAPNavigationEvent");
-            stageChangeEvent.setParams({"stageName": stage});
-            stageChangeEvent.setParams({"eventType": "INITIATED"});
-            stageChangeEvent.setParams({"lead": component.get("v.lead")});
-            stageChangeEvent.fire();
+        const lead = component.get('v.lead');
+        if (lead) {
+            var stage = event.currentTarget.dataset.stage;
+            var stageIndex = helper.getStage(stage);
+            var maxIndex = helper.getStage(lead.CAP_Stage__c);
+            if (stageIndex <= maxIndex+1) {
+                helper.raiseNavEvent("INITIATED", {"stageName": stage, "lead": lead});
+            }
         }
     },
 })

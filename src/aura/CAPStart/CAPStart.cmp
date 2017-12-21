@@ -1,26 +1,23 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="CAPController" access="global" extends="c:CAPParent">
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <aura:attribute name="page" type="String" default="Login"/>
-  <aura:attribute name="leadId" type="Id"/>
+<aura:component controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="leadEmail" type="String"/>
-  <aura:attribute name="STAGENAME" type="String" default="NAV_Getting_Started"/>
+  <aura:set attribute="STAGENAME" value="NAV_Getting_Started"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
-
   <aura:registerEvent name="CAPNavigationEvent" type="c:CAPNavigationEvent"/>
-
-  <lightning:spinner aura:id="mySpinner" class="slds-hide"/>
 
   <!-- LOGIN FORM -->
   <aura:if isTrue="{!v.page == 'Login'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      <form class="slds-form--stacked">
+      <form class="slds-form--stacked" aura:id="form" action="javascript: return false">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             {!$Label.c.START_Email_Confirmation_Instruction}
             <ui:inputEmail aura:id="leadEmail"
                            placeholder="yourname@email.com"
                            class="slds-input slds-p-top-small"
-                           value="{!v.leadEmail}"/>
+                           value="{!v.leadEmail}"
+                           updateOn="keydown,change"
+                           keydown="{!c.checkForEnter}"/>
           </div>
         </div>
         <div class="slds-form-element__row slds-p-top--small">
@@ -42,7 +39,7 @@
               <lightning:input type="number" 
                                formatter="currency" 
                                label="System Cost" 
-                               value="{!v.leadRecord.System_Cost__c}" 
+                               value="{!v.lead.System_Cost__c}" 
                                disabled="true">
               </lightning:input>
             </div>
@@ -50,7 +47,7 @@
               <lightning:input type="number" 
                                formatter="currency" 
                                label="Down Payment" 
-                               value="{!v.leadRecord.System_Cost__c - v.leadRecord.Requested_Loan_Amount__c}" 
+                               value="{!v.lead.System_Cost__c - v.lead.Requested_Loan_Amount__c}" 
                                disabled="true">
               </lightning:input>
             </div>
@@ -60,7 +57,7 @@
               <lightning:input type="number" 
                                formatter="currency" 
                                label="Requested Loan Amount" 
-                               value="{!v.leadRecord.Requested_Loan_Amount__c}" 
+                               value="{!v.lead.Requested_Loan_Amount__c}" 
                                disabled="true">
               </lightning:input>
             </div>

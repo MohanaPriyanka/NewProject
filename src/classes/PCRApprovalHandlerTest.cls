@@ -11,49 +11,54 @@ private class PCRApprovalHandlerTest {
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
 
-        Product2 productVar = new Product2( name = 'BlueWave Solar Loan - MA',
-                                            State__c = 'MA',
-                                            Family = 'Solar Loan',
-                                            Product_Type__c = 'Residential Loan',
-                                            Program__c = 'BlueWave Solar Loan',
-                                            IsActive = TRUE,
-                                            ProductCode = 'x',
-                                            Loan_Term__c = 120,
-                                            Loan_Interest_Rate__c = 5.99,
-                                            Loan_Interest_Only_Period__c = 12,
-                                            Loan_Base_Rate__c = .0625,
-                                            Debt_To_Income_Maximum__c = 50,
-                                            Credit_Minimum__c = '681',
-                                            Credit_Maximum__c = '999',
-                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                            Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
-        Product2 mslp = new Product2( name = 'BlueWave Solar Loan - MA',
-                                            State__c = 'MA',
-                                            Family = 'Solar Loan',
-                                            Product_Type__c = 'Residential Loan',
-                                            Program__c = 'MSLP',
-                                            IsActive = TRUE,
-                                            ProductCode = 'x',
-                                            Loan_Term__c = 120,
-                                            Loan_Interest_Rate__c = 5.99,
-                                            Loan_Interest_Only_Period__c = 12,
-                                            Loan_Base_Rate__c = .0625,
-                                            Debt_To_Income_Maximum__c = 50,
-                                            Credit_Minimum__c = '681',
-                                            Credit_Maximum__c = '999',
-                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                            Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
+        Product2 productVar = new Product2(name = 'BlueWave Solar Loan - MA',
+                                           State__c = 'MA',
+                                           Family = 'Solar Loan',
+                                           Product_Type__c = 'Residential Loan',
+                                           Program__c = 'BlueWave Solar Loan',
+                                           IsActive = TRUE,
+                                           ProductCode = 'x',
+                                           Loan_Term__c = 120,
+                                           Loan_Interest_Rate__c = 5.99,
+                                           Loan_Interest_Only_Period__c = 12,
+                                           Loan_Base_Rate__c = .0625,
+                                           Debt_To_Income_Maximum__c = 50,
+                                           Credit_Minimum__c = '681',
+                                           Credit_Maximum__c = '999',
+                                           Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                                           Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
+        Product2 mslp = new Product2(name = 'BlueWave Solar Loan - MA',
+                                     State__c = 'MA',
+                                     Family = 'Solar Loan',
+                                     Product_Type__c = 'Residential Loan',
+                                     Program__c = 'MSLP',
+                                     IsActive = TRUE,
+                                     ProductCode = 'x',
+                                     Loan_Term__c = 120,
+                                     Loan_Interest_Rate__c = 5.99,
+                                     Loan_Interest_Only_Period__c = 12,
+                                     Loan_Base_Rate__c = .0625,
+                                     Debt_To_Income_Maximum__c = 50,
+                                     Credit_Minimum__c = '681',
+                                     Credit_Maximum__c = '999',
+                                     Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+                                     Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)',
+                                     IBLS_Category__c = 'Category 1');
         insert new List<Product2>{productVar, mslp};
 
+        // DOER Lead FICOs: 681, 800, 701, 682, 700, 820
         Lead lead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        lead.IBLS_Category__c = 'Category 1';
         insertleads.add(lead);
         Lead leadA = getLead(20000, 65000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadA);
         Lead leadAA = getLead(1000, 65000, productVar.Id, false, false, partner.Id);
         insertleads.add(leadAA);
         Lead leadAB = getLead(14000, 15000, productVar.Id, true, false, partner.Id);
+        leadAB.IBLS_Category__c = 'Category 1';
         insertleads.add(leadAB);
         Lead leadAC = getLead(14000, 46000, productVar.Id, true, false, partner.Id);
+        leadAc.IBLS_Category__c = 'Category 1';
         insertleads.add(leadAC);
         Lead leadAD = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAD);
@@ -64,8 +69,10 @@ private class PCRApprovalHandlerTest {
         Lead leadAG = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAG);
         Lead leadAH = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        leadAH.IBLS_Category__c = 'Category 1';
         insertleads.add(leadAH);
         Lead leadAI = getLead(null, 45000, productVar.Id, true, true, partner.Id);
+        leadAI.IBLS_Category__c = 'Category 1';
         insertleads.add(leadAI);
         Lead leadAJ = getLead(100000, 30000, productVar.Id, false, true, partner.Id);
         insertleads.add(leadAJ);
@@ -73,7 +80,9 @@ private class PCRApprovalHandlerTest {
         leadAK.Co_Applicant_First_Name__c = 'Jordan';
         insertleads.add(leadAK);
         Lead coAppLead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        coAppLead.IBLS_Category__c = 'Category 1';
         coAppLead.Co_Applicant_Income__c = 2000;
+        coAppLead.Application_Type__c = 'Joint';
         insertleads.add(coAppLead);
         insert insertleads;
         Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
@@ -132,6 +141,7 @@ private class PCRApprovalHandlerTest {
         insertpcrlist.add(pcrAK);
         LASERCA__Personal_Credit_Report__c pcrCoAppLead =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Primary with Co App',
+                                                   LASERCA__Credit_Score_TransUnion__c = '820',
                                                    LASERCA__Lead__c = coAppLead.Id);
         insertpcrlist.add(pcrCoAppLead);
         insert insertpcrlist;
@@ -139,6 +149,7 @@ private class PCRApprovalHandlerTest {
         LASERCA__Personal_Credit_Report__c pcrCoAppContact =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Co App',
                                                    LASERCA__Lead__c = coAppLead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '821',
                                                    LASERCA__Contact__c = coApplicantContact.Id);
         insert pcrCoAppContact;
 
@@ -261,10 +272,11 @@ private class PCRApprovalHandlerTest {
             } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '' || creditreport.LASERCA__Credit_Score_TransUnion__c == '0') {
                 System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
                 System.assertEquals(FALSE, creditreport.Credit_Denial_Email_Sent__c);
-            } else if (creditreport.Name == 'PCR Primary with Co App.Joey') {
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '820') {
+                System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
                 System.assertEquals(9.6, creditreport.DTI_Before__c.setScale(1));
-            } else if (creditreport.Name == 'PCR Co App.Joey') {
-                System.assertEquals(240, creditreport.DTI_Before__c.setScale(1));
+            } else if (creditreport.LASERCA__Credit_Score_TransUnion__c == '821') {
+                System.assertEquals('Pending Credit Review', creditreport.LASERCA__Lead__r.Status);
             }
         }
     }
@@ -366,23 +378,7 @@ private class PCRApprovalHandlerTest {
                                             Credit_Maximum__c = '999',
                                             Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
                                             Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
-        Product2 mslp = new Product2( name = 'BlueWave Solar Loan - MA',
-                                            State__c = 'MA',
-                                            Family = 'Solar Loan',
-                                            Product_Type__c = 'Residential Loan',
-                                            Program__c = 'MSLP',
-                                            IsActive = TRUE,
-                                            ProductCode = 'x',
-                                            Loan_Term__c = 120,
-                                            Loan_Interest_Rate__c = 5.99,
-                                            Loan_Interest_Only_Period__c = 12,
-                                            Loan_Base_Rate__c = .0625,
-                                            Debt_To_Income_Maximum__c = 50,
-                                            Credit_Minimum__c = '681',
-                                            Credit_Maximum__c = '999',
-                                            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                            Loan_Financing_Fee_Terms__c ='Maximum (5%, $1,250)');
-        insert new List<Product2>{productVar, mslp};
+        insert new List<Product2>{productVar};
 
         Test.startTest();
         Lead lead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
@@ -506,7 +502,7 @@ private class PCRApprovalHandlerTest {
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                Income_Support__c
+                Income_Support__c, Partner_Lookup__c
                 FROM Lead
                 WHERE Id = :lead.Id];
 
@@ -518,6 +514,95 @@ private class PCRApprovalHandlerTest {
                             productRepo.calcDTIAfter(product, lead, 6750, 3300).dtiAfter);
         System.assertEquals(50.61,
                             lead.Personal_Credit_Report__r.DTI_After__c);
+    }
+
+    static testMethod void testProductRepoForJunctions() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 product = [SELECT Id, Name, Product_Type__c, Program__c, State__c,
+                            Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
+                            FROM Product2
+                            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)' 
+                            AND Require_Junctions_to_Enable__c = true LIMIT 1];
+        Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
+                                                                          Partner__c = partner.Id);
+        Product2 bwsl = [SELECT Id
+                         FROM Product2
+                         WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1];
+        insert ppj;
+        Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
+        lead.Product__c = bwsl.Id;
+        insert lead;
+
+        lead.Status = 'Ready for Credit Check';
+        update lead;
+
+        Test.startTest();
+        LASERCA__Personal_Credit_Report__c pcr =
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '650');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct =
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 300);
+        insert tradeacct;
+        insert getCRL(pcr);
+
+        Test.stopTest();
+
+        lead = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.DTI_After__c,
+                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c, Partner_Lookup__c, Product__r.Name
+                FROM Lead
+                WHERE Id = :lead.Id];
+
+        System.assertEquals('BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)', lead.Product__r.Name);
+        PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
+        System.assertEquals('Pre-Qualified', lead.Status);
+        System.assertEquals(1, productRepo.getApplicableProducts(lead, 650).size());
+    }
+
+    static testMethod void testProductRepoFor40k() {
+        Partner__c partner = [SELECT Id from Partner__c where Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 product = [SELECT Id, Name, Product_Type__c, Program__c, State__c,
+                            Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
+                            FROM Product2
+                            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)' 
+                            AND Require_Junctions_to_Enable__c = true LIMIT 1];
+        Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
+                                                                          Partner__c = partner.Id);
+        insert ppj;
+        Lead lead = getLead(81000, 50000, null, false, false, partner.Id);
+        insert lead;
+
+        lead.Status = 'Ready for Credit Check';
+        update lead;
+
+        Test.startTest();
+        LASERCA__Personal_Credit_Report__c pcr =
+            new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
+                                                   LASERCA__Credit_Score_TransUnion__c = '650');
+        insert pcr;
+        LASERCA__Trade_Accounts__c  tradeacct =
+            new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcr.id,
+                                           LASERCA__Monthly_Payment__c = 300);
+        insert tradeacct;
+        insert getCRL(pcr);
+
+        Test.stopTest();
+
+        lead = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.DTI_After__c,
+                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c, Partner_Lookup__c
+                FROM Lead
+                WHERE Id = :lead.Id];
+
+        PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
+        System.assertEquals('Unqualified', lead.Status);
+        System.assertEquals(0, productRepo.getApplicableProducts(lead, 650).size());
     }
 
     static testMethod void testNoIBLSInDTI() {
@@ -562,7 +647,7 @@ private class PCRApprovalHandlerTest {
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c, 
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                Income_Support__c
+                Income_Support__c, Partner_Lookup__c, IBLS_Category__c
                 FROM Lead 
                 WHERE Id = :lead.Id];
 

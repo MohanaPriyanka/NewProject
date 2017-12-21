@@ -22,6 +22,11 @@
     font-size:150%;
     color: #FFFFFF;
 }
+.THIS .proximaNovaWhiteSmall {
+    font-family: proximaNovaFont;
+    font-size:75%;
+    color: #FFFFFF;
+}
 .THIS .proximaNovaBrand {
     font-family: proximaNovaFont;
     font-size:32px;
@@ -42,6 +47,11 @@
     font-size:90%;
     color: #266092;
 }
+.THIS .proximaNovaStream90 {
+    font-family: proximaNovaFont;
+    font-size:90%;
+    color: #00b2a9;
+}
 .THIS .proximaNovaDataBlue50 {
     font-family: proximaNovaFont;
     font-size:85%;
@@ -57,3 +67,10 @@
     font-size:100%;
     color: #32CD32;
 }
+.THIS .visibilityHidden {
+    visibility: hidden;
+}
+.THIS .noDisplay {
+    display: none;
+}
+

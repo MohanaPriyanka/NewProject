@@ -2,7 +2,7 @@
     clickCreateQSS : function(component, event, helper) {
         var newSheet = component.get("v.quicksalessheet"); 
         var btnClicked = event.getSource().get("v.name");
-		var genDoc = false;
+        var genDoc = false;
         if (btnClicked == 'submitUpfront') {
             genDoc = true;
         } else if (btnClicked == 'refreshbutton'){
@@ -15,22 +15,22 @@
             "generateDoc": genDoc
         });
         
-        actionAddNewQss.setCallback(this,function(resp) {		
+        actionAddNewQss.setCallback(this,function(resp) {       
             if(resp.getState() == "SUCCESS" && genDoc) {                
                 $A.util.addClass(component.find("submitQSSbutton"), 'noDisplay');
-               	$A.util.addClass(component.find("viewLoanData"), 'noDisplay');
+                $A.util.addClass(component.find("viewLoanData"), 'noDisplay');
                 $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
                                               
                     window.setTimeout(function() {
                         $A.util.removeClass(component.find("docStatus"), 'noDisplay');
                         component.set("v.docStatusText", "Calculating Your Loan Stats...");
-                    	}, 3000);
+                        }, 3000);
                     window.setTimeout(function() {
                         component.set("v.docStatusText", "Creating the Document...");
-                    	}, 8000);
+                        }, 8000);
                     window.setTimeout(function() {
                         component.set("v.docStatusText", "Generating a download link...");
-                    	}, 12000);
+                        }, 12000);
                     window.setTimeout(function() {
                         var qssIdVar = resp.getReturnValue().Id;
                         var docInterval = window.setInterval($A.getCallback(function() {helper.getQSS(component,qssIdVar);}), 2000);
@@ -41,24 +41,19 @@
                         var successLink = component.get("v.qssLinkToFile");
                         if (successLink == "notgeneratedinportal") {
                             component.set("v.docStatusText", "An Error Occurred While Creating Your Document, Please Contact BlueWave");
-                			$A.util.addClass(component.find("qssSpinner"), 'noDisplay');
+                            $A.util.addClass(component.find("qssSpinner"), 'noDisplay');
                         }
-                     	}, 30000);
+                        }, 30000);
             }
- 			else if(resp.getState() == "SUCCESS" && !genDoc) { 
-                $A.util.addClass(component.find("submitQSSbutton"), 'noDisplay');
-                $A.util.addClass(component.find("viewLoanData"), 'noDisplay');
-                $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
+            else if(resp.getState() == "SUCCESS" && !genDoc) { 
                 var qssIdVar = resp.getReturnValue().Id;
                 helper.getQSS(component,qssIdVar);
-               	$A.util.addClass(component.find("spinnerandtext"), 'noDisplay');
-                $A.util.removeClass(component.find("loaninfocard"), 'noDisplay');
-                $A.util.removeClass(component.find("documentCreatebutton"), 'noDisplay');
+                helper.refreshTable(component);
             }
         });
         
         $A.enqueueAction(actionAddNewQss);
-	},
+    },
 
     doInit : function(component, event, helper) {
         var actionProducts = component.get("c.getActiveProducts");        
@@ -78,10 +73,14 @@
     clickCreateDocument : function(component, event, helper) {
         var qssToUpdate = component.get("v.calculatedQSS");
         var qssIdVarible = component.get("v.calculatedQSS.Id");
+        var modified = component.get("v.modifiedTaxIncentive");
         var actionCreateDocQss = component.get("c.updateQSS");
+        component.set("v.calculatedQSS.Generate_Doc__c", true);
         
         actionCreateDocQss.setParams({
-            "updatedQSS" : qssToUpdate, 
+            "updatedQSS" : qssToUpdate,
+            "generateDoc" : true, 
+            "modifiedTax" : modified
         });
         
         actionCreateDocQss.setCallback(this,function(resp) {
@@ -99,7 +98,7 @@
                     }, 8000);
                
             window.setTimeout(function() {
-                    var docInterval = window.setInterval($A.getCallback(function() {helper.getDocument(component,qssIdVarible);}), 2000);
+                    var docInterval = window.setInterval($A.getCallback(function() {helper.getQSS(component,qssIdVarible);}), 2000);
                        component.set("v.docStatusPoller", docInterval);
                     }, 12000);  
                
@@ -115,6 +114,12 @@
         
         $A.enqueueAction(actionCreateDocQss);
     },   
+
+    refreshTable : function(component, event, helper) {
+         $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
+         var qssToUpdate = component.get("v.calculatedQSS");
+         helper.updateQSS(component, qssToUpdate);
+    },
     
     eraseZeros : function(component, event, helper) {
         var source = event.getSource();
@@ -122,4 +127,17 @@
            source.set("v.value","");
         }
     },
+    
+    checkTaxCredit : function(component, event, helper) {
+        var source = event.getSource();
+        if (source.get("v.value") > source.get("v.placeholder")) {
+           source.set("v.value", "v.placeholder");
+            return;
+        } else {
+            $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
+            var qssToUpdate = component.get("v.calculatedQSS");
+            helper.updateQSS(component, qssToUpdate);
+        }
+    },
+
 })

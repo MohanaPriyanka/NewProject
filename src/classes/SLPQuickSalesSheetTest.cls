@@ -69,7 +69,7 @@ public without sharing class SLPQuickSalesSheetTest{
                                                                       Product__c = productRecord.Id);
         Boolean generateDoc = false;
         SLPQuickSalesSheetHandler.addNewQSS(qssLoanTable, generateDoc);
-        SLPQuickSalesSheetHandler.updateQSS(qssLoanTable);
+        SLPQuickSalesSheetHandler.updateQSS(qssLoanTable, true, false);
 
         SLPQuickSalesSheetHandler.getActiveProducts();
         generateDoc = true;

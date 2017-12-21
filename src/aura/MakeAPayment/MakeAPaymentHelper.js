@@ -22,6 +22,18 @@
             } else {
                 $A.log("Errors", resp.getError());
             }
+            var systemBillList = resp.getReturnValue(); 
+            var sbStep;
+            var totalOutstandingBalance = 0;
+                if (systemBillList === undefined || systemBillList.length === 0) {
+                    component.set("v.myBill", 0);
+                } else {
+                    for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {
+                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].carryover*100);
+                    }
+                    var roundedBalance = totalOutstandingBalance/100;
+                    component.set("v.myBill", roundedBalance);
+                }
         }); 
        
         actionGetTransactions.setCallback(this,function(resp){
@@ -35,18 +47,6 @@
         actionGetAccountBills.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.AccountBills", resp.getReturnValue());
-                var accountBillList = resp.getReturnValue(); 
-                var abStep;
-                var totalOutstandingBalance = 0;
-                if (accountBillList === undefined || accountBillList.length === 0) {
-                    component.set("v.myBill", 0);
-                } else {
-                    for (abStep = 0; abStep < accountBillList.length; abStep++) {
-                        totalOutstandingBalance = totalOutstandingBalance + accountBillList[abStep].Balance_Net_Late_Payments__c;
-                    }
-                    var roundedBalance = totalOutstandingBalance;
-                    component.set("v.myBill", roundedBalance);
-                }
             }
             else {
                 $A.log("Errors", resp.getError());

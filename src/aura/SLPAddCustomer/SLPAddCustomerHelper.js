@@ -52,107 +52,102 @@
 
     errorsInForm : function(component, helper, lead) {
         var errorMessage = "";
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, true, false, true, "Please enter the Applicants's First Name without any special characters.", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, true, false, true, "Please enter the Applicants's Last Name without any special characters.", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "customerEmail", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Birthdate__c, "dateOfBirth", "shake", null, false, null, null, "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c, "date");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Address__c, "homeAddressElement", "shake", null, true, false, true, "Please enter the Applicants's correct home address", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_City__c, "cityElement", "shake", null, true, false, true, "Please enter the Applicant's City", "standard");        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, true, false, true, "Please enter the Applicants's First Name without any special characters.", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, true, false, true, "Please enter the Applicants's Last Name without any special characters.", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "customerEmail", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Birthdate__c, "dateOfBirth", "shake", null, false, null, null, "Please enter a Date of Birth in the format MM/DD/YYYY. Your date was entered as: " + lead.LASERCA__Birthdate__c, "date");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Address__c, "homeAddressElement", "shake", null, true, false, true, "Please enter the Applicants's correct home address", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_City__c, "cityElement", "shake", null, true, false, true, "Please enter the Applicant's City", "standard");
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
-            errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";                          
+            errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";
         } else {
             helper.setInputToCorrect(component, "stateElement" );
-        }     
+        }
         if (component.get("v.downPayment") < 0) {
             helper.setInputToError(component, "downPaymentElement", "shake");
-            errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";                          
+            errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";
         } else {
             helper.setInputToCorrect(component, "downPaymentElement" );
-        }          
-        if (lead.LASERCA__Home_State__c === 'MA') {
-            if (!lead.Product__c) {
-                helper.setInputToError(component, "productElement", "shake");
-                errorMessage = errorMessage + "Please enter a valid Product" + "\n" + "\n";                          
-            } else {
-                helper.setInputToCorrect(component, "productElement" );
-            }
-        } else {
-            // If they haven't selected a product, don't include undefined in the lead, it results in 
-            // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
-            if (!lead.Product__c) {
-                delete lead['Product__c'];
-            }
-        } 
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Zip__c, "zipCodeElement", "shake", 5, false, false, false, "Please enter a valid 5 digit Zip Code", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Requested_Loan_Amount__c, "loanAmountElement", "shake", null, false, false, false, "Please enter this Applicant's requested loan amount", "standard");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, false, false, false, "Please enter this Applicant's system installation cost", "standard");                
+        }
+        // If they haven't selected a product, don't include undefined in the lead, it results in 
+        // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
+        if (!lead.Product__c) {
+            delete lead['Product__c'];
+        }
+        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__Home_Zip__c, "zipCodeElement", "shake", 5, false, false, false, "Please enter a valid 5 digit Zip Code", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Requested_Loan_Amount__c, "loanAmountElement", "shake", null, false, false, false, "Please enter this Applicant's requested loan amount", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, false, false, false, "Please enter this Applicant's system installation cost", "standard");
         lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__SSN__c, "ssnElement", "shake", 9, false, false, false, "Please enter a valid 9 digit Social Security Number without any special characters/symbols.", "standard");             
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Annual_Income_Currency__c, "incomeElement", "shake", null, false, false, false, "Please enter this Applicant's estimated annual income", "standard");             
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LASERCA__SSN__c, "ssnElement", "shake", 9, false, false, false, "Please enter a valid 9 digit Social Security Number without any special characters/symbols.", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Annual_Income_Currency__c, "incomeElement", "shake", null, false, false, false, "Please enter this Applicant's estimated annual income", "standard");
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Credit_Check_Acknowledged__c, "creditHistoryElement", "shake", null, true, false, false, "Please have the Applicant give BlueWave and Avidia Bank permission to access their credit history.", "standard");             
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", "shake", null, true, false, false, "Please have the Applicant acknowledge BlueWave's Privacy Policy.", "standard");             
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Privacy_Policy_Acknowledged__c, "privacyPolicyElement", "shake", null, true, false, false, "Please have the Applicant acknowledge BlueWave's Privacy Policy.", "standard");
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Utility_Bill_Access_Acknowledged__c, "energyHistoryElement", "shake", null, true, false, false, "Please have the Applicant give BlueWave permission to access their energy billing history.", "standard");             
 
         if (errorMessage.length > 0) {
             return errorMessage;
-        } 
-    },    
+        }
+    },
 
     removeAddCustomerForm : function(component) {
         $A.util.addClass(component.find("applicationTabBar"), 'noDisplay');
         $A.util.addClass(component.find("bwApplicationHeader"), 'noDisplay');
-        $A.util.addClass(component.find("inputForm"), 'noDisplay'); 
-        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');    
+        $A.util.addClass(component.find("inputForm"), 'noDisplay');
+        $A.util.addClass(component.find("avidiaLogo"), 'noDisplay');
         $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
         $A.util.addClass(component.find("customerEmailButton"), 'noDisplay'); 
-    },    
+        $A.util.addClass(component.find("avidiaOriginatedDisclaimer"), 'noDisplay'); 
+        $A.util.addClass(component.find("goBackToIBSLSelection"), 'noDisplay'); 
+    },
    
     returnAddCustomerForm : function(component) {
-        $A.util.removeClass(component.find("inputForm"), 'noDisplay'); 
-        $A.util.removeClass(component.find("applicationTabBar"), 'noDisplay'); 
-    },    
+        $A.util.removeClass(component.find("avidiaOriginatedDisclaimer"), 'noDisplay'); 
+        $A.util.removeClass(component.find("inputForm"), 'noDisplay');
+        $A.util.removeClass(component.find("applicationTabBar"), 'noDisplay');
+    },
 
     showCreditCheckPage : function(component) {
         $A.util.removeClass(component.find("pullCreditButtons"), 'noDisplay');
         $A.util.removeClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
-    },  
+    },
     
     hideCreditCheckPage : function(component) {
         $A.util.addClass(component.find("pullCreditButtons"), 'noDisplay');
         $A.util.addClass(component.find("addedCustomerConfirmCredit"), 'noDisplay');
-    },      
+    },
 
     showMSLPApplication : function(component) {
-        $A.util.removeClass(component.find("bwslAppTab"), 'slds-has-focus');      
-        $A.util.addClass(component.find("mslpAppTab"), 'slds-has-focus'); 
-        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');    
-    },     
+        $A.util.removeClass(component.find("bwslAppTab"), 'slds-has-focus');
+        $A.util.addClass(component.find("mslpAppTab"), 'slds-has-focus');
+        $A.util.removeClass(component.find("mslpDisclaimer"), 'noDisplay');
+    },
 
     showBWSLApplication : function(component) {
-        $A.util.addClass(component.find("bwslAppTab"), 'slds-has-focus');      
+        $A.util.addClass(component.find("bwslAppTab"), 'slds-has-focus');
         $A.util.removeClass(component.find("mslpAppTab"), 'slds-has-focus');
-        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');     
-    },         
+        $A.util.addClass(component.find("mslpDisclaimer"), 'noDisplay');
+    },
 
     removeErrorAnimations : function(component, animation) {
         $A.util.removeClass(component.find("firstNameElement"), animation);
         $A.util.removeClass(component.find("lastNameElement"), animation);
-        $A.util.removeClass(component.find("customerEmail"), animation); 
-        $A.util.removeClass(component.find("dateOfBirth"), animation);    
+        $A.util.removeClass(component.find("customerEmail"), animation);
+        $A.util.removeClass(component.find("dateOfBirth"), animation);
         $A.util.removeClass(component.find("homeAddressElement"), animation);
         $A.util.removeClass(component.find("cityElement"), animation); 
         $A.util.removeClass(component.find("stateElement"), animation);
         $A.util.removeClass(component.find("zipCodeElement"), animation);
         $A.util.removeClass(component.find("loanAmountElement"), animation); 
-        $A.util.removeClass(component.find("systemCostElement"), animation);    
+        $A.util.removeClass(component.find("systemCostElement"), animation);
         $A.util.removeClass(component.find("incomeElement"), animation);
-        $A.util.removeClass(component.find("creditHistoryElement"), animation);         
-        $A.util.removeClass(component.find("privacyPolicyElement"), animation);    
+        $A.util.removeClass(component.find("creditHistoryElement"), animation);
+        $A.util.removeClass(component.find("privacyPolicyElement"), animation);
         $A.util.removeClass(component.find("energyHistoryElement"), animation);
-        $A.util.removeClass(component.find("ssnElement"), animation);        
-    },      
-        
+        $A.util.removeClass(component.find("ssnElement"), animation);
+    },
+
     getStates : function(component, event, helper) {
         var actionGetActiveStates = component.get("c.getActiveStates");
         actionGetActiveStates.setStorable();
@@ -198,8 +193,8 @@
             } else {
                 helper.logError("SLPAddCustomerHelper", "getAvailableProducts", resp.getError());
             }
-        });    
-        $A.enqueueAction(action);    
+        });
+        $A.enqueueAction(action);
     },
 
     getProductName : function(productId, availableProducts) {

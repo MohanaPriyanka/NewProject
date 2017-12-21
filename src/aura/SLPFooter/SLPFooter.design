@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="partnerFooter" label="Partner Footer" 
+                      description="Shows partner footer if checked (partnersupport@bluewavesolar.com), otherwise a customer footer (customercare@bluewavesolar.com)"/>
+</design:component>
