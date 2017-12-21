@@ -23,12 +23,10 @@ public with sharing class SystemBillPaymentRollUpHandler {
                                             Map<Id, ChargentOrders__Transaction__c> oldTransMap) { 
         List <ChargentOrders__Transaction__c> triggeredtransactions = new List <ChargentOrders__Transaction__c> ();
         for(ChargentOrders__Transaction__c chotran : chargentTransactions) {  
-            if (chotran.ChargentOrders__Recurring__c && !chotran.Distributed_Among_System_Bills__c) {
-                triggeredtransactions.add(chotran);
-            } else if(  !chotran.ChargentOrders__Recurring__c 
-                        && chotran.Distributed_Among_System_Bills__c
-                        && !oldTransMap.get(chotran.Id).Distributed_Among_System_Bills__c) {
-                triggeredtransactions.add(chotran);
+            if( !chotran.ChargentOrders__Recurring__c 
+                && chotran.Distributed_Among_System_Bills__c
+                && !oldTransMap.get(chotran.Id).Distributed_Among_System_Bills__c) {
+                    triggeredtransactions.add(chotran);
             }
         } 
         SystemBillPaymentRollUpHandler.rollUpPayments(triggeredtransactions);
@@ -39,16 +37,12 @@ public with sharing class SystemBillPaymentRollUpHandler {
         List <Id> chargentOrderIdsList = new List <Id>();
         List <String> propertyaccountIdsstring = new List <String>();
         Map <Id,Account> propaccountMap = new Map <Id,Account>();
-        List <System_Bill__c> groupedSystemBillsList = new List <System_Bill__c>();
         Map <Id,Account_Bill__c> accountBillMap = new Map <Id,Account_Bill__c>();
-
 
         List<System_Bill__c> finalGroupedSystemBillsToUpdate = new List<System_Bill__c>();
         List<Account_Bill__c> finalAccountBillsToUpdate = new List<Account_Bill__c>();
         List<Bill_Adjustment__c> finalAdjustmentsToInsertList = new List<Bill_Adjustment__c>();
 
-
-        
         for(ChargentOrders__Transaction__c trigtran : triggeredtransactions) {
             if(trigtran.Account_Bill_Id__c != NULL && trigtran.ChargentOrders__Response_Status__c == 'Approved') {    
                 chargentOrderIdsList.add(trigtran.ChargentOrders__Order__c);
@@ -84,6 +78,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
                 propaccountMap.put(prop.Id, prop);
             }
             for(ChargentOrders__Transaction__c chTransaction: triggeredtransactions) {
+                List<System_Bill__c> groupedSystemBillsList = new List <System_Bill__c>();
                 if(chTransaction.Account_Bill_ID__c != NULL && chtransaction.ChargentOrders__Response_Status__c == 'Approved') {
                     String parentID = chTransaction.Property_Account_ID__c;  
                     String entityId = chTransaction.Entity_ID__c;
