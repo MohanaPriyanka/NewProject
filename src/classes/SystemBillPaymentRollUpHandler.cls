@@ -44,7 +44,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
         List<Bill_Adjustment__c> finalAdjustmentsToInsertList = new List<Bill_Adjustment__c>();
 
         for(ChargentOrders__Transaction__c trigtran : triggeredtransactions) {
-            if(trigtran.Account_Bill_Id__c != NULL && trigtran.ChargentOrders__Response_Status__c == 'Approved') {    
+            if(trigtran.Account_Bill_Id__c != null && trigtran.ChargentOrders__Response_Status__c == 'Approved') {    
                 chargentOrderIdsList.add(trigtran.ChargentOrders__Order__c);
                 propertyaccountIdsstring.add(trigtran.Property_Account_ID__c);
             }  
@@ -79,7 +79,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
             }
             for(ChargentOrders__Transaction__c chTransaction: triggeredtransactions) {
                 List<System_Bill__c> groupedSystemBillsList = new List <System_Bill__c>();
-                if(chTransaction.Account_Bill_ID__c != NULL && chtransaction.ChargentOrders__Response_Status__c == 'Approved') {
+                if(chTransaction.Account_Bill_ID__c != null && chtransaction.ChargentOrders__Response_Status__c == 'Approved') {
                     String parentID = chTransaction.Property_Account_ID__c;  
                     String entityId = chTransaction.Entity_ID__c;
                     Decimal payment = chTransaction.ChargentOrders__Amount__c;
