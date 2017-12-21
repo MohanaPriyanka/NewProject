@@ -152,6 +152,7 @@ public without sharing class SLPAddCustomer {
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
+        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
 
         emailList.add(newLead.Email);
         emailList.add((String)profile.salesRepEmail);
@@ -160,8 +161,52 @@ public without sharing class SLPAddCustomer {
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];
 
         stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);
+        if (slpSettings.get(0).Allow_Users_to_Email_CAP_Applications__c) {
+            startApplicationUrl = 'https://cole-bluewavememberportal.cs23.force.com/apply/s/loan-application?email=' + newLead.Email + '&leadId=' + newLead.Id;
+        } else {
+            if (BlueWaveParent.getSLPortalCustomSetting().get(0).Require_IBLS_for_MSL_Loans__c) {
+                mslpUrlParametersMap.put('803', (String)profile.partnerId);
+                mslpUrlParametersMap.put('804', (String)profile.salesRepId);
+                mslpUrlParametersMap.put('805', emailList.get(0));
+                mslpUrlParametersMap.put('806', String.valueof(newLead.System_Cost__c));
+                mslpUrlParametersMap.put('807', String.valueof(loanAmount));
+                mslpUrlParametersMap.put('808', stateName);
+                mslpUrlParametersMap.put('809', 'SLPortal - Emailed Customer Phase 1 Application 381613');
+                if (newLead.Product__c != null) {
+                    mslpUrlParametersMap.put('810', newLead.Product__c);
+                }
+                mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381668', mslpUrlParametersMap);
+            } else {
+                mslpUrlParametersMap.put('648', (String)profile.partnerId);
+                mslpUrlParametersMap.put('649', (String)profile.salesRepId);
+                mslpUrlParametersMap.put('529', emailList.get(0));
+                mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
+                mslpUrlParametersMap.put('544', String.valueof(loanAmount));
+                mslpUrlParametersMap.put('574', stateName);
+                mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
+                if (newLead.Product__c != null) {
+                    mslpUrlParametersMap.put('796', newLead.Product__c);
+                }
+                mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
+            }
+            bwslUrlParametersMap.put('648', (String)profile.partnerId);
+            bwslUrlParametersMap.put('649', (String)profile.salesRepId);
+            bwslUrlParametersMap.put('529', emailList.get(0));
+            bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
+            bwslUrlParametersMap.put('544', String.valueof(loanAmount));
+            bwslUrlParametersMap.put('574', stateName);
+            bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
+            if (newLead.Product__c != null) {
+                bwslUrlParametersMap.put('803', newLead.Product__c);
+            }
+            bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        startApplicationUrl = 'https://cole-bluewavememberportal.cs23.force.com/apply/s/loan-application?email=' + newLead.Email + '&leadId=' + newLead.Id;
+            if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
+              startApplicationUrl = bwslUrl;
+            } else if (newLead.Product_Program__c == 'MSLP') {
+              startApplicationUrl = mslpUrl;
+            }
+        }
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
