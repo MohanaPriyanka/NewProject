@@ -65,7 +65,7 @@ public without sharing class BlueWaveParent {
     @AuraEnabled
     public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) {
         String description = '';
-        Id fileUploaded = saveTheChunkWithDescription(parentId, fileName, base64Data, contentType, description, NULL, fileId);
+        Id fileUploaded = saveTheChunkWithDescription(parentId, fileName, base64Data, contentType, description, null, fileId);
         return fileUploaded;
     }
 
@@ -73,7 +73,7 @@ public without sharing class BlueWaveParent {
     public static Id saveTheChunkWithDescription(Id parentId, String fileName, String base64Data, String contentType, String description,  String emailNotification, String fileId) {
         if (fileId == '') {
             fileId = saveTheFile(parentId, fileName, base64Data, contentType, description);
-            if (emailNotification != NULL){
+            if (emailNotification != null){
                 String emailBody = 'A file has been uploaded'+  
                                     + '<br>  Parent Id: ' + parentId 
                                     + '<br>  File Name: ' + fileName;
