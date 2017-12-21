@@ -53,6 +53,7 @@
     createLeadAndSendApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
+        newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
         var availableProducts = component.get("v.availableProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
@@ -61,8 +62,7 @@
             if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
                 delete newLead.Product__c;
             }
-            helper.removeButtonsAndShowSpinner(component, event, helper);
-            helper.emailApplication(component, event, helper, downPayment, newLead);
+            helper.createLead(component, event, helper, downPayment, newLead);
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;

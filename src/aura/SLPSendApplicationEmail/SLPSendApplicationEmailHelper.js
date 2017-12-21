@@ -1,9 +1,11 @@
 ({
     errorsInForm : function(component, helper, lead) {
         var errorMessage = "";
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");        
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, true, true, false, "Please provide this applicant's expected system cost.", "standard");        
-        
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, 50, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "firstNameElement", "shake", null, 30, true, true, true, "Please enter a valid first name. The first name you entered is: " + lead.FirstName, "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "lastNameElement", "shake", null, 30, true, true, true, "Please enter a valid last name. The last name you entered is: " + lead.lastName, "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, true, true, false, "Please provide this applicant's expected system cost.", "standard");
+   
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
             errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";
@@ -39,6 +41,20 @@
         $A.util.addClass(component.find('sendEmailModalButtons'), 'noDisplay');
         this.startSpinner(component, "emailSpinner");
     }, 
+
+    createLead : function(component, event, helper, downPayment, newLead) {
+        var action = component.get("c.addNewLeadRecord");
+        action.setParams({newLead : newLead});
+        action.setCallback(this,function(resp){
+            if (resp.getState() == 'SUCCESS') {
+                this.emailApplication(component, event, helper, downPayment, resp.getReturnValue());
+            } else {
+                helper.logError("SLPSendApplicationEmailEvent", "createLead", resp.getError(), resp.getReturnValue());
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(action);
+    },
 
     emailApplication : function(component, event, helper, downPayment, newLead) {
         var action = component.get("c.sendApplication");
