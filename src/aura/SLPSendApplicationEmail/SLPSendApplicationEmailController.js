@@ -75,10 +75,14 @@
 
     setProductProgram : function(component, event, helper) {
         const newLead = component.get('v.newLead');
-        console.log(newLead);
         const availableProducts = component.get("v.availableProducts");
+        var productProgram = helper.getProductProgram(availableProducts, newLead.Product__c)
+
         if (newLead.Product__c) {
-            component.set('v.productProgram', helper.getProductProgram(availableProducts, newLead.Product__c));
+            component.set('v.productProgram', productProgram);
+            if (productProgram == 'MSLP') {
+                component.set('v.newLead.DOER_Solar_Loan__c', true);
+            }
         } else {
             component.set('v.productProgram', '');
         }

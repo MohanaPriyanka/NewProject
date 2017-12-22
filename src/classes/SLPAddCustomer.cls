@@ -19,12 +19,10 @@ public without sharing class SLPAddCustomer {
         RecordType leadRecordType;
         String recordType;
         String productProgram;
-        if (newLead.DOER_Solar_Loan__c) {
+        if (newLead.Product_Program__c == 'MSLP') {
             recordType = 'BFG - DOER Solar Loan';
-            productProgram = 'MSLP';
         } else {
             recordType = 'BlueWave Solar Loan';
-            productProgram = 'BlueWave Solar Loan';
         }
 
         leadRecordType = [SELECT Id
@@ -39,7 +37,6 @@ public without sharing class SLPAddCustomer {
         newLead.Company = propertyString;
         newLead.Email_Re_Enter__c = newLead.Email;
         newLead.Application_Source_Phase_1__c = 'SLPortal Phase 1 Application';
-        newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
         newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
