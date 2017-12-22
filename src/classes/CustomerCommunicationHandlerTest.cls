@@ -188,8 +188,8 @@ public class CustomerCommunicationHandlerTest{
             uasTwo.Customer_Subscription_KW_DC_STATIC__c = 5;
             update new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};  
 
-            createBills(System.Today() - 110, sss1.Id); // 30 days late
-            createBills(System.Today() - 50, sss2.Id); // 90 days late
+            createBills(System.Today() - 110, sss1.Id); // 90 days late
+            createBills(System.Today() - 50, sss2.Id); // 30 days late
             createBills(System.Today() - 17, sss3.Id); // 3 day warning
 
             List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
