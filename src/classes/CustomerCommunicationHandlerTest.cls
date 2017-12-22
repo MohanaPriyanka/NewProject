@@ -238,5 +238,7 @@ public class CustomerCommunicationHandlerTest{
         System.AssertEquals(dt.hour(), ct.NextFireTime.hour());
         System.AssertEquals(dt.day(), ct.NextFireTime.day());
         System.AssertEquals(dt.month(), ct.NextFireTime.month());
+
+        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     } 
  }
