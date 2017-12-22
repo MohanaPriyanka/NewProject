@@ -110,10 +110,14 @@
                 disbursal. To continue:
               </aura:set>
             </aura:if>
-            <ol>
+            <ol class="slds-m-top_small">
               <li>Select the loan the applicant is applying for</li>
               <li>Email the application or continue the application in a new tab</li>
             </ol>
+            <div class="slds-text-longform">
+              The terms of loans we offer you will be based on your creditworthiness and other factors. 
+              We will send you more information via email.
+            </div>
           </div>
           <hr></hr>
           <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
