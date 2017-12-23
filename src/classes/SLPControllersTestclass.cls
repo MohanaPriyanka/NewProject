@@ -600,8 +600,8 @@ public without sharing class SLPControllersTestclass {
 
         System.runAs(partnerUser) {
             List<SLPortal_Settings__c> customSetting = BlueWaveParent.getSLPortalCustomSetting();
-            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', '');
-            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', newFileId);
+            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com','');
+            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com', newFileId);
 
             List<Attachment> attachList = [SELECT Id, Body
                                             FROM Attachment
