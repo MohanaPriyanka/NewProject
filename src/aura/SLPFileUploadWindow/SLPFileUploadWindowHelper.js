@@ -136,6 +136,7 @@
                 contentType: file.type,
                 fileType: newFileName,
                 description: descriptionValue,
+                emailNotification: 'solarloans@bluewavesolar.com',
                 fileId : attachID,
             });
             var self = this;

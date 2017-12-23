@@ -70,7 +70,6 @@ public with sharing class LeadTriggerHandler {
         opp.Co_Applicant_Income__c = lead.Co_Applicant_Income__c;
         opp.Co_Applicant_Last_Name__c = lead.Co_Applicant_Last_Name__c;
         opp.Co_Applicant_Phone__c = lead.Co_Applicant_Phone__c;
-        opp.Co_Applicant_Social_Security__c = lead.Co_Applicant_Social_Security__c;
         opp.Commencement_Date__c = lead.Commencement_Date__c;
         opp.Cumulative_Loan_to_Value__c = lead.Cumulative_Loan_to_Value_if_Applicable__c;
         opp.Customer_Referral__c = lead.Customer_Referral__c;
@@ -94,7 +93,6 @@ public with sharing class LeadTriggerHandler {
         opp.Income_Type_2__c = lead.Income_Type_2__c;
         opp.Is_Loan_Secured__c = lead.Is_Loan_Secured__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
-        opp.License_Number__c = lead.License_Number__c;
         opp.Lived_at_residence_more_than_six_months__c = lead.Lived_Residence_Six_Months__c;   
         opp.Loan_Program_Class__c = lead.Loan_Program_Class__c;
         opp.Loan_Principle__c  = lead.System_Cost__c;       

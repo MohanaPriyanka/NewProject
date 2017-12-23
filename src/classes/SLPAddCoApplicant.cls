@@ -86,7 +86,6 @@ public without sharing class SLPAddCoApplicant {
         mainApplicant.Co_Applicant_First_Name__c = newContact.FirstName;
         mainApplicant.Co_Applicant_Last_Name__c = newContact.LastName;
         mainApplicant.Co_Applicant_Email__c = newContact.Email;
-        mainApplicant.Co_Applicant_Social_Security__c = newContact.LASERCA__Social_Security_Number__c  ;
         mainApplicant.Co_Applicant_Income__c = newContact.Income__c;
         mainApplicant.Co_Applicant_Date_of_Birth__c = newContact.LASERCA__Co_Applicant_DOB__c ;
         mainApplicant.Co_Applicant_Address__c = concatenatedAddress;
