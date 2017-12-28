@@ -13,7 +13,7 @@
             src: url('{!$Resource.ProximaNova}');
         }
         .proximaNova {
-            font-family: proximaNovaFont;    am
+            font-family: proximaNovaFont;    
       		color: #266092;
         }
       
