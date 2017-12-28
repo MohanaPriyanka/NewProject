@@ -156,12 +156,12 @@
 
     changeApplicationToBWSL : function(component, event, helper) {
         alert('You are being redirected to apply for a standard BlueWave Solar Loan');
-        helper.toggleMSLP(component, event, helper, true);
+        helper.toggleMSLP(component, event, helper, false);
         component.set('v.page', 'IndividualOrJoint');
     },
 
     setToMSLPEligible : function(component, event, helper) {
-        helper.toggleMSLP(component, event, helper, false);
+        helper.toggleMSLP(component, event, helper, true);
         component.set('v.page', 'IndividualOrJoint');
     },
 })
