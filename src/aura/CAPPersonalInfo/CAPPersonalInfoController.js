@@ -2,18 +2,23 @@
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
         if (options) {
+            const lead =  event.getParam("lead");
             if (options.pageName) {
                 helper.handleNavEvent(component, event, helper, options.pageName);
+            } else if (lead.Product_Program__c == 'MSLP') {
+                helper.handleNavEvent(component, event, helper, 'iblsQualification');
             } else {
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
             if (options.coSigner) {
                 component.set('v.coSigner', true);
             }
+        } else if (lead.Product_Program__c == 'MSLP') {
+            helper.handleNavEvent(component, event, helper, 'iblsQualification');
         } else {
             helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
         }
-        const lead = component.get('v.lead');
+        const lead =  component.get('v.lead');
         if (event.getParam('eventType') === 'LOCKPI' ||
             event.getParam('eventType') === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report__c)) {
@@ -144,5 +149,16 @@
 
     finishStage : function(component, event, helper) {
         helper.finishStage(component, event, helper);
+    },
+
+    changeApplicationToBWSL : function(component, event, helper) {
+        alert('You are being redirected to apply for a standard BlueWave Solar Loan');
+        helper.toggleMSLP(component, event, helper, true);
+        component.set('v.page', 'IndividualOrJoint');
+    },
+
+    setToMSLPEligible : function(component, event, helper) {
+        helper.toggleMSLP(component, event, helper, false);
+        component.set('v.page', 'IndividualOrJoint');
     },
 })
