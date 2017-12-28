@@ -1,30 +1,33 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
-        if (options) {
-            const lead =  event.getParam("lead");
-            if (options.pageName) {
-                helper.handleNavEvent(component, event, helper, options.pageName);
-            } else if (lead.Product_Program__c == 'MSLP') {
+        var eventType = event.getParam('eventType');
+        if(eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT') {
+            const leadVar =  event.getParam("lead");
+            if (options) {
+                if (options.pageName) {
+                    helper.handleNavEvent(component, event, helper, options.pageName);
+                } else if (leadVar.Product_Program__c == 'MSLP') {
+                    helper.handleNavEvent(component, event, helper, 'iblsQualification');
+                } else {
+                    helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
+                }
+                if (options.coSigner) {
+                    component.set('v.coSigner', true);
+                }
+            } else if (leadVar.Product_Program__c === 'MSLP') {
                 helper.handleNavEvent(component, event, helper, 'iblsQualification');
             } else {
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
-            if (options.coSigner) {
-                component.set('v.coSigner', true);
-            }
-        } else if (lead.Product_Program__c == 'MSLP') {
-            helper.handleNavEvent(component, event, helper, 'iblsQualification');
-        } else {
-            helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
         }
         const lead =  component.get('v.lead');
-        if (event.getParam('eventType') === 'LOCKPI' ||
-            event.getParam('eventType') === 'LOCKJOINT' ||
+        if (eventType === 'LOCKPI' ||
+            eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report__c)) {
             component.set('v.piLocked', true);
         }
-        if (event.getParam('eventType') === 'LOCKJOINT' ||
+        if (eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report_Co_Applicant__c)) {
             component.set('v.coAppLocked', true);
         }
