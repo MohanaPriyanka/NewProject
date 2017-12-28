@@ -70,18 +70,31 @@ public with sharing class AccountBillHandler{
                                                 FROM System_Bill__c 
                                                 WHERE Account_Bill__c IN : accountToABMap.keySet()
                                                 GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Name, 
-                                                Account_Bill__r.Id];
+                                                Account_Bill__r.Id
+                                                ORDER BY SUM(Total_Due__c) DESC];
 
         for (AggregateResult lineItem : checkAddress)  {
             checkLine = '';
             if (accountToABMap.containsKey((Id)lineItem.get('abID'))) {
                 Id accountId = accountToABMap.get((Id)lineItem.get('abID'));
+                Decimal lineItemDue = ((Decimal)lineItem.get('TotalDue')).setScale(2);
+
                 if ( !acctToFieldMap.containsKey(accountId)) {
-                    checkLine = 'Make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' +  ((Decimal)lineItem.get('TotalDue')).setScale(2);
-                    acctToFieldMap.put(accountId , checkLine );
+                    if (lineItemDue < 0.01) {
+                        checkLine = 'No Payment Due';
+                        acctToFieldMap.put(accountId , checkLine);
+                    } else {
+                        checkLine = 'Make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + lineItemDue;
+                        acctToFieldMap.put(accountId , checkLine);
+                    }
                 } else {
-                    checkLine = acctToFieldMap.get(accountId) + ', make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + ((Decimal)lineItem.get('TotalDue')).setScale(2);
-                    acctToFieldMap.put(accountId , checkLine); 
+                    if (lineItemDue < 0.01) {
+                        checkLine = acctToFieldMap.get(accountId) + ' ';
+                        acctToFieldMap.put(accountId , checkLine);
+                    } else {
+                        checkLine = acctToFieldMap.get(accountId) + ', make one check out to ' + (String)lineItem.get('ProjectCompany') + ' for $' + lineItemDue;
+                        acctToFieldMap.put(accountId , checkLine); 
+                    }
                 }
             }
         }
