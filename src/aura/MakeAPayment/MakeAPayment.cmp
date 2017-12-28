@@ -4,7 +4,8 @@
   <aura:attribute name="menuLabels" type="Account" />
   <aura:attribute name="SystemBills" type="Decimal" />
   <aura:attribute name="AccountBills" type="Object" /> 
-  <aura:attribute name="PaymentLogs" type="Object" />    
+  <aura:attribute name="PaymentLogs" type="Object" />  
+  <aura:attribute name="recurringCheck" type="Boolean" />   
   <aura:attribute name="paymentURL" type="String" /> 
   <style type="text/css">
         @font-face {
@@ -12,7 +13,7 @@
             src: url('{!$Resource.ProximaNova}');
         }
         .proximaNova {
-            font-family: proximaNovaFont;    
+            font-family: proximaNovaFont;    am
       		color: #266092;
         }
       
@@ -56,59 +57,63 @@
     <br /><br />
     <b><h3 class="proximaNova"> Current Balance Due: </h3></b>           
     <div><h2 class="myBill proximaNovaBlack "><ui:outputCurrency value="{!v.myBill}" /></h2><br /><br /><br /><br /> </div> 
-    <div><a href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
-                  	  'tfa_799=' + v.myBill + '&amp;' +
-                  
-                  	  'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
-                  	  'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
-                  	  'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
-                  	  'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
-                  
-                      'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
-                  	  'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
-                      'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
-                  	  'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
-                  
-                  	  'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
-                  	  'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
-                      'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
-                  	  'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
-                                        
-                      'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
-                  	  'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
-                      'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
-                  	  'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
-                  
-                      'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
-                  	  'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
-                      'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
-                  	  'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
-                  
-                      'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
-                  	  'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
-                      'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
-                  	  'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
-                  
-                      'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
-                  	  'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
-                      'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
-                  	  'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
-                  
-                      'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
-                  	  'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
-                      'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
-                  	  'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
-                  
-                  	  'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
-                  	  'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
-                      'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
-                  	  'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}"     
-            
-                target="_blank">
-        <div aura:id="paymentButton" class="proximaNovaWhite notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Make a payment</div>
-        </a>         
-    </div>
-    <b><h3 aura:id="recurringNotification" class="proximaNova noDisplay"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100 </h3></b>          
+    <aura:if isTrue="(!v.recurringCheck}">
+      <b><h3 aura:id="recurringNotification" class="proximaNova"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100 </h3></b>  
+    <aura:set attribute="else">
+      <div><a href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
+                    	  'tfa_799=' + v.myBill + '&amp;' +
+                    
+                    	  'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
+                    	  'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
+                    	  'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
+                    	  'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
+                    
+                        'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
+                    	  'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
+                        'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
+                    	  'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
+                    
+                    	  'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
+                    	  'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
+                        'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
+                    	  'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
+                                          
+                        'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
+                    	  'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
+                        'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
+                    	  'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
+                    
+                        'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
+                    	  'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
+                        'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
+                    	  'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
+                    
+                        'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
+                    	  'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
+                        'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
+                    	  'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
+                    
+                        'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
+                    	  'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
+                        'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
+                    	  'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
+                    
+                        'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
+                    	  'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
+                        'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
+                    	  'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
+                    
+                    	  'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
+                    	  'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
+                        'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
+                    	  'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}"     
+              
+                  target="_blank">
+          <div aura:id="paymentButton" class="proximaNovaWhite notification box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Make a payment</div>
+          </a>         
+      </div>
+    </aura:set> 
+  </aura:if>        
 	<br></br>
     <br></br>
     <b><h3 class="proximaNova"> My Statements: </h3>   </b> 
