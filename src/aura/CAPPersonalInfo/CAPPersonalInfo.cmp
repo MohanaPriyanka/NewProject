@@ -13,6 +13,7 @@
   <aura:attribute name="piLocked" type="Boolean" default="false"
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
+  <aura:attribute name="bwslTransferAlert" type="Boolean"/>
   <lightning:overlayLibrary aura:id="overlayLib"/>
 
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
@@ -33,7 +34,7 @@
             <p class="proximaNovaDataBlue">You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.  Household income refers to the income of all household members as reported on line 22 of their most recently filed tax return (Tax Return Form 1040) accepted by the IRS. Household size includes any person occupying the system owner’s household. For a project seeking IBLS, all borrowers who will be present on the program loan should be included as household members.</p>
             <div class="proximaNovaStream slds-m-top_small"> <b><h3>Select your category:</h3></b> </div>
             <div class="slds-size_1-of-3">
-              <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}">
+              <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}" disabled="{!v.piLocked}">
                 <ui:inputSelectOption label="Select" text="No Category Selected"/>
                 <ui:inputSelectOption label="Category 1 (Less than 80% of State Median Household Income)" text="Category 1"/>
                 <ui:inputSelectOption label="Category 2 (80% - 120% of State Median Household Income)" text="Category 2"/>
@@ -71,8 +72,8 @@
         </div>
       </aura:if>
       <aura:if isTrue="{!v.lead.IBLS_Category__c != 'No Category Selected'}">
-        <div aura:id="checkEligibilityButton" class="slds-m-bottom_small slds-m-top_medium slds-m-left_xx-small">
-          <ui:button label="{!v.lead.IBLS_Category__c=='None'?'Apply for a BlueWave Solar Loan':'Continue this application'}" class="slds-button slds-button--brand" press="{!v.lead.IBLS_Category__c=='None'?c.changeApplicationToBWSL:c.setToMSLPEligible}"></ui:button>
+        <div aura:id="checkEligibilityButton" class="slds-m-bottom_small slds-m-top_medium slds-m-left_small">
+          <ui:button label="{!v.lead.IBLS_Category__c=='None'?'Apply for a BlueWave Solar Loan':'Continue this application'}" class="slds-button slds-button--brand" press="{!v.lead.IBLS_Category__c=='None'?c.openBWSLTransferAlert:c.setToMSLPEligible}"></ui:button>
         </div>
       </aura:if>
     </fieldset>
@@ -82,6 +83,28 @@
     </div>
   </aura:if>
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
+
+    <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
+    <aura:if isTrue="{!v.bwslTransferAlert}">  
+      <section aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header slds-theme_warning">
+            <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
+          </header>
+          <div class="slds-modal__content slds-p-around_medium">
+            <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
+            <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
+            If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
+          </div>
+          <footer class="slds-modal__footer">
+            <ui:button label="Continue" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}"></ui:button>
+            <ui:button label="Go Back" class="slds-button slds-button--brand" press="{!c.closeBWSLTransferAlert}"></ui:button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
 
   <!-- INDIVIDUAL OR JOINT -->
   <aura:if isTrue="{!v.page == 'IndividualOrJoint'}">

@@ -2,7 +2,7 @@
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
         var eventType = event.getParam('eventType');
-        if(eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT') {
+        if(eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT' && eventType !== 'LORCHANGE') {
             const leadVar =  event.getParam("lead");
             if (options) {
                 if (options.pageName) {
@@ -154,8 +154,16 @@
         helper.finishStage(component, event, helper);
     },
 
+    openBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', true);
+    },
+
+    closeBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', false);
+    },
+
     changeApplicationToBWSL : function(component, event, helper) {
-        alert('You are being redirected to apply for a standard BlueWave Solar Loan');
+        component.set('v.bwslTransferAlert', false);
         helper.toggleMSLP(component, event, helper, false);
         component.set('v.page', 'IndividualOrJoint');
     },
