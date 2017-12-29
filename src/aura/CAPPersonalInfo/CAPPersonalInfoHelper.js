@@ -124,7 +124,8 @@
         // Make a copy of the lead to update, since we can't update child objects
         // like CoApplicant_Contact
         var lead = component.get("v.lead");
-        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application'
+        helper.finishLead(lead);
+        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application';
         if (lead.LASERCA__SSN__c) {
             lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         }
@@ -211,6 +212,16 @@
             leadPromise.then($A.getCallback(function resolve(value) {
                 helper.finishPage(component, event, helper, options);
             }));
+        }
+    },
+
+    // Need to set the Status in order for the PCRApprovalHandler to pull credit (skips it if it's "Unfinished")
+    finishLead : function(lead) {
+        if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
+            if ((lead.Application_Type__c === 'Individual') ||
+                (lead.Application_Type__c === 'Joint' && lead.CoApplicant_Contact__r.LASERCA__SSN__c)) {
+                lead.Status = 'Ready for Credit Check';
+            }
         }
     },
 

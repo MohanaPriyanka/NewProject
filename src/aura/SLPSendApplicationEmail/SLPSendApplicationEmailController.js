@@ -2,7 +2,7 @@
     doInit: function(component, event, helper) {
         var action = component.get("c.getPartnerRecord");
         action.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
+            if (resp.getState() === 'SUCCESS') {
                 var partner = resp.getReturnValue();
                 component.set("v.partnerRecord", partner);
                 if (partner.Accounts__r[0] &&
@@ -22,7 +22,7 @@
         $A.util.removeClass(component.find('emailForm'), 'noDisplay');
 
         var modalToggle = event.getParam("openModal");
-        if (modalToggle == "openModal") {
+        if (modalToggle === "openModal") {
             helper.openModal(component, "emailCustomerModal");
         }
 
@@ -66,7 +66,6 @@
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
-            return;
         }
     },
 
@@ -82,7 +81,7 @@
 
         if (newLead.Product__c) {
             component.set('v.productProgram', productProgram);
-            if (productProgram == 'MSLP') {
+            if (productProgram === 'MSLP') {
                 component.set('v.newLead.DOER_Solar_Loan__c', true);
             }
         } else {

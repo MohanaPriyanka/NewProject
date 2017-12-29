@@ -44,7 +44,6 @@
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
         $A.util.removeClass(component.find(divToShow), 'noDisplay');
         helper.stopSpinner(component, 'creditSpinner');
-        console.log("poller from hccr: " + component.get("v.creditStatusPoller"));
         window.clearInterval(component.get("v.creditStatusPoller"));
         window.clearTimeout(component.get("v.creditStatusTimeoutID"));
     },
