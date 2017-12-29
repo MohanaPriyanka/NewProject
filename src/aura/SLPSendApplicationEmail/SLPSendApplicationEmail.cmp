@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCustomer" access="global">
-  <ltng:require styles="{!$Resource.animations}" /> 
+  <ltng:require styles="{!$Resource.animations}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.openEmailCustomerModal}" />
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/>
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
@@ -23,16 +24,10 @@
     'Product__c':'',
     'DOER_Solar_Loan__c':'',
     }"/>  
-  <div id="emailCustomerModal" aura:id="emailCustomerModal" class="slds-modal slds-fade-in-hide box">
-    <div aura:id="emailCustomerModal2" class="slds-modal__container">
-      <div class="slds-modal__header blueBackground">
-        <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
-          <span class="slds-assistive-text">Send Email</span>
-        </button>
-        <h2 class="slds-text-heading--medium proximaNovaWhite"> Send Application</h2>
-      </div>  
+  <div id="emailCustomerModal" aura:id="emailCustomerModal">
+    <div aura:id="emailCustomerModal2">
       <div aura:id="emailForm">
-        <div class="slds-modal__content slds-p-around--medium">
+        <div>
           <aura:if isTrue="{!v.disableOrigination}">
             <div class="proximaNovaBlue">
               {!$Label.c.SLP_Disabled}
@@ -142,17 +137,16 @@
         </div>
       </div>
       <div aura:id="emailConfirmation" class="noDisplay">
-        <div class="slds-modal__content slds-p-around--medium">
+        <div class="slds-p-around--medium">
           <div class="slds-align--absolute-center ">
-            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The email has been sent, thank you! </b></p>
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"><b>The email has been sent, thank you!</b></p>
           </div>
         </div>
       </div>
-      <div class="slds-modal__footer">
-        <div aura:id="sendEmailModalButtons">
-          <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>
+      <div>
+        <div aura:id="sendEmailModalButtons" class="slds-float_right">
           <aura:if isTrue="{!not(v.disableOrigination)}">
-            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"></lightning:button>
+            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"/>
           </aura:if>
         </div>
         <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>

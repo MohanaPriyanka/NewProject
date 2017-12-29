@@ -1,5 +1,5 @@
 ({
-    openEmailCustomerModal: function(component, event, helper) {
+    doInit: function(component, event, helper) {
         var action = component.get("c.getPartnerRecord");
         action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
@@ -10,7 +10,7 @@
                     component.set("v.disableOrigination", true);
                 }
             } else {
-                helper.logError("SLPSendApplicationEmailController", "openEmailCustomerModal", resp.getError());
+                helper.logError("SLPSendApplicationEmailController", "doInit", resp.getError());
             }
         });    
         $A.enqueueAction(action);    
