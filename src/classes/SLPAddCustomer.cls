@@ -159,7 +159,8 @@ public without sharing class SLPAddCustomer {
 
         stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);
         if (slpSettings.get(0).Allow_Users_to_Email_CAP_Applications__c) {
-            startApplicationUrl = 'https://cole-bluewavememberportal.cs23.force.com/apply/s/loan-application?email=' + newLead.Email + '&leadId=' + newLead.Id;
+            String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+            startApplicationUrl = host + 'apply/s/loan-application?leadId=' + newLead.Id;
         } else {
             if (BlueWaveParent.getSLPortalCustomSetting().get(0).Require_IBLS_for_MSL_Loans__c) {
                 mslpUrlParametersMap.put('803', (String)profile.partnerId);

@@ -2,7 +2,7 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="email" type="String"/>
-  <c:LightningErrorHandler />
+  <c:LightningErrorHandler/>
   <c:CAPStart supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}" page="Login"/>
   <c:CAPPersonalInfo supressWaiting="true"/>
   <c:CAPCreditCheck supressWaiting="true"/>
