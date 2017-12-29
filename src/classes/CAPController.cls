@@ -160,4 +160,9 @@ public without sharing class CAPController {
 
         return productList;
     }
+
+    @AuraEnabled
+    public static List<Product2> getProducts(String state, String productType) {
+        return Util.getActiveProducts(new List<String>{state}, null, productType);
+    }
 }
