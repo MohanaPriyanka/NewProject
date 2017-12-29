@@ -53,6 +53,7 @@
     createLeadAndSendApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
+        newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
         var availableProducts = component.get("v.availableProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
@@ -61,8 +62,8 @@
             if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
                 delete newLead.Product__c;
             }
-            helper.removeButtonsAndShowSpinner(component, event, helper);
-            helper.emailApplication(component, event, helper, downPayment, newLead);
+            helper.createLead(component, event, helper, downPayment, newLead);
+            $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
@@ -75,10 +76,14 @@
 
     setProductProgram : function(component, event, helper) {
         const newLead = component.get('v.newLead');
-        console.log(newLead);
         const availableProducts = component.get("v.availableProducts");
+        var productProgram = helper.getProductProgram(availableProducts, newLead.Product__c)
+
         if (newLead.Product__c) {
-            component.set('v.productProgram', helper.getProductProgram(availableProducts, newLead.Product__c));
+            component.set('v.productProgram', productProgram);
+            if (productProgram == 'MSLP') {
+                component.set('v.newLead.DOER_Solar_Loan__c', true);
+            }
         } else {
             component.set('v.productProgram', '');
         }

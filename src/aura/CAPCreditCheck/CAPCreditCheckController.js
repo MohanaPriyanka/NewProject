@@ -36,8 +36,10 @@
         action.setParams({"lead" : lead});
         action.setCallback(this, function(resp) {
             if (lead.Application_Type__c === 'Joint') {
+                console.log('check8');
                 helper.raiseNavEvent('LOCKJOINT');
             } else {
+                console.log('check9');
                 helper.raiseNavEvent('LOCKPI');
             }
             if(resp.getState() == "SUCCESS") {

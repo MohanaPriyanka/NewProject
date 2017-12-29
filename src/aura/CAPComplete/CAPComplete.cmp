@@ -1,0 +1,19 @@
+<aura:component description="CAPComplete" controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:set attribute="STAGENAME" value="NAV_Complete"/>
+  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+
+  <aura:if isTrue="{!v.page == 'Complete'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+                  {!$Label.c.CD_Finished}
+          </div>
+          <div class="slds-form-element__control slds-p-top--small">
+                  {!$Label.c.CD_Finished_Questions}
+          </div>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+</aura:component>

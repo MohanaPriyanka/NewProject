@@ -13,11 +13,15 @@
   <aura:attribute name="iblsRequired" type="Boolean"/>
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
+    'FirstName': '',
+    'LastName': '',
     'LASERCA__Home_State__c': '',
     'Email': '',
     'Product_Program__c': '',
+    'Requested_Loan_Amount__c':'',
     'System_Cost__c':'',
     'Product__c':'',
+    'DOER_Solar_Loan__c':'',
     }"/>  
   <div id="emailCustomerModal" aura:id="emailCustomerModal" class="slds-modal slds-fade-in-hide box">
     <div aura:id="emailCustomerModal2" class="slds-modal__container">
@@ -37,6 +41,20 @@
               <div class="slds-tabs--default">
                 <fieldset class="slds-form--compound slds-m-top_small">
                   <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
+                  <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                      <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
+                        <label class="slds-form-element__label proximaNovaBlue"> <b>First Name</b> </label>
+                        <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
+                      </div>
+                      <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
+                        <label class="slds-form-element__label proximaNovaBlue"> <b>Last Name</b> </label>
+                        <ui:inputText aura:id="lastName" class="slds-input" value="{!v.newLead.LastName}"  />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="slds-form--compound ">
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
