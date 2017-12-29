@@ -70,7 +70,8 @@
     },
 
     getAvailableProducts : function(component, event, helper) {
-        helper.getAvailableProducts(component, event, helper);
+        helper.getAvailableLoanProducts(component, event, helper);
+        helper.getAvailableSRECProducts(component, event, helper);
     },
 
     setProductProgram : function(component, event, helper) {

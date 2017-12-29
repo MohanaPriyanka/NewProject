@@ -94,14 +94,29 @@
         component.set('v.availableProducts', null);
     },
 
-    getAvailableProducts : function(component, event, helper) { 
+    getAvailableLoanProducts : function(component, event, helper) { 
         var action = component.get("c.getProducts");
-        action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c")});
+        action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c"),
+                          productType: 'Residential Loan'});
         action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
-                component.set("v.availableProducts", resp.getReturnValue());
+                component.set("v.availableLoanProducts", resp.getReturnValue());
             } else {
-                helper.logError("SLPSendApplicationEmailController", "availableProducts", resp.getError());
+                helper.logError("SLPSendApplicationEmailController", "availableLoanProducts", resp.getError());
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+    getAvailableSRECProducts : function(component, event, helper) { 
+        var action = component.get("c.getProducts");
+        action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c"),
+                          productType: 'SREC'});
+        action.setCallback(this,function(resp){
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.availableSRECProducts", resp.getReturnValue());
+            } else {
+                helper.logError("SLPSendApplicationEmailController", "availableSRECProducts", resp.getError());
             }
         });
         $A.enqueueAction(action);
