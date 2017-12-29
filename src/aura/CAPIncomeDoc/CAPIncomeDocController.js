@@ -1,7 +1,6 @@
 ({
     handleNavEvent : function(component, event, helper) {
         helper.handleNavEvent(component, event, helper, 'EmployedQuestion');
-        // helper.handleNavEvent(component, event, helper, 'GetTaxReturns');
         if (event.getParam("eventType") === "INITIATED" &&
             event.getParam("stageName") === component.get("v.STAGENAME")) {
             helper.parseAttachments(component, helper);
