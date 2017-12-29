@@ -124,6 +124,7 @@
         // Make a copy of the lead to update, since we can't update child objects
         // like CoApplicant_Contact
         var lead = component.get("v.lead");
+        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application'
         if (lead.LASERCA__SSN__c) {
             lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         }
@@ -237,4 +238,15 @@
         }
     },
 
+    toggleMSLP : function(component, event, helper, mslp) {
+      var lead = component.get('v.lead');
+        if (mslp) {
+          lead.Product_Program__c = 'MSLP';
+          lead.DOER_Solar_Loan__c = true;
+        } else {
+          lead.Product_Program__c = 'BlueWave Solar Loan';
+          lead.DOER_Solar_Loan__c = false;
+        }
+      component.set('v.lead', lead);
+    },
 })

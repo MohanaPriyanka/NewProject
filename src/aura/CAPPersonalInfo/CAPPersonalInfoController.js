@@ -1,25 +1,33 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
-        if (options) {
-            if (options.pageName) {
-                helper.handleNavEvent(component, event, helper, options.pageName);
+        var eventType = event.getParam('eventType');
+        if(eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT' && eventType !== 'LORCHANGE') {
+            const leadVar =  event.getParam("lead");
+            if (options) {
+                if (options.pageName) {
+                    helper.handleNavEvent(component, event, helper, options.pageName);
+                } else if (leadVar.Product_Program__c == 'MSLP') {
+                    helper.handleNavEvent(component, event, helper, 'iblsQualification');
+                } else {
+                    helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
+                }
+                if (options.coSigner) {
+                    component.set('v.coSigner', true);
+                }
+            } else if (leadVar.Product_Program__c === 'MSLP') {
+                helper.handleNavEvent(component, event, helper, 'iblsQualification');
             } else {
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
-            if (options.coSigner) {
-                component.set('v.coSigner', true);
-            }
-        } else {
-            helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
         }
-        const lead = component.get('v.lead');
-        if (event.getParam('eventType') === 'LOCKPI' ||
-            event.getParam('eventType') === 'LOCKJOINT' ||
+        const lead =  component.get('v.lead');
+        if (eventType === 'LOCKPI' ||
+            eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report__c)) {
             component.set('v.piLocked', true);
         }
-        if (event.getParam('eventType') === 'LOCKJOINT' ||
+        if (eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report_Co_Applicant__c)) {
             component.set('v.coAppLocked', true);
         }
@@ -144,5 +152,24 @@
 
     finishStage : function(component, event, helper) {
         helper.finishStage(component, event, helper);
+    },
+
+    openBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', true);
+    },
+
+    closeBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', false);
+    },
+
+    changeApplicationToBWSL : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', false);
+        helper.toggleMSLP(component, event, helper, false);
+        component.set('v.page', 'IndividualOrJoint');
+    },
+
+    setToMSLPEligible : function(component, event, helper) {
+        helper.toggleMSLP(component, event, helper, true);
+        component.set('v.page', 'IndividualOrJoint');
     },
 })

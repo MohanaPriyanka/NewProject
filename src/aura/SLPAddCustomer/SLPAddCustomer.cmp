@@ -110,7 +110,7 @@
                     <div aura:id="iblsCategory" class="slds-form-element slds-m-bottom_xx-small slds-p-horizontal--small animated">
                       <p class="proximaNovaDataBlue">You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.  Household income refers to the income of all household members as reported on line 22 of their most recently filed tax return (Tax Return Form 1040) accepted by the IRS. Household size includes any person occupying the system owner’s household. For a project seeking IBLS, all borrowers who will be present on the program loan should be included as household members.</p>
                       <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.newLead.IBLS_Category__c}">
-                        <ui:inputSelectOption label="Select"/>
+                        <ui:inputSelectOption label="Select" text="No category selected"/>
                         <ui:inputSelectOption label="Category 1 (Less than 80% of State Median Household Income)" text="Category 1"/>
                         <ui:inputSelectOption label="Category 2 (80% - 120% of State Median Household Income)" text="Category 2"/>
                         <ui:inputSelectOption label="I am not eligible for either of the categories" text="None"/>

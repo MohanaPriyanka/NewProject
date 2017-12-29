@@ -63,6 +63,7 @@
                 delete newLead.Product__c;
             }
             helper.createLead(component, event, helper, downPayment, newLead);
+            $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
@@ -70,7 +71,8 @@
     },
 
     getAvailableProducts : function(component, event, helper) {
-        helper.getAvailableProducts(component, event, helper);
+        helper.getAvailableLoanProducts(component, event, helper);
+        helper.getAvailableSRECProducts(component, event, helper);
     },
 
     setProductProgram : function(component, event, helper) {

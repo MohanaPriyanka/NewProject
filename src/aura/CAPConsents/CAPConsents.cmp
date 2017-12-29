@@ -1,0 +1,80 @@
+<aura:component description="CAPConsents" controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:attribute name="availableSRECProducts" type="Product2[]"/>  
+  <aura:set attribute="STAGENAME" value="NAV_SREC_and_Disbursals"/>
+  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:if isTrue="{!v.page == 'SREC'}">
+
+
+<!-- need to figure out how to make the drop down menu default to the already selected SREC Option -->
+
+    <div class="slds-form-element__row">
+      <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
+        <label class="slds-form-element__label proximaNovaBlue"><b>{!$Label.c.CD_SREC}</b></label>
+        <div class="slds-form-element__control">
+          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">
+            <aura:iteration items="{!v.availableSRECProducts}" var="product">
+              <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
+            </aura:iteration>
+          </ui:inputSelect>
+        </div>
+      </div>
+    </div>
+
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+<!--         <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+          {!$Label.c.CD_SREC}&nbsp;{!v.lead.SREC_Product__r.Name}
+          </div>
+          <div class="slds-form-element__control slds-p-top--small">
+            For more information about SRECs, please click here (where?)
+          </div>
+        </div> -->
+        <!--
+        When we're ready to capture account/routing number for SREC
+        <aura:if isTrue="{!v.lead.Electronic_Disbursal_Authorized__c == 'Yes'}">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="SRECAccountNumber">
+              <label class="proximaNovaDataBlue">Account Number</label>
+              <ui:inputCurrency value=""/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="SRECRoutingNumber">
+              <label class="proximaNovaDataBlue">Routing number</label>
+              <ui:inputText value=""/>
+            </div>
+          </div>
+        </aura:if>
+        -->
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveSRECAskDisbursal}"/>
+        </div>
+      </form>
+    </div>
+    <ui:button label="View SREC products" class="slds-button slds-button--brand" press="{!c.getAvailableSRECProducts}"></ui:button>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'Disbursal'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+                  {!$Label.c.CD_Disbursal_Request}
+          </div>
+          <div class="slds-p-top_small">
+            <ui:inputSelect aura:id="eDisbursalConsent"
+                            label="{!$Label.c.CD_Disbursal_Consent}"
+                            class="slds-input"
+                            value="{!v.lead.Electronic_Disbursal_Authorized__c}">
+              <ui:inputSelectOption text="Yes"/>
+              <ui:inputSelectOption text="No"/>
+            </ui:inputSelect>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveDisbursal}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
+</aura:component>
