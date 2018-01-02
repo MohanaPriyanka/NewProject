@@ -22,6 +22,7 @@
 
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
+        <!--
         When we're ready to capture account/routing number for SREC
         <aura:if isTrue="{!v.lead.Electronic_Disbursal_Authorized__c == 'Yes'}">
           <div class="slds-grid slds-wrap slds-form-element__row">
