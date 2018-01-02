@@ -464,7 +464,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>SREC Confirmation</shortDescription>
-    <value>You have chosen the following SREC option with your installer:</value>
+    <value>You have chosen the following SREC option with your installer. You may select a different option below. For more information, please visit our website by clicking </value>
   </labels>
   <labels>
     <fullName>CD_SREC_Consent</fullName>

@@ -28,16 +28,16 @@
     }"/>  
   <div id="emailCustomerModal" aura:id="emailCustomerModal">
     <div aura:id="emailCustomerModal2">
-      <div aura:id="emailForm">
+      <div class="slds-m-bottom_small" aura:id="emailForm">
         <div>
           <aura:if isTrue="{!v.disableOrigination}">
             <div class="proximaNovaBlue">
               {!$Label.c.SLP_Disabled}
             </div>
             <aura:set attribute="else">
-              <div class="slds-tabs--default">
+              <div class="slds-tabs--default box">
                 <fieldset class="slds-form--compound slds-m-top_small">
-                  <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
+                  <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small slds-m-top_small"> <b><h3>Applicant Information </h3></b> </div>
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
@@ -152,21 +152,19 @@
           </aura:if>
         </div>
       </div>
-      <div aura:id="emailConfirmation" class="noDisplay">
+      <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
         <div class="slds-p-around--medium">
           <div class="slds-align--absolute-center ">
             <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"><b>The email has been sent, thank you!</b></p>
           </div>
         </div>
       </div>
-      <div>
-        <div aura:id="sendEmailModalButtons" class="slds-float_right">
-          <aura:if isTrue="{!not(v.disableOrigination)}">
-            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"/>
-          </aura:if>
-        </div>
-        <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
+      <div aura:id="sendEmailModalButtons" class="slds-float_right">
+        <aura:if isTrue="{!not(v.disableOrigination)}">
+          <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"/>
+        </aura:if>
       </div>
+      <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
     </div>
   </div>
 </aura:component>

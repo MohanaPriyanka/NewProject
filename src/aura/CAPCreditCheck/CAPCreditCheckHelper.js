@@ -75,14 +75,14 @@
                 component.set("v.lead.Product__c", prodId);
             }
             $A.util.removeClass(customerEmailButton, 'noDisplay');
-            $A.util.removeClass(incomeFormButton, 'noDisplay');     
+            $A.util.removeClass(incomeFormButton, 'noDisplay');
         } else {
             component.set("v.productId", null); 
             component.set("v.loanTerm", 0);
             component.set("v.allCustomers[0].Product__c", null);
 
             $A.util.addClass(customerEmailButton, 'noDisplay');
-            $A.util.addClass(incomeFormButton, 'noDisplay');     
+            $A.util.addClass(incomeFormButton, 'noDisplay');
         }
     },
 
