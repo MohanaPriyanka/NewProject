@@ -148,18 +148,27 @@
         </div>
         <aura:if isTrue="{!v.lead.Status == 'Pending Credit Review'}">
           <div class="slds-form-element__row slds-p-top--small">
-            <ui:outputText value="Thanks for submitting your application. You'll receive an email confirming our receipt of your application and we'll get back to you with the result of our review in 1-2 business days."/>
+            <ui:outputText value="Thanks for submitting your application. Please allow 1-2 business days for our
+            underwriting team to review. Customers with credit freezes may encounter delays. Please inquire with
+            Partner Support for an update."/>
           </div>
         </aura:if>
         <aura:if isTrue="{!and(v.lead.Status == 'Unqualified', v.lead.Application_Type__c == 'Individual')}">
           <ui:outputText class="marginAround"
-                         value="This application cannot be pre-qualified. You can wait 1-2 business days for a full credit review, or add a co-signer now."/>
+                         value="This application cannot be pre-qualified. You can wait 1-2 business days for a full
+                         credit review, or add a co-signer now."/>
           <div class="center">
             <ui:button aura:id="addCoApplicant"
                        class="box proximaNovaBlue marginAround"
                        label="Add Co-Signer"
                        press="{!c.addCoSigner}"/>
           </div>
+        </aura:if>
+        <aura:if isTrue="{!and(v.lead.Status == 'Unqualified', v.lead.Application_Type__c == 'Joint')}">
+          <aura:if isTrue="{!v.coAppChecked}">
+            <ui:outputText class="marginAround"
+                           value="This application cannot be pre-qualified, please wait 1-2 business days for a full credit review."/>
+          </aura:if>
         </aura:if>
         <div aura:id="creditResultError"
              class="noDisplay center">

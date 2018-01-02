@@ -35,11 +35,6 @@
         var action = component.get("c.pullCreditStatus");
         action.setParams({"lead" : lead});
         action.setCallback(this, function(resp) {
-            if (lead.Application_Type__c === 'Joint') {
-                helper.raiseNavEvent('LOCKJOINT');
-            } else {
-                helper.raiseNavEvent('LOCKPI');
-            }
             if(resp.getState() == "SUCCESS") {
                 window.setTimeout(function() {
                     $A.util.removeClass(component.find("creditStatus"), 'noDisplay');

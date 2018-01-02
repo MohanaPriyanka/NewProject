@@ -201,7 +201,9 @@
     finishLead : function(lead) {
         if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
             if ((lead.Application_Type__c === 'Individual') ||
-                (lead.Application_Type__c === 'Joint' && lead.CoApplicant_Contact__r.LASERCA__SSN__c)) {
+                (lead.Application_Type__c === 'Joint' &&
+                 lead.CoApplicant_Contact__r &&
+                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
                 lead.Status = 'Ready for Credit Check';
                 lead.Pre_Approval_Form__c = true;
             }

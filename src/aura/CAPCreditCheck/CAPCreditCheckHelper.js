@@ -19,14 +19,20 @@
 
     checkCreditResponse : function(component, helper, applicationType, returnValue) {
         const lead = component.get('v.lead');
-        lead.Status = returnValue;
-        component.set('v.lead', lead);
         if (returnValue === "Ready for Credit Check") {
             // Don't do anything, credit check isn't done yet
         } else if (
             returnValue === "Pre-Qualified" ||
             returnValue === "Pending Credit Review" ||
             returnValue === "Unqualified") {
+            lead.Status = returnValue;
+            component.set('v.lead', lead);
+            helper.raiseNavEvent('LOCKPI');
+            component.set('v.primaryChecked', true);
+            if (lead.Application_Type__c === 'Joint') {
+                helper.raiseNavEvent('LOCKJOINT');
+                component.set('v.coAppChecked', true);
+            }
             helper.handleCreditCheckResponse(component, helper);
         } else {
             component.set("v.creditStatusErrorText", returnValue);
@@ -35,10 +41,6 @@
     },
 
     handleCreditCheckResponse : function(component, helper, divToShow) {
-        component.set('v.primaryChecked', true);
-        if (component.get('v.lead').Application_Type__c === 'Joint') {
-            component.set('v.coAppChecked', true);
-        }
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
         if (divToShow) {
             $A.util.removeClass(component.find(divToShow), 'noDisplay');
