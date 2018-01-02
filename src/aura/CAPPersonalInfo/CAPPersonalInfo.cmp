@@ -14,7 +14,7 @@
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
-  <lightning:overlayLibrary aura:id="overlayLib"/>
+  <!-- <lightning:overlayLibrary aura:id="overlayLib"/> -->
 
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
@@ -111,14 +111,16 @@
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             {!$Label.c.PI_Individual_or_Joint}
-            <ui:inputSelect aura:id="appType" class="slds-input" value="{!v.lead.Application_Type__c}" disabled="{!coAppLocked}">
+            <ui:inputSelect aura:id="appType" class="slds-input"
+                            value="{!v.lead.Application_Type__c}"
+                            disabled="{!coAppLocked || v.lead.Status == 'Pre-Qualified'}">
               <ui:inputSelectOption text="Individual"/> 
               <ui:inputSelectOption text="Joint"/> 
             </ui:inputSelect>
           </div>
         </div>
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button aura:id="confirmSubmit" label="Next" onclick="{!c.setAppType}"/>
+          <lightning:button aura:id="confirmSubmit" label="Next" onclick="{!c.setApplicationType}"/>
         </div>
       </form>
     </div>

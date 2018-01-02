@@ -35,6 +35,7 @@ public without sharing class SLPAddCustomer {
         }
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
+        newLead.Unfinished_Lead__c = true;
         newLead.Email_Re_Enter__c = newLead.Email;
         newLead.Application_Source_Phase_1__c = 'SLPortal Phase 1 Application';
         newLead.Partner_Lookup__c = profile.partnerId;
@@ -244,6 +245,11 @@ public without sharing class SLPAddCustomer {
         return result;
     }
  
+    @AuraEnabled
+    public static List<Product2> getProducts(String state) {
+        return getProducts(state, 'Residential Loan');
+    }
+
     @AuraEnabled
     public static List<Product2> getProducts(String state, String productType) {
         return Util.getActiveProducts(new List<String>{state}, profile.partnerId, productType);

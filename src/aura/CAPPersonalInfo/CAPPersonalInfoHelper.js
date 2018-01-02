@@ -124,7 +124,8 @@
         // Make a copy of the lead to update, since we can't update child objects
         // like CoApplicant_Contact
         var lead = component.get("v.lead");
-        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application'
+        helper.finishLead(lead);
+        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application';
         if (lead.LASERCA__SSN__c) {
             lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         }
@@ -132,7 +133,7 @@
             lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c =
                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c.replace(/-/g,"");
         }
-            
+
         var leadClone = helper.cleanLead(component);
         var leadPromise, contactPromise;
 
@@ -187,30 +188,25 @@
             }
         } else {
             // Individual application, blank out CoApp info if it was set
-            leadClone.CoApplicant_Contact__c = null;
-            leadClone.Co_Applicant_First_Name__c = null;
-            leadClone.Co_Applicant_Last_Name__c = null;
-            leadClone.Co_Applicant_Phone__c = null;
-            leadClone.Co_Applicant_Email__c = null;
-            leadClone.Co_Applicant_Date_of_Birth__c = null;
-            leadClone.Co_Applicant_Income__c = null;
-            leadClone.Co_Applicant_Address__c = null;
-            leadClone.Co_Applicant_Income__c = null;
-            delete lead['CoApplicant_Contact__c'];
-            delete lead['CoApplicant_Contact__r'];
-            delete lead['CoApplicant_Contact__c'];
-            delete lead['Co_Applicant_First_Name__c'];
-            delete lead['Co_Applicant_Last_Name__c'];
-            delete lead['Co_Applicant_Phone__c'];
-            delete lead['Co_Applicant_Email__c'];
-            delete lead['Co_Applicant_Date_of_Birth__c'];
-            delete lead['Co_Applicant_Income__c'];
-            delete lead['Co_Applicant_Address__c'];
-            delete lead['Co_Applicant_Income__c'];
+            helper.removeCoAppInfo(lead, leadClone);
             leadPromise = helper.saveSObject(component, leadClone.Id, 'Lead', null, null, leadClone);
             leadPromise.then($A.getCallback(function resolve(value) {
                 helper.finishPage(component, event, helper, options);
             }));
+        }
+    },
+
+    // Need to set the Status in order for the PCRApprovalHandler to pull credit (skips it if it's "Unfinished")
+    // Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
+    finishLead : function(lead) {
+        if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
+            if ((lead.Application_Type__c === 'Individual') ||
+                (lead.Application_Type__c === 'Joint' &&
+                 lead.CoApplicant_Contact__r &&
+                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
+                lead.Status = 'Ready for Credit Check';
+                lead.Pre_Approval_Form__c = true;
+            }
         }
     },
 

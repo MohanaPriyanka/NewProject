@@ -37,29 +37,14 @@
         }
     },
 
-    setAppType : function(component, event, helper) {
+    setApplicationType : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if (component.get('v.coAppLocked') || lead.Application_Type__c === 'Individual') {
+        if (component.get('v.coAppLocked') || lead.Status === 'Pre-Qualified') {
             component.set('v.page', 'PrimaryPI');
             return;
         }
             
-        // If it's an individual application, save the whole lead in case the applicant
-        // was switching from joint (we need to remove the CoApp Contact Info).
-        // Otherwise, we can just save the application type. We can't use saveLead since
-        // it assumes there's already coapp contact information which might not be set yet
-        if (lead.Application_Type__c === 'Individual') {
-            helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryPI'});
-        } else {
-            const promise = helper.saveSObject(component,
-                                               lead.Id,
-                                               'Lead',
-                                               'Application_Type__c',
-                                               lead.Application_Type__c);
-            promise.then($A.getCallback(function resolve(value) {
-                component.set('v.page', 'PrimaryPI');
-            }));
-        }
+        helper.setAppType(component, event, helper);
     },
 
     handleShowModal : function(component, event, helper) {

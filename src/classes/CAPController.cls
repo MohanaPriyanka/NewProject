@@ -16,7 +16,7 @@ public without sharing class CAPController {
                         Lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
                         Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
                         Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c, Product_Program__c,
-                        Electronic_Disbursal_Authorized__c,
+                        Electronic_Disbursal_Authorized__c, Pre_Approval_Form__c,
                         Product__c, Product__r.Lender_of_Record__c,
                         CoApplicant_Contact__c, CoApplicant_Contact__r.FirstName, CoApplicant_Contact__r.LastName,
                         CoApplicant_Contact__r.LASERCA__Home_Address__c, CoApplicant_Contact__r.Year_Employment__c,
@@ -41,6 +41,39 @@ public without sharing class CAPController {
             lead = leadList[0];
         }
         return lead;
+    }
+
+    @AuraEnabled
+    public static void setAppType(Lead capLead) {
+        Lead dbLead = getLead(capLead.Id, capLead.email);
+        if (dbLead == null) {
+            throw new Util.BWException('Invalid lead');
+        }
+
+        Lead updateLead = new Lead(Id = capLead.Id,
+            Application_Type__c = capLead.Application_Type__c);
+        if (capLead.Application_Type__c == 'Joint') {
+            if (dbLead.Personal_Credit_Report__c != null ||
+                dbLead.Status == 'Pending Credit Review' ||
+                dbLead.Status == 'Unqualified') {
+                updateLead.Joint_Applicant_Type__c = 'Co-Signer';
+            } else {
+                updateLead.Joint_Applicant_Type__c = 'Co-Applicant';
+            }
+        } else {
+            updateLead.CoApplicant_Contact__c = null;
+            updateLead.Joint_Applicant_Type__c = null;
+            updateLead.Co_Applicant_First_Name__c = null;
+            updateLead.Co_Applicant_Last_Name__c = null;
+            updateLead.Co_Applicant_Phone__c = null;
+            updateLead.Co_Applicant_Email__c = null;
+            updateLead.Co_Applicant_Date_of_Birth__c = null;
+            updateLead.Co_Applicant_Income__c = null;
+            updateLead.Co_Applicant_Address__c = null;
+            updateLead.Co_Applicant_Income__c = null;
+
+        }
+        update updateLead;
     }
 
     // The Credit Check methods are copied from SLPAddCustomer to make it easier to retire that class
@@ -75,31 +108,73 @@ public without sharing class CAPController {
 
     @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
-        Lead lead = [SELECT Id, Status, LASTMODIFIEDDATE,
+        Lead lead = [SELECT Id, Status, Application_Type__c, LASTMODIFIEDDATE, CoApplicant_Contact__c,
                      (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
                       FROM LASERCA__Credit_Report_Logs__r
                       ORDER BY CREATEDDATE DESC),
                      (SELECT id, Solar_Loan_Approval_Status__c
                       FROM LASERCA__Personal_Credit_Reports__r
-                      ORDER BY CREATEDDATE DESC LIMIT 1)
+                      ORDER BY CREATEDDATE)
                      FROM Lead
                      WHERE Id = :leadToQuery.Id];
-        if (!lead.LASERCA__Personal_Credit_Reports__r.isEmpty()) {
-            // If a PCR was successfully created, the Status will be updated on the Lead
-            return(lead.Status);
-        } else if (!lead.LASERCA__Credit_Report_Logs__r.isEmpty()) {
-            // Since an installer can run credit multiple times on an applicant (if there was an error),
-            // there might be multiple CRLs, some or all of which might be for previous credit checks.
-
-            // Assuming the credit check is run based on checking the "Pull Credit Check" checkbox, we
-            // can use the Lead.LASTMODIFIEDDATE to find the relevant CRL.
-            for (LASERCA__Credit_Report_Log__c crl : lead.LASERCA__Credit_Report_Logs__r) {
-                if (crl.CREATEDDATE > Lead.LASTMODIFIEDDATE) {
-                    return(parseError(crl.LASERCA__Error_Message__c.split('\\n')[0]));
+        if (lead.Application_Type__c == 'Individual') {
+            if (!lead.LASERCA__Personal_Credit_Reports__r.isEmpty()) {
+                // If a PCR was successfully created, the Status will be updated on the Lead
+                return(lead.Status);
+            } else {
+                // There's no PCR; if there are credit report logs, send the credit report log error
+                if (getCreditErrors(lead.LASERCA__Credit_Report_Logs__r, lead.LastModifiedDate) != null) {
+                    return getCreditErrors(lead.LASERCA__Credit_Report_Logs__r, lead.LastModifiedDate);
                 }
+            }
+        } else if (lead.Application_Type__c == 'Joint' && lead.CoApplicant_Contact__c != null) {
+            if (lead.LASERCA__Personal_Credit_Reports__r.size() >= 2) {
+                // If a PCR was successfully created, the Status will be updated on the Lead
+                return(lead.Status);
+            } else {
+                // There's one or zero PCRs, and there could be zero, one, or two CRLs with an error.
+                String reportError = '';
+                if (getCreditErrors(lead.LASERCA__Credit_Report_Logs__r, lead.LastModifiedDate) != null) {
+                    reportError += getCreditErrors(lead.LASERCA__Credit_Report_Logs__r, lead.LastModifiedDate);
+                }
+                // We can't select co-app crls from the lead query, so we need to query the co-app contact directly.
+                Contact coApp = [
+                    SELECT Id, LastModifiedDate, (
+                        SELECT Id, LASERCA__Error_Message__c, CREATEDDATE
+                        FROM LASERCA__Credit_Report_Logs__r
+                        ORDER BY CREATEDDATE DESC), (
+                        SELECT id, Solar_Loan_Approval_Status__c
+                        FROM LASERCA__Personal_Credit_Reports__r
+                        ORDER BY CREATEDDATE DESC LIMIT 1)
+                    FROM Contact
+                    WHERE Id =: lead.CoApplicant_Contact__c];
+                if (getCreditErrors(coApp.LASERCA__Credit_Report_Logs__r, coApp.LastModifiedDate) != null) {
+                    reportError += getCreditErrors(coApp.LASERCA__Credit_Report_Logs__r, coApp.LastModifiedDate);
+                }
+                if (reportError != '') {
+                    return reportError;
+                }
+                // There's no errors, but the reports aren't done yet. Instead of returning the lead status,
+                // which might be "Unqualified" if this were an Individual running a check on the Co-Signer,
+                // return 'Ready for Credit Check'
+                return 'Ready for Credit Check';
             }
         }
         return(lead.Status);
+    }
+
+    // Since an installer can run credit multiple times on an applicant (if there was an error),
+    // there might be multiple CRLs, some or all of which might be for previous credit checks.
+
+    // Assuming the credit check is run based on checking the "Pull Credit Check" checkbox, we
+    // can use the Lead.LASTMODIFIEDDATE to find the relevant CRL.
+    private static String getCreditErrors(List<LASERCA__Credit_Report_Log__c> crls, Datetime lastModifiedDate) {
+        for (LASERCA__Credit_Report_Log__c crl : crls) {
+            if (crl.CREATEDDATE > lastModifiedDate) {
+                return(parseError(crl.LASERCA__Error_Message__c.split('\\n')[0]));
+            }
+        }
+        return null;
     }
 
     // We often get errors in this format, if so, we can parse out the error text (everything after the first dash)
@@ -159,5 +234,10 @@ public without sharing class CAPController {
         }
 
         return productList;
+    }
+
+    @AuraEnabled
+    public static List<Product2> getProducts(String state, String productType) {
+        return Util.getActiveProducts(new List<String>{state}, null, productType);
     }
 }

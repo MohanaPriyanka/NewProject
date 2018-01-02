@@ -1,8 +1,8 @@
 ({
-    openEmailCustomerModal: function(component, event, helper) {
+    doInit: function(component, event, helper) {
         var action = component.get("c.getPartnerRecord");
         action.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
+            if (resp.getState() === 'SUCCESS') {
                 var partner = resp.getReturnValue();
                 component.set("v.partnerRecord", partner);
                 if (partner.Accounts__r[0] &&
@@ -10,7 +10,7 @@
                     component.set("v.disableOrigination", true);
                 }
             } else {
-                helper.logError("SLPSendApplicationEmailController", "openEmailCustomerModal", resp.getError());
+                helper.logError("SLPSendApplicationEmailController", "doInit", resp.getError());
             }
         });    
         $A.enqueueAction(action);    
@@ -22,7 +22,7 @@
         $A.util.removeClass(component.find('emailForm'), 'noDisplay');
 
         var modalToggle = event.getParam("openModal");
-        if (modalToggle == "openModal") {
+        if (modalToggle === "openModal") {
             helper.openModal(component, "emailCustomerModal");
         }
 
@@ -51,6 +51,7 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
+        helper.startSpinner(component, 'emailSpinner');
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
@@ -64,9 +65,9 @@
             }
             helper.createLead(component, event, helper, downPayment, newLead);
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
+            helper.stopSpinner(component, 'emailSpinner');
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
-            return;
         }
     },
 
@@ -82,7 +83,7 @@
 
         if (newLead.Product__c) {
             component.set('v.productProgram', productProgram);
-            if (productProgram == 'MSLP') {
+            if (productProgram === 'MSLP') {
                 component.set('v.newLead.DOER_Solar_Loan__c', true);
             }
         } else {
