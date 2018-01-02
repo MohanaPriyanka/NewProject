@@ -1,6 +1,8 @@
 ({
     handleNavEvent : function(component, event, helper) {
-        component.set("v.lead", event.getParam("lead"));
+        if (event.getParam('lead')) {
+            component.set("v.lead", event.getParam("lead"));
+        }
         if (event.getParam("eventType") === "COMPLETED") {
             var nextStageIndex = helper.getNextStageIndex(event.getParam("stageName"), helper);
             var nextStageName = helper.getStage(nextStageIndex);

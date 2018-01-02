@@ -83,7 +83,7 @@
     addCoSigner : function(component, event, helper) {
         const lead = component.get('v.lead');
         lead.Application_Type__c = 'Joint';
-        let leadPromise = helper.saveSObject(component, lead.Id, 'Lead', 'Application_Type__c', 'Joint');
+        let leadPromise = helper.setAppType(component, event, helper);
         leadPromise.then($A.getCallback(function resolve(value) {
             component.set('v.page', 'Done');
             var stageChangeEvent = $A.get("e.c:CAPNavigationEvent");

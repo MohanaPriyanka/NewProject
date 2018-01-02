@@ -43,6 +43,39 @@ public without sharing class CAPController {
         return lead;
     }
 
+    @AuraEnabled
+    public static void setAppType(Lead capLead) {
+        Lead dbLead = getLead(capLead.Id, capLead.email);
+        if (dbLead == null) {
+            throw new Util.BWException('Invalid lead');
+        }
+
+        Lead updateLead = new Lead(Id = capLead.Id,
+            Application_Type__c = capLead.Application_Type__c);
+        if (capLead.Application_Type__c == 'Joint') {
+            if (dbLead.Personal_Credit_Report__c != null ||
+                dbLead.Status == 'Pending Credit Review' ||
+                dbLead.Status == 'Unqualified') {
+                updateLead.Joint_Applicant_Type__c = 'Co-Signer';
+            } else {
+                updateLead.Joint_Applicant_Type__c = 'Co-Applicant';
+            }
+        } else {
+            updateLead.CoApplicant_Contact__c = null;
+            updateLead.Joint_Applicant_Type__c = null;
+            updateLead.Co_Applicant_First_Name__c = null;
+            updateLead.Co_Applicant_Last_Name__c = null;
+            updateLead.Co_Applicant_Phone__c = null;
+            updateLead.Co_Applicant_Email__c = null;
+            updateLead.Co_Applicant_Date_of_Birth__c = null;
+            updateLead.Co_Applicant_Income__c = null;
+            updateLead.Co_Applicant_Address__c = null;
+            updateLead.Co_Applicant_Income__c = null;
+
+        }
+        update updateLead;
+    }
+
     // The Credit Check methods are copied from SLPAddCustomer to make it easier to retire that class
     @AuraEnabled
     public static Integer getCreditCheckTimeout() {

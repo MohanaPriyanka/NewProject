@@ -246,6 +246,11 @@ public without sharing class SLPAddCustomer {
     }
  
     @AuraEnabled
+    public static List<Product2> getProducts(String state) {
+        return getProducts(state, 'Residential Loan');
+    }
+
+    @AuraEnabled
     public static List<Product2> getProducts(String state, String productType) {
         return Util.getActiveProducts(new List<String>{state}, profile.partnerId, productType);
     }

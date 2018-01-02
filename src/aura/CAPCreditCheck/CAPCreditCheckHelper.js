@@ -18,21 +18,19 @@
     },
 
     checkCreditResponse : function(component, helper, applicationType, returnValue) {
-        if (applicationType === 'Individual') {
-            if (returnValue === "Ready for Credit Check") {
-                // Don't do anything, credit check isn't done yet
-            } else if (returnValue === "Pre-Qualified") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultPass');
-            } else if (returnValue === "Pending Credit Review") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultPendingReview');
-            } else if (returnValue === "Unqualified") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultUnqualified');
-            } else {
-                component.set("v.creditStatusErrorText", returnValue);
-                helper.handleCreditCheckResponse(component, helper, 'creditResultError');
-            }
+        const lead = component.get('v.lead');
+        lead.Status = returnValue;
+        component.set('v.lead', lead);
+        if (returnValue === "Ready for Credit Check") {
+            // Don't do anything, credit check isn't done yet
+        } else if (
+            returnValue === "Pre-Qualified" ||
+            returnValue === "Pending Credit Review" ||
+            returnValue === "Unqualified") {
+            helper.handleCreditCheckResponse(component, helper);
         } else {
-            helper.handleCreditCheckResponse(component, helper, 'creditResultJoint');
+            component.set("v.creditStatusErrorText", returnValue);
+            helper.handleCreditCheckResponse(component, helper, 'creditResultError');
         }
     },
 
@@ -42,7 +40,9 @@
             component.set('v.coAppChecked', true);
         }
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
-        $A.util.removeClass(component.find(divToShow), 'noDisplay');
+        if (divToShow) {
+            $A.util.removeClass(component.find(divToShow), 'noDisplay');
+        }
         helper.stopSpinner(component, 'creditSpinner');
         window.clearInterval(component.get("v.creditStatusPoller"));
         window.clearTimeout(component.get("v.creditStatusTimeoutID"));
