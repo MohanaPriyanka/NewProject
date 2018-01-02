@@ -1,15 +1,13 @@
 <aura:component description="CAPConsents" controller="CAPController" access="global" extends="c:CAPParent">
-  <aura:attribute name="availableSRECProducts" type="Product2[]"/>  
+  <aura:attribute name="availableSRECProducts" type="Product2[]"/>
   <aura:set attribute="STAGENAME" value="NAV_SREC_and_Disbursals"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:if isTrue="{!v.page == 'SREC'}">
-
-
-<!-- need to figure out how to make the drop down menu default to the already selected SREC Option -->
-
     <div class="slds-form-element__row">
       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-        <label class="slds-form-element__label proximaNovaBlue"><b>{!$Label.c.CD_SREC}</b></label>
+        <label class="slds-form-element__label proximaNovaBlue">
+          <b>{!$Label.c.CD_SREC} <a href="http://bluewavesolar.com/home-solar-loan-faqs/" target="_blank"> here</a></b>
+        </label>
         <div class="slds-form-element__control">
           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">
             <aura:iteration items="{!v.availableSRECProducts}" var="product">
@@ -19,7 +17,6 @@
         </div>
       </div>
     </div>
-
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <!--
@@ -38,13 +35,11 @@
         </aura:if>
         -->
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button label="Next" onclick="{!c.saveSRECAskDisbursal}"/>
+          <lightning:button label="Next" class="slds-button" onclick="{!c.saveSRECAskDisbursal}"/>
         </div>
       </form>
     </div>
-    <ui:button label="View SREC products" class="slds-button slds-button--brand" press="{!c.getAvailableSRECProducts}"></ui:button>
   </aura:if>
-
   <aura:if isTrue="{!v.page == 'Disbursal'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">

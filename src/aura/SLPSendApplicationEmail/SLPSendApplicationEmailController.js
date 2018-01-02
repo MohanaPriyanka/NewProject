@@ -51,6 +51,7 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
+        helper.startSpinner(component, 'emailSpinner');
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
@@ -64,6 +65,7 @@
             }
             helper.createLead(component, event, helper, downPayment, newLead);
             $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
+            helper.stopSpinner(component, 'emailSpinner');
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
         }
