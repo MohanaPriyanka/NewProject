@@ -22,15 +22,6 @@
 
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
-<!--         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-          {!$Label.c.CD_SREC}&nbsp;{!v.lead.SREC_Product__r.Name}
-          </div>
-          <div class="slds-form-element__control slds-p-top--small">
-            For more information about SRECs, please click here (where?)
-          </div>
-        </div> -->
-        <!--
         When we're ready to capture account/routing number for SREC
         <aura:if isTrue="{!v.lead.Electronic_Disbursal_Authorized__c == 'Yes'}">
           <div class="slds-grid slds-wrap slds-form-element__row">
