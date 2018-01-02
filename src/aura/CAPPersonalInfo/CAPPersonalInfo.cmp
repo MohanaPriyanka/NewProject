@@ -14,7 +14,7 @@
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
-  <lightning:overlayLibrary aura:id="overlayLib"/>
+  <!-- <lightning:overlayLibrary aura:id="overlayLib"/> -->
 
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
