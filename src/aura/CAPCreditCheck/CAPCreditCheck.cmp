@@ -180,6 +180,9 @@
 
   <aura:if isTrue="{!v.page == 'SelectProduct'}">
     <aura:if isTrue="{!not(empty(v.allProducts))}">
+      <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small">
+        {!$Label.c.Low_Fico_Disclosure}
+      </div>
       <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
         <tbody>
           <aura:iteration items="{!v.allProducts}" var="product">
