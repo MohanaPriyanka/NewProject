@@ -92,11 +92,19 @@ public without sharing class CAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c, CoApplicant_Contact__c
+        Lead l = [SELECT Id, Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c, CoApplicant_Contact__c,
+            Date_of_Application__c
                   FROM Lead
                   WHERE Id =: lead.Id];
+        boolean forceUpdate = false;
+        if (l.Date_of_Application__c == null) {
+            lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
+        }
         if (l != null && l.Personal_Credit_Report__c == null) {
             lead.LASERCA__Pull_Credit_Report__c = true;
+        }
+        if (l.Date_of_Application__c == null ||
+            (l != null && l.Personal_Credit_Report__c == null)) {
             update lead;
         }
         if (l != null && l.CoApplicant_Contact__c != null && l.Personal_Credit_Report_Co_Applicant__c == null) {
