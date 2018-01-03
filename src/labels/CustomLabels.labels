@@ -514,4 +514,14 @@
     <shortDescription>Finished Questions</shortDescription>
     <value>If you have any questions in the meantime, please contact us at customercare@bluewavesolar.com.</value>
   </labels>
+  <labels>
+    <fullName>Low_Fico_Disclosure</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Disclousre used for low fico products</shortDescription>
+    <value>The terms of loans we offer you will be based on your creditworthiness and other factors. 
+      We will send you more information via email.
+    </value>
+  </labels>
 </CustomLabels>
