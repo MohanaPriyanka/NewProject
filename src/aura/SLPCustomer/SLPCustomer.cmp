@@ -181,13 +181,13 @@
             <fieldset class="slds-form--compound ">
               <div class="slds-form-element__group">
                 <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small">
+                  <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                     <label class="slds-form-element__label" for="input-03"><b>System Size</b></label>
                     <ui:inputNumber aura:id="systemSize" class="slds-input"
                                     value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}"
                                     placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>
                   </div>
-                  <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated">
+                  <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
                     <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
                     <div class="slds-form-element__control">              
                       <c:BlueWaveDate value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"
@@ -201,19 +201,19 @@
               <fieldset class="slds-form--compound">
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Module Manufacturer</b></label>
                       <ui:inputText aura:id="moduleManfuacturer" class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Manufacturer__c}"
                                     placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>
                     </div>
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Module Model Number/Type</b></label>
                       <ui:inputText aura:id="moduleType" class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Model_Number__c}"
                                     placeholder="{!v.customerInformation.Module_Model_Number__c}"/>
                     </div>
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
                       <ui:inputNumber aura:id="moduleNumber" class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Modules__c}"
@@ -225,19 +225,19 @@
               <fieldset class="slds-form--compound">
                 <div class="slds-form-element__group">
                   <div class="slds-form-element__row">
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
                       <ui:inputText aura:id="inverterManufacturer" class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Manufacturer__c}"
                                     placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>
                     </div>
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Inverter Model Number/Type</b></label>
                       <ui:inputText aura:id="inverterType" class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Model_Number__c}"
                                     placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>
                     </div>
-                    <div class="slds-form-element slds-p-horizontal--small">
+                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
                       <ui:inputNumber aura:id="inverterNumber" class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Inverters__c}"

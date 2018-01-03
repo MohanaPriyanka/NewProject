@@ -540,6 +540,10 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testSLPSendApplicationEmail() {
+        if (SLPortal_Settings__c.getall().isEmpty()) {
+            insert new SLPortal_Settings__c(Name = 'System',
+                                            Require_IBLS_for_MSL_Loans__c = true);
+        }
         User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
         String emailTest;
@@ -569,7 +573,12 @@ public without sharing class SLPControllersTestclass {
         System.runAs(partnerUser) {
             SLPAddCustomer.sendApplication(newLead, 25000);
         }
+        SLPortal_Settings__c slportalSettings = SLPortal_Settings__c.getall().values()[0];
+        slportalSettings.Require_IBLS_for_MSL_Loans__c = false;
+        update slportalSettings;
+        SLPAddCustomer.sendApplication(newLead, 25000);
         Test.stopTest();
+        System.assertEquals(1, MessagingService.emailsSent.size());
     }
 
     @isTest static void testViewPreQualifiedRecords() {
@@ -611,8 +620,8 @@ public without sharing class SLPControllersTestclass {
 
         System.runAs(partnerUser) {
             List<SLPortal_Settings__c> customSetting = BlueWaveParent.getSLPortalCustomSetting();
-            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', '');
-            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', newFileId);
+            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com','');
+            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com', newFileId);
 
             List<Attachment> attachList = [SELECT Id, Body
                                             FROM Attachment
@@ -708,13 +717,13 @@ public without sharing class SLPControllersTestclass {
 
     @isTest static void testOrigination() {
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true];
-        System.assertEquals(9, products.size());
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
+        System.assertEquals(10, products.size());
 
         System.assertEquals(new List<String>{'MA', 'RI'}, SLPAddCustomer.getActiveStates());
         System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
 
         products = SLPAddCustomer.getProducts('MA');
-        System.assertEquals(8, products.size());
+        System.assertEquals(9, products.size());
     }
 }

@@ -4,11 +4,7 @@
 
 .THIS .smallertext{
     font-size : 10px;
-	width:30%;
-}
-
-.THIS .colorwhite {
-    color: #ffffff;
+  width:30%;
 }
 
 .THIS .bwcolorforcard {
@@ -25,7 +21,16 @@
 }
 
 .THIS .smallText {
-    font-size : 9px;
+    font-size : 10px;
+}
+
+.THIS .myCheckbox{
+  display: inline-block;
+  float: left;
+}
+
+.THIS .padding{
+  padding-left: 2%;
 }
 
 .THIS .bounce {

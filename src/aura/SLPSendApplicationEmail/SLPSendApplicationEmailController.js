@@ -1,6 +1,6 @@
 ({
     openEmailCustomerModal: function(component, event, helper) {
-        var action = component.get("c.getPartnerRecord");        
+        var action = component.get("c.getPartnerRecord");
         action.setCallback(this,function(resp){
             if (resp.getState() == 'SUCCESS') {
                 var partner = resp.getReturnValue();
@@ -18,14 +18,19 @@
         helper.callApexMethod(component, "getActiveStates", ["activeStates"]);
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
-        $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');  
-        $A.util.removeClass(component.find('emailForm'), 'noDisplay'); 
+        $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');
+        $A.util.removeClass(component.find('emailForm'), 'noDisplay');
 
-        var modalToggle = event.getParam("openModal");    
-        if (modalToggle == "openModal") {                                        
-            helper.openModal(component, "emailCustomerModal");   
-        }           
-    },   
+        var modalToggle = event.getParam("openModal");
+        if (modalToggle == "openModal") {
+            helper.openModal(component, "emailCustomerModal");
+        }
+
+        var promise = helper.getSLPSettings(component, event, helper);
+        promise.then($A.getCallback(function resolve(settings) {
+            component.set('v.iblsRequired', settings[0].Require_IBLS_for_MSL_Loans__c);
+        }));
+    },
 
     closeEmailCustomerModal: function(component, event, helper) {
         helper.closeModal(component, 'emailCustomerModal'); 
@@ -42,25 +47,40 @@
 
         var evtCustomerWindow = $A.get("e.c:SLPSendApplicationEmailEvent");
         evtCustomerWindow.setParams({"closeModal": "closeModal"});
-        evtCustomerWindow.fire();         
-    },    
+        evtCustomerWindow.fire();
+    },
 
-    createLeadAndSendApplication : function(component, event, helper) {  
+    createLeadAndSendApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         var availableProducts = component.get("v.availableProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
             newLead.Product_Program__c = helper.getProductProgram(availableProducts, newLead.Product__c);
-            helper.removeButtonsAndShowSpinner(component, event, helper);  
+            // We don't want to set a product for MA loans - just MSLP vs non-MSLP
+            if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
+                delete newLead.Product__c;
+            }
+            helper.removeButtonsAndShowSpinner(component, event, helper);
             helper.emailApplication(component, event, helper, downPayment, newLead);
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
             return;
-        }                      
-    },            
+        }
+    },
 
     getAvailableProducts : function(component, event, helper) {
         helper.getAvailableProducts(component, event, helper);
-    }
+    },
+
+    setProductProgram : function(component, event, helper) {
+        const newLead = component.get('v.newLead');
+        console.log(newLead);
+        const availableProducts = component.get("v.availableProducts");
+        if (newLead.Product__c) {
+            component.set('v.productProgram', helper.getProductProgram(availableProducts, newLead.Product__c));
+        } else {
+            component.set('v.productProgram', '');
+        }
+    },
 })

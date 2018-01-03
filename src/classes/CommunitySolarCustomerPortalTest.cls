@@ -38,7 +38,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                  LocaleSidKey = 'en_US',
                                  EmailEncodingKey = 'ISO-8859-1',
                                  LanguageLocaleKey = 'en_US');
-        insert communityUser;
+        // To avoid UNABLE_TO_LOCK_ROW:
+        Util.insertSobjs(new list<User>{communityUser});
 
         for (Account_Bill__c aBill : accountBillList){
             aBill.Published__c = true;

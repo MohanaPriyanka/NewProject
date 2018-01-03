@@ -10,14 +10,13 @@
                     component.set("v.disableOrigination", true);
                 }
                 if (partner.State__c == 'MA') {
-                    component.set("v.newLead.DOER_Solar_Loan__c",true);
                     $A.util.addClass(component.find("customerEmailButton"), 'slds-float--right');
                     if (partner.Default_Application__c != 'Massachusetts Solar Loan Program') {
                         component.set("v.newLead.DOER_Solar_Loan__c",false);
                         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');
-                        helper.showBWSLApplication(component);
                     } else {
-                        helper.showMSLPApplication(component);
+                        component.set("v.newLead.DOER_Solar_Loan__c",true);
+                        component.set("v.newLead.Product_Program__c",'MSLP');
                     }
                 }
             } else {
@@ -37,14 +36,18 @@
         $A.enqueueAction(actionGetTimeout);
 
         helper.getStates(component, event, helper);
+
+        var promise = helper.getSLPSettings(component, event, helper);
+        promise.then($A.getCallback(function resolve(settings) {
+            component.set('v.iblsRequired', settings[0].Require_IBLS_for_MSL_Loans__c);
+        }));
     },
 
     checkAvidiaOriginated : function(component, event, helper) {
-        if (component.get("v.newLead.LASERCA__Home_State__c") === 'MA') {
-            component.set("v.newLead.DOER_Solar_Loan__c",true);
-        } else {
+        if (component.get("v.newLead.LASERCA__Home_State__c") != 'MA') {
+            component.set("v.newLead.Product_Program__c", "BlueWave Solar Loan");
             component.set("v.newLead.DOER_Solar_Loan__c",false);
-        }        
+        } 
         var actionGetLender = component.get("c.getLenderOfRecord");
         actionGetLender.setStorable();
         actionGetLender.setParams({"state": component.get("v.newLead.LASERCA__Home_State__c")});
@@ -65,6 +68,7 @@
 
     addCustomer : function(component, event, helper) {
         var lead = component.get("v.newLead");
+
         var downPayment = component.get("v.downPayment");
         if (!downPayment) {
             downPayment = 0;
@@ -175,11 +179,9 @@
     },
 
     navigateToMSLP : function(component, event, helper) {
-
         var urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
           "url": 'https://forms.bluewaverenewables.com/381458?'
-
         });
         urlEvent.fire();
     },
@@ -187,14 +189,36 @@
     changeApplicationToMSLP : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",true);
         component.set("v.newLead.Product_Program__c",'MSLP');
-        helper.showMSLPApplication(component);
+        component.set("v.iblsEligible",false);
         helper.getAvailableProducts(component, event, helper);
+        component.set("v.loading",true);
+        component.set("v.loadingText","You are being directed to the application for the Massachusetts Solar Loan Program...");
+        window.setTimeout(function() {
+            component.set("v.loading",false);
+        }, 2000);
     },
+
     changeApplicationToBWSL : function(component, event, helper) {
         component.set("v.newLead.DOER_Solar_Loan__c",false);
         component.set("v.newLead.Product_Program__c",'BlueWave Solar Loan');
-        helper.showBWSLApplication(component);
+        component.set("v.iblsEligible",false);
         helper.getAvailableProducts(component, event, helper);
+        component.set("v.loading",true);
+        component.set("v.loadingText","You are being directed to the application for BlueWave's Solar Loan Product...");
+        window.setTimeout(function() {
+            component.set("v.loading",false);
+        }, 2000);
+    },
+
+    setToMSLPEligible : function(component, event, helper) {
+        helper.startSpinner(component, 'iblsElibilitySpinner');
+        helper.stopSpinner(component, 'iblsElibilitySpinner');
+        var category = component.get("v.newLead.IBLS_Category__c");
+        if (category == 'Category 1' || category == 'Category 2') {
+            component.set("v.iblsEligible",true);
+        } else {
+            component.set("v.iblsEligible", false);
+        }
     },
 
     returnToEdit : function(component, event, helper) {

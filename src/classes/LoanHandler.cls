@@ -108,7 +108,9 @@ public without sharing class LoanHandler{
             }
             if (newOpp.Update_Dummy__c != oldOpportunityMap.get(newOpp.Id).Update_Dummy__c) {
                 validateSalesAgreementList.add(newOpp);
-                oppLeadIdsList.add(newOpp.Lead_Id__c);
+                if (newOpp.Lead_Id__c != null) {
+                    oppLeadIdsList.add(newOpp.Lead_Id__c);
+                }
             }
         }
         if (!completedOppIds.isEmpty()) {
@@ -144,7 +146,9 @@ public without sharing class LoanHandler{
             }
         }
         for (Opportunity oppRecord : updatedOpportunities) {
-            oppLeadIds.add(oppRecord.Lead_ID__c);
+            if (oppRecord.Lead_ID__c != null) {
+                oppLeadIds.add(oppRecord.Lead_ID__c);
+            }
         }
         if (!signedCustomerOppIds.isEmpty()) {
             List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
