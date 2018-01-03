@@ -25,6 +25,10 @@
             } else {
                 helper.setInputToCorrect(component, "productElement" );
             }
+            if (!lead.SREC_Product__c) {
+                helper.setInputToError(component, "srecElement", "shake");
+                errorMessage = errorMessage + "Please select an SREC Product" + "\n" + "\n";
+            }
         } else {
             // If they haven't selected a product, don't include undefined in the lead, it results in 
             // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
@@ -43,13 +47,13 @@
     }, 
 
     startApplication : function(component, event, helper, options) {
-        helper.startSpinner(component, 'emailSpinner');
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
         var availableProducts = component.get("v.availableProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
+            helper.startSpinner(component, 'emailSpinner');
             newLead.Product_Program__c = helper.getProductProgram(availableProducts, newLead.Product__c);
             // We don't want to set a product for MA loans - just MSLP vs non-MSLP
             if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
