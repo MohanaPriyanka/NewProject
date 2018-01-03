@@ -51,6 +51,8 @@ public with sharing class CAPControllerTest {
         }
         System.assertEquals(true, caughtException);
         System.assertEquals(null, CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+        l.Application_Type__c = 'Individual';
+        CAPController.setAppType(l);
         l.Application_Type__c = 'Joint';
         CAPController.setAppType(l);
         System.assertEquals('Joint', CAPController.getLead(l.id, l.email).Application_Type__c);
@@ -71,9 +73,6 @@ public with sharing class CAPControllerTest {
         System.assertEquals(pcrs.size(), 1);
 
         System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(l));
-
-        l.Application_Type__c = 'Individual';
-        CAPController.setAppType(l);
     }
 
     @isTest static void creditCheckTimeout() {
