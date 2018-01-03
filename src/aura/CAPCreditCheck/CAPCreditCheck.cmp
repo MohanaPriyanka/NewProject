@@ -17,7 +17,9 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-            {!$Label.c.CC_Confirmation}
+            <aura:if isTrue="{!or(not(v.primaryChecked), and(v.lead.Application_Type__c == 'Joint', not(v.coAppChecked)))}">
+              {!$Label.c.CC_Confirmation}
+            </aura:if>
           </div>
           <aura:if isTrue="{!v.primaryChecked}">
             <div>
@@ -212,7 +214,8 @@
       <div class="slds-form-element__row slds-p-top--small">
         <lightning:button aura:id="finish"
                           label="Save and Next"
-                          onclick="{!c.finishStage}"/>
+                          onclick="{!c.finishStage}"
+                          disabled="{!v.lead.Product__c == null}"/>
       </div>
     </aura:if>
   </aura:if>
