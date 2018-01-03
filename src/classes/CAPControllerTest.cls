@@ -212,11 +212,10 @@ public with sharing class CAPControllerTest {
     }
 
     @isTest static void testGetProducts() {
-        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
-        System.assertEquals(16, products.size());
+        System.assertEquals(8, products.size());
 
         products = CAPController.getProducts('MA', 'Residential Loan');
-        System.assertEquals(14, products.size());
+        System.assertEquals(7, products.size());
     }
 }
