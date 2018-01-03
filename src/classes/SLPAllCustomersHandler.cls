@@ -21,21 +21,24 @@ public without sharing class SLPAllCustomersHandler {
       return profile.LicenseType;
   }
 
-  public class LoanRecords {      
+  public class LoanRecords {
     @AuraEnabled
     public Loan__c[] loansInProcess {get;set;}
 
     @AuraEnabled
-    public Loan__c[] completedLoans {get;set;}    
+    public Loan__c[] completedLoans {get;set;}
 
+    @AuraEnabled
+    public Loan__c[] expiredApplicants {get;set;}
 
     public LoanRecords() { 
-      loansInProcess = new List<Loan__c>();    
-      completedLoans = new List<Loan__c>();                                   
-    }       
+      loansInProcess = new List<Loan__c>();
+      completedLoans = new List<Loan__c>();
+      expiredApplicants = new List<Loan__c>();
+    }
   }
 
-  public class LeadRecords {      
+  public class LeadRecords {
     @AuraEnabled
     public Lead[] allLeads {get;set;}
 
@@ -43,14 +46,14 @@ public without sharing class SLPAllCustomersHandler {
     public Lead[] pendingApplications {get;set;}
 
     @AuraEnabled
-    public Lead[] declinedApplicants {get;set;}    
+    public Lead[] declinedApplicants {get;set;}
 
 
-    public LeadRecords() { 
+    public LeadRecords() {
       allLeads = new List<Lead>();
-      pendingApplications = new List<Lead>();    
-      declinedApplicants = new List<Lead>();                                   
-    }       
+      pendingApplications = new List<Lead>();
+      declinedApplicants = new List<Lead>();
+    }
   }
 
 
@@ -60,7 +63,7 @@ public without sharing class SLPAllCustomersHandler {
   public static LoanRecords getAllCustomers () {
     LoanRecords LoanRecords = new LoanRecords();
     List<Loan__c> loanList = new List<Loan__c>();
-    String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, createdDate, Total_Funds_Disbursed__c, Sales_Agent__r.Name,' + 
+    String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, createdDate, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Opportunity__r.StageName,' + 
     					         'Product__r.ProductCode, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
     loanQuery += '      FROM Loan__c' ;
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
@@ -68,12 +71,11 @@ public without sharing class SLPAllCustomersHandler {
       loanQuery += '    AND Sales_Agent__r.Id  =  \'' + profile.salesRepId +  '\' ';
     }
     loanQuery += '      ORDER BY createdDate DESC';
-    for(Loan__c loanRecord : Database.query(loanQuery)){
-      loanList.add(loanRecord);
-    }
 
-    for (Loan__c loan : loanList) {
-      if (loan.Partner_Tasks__r.size() == 0) {
+    for (Loan__c loan : Database.query(loanQuery)) {
+      if (loan.Opportunity__r.StageName == 'Expired' || loan.Opportunity__r.StageName == 'Dead') {
+        LoanRecords.expiredApplicants.add(loan);
+      } else if (loan.Partner_Tasks__r.size() == 0) {
         LoanRecords.completedLoans.add(loan);
       } else {
         LoanRecords.loansInProcess.add(loan);
@@ -117,5 +119,5 @@ public without sharing class SLPAllCustomersHandler {
       LeadRecords.allLeads.add(lead);
     }
     return LeadRecords;
-  }    
-} 
+  }
+}
