@@ -71,6 +71,9 @@ public with sharing class CAPControllerTest {
         System.assertEquals(pcrs.size(), 1);
 
         System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(l));
+
+        l.Application_Type__c = 'Individual';
+        CAPController.setAppType(l);
     }
 
     @isTest static void creditCheckTimeout() {
