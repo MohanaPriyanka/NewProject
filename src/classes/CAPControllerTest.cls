@@ -119,10 +119,13 @@ public with sharing class CAPControllerTest {
         Test.stopTest();
 
         // Laser Credit Access trigger should unset the pull credit report checkbox
-        List<Lead> leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c, Personal_Credit_Report__c
-                               FROM Lead
-                               WHERE LastName = 'Swain'];
+        List<Lead> leadList = [
+            SELECT Id, LASERCA__Pull_Credit_Report__c, Personal_Credit_Report__c,
+            Date_of_Application_2__c
+            FROM Lead
+            WHERE LastName = 'Swain'];
         System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+        System.assertEquals(System.now().format('YYYY-MM-DD'), leadList[0].Date_of_Application_2__c);
 
         // LCA should set pull credit once the future method fires
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
