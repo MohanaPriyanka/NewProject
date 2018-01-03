@@ -164,7 +164,7 @@
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <lightning:input type="checkbox" 
-                             checked="{!v.lead.lived_residence_six_months__c}"
+                             checked="{!v.lead.Residence_Owner__c}"
                              label="I own the house where solar panels will be installed"
                              disabled="{!v.piLocked}"/>
           </div>
