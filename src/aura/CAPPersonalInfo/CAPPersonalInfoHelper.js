@@ -27,7 +27,7 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.lived_residence_six_months__c,
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.Residence_Owner__c,
                                                        'fieldId': "ownHouseElement",
                                                        'fieldType': "uncheckedCheckbox",
                                                        'errorMessage': "You need to own the house where solar panels will be installed"});
