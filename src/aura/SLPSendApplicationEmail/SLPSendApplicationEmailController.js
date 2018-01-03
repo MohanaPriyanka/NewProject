@@ -51,24 +51,11 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
-        helper.startSpinner(component, 'emailSpinner');
-        var newLead = component.get("v.newLead");
-        var downPayment = component.get("v.downPayment");
-        newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
-        var availableProducts = component.get("v.availableProducts");
-        var errors = helper.errorsInForm(component, helper, newLead);
-        if (errors == null) {
-            newLead.Product_Program__c = helper.getProductProgram(availableProducts, newLead.Product__c);
-            // We don't want to set a product for MA loans - just MSLP vs non-MSLP
-            if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
-                delete newLead.Product__c;
-            }
-            helper.createLead(component, event, helper, downPayment, newLead);
-            $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-            helper.stopSpinner(component, 'emailSpinner');
-        } else {
-            helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
-        }
+        helper.startApplication(component, event, helper, {'email':true, 'open':false});
+    },
+
+    createLeadAndOpenApplication : function(component, event, helper) {
+        helper.startApplication(component, event, helper, {'email':true, 'open':true});
     },
 
     getAvailableProducts : function(component, event, helper) {
