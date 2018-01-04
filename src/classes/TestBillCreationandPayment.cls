@@ -488,8 +488,8 @@ public class TestBillCreationandPayment {
                                     FROM Account
                                     WHERE Id = : propertyAccountId];                                            
 
-        System.AssertNotEquals(oldCheckAddressField, propertyAccount.Directions_To_Write_Paper_Check__c);
-        System.Assert(propertyAccount.Directions_To_Write_Paper_Check__c.contains('Oxford Barrett St. P1'));
+        System.assertNotEquals(oldCheckAddressField, propertyAccount.Directions_To_Write_Paper_Check__c);
+        System.assert(propertyAccount.Directions_To_Write_Paper_Check__c.contains('Oxford Barrett St. P1'));
 
         Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Generate_Bills__c = false];
         prodUpdate.Generate_Bills__c = True;
