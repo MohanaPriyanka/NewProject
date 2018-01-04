@@ -126,7 +126,7 @@
                         <label class="slds-form-element__label proximaNovaBlue"><b>SREC Product</b></label>
                         <div class="slds-form-element__control">
                           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.newLead.SREC_Product__c}">
-                            <ui:inputSelectOption label="Select" text=""/>
+                            <ui:inputSelectOption label="Select"/>
                             <aura:iteration items="{!v.availableSRECProducts}" var="product">
                               <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
                             </aura:iteration>

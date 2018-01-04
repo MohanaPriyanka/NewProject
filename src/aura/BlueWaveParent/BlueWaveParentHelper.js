@@ -49,8 +49,9 @@
         $A.enqueueAction(action);
     },
 
-    getUSStates : function(component, attr) {
+    getUSStates : function(component, attr, abbreviated) {
         var action = component.get("c.getUSStates");
+        action.setParams({"abbreviated": abbreviated});
         action.setStorable();
         var opts=[];
         action.setCallback(this, function(a) {
