@@ -51,7 +51,7 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
-        helper.startApplbication(component, event, helper, {'email':true, 'open':false});
+        helper.startApplication(component, event, helper, {'email':true, 'open':false});
     },
 
     getAvailableProducts : function(component, event, helper) {
