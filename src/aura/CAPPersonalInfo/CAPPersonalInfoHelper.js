@@ -117,6 +117,11 @@
                                                        'fieldId': "coAppIncomeElement",
                                                        'fieldType': "currency",
                                                        'errorMessage': "Enter " + firstname + "'s income, and 0 if they aren't reporting any income"});
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Co_App_Monthly_Mortgage__c,
+            'fieldId': "coAppMortgageElement",
+            'fieldType': "currency",
+            'errorMessage': "Enter your approximate monthly mortgage not included in the primary applicant's mortgage, and 0 if not applicable"});
         return errorMessage;
     },
 
