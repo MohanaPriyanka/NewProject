@@ -153,7 +153,8 @@ public without sharing class SLPAddCustomer {
         List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
 
         emailList.add(newLead.Email);
-        emailList.add((String)profile.salesRepEmail);
+        // With the CAP release, don't cc the sales rep on the email - only applicants should fill out the application
+        // emailList.add((String)profile.salesRepEmail);
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];
