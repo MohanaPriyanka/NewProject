@@ -19,7 +19,7 @@
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
     <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Let's check if you are eligible for the Mass Solar Loan Program:</h1></b> </div>
-    <div class="box slds-m-top_x-small">
+    <div class="slds-m-top_x-small">
       <p class="slds-m-around_small slds-align--absolute-center proximaNovaDataBlue">
         The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Technology Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete.  For some consumers, the MSLP may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave’s bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
       </p>
@@ -75,7 +75,7 @@
         </div>
       </aura:if>
     </fieldset>
-    <div class="box slds-m-top_medium slds-p-bottom_small">
+    <div class="slds-m-top_medium slds-p-bottom_small">
       <img aura:id="IBLSCategorization" class="slds-align--absolute-center slds-p-top_medium slds-m-bottom_medium" src="{!$Resource.IBLSCategorization}"/>
       <u><a class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
     </div>
