@@ -39,6 +39,13 @@
         actionGetTransactions.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.PaymentLogs", resp.getReturnValue());
+                var transactionList = resp.getReturnValue();
+                var tranStep;
+                    for (tranStep = 0; tranStep < transactionList.length; tranStep++) {
+                        if (transactionList[tranStep].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c == 'Recurring') {
+                            component.set("v.recurringCheck", true);
+                        }
+                    }
             } else {
                 $A.log("Errors", resp.getError());
             }
