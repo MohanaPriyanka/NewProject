@@ -1,10 +1,12 @@
 ({
     errorsInForm : function(component, helper, lead) {
         var errorMessage = "";
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, 50, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, "email");
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "firstNameElement", "shake", null, 30, true, true, true, "Please enter a valid first name. The first name you entered is: " + lead.FirstName, "standard");
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "lastNameElement", "shake", null, 30, true, true, true, "Please enter a valid last name. The last name you entered is: " + lead.lastName, "standard");
-        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.System_Cost__c, "systemCostElement", "shake", null, true, true, false, "Please provide this applicant's expected system cost.", "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, 50, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, false, "email");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, 30, true, true, true, "Please enter a valid first name. The first name you entered is: " + lead.FirstName, false, "standard");
+        errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, 30, true, true, true, "Please enter a valid last name. The last name you entered is: " + lead.lastName, false, "standard");
+        errorMessage = errorMessage +
+                       helper.getFieldError(component,
+                           {'fieldValue': lead.System_Cost__c, 'fieldId': "systemCostElement", 'fieldType': 'currency', 'errorMessage': 'Please enter a System Cost'});
    
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
@@ -17,6 +19,12 @@
             errorMessage = errorMessage + "You may not enter a negative value as a down payment." + "\n" + "\n";
         } else {
             helper.setInputToCorrect(component, "downPaymentElement" );
+        }
+        if (lead.System_Cost__c < 0) {
+            helper.setInputToError(component, "systemCostElement", "shake");
+            errorMessage = errorMessage + "You may not enter a negative system cost." + "\n" + "\n";
+        } else {
+            helper.setInputToCorrect(component, "systemCostElement" );
         }
         if (lead.LASERCA__Home_State__c === 'MA') {
             if (!lead.Product__c) {

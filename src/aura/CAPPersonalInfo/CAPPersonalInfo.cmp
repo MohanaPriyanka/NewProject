@@ -164,7 +164,7 @@
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <lightning:input type="checkbox" 
-                             checked="{!v.lead.Residence_Owner__c}"
+                             checked="{!v.lead.lived_residence_six_months__c}"
                              label="I own the house where solar panels will be installed"
                              disabled="{!v.piLocked}"/>
           </div>
@@ -439,6 +439,10 @@
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppIncomeElement">
             <label class="proximaNovaDataBlue">Annual Income</label>
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
+          </div>
+          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
+            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage (not previously reported)</label>
+            <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
