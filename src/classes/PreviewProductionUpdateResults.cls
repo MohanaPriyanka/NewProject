@@ -85,6 +85,7 @@ public without sharing class PreviewProductionUpdateResults{
 															Total_System_NMCs__c, Shared_Solar_System__r.Id, Credits_on_Bill_Period__c
 	    													FROM Energy_Usage_Update__c
 	    													WHERE Shared_Solar_System__r.Id IN : sssList
+	    													AND Total_System_NMCs__c != null
 	    													ORDER BY Date__c ];
 			for (Utility_Account_Subscription__c subscription : uasListFromAcct) {
 				for (Energy_Usage_Update__c productionUpdate : productionList) {
