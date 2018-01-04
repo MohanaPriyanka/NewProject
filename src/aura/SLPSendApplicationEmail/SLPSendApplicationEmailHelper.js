@@ -50,11 +50,11 @@
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
-        var availableProducts = component.get("v.availableProducts");
+        var availableLoanProducts = component.get("v.availableLoanProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
             helper.startSpinner(component, 'emailSpinner');
-            newLead.Product_Program__c = helper.getProductProgram(availableProducts, newLead.Product__c);
+            newLead.Product_Program__c = helper.getProductProgram(availableLoanProducts, newLead.Product__c);
             // We don't want to set a product for MA loans - just MSLP vs non-MSLP
             if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
                 delete newLead.Product__c;
@@ -136,7 +136,8 @@
         component.set('v.newLead.System_Cost__c', null);
         component.set('v.newLead.Product__c', null);
         component.set('v.newLead.Product_Program__c', null);
-        component.set('v.availableProducts', null);
+        component.set('v.availableLoanProducts', null);
+        component.set('v.availableSRECProducts', null);
     },
 
     getAvailableLoanProducts : function(component, event, helper) { 
