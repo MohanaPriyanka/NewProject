@@ -202,7 +202,7 @@ public with sharing class LoanUnderwritingTest {
     }
 
     static testMethod void testGetStates() {
-        System.assertEquals(50, BlueWaveParent.getUSStates().size());
+        System.assertEquals(50, BlueWaveParent.getUSStates(false).size());
     }
 
     static testMethod void testPDFGenerationForPrimary() {

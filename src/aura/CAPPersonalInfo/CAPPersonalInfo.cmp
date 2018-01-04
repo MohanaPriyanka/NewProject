@@ -9,6 +9,7 @@
   <aura:attribute name="program" type="String"/>  
   <aura:attribute name="coAppAddressSame" type="Boolean" default="true"/>
   <aura:attribute name="states" type="String[]"/>
+  <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="coSigner" type="Boolean" default="false"/>
   <aura:attribute name="piLocked" type="Boolean" default="false"
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
@@ -229,12 +230,69 @@
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!v.lead.Product_Program__c=='MSLP'?c.openLicenseInformation:c.savePI}"/>
         </div>
       </form>
     </div>
   </aura:if>
   <!-- / PRIMARY PI -->
+
+  <!-- Primary MSLP License Information -->
+  <aura:if isTrue="{!v.page == 'PrimaryLicenseInfo'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element__control">
+          <header class="proximaNovaStream"> 
+            <b>Avidia Bank Customer Identification Program</b>
+          </header>
+          <div class="proximaNovaDataBlue">
+            <p class="slds-p-top--small">As a result of the September 11 terrorist attacks, Congress enacted the U.S.A PATRIOT ACT of 2001. In order to make it more difficult for terrorists and other criminals to use the country’s financial system for illicit purposes, the law requires financial institutions to establish procedures to obtain, verify, and record information that identifies each person who opens an account.</p>
+            <p class="slds-p-top--small">What this means to you: When you open a deposit account, apply for a loan, or otherwise establish a formal banking relationship with Avidia Bank, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see your driver's license or other identifying documents.</p>
+            <p class="slds-p-top--small slds-p-bottom--small">Please be assured that we will take every precaution to protect the confidentiality of the information and documentation you provide to us. We thank you for your understanding and your patience as we comply with the law.</p>
+          </div>
+          <header class="proximaNovaStream slds-p-top--small slds-p-bottom--small"> 
+            <b>Certificate and Authorization</b>
+          </header>
+          <div class="proximaNovaDataBlue">
+            <p class="slds-p-top--x_small"><i>The applicant and any co-applicant each: (i) certify that everything stated in this application is true and complete in all respects; (ii) authorize the Bank to verify any information provided in connection with this application.</i></p>
+          </div>
+          <hr></hr>
+          <header class="proximaNovaStream slds-p-bottom--small"> 
+            <b>Please provide us with some additional information about your Driver's License.</b>
+          </header>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
+              <label class="proximaNovaDataBlue">Driver's License Number</label>
+              <ui:inputSecret value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
+            </div>
+            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2" aura:id="stateElement">
+              <label class="proximaNovaDataBlue">State of Issuance</label>
+              <ui:inputSelect aura:id="state" class="slds-input" value="{!v.lead.State_of_Issuance__c}" disabled="{!v.piLocked}"> 
+                <ui:inputSelectOption text="Select"/> 
+                <aura:iteration items="{!v.abbrevStates}" var="state">
+                  <ui:inputSelectOption text="{!state}" value="{!state == v.lead.State_of_Issuance__c}"/>
+                </aura:iteration>
+              </ui:inputSelect>
+            </div>
+          </div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="dateOfIssuanceElement">
+              <label class="proximaNovaDataBlue">Date of Issuance</label>
+              <c:BlueWaveDate value="{!v.lead.Date_of_Issuance__c}" disabled="{!v.piLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="dateOfExpirationElement">
+              <label class="proximaNovaDataBlue">Date of Expiration</label>
+              <c:BlueWaveDate value="{!v.lead.Date_of_Expiration__c}" disabled="{!v.piLocked}"/>
+            </div>
+          </div>
+        </div>
+        <div class="slds-form-element__row slds-m-top--medium">
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+  <!-- Primary MSLP License Information -->
 
   <!-- PRIMARY SSN -->
   <aura:if isTrue="{!v.page == 'PrimarySSN'}">

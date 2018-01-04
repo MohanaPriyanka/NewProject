@@ -89,7 +89,7 @@ public without sharing class SLPAddCustomer {
                      (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
                       FROM LASERCA__Credit_Report_Logs__r
                       ORDER BY CREATEDDATE DESC),
-                     (SELECT id, Solar_Loan_Approval_Status__c
+                     (SELECT Id, Solar_Loan_Approval_Status__c
                       FROM LASERCA__Personal_Credit_Reports__r
                       ORDER BY CREATEDDATE DESC LIMIT 1)
                      FROM Lead
