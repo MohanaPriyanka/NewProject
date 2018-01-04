@@ -57,7 +57,7 @@
     <br /><br />
     <b><h3 class="proximaNova"> Current Balance Due: </h3></b>           
     <div><h2 class="myBill proximaNovaBlack "><ui:outputCurrency value="{!v.myBill}" /></h2><br /><br /><br /><br /> </div> 
-    <aura:if isTrue="(!v.recurringCheck}">
+    <aura:if isTrue="{!v.recurringCheck}">
       <b><h3 aura:id="recurringNotification" class="proximaNova"> Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100 </h3></b>  
     <aura:set attribute="else">
       <div><a href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
