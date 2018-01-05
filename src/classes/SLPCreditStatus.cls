@@ -151,11 +151,6 @@ public without sharing class SLPCreditStatus {
           LIMIT 1]) {
           mail.setOrgWideEmailAddressId(senderEmail.Id);
       }
-      if (lead.Partner_Email__c != null){
-          String partnerEmail = lead.Partner_Email__c;
-          String[] copiedEmailAddresses = new String[] {partneremail};
-          mail.setccAddresses(copiedEmailAddresses);
-      }
       String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here';
       mail.setSubject(emailSubject);
       mail.setTargetObjectId(lead.Id);
