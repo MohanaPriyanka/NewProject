@@ -15,7 +15,7 @@
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
-  <lightning:overlayLibrary aura:id="overlayLib"/>
+  <!-- <lightning:overlayLibrary aura:id="overlayLib"/> -->
 
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
@@ -165,7 +165,7 @@
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <lightning:input type="checkbox" 
-                             checked="{!v.lead.lived_residence_six_months__c}"
+                             checked="{!v.lead.Residence_Owner__c}"
                              label="I own the house where solar panels will be installed"
                              disabled="{!v.piLocked}"/>
           </div>
@@ -346,7 +346,7 @@
               </aura:set>
             </aura:if>
             <div onclick="{!c.handleShowModal}" class="slds-align-middle">
-              <lightning:icon class="paddingLeft" iconName="utility:open" size="x-small"/>
+              <lightning:icon class="paddingLeft" iconName="utility:info" size="x-small"/>
             </div>
           </div>
         </div>
@@ -432,12 +432,12 @@
             <aura:if isTrue="{!v.coSigner}">
               <lightning:input type="checkbox" 
                                checked="{!v.coAppAddressSame}"
-                               label="Co-signers's home address is the same primary's"
+                               label="Co-signers's address is the same"
                                disabled="{!v.coAppLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
                                  checked="{!v.coAppAddressSame}"
-                                 label="Co-applicant's home address is the same as primary's"
+                                 label="Co-applicant's address is the same"
                                  disabled="{!v.coAppLocked}"/>
               </aura:set>
             </aura:if>
