@@ -142,11 +142,19 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled
-    public static List<String> getUSStates() {
+    public static List<String> getUSStates(Boolean abbreviated) {
         List<String> states = new List<String>();
-        for (String s : stateMap.keySet()) {
-            if (s.length() > 2) {
-                states.add(s);
+        if (!abbreviated) {
+            for (String s : stateMap.keySet()) {
+                if (s.length() > 2) {
+                    states.add(s);
+                }
+            }
+        } else {
+            for (String s : stateMap.values()) {
+                if (s.length() == 2) {
+                    states.add(s);
+                }
             }
         }
         return states;

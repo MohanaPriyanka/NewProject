@@ -51,7 +51,7 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
-        helper.startApplbication(component, event, helper, {'email':true, 'open':false});
+        helper.startApplication(component, event, helper, {'email':true, 'open':false});
     },
 
     getAvailableProducts : function(component, event, helper) {
@@ -61,8 +61,8 @@
 
     setProductProgram : function(component, event, helper) {
         const newLead = component.get('v.newLead');
-        const availableProducts = component.get("v.availableProducts");
-        var productProgram = helper.getProductProgram(availableProducts, newLead.Product__c)
+        const availableLoanProducts = component.get("v.availableLoanProducts");
+        var productProgram = helper.getProductProgram(availableLoanProducts, newLead.Product__c)
 
         if (newLead.Product__c) {
             component.set('v.productProgram', productProgram);

@@ -33,7 +33,10 @@
         }
 
         if (component.get('v.states') && component.get('v.states').length === 0) {
-            helper.getUSStates(component, 'v.states');
+            helper.getUSStates(component, 'v.states', false);
+        }
+        if (component.get('v.abbrevStates') && component.get('v.abbrevStates').length === 0) {
+            helper.getUSStates(component, 'v.abbrevStates', true);
         }
     },
 
@@ -80,6 +83,10 @@
                                 }
                                 
                             });
+    },
+
+    openLicenseInformation : function(component, event, helper) {
+        component.set('v.page', 'PrimaryLicenseInfo');
     },
 
     savePI : function(component, event, helper) {
