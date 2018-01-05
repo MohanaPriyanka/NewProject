@@ -432,12 +432,12 @@
             <aura:if isTrue="{!v.coSigner}">
               <lightning:input type="checkbox" 
                                checked="{!v.coAppAddressSame}"
-                               label="Co-signers's address is the same"
+                               label="Co-signers's home address is the same primary's"
                                disabled="{!v.coAppLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
                                  checked="{!v.coAppAddressSame}"
-                                 label="Co-applicant's address is the same"
+                                 label="Co-applicant's home address is the same as primary's"
                                  disabled="{!v.coAppLocked}"/>
               </aura:set>
             </aura:if>
