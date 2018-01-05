@@ -1,8 +1,9 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
+        const lead =  component.get('v.lead');
         var eventType = event.getParam('eventType');
-        if(eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT' && eventType !== 'LORCHANGE') {
+        if (eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT' && eventType !== 'LORCHANGE') {
             const leadVar =  event.getParam("lead");
             if (options) {
                 if (options.pageName) {
@@ -21,7 +22,9 @@
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
         }
-        const lead =  component.get('v.lead');
+        if (eventType === 'LORCHANGE') {
+            helper.handleNavEvent(component, event, helper);
+        }
         if (eventType === 'LOCKPI' ||
             eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report__c)) {
