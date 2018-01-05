@@ -88,13 +88,23 @@
                             });
     },
 
-    openLicenseInformation : function(component, event, helper) {
-        component.set('v.page', 'PrimaryLicenseInfo');
-    },
-
     savePI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
             helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+            return;
+        }
+
+        // PI is locked if credit has already been run
+        if (component.get('v.piLocked')) {
+            component.set('v.page', 'PrimaryLicenseInfo');
+        } else {
+            helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+        }
+    },
+
+    saveLicenseInfo : function(component, event, helper) {
+        if (helper.checkLicenseErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "savePI", helper.checkLicenseErrors(component));
             return;
         }
 

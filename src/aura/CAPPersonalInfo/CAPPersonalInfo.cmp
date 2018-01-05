@@ -15,7 +15,7 @@
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
-  <!-- <lightning:overlayLibrary aura:id="overlayLib"/> -->
+  <lightning:overlayLibrary aura:id="overlayLib"/>
 
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
@@ -230,7 +230,7 @@
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!v.lead.Product_Program__c=='MSLP'?c.openLicenseInformation:c.savePI}"/>
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
         </div>
       </form>
     </div>
@@ -261,14 +261,14 @@
             <b>Please provide us with some additional information about your Driver's License.</b>
           </header>
           <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
+            <div class="slds-form-element slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
               <label class="proximaNovaDataBlue">Driver's License Number</label>
-              <ui:inputSecret value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
+              <ui:inputSecret class="slds-input" value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
             </div>
-            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2" aura:id="stateElement">
+            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="stateElement">
               <label class="proximaNovaDataBlue">State of Issuance</label>
               <ui:inputSelect aura:id="state" class="slds-input" value="{!v.lead.State_of_Issuance__c}" disabled="{!v.piLocked}"> 
-                <ui:inputSelectOption text="Select"/> 
+                <ui:inputSelectOption label="Select" value=""/>
                 <aura:iteration items="{!v.abbrevStates}" var="state">
                   <ui:inputSelectOption text="{!state}" value="{!state == v.lead.State_of_Issuance__c}"/>
                 </aura:iteration>
@@ -287,7 +287,7 @@
           </div>
         </div>
         <div class="slds-form-element__row slds-m-top--medium">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveLicenseInfo}"/>
         </div>
       </form>
     </div>
@@ -346,7 +346,7 @@
               </aura:set>
             </aura:if>
             <div onclick="{!c.handleShowModal}" class="slds-align-middle">
-              <lightning:icon class="paddingLeft" iconName="utility:info" size="x-small"/>
+              <lightning:icon class="paddingLeft" iconName="utility:open" size="x-small"/>
             </div>
           </div>
         </div>
@@ -432,12 +432,12 @@
             <aura:if isTrue="{!v.coSigner}">
               <lightning:input type="checkbox" 
                                checked="{!v.coAppAddressSame}"
-                               label="Co-signers's address is the same"
+                               label="Co-signers's home address is the same as primary's"
                                disabled="{!v.coAppLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
                                  checked="{!v.coAppAddressSame}"
-                                 label="Co-applicant's address is the same"
+                                 label="Co-applicant's home address is the same as primary's"
                                  disabled="{!v.coAppLocked}"/>
               </aura:set>
             </aura:if>

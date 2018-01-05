@@ -34,6 +34,34 @@
         return errorMessage;
     },
 
+    checkLicenseErrors : function(component) {
+        var errorMessage = "";
+        var lead = component.get("v.lead");
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.License_Number_Encrypted__c,
+            'fieldId': "licenseNumberElement",
+            'errorMessage': "Enter provide your license number"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.State_of_Issuance__c,
+            'fieldId': "stateElement",
+            'errorMessage': "Enter provide the state issuing your driver's license"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Issuance__c,
+            'fieldId': "dateOfIssuanceElement",
+            'errorMessage': "Enter provide the date the driver's license was issued",
+            'fieldType': 'date'
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Expiration__c,
+            'fieldId': "dateOfExpirationElement",
+            'errorMessage': "Enter provide the date the driver's license expires",
+            'fieldType': 'date'
+        });
+        return errorMessage;
+    },
+
     checkSSNErrors : function(component) {
         var errorMessage = "";
         var lead = component.get("v.lead");
@@ -52,7 +80,7 @@
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
                                                        'fieldId': "mortgageElement",
                                                        'fieldType': "currency",
-                                                       'errorMessage': "Enter your approximate monthly mortgage, and 0 if you don't have a mortgage"});
+                                                       'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance, and 0 if you don't have a mortgage"});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Credit_Check_Acknowledged__c,
                                                        'fieldId': "creditCheckElement",
                                                        'fieldType': "uncheckedCheckbox",
@@ -121,7 +149,7 @@
             'fieldValue': lead.Co_App_Monthly_Mortgage__c,
             'fieldId': "coAppMortgageElement",
             'fieldType': "currency",
-            'errorMessage': "Enter your approximate monthly mortgage not included in the primary applicant's mortgage, and 0 if not applicable"});
+            'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance not included in the primary applicant's mortgage, and 0 if not applicable"});
         return errorMessage;
     },
 
