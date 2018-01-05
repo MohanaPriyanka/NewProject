@@ -8,25 +8,39 @@
     format : function(component, event) {
         var currVal = component.find("BlueWaveDate").get("v.value");
         var numChars = currVal.length;
-        //To accomdate for backspacing, we detect which key was pressed - if backspace (keycode 8), do nothing:
+        var newVal = currVal;
+        //To accommodate for backspacing, we detect which key was pressed - if backspace (keycode 8), do nothing:
         if (event.getParams().keyCode !== 8) {
-            // user entered a /, fix formatting or supress if necessary
+            // user entered a /, fix formatting or suppress if necessary
             if (event.getParams().keyCode === 111 || event.getParams().keyCode === 191) {
                 if (currVal.endsWith('/') && numChars === 2) {
                     // e.g. 1/ turns into 01/
-                    component.set("v.value", '0' + currVal);
+                    newVal = '0' + currVal;
                 } else if (currVal.endsWith('/') && numChars === 5) {
                     // e.g. 01/1/ turns into 01/01
-                    component.set("v.value", currVal.substring(0,3) + '0' + currVal.substring(3,5));
+                    newVal = currVal.substring(0, 3) + '0' + currVal.substring(3, 5);
                 } else {
                     // in case there's something like this: 10//
-                    component.set("v.value", currVal.replace('//', '/'));
-                }
-            } else {
-                if (!currVal.endsWith('/') && (numChars === 2 || numChars === 5)) {
-                    component.set("v.value", currVal + '/');
+                    newVal = currVal.replace('//', '/');
                 }
             }
+        }
+        // Now, newVal should be well formatted, but we need to find strings like 001/00 or 01/001/
+        var parts = newVal.split('/');
+        if (parts[0]) {
+            newVal = parts[0].substring(0,2);
+        }
+        if (parts[1]) {
+            newVal += '/' + parts[1].substring(0,2);
+        }
+        if (parts[2]) {
+            newVal += '/' + parts[2].substring(0,4);
+        }
+        if (!newVal.endsWith('/') && (newVal.length === 2 || newVal.length === 5)) {
+            newVal += '/';
+        }
+        if (newVal !== currVal) {
+            component.set("v.value", newVal);
         }
     }
 })

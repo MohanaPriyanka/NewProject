@@ -51,10 +51,25 @@ public with sharing class CAPControllerTest {
         }
         System.assertEquals(true, caughtException);
         System.assertEquals(null, CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+        l.Application_Type__c = 'Individual';
+        CAPController.setAppType(l);
         l.Application_Type__c = 'Joint';
         CAPController.setAppType(l);
         System.assertEquals('Joint', CAPController.getLead(l.id, l.email).Application_Type__c);
         System.assertEquals('Co-Applicant', CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+
+        Account coApplicantAccount = new Account( Name = 'CoapplicantAccount');
+        insert coApplicantAccount;
+        Contact coApplicantContact = new Contact(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            AccountId = coApplicantAccount.Id,
+            Lead__c = l.Id,
+            Income__c = 2000,
+            LASERCA__Social_Security_Number__c = '000000002');
+        insert coApplicantContact;
+        l.CoApplicant_Contact__c = coApplicantContact.Id;
+        update l;
 
         CAPController.pullCreditStatus(l);
         // Laser Credit Access trigger should unset the pull credit report checkbox
@@ -68,7 +83,7 @@ public with sharing class CAPControllerTest {
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
                                                          FROM LASERCA__Personal_Credit_Report__c
                                                          WHERE LASERCA__Lead__c = :l.Id];
-        System.assertEquals(pcrs.size(), 1);
+        System.assertEquals(2, pcrs.size());
 
         System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(l));
     }
@@ -194,5 +209,13 @@ public with sharing class CAPControllerTest {
         productReturnList = CAPController.getCustomerProducts(leadMap.get('coApplicantLead').Id);
         System.assertEquals(2, productReturnList.size());
         Test.stopTest();
+    }
+
+    @isTest static void testGetProducts() {
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
+        System.assertEquals(8, products.size());
+
+        products = CAPController.getProducts('MA', 'Residential Loan');
+        System.assertEquals(7, products.size());
     }
 }
