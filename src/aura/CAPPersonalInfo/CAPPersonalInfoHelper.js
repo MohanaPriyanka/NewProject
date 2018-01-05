@@ -1,5 +1,8 @@
 ({
     checkPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.FirstName,
@@ -35,6 +38,9 @@
     },
 
     checkLicenseErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {
@@ -63,6 +69,9 @@
     },
 
     checkSSNErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__SSN__c,
@@ -93,6 +102,9 @@
     },
 
     checkCoAppPIErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';
@@ -130,6 +142,9 @@
     },
 
     checkCoAppSSNErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';

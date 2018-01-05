@@ -96,9 +96,17 @@
 
         // PI is locked if credit has already been run
         if (component.get('v.piLocked')) {
-            component.set('v.page', 'PrimaryLicenseInfo');
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                component.set('v.page', 'PrimaryLicenseInfo');
+            } else {
+                component.set('v.page', 'PrimarySSN');
+            }
         } else {
-            helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+            } else {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimarySSN'});
+            }
         }
     },
 
