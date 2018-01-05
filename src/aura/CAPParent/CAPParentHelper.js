@@ -111,10 +111,10 @@
     cleanLead : function(component) {
         const lead = component.get('v.lead');
         const leadClone = JSON.parse(JSON.stringify(lead));
-        if (lead.lived_residence_six_months__c) {
-            leadClone.lived_residence_six_months__c = 'true';
+        if (lead.Residence_Owner__c) {
+            leadClone.Residence_Owner__c = 'true';
         } else {
-            leadClone.lived_residence_six_months__c = 'false';
+            leadClone.Residence_Owner__c = 'false';
         }
         delete leadClone['CoApplicant_Contact__r'];
         delete leadClone['Product__r'];

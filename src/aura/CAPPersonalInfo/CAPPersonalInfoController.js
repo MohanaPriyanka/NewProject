@@ -88,13 +88,31 @@
                             });
     },
 
-    openLicenseInformation : function(component, event, helper) {
-        component.set('v.page', 'PrimaryLicenseInfo');
-    },
-
     savePI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
             helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+            return;
+        }
+
+        // PI is locked if credit has already been run
+        if (component.get('v.piLocked')) {
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                component.set('v.page', 'PrimaryLicenseInfo');
+            } else {
+                component.set('v.page', 'PrimarySSN');
+            }
+        } else {
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+            } else {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimarySSN'});
+            }
+        }
+    },
+
+    saveLicenseInfo : function(component, event, helper) {
+        if (helper.checkLicenseErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "savePI", helper.checkLicenseErrors(component));
             return;
         }
 

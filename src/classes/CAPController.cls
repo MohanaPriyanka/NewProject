@@ -13,7 +13,7 @@ public without sharing class CAPController {
                         Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                         LASERCA__Pull_Credit_Report__c, CAP_Stage__c, Monthly_Mortgage_Tax_and_Insurance__c, IBLS_Category__c,
                         LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c,
-                        Lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
+                        Residence_Owner__c, Lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
                         Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
                         Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c, Product_Program__c,
                         Electronic_Disbursal_Authorized__c, Pre_Approval_Form__c,
@@ -247,5 +247,21 @@ public without sharing class CAPController {
     @AuraEnabled
     public static List<Product2> getProducts(String state, String productType) {
         return Util.getActiveProducts(new List<String>{state}, null, productType);
+    }
+
+    @AuraEnabled
+    public static String getLenderOfRecord(String state) {
+        List<AggregateResult> products = [SELECT Lender_of_Record__c
+        FROM Product2
+        WHERE IsActive = true
+        AND Product_Type__c = 'Residential Loan'
+        AND State__c = : state
+        GROUP BY Lender_of_Record__c
+        ORDER BY Lender_of_Record__c];
+        String result = '';
+        for (AggregateResult p : products) {
+            result += (String) p.get('Lender_of_Record__c');
+        }
+        return result;
     }
 }

@@ -22,10 +22,10 @@
     <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Let's check if you are eligible for the Mass Solar Loan Program:</h1></b> </div>
     <div class="slds-m-top_x-small">
       <p class="slds-m-around_small slds-align--absolute-center proximaNovaDataBlue">
-        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Technology Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete.  For some consumers, the MSLP may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave’s bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
+        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete.  For some consumers, the MSLP may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave’s bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
       </p>
       <p class="slds-m-around_small proximaNovaDataBlue">
-        BlueWave is not working for or with MassCEC or DOER to determine eligibility for IBLS or the Mass Solar Loan program.  You must apply directly to the MSLP to determine eligibility. 
+        BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
       </p>
     </div>
     <fieldset class="slds-form--compound">
@@ -49,7 +49,7 @@
             Great – let’s work on this option for you. Consumers eligible for IBLS Category 1 may also be able to qualify for additional financial incentives through the MSLP, such as the MSLP’s interest rate buy down and loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
-            It’s important to remember that availability of this loan depends on the qualification review performed by the MA Clean Energy Center.  Your solar contractor can help you with what to do for this qualification process.
+            It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
           </p>
         </div>
       </aura:if>
@@ -59,14 +59,17 @@
             Great – let’s work on this option for you. Consumers eligible for IBLS Category 2 may also be able to qualify for the MSLP’s loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
-            It’s important to remember that availability of this loan depends on the qualification review performed by the MA Clean Energy Center.  Your solar contractor can help you with what to do for this qualification process.
+            It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
           </p>
         </div>
       </aura:if>
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'None')}">
         <div aura:id="ineligibleIBLSAlert" class="">
           <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
-            Great – let’s work on this option for you. If you would like to check to see if you qualify for the MSLP instead, you can <u><a class="proximaNovaStream90" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the MSLP are not made by BlueWave. Otherwise, please click below to apply for one of BlueWave's traditional loan products available from its bank partner.
+            Great – let’s work on this option for you. If you would like to check to see if you qualify for the MSLP instead, you can
+            <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>,
+            or check with your solar contractor. Eligibility determinations for the MSLP are not made by BlueWave. Otherwise,
+            please click below to apply for one of BlueWave's traditional loan products available from its bank partner.
           </p>
         </div>
       </aura:if>
@@ -165,7 +168,7 @@
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <lightning:input type="checkbox" 
-                             checked="{!v.lead.lived_residence_six_months__c}"
+                             checked="{!v.lead.Residence_Owner__c}"
                              label="I own the house where solar panels will be installed"
                              disabled="{!v.piLocked}"/>
           </div>
@@ -230,7 +233,7 @@
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!v.lead.Product_Program__c=='MSLP'?c.openLicenseInformation:c.savePI}"/>
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
         </div>
       </form>
     </div>
@@ -261,14 +264,14 @@
             <b>Please provide us with some additional information about your Driver's License.</b>
           </header>
           <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
+            <div class="slds-form-element slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
               <label class="proximaNovaDataBlue">Driver's License Number</label>
-              <ui:inputSecret value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
+              <ui:inputSecret class="slds-input" value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
             </div>
-            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2" aura:id="stateElement">
+            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="stateElement">
               <label class="proximaNovaDataBlue">State of Issuance</label>
               <ui:inputSelect aura:id="state" class="slds-input" value="{!v.lead.State_of_Issuance__c}" disabled="{!v.piLocked}"> 
-                <ui:inputSelectOption text="Select"/> 
+                <ui:inputSelectOption label="Select" value=""/>
                 <aura:iteration items="{!v.abbrevStates}" var="state">
                   <ui:inputSelectOption text="{!state}" value="{!state == v.lead.State_of_Issuance__c}"/>
                 </aura:iteration>
@@ -287,7 +290,7 @@
           </div>
         </div>
         <div class="slds-form-element__row slds-m-top--medium">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveLicenseInfo}"/>
         </div>
       </form>
     </div>
@@ -432,7 +435,7 @@
             <aura:if isTrue="{!v.coSigner}">
               <lightning:input type="checkbox" 
                                checked="{!v.coAppAddressSame}"
-                               label="Co-signers's home address is the same primary's"
+                               label="Co-signers's home address is the same as primary's"
                                disabled="{!v.coAppLocked}"/>
               <aura:set attribute="else">
                 <lightning:input type="checkbox" 
