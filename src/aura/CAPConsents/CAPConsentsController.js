@@ -25,7 +25,8 @@
         var leadToSave = {
             sobjectType: 'Lead',
             Id: lead.Id,
-            Electronic_Disbursal_Authorized__c: lead.Electronic_Disbursal_Authorized__c
+            Electronic_Disbursal_Authorized__c: lead.Electronic_Disbursal_Authorized__c,
+            Unfinished_Lead__c: false
         };
         var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
         leadPromise.then($A.getCallback(function resolve(retVal) {

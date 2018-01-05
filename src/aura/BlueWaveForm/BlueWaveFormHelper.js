@@ -45,7 +45,7 @@
         if (!optional && (fieldValue === '' || fieldValue === null || !fieldValue)) {
             return true;
         } else {
-            if (expectedLength > 0 && fieldValue.length != expectedLength) {
+            if (fieldValue && expectedLength > 0 && fieldValue.length != expectedLength) {
                 return true;
             }
             if (!allowLetters && !/^[0-9]+$/.test(fieldValue)) {
@@ -57,7 +57,7 @@
             if (!allowSpecialChars && !allowSpaces && !/^[a-zA-Z0-9-]*$/.test(fieldValue)) {
                 return true;
             }
-            if (maxLength > 0 && fieldValue.length > maxLength) {
+            if (fieldValue && maxLength > 0 && fieldValue.length > maxLength) {
                 return true;
             }
         }
