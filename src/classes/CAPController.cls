@@ -13,7 +13,7 @@ public without sharing class CAPController {
                         Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                         LASERCA__Pull_Credit_Report__c, CAP_Stage__c, Monthly_Mortgage_Tax_and_Insurance__c, IBLS_Category__c,
                         LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c,
-                        Residence_Owner__c, Lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
+                        Residence_Owner__c, Not_Residence_Owner__c, Lived_residence_six_months__c, Other_Bank_Executive__c, Application_Type__c, Joint_Applicant_Type__c,
                         Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
                         Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c, Product_Program__c,
                         Employed_less_than_a_year__c, Retired__c, Not_Retired__c, Not_Self_Employed__c, Self_Employed__c, No_Veteran_Disability__c, Veteran_Disability__c,

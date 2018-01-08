@@ -30,10 +30,12 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.Residence_Owner__c,
-                                                       'fieldId': "ownHouseElement",
-                                                       'fieldType': "uncheckedCheckbox",
-                                                       'errorMessage': "You need to own the house where solar panels will be installed"});
+        var residenceOwner = component.get('v.lead.Residence_Owner__c');
+        var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
+        if (!residenceOwner && !notResidenceOwner) {
+          errorMessage += 'Plese select whether or not you own the property located at the detailed installation address.';
+        } 
+
         return errorMessage;
     },
 

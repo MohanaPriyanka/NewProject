@@ -92,12 +92,15 @@
         component.set('v.page', 'PrimaryLicenseInfo');
     },
 
-    setResidenceOwner : function(component, event, helper) {
-        var residenceOwner = component.get('v.lead.Residence_Owner__c');
-        if (residenceOwner) {
-            component.set('v.lead.Residence_Owner__c', false);
-        } else {
+    setResidenceOwner: function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var value = event.currentTarget.value;
+        if (value == 'true') {
             component.set('v.lead.Residence_Owner__c', true);
+            component.set('v.lead.Not_Residence_Owner__c', false);
+        } else {
+            component.set('v.lead.Residence_Owner__c', false);
+            component.set('v.lead.Not_Residence_Owner__c', true);
         }
     },
 
