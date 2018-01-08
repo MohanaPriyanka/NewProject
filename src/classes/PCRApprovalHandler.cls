@@ -597,6 +597,7 @@ public without sharing class PCRApprovalHandler {
 
     @TestVisible
     public class ProductRepo {
+        @TestVisible
         private List<Product2> products;
 
         public ProductRepo(List<Lead> leads) {
