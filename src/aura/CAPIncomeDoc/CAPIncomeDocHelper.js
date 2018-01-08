@@ -66,4 +66,3 @@
         helper.uploadFiles(component, files, parentId, helper.getLead, description, helper);
     }
 })
-
