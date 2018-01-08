@@ -185,6 +185,7 @@
     },
 
     getAlimonyIncome : function(component, event, helper) {
+        const lead = component.get('v.lead');
         var alimony = component.get('v.lead.Reliant_on_Alimony_Child_Support_Other__c');
         var noAlimony = component.get('v.lead.Not_Reliant_on_Alimony_Child_Support_Oth__c');
         if (!alimony && !noAlimony) {
@@ -193,7 +194,30 @@
             if (alimony) {
                 component.set('v.page', 'GetAlimonyIncome');
             } else {
-                component.set('v.page', 'OtherIncome');
+                var leadToSave = {
+                    sobjectType: 'Lead',
+                    Id: lead.Id,
+                    Monthly_Income__c: lead.Monthly_Income__c,
+                    Monthly_Income_Details__c: lead.Monthly_Income_Details__c,
+                    Monthly_Income_2__c: lead.Monthly_Income_2__c,
+                    Monthly_Income_Details_2__c: lead.Monthly_Income_Details_2__c,
+                    Employed__c: lead.Employed__c,
+                    Not_Employed__c: lead.Not_Employed__c,
+                    Year_Employment__c: lead.Year_Employment__c,
+                    Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+                    Self_Employed__c: lead.Self_Employed__c,
+                    Not_Self_Employed__c: lead.Not_Self_Employed__c,
+                    Retired__c: lead.Retired__c,
+                    Not_Retired__c: lead.Not_Retired__c,
+                    Veteran_Disability__c: lead.Veteran_Disability__c,
+                    No_Veteran_Disability__c: lead.No_Veteran_Disability__c,
+                    Reliant_on_Alimony_Child_Support_Other__c: lead.Reliant_on_Alimony_Child_Support_Other__c,
+                    Not_Reliant_on_Alimony_Child_Support_Oth__c: lead.Not_Reliant_on_Alimony_Child_Support_Oth__c,
+                };
+                var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+                leadPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set('v.page', 'OtherIncome');
+                }));
             }
         }
     },
@@ -230,6 +254,18 @@
             Monthly_Income_Details__c: lead.Monthly_Income_Details__c,
             Monthly_Income_2__c: lead.Monthly_Income_2__c,
             Monthly_Income_Details_2__c: lead.Monthly_Income_Details_2__c,
+            Employed__c: lead.Employed__c,
+            Not_Employed__c: lead.Not_Employed__c,
+            Year_Employment__c: lead.Year_Employment__c,
+            Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+            Self_Employed__c: lead.Self_Employed__c,
+            Not_Self_Employed__c: lead.Not_Self_Employed__c,
+            Retired__c: lead.Retired__c,
+            Not_Retired__c: lead.Not_Retired__c,
+            Veteran_Disability__c: lead.Veteran_Disability__c,
+            No_Veteran_Disability__c: lead.No_Veteran_Disability__c,
+            Reliant_on_Alimony_Child_Support_Other__c: lead.Reliant_on_Alimony_Child_Support_Other__c,
+            Not_Reliant_on_Alimony_Child_Support_Oth__c: lead.Not_Reliant_on_Alimony_Child_Support_Oth__c,
         };
         var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
         leadPromise.then($A.getCallback(function resolve(retVal) {
