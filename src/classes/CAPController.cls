@@ -33,7 +33,8 @@ public without sharing class CAPController {
                         Co_Applicant_Date_of_Birth__c, Co_App_Monthly_Mortgage__c,
                         Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,
                         Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
-                        SREC_Product__r.Name,
+                        SREC_Product__r.Name, Project_Identification_Number__c, License_Number_Encrypted__c, State_of_Issuance__c,
+                        Date_of_Issuance__c, Date_of_Expiration__c,
                 (SELECT Id, Name, Description from Attachments)
                 FROM Lead
                 WHERE Id = :leadId
@@ -248,5 +249,21 @@ public without sharing class CAPController {
     @AuraEnabled
     public static List<Product2> getProducts(String state, String productType) {
         return Util.getActiveProducts(new List<String>{state}, null, productType);
+    }
+
+    @AuraEnabled
+    public static String getLenderOfRecord(String state) {
+        List<AggregateResult> products = [SELECT Lender_of_Record__c
+        FROM Product2
+        WHERE IsActive = true
+        AND Product_Type__c = 'Residential Loan'
+        AND State__c = : state
+        GROUP BY Lender_of_Record__c
+        ORDER BY Lender_of_Record__c];
+        String result = '';
+        for (AggregateResult p : products) {
+            result += (String) p.get('Lender_of_Record__c');
+        }
+        return result;
     }
 }

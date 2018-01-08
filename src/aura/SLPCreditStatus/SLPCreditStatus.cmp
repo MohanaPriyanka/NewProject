@@ -148,12 +148,6 @@
             </tbody>
           </table>
           <br></br>
-          <div aura:id="incomeFormButton" class="floatRight noDisplay">
-            <ui:button label="Continue Application (new tab)"
-                       class="slds-button--brand"
-                       labelClass="label"
-                       press="{!c.navigate}"/>
-          </div>
           <div aura:id="customerEmailButton" class="floatRightPadding noDisplay">
             <ui:button label="Continue Application (email)"
                        class="slds-button--brand"

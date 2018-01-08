@@ -28,6 +28,22 @@
         }
     },
 
+    handleShowModal : function(component, event, helper) {
+        var modalBody;
+        $A.createComponent("c:CAPUnfreezeCredit", {},
+            function(content, status) {
+                if (status === "SUCCESS") {
+                    modalBody = content;
+                    var overlay = component.find('overlayLib');
+                    overlay.showCustomModal({
+                        cssClass: 'slds-modal__header_empty, slds-backdrop',
+                        body: modalBody,
+                        showCloseButton: true
+                    })
+                }
+            });
+    },
+
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("confirmSubmit"), 'noDisplay');
         helper.startSpinner(component, 'creditSpinner');
