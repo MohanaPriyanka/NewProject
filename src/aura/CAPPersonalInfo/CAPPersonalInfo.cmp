@@ -138,11 +138,11 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
+          <div class="slds-form-element__control slds-form-element__label">
             {!$Label.c.PI_Primary_PI_Next}
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="firstNameElement">
             <label class="proximaNovaDataBlue">First Name</label>
             <ui:inputText value="{!v.lead.FirstName}" disabled="{!v.piLocked}"/>
@@ -164,32 +164,10 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium">
           <div class="slds-size_1-of-1">
-            <label>Installation Address</label>
+            <label class="slds-form-element__label">Installation Address</label>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
-          <fieldset class="slds-form-element">
-            <div class="slds-form-element__control">
-              <div class="slds-checkbox_button-group">
-                <span class="slds-button slds-checkbox_button">
-                  <input type="checkbox" id="Yes" name="checkbox" value="on" checked="{!v.lead.Residence_Owner__c?true:false}" onchange="{!c.setResidenceOwner}" disabled="{!v.piLocked}"/>
-                  <label class="slds-checkbox_button__label" for="Yes">
-                    <span class="slds-checkbox_faux">Yes</span>
-                  </label>
-                </span>
-                <span class="slds-button slds-checkbox_button">
-                  <input type="checkbox" id="No" name="checkbox" value="off" checked="{!v.lead.Residence_Owner__c?false:true}" onchange="{!c.setResidenceOwner}" disabled="{!v.piLocked}"/>
-                  <label class="slds-checkbox_button__label" for="No">
-                    <span class="slds-checkbox_faux">No</span>
-                  </label>
-                </span>
-              </div>
-            </div>
-          </fieldset>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="homeAddressElement">
             <label class="proximaNovaDataBlue">Street Address</label>
             <ui:inputText value="{!v.lead.LASERCA__Home_Address__c}" disabled="{!v.piLocked}"/>
@@ -248,6 +226,29 @@
             </div>
           </div>
         </aura:if>
+        <div class="slds-grid slds-wrap slds-form-element__row">
+          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 slds-p-top_medium" aura:id="ownHouseElement">
+            <label class="slds-form-element__label slds-p-top_medium">Do you own the property detailed as your installation address?</label>
+            <fieldset class="slds-form-element">
+              <div class="slds-form-element__control">
+                <span class="slds-radio">
+                  <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="true" disabled="{!v.piLocked}"/>
+                  <label class="slds-radio__label" for="radio-1">
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">Yes, I own the property detailed as my installation address.</span>
+                  </label>
+                </span>
+                <span class="slds-radio">
+                  <input type="radio" id="radio-2" name="employment" checked="{!v.lead.Not_Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="false" disabled="{!v.piLocked}"/>
+                  <label class="slds-radio__label" for="radio-2">
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">No, I do not own the property detailed as my installation address.</span>
+                  </label>
+                </span>
+              </div>
+            </fieldset>
+          </div>
+        </div>
         <div class="slds-form-element__row slds-p-top--small">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
         </div>
