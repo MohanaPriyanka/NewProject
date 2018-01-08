@@ -67,13 +67,18 @@ public without sharing class Util {
     }
 
     public static String getCommunitySiteURL(String communityName) {
-        ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
-        for (ConnectApi.Community community : cp.communities) {
-            if (community.name == communityName) {
-                return community.siteUrl;
+        // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests.
+        if (Test.isRunningTest()) {
+            return 'https://sandbox-bluewavememberportal.cs88.force.com/' + communityName;
+        } else {
+            ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
+            for (ConnectApi.Community community : cp.communities) {
+                if (community.name == communityName) {
+                    return community.siteUrl;
+                }
             }
+            return null;
         }
-        return null;
     }
 
     public class BWException extends Exception {}
