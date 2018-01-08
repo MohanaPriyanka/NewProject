@@ -99,7 +99,8 @@
         if (loanTerm > 0 ){
             actionSendApp.setCallback(this,function(resp){ 
                 if (resp.getState() == 'SUCCESS') {
-                    alert('The email to continue this application has been sent to ' + resp.getReturnValue());
+                    alert('The email to continue this application has been sent to ' + resp.getReturnValue() + '. ' +
+                          'If you will be opening the application on this computer, please log out of this portal first.');
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "SLPCreditStatus",

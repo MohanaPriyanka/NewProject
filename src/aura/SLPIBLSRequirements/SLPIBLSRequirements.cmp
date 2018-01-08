@@ -1,17 +1,30 @@
 <aura:component extends="c:BlueWaveForm">
+  <style>
+    table {
+      max-width: 550px;
+    }
+    td {
+      text-align: center;
+    }
+    th {
+      text-align: center;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  </style>
   <div class="slds-wrap">
-    MCEC IBLS Requirements
+    MCEC IBLS Categories
     <table border="1">
       <tr>
         <th>Household Size</th>
-        <th>Category 1 80% of State Median Income</th>
-        <th>Category 2 120% of State Median Income</th>
+        <th>Category 1: Less than or equal to 80% of State Median Income</th>
+        <th>Category 2: Greater than 80% and less than or equal to 120% of State Median Income</th>
       </tr>
       <tr>
         <td>1</td><td>$45,840</td><td>$68,760</td>
       </tr>
       <tr>
-        <td>2</td><td>$59,944</td><td>$89,916</td>
+        <td class="slds-align_absolute_center">2</td><td>$59,944</td><td>$89,916</td>
       </tr>
       <tr>
         <td>3</td><td>$74,049</td><td>$111,074</td>

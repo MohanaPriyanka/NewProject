@@ -134,8 +134,11 @@ public without sharing class SLPCreditStatus {
           FROM EmailTemplate
           WHERE DeveloperName = 'RS_SLP_Customer_Continue_Application'];
 
-      String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
-      continueApplicationUrl = host + 'apply/s/loan-application?leadId=' + lead.Id;
+      String host = Util.getCommunitySiteURL('Apply');
+      if (host == null) {
+          host = URL.getSalesforceBaseUrl().toExternalForm() + '/apply';
+      }
+      continueApplicationUrl = host + '/s/loan-application?leadId=' + lead.Id;
 
       String htmlBody = template.HtmlValue;
       htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);

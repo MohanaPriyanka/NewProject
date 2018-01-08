@@ -7,11 +7,15 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-                  {!$Label.c.CD_Finished}
+            {!$Label.c.CD_Finished}
           </div>
           <div class="slds-form-element__control slds-p-top--small">
-                  {!$Label.c.CD_Finished_Questions}
+            {!$Label.c.CD_Finished_Questions}
           </div>
+          <form action="/apply/s/loan-application">
+            <input type="hidden" name="leadId" value="{!v.lead.Id}"/>
+            <input type="submit" value="Logout"/>
+          </form>
         </div>
       </form>
     </div>

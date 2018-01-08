@@ -66,5 +66,15 @@ public without sharing class Util {
         return enabledProducts;
     }
 
+    public static String getCommunitySiteURL(String communityName) {
+        ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
+        for (ConnectApi.Community community : cp.communities) {
+            if (community.name == communityName) {
+                return community.siteUrl;
+            }
+        }
+        return null;
+    }
+
     public class BWException extends Exception {}
 }
