@@ -54,7 +54,7 @@
         this.startSpinner(component, "emailSpinner");
     }, 
 
-    startApplication : function(component, event, helper, options) {
+    startApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
         newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
@@ -68,21 +68,9 @@
                 delete newLead.Product__c;
             }
             var leadPromise = helper.createLead(component, helper, newLead);
-            var createdLead;
-            if (options.email && options.open) {
-                leadPromise.then($A.getCallback(function resolve(lead) {
-                    createdLead = lead;
-                    helper.emailApplication(component, helper, downPayment, createdLead);
-                })).then($A.getCallback(function resolve() {
-                    window.open('/slportal/s/loan-application?leadId='+createdLead.Id+'&email='+createdLead.Email);
-                }));
-            } else if (options.email) {
-                leadPromise.then($A.getCallback(function resolve(lead) {
-                    helper.emailApplication(component, helper, downPayment, lead);
-                }));
-            }
-            $A.util.removeClass(component.find('sendEmailModalButtons'), 'noDisplay');
-            helper.stopSpinner(component, 'emailSpinner');
+            leadPromise.then($A.getCallback(function resolve(lead) {
+                helper.emailApplication(component, helper, downPayment, lead);
+            }));
         } else {
             helper.logError("SLPSendApplicationEmailController", "createLeadAndSendApplication", errors, newLead);
         }

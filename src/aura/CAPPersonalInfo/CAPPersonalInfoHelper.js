@@ -1,5 +1,8 @@
 ({
     checkPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.FirstName,
@@ -27,14 +30,48 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.lived_residence_six_months__c,
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.Residence_Owner__c,
                                                        'fieldId': "ownHouseElement",
                                                        'fieldType': "uncheckedCheckbox",
                                                        'errorMessage': "You need to own the house where solar panels will be installed"});
         return errorMessage;
     },
 
+    checkLicenseErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
+        var errorMessage = "";
+        var lead = component.get("v.lead");
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.License_Number_Encrypted__c,
+            'fieldId': "licenseNumberElement",
+            'errorMessage': "Enter provide your license number"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.State_of_Issuance__c,
+            'fieldId': "stateElement",
+            'errorMessage': "Enter provide the state issuing your driver's license"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Issuance__c,
+            'fieldId': "dateOfIssuanceElement",
+            'errorMessage': "Enter provide the date the driver's license was issued",
+            'fieldType': 'date'
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Expiration__c,
+            'fieldId': "dateOfExpirationElement",
+            'errorMessage': "Enter provide the date the driver's license expires",
+            'fieldType': 'date'
+        });
+        return errorMessage;
+    },
+
     checkSSNErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__SSN__c,
@@ -52,7 +89,7 @@
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
                                                        'fieldId': "mortgageElement",
                                                        'fieldType': "currency",
-                                                       'errorMessage': "Enter your approximate monthly mortgage, and 0 if you don't have a mortgage"});
+                                                       'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance, and 0 if you don't have a mortgage"});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Credit_Check_Acknowledged__c,
                                                        'fieldId': "creditCheckElement",
                                                        'fieldType': "uncheckedCheckbox",
@@ -65,6 +102,9 @@
     },
 
     checkCoAppPIErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';
@@ -102,6 +142,9 @@
     },
 
     checkCoAppSSNErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';
@@ -121,7 +164,7 @@
             'fieldValue': lead.Co_App_Monthly_Mortgage__c,
             'fieldId': "coAppMortgageElement",
             'fieldType': "currency",
-            'errorMessage': "Enter your approximate monthly mortgage not included in the primary applicant's mortgage, and 0 if not applicable"});
+            'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance not included in the primary applicant's mortgage, and 0 if not applicable"});
         return errorMessage;
     },
 

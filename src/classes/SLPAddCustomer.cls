@@ -210,6 +210,7 @@ public without sharing class SLPAddCustomer {
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
+        htmlBody = htmlBody.replace('{!Lead.FirstName}', newLead.FirstName);
 
         MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;

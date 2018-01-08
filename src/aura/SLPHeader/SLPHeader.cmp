@@ -12,10 +12,10 @@
     </a>
     <aura:if isTrue="{!v.showLogout}">
       <div class="logout">
-       <a href="/slportal/secur/logout.jsp">
-        <span class="slds-truncate proximaNovaWhite">Logout</span>
-      </a>            
-    </div>
+        <a href="/slportal/secur/logout.jsp">
+          <span class="slds-truncate proximaNovaWhite">Logout</span>
+        </a>
+      </div>
   </aura:if>
 </div>
 </aura:component>

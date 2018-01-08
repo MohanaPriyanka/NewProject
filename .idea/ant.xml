@@ -5,7 +5,7 @@
       <additionalClassPath>
         <entry path="file://$PROJECT_DIR$/ant-salesforce.jar" />
       </additionalClassPath>
-      <customJdkName value="1.8" />
+      <customJdkName value="9.0" />
     </buildFile>
   </component>
 </project>

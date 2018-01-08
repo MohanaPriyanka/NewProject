@@ -492,8 +492,8 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Electronic Disbursal</shortDescription>
-    <value>I consent to have funds distributed directly to my Solar Installer. All Customers can choose to recieve paper
-      checks by selecting No
+    <value>I consent to have funds distributed directly to my solar installer. All customers can choose to receive paper
+      checks by selecting No.
     </value>
   </labels>
   <labels>
@@ -502,8 +502,8 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Finished</shortDescription>
-    <value>Thank you for your application, you can close this window! You'll receive an email confirming that we've
-      received your application, and will review it within 1-2 business days.
+    <value>Thank you for your application. You'll get an email confirming our receipt, and we'll send another email in
+      within 1-2 business days with a status. You can close this window or logout now.
     </value>
   </labels>
   <labels>
@@ -512,7 +512,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Finished Questions</shortDescription>
-    <value>If you have any questions in the meantime, please contact us at customercare@bluewavesolar.com.</value>
+    <value>If you have any questions in the meantime, please contact us at partnersupport@bluewavesolar.com</value>
   </labels>
   <labels>
     <fullName>Low_Fico_Disclosure</fullName>

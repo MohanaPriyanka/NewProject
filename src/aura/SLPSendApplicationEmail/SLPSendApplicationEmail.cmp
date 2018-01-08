@@ -156,7 +156,17 @@
       <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
         <div class="slds-p-around--medium">
           <div class="slds-align--absolute-center ">
-            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"><b>The email has been sent, thank you!</b></p>
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
+          </div>
+          <div class="slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
+            <div>
+              <b>If you plan on opening the application from this computer, please logout first.</b>
+            </div>
+            <div>
+              <form action="/slportal/secur/logout.jsp">
+                <input type="submit" value="Logout"/>
+              </form>
+            </div>
           </div>
         </div>
       </div>
