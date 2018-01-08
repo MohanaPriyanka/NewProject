@@ -169,10 +169,24 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
-            <lightning:input type="checkbox" 
-                             checked="{!v.lead.Residence_Owner__c}"
-                             label="I own the house where solar panels will be installed"
-                             disabled="{!v.piLocked}"/>
+          <fieldset class="slds-form-element">
+            <div class="slds-form-element__control">
+              <div class="slds-checkbox_button-group">
+                <span class="slds-button slds-checkbox_button">
+                  <input type="checkbox" id="Yes" name="checkbox" value="on" checked="{!v.lead.Residence_Owner__c?true:false}" onchange="{!c.setResidenceOwner}" disabled="{!v.piLocked}"/>
+                  <label class="slds-checkbox_button__label" for="Yes">
+                    <span class="slds-checkbox_faux">Yes</span>
+                  </label>
+                </span>
+                <span class="slds-button slds-checkbox_button">
+                  <input type="checkbox" id="No" name="checkbox" value="off" checked="{!v.lead.Residence_Owner__c?false:true}" onchange="{!c.setResidenceOwner}" disabled="{!v.piLocked}"/>
+                  <label class="slds-checkbox_button__label" for="No">
+                    <span class="slds-checkbox_faux">No</span>
+                  </label>
+                </span>
+              </div>
+            </div>
+          </fieldset>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">

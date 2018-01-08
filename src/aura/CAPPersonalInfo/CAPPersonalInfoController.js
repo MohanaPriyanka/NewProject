@@ -88,6 +88,19 @@
                             });
     },
 
+    openLicenseInformation : function(component, event, helper) {
+        component.set('v.page', 'PrimaryLicenseInfo');
+    },
+
+    setResidenceOwner : function(component, event, helper) {
+        var residenceOwner = component.get('v.lead.Residence_Owner__c');
+        if (residenceOwner) {
+            component.set('v.lead.Residence_Owner__c', false);
+        } else {
+            component.set('v.lead.Residence_Owner__c', true);
+        }
+    },
+
     savePI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
             helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));

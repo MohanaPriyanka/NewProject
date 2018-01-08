@@ -228,7 +228,7 @@
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
     <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
-      last 30 days)
+      last 30 days).
     </value>
   </labels>
   <labels>
@@ -530,6 +530,15 @@
     <shortDescription>Disclousre used for low fico products</shortDescription>
     <value>The terms of loans we offer you will be based on your creditworthiness and other factors. 
       We will send you more information via email.
+    </value>
+  </labels>
+  <labels>
+    <fullName>Length_With_Employer</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
+    <value>Have you been with your current employer for more than one year?
     </value>
   </labels>
 </CustomLabels>

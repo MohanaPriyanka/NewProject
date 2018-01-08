@@ -1,0 +1,12 @@
+<aura:component  access="global">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:attribute name="optionsMap" type="Map"/>
+	<aura:attribute name="options" type="List"/>
+	<aura:attribute name="value" type="String"/>
+	<aura:attribute name="disabled" type="Boolean"/>
+	<ui:inputSelect value="{!v.value}" disabled="{!v.disabled}">
+		<aura:iteration items="{!v.options}" var="option">
+			<ui:inputSelectOption label="{!option.key}" text="{!option.value}"/>
+		</aura:iteration>
+	</ui:inputSelect>
+</aura:component>
