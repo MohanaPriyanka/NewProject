@@ -36,7 +36,7 @@
             <div class="proximaNovaStream slds-m-top_small"> <b><h3>Select your category:</h3></b> </div>
             <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}" disabled="{!v.piLocked}">
               <ui:inputSelectOption label="Select" text="No Category Selected"/>
-              <ui:inputSelectOption label="Category 1 (Less than 80% of State Median Household Income)" text="Category 1"/>
+              <ui:inputSelectOption label="Category 1 (Less than or equal to 80% of State Median Household Income)" text="Category 1"/>
               <ui:inputSelectOption label="Category 2 (80% - 120% of State Median Household Income)" text="Category 2"/>
               <ui:inputSelectOption label="I am not eligible for either of the categories" text="None"/>
             </ui:inputSelect>
@@ -79,34 +79,36 @@
         </div>
       </aura:if>
     </fieldset>
-    <div class="slds-m-top_medium slds-p-bottom_small">
-      <img aura:id="IBLSCategorization" class="slds-align--absolute-center slds-p-top_medium slds-m-bottom_medium" src="{!$Resource.IBLSCategorization}"/>
-      <u><a class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
+    <div class="slds-m-top_medium slds-p-bottom_small slds-align_absolute-center">
+      <div>
+        <c:SLPIBLSRequirements/>
+        <u><a target="_blank" class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
+      </div>
     </div>
   </aura:if>
     <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
 
     <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
-    <aura:if isTrue="{!v.bwslTransferAlert}">  
-      <section aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-        <div class="slds-modal__container">
-          <header class="slds-modal__header slds-theme_warning">
-            <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
-          </header>
-          <div class="slds-modal__content slds-p-around_medium">
-            <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
-            <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
-            If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
-          </div>
-          <footer class="slds-modal__footer">
-            <ui:button label="Continue" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}"></ui:button>
-            <ui:button label="Go Back" class="slds-button slds-button--brand" press="{!c.closeBWSLTransferAlert}"></ui:button>
-          </footer>
+  <aura:if isTrue="{!v.bwslTransferAlert}">
+    <section aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header slds-theme_warning">
+          <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
+          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
+            If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
         </div>
-      </section>
-      <div class="slds-backdrop slds-backdrop_open"></div>
-    </aura:if>
-    <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
+        <footer class="slds-modal__footer">
+          <ui:button label="Continue" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}"></ui:button>
+          <ui:button label="Go Back" class="slds-button slds-button--brand" press="{!c.closeBWSLTransferAlert}"></ui:button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </aura:if>
+  <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
 
   <!-- INDIVIDUAL OR JOINT -->
   <aura:if isTrue="{!v.page == 'IndividualOrJoint'}">
