@@ -5,7 +5,7 @@
   <aura:attribute name="leadEmail" type="String"/>
   <aura:attribute name="billingAddressSame" type="Boolean" default="true"/>
   <aura:attribute name="bankAffiliation" type="Boolean"/>
-  <aura:attribute name="coAppbankAffiliation" type="Boolean"/>
+  <aura:attribute name="coAppBankAffiliation" type="Boolean"/>
   <aura:attribute name="program" type="String"/>  
   <aura:attribute name="coAppAddressSame" type="Boolean" default="true"/>
   <aura:attribute name="states" type="String[]"/>

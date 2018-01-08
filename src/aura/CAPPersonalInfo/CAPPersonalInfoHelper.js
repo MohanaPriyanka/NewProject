@@ -270,7 +270,7 @@
             (contact.LASERCA__Home_City__c||'') + ', ' +
             (contact.LASERCA__Home_State__c||'') + ' ' +
             (contact.LASERCA__Home_Zip__c||'');
-        lead.LASERCA__Social_Security_Number__c =
+        lead.LASERCA__Co_Applicant_Social_Security_Number__c =
             contact.LASERCA__Social_Security_Number__c;
     },
 
