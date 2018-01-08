@@ -1,4 +1,55 @@
 ({
+    TC_DOC: 'MSLP Technical Confirmation',
+
+    getLead : function(component, helper) {
+        var action = component.get('c.getLead');
+        action.setParams({'leadId' : component.get('v.lead.Id'),
+            'email': component.get('v.lead.Email')});
+        action.setCallback(this,function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                component.set('v.lead', resp.getReturnValue());
+                helper.parseAttachments(component, helper);
+            } else {
+                this.logError('CAPConsentsHelper', 'getLead', resp.getError(), component.get('v.lead'));
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+    parseAttachments : function(component, helper) {
+        const lead = component.get('v.lead');
+        if (lead.Attachments) {
+            const tcDocs = [];
+            lead.Attachments.forEach(function(attachment) {
+                const desc = attachment.Description;
+                if (desc === helper.TC_DOC) {
+                    tcDocs.push(attachment.Name);
+                }
+            });
+            component.set('v.tcDocs', tcDocs);
+        }
+    },
+
+    handleAttachment : function(component, event, helper, description) {
+        var files = event.getSource().get("v.files")
+        var parentId = component.get("v.lead.Id");
+        helper.uploadFiles(component, files, parentId, helper.getLead, description, helper);
+    },
+
+    checkProjectIDErrors : function(component) {
+        var errorMessage = "";
+        var lead = component.get("v.lead");
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Project_Identification_Number__c,
+            'fieldId': "tcProjectId",
+            'errorMessage': "Enter your MassCEC Project ID Number"
+        });
+        if (!component.get('v.tcDocs')) {
+            errorMessage += 'Please upload your Technical Confirmation';
+        }
+        return errorMessage;
+    },
+
 	getSRECProducts : function(component, event, helper, lead) {
 		var i;
         var action = component.get("c.getProducts");

@@ -112,7 +112,7 @@
 
     saveLicenseInfo : function(component, event, helper) {
         if (helper.checkLicenseErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "savePI", helper.checkLicenseErrors(component));
+            helper.logError("CAPPersonalInfoController", "saveLicenseInfo", helper.checkLicenseErrors(component));
             return;
         }
 

@@ -523,6 +523,9 @@ private class PCRApprovalHandlerTest {
                             FROM Product2
                             WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)' 
                             AND Require_Junctions_to_Enable__c = true LIMIT 1];
+        // Let the product be seen by getActiveProducts below...
+        product.Hide_in_Requested_Product__c = false;
+        update product;
         Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
                                                                           Partner__c = partner.Id);
         Product2 bwsl = [SELECT Id
@@ -561,6 +564,9 @@ private class PCRApprovalHandlerTest {
         PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(new List<Lead>{lead});
         System.assertEquals('Pre-Qualified', lead.Status);
         System.assertEquals(1, productRepo.getApplicableProducts(lead, 650).size());
+        System.assertEquals(10, productRepo.products.size());
+        System.debug(LoggingLevel.ERROR, productRepo.products);
+        System.assertEquals(8, Util.getActiveProducts(new List<String>{'MA'}, partner.Id, 'Residential Loan').size());
     }
 
     static testMethod void testProductRepoFor40k() {

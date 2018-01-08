@@ -38,10 +38,18 @@ public without sharing class Util {
         return (String.isBlank(value)?'0':value);
     }
 
+    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) { 
+        return getActiveProductsInternal(states, partnerId, productType, false);
+    }
+
+    public static List<Product2> getActiveProductsIncludingHidden(List<String> states, Id partnerId, String productType) { 
+        return getActiveProductsInternal(states, partnerId, productType, true);
+    }
+
     // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
     // or to generate a quick sales sheet (SLPQuickSalesSheet).
-    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) {
-        List<Product2> productList = [SELECT Id, Name, Program__c, ProductCode, Require_Junctions_to_Enable__c,
+    private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
+        List<Product2> productList = [SELECT Id, Name, Program__c, ProductCode, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
                                       (SELECT Id FROM Partner_Product_Junctions__r 
                                        WHERE Partner__c = :partnerId
                                        AND Active__c = true)
@@ -49,16 +57,17 @@ public without sharing class Util {
                                       WHERE Product_Type__c = :productType
                                       AND IsActive = true
                                       AND State__c IN : states
-                                      AND Hide_in_Requested_Product__c = false
                                       ORDER BY State__c, Loan_Term__c];
         Set<Product2> productSet = new Set<Product2>();
         for (Product2 prod : productList) {
             if (prod.Require_Junctions_to_Enable__c) {
-                if (prod.Partner_Product_Junctions__r.size() > 0) {
+                if ((prod.Partner_Product_Junctions__r.size() > 0) && (!prod.Hide_in_Requested_Product__c || showHidden)) {
                     productSet.add(prod);
                 }
             } else {
-                productSet.add(prod);
+                if (!prod.Hide_in_Requested_Product__c || showHidden) {
+                    productSet.add(prod);
+                }
             }
         }
         List<Product2> enabledProducts = new List<Product2>();
@@ -69,13 +78,13 @@ public without sharing class Util {
     public static String getCommunitySiteURL(String communityName) {
         // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests.
         if (Test.isRunningTest()) {
-            return 'https://sandbox-bluewavememberportal.cs88.force.com/' + communityName;
+            String host = 'https://sandbox-bluewavememberportal.cs88.force.com/';
+            host += communityName;
+            return host;
         } else {
             ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
             for (ConnectApi.Community community : cp.communities) {
-                if (community.name == communityName) {
-                    return community.siteUrl;
-                }
+                if (community.name == communityName) {return community.siteUrl;}
             }
             return null;
         }

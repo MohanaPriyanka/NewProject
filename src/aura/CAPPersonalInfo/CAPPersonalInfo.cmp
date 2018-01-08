@@ -543,7 +543,7 @@
                              disabled="{!v.coAppLocked}"/>
           </div>
         </div>
-        <aura:if isTrue="{!v.Bank_Affiliation__c}">
+        <aura:if isTrue="{!v.coAppBankAffiliation}">
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 
