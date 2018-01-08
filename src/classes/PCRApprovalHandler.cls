@@ -261,7 +261,12 @@ public without sharing class PCRApprovalHandler {
                         
                     if (pcr.DOER_Application__c) {
                         String htmlbody = doerEmailTemplate.HtmlValue;
-                        String host = Util.getCommunitySiteURL('Apply');
+                        String host = null;
+                        try {
+                            host = Util.getCommunitySiteURL('Apply');
+                        } catch (ConnectApi.ConnectApiException cae) {
+                            // Can't run getCommunitySiteURL as a Guest user, let it fall through to a null host
+                        }
                         if (host == null) {
                             host = URL.getSalesforceBaseUrl().toExternalForm() + '/apply';
                         }

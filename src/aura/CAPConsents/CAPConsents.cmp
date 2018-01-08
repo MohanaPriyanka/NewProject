@@ -1,7 +1,55 @@
 <aura:component description="CAPConsents" controller="CAPController" access="global" extends="c:CAPParent">
   <aura:attribute name="availableSRECProducts" type="Product2[]"/>
+  <aura:attribute name="tcDocs" type="Object"/>
   <aura:set attribute="STAGENAME" value="NAV_SREC_and_Disbursals"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+
+  <aura:if isTrue="{!v.page == 'MSLPTechnicalConfirm'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">{!$Label.c.CD_MCEC_Project_ID_Request}</div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcProjectID">
+              <label class="proximaNovaDataBlue">MassCEC Project ID Number</label>
+              <ui:inputText value="{!v.lead.Project_Identification_Number__c}"
+                            placeholder="SLP-####"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
+              <label class="proximaNovaDataBlue">Technical Confirmation Document</label>
+              <lightning:input type="file" label="Attach TC" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTC}"/>
+            </div>
+          </div>
+        </div>
+        <aura:if isTrue="{!not(empty(v.tcDocs))}">
+          <div class="slds-box_border slds-text-body_small">
+            Uploaded Technical Confirmation:
+            <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size--1-of-1">
+                <table class="slds-table">
+                  <tbody>
+                  <aura:iteration items="{!v.tcDocs}" var="attachment">
+                    <tr>
+                      <td>
+                        <div class="slds-text-body_small">
+                          {!attachment}
+                        </div>
+                      </td>
+                    </tr>
+                  </aura:iteration>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveTCAskSREC}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+
   <aura:if isTrue="{!v.page == 'SREC'}">
     <div class="slds-form-element__row">
       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">

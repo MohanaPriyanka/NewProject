@@ -65,7 +65,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>SREC and Disbursals</shortDescription>
-    <value>Consents and Disbursals</value>
+    <value>Finishing Up</value>
   </labels>
   <labels>
     <fullName>START_Email_Confirmation_Instruction</fullName>
@@ -457,6 +457,14 @@
       overtime, bonuses, W2, investments, a second job, or rental income, please upload them here. There are typically
       documented in a tax return and/or W2
     </value>
+  </labels>
+  <labels>
+    <fullName>CD_MCEC_Project_ID_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MCEC Project ID Request</shortDescription>
+    <value>Please provide your MassCEC Project ID Number from your Technical Confirmation, and upload your Technical Confirmation document.</value>
   </labels>
   <labels>
     <fullName>CD_SREC</fullName>

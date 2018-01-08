@@ -32,7 +32,7 @@ public without sharing class CAPController {
                         Co_Applicant_Date_of_Birth__c, Co_App_Monthly_Mortgage__c,
                         Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,
                         Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
-                        SREC_Product__r.Name,
+                        SREC_Product__r.Name, Project_Identification_Number__c,
                 (SELECT Id, Name, Description from Attachments)
                 FROM Lead
                 WHERE Id = :leadId
