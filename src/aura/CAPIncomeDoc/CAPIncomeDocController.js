@@ -242,7 +242,17 @@
     },
 
     handlePaystubFiles : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.PAYSTUB);
+        const lead = component.get('v.lead');
+        var leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+            Year_Employment__c: lead.Year_Employment__c,
+        };
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        leadPromise.then($A.getCallback(function resolve(retVal) {
+            helper.handleAttachment(component, event, helper, helper.PAYSTUB);
+        }));
     },
 
     handleTaxOneYear : function(component, event, helper) {
