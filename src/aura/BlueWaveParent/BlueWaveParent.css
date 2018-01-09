@@ -100,3 +100,16 @@
     font-family: proximaNovaFont;
     color: #266092;
 }
+.THIS .slds-type-focus {
+    font-family: proximaNovaFont;
+    color: #00AEAA;
+}
+.THIS .slds-text-body--regular {
+    font-family: proximaNovaFont;
+    color: #7C98AB;
+}
+.THIS .slds-text-body--large {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #7C98AB;
+}
