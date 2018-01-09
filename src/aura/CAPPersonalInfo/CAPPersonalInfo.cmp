@@ -5,7 +5,7 @@
   <aura:attribute name="leadEmail" type="String"/>
   <aura:attribute name="billingAddressSame" type="Boolean" default="true"/>
   <aura:attribute name="bankAffiliation" type="Boolean"/>
-  <aura:attribute name="coAppbankAffiliation" type="Boolean"/>
+  <aura:attribute name="coAppBankAffiliation" type="Boolean"/>
   <aura:attribute name="program" type="String"/>  
   <aura:attribute name="coAppAddressSame" type="Boolean" default="true"/>
   <aura:attribute name="states" type="String[]"/>
@@ -138,11 +138,11 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
+          <div class="slds-form-element__control slds-form-element__label">
             {!$Label.c.PI_Primary_PI_Next}
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="firstNameElement">
             <label class="proximaNovaDataBlue">First Name</label>
             <ui:inputText value="{!v.lead.FirstName}" disabled="{!v.piLocked}"/>
@@ -164,18 +164,10 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium">
           <div class="slds-size_1-of-1">
-            <label>Installation Address</label>
+            <label class="slds-form-element__label">Installation Address</label>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
-            <lightning:input type="checkbox" 
-                             checked="{!v.lead.Residence_Owner__c}"
-                             label="I own the house where solar panels will be installed"
-                             disabled="{!v.piLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="homeAddressElement">
             <label class="proximaNovaDataBlue">Street Address</label>
             <ui:inputText value="{!v.lead.LASERCA__Home_Address__c}" disabled="{!v.piLocked}"/>
@@ -234,6 +226,29 @@
             </div>
           </div>
         </aura:if>
+        <div class="slds-grid slds-wrap slds-form-element__row">
+          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 slds-p-top_medium" aura:id="ownHouseElement">
+            <label class="slds-form-element__label slds-p-top_medium">Do you own the property detailed as your installation address?</label>
+            <fieldset class="slds-form-element">
+              <div class="slds-form-element__control">
+                <span class="slds-radio">
+                  <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="true" disabled="{!v.piLocked}"/>
+                  <label class="slds-radio__label" for="radio-1">
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">Yes, I own the property detailed as my installation address.</span>
+                  </label>
+                </span>
+                <span class="slds-radio">
+                  <input type="radio" id="radio-2" name="employment" checked="{!v.lead.Not_Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="false" disabled="{!v.piLocked}"/>
+                  <label class="slds-radio__label" for="radio-2">
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">No, I do not own the property detailed as my installation address.</span>
+                  </label>
+                </span>
+              </div>
+            </fieldset>
+          </div>
+        </div>
         <div class="slds-form-element__row slds-p-top--small">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
         </div>
@@ -304,7 +319,7 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
+          <div class="slds-form-element__control slds-form-element__label slds-m-bottom_small">
             {!$Label.c.PI_Primary_SSN}
           </div>
         </div>
@@ -388,6 +403,14 @@
                 </ui:inputSelect>
               </aura:if>
             </div>
+          </div>
+        </aura:if>
+        <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
+          <div class="slds-m-top--small slds-p-bottom--small">
+            <header class="proximaNovaStream"> 
+              <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
+            </header>
+            <p>{!$Label.c.NY_Credit_Disclosure}</p>
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">
@@ -504,12 +527,12 @@
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
-            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage (not previously reported)</label>
+            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage, or 0 (not entered on primary's monthly mortgage)</label>
             <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-size_1-of-1">
+          <div class="slds-col_padded slds-size_1-of-1" aura:id="coAppCreditCheckAcknowledgment">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c}"
                              label="{!$Label.c.PI_Credit_History}"
@@ -517,7 +540,7 @@
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-size_1-of-1 slds-grid">
+          <div class="slds-col_padded slds-size_1-of-1 slds-grid" aura:id="coAppPrivacyPolicyElement">
             <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c}"
@@ -543,7 +566,7 @@
                              disabled="{!v.coAppLocked}"/>
           </div>
         </div>
-        <aura:if isTrue="{!v.Bank_Affiliation__c}">
+        <aura:if isTrue="{!v.coAppBankAffiliation}">
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-size_1-of-1">
               <lightning:input type="checkbox" 

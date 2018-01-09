@@ -88,6 +88,22 @@
                             });
     },
 
+    openLicenseInformation : function(component, event, helper) {
+        component.set('v.page', 'PrimaryLicenseInfo');
+    },
+
+    setResidenceOwner: function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var value = event.currentTarget.value;
+        if (value == 'true') {
+            component.set('v.lead.Residence_Owner__c', true);
+            component.set('v.lead.Not_Residence_Owner__c', false);
+        } else {
+            component.set('v.lead.Residence_Owner__c', false);
+            component.set('v.lead.Not_Residence_Owner__c', true);
+        }
+    },
+
     savePI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
             helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
@@ -112,7 +128,7 @@
 
     saveLicenseInfo : function(component, event, helper) {
         if (helper.checkLicenseErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "savePI", helper.checkLicenseErrors(component));
+            helper.logError("CAPPersonalInfoController", "saveLicenseInfo", helper.checkLicenseErrors(component));
             return;
         }
 

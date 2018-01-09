@@ -78,13 +78,13 @@ public without sharing class Util {
     public static String getCommunitySiteURL(String communityName) {
         // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests.
         if (Test.isRunningTest()) {
-            return 'https://sandbox-bluewavememberportal.cs88.force.com/' + communityName;
+            String host = 'https://sandbox-bluewavememberportal.cs88.force.com/';
+            host += communityName;
+            return host;
         } else {
             ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
             for (ConnectApi.Community community : cp.communities) {
-                if (community.name == communityName) {
-                    return community.siteUrl;
-                }
+                if (community.name == communityName) {return community.siteUrl;}
             }
             return null;
         }

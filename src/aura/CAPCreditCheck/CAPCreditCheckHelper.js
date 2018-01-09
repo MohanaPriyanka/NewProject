@@ -7,8 +7,7 @@
             if (resp.getState() === "SUCCESS") {
                 helper.checkCreditResponse(component, helper, lead.Application_Type__c, resp.getReturnValue());
             } else {
-                helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError());
-                console.log("poller from ccs: " + component.get("v.creditStatusPoller"));
+                helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError(), lead);
                 window.clearInterval(component.get("v.creditStatusPoller"));
                 window.clearTimeout(component.get("v.creditStatusTimeoutID"));
                 $A.util.addClass(component.find("editPencil"), 'noDisplay');
