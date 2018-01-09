@@ -520,7 +520,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Alimony Request</shortDescription>
-    <value>Since you'll be using Alimony, Child Support, or Separate Maintenance Payments to pay your obligation,
+    <value>Since you will be using Alimony, Child Support, or Separate Maintenance Payments to pay your obligation,
       please let us know the details here. We may ask for additional information later
     </value>
   </labels>
@@ -530,9 +530,17 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Other Income Request</shortDescription>
-    <value>Finally, if there's anything else that you'd like to share with us supporting your income sources such as
-      overtime, bonuses, W2, investments, a second job, or rental income, please upload them here. They are typically
-      documented in a tax return and/or W2.
+    <value>Finally, if there is anything else that you'd like to share with us supporting your income sources such as
+      overtime, bonuses, W2, investments, a second job, or rental income, please upload them here.
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Other_Income_Sub_Text</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Other Income Request</shortDescription>
+    <value>They are typically documented in a tax return and/or W2.
     </value>
   </labels>
   <labels>
