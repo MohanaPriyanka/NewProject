@@ -19,20 +19,25 @@
 
   <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
-    <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Let's check if you are eligible for the Mass Solar Loan Program:</h1></b> </div>
+    <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Are you eligible for the income-based Mass Solar Loan Program?</h1></b> </div>
     <div class="slds-m-top_x-small">
       <p class="slds-m-around_small slds-align--absolute-center proximaNovaDataBlue">
-        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete.  For some consumers, the MSLP may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave’s bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
-      </p>
-      <p class="slds-m-around_small proximaNovaDataBlue">
-        BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
+        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
       </p>
     </div>
     <fieldset class="slds-form--compound">
       <div class="slds-form-element__group">
         <div class="slds-form-element__row">
           <div aura:id="iblsCategory" class="slds-form-element slds-m-bottom_xx-small slds-p-horizontal--small animated">
-            <p class="proximaNovaDataBlue">You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.  Household income refers to the income of all household members as reported on line 22 of their most recently filed tax return (Tax Return Form 1040) accepted by the IRS. Household size includes any person occupying the system owner’s household. For a project seeking IBLS, all borrowers who will be present on the program loan should be included as household members.</p>
+            <p class="proximaNovaDataBlue">
+              You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.
+            </p>
+            <div class="slds-m-top_medium slds-p-bottom_small slds-align_absolute-center">
+              <div>
+                <c:SLPIBLSRequirements/>
+                <u><a target="_blank" class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
+              </div>
+            </div>
             <div class="proximaNovaStream slds-m-top_small"> <b><h3>Select your category:</h3></b> </div>
             <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}" disabled="{!v.piLocked}">
               <ui:inputSelectOption label="Select" text="No Category Selected"/>
@@ -46,20 +51,26 @@
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'Category 1')}">
         <div aura:id="eligibleIBLSAlertCategory1" class="">
           <p class="proximaNovaDataBlue slds-m-around_small">
-            Great – let’s work on this option for you. Consumers eligible for IBLS Category 1 may also be able to qualify for additional financial incentives through the MSLP, such as the MSLP’s interest rate buy down and loan loss reserve.
+            We will start processing your application based on your selection of Category 1. Consumers eligible for IBLS Category 1 may also be able to qualify for additional financial incentives through the MSLP, such as the MSLP’s interest rate buy down and loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
-            It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
+            Availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with this qualification process.
+          </p>
+          <p class="slds-m-around_small proximaNovaDataBlue">
+            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
           </p>
         </div>
       </aura:if>
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'Category 2')}">
         <div aura:id="eligibleIBLSAlertCategory2" class="">
           <p class="proximaNovaDataBlue slds-m-around_small">
-            Great – let’s work on this option for you. Consumers eligible for IBLS Category 2 may also be able to qualify for the MSLP’s loan loss reserve.
+            We will start processing your application based on your selection of Category 2. Consumers eligible for IBLS Category 2 may also be able to qualify for the MSLP’s loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
             It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
+          </p>
+          <p class="slds-m-around_small proximaNovaDataBlue">
+            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
           </p>
         </div>
       </aura:if>
@@ -79,12 +90,6 @@
         </div>
       </aura:if>
     </fieldset>
-    <div class="slds-m-top_medium slds-p-bottom_small slds-align_absolute-center">
-      <div>
-        <c:SLPIBLSRequirements/>
-        <u><a target="_blank" class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
-      </div>
-    </div>
   </aura:if>
   <!-- / MASS SOLAR LOAN IBLS CATEGORIZATION  -->
 

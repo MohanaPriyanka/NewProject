@@ -73,7 +73,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Email Confirmation Instruction</shortDescription>
-    <value>Enter the email associated with this loan application to confirm your identity and continue the application
+    <value>Enter the email associated with this loan application to confirm your identity before starting or continuing your application.
     </value>
   </labels>
   <labels>
