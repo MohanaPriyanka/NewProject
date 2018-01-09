@@ -5,18 +5,18 @@
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
 
   <aura:if isTrue="{!v.page == 'MSLPTechnicalConfirm'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control slds-text-heading--medium"><b>{!$Label.c.CD_MCEC_Project_ID_Request}</b></div>
           <div class="slds-form-element__control slds-text-body--regular">{!$Label.c.CD_MCEC_Project_ID_Request_Body2}</div>
           <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-top_small slds-p-bottom_small" aura:id="tcProjectID">
+            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-top_small slds-p-bottom_small" aura:id="tcProjectID">
               <label class="slds-form-element__label">MassCEC Project ID Number</label>
               <ui:inputText value="{!v.lead.Project_Identification_Number__c}"
                             placeholder="SLP-####"/>
             </div>
-            <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
+            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
               <label class="slds-form-element__label">Technical Confirmation Document</label>
               <lightning:input type="file" label="Attach TC" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTC}"/>
             </div>

@@ -75,7 +75,7 @@
             </span>
           </div>
         </fieldset>
-        <div class="slds-form-element slds-is-required slds-p-bottom_medium">
+        <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control slds-form-element__label">
             <div class="slds-text-heading--medium">
               <b>{!$Label.c.ID_Paystub_Request}</b>
@@ -145,32 +145,34 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
-    <fieldset class="slds-form-element slds-m-left_small">
-      <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
-        <aura:set attribute="else">
+    <div class="slds-m-left_small">
+      <fieldset class="slds-form-element">
+        <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
+          <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
+          <aura:set attribute="else">
             <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Self_Employment_Question}</b></label>
-        </aura:set>
-      </aura:if>
-      <div class="slds-form-element__control">
-        <span class="slds-radio">
-          <input type="radio" id="radio-5" name="selfEmployment" checked="{!v.lead.Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="true" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-5">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us is self employed':'I am self employed'}</span>
-          </label>
-        </span>
-        <span class="slds-radio">
-          <input type="radio" id="radio-6" name="selfEmployment" checked="{!v.lead.Not_Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="false" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-6">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us are self-employed':'I am not self employed'}</span>
-          </label>
-        </span>
+          </aura:set>
+        </aura:if>
+        <div class="slds-form-element__control">
+          <span class="slds-radio">
+            <input type="radio" id="radio-5" name="selfEmployment" checked="{!v.lead.Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="true" disabled="{!v.piLocked}"/>
+            <label class="slds-radio__label" for="radio-5">
+              <span class="slds-radio_faux"></span>
+              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us is self employed':'I am self employed'}</span>
+            </label>
+          </span>
+          <span class="slds-radio">
+            <input type="radio" id="radio-6" name="selfEmployment" checked="{!v.lead.Not_Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="false" disabled="{!v.piLocked}"/>
+            <label class="slds-radio__label" for="radio-6">
+              <span class="slds-radio_faux"></span>
+              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us are self-employed':'I am not self employed'}</span>
+            </label>
+          </span>
+        </div>
+      </fieldset>
+      <div class="slds-form-element__row slds-p-top--small">
+        <lightning:button aura:id="getTaxReturns" label="Next" onclick="{!c.getTaxReturns}"/>
       </div>
-    </fieldset>
-    <div class="slds-form-element__row slds-p-top--small">
-      <lightning:button aura:id="getTaxReturns" label="Next" onclick="{!c.getTaxReturns}"/>
     </div>
   </aura:if>
 
