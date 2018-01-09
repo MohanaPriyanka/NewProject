@@ -175,7 +175,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetTaxReturns'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required slds-p-bottom_medium">
           <div class="slds-form-element__control slds-p-bottom_medium slds-text-heading--medium">
@@ -259,8 +259,8 @@
         </span>
       </div>
     </fieldset>
-    <div class="slds-col slds-col--padded slds-p-top--small">
-      <div class="slds-form-element__row slds-p-top--small">
+    <div class="slds-col slds-col--padded">
+      <div class="slds-form-element__row slds-p-top--medium">
         <lightning:button aura:id="getRetirementIncome" label="Next" onclick="{!c.getRetirementIncome}"/>
       </div>
     </div>
@@ -319,7 +319,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'VeteranQuestion'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
@@ -409,7 +409,7 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-        <fieldset class="slds-form-element slds-m-top_medium slds-m-bottom_medium">
+        <fieldset class="slds-form-element">
           <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Alimony_Question}</b></label>
           <div class="slds-form-element__control">
             <span class="slds-radio">
@@ -430,17 +430,17 @@
         </fieldset>
           </div>
         </div>
-        <div class="slds-form-element__row slds-p-top--small">
+        <div class="slds-form-element__row slds-p-top--medium">
           <lightning:button aura:id="getAlimonyIncome" label="Next" onclick="{!c.getAlimonyIncome}"/>
         </div>
       </form>
     </div>
   </aura:if>
   <aura:if isTrue="{!v.page == 'GetAlimonyIncome'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-text-heading--medium"><b>{!$Label.c.ID_Alimony_Request}</b></div>
+          <div class="slds-form-element__control slds-text-heading--medium slds-m-left_small"><b>{!$Label.c.ID_Alimony_Request}</b></div>
           <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_small">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyAmount">
               <label class="slds-form-element__label">Monthly Income Amount</label>
