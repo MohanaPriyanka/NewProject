@@ -29,6 +29,7 @@ public without sharing class CAPController {
                         CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
                         CoApplicant_Contact__r.Other_Bank_Executive__c, CoApplicant_Contact__r.Avidia_Service_Provider__c,
                         CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c,
+                        CoApplicant_Contact__r.Employed_less_than_a_year__c,
                         Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Phone__c, Co_Applicant_Email__c,
                         Co_Applicant_Date_of_Birth__c, Co_App_Monthly_Mortgage__c,
                         Co_Applicant_Income__c, LASERCA__Co_Applicant_Social_Security_Number__c,

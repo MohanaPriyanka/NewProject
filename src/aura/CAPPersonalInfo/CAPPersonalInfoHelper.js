@@ -58,13 +58,13 @@
         errorMessage += this.getFieldError(component, {
             'fieldValue': lead.Date_of_Issuance__c,
             'fieldId': "dateOfIssuanceElement",
-            'errorMessage': "Enter provide the date the driver's license was issued",
+            'errorMessage': "Enter or check the the license issuance date (format: 01/01/2000)",
             'fieldType': 'date'
         });
         errorMessage += this.getFieldError(component, {
             'fieldValue': lead.Date_of_Expiration__c,
             'fieldId': "dateOfExpirationElement",
-            'errorMessage': "Enter provide the date the driver's license expires",
+            'errorMessage': "Enter or check the license expiration date (format: 01/01/2000)",
             'fieldType': 'date'
         });
         return errorMessage;
@@ -167,6 +167,14 @@
             'fieldId': "coAppMortgageElement",
             'fieldType': "currency",
             'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance not included in the primary applicant's mortgage, and 0 if not applicable"});
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
+            'fieldId': "coAppCreditCheckAcknowledgment",
+            'fieldType': "uncheckedCheckbox",
+            'errorMessage': "Please give permission to access your credit history"});
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
+            'fieldId': "coAppPrivacyPolicyElement",
+            'fieldType': "uncheckedCheckbox",
+            'errorMessage': "Please acknowledge privacy policies"});
         return errorMessage;
     },
 

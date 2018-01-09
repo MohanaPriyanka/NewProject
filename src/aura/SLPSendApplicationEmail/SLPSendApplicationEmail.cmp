@@ -139,6 +139,7 @@
                     <div class="slds-form-element__row slds-p-horizontal--small slds-m-top_medium slds-form-element__label">
                       <b>
                         Applicants will need to meet the Massachusetts Clean Energy Technology Center's (MassCEC) Income-Based Loan Support (IBLS) requirements to apply for a Mass Solar Loan Program (MSLP) loan from BlueWave's bank partner.  Applicants who do not meet IBLS requirements may still be eligible for a MSLP loan through MassCEC.
+
                         <c:BlueWaveInputToolTip placementLeft="false"> 
                           <aura:set attribute="popoverBody">
                             <c:SLPIBLSRequirements/>
@@ -158,7 +159,7 @@
           <div class="slds-align--absolute-center ">
             <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
           </div>
-          <div class="slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
+          <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
             <div>
               <b>If you plan on opening the application from this computer, please logout first.</b>
             </div>
