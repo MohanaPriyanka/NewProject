@@ -15,7 +15,9 @@
     }
   </style>
   <div class="slds-wrap">
-    MCEC IBLS Categories
+    <div class="slds-section__title">
+    <b>MCEC IBLS Categories</b>
+    </div>
     <table border="1">
       <tr>
         <th>

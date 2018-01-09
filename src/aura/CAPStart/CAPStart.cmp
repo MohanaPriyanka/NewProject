@@ -31,7 +31,9 @@
   <!-- CONFIRMATION -->
   <aura:if isTrue="{!v.page == 'LoanConfirmation'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      {!$Label.c.START_Lets_Get_Started}
+      <div class="slds-text-heading--medium">
+        <b>{!$Label.c.START_Lets_Get_Started}</b>
+      </div>
       <div class="slds-form slds-form_compound slds-p-top--large">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
@@ -75,8 +77,8 @@
 
   <!-- DISCLAIMER -->
   <aura:if isTrue="{!v.page == 'LoanDisclaimer'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
-      <p class="slds-p-around--large">
+    <div class="slds-col slds-col--padded">
+      <p class="slds-p-left--large slds-text-body--large">
         <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
           {!$Label.c.START_Disclosure_PreQual_MSLP}
           <aura:set attribute="else">
@@ -86,19 +88,17 @@
       </p>
 
       <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'MA'}">
-        <p class="slds-p-around--large">
-          <div class="slds-form-element__control">
-            <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
-              {!$Label.c.START_Disclosure_MSLP_SREC}
-              <aura:set attribute="else">
-                {!$Label.c.START_Disclosure_MA_SREC}
-              </aura:set>
-            </aura:if>
-          </div>
+        <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
+          <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+            {!$Label.c.START_Disclosure_MSLP_SREC}
+            <aura:set attribute="else">
+              {!$Label.c.START_Disclosure_MA_SREC}
+            </aura:set>
+          </aura:if>
         </p>
       </aura:if>
 
-      <p class="slds-p-around--large">
+      <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
         <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
           {!$Label.c.START_Disclosure_Income_Doc_MSLP}
           <aura:set attribute="else">
@@ -106,7 +106,7 @@
           </aura:set>
         </aura:if>
       </p>
-      <div class="slds-form-element__row slds-p-top--small">
+      <div class="slds-form-element__row slds-m-top--medium">
         <lightning:button aura:id="confirmDisclaimer" label="Next" onclick="{!c.finishStage}"/>
       </div>
     </div>

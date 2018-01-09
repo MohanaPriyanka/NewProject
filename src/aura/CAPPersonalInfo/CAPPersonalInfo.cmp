@@ -19,30 +19,31 @@
 
   <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
-    <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Mass Solar Loan Program - Loans from BlueWave's bank partner</h1></b> </div>
+    <div class="slds-text-heading--medium slds-m-left_small slds-m-bottom_small"> <b><h1>Mass Solar Loan Program - Loans from BlueWave's bank partner</h1></b> 
+    </div>
     <div class="slds-m-top_x-small">
-      <p class="slds-m-around_small slds-align--absolute-center proximaNovaDataBlue">
-        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender for some consumers. BlueWave's bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
+      <p class="slds-m-around_small slds-align--absolute-center slds-text-body--regular">
+        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
       </p>
     </div>
     <fieldset class="slds-form--compound">
       <div class="slds-form-element__group">
         <div class="slds-form-element__row">
           <div aura:id="iblsCategory" class="slds-form-element slds-m-bottom_xx-small slds-p-horizontal--small animated">
-            <p class="proximaNovaDataBlue">
-              BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the MSLP. You must apply directly with the MSLP to determine your eligibility.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that applies to your household income and size.
+            <p class="slds-text-body--small">
+              You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.
             </p>
             <div class="slds-m-top_medium slds-p-bottom_small slds-align_absolute-center">
               <div>
                 <c:SLPIBLSRequirements/>
-                <u><a target="_blank" class="proximaNovaStream90 slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
+                <u><a target="_blank" class="slds-type-focus slds-align--absolute-center" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf"> View the Mass Solar Loan Program Manual here</a></u>
               </div>
             </div>
-            <div class="proximaNovaStream slds-m-top_small"> <b><h3>Select your category:</h3></b> </div>
+            <div class="slds-section__title slds-m-top_small"> <b><h3>Select your category:</h3></b> </div>
             <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}" disabled="{!v.piLocked}">
               <ui:inputSelectOption label="Select" text="No Category Selected"/>
               <ui:inputSelectOption label="Category 1 (Less than or equal to 80% of State Median Household Income)" text="Category 1"/>
-              <ui:inputSelectOption label="Category 2 (Greater than 80% and less than or equal to 120% of State Median Household Income)" text="Category 2"/>
+              <ui:inputSelectOption label="Category 2 (80% - 120% of State Median Household Income)" text="Category 2"/>
               <ui:inputSelectOption label="I am not eligible for either of the categories" text="None"/>
             </ui:inputSelect>
           </div>
@@ -50,29 +51,35 @@
       </div>
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'Category 1')}">
         <div aura:id="eligibleIBLSAlertCategory1" class="">
-          <p class="proximaNovaDataBlue slds-m-around_small">
+          <p class="slds-text-body--small slds-m-around_small">
             We will start processing your application based on your selection of Category 1. Consumers eligible for IBLS Category 1 may also be able to qualify for additional financial incentives through the MSLP, such as the MSLP’s interest rate buy down and loan loss reserve.
           </p>
-          <p class="proximaNovaDataBlue slds-m-around_small">
-            Eligibility of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help with this qualification process.
+          <p class="slds-text-body--small slds-m-around_small">
+            Availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with this qualification process.
+          </p>
+          <p class="slds-m-around_small slds-text-body--small">
+            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
           </p>
         </div>
       </aura:if>
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'Category 2')}">
         <div aura:id="eligibleIBLSAlertCategory2" class="">
-          <p class="proximaNovaDataBlue slds-m-around_small">
+          <p class="slds-text-body--small slds-m-around_small">
             We will start processing your application based on your selection of Category 2. Consumers eligible for IBLS Category 2 may also be able to qualify for the MSLP’s loan loss reserve.
           </p>
-          <p class="proximaNovaDataBlue slds-m-around_small">
-            Eligibility of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help with this qualification process.
+          <p class="slds-text-body--small slds-m-around_small">
+            It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
+          </p>
+          <p class="slds-m-around_small slds-text-body--small">
+            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
           </p>
         </div>
       </aura:if>
       <aura:if isTrue="{!and(v.lead.Product_Program__c == 'MSLP',v.lead.IBLS_Category__c == 'None')}">
         <div aura:id="ineligibleIBLSAlert" class="">
-          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
+          <p class="slds-form-element__label slds-text-body--regular slds-m-around_small">
             Great – let’s work on this option for you. If you would like to check to see if you qualify for the MSLP instead, you can
-            <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>,
+            <u><a class="slds-type-focus" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>,
             or check with your solar contractor. Eligibility determinations for the MSLP are not made by BlueWave. Otherwise,
             please click below to apply for one of BlueWave's traditional loan products available from its bank partner.
           </p>
@@ -95,9 +102,9 @@
           <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
         </header>
         <div class="slds-modal__content slds-p-around_medium">
-          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for the income based program in conjunction with the Massachusetts Solar Loan Program.</b></p>
-          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
-            If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
+          <p class="slds-form-element__label slds-text-body--regular slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
+          <p class="slds-form-element__label slds-text-body--regular slds-m-around_small">
+            If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="slds-type-focus" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
         </div>
         <footer class="slds-modal__footer">
           <ui:button label="Continue" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}"></ui:button>
@@ -114,13 +121,13 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-            {!$Label.c.PI_Individual_or_Joint}
+          <div class="slds-form-element__control slds-text-heading--medium">
+            <b>{!$Label.c.PI_Individual_or_Joint}</b>
           </div>
-          <div class="slds-form-element__control slds-p-top_small">
+          <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
             {!$Label.c.PI_Individual_or_Joint_Common_Reasons}
           </div>
-          <div class="slds-form-element__control slds-p-top_small">
+          <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
             {!$Label.c.PI_Individual_or_Joint_Not_Sure}
           </div>
           <div class="slds-form-element__control slds-p-top_small">
@@ -181,7 +188,7 @@
                 <b>Express Consent:</b>
               </header>
               <p class="slds-text-body--small"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
-              <div  class="proximaNovaDataBlue animated">
+              <div  class="slds-text-body--regular animated">
                 <lightning:input type="checkbox" 
                  checked="{!v.lead.Express_Consent__c}"
                  label="I express consent."
@@ -310,22 +317,22 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element__control">
-          <header class="proximaNovaStream"> 
+          <header class="slds-text-heading--medium"> 
             <b>Avidia Bank Customer Identification Program</b>
           </header>
-          <div class="proximaNovaDataBlue">
-            <p class="slds-p-top--small">As a result of the September 11 terrorist attacks, Congress enacted the U.S.A. PATRIOT ACT of 2001. In order to make it more difficult for terrorists and other criminals to use the country’s financial system for illicit purposes, the law requires financial institutions to establish procedures to obtain, verify, and record information that identifies each person who opens an account.</p>
+          <div class="slds-text-body--regular">
+            <p class="slds-p-top--small">As a result of the September 11 terrorist attacks, Congress enacted the U.S.A PATRIOT ACT of 2001. In order to make it more difficult for terrorists and other criminals to use the country’s financial system for illicit purposes, the law requires financial institutions to establish procedures to obtain, verify, and record information that identifies each person who opens an account.</p>
             <p class="slds-p-top--small">What this means to you: When you open a deposit account, apply for a loan, or otherwise establish a formal banking relationship with Avidia Bank, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see your driver's license or other identifying documents.</p>
             <p class="slds-p-top--small slds-p-bottom--small">Please be assured that we will take every precaution to protect the confidentiality of the information and documentation you provide to us. We thank you for your understanding and your patience as we comply with the law.</p>
           </div>
-          <header class="proximaNovaStream slds-p-top--small slds-p-bottom--small"> 
+          <header class="slds-section__title slds-p-top--small slds-p-bottom--small"> 
             <b>Certificate and Authorization</b>
           </header>
-          <div class="proximaNovaDataBlue">
+          <div class="slds-text-body--regular">
             <p class="slds-p-top--x_small"><i>The applicant and any co-applicant each: (i) certify that everything stated in this application is true and complete in all respects; (ii) authorize the Bank to verify any information provided in connection with this application.</i></p>
           </div>
           <hr></hr>
-          <header class="proximaNovaStream slds-p-bottom--small"> 
+          <header class="slds-section__title slds-p-bottom--small"> 
             <b>Please provide us with some additional information about your Driver's License.</b>
           </header>
           <div class="slds-grid slds-wrap slds-form-element__row">
@@ -474,32 +481,35 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-            <aura:if isTrue="{!v.coSigner}">
-              {!$Label.c.Co_Signer_PI_Next}
-              <aura:set attribute="else">
-                {!$Label.c.Co_Applicant_PI_Next}
-              </aura:set>
-            </aura:if>
+          <div class="slds-form-element__control slds-text-heading--medium">
+            <b>
+              <aura:if isTrue="{!v.coSigner}">
+                {!$Label.c.Co_Signer_PI_Next}
+                <aura:set attribute="else">
+                  {!$Label.c.Co_Applicant_PI_Next}
+                </aura:set>
+              </aura:if>
+            </b>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppFirstNameElement">
-            <label class="proximaNovaDataBlue">First Name</label>
-            <ui:inputText value="{!v.lead.CoApplicant_Contact__r.FirstName}" disabled="{!v.coAppLocked}"/>
+        <fieldset class="slds-m-top_xx-small">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 " aura:id="coAppFirstNameElement">
+              <label class="slds-form-element__label">First Name</label>
+              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.FirstName}" disabled="{!v.coAppLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppLastNameElement">
+              <label class="slds-form-element__label">Last Name</label>
+              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LastName}" disabled="{!v.coAppLocked}"/>
+            </div>
           </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppLastNameElement">
-            <label class="proximaNovaDataBlue">Last Name</label>
-            <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LastName}" disabled="{!v.coAppLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+          <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppPhoneElement">
-            <label class="proximaNovaDataBlue">Phone</label>
+            <label class="slds-form-element__label">Phone</label>
             <ui:inputPhone value="{!v.lead.CoApplicant_Contact__r.Phone}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppEmailElement">
-            <label class="proximaNovaDataBlue">Email</label>
+            <label class="slds-form-element__label">Email</label>
             <ui:inputText value="{!v.lead.CoApplicant_Contact__r.Email}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
@@ -522,25 +532,26 @@
         <aura:if isTrue="{!not(v.coAppAddressSame)}">
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppHomeAddressElement">
-              <label class="proximaNovaDataBlue">Street Address</label>
+              <label class="slds-form-element__label">Street Address</label>
               <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Address__c}" disabled="{!v.coAppLocked}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppCityElement">
-              <label class="proximaNovaDataBlue">City</label>
+              <label class="slds-form-element__label">City</label>
               <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_City__c}" disabled="{!v.coAppLocked}"/>
             </div>
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppStateElement">
-              <label class="proximaNovaDataBlue">State</label>
+              <label class="slds-form-element__label">State</label>
               <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_State__c}" disabled="{!v.coAppLocked}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppZipCodeElement">
-              <label class="proximaNovaDataBlue">Zip Code</label>
+              <label class="slds-form-element__label">Zip Code</label>
               <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Zip__c}" disabled="{!v.coAppLocked}"/>
             </div>
           </div>
         </aura:if>
+      </fieldset>
         <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveCoAppPI}"/>
         </div>
@@ -554,33 +565,33 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element">
-          <div class="slds-form-element__control">
-            {!format($Label.c.Co_Applicant_SSN, v.lead.CoApplicant_Contact__r.FirstName)}
+          <div class="slds-form-element__control slds-text-heading--medium slds-m-bottom_small">
+            <b>{!format($Label.c.Co_Applicant_SSN, v.lead.CoApplicant_Contact__r.FirstName)}</b>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppSSNElement">
-            <label class="proximaNovaDataBlue">Social Security Number</label>
+            <label class="slds-form-element__label">Social Security Number</label>
             <ui:inputSecret placeholder="XXX-XX-XXXX" value="{!v.lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c}"
                             disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppBirthdateElement">
-            <label class="proximaNovaDataBlue">Date of Birth</label>
+            <label class="slds-form-element__label">Date of Birth</label>
             <c:BlueWaveDate value="{!v.lead.CoApplicant_Contact__r.LASERCA__Co_Applicant_DOB__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppIncomeElement">
-            <label class="proximaNovaDataBlue">Annual Income</label>
+            <label class="slds-form-element__label">Annual Income</label>
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
-            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage</label>
+            <label class="slds-form-element__label">Approximate Monthly Mortgage</label>
             <c:BlueWaveInputToolTip popoverText="{!'If ' + v.lead.Co_Applicant_First_Name__c + ' pays a mortgage, interest, or tax that has not been entered in ' + v.lead.FirstName + '\'s approximate monthly mortgage, please enter it here. Otherwise, enter 0'}"/>
             <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top--small">
           <div class="slds-col_padded slds-size_1-of-1" aura:id="coAppCreditCheckAcknowledgment">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c}"

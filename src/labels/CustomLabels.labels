@@ -179,8 +179,8 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>SSN Reason</shortDescription>
-    <value>Lastly, we need your Social Security Number and Date of Birth to run a credit check, and your annual income
-      and debt to see if you will qualify for our loan.
+    <value>We need your Social Security Number and Date of Birth to run a credit check, and your annual income
+      and monthly debt to see if you will qualify for our loan.
     </value>
   </labels>
   <labels>
