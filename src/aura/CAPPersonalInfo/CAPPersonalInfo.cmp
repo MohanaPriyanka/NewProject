@@ -138,8 +138,8 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-form-element__label">
-            {!$Label.c.PI_Primary_PI_Next}
+          <div class="slds-form-element__control proximaNovaStream">
+            <b>{!$Label.c.PI_Primary_PI_Next}</b>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
@@ -162,9 +162,23 @@
             <ui:inputText value="{!v.lead.Email}" disabled="{!v.piLocked}"/>
           </div>
         </div>
+        <aura:if isTrue="{!v.lead.Phone}">
+          <div class="slds-p-around--small slds-m-top--medium">
+            <header class="proximaNovaStream90"> 
+              <b>Express Consent:</b>
+            </header>
+            <p class="proximaNovaDataMountaintop95"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
+            <div  class="proximaNovaDataBlue animated">
+              <lightning:input type="checkbox" 
+               checked="{!v.lead.Express_Consent__c}"
+               label="I express consent."
+               aura:id="expressConsent"/>
+            </div>
+          </div>
+        </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium">
           <div class="slds-size_1-of-1">
-            <label class="slds-form-element__label">Installation Address</label>
+            <label class="proximaNovaStream"><b>Installation Address</b></label>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
@@ -228,7 +242,7 @@
         </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 slds-p-top_medium" aura:id="ownHouseElement">
-            <label class="slds-form-element__label slds-p-top_medium">Do you own the property detailed as your installation address?</label>
+            <label class="slds-form-element__label slds-p-top_small">Do you own the property detailed as your installation address?</label>
             <fieldset class="slds-form-element">
               <div class="slds-form-element__control">
                 <span class="slds-radio">
@@ -319,8 +333,8 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-form-element__label slds-m-bottom_small">
-            {!$Label.c.PI_Primary_SSN}
+          <div class="slds-form-element__control proximaNovaStream slds-m-bottom_small">
+            <b>{!$Label.c.PI_Primary_SSN}</b>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
@@ -343,7 +357,7 @@
             <ui:inputCurrency value="{!v.lead.Monthly_Mortgage_Tax_and_Insurance__c}" disabled="{!v.piLocked}"/>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top--small">
           <div class="slds-col_padded slds-size_1-of-1" aura:id="creditCheckElement">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.Credit_Check_Acknowledged__c}"
@@ -406,11 +420,11 @@
           </div>
         </aura:if>
         <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
-          <div class="slds-m-top--small slds-p-bottom--small">
-            <header class="proximaNovaStream"> 
+          <div class="slds-p-around--small slds-m-top--medium">
+            <header class="proximaNovaStream90"> 
               <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
             </header>
-            <p>{!$Label.c.NY_Credit_Disclosure}</p>
+            <p class="proximaNovaDataMountaintop95"><i>{!$Label.c.NY_Credit_Disclosure}</i></p>
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">
