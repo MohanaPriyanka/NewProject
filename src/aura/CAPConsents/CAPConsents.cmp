@@ -53,8 +53,8 @@
   <aura:if isTrue="{!v.page == 'SREC'}">
     <div class="slds-form-element__row">
       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-        <label class="slds-form-element__label proximaNovaBlue">
-          <b>{!$Label.c.CD_SREC} <a href="http://bluewavesolar.com/home-solar-loan-faqs/" target="_blank"> here</a></b>
+        <label class="slds-form-element__label slds-section__title">
+          <b>{!$Label.c.CD_SREC} <a class="slds-type-focus" href="http://bluewavesolar.com/home-solar-loan-faqs/" target="_blank"> &nbsp; <u>here</u></a></b>
         </label>
         <div class="slds-form-element__control">
           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">
@@ -92,8 +92,8 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-                  {!$Label.c.CD_Disbursal_Request}
+          <div class="slds-form-element__control slds-section__title">
+            <b>{!$Label.c.CD_Disbursal_Request}</b>
           </div>
           <div class="slds-p-top_small">
             <ui:inputSelect aura:id="eDisbursalConsent"
