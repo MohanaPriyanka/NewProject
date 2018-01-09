@@ -166,6 +166,14 @@
     <value>Next, we need to gather some personal information:</value>
   </labels>
   <labels>
+    <fullName>PI_Address_PI_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Next</shortDescription>
+    <value>We also need a bit of information about your current address:</value>
+  </labels>
+  <labels>
     <fullName>PI_Primary_SSN</fullName>
     <categories>Customer Application Portal</categories>
     <language>en_US</language>
@@ -625,6 +633,6 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>NY Credit Disclosure</shortDescription>
-    <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is granted, subsequent consumer reports may be obtained in connection with any update, extension of renewal of credit.</value>
+    <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is granted, subsequent consumer reports may be obtained in connection with any update, renewal, or extension of the credit.”</value>
   </labels>
 </CustomLabels>

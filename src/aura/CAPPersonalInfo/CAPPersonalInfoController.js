@@ -92,6 +92,14 @@
         component.set('v.page', 'PrimaryLicenseInfo');
     },
 
+    openAddressPI : function(component, event, helper) {
+        if (helper.checkPIErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+            return;
+        }
+        component.set('v.page', 'AddressPI');
+    },
+
     setResidenceOwner: function(component, event, helper) {
         var lead = component.get('v.lead');
         var value = event.currentTarget.value;
@@ -105,8 +113,8 @@
     },
 
     savePI : function(component, event, helper) {
-        if (helper.checkPIErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+        if (helper.checkAddressPIErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "savePI", helper.checkAddressPIErrors(component));
             return;
         }
 
