@@ -7,8 +7,7 @@
             'email': component.get('v.lead.Email')});
         action.setCallback(this,function(resp) {
             if (resp.getState() === 'SUCCESS') {
-                component.set('v.lead', resp.getReturnValue());
-                helper.parseAttachments(component, helper);
+                helper.parseAttachments(component, helper, resp.getReturnValue());
             } else {
                 this.logError('CAPConsentsHelper', 'getLead', resp.getError(), component.get('v.lead'));
             }
@@ -16,8 +15,7 @@
         $A.enqueueAction(action);
     },
 
-    parseAttachments : function(component, helper) {
-        const lead = component.get('v.lead');
+    parseAttachments : function(component, helper, lead) {
         if (lead.Attachments) {
             const tcDocs = [];
             lead.Attachments.forEach(function(attachment) {

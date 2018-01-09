@@ -8,22 +8,24 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">{!$Label.c.CD_MCEC_Project_ID_Request}</div>
+          <div class="slds-form-element__control slds-text-heading--medium"><b>{!$Label.c.CD_MCEC_Project_ID_Request}</b></div>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcProjectID">
-              <label class="proximaNovaDataBlue">MassCEC Project ID Number</label>
+              <label class="slds-form-element__label">MassCEC Project ID Number</label>
               <ui:inputText value="{!v.lead.Project_Identification_Number__c}"
                             placeholder="SLP-####"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
-              <label class="proximaNovaDataBlue">Technical Confirmation Document</label>
+              <label class="slds-form-element__label">Technical Confirmation Document</label>
               <lightning:input type="file" label="Attach TC" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTC}"/>
             </div>
           </div>
         </div>
         <aura:if isTrue="{!not(empty(v.tcDocs))}">
           <div class="slds-box_border slds-text-body_small">
-            Uploaded Technical Confirmation:
+            <div class="slds-form-element__label">
+              Uploaded Technical Confirmation:
+            </div>
             <div class="slds-grid slds-wrap">
               <div class="slds-col slds-size--1-of-1">
                 <table class="slds-table">

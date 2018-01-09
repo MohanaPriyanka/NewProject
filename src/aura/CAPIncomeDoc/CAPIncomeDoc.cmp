@@ -8,6 +8,7 @@
   <aura:attribute name="otherIncome" type="Object"/>
 
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
+    <div class="slds-m-left_small">
     <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
       <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</label>
       <aura:set attribute="else">
@@ -49,12 +50,13 @@
     <div class="slds-form-element__row slds-p-top--small">
       <lightning:button label="Next" onclick="{!c.getPayStubs}"/>
     </div>
+  </div>
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetPayStubs'}">
     <div class="slds-col slds-col--padded slds-m-bottom_medium">
       <form class="slds-form--stacked">
-        <fieldset class="slds-form-element slds-m-top_medium slds-m-bottom_medium">
+        <fieldset class="slds-form-element slds-m-bottom_medium">
           <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.Length_With_Employer)}</b></label>
           <div class="slds-form-element__control">
             <span class="slds-radio">
@@ -143,7 +145,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
-    <fieldset class="slds-form-element">
+    <fieldset class="slds-form-element slds-m-left_small">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
         <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
         <aura:set attribute="else">
@@ -233,7 +235,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'RetirementQuestion'}">
-    <fieldset class="slds-form-element">
+    <fieldset class="slds-form-element slds-m-left_small">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
         <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
         <aura:set attribute="else">
@@ -265,9 +267,9 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetRetirementIncome'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
-        <div class="slds-form-element slds-is-required slds-p-bottom_medium">
+        <div class="slds-form-element slds-is-required slds-p-bottom_medium slds-m-left_small">
           <div class="slds-form-element__control slds-p-bottom_medium slds-text-heading--medium"><b>{!$Label.c.ID_Retirement_Request}</b></div>
           <div class="slds-form-element__control slds-form-element__label">
           {!$Label.c.ID_Pension}
@@ -403,7 +405,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'AlimonyQuestion'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
+    <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
