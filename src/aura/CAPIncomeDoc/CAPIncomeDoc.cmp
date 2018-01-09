@@ -9,7 +9,7 @@
 
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
     <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-      <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Employment_Question, v.lead.Joint_Applicant_Type__c)}</label>
+      <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</label>
       <aura:set attribute="else">
         <label class="slds-form-element__label">{!$Label.c.ID_Employment_Question}</label>
       </aura:set>
@@ -20,14 +20,28 @@
           <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Employed__c}" onchange="{!c.setEmployment}" value="true" disabled="{!v.piLocked}"/>
           <label class="slds-radio__label" for="radio-1">
             <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">Yes, I am employed and have paystubs to upload.</span>
+            <span class="slds-form-element__label">
+              <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
+                Yes, one of us is employed and have paystubs to upload.
+                <aura:set attribute="else">
+                  Yes, I am employed and have paystubs to upload.
+                </aura:set>
+              </aura:if>
+            </span>
           </label>
         </span>
         <span class="slds-radio">
           <input type="radio" id="radio-2" name="employment" checked="{!v.lead.Not_Employed__c}" onchange="{!c.setEmployment}" value="false" disabled="{!v.piLocked}"/>
           <label class="slds-radio__label" for="radio-2">
             <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">No, I am not employed.</span>
+            <span class="slds-form-element__label">
+              <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
+                No, neither of us are employed
+                <aura:set attribute="else">
+                  No, I am not employed
+                </aura:set>
+              </aura:if>
+            </span>
           </label>
         </span>
       </div>
@@ -68,10 +82,32 @@
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
             <div class="slds-form-element__control slds-p-top_small">
-            {!format($Label.c.ID_Joint_Paystub_Request, v.lead.Joint_Applicant_Type__c)}
-              <lightning:input type="checkbox"
-                               checked="{!v.lead.CoApplicant_Contact__r.Year_Employment__c}"
-                               label="They've been with their current employer for longer than one year"/>
+              {!format($Label.c.ID_Joint_Paystub_Request, v.lead.Co_Applicant_First_Name__c)}
+              <span class="slds-radio">
+                <input type="radio" id="radio-5"
+                       name="coAppLengthWithEmployer"
+                       checked="{!v.lead.CoApplicant_Contact__r.Year_Employment__c}"
+                       onchange="{!c.setCoAppEmploymentLength}"
+                       value="true"
+                       disabled="{!v.piLocked}"/>
+                <label class="slds-radio__label" for="radio-5">
+                  <span class="slds-radio_faux"></span>
+                  <span class="slds-form-element__label">Yes, {!v.lead.Co_Applicant_First_Name__c} has been with my employer for longer than one year.</span>
+                </label>
+              </span>
+              <span class="slds-radio">
+                <input type="radio"
+                       id="radio-6"
+                       name="coAppLengthWithEmployer"
+                       checked="{!v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c}"
+                       onchange="{!c.setCoAppEmploymentLength}"
+                       value="false"
+                       disabled="{!v.piLocked}"/>
+                <label class="slds-radio__label" for="radio-6">
+                  <span class="slds-radio_faux"></span>
+                  <span class="slds-form-element__label">No, {!v.lead.Co_Applicant_First_Name__c} has not been with my employer for longer than one year.</span>
+                </label>
+              </span>
               <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true"
                                onchange="{!c.handlePaystubFiles}"/>
             </div>
@@ -107,7 +143,7 @@
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
     <fieldset class="slds-form-element">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Joint_Applicant_Type__c)}</label>
+        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</label>
         <aura:set attribute="else">
             <label class="slds-form-element__label">{!$Label.c.ID_Self_Employment_Question}</label>
         </aura:set>
@@ -144,15 +180,15 @@
           <div class="slds-form-element__control">
           {!$Label.c.ID_Tax_Details}
             <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
-                  {!$Label.c.ID_Tax_Two_Details}
+            {!$Label.c.ID_Tax_Two_Details}
             <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
             <div class="slds-form-element__control slds-p-top_small">
-                    {!format($Label.c.ID_Joint_Tax_Request, v.lead.Joint_Applicant_Type__c)}
+              {!format($Label.c.ID_Joint_Tax_Request, v.lead.Co_Applicant_First_Name__c)}
             </div>
             <div class="slds-form-element__control">
-            {!format($Label.c.ID_Joint_Tax_Details, v.lead.Joint_Applicant_Type__c)}
+              {!$Label.c.ID_Tax_Details}
               <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
                     {!format($Label.c.ID_Joint_Tax_Two_Details, v.lead.Joint_Applicant_Type__c)}
               <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
@@ -189,7 +225,7 @@
   <aura:if isTrue="{!v.page == 'RetirementQuestion'}">
     <fieldset class="slds-form-element">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Applicant_Type__c)}</label>
+        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}</label>
         <aura:set attribute="else">
             <label class="slds-form-element__label">{!$Label.c.ID_Retirement_Question}</label>
         </aura:set>
@@ -232,7 +268,7 @@
             <lightning:input type="file" label="Attach Bank Statement" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleBankStatement}"/>
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
-            <div class="slds-form-element__control slds-p-top_small">{!format($Label.c.ID_Joint_Retirement_Request, v.lead.Joint_Applicant_Type__c)}</div>
+            <div class="slds-form-element__control slds-p-top_small">{!format($Label.c.ID_Joint_Retirement_Request, v.lead.Co_Applicant_First_Name__c)}</div>
             <div class="slds-form-element__control">
             {!format($Label.c.ID_Joint_Pension, v.lead.Joint_Applicant_Type__c)}
               <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePension}"/>
@@ -275,21 +311,30 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-          <label class="slds-form-element__label">{!format($Label.c.ID_Veteran_Question, v.lead.Applicant_Type__c)}</label>
+            <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
+              <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Veteran_Question, v.lead.Co_Applicant_First_Name__c)}</label>
+              <aura:set attribute="else">
+                <label class="slds-form-element__label">{!$Label.c.ID_Veteran_Question}</label>
+              </aura:set>
+            </aura:if>
           <fieldset class="slds-form-element">
             <div class="slds-form-element__control">
               <span class="slds-radio">
                 <input type="radio" id="radio-10" name="veteranOrDisability" checked="{!v.lead.Veteran_Disability__c }" onchange="{!c.setVeteran}" value="true" disabled="{!v.piLocked}"/>
                 <label class="slds-radio__label" for="radio-10">
                   <span class="slds-radio_faux"></span>
-                  <span class="slds-form-element__label">Yes, I have veteran or disability documentation to upload</span>
+                  <span class="slds-form-element__label">
+                    {!v.lead.Application_Type__c == 'Joint'?'Yes, at least one of us is a veteran or has disability documentation to upload.':'Yes, I have veteran or disability documentation to upload.'}
+                  </span>
                 </label>
               </span>
               <span class="slds-radio">
                 <input type="radio" id="radio-11" name="veteranOrDisability" checked="{!v.lead.No_Veteran_Disability__c}" onchange="{!c.setVeteran}" value="false" disabled="{!v.piLocked}"/>
                 <label class="slds-radio__label" for="radio-11">
                   <span class="slds-radio_faux"></span>
-                  <span class="slds-form-element__label">No, I do not have veteran or disability documentation to upload}</span>
+                  <span class="slds-form-element__label">
+                    {!v.lead.Application_Type__c == 'Joint'?'No, neither of us is a veteran or has disability documentation to upload.':'No, I do not have veteran or disability documentation to upload.'}
+                  </span>
                 </label>
               </span>
             </div>
@@ -313,7 +358,7 @@
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
             <div class="slds-form-element__control slds-p-top_small">
-            <legend class="slds-form-element__legend slds-form-element__label">{!format($Label.c.ID_Joint_Veteran_Request, v.lead.Joint_Applicant_Type__c)}</legend>
+            <legend class="slds-form-element__legend slds-form-element__label">{!format($Label.c.ID_Joint_Veteran_Request, v.lead.Co_Applicant_First_Name__c)}</legend>
               <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleVeteran}"/>
             </div>
           </aura:if>

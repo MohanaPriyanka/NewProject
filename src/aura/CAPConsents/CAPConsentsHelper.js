@@ -42,6 +42,7 @@
         errorMessage += this.getFieldError(component, {
             'fieldValue': lead.Project_Identification_Number__c,
             'fieldId': "tcProjectId",
+            'allowSpecialChars': true,
             'errorMessage': "Enter your MassCEC Project ID Number"
         });
         if (!component.get('v.tcDocs')) {

@@ -14,9 +14,7 @@
                     }
                 } else {
                     var lorAction = component.get('c.getLenderOfRecord');
-                    lorAction.setParams({
-                        'state': lead.LASERCA__Home_State__c
-                    });
+                    lorAction.setParams({'state': lead.LASERCA__Home_State__c});
                     lorAction.setCallback(this, function(result) {
                         var lor = result.getReturnValue();
                         if (lor !== 'BlueWave') {
@@ -24,6 +22,12 @@
                         }
                     });
                     $A.enqueueAction(lorAction);
+                }
+                if (lead.LASERCA__Personal_Credit_Report__c) {
+                    helper.raiseNavEvent('LOCKPI');
+                }
+                if (lead.Personal_Credit_Report_Co_Applicant__c) {
+                    helper.raiseNavEvent('LOCKJOINT');
                 }
                 if (lead.CAP_Stage__c !== '') {
                     component.set('v.page', '');

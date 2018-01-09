@@ -45,6 +45,18 @@
         }
     },
 
+    setCoAppEmploymentLength: function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var value = event.currentTarget.value;
+        if (value == 'true') {
+            component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', true);
+            component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', false);
+        } else {
+            component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', false);
+            component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', true);
+        }
+    },
+
     setSelfEmployment: function(component, event, helper) {
         var lead = component.get('v.lead');
         var value = event.currentTarget.value;
@@ -93,40 +105,50 @@
         }
     },
 
+
     saveAndAskSelfEmployed : function(component, event, helper) {
         var longerThanYear = component.get('v.lead.Year_Employment__c');
         var shorterThanYear = component.get('v.lead.Employed_less_than_a_year__c');
+        var coAppLongerThanYear = component.get('v.lead.CoApplicant_Contact__r.Year_Employment__c');
+        var coAppShorterThanYear = component.get('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c');
         if (!longerThanYear && !shorterThanYear) {
-            alert('Plese select an option with regards to your length of employment.')
-        } else {
-            const lead = component.get('v.lead');
-            var leadToSave = {
-                sobjectType: 'Lead',
-                Id: lead.Id,
-                Year_Employment__c: lead.Year_Employment__c
-            };
-            var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
-            if (lead.Application_Type__c === 'Joint') {
-                if (lead.CoApplicant_Contact__c) {
-                    var contact = {
-                        sobjectType: 'Contact',
-                        Id: lead.CoApplicant_Contact__c,
-                        Year_Employment__c: lead.CoApplicant_Contact__r.Year_Employment__c
-                    };
-                    leadPromise.then($A.getCallback(function resolve(retVal) {
-                        return(helper.saveSObject(component, contact.Id, 'Contact', null, null, contact));
-                    })).then($A.getCallback(function resolve(retVal) {
-                        component.set('v.page', 'SelfEmployedQuestion');
-                    }));
-                } else {
-                    helper.logError('CAPIncomeDocController', 'saveAndAskSelfEmployed',
-                        'This Joint Application has no Co-Signer or Co-Applicant', lead);
-                }
-            } else {
+            alert('Please specify your length of employment.')
+            return;
+        }
+        if (component.get('v.lead.Application_Type__c') === 'Joint' && !coAppLongerThanYear && !coAppShorterThanYear) {
+            alert('Please specify ' + component.get('v.lead.Co_Applicant_First_Name__c') + '\'s employment length.')
+            return;
+        }
+
+        const lead = component.get('v.lead');
+        var leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Year_Employment__c: lead.Year_Employment__c,
+            Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c
+        };
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        if (lead.Application_Type__c === 'Joint') {
+            if (lead.CoApplicant_Contact__c) {
+                var contact = {
+                    sobjectType: 'Contact',
+                    Id: lead.CoApplicant_Contact__c,
+                    Year_Employment__c: lead.CoApplicant_Contact__r.Year_Employment__c,
+                    Employed_less_than_a_year__c: lead.CoApplicant_Contact__r.Employed_less_than_a_year__c
+                };
                 leadPromise.then($A.getCallback(function resolve(retVal) {
+                    return(helper.saveSObject(component, contact.Id, 'Contact', null, null, contact));
+                })).then($A.getCallback(function resolve(retVal) {
                     component.set('v.page', 'SelfEmployedQuestion');
                 }));
+            } else {
+                helper.logError('CAPIncomeDocController', 'saveAndAskSelfEmployed',
+                    'This Joint Application has no Co-Signer or Co-Applicant', lead);
             }
+        } else {
+            leadPromise.then($A.getCallback(function resolve(retVal) {
+                component.set('v.page', 'SelfEmployedQuestion');
+            }));
         }
     },
 
@@ -185,6 +207,7 @@
     },
 
     getAlimonyIncome : function(component, event, helper) {
+        const lead = component.get('v.lead');
         var alimony = component.get('v.lead.Reliant_on_Alimony_Child_Support_Other__c');
         var noAlimony = component.get('v.lead.Not_Reliant_on_Alimony_Child_Support_Oth__c');
         if (!alimony && !noAlimony) {
@@ -193,7 +216,30 @@
             if (alimony) {
                 component.set('v.page', 'GetAlimonyIncome');
             } else {
-                component.set('v.page', 'OtherIncome');
+                var leadToSave = {
+                    sobjectType: 'Lead',
+                    Id: lead.Id,
+                    Monthly_Income__c: lead.Monthly_Income__c,
+                    Monthly_Income_Details__c: lead.Monthly_Income_Details__c,
+                    Monthly_Income_2__c: lead.Monthly_Income_2__c,
+                    Monthly_Income_Details_2__c: lead.Monthly_Income_Details_2__c,
+                    Employed__c: lead.Employed__c,
+                    Not_Employed__c: lead.Not_Employed__c,
+                    Year_Employment__c: lead.Year_Employment__c,
+                    Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+                    Self_Employed__c: lead.Self_Employed__c,
+                    Not_Self_Employed__c: lead.Not_Self_Employed__c,
+                    Retired__c: lead.Retired__c,
+                    Not_Retired__c: lead.Not_Retired__c,
+                    Veteran_Disability__c: lead.Veteran_Disability__c,
+                    No_Veteran_Disability__c: lead.No_Veteran_Disability__c,
+                    Reliant_on_Alimony_Child_Support_Other__c: lead.Reliant_on_Alimony_Child_Support_Other__c,
+                    Not_Reliant_on_Alimony_Child_Support_Oth__c: lead.Not_Reliant_on_Alimony_Child_Support_Oth__c,
+                };
+                var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+                leadPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set('v.page', 'OtherIncome');
+                }));
             }
         }
     },
@@ -230,6 +276,18 @@
             Monthly_Income_Details__c: lead.Monthly_Income_Details__c,
             Monthly_Income_2__c: lead.Monthly_Income_2__c,
             Monthly_Income_Details_2__c: lead.Monthly_Income_Details_2__c,
+            Employed__c: lead.Employed__c,
+            Not_Employed__c: lead.Not_Employed__c,
+            Year_Employment__c: lead.Year_Employment__c,
+            Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+            Self_Employed__c: lead.Self_Employed__c,
+            Not_Self_Employed__c: lead.Not_Self_Employed__c,
+            Retired__c: lead.Retired__c,
+            Not_Retired__c: lead.Not_Retired__c,
+            Veteran_Disability__c: lead.Veteran_Disability__c,
+            No_Veteran_Disability__c: lead.No_Veteran_Disability__c,
+            Reliant_on_Alimony_Child_Support_Other__c: lead.Reliant_on_Alimony_Child_Support_Other__c,
+            Not_Reliant_on_Alimony_Child_Support_Oth__c: lead.Not_Reliant_on_Alimony_Child_Support_Oth__c,
         };
         var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
         leadPromise.then($A.getCallback(function resolve(retVal) {
@@ -242,7 +300,17 @@
     },
 
     handlePaystubFiles : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.PAYSTUB);
+        const lead = component.get('v.lead');
+        var leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Employed_less_than_a_year__c: lead.Employed_less_than_a_year__c,
+            Year_Employment__c: lead.Year_Employment__c,
+        };
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        leadPromise.then($A.getCallback(function resolve(retVal) {
+            helper.handleAttachment(component, event, helper, helper.PAYSTUB);
+        }));
     },
 
     handleTaxOneYear : function(component, event, helper) {

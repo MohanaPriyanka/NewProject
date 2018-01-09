@@ -1,19 +1,19 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const lead = event.getParam('lead');
-        if (event.getParam("eventType") === "INITIATED" &&
-            event.getParam("stageName") === component.get("v.STAGENAME")) {
-            if (lead && lead.LASERCA__Home_State__c === 'MA') {
-                if (lead.Product_Program__c === 'MSLP') {
-                    helper.handleNavEvent(component, event, helper, 'MSLPTechnicalConfirm');
+        if (lead && lead.LASERCA__Home_State__c === 'MA') {
+            if (lead.Product_Program__c === 'MSLP') {
+                helper.handleNavEvent(component, event, helper, 'MSLPTechnicalConfirm');
+                if (event.getParam("eventType") === "INITIATED" &&
+                    event.getParam("stageName") === component.get("v.STAGENAME")) {
                     helper.parseAttachments(component, helper);
-                } else {
-                    helper.handleNavEvent(component, event, helper, 'SREC');
                 }
-                helper.getSRECProducts(component, event, helper, lead);
             } else {
-                helper.handleNavEvent(component, event, helper, 'Disbursal');
+                helper.handleNavEvent(component, event, helper, 'SREC');
             }
+            helper.getSRECProducts(component, event, helper, lead);
+        } else {
+            helper.handleNavEvent(component, event, helper, 'Disbursal');
         }
     },
 

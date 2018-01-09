@@ -109,19 +109,6 @@
     },
 
     cleanLead : function(component) {
-        // Need to convert abbreviation to full name.
-        const USSTATES = {
-            'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California', 'CO': 'Colorado',
-            'CT': 'Connecticut', 'DE': 'Delaware', 'DC': 'District Of Columbia', 'FL': 'Florida', 'GA': 'Georgia',
-            'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas', 'KY': 'Kentucky',
-            'LA': 'Louisiana', 'ME': 'Maine', 'MH': 'Marshall Islands', 'MD': 'Maryland', 'MA': 'Massachusetts', 'MI': 'Michigan',
-            'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada',
-            'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina',
-            'ND': 'North Dakota', 'OH': 'Ohio', 'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island',
-            'SC': 'South Carolina', 'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
-            'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'
-        };
-
         const lead = component.get('v.lead');
         const leadClone = JSON.parse(JSON.stringify(lead));
         if (lead.Residence_Owner__c) {
@@ -134,10 +121,6 @@
         if (lead.LASERCA__Birthdate__c) {
             leadClone.LASERCA__Birthdate__c = lead.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         }
-        if (lead.LASERCA__Home_Address__c) {lead.Street = lead.LASERCA__Home_Address__c;}
-        if (lead.LASERCA__Home_City__c) {lead.City = lead.LASERCA__Home_City__c;}
-        if (lead.LASERCA__Home_State__c) {lead.State = USSTATES[lead.LASERCA__Home_State__c];}
-        if (lead.LASERCA__Home_Zip__c) {lead.PostalCode = lead.LASERCA__Home_Zip__c;}
         return leadClone;
     },
 

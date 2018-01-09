@@ -519,12 +519,12 @@
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
-            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage (not previously reported)</label>
+            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage, or 0 (not entered on primary's monthly mortgage)</label>
             <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-size_1-of-1">
+          <div class="slds-col_padded slds-size_1-of-1" aura:id="coAppCreditCheckAcknowledgment">
             <lightning:input type="checkbox" 
                              checked="{!v.lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c}"
                              label="{!$Label.c.PI_Credit_History}"
@@ -532,7 +532,7 @@
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-size_1-of-1 slds-grid">
+          <div class="slds-col_padded slds-size_1-of-1 slds-grid" aura:id="coAppPrivacyPolicyElement">
             <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
               <lightning:input type="checkbox" 
                                checked="{!v.lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c}"

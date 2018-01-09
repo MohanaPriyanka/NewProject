@@ -90,10 +90,11 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Individual or Joint</shortDescription>
-    <value>Will this be an individual or joint application? Common reasons to pick a joint application: low FICO, Debt to
-      Income, shared ownership. Not sure? You can continue as an Individual application and add a co-signer later if
-      needed. We can check to see if you are pre-qualified for our loan in minutes, but will need 1-2 business days to
-      check a joint application.
+    <value>Will this be an individual or joint application? Common reasons to pick a joint application: one applicant
+      may have a low FICO or a high debt-to-income ratio, or both applicants are owners of the property where solar will
+      be installed.Not sure? You can continue as an Individual application and add a co-signer later if needed. We can
+      check to see if you are pre-qualified for our loan in minutes, but will need 1-2 business days to check a joint
+      application.
     </value>
   </labels>
   <labels>
@@ -144,7 +145,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Bank Affiliation</shortDescription>
-    <value>I am currently employed by or have a service/business affiliation with a bank</value>
+    <value>(Not common) I am currently employed by or have a service/business affiliation with a bank</value>
   </labels>
   <labels>
     <fullName>PI_Bank_Executive</fullName>
@@ -219,7 +220,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Employment Question</shortDescription>
-    <value>Are you or your {0} employed? We'll ask about self-employment later.</value>
+    <value>Are you or {0} employed? We'll ask about self-employment later.</value>
   </labels>
   <labels>
     <fullName>ID_Paystub_Request</fullName>
@@ -245,7 +246,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
-    <value>We'll need supporting income documentation for your {0} as well. Please upload their most recent paystubs
+    <value>We'll need supporting income documentation for {0} as well. Please upload their most recent paystubs
       (dated within the last 30 days)
     </value>
   </labels>
@@ -271,7 +272,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Self Employment Question</shortDescription>
-    <value>Are you or your {0} self-employed?</value>
+    <value>Are you or {0} self-employed?</value>
   </labels>
   <labels>
     <fullName>ID_Tax_Request</fullName>
@@ -279,7 +280,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need tax returns supporting your income. Please upload returns with all applicable schedules:</value>
+    <value>We'll need personal and business tax returns (federal only) supporting your income. Please upload returns with all applicable schedules:</value>
   </labels>
   <labels>
     <fullName>ID_Tax_Details</fullName>
@@ -303,12 +304,12 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need your {0}'s tax returns supporting their income. Please upload returns with all applicable
+    <value>We'll need {0}'s personal and business tax returns (federal only) supporting their income. Please upload returns with all applicable
       schedules:
     </value>
   </labels>
   <labels>
-    <fullName>ID_Joint_Tax_Details</fullName>
+    <fullName>ID_Tax_Details</fullName>
     <categories>Customer Application Portal</categories>
     <language>en_US</language>
     <protected>false</protected>
@@ -337,7 +338,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Retirement Question</shortDescription>
-    <value>Do you or your {0} receive retirement income?</value>
+    <value>Do you or {0} receive retirement income?</value>
   </labels>
   <labels>
     <fullName>ID_Retirement_Request</fullName>
@@ -377,7 +378,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Retirement Request</shortDescription>
-    <value>We'll need supporting income documentation for your {0} as well. If applicable, please upload their:</value>
+    <value>We'll need supporting income documentation for {0} as well. If applicable, please upload their:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Pension</fullName>
@@ -409,7 +410,15 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Veteran Question</shortDescription>
-    <value>Are you or your {0} a veteran or receive disability</value>
+    <value>Are you a veteran or receive disability</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Veteran_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Veteran Question</shortDescription>
+    <value>Are you or {0} a veteran or receive disability</value>
   </labels>
   <labels>
     <fullName>ID_Veteran_Request</fullName>
@@ -425,7 +434,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Veteran Request</shortDescription>
-    <value>We'll need supporting documentation of veteran status or disability for your {0}:</value>
+    <value>We'll need supporting documentation of veteran status or disability for {0}:</value>
   </labels>
   <labels>
     <fullName>ID_Alimony_Question</fullName>
@@ -455,7 +464,7 @@
     <shortDescription>Other Income Request</shortDescription>
     <value>Finally, if there's anything else that you'd like to share with us supporting your income sources such as
       overtime, bonuses, W2, investments, a second job, or rental income, please upload them here. There are typically
-      documented in a tax return and/or W2
+      documented in a tax return and/or W2.
     </value>
   </labels>
   <labels>
