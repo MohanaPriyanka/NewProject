@@ -127,6 +127,7 @@ public without sharing class MyAccountController {
                                                                                 ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name, 
                                                                                 ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                                 ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, 
+                                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name , 
                                                                                 ChargentOrders__Response_Status__c 
                                                                             FROM ChargentOrders__Transaction__c
@@ -141,7 +142,8 @@ public without sharing class MyAccountController {
             for(ChargentOrders__Transaction__c chargentTransactionsProperty : [ SELECT ChargentOrders__Type__c, Activity_Type__c,Negative_Amount__c, 
                                                                                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name, 
                                                                                     ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
-                                                                                    ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, 
+                                                                                    ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
+                                                                                    ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
                                                                                     ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name, 
                                                                                     ChargentOrders__Response_Status__c 
                                                                                 FROM ChargentOrders__Transaction__c
