@@ -19,6 +19,19 @@
                                                        'fieldId': "emailElement",
                                                        'fieldType': "email",
                                                        'errorMessage': "Enter your email"});
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
+        }
+        return errorMessage;
+      },
+
+    checkAddressPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
+        var errorMessage = "";
+        var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__Home_Address__c,
                                                        'fieldId': "homeAddressElement",
                                                        'errorMessage': "Enter your street address"});
@@ -32,10 +45,13 @@
                                                        'errorMessage': "Enter your 5 digit zip code"});
         var residenceOwner = component.get('v.lead.Residence_Owner__c');
         var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
-        if (!residenceOwner && !notResidenceOwner) {
-          errorMessage += 'Plese select whether or not you own the property located at the installation address detailed above.';
-        } 
-
+        if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
+          errorMessage += 'Please select whether or not you own the property located at the installation address detailed above.';
+        }
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+        }
         return errorMessage;
     },
 
@@ -91,7 +107,9 @@
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
                                                        'fieldId': "mortgageElement",
                                                        'fieldType': "currency",
-                                                       'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance, and 0 if you don't have a mortgage"});
+                                                       'errorMessage': "Enter your approximate monthly mortgage. If you don't have a mortgage, " +
+                                                                       "enter your estimated monthly taxes and insurance. If you don't pay mortgage, " +
+                                                                       "insurance or tax on the installation property, enter 0."});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Credit_Check_Acknowledged__c,
                                                        'fieldId': "creditCheckElement",
                                                        'fieldType': "uncheckedCheckbox",
@@ -166,7 +184,7 @@
             'fieldValue': lead.Co_App_Monthly_Mortgage__c,
             'fieldId': "coAppMortgageElement",
             'fieldType': "currency",
-            'errorMessage': "Enter your approximate monthly mortgage, taxes, and insurance not included in the primary applicant's mortgage, and 0 if not applicable"});
+            'errorMessage': "Enter " + lead.Co_Applicant_First_Name__c + "\'s approximate monthly mortgage, taxes, and insurance not included in " + lead.FirstName + "\'s mortgage, and 0 if not applicable"});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
             'fieldId': "coAppCreditCheckAcknowledgment",
             'fieldType': "uncheckedCheckbox",
@@ -293,14 +311,15 @@
     },
 
     toggleMSLP : function(component, event, helper, mslp) {
-      var lead = component.get('v.lead');
+        var lead = component.get('v.lead');
         if (mslp) {
-          lead.Product_Program__c = 'MSLP';
-          lead.DOER_Solar_Loan__c = true;
+            lead.Product_Program__c = 'MSLP';
+            lead.DOER_Solar_Loan__c = true;
         } else {
-          lead.Product_Program__c = 'BlueWave Solar Loan';
-          lead.DOER_Solar_Loan__c = false;
+            lead.Product_Program__c = 'BlueWave Solar Loan';
+            lead.DOER_Solar_Loan__c = false;
         }
-      component.set('v.lead', lead);
+        helper.saveSObject(component, lead.Id, 'Lead', null, null, lead);
+        component.set('v.lead', lead);
     },
 })
