@@ -17,7 +17,7 @@
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
   <lightning:overlayLibrary aura:id="overlayLib"/>
 
-    <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
+  <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
     <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Let's check if you are eligible for the Mass Solar Loan Program:</h1></b> </div>
     <div class="slds-m-top_x-small">
@@ -86,9 +86,9 @@
       </div>
     </div>
   </aura:if>
-    <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
+  <!-- / MASS SOLAR LOAN IBLS CATEGORIZATION  -->
 
-    <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
+  <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
   <aura:if isTrue="{!v.bwslTransferAlert}">
     <section aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
       <div class="slds-modal__container">
@@ -108,7 +108,7 @@
     </section>
     <div class="slds-backdrop slds-backdrop_open"></div>
   </aura:if>
-  <!-- TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
+  <!-- / TRANSFER TO BWSL ACKNOWLEDGEMENT MODAL  -->
 
   <!-- INDIVIDUAL OR JOINT -->
   <aura:if isTrue="{!v.page == 'IndividualOrJoint'}">
@@ -117,6 +117,14 @@
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             {!$Label.c.PI_Individual_or_Joint}
+          </div>
+          <div class="slds-form-element__control slds-p-top_small">
+            {!$Label.c.PI_Individual_or_Joint_Common_Reasons}
+          </div>
+          <div class="slds-form-element__control slds-p-top_small">
+            {!$Label.c.PI_Individual_or_Joint_Not_Sure}
+          </div>
+          <div class="slds-form-element__control slds-p-top_small">
             <ui:inputSelect aura:id="appType" class="slds-input"
                             value="{!v.lead.Application_Type__c}"
                             disabled="{!coAppLocked || v.lead.Status == 'Pre-Qualified'}">
@@ -519,7 +527,8 @@
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
-            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage, or 0 (not entered on primary's monthly mortgage)</label>
+            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage</label>
+            <c:BlueWaveInputToolTip popoverText="{!'If ' + v.lead.Co_Applicant_First_Name__c + ' pays a mortgage, interest, or tax that has not been entered in ' + v.lead.FirstName + '\'s approximate monthly mortgage, please enter it here. Otherwise, enter 0'}"/>
             <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
