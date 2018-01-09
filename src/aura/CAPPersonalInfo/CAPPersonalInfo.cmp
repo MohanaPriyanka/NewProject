@@ -138,112 +138,139 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control proximaNovaStream">
+          <div class="slds-form-element__control slds-text-heading--medium">
             <b>{!$Label.c.PI_Primary_PI_Next}</b>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="firstNameElement">
-            <label class="proximaNovaDataBlue">First Name</label>
-            <ui:inputText value="{!v.lead.FirstName}" disabled="{!v.piLocked}"/>
-          </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="lastNameElement">
-            <label class="proximaNovaDataBlue">Last Name</label>
-            <ui:inputText value="{!v.lead.LastName}" disabled="{!v.piLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="phoneElement">
-            <label class="proximaNovaDataBlue">Phone</label>
-            <ui:inputPhone value="{!v.lead.Phone}" disabled="{!v.piLocked}"/>
-          </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="emailElement">
-            <label class="proximaNovaDataBlue">Email</label>
-            <ui:inputText value="{!v.lead.Email}" disabled="{!v.piLocked}"/>
-          </div>
-        </div>
-        <aura:if isTrue="{!v.lead.Phone}">
-          <div class="slds-p-around--small slds-m-top--medium">
-            <header class="proximaNovaStream90"> 
-              <b>Express Consent:</b>
-            </header>
-            <p class="proximaNovaDataMountaintop95"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
-            <div  class="proximaNovaDataBlue animated">
-              <lightning:input type="checkbox" 
-               checked="{!v.lead.Express_Consent__c}"
-               label="I express consent."
-               aura:id="expressConsent"/>
-            </div>
-          </div>
-        </aura:if>
-        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium slds-m-left_small">
           <div class="slds-size_1-of-1">
-            <label class="proximaNovaStream"><b>Installation Address</b></label>
+            <label class="slds-section__title"><b>Contact Information</b></label>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_small">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="homeAddressElement">
-            <label class="proximaNovaDataBlue">Street Address</label>
-            <ui:inputText value="{!v.lead.LASERCA__Home_Address__c}" disabled="{!v.piLocked}"/>
+        <fieldset class="slds-m-top_xx-small slds-m-left_small">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="firstNameElement">
+              <label class="slds-form-element__label">First Name</label>
+              <ui:inputText value="{!v.lead.FirstName}" disabled="{!v.piLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="lastNameElement">
+              <label class="slds-form-element__label">Last Name</label>
+              <ui:inputText value="{!v.lead.LastName}" disabled="{!v.piLocked}"/>
+            </div>
           </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="cityElement">
-            <label class="proximaNovaDataBlue">City</label>
-            <ui:inputText value="{!v.lead.LASERCA__Home_City__c}" disabled="{!v.piLocked}"/>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="phoneElement">
+              <label class="slds-form-element__label">Phone</label>
+              <ui:inputPhone value="{!v.lead.Phone}" disabled="{!v.piLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="emailElement">
+              <label class="slds-form-element__label">Email</label>
+              <ui:inputText value="{!v.lead.Email}" disabled="{!v.piLocked}"/>
+            </div>
+          </div>
+          <aura:if isTrue="{!v.lead.Phone}">
+            <div class="slds-p-around--small slds-m-top--medium">
+              <header class="slds-form-element__label"> 
+                <b>Express Consent:</b>
+              </header>
+              <p class="slds-text-body--small"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
+              <div  class="proximaNovaDataBlue animated">
+                <lightning:input type="checkbox" 
+                 checked="{!v.lead.Express_Consent__c}"
+                 label="I express consent."
+                 aura:id="expressConsent"/>
+               </div>
+             </div>
+           </aura:if>
+         </fieldset>
+        <div class="slds-form-element__row slds-m-top--medium">
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.openAddressPI}"/>
+        </div>
+       </form>
+     </div>
+   </aura:if>
+   <!-- PRIMARY PI -->
+
+   <aura:if isTrue="{!v.page == 'AddressPI'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control slds-text-heading--medium">
+            <b>{!$Label.c.PI_Address_PI_Next}</b>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-            <label class="proximaNovaDataBlue">State</label>
-            <ui:inputText value="{!v.lead.LASERCA__Home_State__c}" disabled="true"/>
-          </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="zipCodeElement">
-            <label class="proximaNovaDataBlue">Zip Code</label>
-            <ui:inputText value="{!v.lead.LASERCA__Home_Zip__c}" disabled="{!v.piLocked}"/>
+        <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium slds-m-left_small">
+          <div class="slds-size_1-of-1">
+            <label class="slds-section__title"><b>Installation Address</b></label>
           </div>
         </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-            <lightning:input type="checkbox" 
-                             checked="{!v.billingAddressSame}"
-                             label="My billing address is the same as my installation address"
-                             disabled="{!v.piLocked}"/>
+        <fieldset class="slds-m-top_xx-small slds-m-left_small">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="homeAddressElement">
+              <label class="slds-form-element__label">Street Address</label>
+              <ui:inputText value="{!v.lead.LASERCA__Home_Address__c}" disabled="{!v.piLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="cityElement">
+              <label class="slds-form-element__label">City</label>
+              <ui:inputText value="{!v.lead.LASERCA__Home_City__c}" disabled="{!v.piLocked}"/>
+            </div>
           </div>
-        </div>
-        <aura:if isTrue="{!not(v.billingAddressSame)}">
-          <div class="slds-grid slds-wrap slds-form-element__row slds-p-top_medium">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+              <label class="slds-form-element__label">State</label>
+              <ui:inputText value="{!v.lead.LASERCA__Home_State__c}" disabled="true"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="zipCodeElement">
+              <label class="slds-form-element__label">Zip Code</label>
+              <ui:inputText value="{!v.lead.LASERCA__Home_Zip__c}" disabled="{!v.piLocked}"/>
+            </div>
+          </div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+              <lightning:input type="checkbox" 
+               checked="{!v.billingAddressSame}"
+               label="My billing address is the same as my installation address"
+               disabled="{!v.piLocked}"/>
+             </div>
+           </div>
+         </fieldset>
+         <aura:if isTrue="{!not(v.billingAddressSame)}">
+          <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium  slds-m-left_small">
             <div class="slds-size_1-of-1">
-              <label>Billing Address</label>
+              <label class="slds-section__title"><b>Billing Address</b></label>
             </div>
           </div>
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-              <label class="proximaNovaDataBlue">Billing Street</label>
-              <ui:inputText value="{!v.lead.Street}" disabled="{!v.piLocked}"/>
+          <fieldset class= "slds-m-left_small">
+            <div class="slds-grid slds-wrap slds-form-element__row">
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 slds-m-top_xx-small">
+                <label class="slds-form-element__label">Billing Street</label>
+                <ui:inputText value="{!v.lead.Street}" disabled="{!v.piLocked}"/>
+              </div>
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+                <label class="slds-form-element__label">Billing City</label>
+                <ui:inputText value="{!v.lead.City}" disabled="{!v.piLocked}"/>
+              </div>
             </div>
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-              <label class="proximaNovaDataBlue">Billing City</label>
-              <ui:inputText value="{!v.lead.City}" disabled="{!v.piLocked}"/>
+            <div class="slds-grid slds-wrap slds-form-element__row">
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+                <label class="slds-form-element__label">Billing State</label>
+                <ui:inputSelect aura:id="billingState" value="{!v.lead.State}" disabled="{!v.piLocked}">
+                  <aura:iteration items="{!v.states}" var="state">
+                    <ui:inputSelectOption text="{!state}" value="{!state == v.lead.State}"/>
+                  </aura:iteration>
+                </ui:inputSelect>
+              </div>
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+                <label class="slds-form-element__label">Billing Zip</label>
+                <ui:inputText value="{!v.lead.PostalCode}" disabled="{!v.piLocked}"/>
+              </div>
             </div>
-          </div>
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-              <label class="proximaNovaDataBlue">Billing State</label>
-              <ui:inputSelect aura:id="billingState" value="{!v.lead.State}" disabled="{!v.piLocked}">
-                <aura:iteration items="{!v.states}" var="state">
-                  <ui:inputSelectOption text="{!state}" value="{!state == v.lead.State}"/>
-                </aura:iteration>
-              </ui:inputSelect>
-            </div>
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-              <label class="proximaNovaDataBlue">Billing Zip</label>
-              <ui:inputText value="{!v.lead.PostalCode}" disabled="{!v.piLocked}"/>
-            </div>
-          </div>
+          </fieldset>
         </aura:if>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1 slds-p-top_medium" aura:id="ownHouseElement">
-            <label class="slds-form-element__label slds-p-top_small">Do you own the property detailed as your installation address?</label>
-            <fieldset class="slds-form-element">
+        <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium">
+          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
+            <label class="slds-section__title"><b>Do you own the property detailed above as your installation address?</b></label>
+            <fieldset class="slds-form-element slds-m-left_small slds-m-top_xx-small">
               <div class="slds-form-element__control">
                 <span class="slds-radio">
                   <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="true" disabled="{!v.piLocked}"/>
@@ -263,7 +290,7 @@
             </fieldset>
           </div>
         </div>
-        <div class="slds-form-element__row slds-p-top--small">
+        <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.savePI}"/>
         </div>
       </form>
@@ -296,11 +323,11 @@
           </header>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-form-element slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
-              <label class="proximaNovaDataBlue">Driver's License Number</label>
+              <label class="slds-form-element__label">Driver's License Number</label>
               <ui:inputSecret class="slds-input" value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
             </div>
             <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="stateElement">
-              <label class="proximaNovaDataBlue">State of Issuance</label>
+              <label class="slds-form-element__label">State of Issuance</label>
               <ui:inputSelect aura:id="state" class="slds-input" value="{!v.lead.State_of_Issuance__c}" disabled="{!v.piLocked}"> 
                 <ui:inputSelectOption label="Select" value=""/>
                 <aura:iteration items="{!v.abbrevStates}" var="state">
@@ -311,11 +338,11 @@
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="dateOfIssuanceElement">
-              <label class="proximaNovaDataBlue">Date of Issuance</label>
+              <label class="slds-form-element__label">Date of Issuance</label>
               <c:BlueWaveDate value="{!v.lead.Date_of_Issuance__c}" disabled="{!v.piLocked}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="dateOfExpirationElement">
-              <label class="proximaNovaDataBlue">Date of Expiration</label>
+              <label class="slds-form-element__label">Date of Expiration</label>
               <c:BlueWaveDate value="{!v.lead.Date_of_Expiration__c}" disabled="{!v.piLocked}"/>
             </div>
           </div>
@@ -339,24 +366,32 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ssnElement">
-            <label class="proximaNovaDataBlue">Social Security Number</label>
+            <label class="slds-form-element__label">Social Security Number</label>
             <ui:inputSecret placeholder="XXX-XX-XXXX" value="{!v.lead.LASERCA__SSN__c}" disabled="{!v.piLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="birthdateElement">
-            <label class="proximaNovaDataBlue">Date of Birth</label>
+            <label class="slds-form-element__label">Date of Birth</label>
             <c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" disabled="{!v.piLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="incomeElement">
-            <label class="proximaNovaDataBlue">Annual Income</label>
+            <label class="slds-form-element__label">Annual Income</label>
             <ui:inputCurrency value="{!v.lead.Annual_Income_Currency__c}" disabled="{!v.piLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mortgageElement">
-            <label class="proximaNovaDataBlue">Approximate Monthly Mortgage Payment</label>
+            <label class="slds-form-element__label">Approximate Monthly Mortgage Payment</label>
             <ui:inputCurrency value="{!v.lead.Monthly_Mortgage_Tax_and_Insurance__c}" disabled="{!v.piLocked}"/>
           </div>
         </div>
+        <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
+          <div class="slds-p-around--small slds-m-top--medium">
+            <header class="slds-section__title"> 
+              <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
+            </header>
+            <p class="slds-text-body--small"><i>{!$Label.c.NY_Credit_Disclosure}</i></p>
+          </div>
+        </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top--small">
           <div class="slds-col_padded slds-size_1-of-1" aura:id="creditCheckElement">
             <lightning:input type="checkbox" 
@@ -419,15 +454,7 @@
             </div>
           </div>
         </aura:if>
-        <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
-          <div class="slds-p-around--small slds-m-top--medium">
-            <header class="proximaNovaStream90"> 
-              <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
-            </header>
-            <p class="proximaNovaDataMountaintop95"><i>{!$Label.c.NY_Credit_Disclosure}</i></p>
-          </div>
-        </aura:if>
-        <div class="slds-form-element__row slds-p-top--small">
+        <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveSSN}"/>
         </div>
       </form>
@@ -507,7 +534,7 @@
             </div>
           </div>
         </aura:if>
-        <div class="slds-form-element__row slds-p-top--small">
+        <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveCoAppPI}"/>
         </div>
       </form>
@@ -608,7 +635,7 @@
           </div>
         </aura:if>
 
-        <div class="slds-form-element__row slds-p-top--small">
+        <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveCoAppSSN}"/>
         </div>
       </form>

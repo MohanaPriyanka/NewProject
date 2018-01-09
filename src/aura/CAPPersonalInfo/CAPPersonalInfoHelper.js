@@ -19,6 +19,19 @@
                                                        'fieldId': "emailElement",
                                                        'fieldType': "email",
                                                        'errorMessage': "Enter your email"});
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
+        }
+        return errorMessage;
+      },
+
+    checkAddressPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
+        var errorMessage = "";
+        var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__Home_Address__c,
                                                        'fieldId': "homeAddressElement",
                                                        'errorMessage': "Enter your street address"});
@@ -30,16 +43,11 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        var lead = component.get('v.lead');
         var residenceOwner = component.get('v.lead.Residence_Owner__c');
         var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
         if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
           errorMessage += 'Plese select whether or not you own the property located at the installation address detailed above.';
         } 
-        if (!lead.Express_Consent__c) {
-          errorMessage += 'You must express consent in order to continue.';
-          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
-        }
         return errorMessage;
     },
 
