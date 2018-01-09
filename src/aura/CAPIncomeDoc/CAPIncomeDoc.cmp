@@ -271,7 +271,7 @@
   <aura:if isTrue="{!v.page == 'GetRetirementIncome'}">
     <div class="slds-col slds-col--padded">
       <form class="slds-form--stacked">
-        <div class="slds-form-element slds-is-required slds-p-bottom_medium slds-m-left_small">
+        <div class="slds-form-element slds-is-required slds-p-bottom_medium">
           <div class="slds-form-element__control slds-p-bottom_medium slds-text-heading--medium"><b>{!$Label.c.ID_Retirement_Request}</b></div>
           <div class="slds-form-element__control slds-form-element__label">
           {!$Label.c.ID_Pension}
@@ -439,7 +439,7 @@
     </div>
   </aura:if>
   <aura:if isTrue="{!v.page == 'GetAlimonyIncome'}">
-    <div class="slds-col slds-col--padded">
+    <div class="slds-col">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control slds-text-heading--medium slds-m-left_small"><b>{!$Label.c.ID_Alimony_Request}</b></div>
