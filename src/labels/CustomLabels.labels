@@ -589,7 +589,15 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Finished</shortDescription>
-    <value>Thank you for your application. You'll get an email confirming our receipt, and for approved application, you should expect to receive an electronic contract (via DocuSign) within 1-2 business days. You can close this window or logout now.
+    <value>Thank you for your application for a solar loan with BlueWave Solar! We hope to have you join our community of customers soon.</value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished next</shortDescription>
+    <value>You'll get an email confirming our receipt, and for approved applications, you should expect to receive an electronic contract (via DocuSign) within 1-2 business days.
     </value>
   </labels>
   <labels>
@@ -599,6 +607,14 @@
     <protected>false</protected>
     <shortDescription>Finished Questions</shortDescription>
     <value>If you have any questions in the meantime, please contact us at partnersupport@bluewavesolar.com</value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished_Logout</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished Logout</shortDescription>
+    <value> You can close this window or logout now.</value>
   </labels>
   <labels>
     <fullName>Low_Fico_Disclosure</fullName>

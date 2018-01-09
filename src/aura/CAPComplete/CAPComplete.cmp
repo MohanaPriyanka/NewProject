@@ -10,7 +10,13 @@
             {!$Label.c.CD_Finished}
           </div>
           <div class="slds-form-element__control slds-p-top--small">
+            {!$Label.c.CD_Finished_Next}
+          </div>
+          <div class="slds-form-element__control slds-p-top--small">
             {!$Label.c.CD_Finished_Questions}
+          </div>
+          <div class="slds-form-element__control slds-p-top--small">
+            {!$Label.c.CD_Finished_Logout}
           </div>
           <form action="/apply/s/loan-application">
             <input type="hidden" name="leadId" value="{!v.lead.Id}"/>

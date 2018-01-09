@@ -101,7 +101,7 @@
           <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
         </header>
         <div class="slds-modal__content slds-p-around_medium">
-          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
+          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for the income based program with the Massachusetts Solar Loan Program.</b></p>
           <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
             If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
         </div>
