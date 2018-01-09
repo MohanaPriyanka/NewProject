@@ -30,12 +30,16 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
+        var lead = component.get('v.lead');
         var residenceOwner = component.get('v.lead.Residence_Owner__c');
         var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
-        if (!residenceOwner && !notResidenceOwner) {
-          errorMessage += 'Please select whether or not you own the property located at the detailed installation address.';
-        } 
-
+        if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
+          errorMessage += 'Please select whether or not you own the property located at the installation address detailed above.';
+        }
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+        }
         return errorMessage;
     },
 
