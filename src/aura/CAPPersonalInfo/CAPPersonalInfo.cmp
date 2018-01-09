@@ -319,7 +319,7 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
+          <div class="slds-form-element__control slds-form-element__label slds-m-bottom_small">
             {!$Label.c.PI_Primary_SSN}
           </div>
         </div>
@@ -403,6 +403,14 @@
                 </ui:inputSelect>
               </aura:if>
             </div>
+          </div>
+        </aura:if>
+        <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
+          <div class="slds-m-top--small slds-p-bottom--small">
+            <header class="proximaNovaStream"> 
+              <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
+            </header>
+            <p>{!$Label.c.NY_Credit_Disclosure}</p>
           </div>
         </aura:if>
         <div class="slds-form-element__row slds-p-top--small">

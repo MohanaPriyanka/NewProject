@@ -309,7 +309,7 @@
     </value>
   </labels>
   <labels>
-    <fullName>ID_Tax_Details</fullName>
+    <fullName>ID_Joint_Tax_Details</fullName>
     <categories>Customer Application Portal</categories>
     <language>en_US</language>
     <protected>false</protected>
@@ -549,5 +549,21 @@
     <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
     <value>Have you been with your current employer for more than one year?
     </value>
+  </labels>
+  <labels>
+    <fullName>NY_Credit_Disclosure_Header</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Header for NY Credit Disclosure</shortDescription>
+    <value>NOTICE TO NEW YORK CUSTOMER</value>
+  </labels>
+  <labels>
+    <fullName>NY_Credit_Disclosure</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>NY Credit Disclosure</shortDescription>
+    <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is granted, subsequent consumer reports may be obtained in connection with any update, extension of renewal of credit.</value>
   </labels>
 </CustomLabels>
