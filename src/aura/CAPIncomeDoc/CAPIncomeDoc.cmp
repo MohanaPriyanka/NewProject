@@ -480,7 +480,7 @@
               <b>{!$Label.c.ID_Other_Income}</b>
             </div>
             <div class="slds-text-body--regular">
-              <b>{!$Label.c.ID_Other_Income_Sub_Text}</b>
+              {!$Label.c.ID_Other_Income_Sub_Text}
             </div>
             <div class="slds-p-top--small">
               <lightning:input type="file" label="Attach other income" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleOtherIncome}"/>
