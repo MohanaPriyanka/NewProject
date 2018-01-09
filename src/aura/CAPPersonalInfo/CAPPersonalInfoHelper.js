@@ -33,7 +33,7 @@
         var residenceOwner = component.get('v.lead.Residence_Owner__c');
         var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
         if (!residenceOwner && !notResidenceOwner) {
-          errorMessage += 'Plese select whether or not you own the property located at the detailed installation address.';
+          errorMessage += 'Plese select whether or not you own the property located at the installation address detailed above.';
         } 
 
         return errorMessage;
