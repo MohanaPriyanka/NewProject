@@ -19,7 +19,8 @@
 
   <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
-    <div class="slds-text-heading--medium slds-m-left_small slds-m-bottom_small"> <b><h1>Are you eligible for the income-based Mass Solar Loan Program?</h1></b> </div>
+    <div class="slds-text-heading--medium slds-m-left_small slds-m-bottom_small"> <b><h1>Mass Solar Loan Program - Loans from BlueWave's bank partner</h1></b> 
+    </div>
     <div class="slds-m-top_x-small">
       <p class="slds-m-around_small slds-align--absolute-center slds-text-body--regular">
         The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
