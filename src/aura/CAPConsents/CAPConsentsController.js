@@ -6,7 +6,7 @@
                 helper.handleNavEvent(component, event, helper, 'MSLPTechnicalConfirm');
                 if (event.getParam("eventType") === "INITIATED" &&
                     event.getParam("stageName") === component.get("v.STAGENAME")) {
-                    helper.parseAttachments(component, helper);
+                    helper.parseAttachments(component, helper, lead);
                 }
             } else {
                 helper.handleNavEvent(component, event, helper, 'SREC');
