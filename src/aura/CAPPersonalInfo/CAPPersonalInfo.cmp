@@ -19,10 +19,10 @@
 
   <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
-    <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Are you eligible for the income-based Mass Solar Loan Program?</h1></b> </div>
+    <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small"> <b><h1>Mass Solar Loan Program - Loans from BlueWave's Bank Partner</h1></b> </div>
     <div class="slds-m-top_x-small">
       <p class="slds-m-around_small slds-align--absolute-center proximaNovaDataBlue">
-        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender.  BlueWave is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
+        The Mass Solar Loan Program (MSLP) is administered in partnership between the Massachusetts Department of Energy Resources (DOER) and the Massachusetts Clean Energy Center (MassCEC).  Consumers with annual household incomes below certain thresholds may be eligible to have the MSLP pay a portion of their loan principal when the project is complete. Eligibility may also reduce the annual interest rate below the typical rate offered by the lender for some consumers. BlueWave's bank partner is only participating in the MSLP to offer loans to consumers eligible for the MSLP’s financial incentives, but you may be able to participate in the MSLP through a different lender even if you are not eligible for the program’s financial incentives.
       </p>
     </div>
     <fieldset class="slds-form--compound">
@@ -30,7 +30,7 @@
         <div class="slds-form-element__row">
           <div aura:id="iblsCategory" class="slds-form-element slds-m-bottom_xx-small slds-p-horizontal--small animated">
             <p class="proximaNovaDataBlue">
-              You must apply directly with the MSLP to determine your eligibility for IBLS.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that you think applies to your household income and size.
+              BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the MSLP. You must apply directly with the MSLP to determine your eligibility.  However, if you would like to proceed without first applying to the MSLP, please select the category from the dropdown menu that applies to your household income and size.
             </p>
             <div class="slds-m-top_medium slds-p-bottom_small slds-align_absolute-center">
               <div>
@@ -42,7 +42,7 @@
             <ui:inputSelect aura:id="iblsCategory" class="slds-input slds-m-top_x-small" value="{!v.lead.IBLS_Category__c}" disabled="{!v.piLocked}">
               <ui:inputSelectOption label="Select" text="No Category Selected"/>
               <ui:inputSelectOption label="Category 1 (Less than or equal to 80% of State Median Household Income)" text="Category 1"/>
-              <ui:inputSelectOption label="Category 2 (80% - 120% of State Median Household Income)" text="Category 2"/>
+              <ui:inputSelectOption label="Category 2 (Greater than 80% and less than or equal to 120% of State Median Household Income)" text="Category 2"/>
               <ui:inputSelectOption label="I am not eligible for either of the categories" text="None"/>
             </ui:inputSelect>
           </div>
@@ -54,10 +54,7 @@
             We will start processing your application based on your selection of Category 1. Consumers eligible for IBLS Category 1 may also be able to qualify for additional financial incentives through the MSLP, such as the MSLP’s interest rate buy down and loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
-            Availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with this qualification process.
-          </p>
-          <p class="slds-m-around_small proximaNovaDataBlue">
-            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
+            Eligibility of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help with this qualification process.
           </p>
         </div>
       </aura:if>
@@ -67,10 +64,7 @@
             We will start processing your application based on your selection of Category 2. Consumers eligible for IBLS Category 2 may also be able to qualify for the MSLP’s loan loss reserve.
           </p>
           <p class="proximaNovaDataBlue slds-m-around_small">
-            It’s important to remember that availability of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help you with what to do for this qualification process.
-          </p>
-          <p class="slds-m-around_small proximaNovaDataBlue">
-            BlueWave is not working for or with MassCEC or DOER to determine eligibility for Income Based Loan Support (IBLS) or the Mass Solar Loan Program.  You must apply directly to the MSLP to determine eligibility.
+            Eligibility of this loan depends on the qualification review performed by the MCEC.  Your solar contractor can help with this qualification process.
           </p>
         </div>
       </aura:if>
@@ -101,7 +95,7 @@
           <h2 class="slds-text-heading_medium slds-hyphenate">Alert: Changing Applications</h2>
         </header>
         <div class="slds-modal__content slds-p-around_medium">
-          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for a loan in conjuction with the Massachusetts Solar Loan Program.</b></p>
+          <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">By clicking continue, you will be redirected to an application for BlueWave's traditional loan product. <b>You will not be applying for the income based program in conjunction with the Massachusetts Solar Loan Program.</b></p>
           <p class="slds-form-element__label proximaNovaDataBlue slds-m-around_small">
             If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="proximaNovaStream90" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
         </div>
@@ -320,7 +314,7 @@
             <b>Avidia Bank Customer Identification Program</b>
           </header>
           <div class="proximaNovaDataBlue">
-            <p class="slds-p-top--small">As a result of the September 11 terrorist attacks, Congress enacted the U.S.A PATRIOT ACT of 2001. In order to make it more difficult for terrorists and other criminals to use the country’s financial system for illicit purposes, the law requires financial institutions to establish procedures to obtain, verify, and record information that identifies each person who opens an account.</p>
+            <p class="slds-p-top--small">As a result of the September 11 terrorist attacks, Congress enacted the U.S.A. PATRIOT ACT of 2001. In order to make it more difficult for terrorists and other criminals to use the country’s financial system for illicit purposes, the law requires financial institutions to establish procedures to obtain, verify, and record information that identifies each person who opens an account.</p>
             <p class="slds-p-top--small">What this means to you: When you open a deposit account, apply for a loan, or otherwise establish a formal banking relationship with Avidia Bank, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see your driver's license or other identifying documents.</p>
             <p class="slds-p-top--small slds-p-bottom--small">Please be assured that we will take every precaution to protect the confidentiality of the information and documentation you provide to us. We thank you for your understanding and your patience as we comply with the law.</p>
           </div>
