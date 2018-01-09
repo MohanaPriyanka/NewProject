@@ -11,7 +11,7 @@
     <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
       <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</label>
       <aura:set attribute="else">
-        <label class="slds-form-element__label">{!$Label.c.ID_Employment_Question}</label>
+        <label class="slds-form-element__label slds-section__title "><b>{!$Label.c.ID_Employment_Question}</b></label>
       </aura:set>
     </aura:if> 
     <fieldset class="slds-form-element">
@@ -55,7 +55,7 @@
     <div class="slds-col slds-col--padded slds-m-bottom_medium">
       <form class="slds-form--stacked">
         <fieldset class="slds-form-element slds-m-top_medium slds-m-bottom_medium">
-          <label class="slds-form-element__label">{!format($Label.c.Length_With_Employer)}</label>
+          <label class="slds-form-element__label slds-section__title"><b>{!format($Label.c.Length_With_Employer)}</b></label>
           <div class="slds-form-element__control">
             <span class="slds-radio">
               <input type="radio" id="radio-3" name="lengthWithEmployer" checked="{!v.lead.Year_Employment__c}" onchange="{!c.setEmploymentLength}" value="true" disabled="{!v.piLocked}"/>
@@ -75,7 +75,9 @@
         </fieldset>
         <div class="slds-form-element slds-is-required slds-p-bottom_medium">
           <div class="slds-form-element__control slds-form-element__label">
-            {!$Label.c.ID_Paystub_Request}
+            <div class="slds-section__title">
+              <b>{!$Label.c.ID_Paystub_Request}</b>
+            </div>
             <!-- Winter '18 lightning:fileupload didn't work in community, maybe because it's a standalone app? -->
             <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true"
                              onchange="{!c.handlePaystubFiles}"/>
@@ -143,9 +145,9 @@
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
     <fieldset class="slds-form-element">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</label>
+        <label class="slds-form-element__label slds-section__title"><b>{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
         <aura:set attribute="else">
-            <label class="slds-form-element__label">{!$Label.c.ID_Self_Employment_Question}</label>
+            <label class="slds-form-element__label slds-section__title"><b>{!$Label.c.ID_Self_Employment_Question}</b></label>
         </aura:set>
       </aura:if>
       <div class="slds-form-element__control">
@@ -174,23 +176,31 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required slds-p-bottom_medium">
-          <div class="slds-form-element__control">
-            {!$Label.c.ID_Tax_Request}
+          <div class="slds-form-element__control slds-p-bottom_medium slds-section__title">
+            <b>{!$Label.c.ID_Tax_Request}</b>
           </div>
           <div class="slds-form-element__control">
-          {!$Label.c.ID_Tax_Details}
+            <div class="slds-form-element__label">
+              {!$Label.c.ID_Tax_Details}
+            </div>
             <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
-            {!$Label.c.ID_Tax_Two_Details}
+            <div class="slds-form-element__label">
+              {!$Label.c.ID_Tax_Two_Details}
+            </div>
             <lightning:input type="file" label="Attach tax return" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
             <div class="slds-form-element__control slds-p-top_small">
-              {!format($Label.c.ID_Joint_Tax_Request, v.lead.Co_Applicant_First_Name__c)}
+              <div class="slds-form-element__label">
+                {!format($Label.c.ID_Joint_Tax_Request, v.lead.Co_Applicant_First_Name__c)}
+              </div>
             </div>
             <div class="slds-form-element__control">
               {!$Label.c.ID_Tax_Details}
               <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxOneYear}"/>
-                    {!format($Label.c.ID_Joint_Tax_Two_Details, v.lead.Joint_Applicant_Type__c)}
+              <div class="slds-form-element__label">
+                {!format($Label.c.ID_Joint_Tax_Two_Details, v.lead.Joint_Applicant_Type__c)}
+              </div>
               <lightning:input type="file" label="Attach paystub" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTaxTwoYear}"/>
             </div>
           </aura:if>
@@ -225,9 +235,9 @@
   <aura:if isTrue="{!v.page == 'RetirementQuestion'}">
     <fieldset class="slds-form-element">
       <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}</label>
+        <label class="slds-form-element__label slds-section__title"><b>{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
         <aura:set attribute="else">
-            <label class="slds-form-element__label">{!$Label.c.ID_Retirement_Question}</label>
+            <label class="slds-form-element__label slds-section__title"><b>{!$Label.c.ID_Retirement_Question}</b></label>
         </aura:set>
       </aura:if>
       <div class="slds-form-element__control">
@@ -258,8 +268,8 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required slds-p-bottom_medium">
-          <div class="slds-form-element__control">{!$Label.c.ID_Retirement_Request}</div>
-          <div class="slds-form-element__control">
+          <div class="slds-form-element__control slds-p-bottom_medium slds-section__title"><b>{!$Label.c.ID_Retirement_Request}</b></div>
+          <div class="slds-form-element__control slds-form-element__label">
           {!$Label.c.ID_Pension}
             <lightning:input type="file" label="Attach pension award" variant="label-hidden" name="file" multiple="true" onchange="{!c.handlePension}"/>
                   {!$Label.c.ID_SSN}
@@ -312,9 +322,9 @@
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-              <label class="slds-form-element__label">{!format($Label.c.ID_Joint_Veteran_Question, v.lead.Co_Applicant_First_Name__c)}</label>
+              <label class="slds-form-element__label slds-section__title"><b>{!format($Label.c.ID_Joint_Veteran_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
               <aura:set attribute="else">
-                <label class="slds-form-element__label">{!$Label.c.ID_Veteran_Question}</label>
+                <label class="slds-form-element__label slds-section__title"><b>{!$Label.c.ID_Veteran_Question}</b></label>
               </aura:set>
             </aura:if>
           <fieldset class="slds-form-element">
@@ -353,7 +363,7 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required slds-p-bottom--medium">
           <div class="slds-form-element__control">
-          <legend class="slds-form-element__legend slds-form-element__label">{!$Label.c.ID_Veteran_Request}</legend>
+          <legend class="slds-form-element__legend slds-form-element__label slds-section__title"><b>{!$Label.c.ID_Veteran_Request}</b></legend>
             <lightning:input type="file" label="Attach veteran" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleVeteran}"/>
           </div>
           <aura:if isTrue="{!v.lead.Application_Type__c == 'Joint'}">
@@ -398,7 +408,7 @@
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
         <fieldset class="slds-form-element slds-m-top_medium slds-m-bottom_medium">
-          <label class="slds-form-element__label">{!$Label.c.ID_Alimony_Question}</label>
+          <label class="slds-form-element__label slds-section__title"><b>{!$Label.c.ID_Alimony_Question}</b></label>
           <div class="slds-form-element__control">
             <span class="slds-radio">
               <input type="radio" id="radio-12" name="alimony" checked="{!v.lead.Reliant_on_Alimony_Child_Support_Other__c}" value="true" onchange="{!c.setAlimony}" disabled="{!v.piLocked}"/>
@@ -428,24 +438,24 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">{!$Label.c.ID_Alimony_Request}</div>
+          <div class="slds-form-element__control slds-section__title"><b>{!$Label.c.ID_Alimony_Request}</b></div>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyAmount">
-              <label class="proximaNovaDataBlue">Monthly Income Amount</label>
+              <label class="slds-form-element__label">Monthly Income Amount</label>
               <ui:inputCurrency value="{!v.lead.Monthly_Income__c}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyDetails">
-              <label class="proximaNovaDataBlue">Monthly Income Details</label>
+              <label class="slds-form-element__label">Monthly Income Details</label>
               <ui:inputText value="{!v.lead.Monthly_Income_Details__c}"/>
             </div>
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyAmount2">
-              <label class="proximaNovaDataBlue">Second Monthly Income Amount</label>
+              <label class="slds-form-element__label">Second Monthly Income Amount</label>
               <ui:inputCurrency value="{!v.lead.Monthly_Income_2__c}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="alimonyDetails2">
-              <label class="proximaNovaDataBlue">Second Monthly Income Details</label>
+              <label class="slds-form-element__label">Second Monthly Income Details</label>
               <ui:inputText value="{!v.lead.Monthly_Income_Details_2__c}"/>
             </div>
           </div>
@@ -462,7 +472,9 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required slds-p-bottom--medium">
           <div class="slds-form-element__control">
-          {!$Label.c.ID_Other_Income}
+            <div class="slds-section__title">
+              <b>{!$Label.c.ID_Other_Income}</b>
+            </div>
             <lightning:input type="file" label="Attach other income" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleOtherIncome}"/>
           </div>
         </div>
