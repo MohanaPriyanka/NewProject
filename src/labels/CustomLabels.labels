@@ -542,7 +542,15 @@
     <protected>false</protected>
     <shortDescription>MCEC Project ID Request</shortDescription>
     <value>Please provide your MassCEC Project ID Number from your Technical Confirmation, and upload your Technical Confirmation document.
-      If you do not have your Technical Confirmation, please contact your installer on how to work with MassCEC for this confirmation of income eligibility.
+    </value>
+  </labels>
+    <labels>
+    <fullName>CD_MCEC_Project_ID_Request_Body2</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MCEC Project ID Request</shortDescription>
+    <value>If you do not have your Technical Confirmation, please contact your installer on how to work with MassCEC for this confirmation of income eligibility.
     </value>
   </labels>
   <labels>
