@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: AccountInfoControllerTest, LoanUnderwritingTest (nullToZero)
+ * Tested by: AccountInfoControllerTest, LoanUnderwritingTest (nullToZero), SLPQuickSalesSheetTestclass
  *************************************************************************************/
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
@@ -76,18 +76,9 @@ public without sharing class Util {
     }
 
     public static String getCommunitySiteURL(String communityName) {
-        // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests.
-        if (Test.isRunningTest()) {
-            String host = 'https://sandbox-bluewavememberportal.cs88.force.com/';
-            host += communityName;
-            return host;
-        } else {
-            ConnectApi.CommunityPage cp = ConnectApi.Communities.getCommunities();
-            for (ConnectApi.Community community : cp.communities) {
-                if (community.name == communityName) {return community.siteUrl;}
-            }
-            return null;
-        }
+        Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
+        Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
+        return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
     }
 
     public class BWException extends Exception {}

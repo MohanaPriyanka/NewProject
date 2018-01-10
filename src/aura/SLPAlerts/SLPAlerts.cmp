@@ -6,8 +6,8 @@
 
     <div aura:id="partnerAlert" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal--prompt noDisplay">
      <div class="slds-modal__container">
-      <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--warning slds-theme--alert-texture">
-        <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.partnerAlert.Name}</h2>
+      <div aura:id="partnerAlertTheme" class="slds-modal__header slds-theme--info slds-theme--alert-texture">
+        <h2 class="proximaNova slds-align_absolute-center" id="prompt-heading-id">{!v.partnerAlert.Name}</h2>
       </div>
       <div class="slds-modal__content slds-p-around--medium">
         <p>{!v.partnerAlert.Date__c}</p>
@@ -16,34 +16,35 @@
       </div>
       <div class="slds-modal__footer slds-theme--default">
         <ui:button aura:id="importantAlertButton"
-                   class="slds-button--brand box"
+                   class="slds-button--brand"
                    label="Close"
                    press="{!c.closeAlert}"/>
        </div>
      </div>
    </div>
-   <aura:if isTrue="{!v.partnerAlerts.length > 0}">     
-     <div aura:id = "alertsTable" class="main2"> 
+   <aura:if isTrue="{!v.partnerAlerts.length > 0}">
+     <div aura:id = "alertsTable" class="main2">
       <br></br>
       <div>
         <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
           <thead>
             <tr class="slds-text-heading--label proximaNovaDataBlue " >
-              <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>   
-              <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>                   
+              <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"></span></th>
             </tr>
           </thead>
           <tbody>
             <aura:iteration items="{!v.partnerAlerts}" var="alert">
               <tr>
                 <th scope="row"> <b>{!alert.Name}</b> </th>
-                <th scope="row"> <b>{!alert.Date__c}</b> </th>                                      
+                <th scope="row"> <b>{!alert.Date__c}</b> </th>
                 <th><ui:button label="View"
                  class="{!alert.Id}"
                  labelClass="label"
-                 press="{!c.openAlert}"/>   </th>                       
-               </tr>                    
-             </aura:iteration>          
+                 press="{!c.openAlert}"/></th>
+               </tr>
+             </aura:iteration>
            </tbody>
          </table>
        </div>
@@ -51,6 +52,6 @@
      <aura:set attribute="else">
        <div class="slds-align_absolute-center proximaNovaBlue"><p><b> There are no current alerts.</b></p></div>
      </aura:set>
-   </aura:if>  
- </div>         
+   </aura:if>
+ </div>
 </aura:component>

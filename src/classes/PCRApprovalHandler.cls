@@ -259,16 +259,8 @@ public without sharing class PCRApprovalHandler {
                     pcr.Email_from_Lead__c != NULL &&
                     pcr.Solar_Loan_Approval_Status__c == APPROVED) {
 
-                    String host = null;
-                    try {
-                        host = Util.getCommunitySiteURL('Apply');
-                    } catch (ConnectApi.ConnectApiException cae) {
-                        // Can't run getCommunitySiteURL as a Guest user, let it fall through to a null host
-                    }
-                    if (host == null) {
-                        host = URL.getSalesforceBaseUrl().toExternalForm() + '/apply';
-                    }
-                    String continueApplicationUrl = host + '/s/loan-application?leadId=' + pcr.PCR_Lead_ID__c;
+                    String continueApplicationUrl =
+                        Util.getCommunitySiteURL('Apply') + '/s/loan-application?leadId=' + pcr.PCR_Lead_ID__c;
 
                     if (pcr.DOER_Application__c) {
                         String htmlbody = doerEmailTemplate.HtmlValue;

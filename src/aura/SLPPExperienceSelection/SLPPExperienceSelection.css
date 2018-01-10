@@ -118,6 +118,11 @@
   list-style-type: disc;
 }
 
+.THIS .slds-text-body--regular li {
+  display: list-item;
+  list-style-type: disc;
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
