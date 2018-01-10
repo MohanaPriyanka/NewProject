@@ -1,57 +1,56 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const options = event.getParam('options');
-        if (options) {
-            if (options.pageName) {
-                helper.handleNavEvent(component, event, helper, options.pageName);
+        const lead =  component.get('v.lead');
+        var eventType = event.getParam('eventType');
+        if (eventType !== 'LOCKPI' && eventType !== 'LOCKJOINT' && eventType !== 'LORCHANGE') {
+            const leadVar =  event.getParam("lead");
+            if (options) {
+                if (options.pageName) {
+                    helper.handleNavEvent(component, event, helper, options.pageName);
+                } else if (leadVar.Product_Program__c == 'MSLP') {
+                    helper.handleNavEvent(component, event, helper, 'iblsQualification');
+                } else {
+                    helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
+                }
+                if (options.coSigner) {
+                    component.set('v.coSigner', true);
+                }
+            } else if (leadVar.Product_Program__c === 'MSLP') {
+                helper.handleNavEvent(component, event, helper, 'iblsQualification');
             } else {
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
-            if (options.coSigner) {
-                component.set('v.coSigner', true);
-            }
-        } else {
-            helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
         }
-        const lead = component.get('v.lead');
-        if (event.getParam('eventType') === 'LOCKPI' ||
-            event.getParam('eventType') === 'LOCKJOINT' ||
+        if (eventType === 'LORCHANGE') {
+            helper.handleNavEvent(component, event, helper);
+        }
+        if (eventType === 'LOCKPI' ||
+            eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report__c)) {
             component.set('v.piLocked', true);
         }
-        if (event.getParam('eventType') === 'LOCKJOINT' ||
+        if (eventType === 'LOCKJOINT' ||
             (lead && lead.Personal_Credit_Report_Co_Applicant__c)) {
             component.set('v.coAppLocked', true);
         }
 
         if (component.get('v.states') && component.get('v.states').length === 0) {
-            helper.getUSStates(component, 'v.states');
+            helper.getUSStates(component, 'v.states', false);
+        }
+        if (component.get('v.abbrevStates') && component.get('v.abbrevStates').length === 0) {
+            helper.getUSStates(component, 'v.abbrevStates', true);
         }
     },
 
-    setAppType : function(component, event, helper) {
+    setApplicationType : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if (component.get('v.coAppLocked') || lead.Application_Type__c === 'Individual') {
+        if (component.get('v.coAppLocked') || lead.Status === 'Pre-Qualified') {
             component.set('v.page', 'PrimaryPI');
             return;
         }
             
-        // If it's an individual application, save the whole lead in case the applicant
-        // was switching from joint (we need to remove the CoApp Contact Info).
-        // Otherwise, we can just save the application type. We can't use saveLead since
-        // it assumes there's already coapp contact information which might not be set yet
-        if (lead.Application_Type__c === 'Individual') {
-            helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryPI'});
-        } else {
-            const promise = helper.saveSObject(component,
-                                               lead.Id,
-                                               'Lead',
-                                               'Application_Type__c',
-                                               lead.Application_Type__c);
-            promise.then($A.getCallback(function resolve(value) {
-                component.set('v.page', 'PrimaryPI');
-            }));
-        }
+        helper.setAppType(component, event, helper);
     },
 
     handleShowModal : function(component, event, helper) {
@@ -89,9 +88,55 @@
                             });
     },
 
-    savePI : function(component, event, helper) {
+    openLicenseInformation : function(component, event, helper) {
+        component.set('v.page', 'PrimaryLicenseInfo');
+    },
+
+    openAddressPI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
             helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+            return;
+        }
+        component.set('v.page', 'AddressPI');
+    },
+
+    setResidenceOwner: function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var value = event.currentTarget.value;
+        if (value == 'true') {
+            component.set('v.lead.Residence_Owner__c', true);
+            component.set('v.lead.Not_Residence_Owner__c', false);
+        } else {
+            component.set('v.lead.Residence_Owner__c', false);
+            component.set('v.lead.Not_Residence_Owner__c', true);
+        }
+    },
+
+    savePI : function(component, event, helper) {
+        if (helper.checkAddressPIErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "savePI", helper.checkAddressPIErrors(component));
+            return;
+        }
+
+        // PI is locked if credit has already been run
+        if (component.get('v.piLocked')) {
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                component.set('v.page', 'PrimaryLicenseInfo');
+            } else {
+                component.set('v.page', 'PrimarySSN');
+            }
+        } else {
+            if (component.get('v.lenderOfRecord') === 'Avidia') {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+            } else {
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimarySSN'});
+            }
+        }
+    },
+
+    saveLicenseInfo : function(component, event, helper) {
+        if (helper.checkLicenseErrors(component)) {
+            helper.logError("CAPPersonalInfoController", "saveLicenseInfo", helper.checkLicenseErrors(component));
             return;
         }
 
@@ -144,5 +189,24 @@
 
     finishStage : function(component, event, helper) {
         helper.finishStage(component, event, helper);
+    },
+
+    openBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', true);
+    },
+
+    closeBWSLTransferAlert : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', false);
+    },
+
+    changeApplicationToBWSL : function(component, event, helper) {
+        component.set('v.bwslTransferAlert', false);
+        helper.toggleMSLP(component, event, helper, false);
+        component.set('v.page', 'IndividualOrJoint');
+    },
+
+    setToMSLPEligible : function(component, event, helper) {
+        helper.toggleMSLP(component, event, helper, true);
+        component.set('v.page', 'IndividualOrJoint');
     },
 })

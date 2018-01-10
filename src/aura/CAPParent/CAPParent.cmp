@@ -9,7 +9,9 @@
   <aura:attribute name="waiting" type="Boolean" default="false"/>
   <aura:attribute name="supressWaiting" type="Boolean" default="false"/>
   <aura:if isTrue="{!and(v.waiting, not(v.supressWaiting))}">
-    <lightning:spinner alternativeText="Saving..." class="slds-is-relative" size="medium"/>
+    <div class="slds-is-relative">
+      <lightning:spinner alternativeText="Saving..." size="medium"/>
+    </div>
   </aura:if>
   {!v.body}
 </aura:component>

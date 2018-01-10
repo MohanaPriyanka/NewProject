@@ -9,26 +9,67 @@ public with sharing class CAPControllerTest {
         Product2 p = [SELECT Id FROM Product2 WHERE IsActive = TRUE LIMIT 1];
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
-        Lead l = new Lead(FirstName = 'Tester',
-                          LastName = 'Testcase',
-                          Company = 'Test',
-                          Product__c = p.Id,
-                          Email = 'test@tester.com',
-                          LASERCA__Home_Address__c = '55 Boston St.',
-                          LASERCA__Home_City__c = 'Boston',
-                          LASERCA__Home_State__c = 'MA',
-                          LASERCA__Home_Zip__c = '02052',
-                          LASERCA__Social_Security_Number__c = '000000001',
-                          Requested_Loan_Amount__c = 35000,
-                          Annual_Income_Currency__c = 15000,
-                          Partner_Lookup__c = partner.Id,
-                          Product_Program__c = 'BlueWave Solar Loan',
-                          Bs_Sales_ID__c = salesRep.Id);
+        RecordType loanRT = [
+                SELECT Id
+                FROM RecordType
+                WHERE DeveloperName = 'BFG_Solar_Loan'
+                AND SobjectType = 'Lead'
+                LIMIT 1
+        ];
+        Lead l = new Lead(
+                FirstName = 'Tester',
+                LastName = 'Testcase',
+                Company = 'Test',
+                Product__c = p.Id,
+                Email = 'test@tester.com',
+                LASERCA__Home_Address__c = '55 Boston St.',
+                LASERCA__Home_City__c = 'Boston',
+                LASERCA__Home_State__c = 'MA',
+                LASERCA__Home_Zip__c = '02052',
+                LASERCA__Social_Security_Number__c = '000000001',
+                Requested_Loan_Amount__c = 35000,
+                Annual_Income_Currency__c = 15000,
+                Partner_Lookup__c = partner.Id,
+                Product_Program__c = 'BlueWave Solar Loan',
+                Bs_Sales_ID__c = salesRep.Id,
+                Status = 'Ready for Credit Check',
+                RecordTypeId = loanRT.Id);
         insert l;
         Test.startTest();
         System.assertEquals(CAPController.getCreditCheckTimeout(), 60000);
         System.assertEquals(null, CAPController.getLead(l.id, 'foo'));
         System.assertEquals('Tester', CAPController.getLead(l.id, 'test@tester.com').FirstName);
+        System.assertEquals(null, CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+        Lead leadClone = l.clone(true,false,false,false);
+        leadClone.email = 'foo';
+        leadClone.Application_Type__c = 'Joint';
+        Boolean caughtException = false;
+        try {
+            CAPController.setAppType(leadClone);
+        } catch (Util.BWException bwe) {
+            caughtException = true;
+        }
+        System.assertEquals(true, caughtException);
+        System.assertEquals(null, CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+        l.Application_Type__c = 'Individual';
+        CAPController.setAppType(l);
+        l.Application_Type__c = 'Joint';
+        CAPController.setAppType(l);
+        System.assertEquals('Joint', CAPController.getLead(l.id, l.email).Application_Type__c);
+        System.assertEquals('Co-Applicant', CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
+
+        Account coApplicantAccount = new Account( Name = 'CoapplicantAccount');
+        insert coApplicantAccount;
+        Contact coApplicantContact = new Contact(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            AccountId = coApplicantAccount.Id,
+            Lead__c = l.Id,
+            Income__c = 2000,
+            LASERCA__Social_Security_Number__c = '000000002');
+        insert coApplicantContact;
+        l.CoApplicant_Contact__c = coApplicantContact.Id;
+        update l;
 
         CAPController.pullCreditStatus(l);
         // Laser Credit Access trigger should unset the pull credit report checkbox
@@ -42,7 +83,7 @@ public with sharing class CAPControllerTest {
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
                                                          FROM LASERCA__Personal_Credit_Report__c
                                                          WHERE LASERCA__Lead__c = :l.Id];
-        System.assertEquals(pcrs.size(), 1);
+        System.assertEquals(2, pcrs.size());
 
         System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(l));
     }
@@ -57,25 +98,35 @@ public with sharing class CAPControllerTest {
 
     @isTest static void pullCreditstatus() {
         Test.startTest();
-        Lead newLead = new Lead(FirstName = 'Cole',
-                                LastName = 'Swain',
-                                Company = 'Test',
-                                LASERCA__Home_Address__c = '55 Boston St.',
-                                LASERCA__Home_City__c = 'Boston',
-                                LASERCA__Home_State__c = 'MA',
-                                LASERCA__Home_Zip__c = '02052',
-                                Email = 'colemswain@gmail.com',
-                                LASERCA__Social_Security_Number__c = '000000001',
-                                Requested_Loan_Amount__c = 25000,
-                                Annual_Income_Currency__c = 150000,
-                                Credit_Check_Acknowledged__c = true,
-                                Privacy_Policy_Acknowledged__c = true,
-                                Automatic_Product_Assignment__c = true,
-                                Loan_Term__c = 120,
-                                Product_Program__c = 'BlueWave Solar Loan',
-                                Pre_Approval_Form__c = true,
-                                Unfinished_Lead__c = true,
-                                Utility_Bill_Access_Acknowledged__c = true);
+        RecordType loanRT = [
+                SELECT Id
+                FROM RecordType
+                WHERE DeveloperName = 'BFG_Solar_Loan'
+                AND SobjectType = 'Lead'
+                LIMIT 1
+        ];
+        Lead newLead = new Lead(
+                FirstName = 'Cole',
+                LastName = 'Swain',
+                Company = 'Test',
+                LASERCA__Home_Address__c = '55 Boston St.',
+                LASERCA__Home_City__c = 'Boston',
+                LASERCA__Home_State__c = 'MA',
+                LASERCA__Home_Zip__c = '02052',
+                Email = 'colemswain@gmail.com',
+                LASERCA__Social_Security_Number__c = '000000001',
+                Requested_Loan_Amount__c = 25000,
+                Annual_Income_Currency__c = 150000,
+                Credit_Check_Acknowledged__c = true,
+                Privacy_Policy_Acknowledged__c = true,
+                Automatic_Product_Assignment__c = true,
+                Loan_Term__c = 120,
+                Product_Program__c = 'BlueWave Solar Loan',
+                Pre_Approval_Form__c = true,
+                Unfinished_Lead__c = true,
+                Utility_Bill_Access_Acknowledged__c = true,
+                Status = 'Ready for Credit Check',
+                RecordTypeId = loanRT.Id);
         insert newLead;
 
         CAPController.pullCreditStatus(newLead);
@@ -83,10 +134,13 @@ public with sharing class CAPControllerTest {
         Test.stopTest();
 
         // Laser Credit Access trigger should unset the pull credit report checkbox
-        List<Lead> leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
-                               FROM Lead
-                               WHERE LastName = 'Swain'];
+        List<Lead> leadList = [
+            SELECT Id, LASERCA__Pull_Credit_Report__c, Personal_Credit_Report__c,
+            Date_of_Application_2__c
+            FROM Lead
+            WHERE LastName = 'Swain'];
         System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+        System.assertEquals(System.now().format('YYYY-MM-DD'), leadList[0].Date_of_Application_2__c);
 
         // LCA should set pull credit once the future method fires
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
@@ -95,6 +149,12 @@ public with sharing class CAPControllerTest {
         System.assertEquals(pcrs.size(), 1);
 
         System.assertEquals(CAPController.checkCreditStatus(leadList[0]), 'Pending Credit Review');
+
+        System.assertEquals(null, CAPController.getLead(newLead.id, newLead.email).Joint_Applicant_Type__c);
+        newLead.Application_Type__c = 'Joint';
+        CAPController.setAppType(newLead);
+        System.assertEquals('Joint', CAPController.getLead(newLead.id, newLead.email).Application_Type__c);
+        System.assertEquals('Co-Signer', CAPController.getLead(newLead.id, newLead.email).Joint_Applicant_Type__c);
     }
 
     @isTest static void testErrorParsing() {
@@ -149,5 +209,13 @@ public with sharing class CAPControllerTest {
         productReturnList = CAPController.getCustomerProducts(leadMap.get('coApplicantLead').Id);
         System.assertEquals(2, productReturnList.size());
         Test.stopTest();
+    }
+
+    @isTest static void testGetProducts() {
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
+        System.assertEquals(8, products.size());
+
+        products = CAPController.getProducts('MA', 'Residential Loan');
+        System.assertEquals(7, products.size());
     }
 }

@@ -7,8 +7,7 @@
             if (resp.getState() === "SUCCESS") {
                 helper.checkCreditResponse(component, helper, lead.Application_Type__c, resp.getReturnValue());
             } else {
-                helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError());
-                console.log("poller from ccs: " + component.get("v.creditStatusPoller"));
+                helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError(), lead);
                 window.clearInterval(component.get("v.creditStatusPoller"));
                 window.clearTimeout(component.get("v.creditStatusTimeoutID"));
                 $A.util.addClass(component.find("editPencil"), 'noDisplay');
@@ -18,33 +17,34 @@
     },
 
     checkCreditResponse : function(component, helper, applicationType, returnValue) {
-        if (applicationType === 'Individual') {
-            if (returnValue === "Ready for Credit Check") {
-                // Don't do anything, credit check isn't done yet
-            } else if (returnValue === "Pre-Qualified") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultPass');
-            } else if (returnValue === "Pending Credit Review") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultPendingReview');
-            } else if (returnValue === "Unqualified") {
-                helper.handleCreditCheckResponse(component, helper, 'creditResultUnqualified');
-            } else {
-                component.set("v.creditStatusErrorText", returnValue);
-                helper.handleCreditCheckResponse(component, helper, 'creditResultError');
+        const lead = component.get('v.lead');
+        if (returnValue === "Ready for Credit Check") {
+            // Don't do anything, credit check isn't done yet
+        } else if (
+            returnValue === "Pre-Qualified" ||
+            returnValue === "Pending Credit Review" ||
+            returnValue === "Unqualified") {
+            lead.Status = returnValue;
+            component.set('v.lead', lead);
+            helper.raiseNavEvent('LOCKPI');
+            component.set('v.primaryChecked', true);
+            if (lead.Application_Type__c === 'Joint') {
+                helper.raiseNavEvent('LOCKJOINT');
+                component.set('v.coAppChecked', true);
             }
+            helper.handleCreditCheckResponse(component, helper);
         } else {
-            helper.handleCreditCheckResponse(component, helper, 'creditResultJoint');
+            component.set("v.creditStatusErrorText", returnValue);
+            helper.handleCreditCheckResponse(component, helper, 'creditResultError');
         }
     },
 
     handleCreditCheckResponse : function(component, helper, divToShow) {
-        component.set('v.primaryChecked', true);
-        if (component.get('v.lead').Application_Type__c === 'Joint') {
-            component.set('v.coAppChecked', true);
-        }
         $A.util.addClass(component.find("creditStatus"), 'noDisplay');
-        $A.util.removeClass(component.find(divToShow), 'noDisplay');
+        if (divToShow) {
+            $A.util.removeClass(component.find(divToShow), 'noDisplay');
+        }
         helper.stopSpinner(component, 'creditSpinner');
-        console.log("poller from hccr: " + component.get("v.creditStatusPoller"));
         window.clearInterval(component.get("v.creditStatusPoller"));
         window.clearTimeout(component.get("v.creditStatusTimeoutID"));
     },
@@ -74,14 +74,14 @@
                 component.set("v.lead.Product__c", prodId);
             }
             $A.util.removeClass(customerEmailButton, 'noDisplay');
-            $A.util.removeClass(incomeFormButton, 'noDisplay');     
+            $A.util.removeClass(incomeFormButton, 'noDisplay');
         } else {
             component.set("v.productId", null); 
             component.set("v.loanTerm", 0);
             component.set("v.allCustomers[0].Product__c", null);
 
             $A.util.addClass(customerEmailButton, 'noDisplay');
-            $A.util.addClass(incomeFormButton, 'noDisplay');     
+            $A.util.addClass(incomeFormButton, 'noDisplay');
         }
     },
 

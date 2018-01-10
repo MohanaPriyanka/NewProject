@@ -14,12 +14,7 @@
     },
 
     confirmLoan : function(component, event, helper) {
-        const lead = component.get('v.lead');
-        if (lead.DOER_Solar_Loan__c) {
-            component.set('v.page', 'LoanDisclaimer');
-        } else {
-            helper.finishStage(component, event, helper);
-        }
+        component.set('v.page', 'LoanDisclaimer');
     },
 
     finishStage : function(component, event, helper) {

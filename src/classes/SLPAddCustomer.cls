@@ -19,12 +19,10 @@ public without sharing class SLPAddCustomer {
         RecordType leadRecordType;
         String recordType;
         String productProgram;
-        if (newLead.DOER_Solar_Loan__c) {
+        if (newLead.Product_Program__c == 'MSLP') {
             recordType = 'BFG - DOER Solar Loan';
-            productProgram = 'MSLP';
         } else {
             recordType = 'BlueWave Solar Loan';
-            productProgram = 'BlueWave Solar Loan';
         }
 
         leadRecordType = [SELECT Id
@@ -37,9 +35,9 @@ public without sharing class SLPAddCustomer {
         }
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
+        newLead.Unfinished_Lead__c = true;
         newLead.Email_Re_Enter__c = newLead.Email;
         newLead.Application_Source_Phase_1__c = 'SLPortal Phase 1 Application';
-        newLead.Product_Program__c = productProgram;
         newLead.Partner_Lookup__c = profile.partnerId;
         newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
@@ -91,7 +89,7 @@ public without sharing class SLPAddCustomer {
                      (SELECT id, LASERCA__Error_Message__c, CREATEDDATE
                       FROM LASERCA__Credit_Report_Logs__r
                       ORDER BY CREATEDDATE DESC),
-                     (SELECT id, Solar_Loan_Approval_Status__c
+                     (SELECT Id, Solar_Loan_Approval_Status__c
                       FROM LASERCA__Personal_Credit_Reports__r
                       ORDER BY CREATEDDATE DESC LIMIT 1)
                      FROM Lead
@@ -152,60 +150,67 @@ public without sharing class SLPAddCustomer {
         List<String> emailList = new List<String>();
         Map<String, String> mslpUrlParametersMap = new Map<String, String>();
         Map<String, String> bwslUrlParametersMap = new Map<String, String>();
+        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
 
         emailList.add(newLead.Email);
-        emailList.add((String)profile.salesRepEmail);
+        // With the CAP release, don't cc the sales rep on the email - only applicants should fill out the application
+        // emailList.add((String)profile.salesRepEmail);
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = 'RS_SLP_Start_Customer_Application'];
 
         stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);
-        if (BlueWaveParent.getSLPortalCustomSetting().get(0).Require_IBLS_for_MSL_Loans__c) {
-            mslpUrlParametersMap.put('803', (String)profile.partnerId);
-            mslpUrlParametersMap.put('804', (String)profile.salesRepId);
-            mslpUrlParametersMap.put('805', emailList.get(0));
-            mslpUrlParametersMap.put('806', String.valueof(newLead.System_Cost__c));
-            mslpUrlParametersMap.put('807', String.valueof(loanAmount));
-            mslpUrlParametersMap.put('808', stateName);
-            mslpUrlParametersMap.put('809', 'SLPortal - Emailed Customer Phase 1 Application 381613');
-            if (newLead.Product__c != null) {
-                mslpUrlParametersMap.put('810', newLead.Product__c);
-            }
-            mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381668', mslpUrlParametersMap);
+        if (slpSettings.get(0).Allow_Users_to_Email_CAP_Applications__c) {
+            String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+            startApplicationUrl = host + 'apply/s/loan-application?leadId=' + newLead.Id;
         } else {
-            mslpUrlParametersMap.put('648', (String)profile.partnerId);
-            mslpUrlParametersMap.put('649', (String)profile.salesRepId);
-            mslpUrlParametersMap.put('529', emailList.get(0));
-            mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
-            mslpUrlParametersMap.put('544', String.valueof(loanAmount));
-            mslpUrlParametersMap.put('574', stateName);
-            mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
-            if (newLead.Product__c != null) {
-                mslpUrlParametersMap.put('796', newLead.Product__c);
+            if (BlueWaveParent.getSLPortalCustomSetting().get(0).Require_IBLS_for_MSL_Loans__c) {
+                mslpUrlParametersMap.put('803', (String)profile.partnerId);
+                mslpUrlParametersMap.put('804', (String)profile.salesRepId);
+                mslpUrlParametersMap.put('805', emailList.get(0));
+                mslpUrlParametersMap.put('806', String.valueof(newLead.System_Cost__c));
+                mslpUrlParametersMap.put('807', String.valueof(loanAmount));
+                mslpUrlParametersMap.put('808', stateName);
+                mslpUrlParametersMap.put('809', 'SLPortal - Emailed Customer Phase 1 Application 381613');
+                if (newLead.Product__c != null) {
+                    mslpUrlParametersMap.put('810', newLead.Product__c);
+                }
+                mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381668', mslpUrlParametersMap);
+            } else {
+                mslpUrlParametersMap.put('648', (String)profile.partnerId);
+                mslpUrlParametersMap.put('649', (String)profile.salesRepId);
+                mslpUrlParametersMap.put('529', emailList.get(0));
+                mslpUrlParametersMap.put('654', String.valueof(newLead.System_Cost__c));
+                mslpUrlParametersMap.put('544', String.valueof(loanAmount));
+                mslpUrlParametersMap.put('574', stateName);
+                mslpUrlParametersMap.put('653', 'SLPortal - Emailed Customer Phase 1 Application 381613');
+                if (newLead.Product__c != null) {
+                    mslpUrlParametersMap.put('796', newLead.Product__c);
+                }
+                mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
             }
-            mslpUrl = FormAssemblyHelper.createFormAssemblyUrl('381613', mslpUrlParametersMap);
-        }
+            bwslUrlParametersMap.put('648', (String)profile.partnerId);
+            bwslUrlParametersMap.put('649', (String)profile.salesRepId);
+            bwslUrlParametersMap.put('529', emailList.get(0));
+            bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
+            bwslUrlParametersMap.put('544', String.valueof(loanAmount));
+            bwslUrlParametersMap.put('574', stateName);
+            bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
+            if (newLead.Product__c != null) {
+                bwslUrlParametersMap.put('803', newLead.Product__c);
+            }
+            bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
 
-        bwslUrlParametersMap.put('648', (String)profile.partnerId);
-        bwslUrlParametersMap.put('649', (String)profile.salesRepId);
-        bwslUrlParametersMap.put('529', emailList.get(0));
-        bwslUrlParametersMap.put('656', String.valueof(newLead.System_Cost__c));
-        bwslUrlParametersMap.put('544', String.valueof(loanAmount));
-        bwslUrlParametersMap.put('574', stateName);
-        bwslUrlParametersMap.put('655', 'SLPortal - Emailed Customer Phase 1 Application 381614');
-        if (newLead.Product__c != null) {
-            bwslUrlParametersMap.put('803', newLead.Product__c);
-        }
-        bwslUrl = FormAssemblyHelper.createFormAssemblyUrl('381614', bwslUrlParametersMap);
-
-        if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
-          startApplicationUrl = bwslUrl;
-        } else if (newLead.Product_Program__c == 'MSLP') {
-          startApplicationUrl = mslpUrl;
+            if (newLead.Product_Program__c == 'BlueWave Solar Loan') {
+              startApplicationUrl = bwslUrl;
+            } else if (newLead.Product_Program__c == 'MSLP') {
+              startApplicationUrl = mslpUrl;
+            }
         }
         String htmlBody = template.HtmlValue;
         htmlBody = htmlBody.replace('{!startApplication}', startApplicationUrl);
         htmlBody = htmlBody.replace('{!partnerName}', profile.PartnerName);
+        htmlBody = htmlBody.replace('{!Lead.FirstName}', newLead.FirstName);
 
         MessagingService.createAndSendEmail(htmlBody, 'customercare@bluewavesolar.com', 'BlueWave Solar Loan - Start your application here', emailList);
         return customerName;
@@ -244,7 +249,12 @@ public without sharing class SLPAddCustomer {
  
     @AuraEnabled
     public static List<Product2> getProducts(String state) {
-        return Util.getActiveProducts(new List<String>{state}, profile.partnerId);
+        return getProducts(state, 'Residential Loan');
+    }
+
+    @AuraEnabled
+    public static List<Product2> getProducts(String state, String productType) {
+        return Util.getActiveProducts(new List<String>{state}, profile.partnerId, productType);
     }
 }
 

@@ -52,11 +52,6 @@
         <div class="slds-dropdown slds-dropdown--right">
           <ul class="slds-dropdown__list" role="menu">
             <li class="slds-dropdown__item" role="presentation">
-              <a href="javascript:void(0);" role="menuitem" tabindex="-1" onclick="{!c.openSendCustomerEmail}">
-                <span class="slds-truncate proximaNovaDataMountaintopSmall">Email Application</span>
-              </a>
-            </li>
-            <li class="slds-dropdown__item" role="presentation">
               <a href="/slportal/s/loansheet" role="menuitem" tabindex="-1">
                 <span class="slds-truncate proximaNovaDataMountaintopSmall">Loan Summary Sheet</span>
               </a>

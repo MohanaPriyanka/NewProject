@@ -1,171 +1,670 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+  <labels>
+    <fullName>Type</fullName>
+    <categories>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential
+      Solar
+    </categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Type</shortDescription>
+    <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar
+    </value>
+  </labels>
+  <labels>
+    <fullName>SLP_Disabled</fullName>
+    <categories>Solar Loan Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Disabled Origination</shortDescription>
+    <value>This feature has been disabled. Please contact partnersupport@bluewavesolar.com for assistance.</value>
+  </labels>
+  <labels>
+    <fullName>NAV_Complete</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Complete</shortDescription>
+    <value>Complete</value>
+  </labels>
+  <labels>
+    <fullName>NAV_Credit_Check</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Credit Check</shortDescription>
+    <value>Credit Check</value>
+  </labels>
+  <labels>
+    <fullName>NAV_Getting_Started</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Getting Started</shortDescription>
+    <value>Getting Started</value>
+  </labels>
+  <labels>
+    <fullName>NAV_Income_Documentation</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Income Documentation</shortDescription>
+    <value>Income Documentation</value>
+  </labels>
+  <labels>
+    <fullName>NAV_Personal_Information</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Personal Information</shortDescription>
+    <value>Personal Information</value>
+  </labels>
+  <labels>
+    <fullName>NAV_SREC_and_Disbursals</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SREC and Disbursals</shortDescription>
+    <value>Finishing Up</value>
+  </labels>
+  <labels>
+    <fullName>START_Email_Confirmation_Instruction</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Email Confirmation Instruction</shortDescription>
+    <value>Enter the email associated with this loan application to confirm your identity before starting or continuing your application.
+    </value>
+  </labels>
+  <labels>
+    <fullName>START_Lets_Get_Started</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Lets Get Started</shortDescription>
+    <value>Let's get started! Your installer has provided us with the information below, and they can help you if you'd like to make any changes.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_PreQual</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>PreQual Disclosure</shortDescription>
+    <value>Pre-Qualification does not guarantee that a loan will be granted. All loans issued will require full documentation of income in order to be fully approved. If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_PreQual_MSLP</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>PreQual Disclosure for MSLP</shortDescription>
+    <value>Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved. If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_MA_SREC</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MA SREC Disclosure</shortDescription>
+    <value>For Massachusetts customers, BlueWave requires that solar loan customers to sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_MSLP_SREC</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MA SREC Disclosure</shortDescription>
+    <value>Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_Income_Doc</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Income Disclosure</shortDescription>
+    <value>The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application, you will need to provide proof of your stated income, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.</value>
+  </labels>
+  <labels>
+    <fullName>START_Disclosure_Income_Doc_MSLP</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Income Disclosure MSLP</shortDescription>
+    <value>The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver's license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.</value>
+  </labels>
+  <labels>
+    <fullName>PI_Individual_or_Joint</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Individual or Joint</shortDescription>
+    <value>Will this be an individual or joint application?
+    </value>
+  </labels>
+  <labels>
+    <fullName>PI_Individual_or_Joint_Common_Reasons</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Individual or Joint Reasons</shortDescription>
+    <value>Common reasons to pick a joint application: one applicant may have a low FICO or a high debt-to-income ratio, or both applicants are owners of the property where solar will be installed.</value>
+  </labels>
+  <labels>
+    <fullName>PI_Individual_or_Joint_Not_Sure</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Individual or Joint Not Sure</shortDescription>
+    <value>Not sure? You can continue as an Individual application and add a co-signer later if needed. We can check to see if you are pre-qualified for our loan in minutes, but will need 1-2 business days to check a joint application.</value>
+  </labels>
+  <labels>
+    <fullName>PI_Primary_PI_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Next</shortDescription>
+    <value>Next, we need to gather some personal information:</value>
+  </labels>
+  <labels>
+    <fullName>PI_Address_PI_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Next</shortDescription>
+    <value>We also need a bit of information about your current address:</value>
+  </labels>
+  <labels>
+    <fullName>PI_Primary_SSN</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SSN Reason</shortDescription>
+    <value>We need your Social Security Number and Date of Birth to run a credit check, and your annual income
+      and monthly debt to see if you will qualify for our loan.
+    </value>
+  </labels>
+  <labels>
+    <fullName>PI_Credit_History</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Credit History</shortDescription>
+    <value>I give BlueWave and it's affiliates permission to access my credit history</value>
+  </labels>
+  <labels>
+    <fullName>PI_Privacy_Policy_Acknowledged_BW_Avidia</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Privacy Policy for BlueWave and Avidia</shortDescription>
+    <value>I acknowledge BlueWave's privacy policy and Avidia's privacy policy and accept their terms</value>
+  </labels>
+  <labels>
+    <fullName>PI_Privacy_Policy_Acknowledged_BW</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Privacy Policy for BlueWave Only</shortDescription>
+    <value>I acknowledge BlueWave's privacy policy and accept its terms</value>
+  </labels>
+  <labels>
+    <fullName>PI_Bank_Affiliation</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Bank Affiliation</shortDescription>
+    <value>(Not common) I am currently employed by or have a service/business affiliation with a bank</value>
+  </labels>
+  <labels>
+    <fullName>PI_Bank_Executive</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Bank Executive</shortDescription>
+    <value>I am an executive officer or director at a financial institution</value>
+  </labels>
+  <labels>
+    <fullName>PI_Bank_Service_Provider</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Bank Service Provider</shortDescription>
+    <value>I am a service provider of Avidia Bank and provide this service:</value>
+  </labels>
+  <labels>
+    <fullName>Co_Applicant_PI_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Next</shortDescription>
+    <value>Next, we need to gather your co-applicant's personal information:</value>
+  </labels>
+  <labels>
+    <fullName>Co_Signer_PI_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Next</shortDescription>
+    <value>Next, we need to gather your co-signer's personal information:</value>
+  </labels>
+  <labels>
+    <fullName>Co_Applicant_SSN</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SSN Reason</shortDescription>
+    <value>Lastly, we need {0}'s Social Security Number, date of birth, annual income, and unreported mortgage debt.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CC_Confirmation</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Credit Check Confirmation</shortDescription>
+    <value>You're ready to run a credit check on:</value>
+  </labels>
+  <labels>
+    <fullName>CC_Security_Freeze</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Security Freeze</shortDescription>
+    <value>If you have a credit freeze, you will need to perform a temporary lift before submitting an application. For
+      more information, please click here:
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Employment_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Employment Question</shortDescription>
+    <value>Are you employed? We'll ask about self-employment later.</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Employment_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Employment Question</shortDescription>
+    <value>Are you or {0} employed? We'll ask about self-employment later.</value>
+  </labels>
+  <labels>
+    <fullName>ID_Paystub_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Paystub Request</shortDescription>
+    <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
+      last 30 days).
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Paystub_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Paystub Details</shortDescription>
+    <value>Please upload your most recent paystubs (dated within the last 30 days)</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Paystub_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Paystub Request</shortDescription>
+    <value>We'll need supporting income documentation for {0} as well. Please upload their most recent paystubs
+      (dated within the last 30 days)
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Paystub_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Paystub Details</shortDescription>
+    <value>Please upload your co-signer or co-applicant's most recent paystubs (dated within the last 30 days)</value>
+  </labels>
+  <labels>
+    <fullName>ID_Self_Employment_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Self Employment Question</shortDescription>
+    <value>Are you self-employed?</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Self_Employment_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Self Employment Question</shortDescription>
+    <value>Are you or {0} self-employed?</value>
+  </labels>
+  <labels>
+    <fullName>ID_Tax_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Tax Request</shortDescription>
+    <value>We'll need personal and business tax returns (federal only) supporting your income. Please upload returns with all applicable schedules:</value>
+  </labels>
+  <labels>
+    <fullName>ID_Tax_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Tax Prior Year Details</shortDescription>
+    <value>From last year</value>
+  </labels>
+  <labels>
+    <fullName>ID_Tax_Two_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Tax Prior Year Details</shortDescription>
+    <value>From two years ago</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Tax_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Tax Request</shortDescription>
+    <value>We'll need {0}'s personal and business tax returns (federal only) supporting their income. Please upload returns with all applicable
+      schedules:
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Tax_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Tax Prior Year Details</shortDescription>
+    <value>From last year</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Tax_Two_Details</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Tax Prior Year Details</shortDescription>
+    <value>From two years ago</value>
+  </labels>
+  <labels>
+    <fullName>ID_Retirement_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Retirement Question</shortDescription>
+    <value>Do you receive retirement income?</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Retirement_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Retirement Question</shortDescription>
+    <value>Do you or {0} receive retirement income?</value>
+  </labels>
+  <labels>
+    <fullName>ID_Retirement_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Retirement Request</shortDescription>
+    <value>We'll need supporting income documentation for you. If applicable, please upload:</value>
+  </labels>
+  <labels>
+    <fullName>ID_Pension</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Pension Details</shortDescription>
+    <value>Pension Award</value>
+  </labels>
+  <labels>
+    <fullName>ID_SSN</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SSN Details</shortDescription>
+    <value>Social Security Letter</value>
+  </labels>
+  <labels>
+    <fullName>ID_Bank_Statement</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Bank Details</shortDescription>
+    <value>Bank Statement showing direct deposits of Social Security</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Retirement_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Retirement Request</shortDescription>
+    <value>We'll need supporting income documentation for {0} as well. If applicable, please upload their:</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Pension</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Pension Details</shortDescription>
+    <value>Pension Award</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_SSN</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint SSN Details</shortDescription>
+    <value>Social Security Letter</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Bank_Statement</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Bank Details</shortDescription>
+    <value>Bank Statement showing direct deposits of Social Security</value>
+  </labels>
+  <labels>
+    <fullName>ID_Veteran_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Veteran Question</shortDescription>
+    <value>Are you a veteran or receive disability</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Veteran_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Veteran Question</shortDescription>
+    <value>Are you or {0} a veteran or receive disability</value>
+  </labels>
+  <labels>
+    <fullName>ID_Veteran_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Veteran Request</shortDescription>
+    <value>We'll need supporting documentation of veteran status or disability for you:</value>
+  </labels>
+  <labels>
+    <fullName>ID_Joint_Veteran_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Joint Veteran Request</shortDescription>
+    <value>We'll need supporting documentation of veteran status or disability for {0}:</value>
+  </labels>
+  <labels>
+    <fullName>ID_Alimony_Question</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Alimony Question</shortDescription>
+    <value>Will you rely on Alimony, Child Support, or Separate Maintenance Payments to pay your loan?
+      You don't have to disclose these unless you will rely on them.
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Alimony_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Alimony Request</shortDescription>
+    <value>Since you will be using Alimony, Child Support, or Separate Maintenance Payments to pay your obligation,
+      please let us know the details here. We may ask for additional information later
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Other_Income</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Other Income Request</shortDescription>
+    <value>Finally, if there is anything else that you'd like to share with us supporting your income sources such as
+      overtime, bonuses, W2, investments, a second job, or rental income, please upload them here.
+    </value>
+  </labels>
+  <labels>
+    <fullName>ID_Other_Income_Sub_Text</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Other Income Request</shortDescription>
+    <value>They are typically documented in a tax return and/or W2.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_MCEC_Project_ID_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MCEC Project ID Request</shortDescription>
+    <value>Please provide your MassCEC Project ID Number from your Technical Confirmation, and upload your Technical Confirmation document.
+    </value>
+  </labels>
     <labels>
-        <fullName>NAV_Complete</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Complete</shortDescription>
-        <value>Complete</value>
-    </labels>
-    <labels>
-        <fullName>NAV_Credit_Check</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Credit Check</shortDescription>
-        <value>Credit Check</value>
-    </labels>
-    <labels>
-        <fullName>NAV_Getting_Started</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Getting Started</shortDescription>
-        <value>Getting Started</value>
-    </labels>
-    <labels>
-        <fullName>NAV_Income_Documentation</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Income Documentation</shortDescription>
-        <value>Income Documentation</value>
-    </labels>
-    <labels>
-        <fullName>NAV_Personal_Information</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Personal Information</shortDescription>
-        <value>Personal Information</value>
-    </labels>
-    <labels>
-        <fullName>NAV_SREC_and_Disbursals</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>SREC and Disbursals</shortDescription>
-        <value>SREC and Disbursals</value>
-    </labels>
-    <labels>
-        <fullName>START_Email_Confirmation_Instruction</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Email Confirmation Instruction</shortDescription>
-        <value>Enter the email associated with this loan application to confirm your identity and continue the application</value>
-    </labels>
-    <labels>
-        <fullName>START_Lets_Get_Started</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Lets Get Started</shortDescription>
-        <value>Let&apos;s get started! Your installer has set your financing with:</value>
-    </labels>
-    <labels>
-        <fullName>PI_Individual_or_Joint</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Individual or Joint</shortDescription>
-        <value>Will this be an individual or join application? Common reasons to pick a joint application: low FICO, Debt to Income, shared ownership. Not sure? you can continue as an Invididual application and add a co-signer later if needed. We can check to see if you are pre-qualified for our loan in minutes, but will need 1-2 business days to check a joint application.</value>
-    </labels>
-    <labels>
-        <fullName>PI_Primary_PI_Next</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Next</shortDescription>
-        <value>Next, we need to gather some personal information:</value>
-    </labels>
-    <labels>
-        <fullName>PI_Primary_SSN</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>SSN Reason</shortDescription>
-        <value>Lastly, we need your Social Security Number and Date of Birth to run a credit check, and your annual income and debt to see if you will qualify for our loan.</value>
-    </labels>
-    <labels>
-        <fullName>Co_Applicant_PI_Next</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Next</shortDescription>
-        <value>Next, we need to gather your co-applicant's personal information:</value>
-    </labels>
-    <labels>
-        <fullName>Co_Signer_PI_Next</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Next</shortDescription>
-        <value>Next, we need to gather your co-signer's personal information:</value>
-    </labels>
-    <labels>
-        <fullName>Co_Applicant_SSN</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>SSN Reason</shortDescription>
-        <value>Lastly, we need {0}'s Social Security Number, date of birth, annual income, and unreported mortgage debt.</value>
-    </labels>
-    <labels>
-        <fullName>CC_Confirmation</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Credit Check Confirmation</shortDescription>
-        <value>You're ready to run a credit check on:</value>
-    </labels>
-    <labels>
-        <fullName>CC_Security_Freeze</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Security Freeze</shortDescription>
-        <value>If you have a credit freeze, you will need to perform a temporary lift before submitting an application. For more information, please click here:</value>
-    </labels>
-    <labels>
-        <fullName>ID_Employment_Question</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Employment Question</shortDescription>
-        <value>Are you employed? We'll ask about self-employment later.</value>
-    </labels>
-    <labels>
-        <fullName>ID_Paystub_Request</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Paystub Request</shortDescription>
-        <value>We'll need supporting income documentation for both applicants (if joint)</value>
-    </labels>
-    <labels>
-        <fullName>ID_Paystub_Details</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Paystub Details</shortDescription>
-        <value>Please upload your most recent paystubs (dated within the last 30 days)</value>
-    </labels>
-    <labels>
-        <fullName>Type</fullName>
-        <categories>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Type</shortDescription>
-        <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</value>
-    </labels>
-    <labels>
-        <fullName>SLP_Disabled</fullName>
-        <categories>Solar Loan Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Disabled Origination</shortDescription>
-        <value>This feature has been disabled. Please contact partnersupport@bluewavesolar.com for assistance.</value>
-    </labels>
+    <fullName>CD_MCEC_Project_ID_Request_Body2</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>MCEC Project ID Request</shortDescription>
+    <value>If you do not have your Technical Confirmation, please contact your installer on how to work with MassCEC for this confirmation of income eligibility.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_SREC</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SREC Confirmation</shortDescription>
+    <value>You have chosen the following SREC option with your installer. You may select a different option below. For more information, please visit our website by clicking</value>
+  </labels>
+  <labels>
+    <fullName>CD_SREC_Consent</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>SREC Consent</shortDescription>
+    <value>I consent to electronic disbursal of SREC funds. This means that all of my credits will be directly deposited
+      into my bank account.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_Disbursal_Request</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Electronic Disbursal</shortDescription>
+    <value>Please let us know how funds should be disbursed. If not done electronically (the default), your installer
+      will need to schedule another visit and have you sign the disbursal check.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_Disbursal_Consent</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Electronic Disbursal</shortDescription>
+    <value>I consent to have funds distributed directly to my solar installer. All customers can choose to receive paper
+      checks by selecting No.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished</shortDescription>
+    <value>Thank you for your application for a solar loan with BlueWave Solar's bank partner! We hope to have you join our community of customers soon.</value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished_Next</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished next</shortDescription>
+    <value>You'll get an email confirming our receipt, and for approved applications, you should expect to receive an electronic contract (via DocuSign) within 1-2 business days.
+    </value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished_Questions</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished Questions</shortDescription>
+    <value>If you have any questions in the meantime, please contact us at partnersupport@bluewavesolar.com</value>
+  </labels>
+  <labels>
+    <fullName>CD_Finished_Logout</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Finished Logout</shortDescription>
+    <value> You can close this window or logout now.</value>
+  </labels>
+  <labels>
+    <fullName>Low_Fico_Disclosure</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Disclousre used for low fico products</shortDescription>
+    <value>The terms of loans we offer you will be based on your creditworthiness and other factors. 
+      We will send you more information via email.
+    </value>
+  </labels>
+  <labels>
+    <fullName>Length_With_Employer</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
+    <value>Have you been with your current employer for more than one year?
+    </value>
+  </labels>
+  <labels>
+    <fullName>NY_Credit_Disclosure_Header</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Header for NY Credit Disclosure</shortDescription>
+    <value>NOTICE TO NEW YORK CUSTOMER</value>
+  </labels>
+  <labels>
+    <fullName>NY_Credit_Disclosure</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>NY Credit Disclosure</shortDescription>
+    <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is granted, subsequent consumer reports may be obtained in connection with any update, renewal, or extension of the credit.”</value>
+  </labels>
 </CustomLabels>

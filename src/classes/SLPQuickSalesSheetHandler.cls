@@ -25,7 +25,7 @@ public without sharing class SLPQuickSalesSheetHandler {
 
     @AuraEnabled
     public static List<Product2> getActiveProducts() {
-        return Util.getActiveProducts(partnerinfo.partnerMarkets.split(';',15), partnerinfo.partnerId);
+        return Util.getActiveProductsIncludingHidden(partnerinfo.partnerMarkets.split(';',15), partnerinfo.partnerId, 'Residential Loan');
     }
 
     @AuraEnabled

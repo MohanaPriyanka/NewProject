@@ -1,5 +1,8 @@
 ({
     checkPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.FirstName,
@@ -16,6 +19,19 @@
                                                        'fieldId': "emailElement",
                                                        'fieldType': "email",
                                                        'errorMessage': "Enter your email"});
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
+        }
+        return errorMessage;
+      },
+
+    checkAddressPIErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
+        var errorMessage = "";
+        var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__Home_Address__c,
                                                        'fieldId': "homeAddressElement",
                                                        'errorMessage': "Enter your street address"});
@@ -27,14 +43,53 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.lived_residence_six_months__c,
-                                                       'fieldId': "ownHouseElement",
-                                                       'fieldType': "uncheckedCheckbox",
-                                                       'errorMessage': "You need to own the house where solar panels will be installed"});
+        var residenceOwner = component.get('v.lead.Residence_Owner__c');
+        var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
+        if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
+          errorMessage += 'Please select whether or not you own the property located at the installation address detailed above.';
+        }
+        if (!lead.Express_Consent__c) {
+          errorMessage += 'You must express consent in order to continue.';
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+        }
+        return errorMessage;
+    },
+
+    checkLicenseErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
+        var errorMessage = "";
+        var lead = component.get("v.lead");
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.License_Number_Encrypted__c,
+            'fieldId': "licenseNumberElement",
+            'errorMessage': "Enter provide your license number"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.State_of_Issuance__c,
+            'fieldId': "stateElement",
+            'errorMessage': "Enter provide the state issuing your driver's license"
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Issuance__c,
+            'fieldId': "dateOfIssuanceElement",
+            'errorMessage': "Enter or check the the license issuance date (format: 01/01/2000)",
+            'fieldType': 'date'
+        });
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Date_of_Expiration__c,
+            'fieldId': "dateOfExpirationElement",
+            'errorMessage': "Enter or check the license expiration date (format: 01/01/2000)",
+            'fieldType': 'date'
+        });
         return errorMessage;
     },
 
     checkSSNErrors : function(component) {
+        if (component.get('v.piLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__SSN__c,
@@ -52,7 +107,9 @@
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
                                                        'fieldId': "mortgageElement",
                                                        'fieldType': "currency",
-                                                       'errorMessage': "Enter your approximate monthly mortgage, and 0 if you don't have a mortgage"});
+                                                       'errorMessage': "Enter your approximate monthly mortgage. If you don't have a mortgage, " +
+                                                                       "enter your estimated monthly taxes and insurance. If you don't pay mortgage, " +
+                                                                       "insurance or tax on the installation property, enter 0."});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Credit_Check_Acknowledged__c,
                                                        'fieldId': "creditCheckElement",
                                                        'fieldType': "uncheckedCheckbox",
@@ -65,6 +122,9 @@
     },
 
     checkCoAppPIErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';
@@ -102,6 +162,9 @@
     },
 
     checkCoAppSSNErrors : function(component) {
+        if (component.get('v.coAppLocked')) {
+            return "";
+        }
         var errorMessage = "";
         var lead = component.get("v.lead");
         var firstname = lead.CoApplicant_Contact__r.FirstName||'Co-Applicant';
@@ -117,6 +180,19 @@
                                                        'fieldId': "coAppIncomeElement",
                                                        'fieldType': "currency",
                                                        'errorMessage': "Enter " + firstname + "'s income, and 0 if they aren't reporting any income"});
+        errorMessage += this.getFieldError(component, {
+            'fieldValue': lead.Co_App_Monthly_Mortgage__c,
+            'fieldId': "coAppMortgageElement",
+            'fieldType': "currency",
+            'errorMessage': "Enter " + lead.Co_Applicant_First_Name__c + "\'s approximate monthly mortgage, taxes, and insurance not included in " + lead.FirstName + "\'s mortgage, and 0 if not applicable"});
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
+            'fieldId': "coAppCreditCheckAcknowledgment",
+            'fieldType': "uncheckedCheckbox",
+            'errorMessage': "Please give permission to access your credit history"});
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
+            'fieldId': "coAppPrivacyPolicyElement",
+            'fieldType': "uncheckedCheckbox",
+            'errorMessage': "Please acknowledge privacy policies"});
         return errorMessage;
     },
 
@@ -124,6 +200,8 @@
         // Make a copy of the lead to update, since we can't update child objects
         // like CoApplicant_Contact
         var lead = component.get("v.lead");
+        helper.finishLead(lead);
+        lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application';
         if (lead.LASERCA__SSN__c) {
             lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         }
@@ -131,7 +209,7 @@
             lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c =
                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c.replace(/-/g,"");
         }
-            
+
         var leadClone = helper.cleanLead(component);
         var leadPromise, contactPromise;
 
@@ -186,30 +264,25 @@
             }
         } else {
             // Individual application, blank out CoApp info if it was set
-            leadClone.CoApplicant_Contact__c = null;
-            leadClone.Co_Applicant_First_Name__c = null;
-            leadClone.Co_Applicant_Last_Name__c = null;
-            leadClone.Co_Applicant_Phone__c = null;
-            leadClone.Co_Applicant_Email__c = null;
-            leadClone.Co_Applicant_Date_of_Birth__c = null;
-            leadClone.Co_Applicant_Income__c = null;
-            leadClone.Co_Applicant_Address__c = null;
-            leadClone.Co_Applicant_Income__c = null;
-            delete lead['CoApplicant_Contact__c'];
-            delete lead['CoApplicant_Contact__r'];
-            delete lead['CoApplicant_Contact__c'];
-            delete lead['Co_Applicant_First_Name__c'];
-            delete lead['Co_Applicant_Last_Name__c'];
-            delete lead['Co_Applicant_Phone__c'];
-            delete lead['Co_Applicant_Email__c'];
-            delete lead['Co_Applicant_Date_of_Birth__c'];
-            delete lead['Co_Applicant_Income__c'];
-            delete lead['Co_Applicant_Address__c'];
-            delete lead['Co_Applicant_Income__c'];
+            helper.removeCoAppInfo(lead, leadClone);
             leadPromise = helper.saveSObject(component, leadClone.Id, 'Lead', null, null, leadClone);
             leadPromise.then($A.getCallback(function resolve(value) {
                 helper.finishPage(component, event, helper, options);
             }));
+        }
+    },
+
+    // Need to set the Status in order for the PCRApprovalHandler to pull credit (skips it if it's "Unfinished")
+    // Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
+    finishLead : function(lead) {
+        if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
+            if ((lead.Application_Type__c === 'Individual') ||
+                (lead.Application_Type__c === 'Joint' &&
+                 lead.CoApplicant_Contact__r &&
+                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
+                lead.Status = 'Ready for Credit Check';
+                lead.Pre_Approval_Form__c = true;
+            }
         }
     },
 
@@ -225,7 +298,7 @@
             (contact.LASERCA__Home_City__c||'') + ', ' +
             (contact.LASERCA__Home_State__c||'') + ' ' +
             (contact.LASERCA__Home_Zip__c||'');
-        lead.LASERCA__Social_Security_Number__c =
+        lead.LASERCA__Co_Applicant_Social_Security_Number__c =
             contact.LASERCA__Social_Security_Number__c;
     },
 
@@ -237,4 +310,16 @@
         }
     },
 
+    toggleMSLP : function(component, event, helper, mslp) {
+        var lead = component.get('v.lead');
+        if (mslp) {
+            lead.Product_Program__c = 'MSLP';
+            lead.DOER_Solar_Loan__c = true;
+        } else {
+            lead.Product_Program__c = 'BlueWave Solar Loan';
+            lead.DOER_Solar_Loan__c = false;
+        }
+        helper.saveSObject(component, lead.Id, 'Lead', null, null, lead);
+        component.set('v.lead', lead);
+    },
 })

@@ -5,25 +5,31 @@
   <aura:attribute name="creditStatusPoller" type="Integer"/>
   <aura:attribute name="creditStatusTimeout" type="Integer"/>
   <aura:attribute name="creditStatusTimeoutID" type="Integer"/>
+  <aura:attribute name="creditStatusErrorText" type="String"/>
   <aura:attribute name="primaryChecked" type="Boolean" default="false"/>
   <aura:attribute name="coAppChecked" type="Boolean" default="false"/>
   <aura:attribute name="allProducts" type="Object"/>
   <aura:set attribute="STAGENAME" value="NAV_Credit_Check"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <lightning:overlayLibrary aura:id="overlayLib"/>
 
   <aura:if isTrue="{!v.page == 'ConfirmBeforePull'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
-            {!$Label.c.CC_Confirmation}
+            <aura:if isTrue="{!or(not(v.primaryChecked), and(v.lead.Application_Type__c == 'Joint', not(v.coAppChecked)))}">
+              <div class="slds-text-heading--medium">
+                <b>{!$Label.c.CC_Confirmation}</b>
+              </div>
+            </aura:if>
           </div>
           <aura:if isTrue="{!v.primaryChecked}">
             <div>
               <fieldset class="slds-box_border slds-form--compound">
                 <div class="slds-p-top_small slds-p-left_small slds-form-element__group">
                   <div class="slds-form-element__row">
-                    <div class="slds-size_1-of-1">
+                    <div class="slds-size_1-of-1 slds-text-body--regular">
                       Credit has been pulled for {!v.lead.FirstName}
                     </div>
                   </div>
@@ -36,17 +42,17 @@
                   <div class="slds-p-top_small slds-p-left_small slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div class="slds-size_1-of-2">
-                        <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Name:</b></label>
+                        <label class="slds-form-element__label slds-form-element__label"><b>Name:</b></label>
                         {!v.lead.FirstName}&nbsp;{!v.lead.LastName}
                       </div>
                       <div class="slds-size_1-of-2">
-                        <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Email:</b></label>
+                        <label class="slds-form-element__label slds-form-element__label"><b>Email:</b></label>
                         {!v.lead.Email}
                       </div>
                     </div>
                     <div class="slds-form-element__row">
                       <div class="slds-size_1-of-1">
-                        <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Address:</b></label>
+                        <label class="slds-form-element__label slds-form-element__label"><b>Address:</b></label>
                         {!v.lead.LASERCA__Home_Address__c},&nbsp;
                         {!v.lead.LASERCA__Home_City__c},&nbsp;
                         {!v.lead.LASERCA__Home_State__c}&nbsp;
@@ -55,11 +61,11 @@
                     </div>
                     <div class="slds-form-element__row">
                       <div class="slds-size_1-of-2">
-                        <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Date of Birth:</b></label>
+                        <label class="slds-form-element__label slds-form-element__label"><b>Date of Birth:</b></label>
                         <ui:outputDate class="slds-output" value="{!v.lead.LASERCA__Birthdate__c}"/>
                       </div>
                       <div class="slds-size_1-of-2">
-                        <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Social Security Number:</b></label>
+                        <label class="slds-form-element__label slds-form-element__label"><b>Social Security Number:</b></label>
                         <ui:outputDate class="slds-output" value="{!v.primarySSN}"/>
                       </div>
                     </div>
@@ -74,7 +80,7 @@
                 <fieldset class="slds-box_border slds-form--compound">
                   <div class="slds-p-top_small slds-p-left_small slds-form-element__group">
                     <div class="slds-form-element__row">
-                      <div class="slds-size_1-of-1">
+                      <div class="slds-size_1-of-1 slds-text-body--regular">
                         Credit has been pulled for {!v.lead.CoApplicant_Contact__r.FirstName}
                       </div>
                     </div>
@@ -87,17 +93,17 @@
                     <div class="slds-p-top_small slds-p-left_small slds-form-element__group">
                       <div class="slds-form-element__row">
                         <div class="slds-size_1-of-2">
-                          <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Name:</b></label>
+                          <label class="slds-form-element__label slds-form-element__label"><b>Name:</b></label>
                           {!v.lead.CoApplicant_Contact__r.FirstName}&nbsp;{!v.lead.CoApplicant_Contact__r.LastName}
                         </div>
                         <div class="slds-size_1-of-2">
-                          <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Email:</b></label>
+                          <label class="slds-form-element__label slds-form-element__label"><b>Email:</b></label>
                           {!v.lead.CoApplicant_Contact__r.Email}
                         </div>
                       </div>
                       <div class="slds-form-element__row">
                         <div class="slds-size_1-of-1">
-                          <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Address:</b></label>
+                          <label class="slds-form-element__label slds-form-element__label"><b>Address:</b></label>
                           {!v.lead.CoApplicant_Contact__r.LASERCA__Home_Address__c},&nbsp;
                           {!v.lead.CoApplicant_Contact__r.LASERCA__Home_City__c},&nbsp;
                           {!v.lead.CoApplicant_Contact__r.LASERCA__Home_State__c}&nbsp;
@@ -106,11 +112,11 @@
                       </div>
                       <div class="slds-form-element__row">
                         <div class="slds-size_1-of-2">
-                          <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Date of Birth:</b></label>
+                          <label class="slds-form-element__label slds-form-element__label"><b>Date of Birth:</b></label>
                           <ui:outputDate class="slds-output" value="{!v.lead.CoApplicant_Contact__r.LASERCA__Co_Applicant_DOB__c}"/>
                         </div>
                         <div class="slds-size_1-of-2">
-                          <label class="slds-form-element__label proximaNovaDataMountaintop95"><b>Social Security Number:</b></label>
+                          <label class="slds-form-element__label slds-form-element__label"><b>Social Security Number:</b></label>
                           <ui:outputDate class="slds-output" value="{!v.coAppSSN}"/>
                         </div>
                       </div>
@@ -120,69 +126,65 @@
               </aura:set>
             </aura:if>
           </aura:if>
-          <div class="slds-form-element__control">
-            {!$Label.c.CC_Security_Freeze}
-          </div>
-          <a href="https://www.advcredit.com/linked_docs/temporary_lift.pdf" target="_blank">Credit Lift Instructions</a>
         </div>
         <aura:if isTrue="{!or(not(v.primaryChecked), and(v.lead.Application_Type__c == 'Joint', not(v.coAppChecked)))}">
-          <div class="slds-form-element__row slds-p-top--small">
-            <lightning:button aura:id="confirmSubmit" label="Pull Credit" onclick="{!c.checkCredit}"/>
+          <div aura:id="confirmSubmit" class="slds-form-element__row slds-p-top--small">
+            <div class="slds-form-element__control slds-p-bottom_small slds-text-body--regular">
+              {!$Label.c.CC_Security_Freeze}
+              <u><a onclick="{!c.handleShowModal}" class="slds-type-focus"> Credit Lift Instructions</a></u>
+            </div>
+            <lightning:button label="Check Credit" onclick="{!c.checkCredit}"/>
           </div>
-          <aura:set attribute="else">
-            <aura:if isTrue="{!v.lead.Status == 'Pre-Qualified'}">
-              <lightning:button aura:id="continueApplicationNoCheck"
-                                class="box"
-                                label="Select Products and continue"
-                                onclick="{!c.selectProduct}"/>
-              <aura:set attribute="else">
-                <div>
-                  <ui:outputText value="Credit status requires additional BlueWave review. Please give us 1-2 business days to review."/>
-                </div>
-              </aura:set>
-            </aura:if>
-          </aura:set>
         </aura:if>
-
-        <div class="slds-align--absolute-center">
+        <aura:if isTrue="{!v.lead.Status == 'Pre-Qualified'}">
+          <div class="slds-form-element__row slds-p-top--small">
+            <lightning:button aura:id="continueApplicationNoCheck"
+                              class="box"
+                              label="Credit Approved, Continue Application"
+                              onclick="{!c.selectProduct}"/>
+          </div>
+        </aura:if>
+        <div class="slds-align--absolute-center slds-p-top--small">
           <ui:spinner aura:id="creditSpinner" isVisible="false"/>
         </div>
         <div aura:id="creditStatus"
              class="slds-align--absolute-center paddingTop1x5 noDisplay">
           <ui:outputText value="{!v.creditStatusText}"/>
         </div>
-
-        <div aura:id="creditResultPass"
-             class="noDisplay">
-          <lightning:button aura:id="continueApplicationButton"
-                            class="box"
-                            iconName="utility:like"
-                            iconPosition="left"
-                            label="Credit Approved, Continue Application"
-                            onclick="{!c.selectProduct}"/>
-        </div>
-        <div aura:id="creditResultPendingReview"
-             class="noDisplay">
-          <div>
-            <ui:outputText value="Credit status requires additional BlueWave review. Please give us 1-2 business days to review."/>
+        <aura:if isTrue="{!v.lead.Status == 'Pending Credit Review'}">
+          <div class="slds-form-element__row slds-p-top--small slds-text-body--regular">
+            <ui:outputText value="Thanks for submitting your application. Please allow 1-2 business days for our
+            underwriting team to review, but customers with credit freezes may encounter delays. If you have questions,
+            please email Partner Support (partnersupport@bluewaveoslar.com) for an update."/>
           </div>
-        </div>
-        <div aura:id="creditResultUnqualified" class="noDisplay">
+          <div class="slds-form-element__row slds-p-top--small ">
+            <ui:outputText class ="slds-text-body--regular" value="You can close this window or logout now."/>
+            <form action="/apply/s/loan-application" class="slds-m-top--small">
+              <input type="hidden" name="leadId" value="{!v.lead.Id}"/>
+              <input type="submit" value="Logout"/>
+            </form>
+          </div>
+        </aura:if>
+        <aura:if isTrue="{!and(v.lead.Status == 'Unqualified', v.lead.Application_Type__c == 'Individual')}">
           <ui:outputText class="marginAround"
-                         value="This application cannot be pre-qualified. You can wait 1-2 business days for a full credit review, or add a co-signer now."/>
+                         value="This application cannot be pre-qualified. You can wait 1-2 business days for a full
+                         credit review, or add a co-signer now."/>
           <div class="center">
             <ui:button aura:id="addCoApplicant"
                        class="box proximaNovaBlue marginAround"
                        label="Add Co-Signer"
                        press="{!c.addCoSigner}"/>
           </div>
-        </div>
+        </aura:if>
+        <aura:if isTrue="{!and(v.lead.Status == 'Unqualified', v.lead.Application_Type__c == 'Joint')}">
+          <aura:if isTrue="{!v.coAppChecked}">
+            <ui:outputText class="marginAround"
+                           value="This application cannot be pre-qualified, please wait 1-2 business days for a full credit review."/>
+          </aura:if>
+        </aura:if>
         <div aura:id="creditResultError"
              class="noDisplay center">
-          <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText}"/>
-        </div>
-        <div aura:id="creditResultJoint" class="noDisplay center">
-          <ui:outputText value="Thanks for submitting your application. You'll receive an email confirming out receipt of your application and we'll get back to you with the result of our review in 1-2 business days."/>
+          <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText + ' You can refresh the page and log back into the application to check status or retry the credit check.'}"/>
         </div>
       </form>
     </div>
@@ -190,6 +192,9 @@
 
   <aura:if isTrue="{!v.page == 'SelectProduct'}">
     <aura:if isTrue="{!not(empty(v.allProducts))}">
+      <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+        <b>{!$Label.c.Low_Fico_Disclosure}</b>
+      </div>
       <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
         <tbody>
           <aura:iteration items="{!v.allProducts}" var="product">
@@ -219,7 +224,8 @@
       <div class="slds-form-element__row slds-p-top--small">
         <lightning:button aura:id="finish"
                           label="Save and Next"
-                          onclick="{!c.finishStage}"/>
+                          onclick="{!c.finishStage}"
+                          disabled="{!v.lead.Product__c == null}"/>
       </div>
     </aura:if>
   </aura:if>

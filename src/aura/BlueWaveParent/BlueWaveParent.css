@@ -37,6 +37,11 @@
     font-size:100%;
     color: #00AFA9;
 }  
+.THIS .proximaNovaStream90 {
+    font-family: proximaNovaFont;   
+    font-size:100%;
+    color: #00AFA9;
+}  
 .THIS .proximaNovaDataStream {
     font-family: proximaNovaFont;
     font-size:100%;
@@ -45,6 +50,11 @@
 .THIS .proximaNovaDataBlue {
     font-family: proximaNovaFont;
     font-size:90%;
+    color: #266092;
+}
+.THIS .proximaNovaBlue {
+    font-family: proximaNovaFont;
+    font-size:100%;
     color: #266092;
 }
 .THIS .proximaNovaStream90 {
@@ -63,7 +73,7 @@
     color: #7C98AB;
 }
 .THIS .proximaNovaDataGreenSmall {
-    font-family: proximaNovaFont;   
+    font-family: proximaNovaFont;
     font-size:100%;
     color: #32CD32;
 }
@@ -73,4 +83,38 @@
 .THIS .noDisplay {
     display: none;
 }
-
+.THIS .box {
+    box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad;
+       background-color:#ECECEC
+}
+.THIS .slds-text-heading--medium {
+    font-family: proximaNovaFont;
+    font-size:100%;
+    color: #00AEAA;
+}
+.THIS .slds-section-title--divider {
+    font-family: proximaNovaFont;
+    font-size:100%;
+    color: #266092;
+}
+.THIS .slds-text-body--small {
+    font-family: proximaNovaFont;
+    color: #7C98AB;
+}
+.THIS .slds-section__title {
+    font-family: proximaNovaFont;
+    color: #266092;
+}
+.THIS .slds-type-focus {
+    font-family: proximaNovaFont;
+    color: #00AEAA;
+}
+.THIS .slds-text-body--regular {
+    font-family: proximaNovaFont;
+    color: #7C98AB;
+}
+.THIS .slds-text-body--large {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #7C98AB;
+}

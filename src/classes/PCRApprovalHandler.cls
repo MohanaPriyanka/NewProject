@@ -98,7 +98,7 @@ public without sharing class PCRApprovalHandler {
              Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
              Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c, PreApproval_Form__c, 
              LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
-             Continue_Loan_Application_Link__c, PCR_Lead_ID__c, Partner_Email__c,
+             PCR_Lead_ID__c, Partner_Email__c,
              Credit_Denial_Email_Sent__c
              FROM LASERCA__Personal_Credit_Report__c
              WHERE Id = :pcrIds];
@@ -258,11 +258,21 @@ public without sharing class PCRApprovalHandler {
                     pcr.Last_Name_from_Lead__c != NULL &&
                     pcr.Email_from_Lead__c != NULL &&
                     pcr.Solar_Loan_Approval_Status__c == APPROVED) {
-                        
+
+                    String host = null;
+                    try {
+                        host = Util.getCommunitySiteURL('Apply');
+                    } catch (ConnectApi.ConnectApiException cae) {
+                        // Can't run getCommunitySiteURL as a Guest user, let it fall through to a null host
+                    }
+                    if (host == null) {
+                        host = URL.getSalesforceBaseUrl().toExternalForm() + '/apply';
+                    }
+                    String continueApplicationUrl = host + '/s/loan-application?leadId=' + pcr.PCR_Lead_ID__c;
+
                     if (pcr.DOER_Application__c) {
                         String htmlbody = doerEmailTemplate.HtmlValue;
-                        htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', 
-                                                    pcr.Continue_Loan_Application_Link__c);
+                        htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
@@ -276,6 +286,7 @@ public without sharing class PCRApprovalHandler {
 
                     } else {
                         String htmlbody = standardEmailTemplate.HtmlValue;
+                        htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
                         htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
                         htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
@@ -592,6 +603,7 @@ public without sharing class PCRApprovalHandler {
 
     @TestVisible
     public class ProductRepo {
+        @TestVisible
         private List<Product2> products;
 
         public ProductRepo(List<Lead> leads) {

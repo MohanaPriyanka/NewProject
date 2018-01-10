@@ -59,13 +59,62 @@
         return helper.getStage(helper.getNextStageIndex(stageName));
     },
 
+    setAppType : function(component, event, helper) {
+        const self = this;
+        return new Promise(function(resolve, reject) {
+            const lead = helper.cleanLead(component);
+            const action = component.get('c.setAppType');
+            action.setParams({'capLead': lead});
+            action.setCallback(this, function (resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    if (lead.Application_Type__c === 'Individual') {
+                        self.removeCoAppInfo(component.get('v.lead'));
+                    }
+                    component.set('v.page', 'PrimaryPI');
+                    resolve();
+                } else {
+                    self.logError('CAPParentHelper', 'setAppType', 'Error saving application type', resp);
+                    reject();
+                }
+            });
+            $A.enqueueAction(action);
+        });
+    },
+
+    removeCoAppInfo : function(lead, leadClone) {
+        if (leadClone) {
+            leadClone.CoApplicant_Contact__c = null;
+            leadClone.Co_Applicant_First_Name__c = null;
+            leadClone.Co_Applicant_Last_Name__c = null;
+            leadClone.Co_Applicant_Phone__c = null;
+            leadClone.Co_Applicant_Email__c = null;
+            leadClone.Co_Applicant_Date_of_Birth__c = null;
+            leadClone.Co_Applicant_Income__c = null;
+            leadClone.Co_Applicant_Address__c = null;
+            leadClone.Co_Applicant_Income__c = null;
+        }
+        if (lead) {
+            delete lead['CoApplicant_Contact__c'];
+            delete lead['CoApplicant_Contact__r'];
+            delete lead['CoApplicant_Contact__c'];
+            delete lead['Co_Applicant_First_Name__c'];
+            delete lead['Co_Applicant_Last_Name__c'];
+            delete lead['Co_Applicant_Phone__c'];
+            delete lead['Co_Applicant_Email__c'];
+            delete lead['Co_Applicant_Date_of_Birth__c'];
+            delete lead['Co_Applicant_Income__c'];
+            delete lead['Co_Applicant_Address__c'];
+            delete lead['Co_Applicant_Income__c'];
+        }
+    },
+
     cleanLead : function(component) {
         const lead = component.get('v.lead');
         const leadClone = JSON.parse(JSON.stringify(lead));
-        if (lead.lived_residence_six_months__c) {
-            leadClone.lived_residence_six_months__c = 'true';
+        if (lead.Residence_Owner__c) {
+            leadClone.Residence_Owner__c = 'true';
         } else {
-            leadClone.lived_residence_six_months__c = 'false';
+            leadClone.Residence_Owner__c = 'false';
         }
         delete leadClone['CoApplicant_Contact__r'];
         delete leadClone['Product__r'];

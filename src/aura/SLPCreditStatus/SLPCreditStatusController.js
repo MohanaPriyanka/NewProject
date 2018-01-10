@@ -74,98 +74,17 @@
         action.setParams({leadId : leadId});
         if(loanTerm > 0 && loanTerm != null) {
             action.setCallback(this,function(resp){ 
-                if(resp.getState() == 'SUCCESS') {
-                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == false) {
-                        component.set("v.selectedCustomer", resp.getReturnValue(0));
-                        var lead = resp.getReturnValue()[0];
-                        var address = lead.LASERCA__Home_Address__c;
-                        var city = lead.LASERCA__Home_City__c;
-                        var state = lead.LASERCA__Home_State__c;
-                        var zip = lead.LASERCA__Home_Zip__c;
-                        var income = lead.Annual_Income_Currency__c;
-                        var requestedLoanAmount = lead.Requested_Loan_Amount__c;
-                        var updateDummy = lead.Update_Dummy;
-                        var firstName = lead.FirstName;
-                        var lastName = lead.LastName;   
-                        var appType = lead.Application_Type__c;       
-
-                        if(updateDummy == true){
-                            updateDummy = false;
-                        }else{
-                            updateDummy = true;
-                        }
-                        var leadId = lead.Id;                         
-                        var urlEvent = $A.get("e.force:navigateToURL");
-                        urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381610' + '?tfa_1311=' + address 
-                            + '&' + 'tfa_154=' + state 
-                            + '&' + 'tfa_526=' + leadId 
-                            + '&' + 'tfa_1180=' + updateDummy
-                            + '&' + 'tfa_390=' + income 
-                            + '&' + 'tfa_1312=' + city 
-                            + '&' + 'tfa_1179=' + productId 
-                            + '&' + 'tfa_1313=' + zip     
-                            + '&' + 'tfa_1287=' + loanTerm     
-                            + '&' + 'tfa_1372=' + firstName     
-                            + '&' + 'tfa_1373=' + lastName
-                            + '&' + 'tfa_1370=' + appType
-                            + '&' + 'tfa_1181=true' 
-                            + '&' + 'tfa_1375=' + 'SLPortal - Phase 2 Application 381610'      
-                        });
-                        urlEvent.fire();  
-                    }
-                    if (resp.getReturnValue()[0].DOER_Solar_Loan__c == true) {
-                        //component.set("v.selectedCustomer", resp.getReturnValue(0));
-                        var lead = resp.getReturnValue()[0];
-                        var address = lead.LASERCA__Home_Address__c;
-                        var city = lead.LASERCA__Home_City__c;
-                        var state = lead.LASERCA__Home_State__c;
-                        var formId = component.get("v.formId");   
-                        var zip = lead.LASERCA__Home_Zip__c;
-                        var income = lead.Annual_Income_Currency__c;
-                        var requestedLoanAmount = lead.Requested_Loan_Amount__c;
-                        var updateDummy = lead.Update_Dummy;
-                        var firstName = lead.FirstName;
-                        var lastName = lead.LastName; 
-                        var appType = lead.Application_Type__c; 
-                        if (appType === 'Joint' || appType === 'Jointly')  {
-                            appType = 'Jointly with another applicant';
-                        } else {
-                            appType = 'Individually';
-                        }              
-                        if(updateDummy == true){
-                            updateDummy = false;
-                        }else{
-                            updateDummy = true;
-                        }
-                        var leadId = lead.Id;                         
-                        var urlEvent = $A.get("e.force:navigateToURL");
-                        urlEvent.setParams({
-                          "url": 'https://forms.bluewaverenewables.com/' + '381607' + '?tfa_154=Massachusetts'  
-                            + '&' + 'tfa_526=' + leadId 
-                            + '&' + 'tfa_1180=' + updateDummy
-                            + '&' + 'tfa_63=' + city 
-                            + '&' + 'tfa_1179=' + productId 
-                            + '&' + 'tfa_81=' + zip     
-                            + '&' + 'tfa_1287=' + loanTerm   
-                            + '&' + 'tfa_94=' + address 
-                            + '&' + 'tfa_390=' + income 
-                            + '&' + 'tfa_572=' + appType   
-                            + '&' + 'tfa_1181=true'  
-                            + '&' + 'tfa_1310=' + 'SLPortal - Phase 2 Application 381607'      
-
-                        });
-                        urlEvent.fire();  
-                    }              
-                }
-                else {
+                if (resp.getState() === 'SUCCESS') {
+                    var lead = resp.getReturnValue()[0];
+                    window.open('/slportal/s/loan-application?leadId='+lead.Id+'&email='+lead.Email);
+                } else {
                     $A.log("Errors", resp.getError());
                 }
-            });        
-            $A.enqueueAction(action);                              
-        }else {
+            });
+            $A.enqueueAction(action);
+        } else {
             alert("Please select a product");
-        }        
+        }
         //Find the text value of the component with aura:id set to "address"
     },
 
@@ -180,7 +99,8 @@
         if (loanTerm > 0 ){
             actionSendApp.setCallback(this,function(resp){ 
                 if (resp.getState() == 'SUCCESS') {
-                    alert('The email to continue this application has been sent to ' + resp.getReturnValue());
+                    alert('The email to continue this application has been sent to ' + resp.getReturnValue() + '. ' +
+                          'If you will be opening the application on this computer, please log out of this portal first.');
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "SLPCreditStatus",

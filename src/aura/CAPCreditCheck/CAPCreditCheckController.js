@@ -28,6 +28,22 @@
         }
     },
 
+    handleShowModal : function(component, event, helper) {
+        var modalBody;
+        $A.createComponent("c:CAPUnfreezeCredit", {},
+            function(content, status) {
+                if (status === "SUCCESS") {
+                    modalBody = content;
+                    var overlay = component.find('overlayLib');
+                    overlay.showCustomModal({
+                        cssClass: 'slds-modal__header_empty, slds-backdrop',
+                        body: modalBody,
+                        showCloseButton: true
+                    })
+                }
+            });
+    },
+
     checkCredit : function(component, event, helper) {
         $A.util.addClass(component.find("confirmSubmit"), 'noDisplay');
         helper.startSpinner(component, 'creditSpinner');
@@ -35,11 +51,6 @@
         var action = component.get("c.pullCreditStatus");
         action.setParams({"lead" : lead});
         action.setCallback(this, function(resp) {
-            if (lead.Application_Type__c === 'Joint') {
-                helper.raiseNavEvent('LOCKJOINT');
-            } else {
-                helper.raiseNavEvent('LOCKPI');
-            }
             if(resp.getState() == "SUCCESS") {
                 window.setTimeout(function() {
                     $A.util.removeClass(component.find("creditStatus"), 'noDisplay');
@@ -83,7 +94,7 @@
     addCoSigner : function(component, event, helper) {
         const lead = component.get('v.lead');
         lead.Application_Type__c = 'Joint';
-        let leadPromise = helper.saveSObject(component, lead.Id, 'Lead', 'Application_Type__c', 'Joint');
+        let leadPromise = helper.setAppType(component, event, helper);
         leadPromise.then($A.getCallback(function resolve(value) {
             component.set('v.page', 'Done');
             var stageChangeEvent = $A.get("e.c:CAPNavigationEvent");

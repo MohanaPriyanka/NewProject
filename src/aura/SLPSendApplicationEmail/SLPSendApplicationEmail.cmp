@@ -1,5 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveForm" controller="SLPAddCustomer" access="global">
-  <ltng:require styles="{!$Resource.animations}" /> 
+  <ltng:require styles="{!$Resource.animations}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.openEmailCustomerModal}" />
   <aura:registerEvent name="openSendCustomerEmail" type="c:SLPSendApplicationEmailEvent"/>
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
@@ -8,35 +9,49 @@
   <aura:attribute name="activeStates" type="List" />
   <aura:attribute name="downPayment" type="Decimal" />
   <aura:attribute name="customerEmail" type="String" />
-  <aura:attribute name="availableProducts" type="Product2[]"/>
+  <aura:attribute name="availableLoanProducts" type="Product2[]"/>
+  <aura:attribute name="availableSRECProducts" type="Product2[]"/>
   <aura:attribute name="productProgram" type="String"/>
   <aura:attribute name="iblsRequired" type="Boolean"/>
   <aura:attribute name="newLead" type="Lead" 
     default="{ 'sobjectType' : 'Lead',
+    'FirstName': '',
+    'LastName': '',
     'LASERCA__Home_State__c': '',
     'Email': '',
     'Product_Program__c': '',
+    'Requested_Loan_Amount__c':'',
     'System_Cost__c':'',
     'Product__c':'',
+    'DOER_Solar_Loan__c':'',
+    'SREC_Product__c':'',
     }"/>  
-  <div id="emailCustomerModal" aura:id="emailCustomerModal" class="slds-modal slds-fade-in-hide box">
-    <div aura:id="emailCustomerModal2" class="slds-modal__container">
-      <div class="slds-modal__header blueBackground">
-        <button class="slds-button slds-modal__close slds-button--icon-inverse " title="Send Email">
-          <span class="slds-assistive-text">Send Email</span>
-        </button>
-        <h2 class="slds-text-heading--medium proximaNovaWhite"> Send Application</h2>
-      </div>  
-      <div aura:id="emailForm">
-        <div class="slds-modal__content slds-p-around--medium">
+  <div id="emailCustomerModal" aura:id="emailCustomerModal">
+    <div aura:id="emailCustomerModal2">
+      <div class="slds-m-bottom_small" aura:id="emailForm">
+        <div>
           <aura:if isTrue="{!v.disableOrigination}">
             <div class="proximaNovaBlue">
               {!$Label.c.SLP_Disabled}
             </div>
             <aura:set attribute="else">
-              <div class="slds-tabs--default">
+              <div class="slds-tabs--default box">
                 <fieldset class="slds-form--compound slds-m-top_small">
-                  <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small "> <b><h3>Applicant Information </h3></b> </div>
+                  <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small slds-m-top_small"> <b><h3>Applicant Information </h3></b> </div>
+                  <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                      <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
+                        <label class="slds-form-element__label proximaNovaBlue"> <b>First Name</b> </label>
+                        <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
+                      </div>
+                      <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
+                        <label class="slds-form-element__label proximaNovaBlue"> <b>Last Name</b> </label>
+                        <ui:inputText aura:id="lastName" class="slds-input" value="{!v.newLead.LastName}"  />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="slds-form--compound ">
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
@@ -96,7 +111,7 @@
                             <ui:inputSelectOption text="MSLP" label="Mass Solar Loan (MCEC)"/>
                             <aura:set attribute="else">
                               <ui:inputSelectOption label="Choose from qualifying products later" text=""/>
-                              <aura:iteration items="{!v.availableProducts}" var="product">
+                              <aura:iteration items="{!v.availableLoanProducts}" var="product">
                                 <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
                               </aura:iteration>
                             </aura:set>
@@ -105,10 +120,26 @@
                       </div>
                     </div>
                   </div>
+                  <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
+                    <div class="slds-form-element__row">
+                      <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
+                        <label class="slds-form-element__label proximaNovaBlue"><b>SREC Product</b></label>
+                        <div class="slds-form-element__control">
+                          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.newLead.SREC_Product__c}">
+                            <ui:inputSelectOption label="Select"/>
+                            <aura:iteration items="{!v.availableSRECProducts}" var="product">
+                              <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
+                            </aura:iteration>
+                          </ui:inputSelect>
+                        </div>
+                      </div>
+                    </div>
+                  </aura:if>
                   <aura:if isTrue="{!and(v.iblsRequired, v.newLead.Product__c == 'MSLP')}">
                     <div class="slds-form-element__row slds-p-horizontal--small slds-m-top_medium slds-form-element__label">
                       <b>
                         Applicants will need to meet the Massachusetts Clean Energy Technology Center's (MassCEC) Income-Based Loan Support (IBLS) requirements to apply for a Mass Solar Loan Program (MSLP) loan from BlueWave's bank partner.  Applicants who do not meet IBLS requirements may still be eligible for a MSLP loan through MassCEC.
+
                         <c:BlueWaveInputToolTip placementLeft="false"> 
                           <aura:set attribute="popoverBody">
                             <c:SLPIBLSRequirements/>
@@ -123,22 +154,29 @@
           </aura:if>
         </div>
       </div>
-      <div aura:id="emailConfirmation" class="noDisplay">
-        <div class="slds-modal__content slds-p-around--medium">
+      <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
+        <div class="slds-p-around--medium">
           <div class="slds-align--absolute-center ">
-            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The email has been sent, thank you! </b></p>
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
+          </div>
+          <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
+            <div>
+              <b>If you plan on opening the application from this computer, please logout first.</b>
+            </div>
+            <div>
+              <form action="/slportal/secur/logout.jsp">
+                <input type="submit" value="Logout"/>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-      <div class="slds-modal__footer">
-        <div aura:id="sendEmailModalButtons">
-          <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeEmailCustomerModal}">Close</lightning:button>
-          <aura:if isTrue="{!not(v.disableOrigination)}">
-            <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Send"></lightning:button>
-          </aura:if>
-        </div>
-        <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
+      <div aura:id="sendEmailModalButtons" class="slds-float_right">
+        <aura:if isTrue="{!not(v.disableOrigination)}">
+          <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Email"/>
+        </aura:if>
       </div>
+      <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
     </div>
   </div>
 </aura:component>

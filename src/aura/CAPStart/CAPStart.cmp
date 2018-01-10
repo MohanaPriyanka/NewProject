@@ -13,11 +13,11 @@
           <div class="slds-form-element__control">
             {!$Label.c.START_Email_Confirmation_Instruction}
             <ui:inputEmail aura:id="leadEmail"
-                           placeholder="yourname@email.com"
-                           class="slds-input slds-p-top-small"
-                           value="{!v.leadEmail}"
-                           updateOn="keydown,change"
-                           keydown="{!c.checkForEnter}"/>
+                             placeholder="yourname@email.com"
+                             class="slds-input slds-p-top-small"
+                             value="{!v.leadEmail}"
+                             updateOn="keydown,change"
+                             keydown="{!c.checkForEnter}"/>
           </div>
         </div>
         <div class="slds-form-element__row slds-p-top--small">
@@ -31,20 +31,24 @@
   <!-- CONFIRMATION -->
   <aura:if isTrue="{!v.page == 'LoanConfirmation'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      {!$Label.c.START_Lets_Get_Started}
+      <div class="slds-text-heading--medium">
+        <b>{!$Label.c.START_Lets_Get_Started}</b>
+      </div>
       <div class="slds-form slds-form_compound slds-p-top--large">
         <div class="slds-form-element__group">
           <div class="slds-form-element__row">
-            <div class="slds-form-element slds-size_1-of-2">
-              <lightning:input type="number" 
+            <div class="slds-form-element slds-size_1-of-1">
+              <lightning:input type="number"
                                formatter="currency" 
                                label="System Cost" 
                                value="{!v.lead.System_Cost__c}" 
                                disabled="true">
               </lightning:input>
             </div>
-            <div class="slds-form-element slds-size_1-of-2">
-              <lightning:input type="number" 
+          </div>
+          <div class="slds-form-element__row">
+            <div class="slds-form-element slds-size_1-of-1">
+              <lightning:input type="number"
                                formatter="currency" 
                                label="Down Payment" 
                                value="{!v.lead.System_Cost__c - v.lead.Requested_Loan_Amount__c}" 
@@ -53,8 +57,8 @@
             </div>
           </div>
           <div class="slds-form-element__row">
-            <div class="slds-form-element slds-size_1-of-2">
-              <lightning:input type="number" 
+            <div class="slds-form-element slds-size_1-of-1">
+              <lightning:input type="number"
                                formatter="currency" 
                                label="Requested Loan Amount" 
                                value="{!v.lead.Requested_Loan_Amount__c}" 
@@ -73,19 +77,36 @@
 
   <!-- DISCLAIMER -->
   <aura:if isTrue="{!v.page == 'LoanDisclaimer'}">
-    <div class="slds-col slds-col--padded slds-p-top--small">
-      <p class="slds-p-around--large">
-        Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.
+    <div class="slds-col slds-col--padded">
+      <p class="slds-p-left--large slds-text-body--large">
+        <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+          {!$Label.c.START_Disclosure_PreQual_MSLP}
+          <aura:set attribute="else">
+            {!$Label.c.START_Disclosure_PreQual}
+          </aura:set>
+        </aura:if>
       </p>
 
-      <p class="slds-p-around--large">
-        Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.
-      </p>
+      <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'MA'}">
+        <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
+          <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+            {!$Label.c.START_Disclosure_MSLP_SREC}
+            <aura:set attribute="else">
+              {!$Label.c.START_Disclosure_MA_SREC}
+            </aura:set>
+          </aura:if>
+        </p>
+      </aura:if>
 
-      <p class="slds-p-around--large">
-        The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver's license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.
+      <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
+        <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+          {!$Label.c.START_Disclosure_Income_Doc_MSLP}
+          <aura:set attribute="else">
+            {!$Label.c.START_Disclosure_Income_Doc}
+          </aura:set>
+        </aura:if>
       </p>
-      <div class="slds-form-element__row slds-p-top--small">
+      <div class="slds-form-element__row slds-m-top--medium">
         <lightning:button aura:id="confirmDisclaimer" label="Next" onclick="{!c.finishStage}"/>
       </div>
     </div>

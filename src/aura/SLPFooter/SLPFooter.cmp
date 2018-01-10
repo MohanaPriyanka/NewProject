@@ -16,8 +16,19 @@
           <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="partnersupport@bluewavesolar.com"/>
         </a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="888-817-2703"/>
-      </div>  
+        <a href="tel:8888172703">
+          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="888-817-2703"/>
+        </a>
+      </div>
+      <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
+        <div class="slds-align--absolute-center slds-p-top_small">
+          <p class="proximaNovaDataMountaintop95">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
+        </div>
+        <div class="slds-align--absolute-center">
+          <img class="slds-p-right_small" src="{!$Resource.avidiaLogo}" width="200"/>
+          <img class="slds-p-left_small" src="{!$Resource.avidiaFooterWhite}" width="300"/>
+        </div>
+      </aura:if>
     </div>
   </aura:if>
   <aura:if isTrue="{!not(v.partnerFooter)}">
@@ -30,7 +41,9 @@
           <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="customercare@bluewavesolar.com"/>
         </a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="844-786-4100"/>
+        <a href="tel:8447864100">
+          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="844-786-4100"/>
+        </a>
       </div>
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
         <div class="slds-align--absolute-center slds-p-top_small">
