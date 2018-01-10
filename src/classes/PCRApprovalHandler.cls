@@ -50,7 +50,7 @@ public without sharing class PCRApprovalHandler {
         if (infoEmailAddress == null) {
             infoEmailAddress = [SELECT id, Address 
                                 FROM OrgWideEmailAddress
-                                WHERE Address like '%info%'
+                                WHERE Address = : 'customercare@bluewavesolar.com' 
                                 LIMIT 1];
         }
         if (flaggedCreditCodes == null) {
