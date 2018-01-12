@@ -23,7 +23,7 @@ public without sharing class PCRApprovalHandler {
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
     private static EmailTemplate denialEmailTemplate;
-    private static OrgWideEmailAddress infoEmailAddress;
+    private static OrgWideEmailAddress customerCareAddress;
     private static Set<String> flaggedCreditCodes;
     @TestVisible
     private static Boolean alreadyRan = false;
@@ -47,10 +47,10 @@ public without sharing class PCRApprovalHandler {
                                      WHERE DeveloperName = 'RS_Customer_PreApplication_Denial'
                                      LIMIT 1];
         }
-        if (infoEmailAddress == null) {
-            infoEmailAddress = [SELECT id, Address 
+        if (customerCareAddress == null) {
+            customerCareAddress = [SELECT id, Address 
                                 FROM OrgWideEmailAddress
-                                WHERE Address like '%info%'
+                                WHERE Address = : 'customercare@bluewavesolar.com' 
                                 LIMIT 1];
         }
         if (flaggedCreditCodes == null) {
@@ -335,7 +335,7 @@ public without sharing class PCRApprovalHandler {
     private void sendEmail(String firstname, String subjectLine, String body, String partnerEmail, Id targetObjectId) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setHtmlBody(body);
-        mail.setOrgWideEmailAddressId(infoEmailAddress.id); 
+        mail.setOrgWideEmailAddressId(customerCareAddress.id); 
 
         if (partnerEmail != NULL) {
             String[] ccAddresses = new String[] {partnerEmail};
