@@ -68,6 +68,8 @@
             component.set('v.productProgram', productProgram);
             if (productProgram === 'MSLP') {
                 component.set('v.newLead.DOER_Solar_Loan__c', true);
+            } else {
+                component.set('v.newLead.DOER_Solar_Loan__c', false);
             }
         } else {
             component.set('v.productProgram', '');
