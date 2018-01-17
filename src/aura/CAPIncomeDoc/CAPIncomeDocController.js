@@ -1,6 +1,13 @@
 ({
     handleNavEvent : function(component, event, helper) {
         helper.handleNavEvent(component, event, helper, 'EmployedQuestion');
+        var now = new Date();
+        if (now.getMonth() <= 2) {
+            component.set('v.inFirstQuarter', true);
+            component.set('v.lastYear', now.getFullYear() - 1);
+        } else {
+            component.set('v.inFirstQuarter', false);
+        }
         if (event.getParam("eventType") === "INITIATED" &&
             event.getParam("stageName") === component.get("v.STAGENAME")) {
             helper.parseAttachments(component, helper);

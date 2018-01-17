@@ -62,7 +62,7 @@
         <div class="slds-form-element__control">
           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">
             <aura:iteration items="{!v.availableSRECProducts}" var="product">
-              <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
+              <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
             </aura:iteration>
           </ui:inputSelect>
         </div>

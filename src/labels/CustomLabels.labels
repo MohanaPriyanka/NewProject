@@ -301,12 +301,14 @@
     </value>
   </labels>
   <labels>
-    <fullName>ID_Paystub_Details</fullName>
+    <fullName>ID_Paystub_Request_First_Quarter</fullName>
     <categories>Customer Application Portal</categories>
     <language>en_US</language>
     <protected>false</protected>
-    <shortDescription>Paystub Details</shortDescription>
-    <value>Please upload your most recent paystubs (dated within the last 30 days)</value>
+    <shortDescription>Paystub Request First Quarter</shortDescription>
+    <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
+      last 30 days) AND either your {0} W-2 or last pay stub for {0}.
+    </value>
   </labels>
   <labels>
     <fullName>ID_Joint_Paystub_Request</fullName>
@@ -319,12 +321,14 @@
     </value>
   </labels>
   <labels>
-    <fullName>ID_Joint_Paystub_Details</fullName>
+    <fullName>ID_Joint_Paystub_Request_First_Quarter</fullName>
     <categories>Customer Application Portal</categories>
     <language>en_US</language>
     <protected>false</protected>
-    <shortDescription>Paystub Details</shortDescription>
-    <value>Please upload your co-signer or co-applicant's most recent paystubs (dated within the last 30 days)</value>
+    <shortDescription>Joint Paystub Request First Quarter</shortDescription>
+    <value>We'll need supporting income documentation for {0} as well. Please upload their most recent paystubs
+      (dated within the last 30 days) AND either their {1} W-2 or last pay stub for {1}.
+    </value>
   </labels>
   <labels>
     <fullName>ID_Self_Employment_Question</fullName>
@@ -372,7 +376,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need {0}'s personal and business tax returns (federal only) supporting their income. Please upload returns with all applicable
+    <value>We'll need {0}'s personal and business tax returns (federal only) supporting their income. If applicable, please upload returns with all applicable
       schedules:
     </value>
   </labels>
@@ -649,6 +653,15 @@
     <protected>false</protected>
     <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
     <value>Have you been with your current employer for more than one year?
+    </value>
+  </labels>
+  <labels>
+    <fullName>Joint_Length_With_Employer</fullName>
+    <categories>Customer Application Portal</categories>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Asks how long the joint applicant has been with their employer.</shortDescription>
+    <value>If {0} is employed, have then been with their employer for more than one year?
     </value>
   </labels>
   <labels>

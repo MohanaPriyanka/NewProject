@@ -128,7 +128,7 @@
                           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.newLead.SREC_Product__c}">
                             <ui:inputSelectOption label="Select"/>
                             <aura:iteration items="{!v.availableSRECProducts}" var="product">
-                              <ui:inputSelectOption label="{!product.Name}" text="{!product.Id}"/>
+                              <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
                             </aura:iteration>
                           </ui:inputSelect>
                         </div>

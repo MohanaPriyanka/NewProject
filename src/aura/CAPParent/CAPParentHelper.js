@@ -118,6 +118,7 @@
         }
         delete leadClone['CoApplicant_Contact__r'];
         delete leadClone['Product__r'];
+        delete leadClone['SREC_Product__r'];
         if (lead.LASERCA__Birthdate__c) {
             leadClone.LASERCA__Birthdate__c = lead.LASERCA__Birthdate__c.replace(/T00:00:00.000Z/,"");
         }

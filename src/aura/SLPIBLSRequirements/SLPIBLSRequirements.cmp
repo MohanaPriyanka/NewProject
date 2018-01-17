@@ -16,19 +16,17 @@
   </style>
   <div class="slds-wrap">
     <div class="slds-section__title">
-    <b>MCEC IBLS Categories</b>
+      <b>MCEC IBLS Categories</b>
+      <a target="_blank" class="slds-align--absolute-center slds-text-body--small" href="http://files.masscec.com/solar-loan/MassSolarLoanProgramManual.pdf">Click here for the Mass Solar Loan Program Manual</a>
     </div>
-    <table border="1">
+    <table border="1" class="slds-text-body_regular">
       <tr>
         <th>
           Household Size
-          <lightning:helptext content="Household size includes any person occupying the system owner’s household. For a project seeking IBLS, all borrowers who will be present on the program loan should be included as household members."/>
         </th>
         <th>Category 1: Less than or equal to 80% of State Median Income
-          <lightning:helptext content="Household income refers to the income of all household members as reported on line 22 of their most recently filed tax return (Tax Return Form 1040) accepted by the IRS."/>
         </th>
         <th>Category 2: Greater than 80% and less than or equal to 120% of State Median Income
-          <lightning:helptext content="Household income refers to the income of all household members as reported on line 22 of their most recently filed tax return (Tax Return Form 1040) accepted by the IRS."/>
         </th>
       </tr>
       <tr>
