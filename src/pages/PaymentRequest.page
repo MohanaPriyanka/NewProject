@@ -1,0 +1,56 @@
+<apex:page showheader="false" standardStylesheets="true" id="page">
+  <style type="text/css">
+    .footer {
+      text-align: center;
+      margin-top:40px;
+      color: black;
+      font-size: 14px;
+      height: 40px;
+      position: relative;
+      bottom:0;
+      width: 100%;
+      border-top: 1px solid lightgray;
+    }
+    .footertext {
+      line-height: 20px;
+    }
+    .topText {
+      display: block;
+      text-align: center; 
+      font-size: 14px; 
+      margin-bottom: 5px;"
+    }
+    .topTextBold {
+      display: block;
+      text-align: center; 
+      font-size: 14px; 
+      font-weight: bold;
+      margin-bottom: 5px;"
+    }
+    .topTextBigMargin {
+      display: block;
+      text-align: center; 
+      font-size: 14px; 
+      margin-bottom: 5px;"
+    }
+  </style>  
+  <apex:outputPanel id="header" layout="block">
+    <img  src="{!$Resource.BlueWaveLogo}" style="display: block; margin: 0 auto; margin-bottom: 40px;  margin-top: 50px;"/>
+    <apex:outputText  value="Please enter the information for the bank account in which you would like your Solar Renewable Energy Certificate (SREC) payments to be deposited." styleClass="topTextBold"/>
+    <br></br>
+    <apex:outputText  value="By providing this information and pressing Charge, I confirm that I am opting out of receiving paper checks "
+                      styleClass="topText"/>
+    <apex:outputText  value="and recognize that my SREC payments will be deposited into this account on a quarterly basis."
+                      styleClass="topText"/>
+    <apex:outputText value="I allow BlueWave to charge and then refund this account $0.01 in order to validate its existence." 
+                      styleClass="topTextBigMargin"/>
+  </apex:outputPanel>
+  <ChargentOrders:SitePaymentComponent  showAddress="false" 
+                                        cancel="{!URLFOR($Page.PaymentRequestCancel)}" 
+                                        success="{!URLFOR($Page.PaymentRequestSuccess)}" 
+                                        fail="{!URLFOR($Page.PaymentRequestFail)}"/>
+  <apex:outputPanel layout="block" styleClass="footer">
+    <apex:outputText  value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
+                      styleClass="footertext"/>
+  </apex:outputPanel>
+</apex:page>

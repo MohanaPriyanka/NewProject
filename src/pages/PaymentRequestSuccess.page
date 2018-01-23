@@ -1,0 +1,29 @@
+<apex:page showheader="false" standardStylesheets="true" id="page">
+<apex:outputPanel id="header" layout="block">
+<img src="{!$Resource.BlueWaveLogo}" style="display: block; margin: 0 auto; margin-bottom: 40px;  margin-top: 50px;"></img>
+</apex:outputPanel>
+    <apex:pageBlock >
+        <apex:pageMessage summary="Success! The action was successful!" severity="confirm" strength="3" />
+     </apex:pageBlock>
+
+        <style type="text/css">
+            .footer {
+                text-align: center;
+                margin-top:40px;
+                color: black;
+                font-size: 14px;
+                height: 40px;
+                position: relative;
+                bottom:0;
+                width: 100%;
+                border-top: 1px solid lightgray;
+            }
+            .footertext {
+                line-height: 20px;
+            }
+        </style>  
+
+<apex:outputPanel layout="block" styleClass="footer">
+<apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" styleClass="footertext"/>
+</apex:outputPanel>
+</apex:page>

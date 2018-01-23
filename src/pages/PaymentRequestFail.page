@@ -1,0 +1,41 @@
+<apex:page showheader="false" standardStylesheets="true" id="page">
+<apex:outputPanel id="header" layout="block">
+<img src="{!$Resource.BlueWaveLogo}" style="display: block; margin: 0 auto; margin-bottom: 40px;  margin-top: 50px;"></img>
+</apex:outputPanel>
+    <apex:outputPanel id="content" layout="block">
+        <apex:pageBlock >
+            <apex:pageMessage summary="Unfortunately, that payment data did not work. Please either re enter the information or use a different payment source." severity="error" strength="3" />
+        </apex:pageBlock>
+    </apex:outputPanel>
+    
+    <script type="text/javascript">
+        var msgBlock = document.getElementsByClassName('messageText')[0];
+        var a = document.createElement("a");
+        a.href = document.referrer;
+        a.style.fontSize = '100%';
+        a.style.margin = '0px';
+        a.appendChild(document.createTextNode('Click here to get back'));
+        msgBlock.appendChild(a);
+    </script>
+
+        <style type="text/css">
+            .footer {
+                text-align: center;
+                margin-top:40px;
+                color: black;
+                font-size: 14px;
+                height: 40px;
+                position: relative;
+                bottom:0;
+                width: 100%;
+                border-top: 1px solid lightgray;
+            }
+            .footertext {
+                line-height: 20px;
+            }
+        </style>  
+
+<apex:outputPanel layout="block" styleClass="footer">
+<apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" styleClass="footertext"/>
+</apex:outputPanel>
+</apex:page>
