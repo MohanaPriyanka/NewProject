@@ -83,7 +83,7 @@ public without sharing class SLPQuickSalesSheetTest{
       ContentVersion salesDocCV = new ContentVersion (Title ='Loan Summary Sheet.pdf',
                                                       PathOnClient='/Loan Summary Sheet.pdf' );
       salesDocCV.VersionData = Blob.valueOf('This is the body of the pdf');
-      insert salesDocCV;
+      Util.insertSObj(salesDocCV);
       ContentVersion testContent = [SELECT ContentDocumentId 
                                     FROM ContentVersion 
                                     WHERE Id = :salesDocCV.Id]; 
