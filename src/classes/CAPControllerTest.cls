@@ -29,6 +29,7 @@ public with sharing class CAPControllerTest {
                 LASERCA__Social_Security_Number__c = '000000001',
                 Requested_Loan_Amount__c = 35000,
                 Annual_Income_Currency__c = 15000,
+                Co_Applicant_Income__c = 10,
                 Partner_Lookup__c = partner.Id,
                 Product_Program__c = 'BlueWave Solar Loan',
                 Bs_Sales_ID__c = salesRep.Id,
@@ -65,7 +66,7 @@ public with sharing class CAPControllerTest {
             LastName = 'Swain',
             AccountId = coApplicantAccount.Id,
             Lead__c = l.Id,
-            Income__c = 2000,
+            Income__c = 10,
             LASERCA__Social_Security_Number__c = '000000002');
         insert coApplicantContact;
         l.CoApplicant_Contact__c = coApplicantContact.Id;

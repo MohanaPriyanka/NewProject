@@ -57,7 +57,13 @@
     startApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
         var downPayment = component.get("v.downPayment");
-        newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
+        if (downPayment) {
+            newLead.Requested_Loan_Amount__c = newLead.System_Cost__c - downPayment;
+        } else {
+            newLead.Requested_Loan_Amount__c = newLead.System_Cost__c;
+        }
+        // We can correct the email if people add an extra space at the end instead of raising an error
+        component.set('v.newLead.Email', newLead.Email.trimRight());
         var availableLoanProducts = component.get("v.availableLoanProducts");
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {

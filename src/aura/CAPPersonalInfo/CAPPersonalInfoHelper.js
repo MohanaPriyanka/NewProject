@@ -46,11 +46,14 @@
         var residenceOwner = component.get('v.lead.Residence_Owner__c');
         var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
         if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
-          errorMessage += 'Please select whether or not you own the property located at the installation address detailed above.';
+            errorMessage += 'Please select whether or not you own the property located at the installation address. You must own the property to continue applying for this loan.';
+        }
+        if (lead.Not_Residence_Owner__c) {
+            errorMessage += 'You must own the property at the installation address to apply for this loan.';
         }
         if (!lead.Express_Consent__c) {
-          errorMessage += 'You must express consent in order to continue.';
-          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+            errorMessage += 'You must express consent in order to continue.';
+            $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
         }
         return errorMessage;
     },
@@ -319,7 +322,8 @@
             lead.Product_Program__c = 'BlueWave Solar Loan';
             lead.DOER_Solar_Loan__c = false;
         }
-        helper.saveSObject(component, lead.Id, 'Lead', null, null, lead);
+        const leadClone = helper.cleanLead(component);
+        helper.saveSObject(component, lead.Id, 'Lead', null, null, leadClone);
         component.set('v.lead', lead);
     },
 })

@@ -1,7 +1,10 @@
 ({
     checkCreditStatus : function(component, helper) {
         var action = component.get("c.checkCreditStatus");
-        const lead = helper.cleanLead(component);
+        const lead = {
+            sObjectType: 'Lead',
+            Id: component.get('v.lead.Id')
+        };
         action.setParams({"leadToQuery" : lead});
         action.setCallback(this, function(resp) {
             if (resp.getState() === "SUCCESS") {

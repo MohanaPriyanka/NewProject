@@ -150,7 +150,7 @@ public without sharing class PCRApprovalHandler {
                                     Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                                     Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
                                     Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Partner_Lookup__c,
-                                    IBLS_Category__c
+                                    IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c
                                     FROM Lead 
                                     WHERE Id  IN : leadlist];
         for (Lead lead : relatedLeads) {
@@ -194,7 +194,9 @@ public without sharing class PCRApprovalHandler {
                                                  pcr.DOER_Application__c);
 
                 pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
+                pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
                 pcr.DTI_After__c = creditSummary.highestDTI;
+                pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
                 if (ld.Product__c == null) {
@@ -217,6 +219,10 @@ public without sharing class PCRApprovalHandler {
                      flaggedCreditCodes.contains(pcr.LASERCA__Code_2__c) ||
                      flaggedCreditCodes.contains(pcr.LASERCA__Code_3__c) ||
                      flaggedCreditCodes.contains(pcr.LASERCA__Code_4__c))) {
+                    creditSummary.bestStatus = PENDINGREVIEW;
+                }
+                if (creditSummary.bestStatus == APPROVED &&
+                    (ld.Avidia_Executive__c || ld.Avidia_Service_Provider__c || ld.Other_Bank_Executive__c)) {
                     creditSummary.bestStatus = PENDINGREVIEW;
                 }
 
