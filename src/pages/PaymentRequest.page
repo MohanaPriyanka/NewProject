@@ -1,13 +1,12 @@
 <apex:page showheader="false" standardStylesheets="true" id="page"> 
-  <apex:outputPanel id="header" layout="block" style="background-color: #266092;  position: absolute; height:100%;">
+  <apex:outputPanel id="header" layout="block" style="background-color: #266092;  position: sticky; height:100%;">
     <style type="text/css">
       .footer {
         text-align: center;
         margin-top:40px;
         color: black;
         font-size: 14px;
-        height: 40px;
-        position: absolute;
+        position: sticky;
         bottom:0;
         width: 100%;
         font-family: Helvetica; 
@@ -65,9 +64,13 @@
                       styleClass="topText"/>
     <apex:outputText value="I allow BlueWave to charge and then refund this account $0.01 in order to validate its existence." 
                       styleClass="topTextBigMargin"/>
-  </apex:outputPanel>
-  <apex:outputPanel layout="block" styleclass="footer">
-    <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
+    <apex:outputPanel layout="block" styleclass="footer">
+        <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
                       styleClass="footertext"/>
+        <br></br>
+        <apex:outputText value="Have a question? Please email customercare@bluewavesolar.com or call (844) 786-4100 to access our Customer Care team." 
+                      styleClass="footertext"/>
+    </apex:outputPanel>
   </apex:outputPanel>
+
 </apex:page>
