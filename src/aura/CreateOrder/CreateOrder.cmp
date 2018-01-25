@@ -1,4 +1,4 @@
-<aura:component controller="CreateOrder" extends="c:BlueWaveParent" access="global">
+<aura:component controller="CreateUALController" extends="c:BlueWaveParent" access="global">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
       
   <aura:attribute name="OppId" type="String" default=""/>
