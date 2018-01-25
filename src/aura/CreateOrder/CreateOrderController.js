@@ -1,36 +1,24 @@
 ({
     doInit : function(component, event, helper) {
-        helper.getUALs(component, event, helper);
-    },
-    
-    selectUAL : function(component, event, helper) {
-        const ualChoice = component.find("ualInput").get("v.value");
-        if (ualChoice === 'createNewUAL'){
-            component.set("v.createNew", true);
-        } else {
-            component.set("v.createNew", false);
-            const ualInfo = component.find("ualInput").get("v.value");
-            const infoArray = ualInfo.split('-');
-            console.log(infoArray);
-            component.set("v.UAS.Utility_Account_Log__c", infoArray[0]);
-            component.set("v.UAS.Name", infoArray[1]);
-        }
-    },
-    
-    submitUAL : function(component, event, helper) {
-        if(component.get("v.SSSname").length < 1){
-            component.set("v.errorMessage", "Opportunity Must Be Linked to SSS");
-        } else if (component.get("v.SSSsize") == 0 || component.get("v.SSSsize") == null) {
-            component.set("v.errorMessage", "Project Size must be > 0");
-        } else if(component.get("v.createNew")){
-            helper.createUALandUAS(component, event, helper);
-        } else {
-            helper.createUAS(component, event, helper);
-        }
-    },
-    
-    goBack : function(component, event, helper) {
-        component.set("v.showPage", true);
-        helper.getUALs(component, event, helper);
+        const orderToInsert = { 'sobjectType' : 'ChargentOrders__ChargentOrder__c',
+                                'Comments__c' : 'Created For Payment Request',
+                                'ChargentOrders__Subtotal__c' : 0.01,
+                                'ChargentOrders__Charge_Amount__c' : 0.01,
+                                'ChargentOrders__Gateway__c' : 'a1w210000007hd7',
+                                'Opportunity__c' : component.get("v.OppId")};
+        
+        const ChargentOrderPromise = helper.insertSObject(component, orderToInsert);
+
+        ChargentOrderPromise.then($A.getCallback(function resolve(returnValue) {
+            const payRequest = { 'sobjectType' : 'ChargentOrders__Payment_Request__c',
+                                'Status' : 'Created',
+                                'Send_Payment_Request_Email__c' : false,
+                                'ChargentOrders__ChargentOrder__c' : returnValue.Id};
+            const PaymentRequestPromise = helper.insertSObject(component, payRequest);
+            PaymentRequestPromise.then($A.getCallback(function resolve(retVal) {
+                var docInterval = window.setInterval($A.getCallback(function() {
+                    helper.checkForLink(component,retVal.Id);}), 2000);
+            }));
+        }));
     },
 })

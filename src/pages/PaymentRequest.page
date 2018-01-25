@@ -50,25 +50,18 @@
     </style> 
     <br></br>
       <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
-    <apex:outputText value="Solar Renewable Energy Certificate (SREC) Direct Deposit Form" styleClass="topTextBold"/>
-    <apex:outputText value="(please fill in your bank details so we can get you your SREC payments at the speed of light)*" styleClass="topTextBold"/>
-    <br></br>
-    <div class="slds-scope padded" id="lightning"/>
     <apex:includeLightning />
     <apex:slds />
+    <div class="slds-scope padded slds-media_center" id="lightning"/>    
     <script>
     const OppIdt="{!$CurrentPage.parameters.OppId}";
     
-        $Lightning.use("c:CreateUALApp", function() {
-            $Lightning.createComponent("c:CreateUAL", {
-            "OppId": OppIdt,
-            "acctId": acctIdt,
-            "SSSsize": SSSsizet,
-            "SSSname": SSSnamet}
+        $Lightning.use("c:CreateOrderApp", function() {
+            $Lightning.createComponent("c:CreateOrder", {
+            "OppId": OppIdt}
             ,"lightning", function(cmp) {console.log('component created');});
         });
-        
-    </script>        
+    </script>    
     <ChargentOrders:SitePaymentComponent showAddress="false" 
                                         cancel="{!URLFOR($Page.PaymentRequestCancel)}" 
                                         success="{!URLFOR($Page.PaymentRequestSuccess)}" 
