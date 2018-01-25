@@ -15,17 +15,27 @@
     },
 
     getPayStubs : function(component, event, helper) {
+        var lead = component.get('v.lead');
         var employed = component.get('v.lead.Employed__c');
         var notEmployed = component.get('v.lead.Not_Employed__c');
         if (!employed && !notEmployed) {
             alert('Please choose an option.');
         } else {
-            if (employed) {
-                component.set('v.page', 'GetPayStubs');
-            } else {
-                component.set('v.page', 'SelfEmployedQuestion');
-            }
-        } 
+            var leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Employed__c: lead.Employed__c,
+                Not_Employed__c: lead.Not_Employed__c
+            };
+            var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+            promise.then($A.getCallback(function resolve(retVal) {
+                if (employed) {
+                    component.set('v.page', 'GetPayStubs');
+                } else {
+                    component.set('v.page', 'SelfEmployedQuestion');
+                }
+            }));
+        }
     },
 
     setEmployment: function(component, event, helper) {
@@ -160,16 +170,26 @@
     },
 
     getTaxReturns : function(component, event, helper) {
+        var lead = component.get('v.lead');
         var selfEmployed = component.get('v.lead.Self_Employed__c');
         var notSelfEmployed = component.get('v.lead.Not_Self_Employed__c');
         if (!selfEmployed && !notSelfEmployed) {
             alert('Please choose an option.');
         } else {
-            if (selfEmployed) {
-                component.set('v.page', 'GetTaxReturns');
-            } else {
-                component.set('v.page', 'RetirementQuestion');
-            }
+            var leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Self_Employed__c: lead.Self_Employed__c,
+                Not_Self_Employed__c: lead.Not_Self_Employed__c
+            };
+            var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+            promise.then($A.getCallback(function resolve(retVal) {
+                if (selfEmployed) {
+                    component.set('v.page', 'GetTaxReturns');
+                } else {
+                    component.set('v.page', 'RetirementQuestion');
+                }
+            }));
         }
     },
 
@@ -178,16 +198,26 @@
     },
 
     getRetirementIncome : function(component, event, helper) {
+        var lead = component.get('v.lead');
         var retired = component.get('v.lead.Retired__c');
         var notRetired = component.get('v.lead.Not_Retired__c');
         if (!retired && !notRetired) {
             alert('Please choose an option.');
         } else {
-            if (retired) {
-                component.set('v.page', 'GetRetirementIncome');
-            } else {
-                component.set('v.page', 'VeteranQuestion');
-            }
+            var leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Retired__c: lead.Retired__c,
+                Not_Retired__c: lead.Not_Retired__c
+            };
+            var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+            promise.then($A.getCallback(function resolve(retVal) {
+                if (retired) {
+                    component.set('v.page', 'GetRetirementIncome');
+                } else {
+                    component.set('v.page', 'VeteranQuestion');
+                }
+            }));
         }
     },
 
@@ -196,16 +226,26 @@
     },
 
     getVeteranIncome : function(component, event, helper) {
+        var lead = component.get('v.lead');
         var veteran = component.get('v.lead.Veteran_Disability__c');
         var notVeteran = component.get('v.lead.No_Veteran_Disability__c');
         if (!veteran && !notVeteran) {
             alert('Please choose an option');
         } else {
-            if (veteran) {
-                component.set('v.page', 'GetVeteranIncome');
-            } else {
-                component.set('v.page', 'AlimonyQuestion');
-            }
+            var leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                No_Veteran_Disability__c: lead.No_Veteran_Disability__c,
+                Veteran_Disability__c: lead.Veteran_Disability__c
+            };
+            var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+            promise.then($A.getCallback(function resolve(retVal) {
+                if (veteran) {
+                    component.set('v.page', 'GetVeteranIncome');
+                } else {
+                    component.set('v.page', 'AlimonyQuestion');
+                }
+            }));
         }
     },
 
@@ -221,7 +261,10 @@
             alert('Please choose an option.');
         } else {
             if (alimony) {
-                component.set('v.page', 'GetAlimonyIncome');
+                var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, lead);
+                promise.then($A.getCallback(function resolve(retVal) {
+                    component.set('v.page', 'GetAlimonyIncome');
+                }));
             } else {
                 var leadToSave = {
                     sobjectType: 'Lead',

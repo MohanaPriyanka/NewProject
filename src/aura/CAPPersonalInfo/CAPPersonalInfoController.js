@@ -21,6 +21,13 @@
             } else {
                 helper.handleNavEvent(component, event, helper, 'IndividualOrJoint');
             }
+            if (leadVar.Other_Bank_Executive__c || leadVar.Avidia_Service_Provider__c) {
+                component.set('v.bankAffiliation', true);
+            }
+            if (leadVar.CoApplicant_Contact__r &&
+                (leadVar.CoApplicant_Contact__r.Other_Bank_Executive__c || leadVar.CoApplicant_Contact__r.Avidia_Service_Provider__c)) {
+                component.set('v.coAppBankAffiliation', true);
+            }
         }
         if (eventType === 'LORCHANGE') {
             helper.handleNavEvent(component, event, helper);

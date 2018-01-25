@@ -121,6 +121,11 @@
 
     MAX_FILE_SIZE: 4500000, /* 6 000 000 * 3/4 to account for base64 */
     CHUNK_SIZE: 400000,
+    BYTES_IN_MB: 1000000,
+    precisionRound : function(number, precision) {
+        var factor = Math.pow(10, precision);
+        return Math.round(number * factor) / factor;
+    },
     /*
        CHUNK_SIZE: Use a multiple of 4. 950000 in the blog post didn't work,
        81250 works except for one test file, 40000 seems to work ok...
@@ -132,9 +137,10 @@
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
                 if (file.size > ltg.MAX_FILE_SIZE) {
-                    alert('File size cannot exceed ' + ltg.MAX_FILE_SIZE + ' bytes.\n' +
-    	                  'Selected file size: ' + file.size + '\n' +
-                          'Please use the standard Attachment Upload instead');
+                    helper.logError('BlueWaveParentHelper', 'uploadFiles',
+                        'File size cannot exceed: ' + helper.precisionRound(ltg.MAX_FILE_SIZE/ltg.BYTES_IN_MB,2) + ' MB.\n' +
+                        'Your file size is: ' + helper.precisionRound(file.size/ltg.BYTES_IN_MB,2) + ' MB.\n' +
+                        'Please email us for help with large files.');
                     return;
                 }
                 var fr = new FileReader();

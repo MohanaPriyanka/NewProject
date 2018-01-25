@@ -24,23 +24,28 @@
                     newVal = currVal.replace('//', '/');
                 }
             }
-        }
-        // Now, newVal should be well formatted, but we need to find strings like 001/00 or 01/001/
-        var parts = newVal.split('/');
-        if (parts[0]) {
-            newVal = parts[0].substring(0,2);
-        }
-        if (parts[1]) {
-            newVal += '/' + parts[1].substring(0,2);
-        }
-        if (parts[2]) {
-            newVal += '/' + parts[2].substring(0,4);
-        }
-        if (!newVal.endsWith('/') && (newVal.length === 2 || newVal.length === 5)) {
-            newVal += '/';
-        }
-        if (newVal !== currVal) {
-            component.set("v.value", newVal);
+            // Now, newVal should be well formatted, but we need to find strings like 001/00 or 01/001/
+            var parts = newVal.split('/');
+            var carryover = '';
+            if (parts[0]) {
+                newVal = parts[0].substring(0,2);
+                carryover = parts[0].substring(2);
+            }
+            if (parts[1] || (carryover !== '' && carryover !== null)) {
+                var day = carryover + (parts[1]?parts[1]:'');
+                newVal += '/' + day.substring(0,2);
+                carryover = day.substring(2);
+            }
+            if (parts[2] || (carryover !== '' && carryover !== null)) {
+                var year = carryover + (parts[2]?parts[2]:'');
+                newVal += '/' + year.substring(0,4);
+            }
+            if (!newVal.endsWith('/') && (newVal.length === 2 || newVal.length === 5)) {
+                newVal += '/';
+            }
+            if (newVal !== currVal) {
+                component.set("v.value", newVal);
+            }
         }
     }
 })
