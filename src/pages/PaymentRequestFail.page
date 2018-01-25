@@ -12,17 +12,17 @@
         font-family: Helvetica; 
         border-top: 1px solid lightgray;
         color: #ffffff;
-        background-color: #266092; 
+        background-color: #ededed; 
       }
       .footertext {
         line-height: 20px;
-        color: #ffffff;
+        color: #000000;
         font-family: Helvetica; 
-        background-color: #266092; 
+        background-color: #ededed; 
       }
     </style> 
     <br></br>
-      <apex:image value="{!$Resource.BlueWave_White}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
+      <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
         <apex:pageMessage summary="Unfortunately, that payment data did not work. Please either re enter the information or use a different payment source." severity="error" strength="3" />
     <script type="text/javascript">
         var msgBlock = document.getElementsByClassName('messageText')[0];

@@ -12,17 +12,17 @@
         font-family: Helvetica; 
         border-top: 1px solid lightgray;
         color: #ffffff;
-        background-color: #266092; 
+        background-color: #ededed; 
       }
       .footertext {
         line-height: 20px;
-        color: #ffffff;
+        color: #000000;
         font-family: Helvetica; 
-        background-color: #266092; 
+        background-color: #ededed; 
       }
     </style> 
     <br></br>
-      <apex:image value="{!$Resource.BlueWave_White}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
+      <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
         <apex:pageMessage summary="Success! The action was successful!" severity="confirm" strength="3" />
     <apex:outputPanel layout="block" styleclass="footer">
         <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
