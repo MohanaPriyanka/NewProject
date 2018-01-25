@@ -12,13 +12,13 @@
         font-family: Helvetica; 
         border-top: 1px solid lightgray;
         color: #ffffff;
-        background-color: #ededed; 
+        background-color: #266092; 
       }
       .footertext {
         line-height: 20px;
-        color: #000000;
+        color: #ffffff;
         font-family: Helvetica; 
-        background-color: #ededed; 
+        background-color: #266092; 
       }
       .topText {
         display: block;
@@ -52,27 +52,12 @@
       <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
     <apex:includeLightning />
     <apex:slds />
-    <div class="slds-scope padded slds-media_center" id="lightning"/>    
-    <script>
-    const OppIdt="{!$CurrentPage.parameters.OppId}";
-    
-        $Lightning.use("c:CreateOrderApp", function() {
-            $Lightning.createComponent("c:CreateOrder", {
-            "OppId": OppIdt}
-            ,"lightning", function(cmp) {console.log('component created');});
-        });
-    </script>    
+    <div class="slds-scope padded slds-media_center" id="lightning"/>      
     <ChargentOrders:SitePaymentComponent showAddress="false" 
                                         cancel="{!URLFOR($Page.PaymentRequestCancel)}" 
                                         success="{!URLFOR($Page.PaymentRequestSuccess)}" 
                                         fail="{!URLFOR($Page.PaymentRequestFail)}"/>
     <br></br>
-    <apex:outputText value="*By providing this information and pressing Charge, I confirm that I am opting out of receiving paper checks "
-                      styleClass="topText"/>
-    <apex:outputText value="and recognize that my SREC payments will be deposited into this account on a quarterly basis."
-                      styleClass="topText"/>
-    <apex:outputText value="I allow BlueWave to charge and then refund this account $0.01 in order to validate its existence." 
-                      styleClass="topTextBigMargin"/>
     <apex:outputPanel layout="block" styleclass="footer">
         <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
                       styleClass="footertext"/>
