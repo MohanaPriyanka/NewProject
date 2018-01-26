@@ -203,7 +203,7 @@
                                     labelClass="slds-form-element__label padding" 
                                     label="Reduce State or Federal Tax Credits" 
                                     value="{!v.modifiedTaxIncentive}"
-                                    change="{!c.refreshTable}"/>
+                                    change="{!c.refreshTaxCredits}"/>
                     </th>
                     <td></td>
                   </tr>
