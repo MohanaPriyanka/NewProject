@@ -26,4 +26,16 @@ public without sharing class CreateOrderandPaymentRequest {
                                                          WHERE Id = : payRequestId];
         return payRequest;
     }
+
+    @AuraEnabled
+    public static Boolean checkEmail(String oppId, String emailInput) {
+        Boolean idCheck = false;
+        Opportunity loanRecord = [  SELECT Id, Email__c
+                                    FROM Opportunity
+                                    WHERE Id = : oppID];
+        if (loanRecord.Email__c == emailInput){
+            idCheck = true;
+        }
+        return idCheck;
+    }
 }
