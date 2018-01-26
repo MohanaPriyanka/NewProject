@@ -1,4 +1,29 @@
 ({  
+    insertRecord : function(component, oppId){
+        return new Promise(function(resolve, reject) {
+            const actionInsert = component.get("c.insertRequest");
+            
+            actionInsert.setParams({
+                "oppId": oppId
+            }); 
+            
+            actionInsert.setCallback(this,function(response) {
+                if(response.getState() == "SUCCESS") { 
+                    const retVal = response.getReturnValue();
+                    resolve(retVal);
+                } else {
+                    const appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "BlueWaveParentHelper",
+                                            "methodName" : "insertSObject",
+                                            "errors" : resp.getError(),
+                                            "developerInfo" : sObject});
+                    appEvent.fire();
+                }
+            });                                 
+            $A.enqueueAction(actionInsert);
+        });
+    },
+    
     checkForLink : function(component, payRequestId){
         const actionGetUrl = component.get("c.checkForLink");
         
@@ -17,4 +42,3 @@
         $A.enqueueAction(actionGetUrl);
     },
 })
-
