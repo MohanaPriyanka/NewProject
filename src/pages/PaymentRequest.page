@@ -51,9 +51,9 @@
     <br></br>
       <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
     <ChargentOrders:SitePaymentComponent showAddress="false" 
-                                        cancel="{!URLFOR($Page.PaymentRequestCancel)}" 
-                                        success="{!URLFOR($Page.PaymentRequestSuccess)}" 
-                                        fail="{!URLFOR($Page.PaymentRequestFail)}"/>
+                                        cancel="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestCancel" 
+                                        success="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestSuccess" 
+                                        fail="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestFail"/>
     <br></br>
     <apex:outputPanel layout="block" styleclass="footer">
         <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
