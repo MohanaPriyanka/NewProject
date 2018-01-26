@@ -50,9 +50,6 @@
     </style> 
     <br></br>
       <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
-    <apex:includeLightning />
-    <apex:slds />
-    <div class="slds-scope padded slds-media_center" id="lightning"/>      
     <ChargentOrders:SitePaymentComponent showAddress="false" 
                                         cancel="{!URLFOR($Page.PaymentRequestCancel)}" 
                                         success="{!URLFOR($Page.PaymentRequestSuccess)}" 
