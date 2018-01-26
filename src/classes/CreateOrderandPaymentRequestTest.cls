@@ -7,6 +7,7 @@ public with sharing class CreateOrderandPaymentRequestTest {
 
         Opportunity opportunityone = new Opportunity(Name = 'Jordan Jordan',
                             AccountId = accountA.Id,
+                            Email__c = 'test@test.com',
                             StageName = 'Complete',
                             CloseDate = System.today());
 
@@ -18,12 +19,14 @@ public with sharing class CreateOrderandPaymentRequestTest {
                                         ChargentBase__Active__c = True);
         Insert chGateway;
 
+        Boolean emailCheck = CreateOrderandPaymentRequest.checkEmail(opportunityone.Id,'test@test.com');
         ChargentOrders__Payment_Request__c payRequest = CreateOrderandPaymentRequest.insertRequest(opportunityone.Id);
         ChargentOrders__Payment_Request__c payRequestUpdated = CreateOrderandPaymentRequest.checkForLink(payRequest.Id);
 
         List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
 
+        System.AssertEquals(true, emailCheck);
         System.AssertEquals(1, chOrderList.size());
         System.AssertEquals(payRequestUpdated.ChargentOrders__ChargentOrder__c, chOrderList[0].Id);
     }
