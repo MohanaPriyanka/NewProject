@@ -40,6 +40,9 @@
     },
 
     checkID : function(component, oppId, emailInput){
+        $A.util.removeClass(component.find('Confirm'), 'shake slds-has-error');
+        component.set("v.showError", false); 
+
         return new Promise(function(resolve, reject) {
             const actionCheckID = component.get("c.checkEmail");
             
