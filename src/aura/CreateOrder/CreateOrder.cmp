@@ -1,4 +1,4 @@
-<aura:component controller="CreateUALController" extends="c:BlueWaveParent" access="global">
+<aura:component controller="CreateOrderandPaymentRequest" extends="c:BlueWaveParent" access="global">
   <aura:attribute name="OppId" type="String" default="00621000005mU8w"/>
   <aura:attribute name="errorMessage" type="String" default=""/>
   <aura:attribute name="showButton" type="Boolean" default="false"/>
