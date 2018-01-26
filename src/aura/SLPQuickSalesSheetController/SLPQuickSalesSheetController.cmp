@@ -202,7 +202,8 @@
                                     class="myCheckbox"
                                     labelClass="slds-form-element__label padding" 
                                     label="Reduce State or Federal Tax Credits" 
-                                    value="{!v.modifiedTaxIncentive}"/>
+                                    value="{!v.modifiedTaxIncentive}"
+                                    change="{!c.refreshTable}"/>
                     </th>
                     <td></td>
                   </tr>
