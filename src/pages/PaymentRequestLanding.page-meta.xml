@@ -3,5 +3,5 @@
     <apiVersion>40.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>PaymentRequest</label>
+    <label>PaymentRequestLanding</label>
 </ApexPage>
