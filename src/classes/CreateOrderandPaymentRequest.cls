@@ -21,7 +21,7 @@ public without sharing class CreateOrderandPaymentRequest {
     
     @AuraEnabled
     public static ChargentOrders__Payment_Request__c checkForLink(String payRequestId) {
-        ChargentOrders__Payment_Request__c payRequest = [SELECT Id, ChargentOrders__Pay_Link__c 
+        ChargentOrders__Payment_Request__c payRequest = [SELECT Id, ChargentOrders__Pay_Link__c, ChargentOrders__ChargentOrder__c
                                                          FROM ChargentOrders__Payment_Request__c 
                                                          WHERE Id = : payRequestId];
         return payRequest;
