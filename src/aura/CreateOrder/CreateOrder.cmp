@@ -1,5 +1,5 @@
 <aura:component controller="CreateOrderandPaymentRequest" extends="c:BlueWaveParent" access="global">
-  <aura:attribute name="OppId" type="String" default="00621000005mU8w"/>
+  <aura:attribute name="OppId" type="String" default=""/>
   <aura:attribute name="errorMessage" type="String" default="Invalid Email"/>
   <aura:attribute name="showError" type="Boolean" default="false"/>
   <aura:attribute name="showEmail" type="Boolean" default="true"/>
