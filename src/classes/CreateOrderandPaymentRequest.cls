@@ -1,14 +1,11 @@
 public without sharing class CreateOrderandPaymentRequest {
   @AuraEnabled
     public static String insertRequest(String oppId, String emailInput) {
-        Boolean idCheck = false;
         Opportunity loanRecord = [  SELECT Id, Email__c
                                     FROM Opportunity
                                     WHERE Id = : oppID];
+                                    
         if (loanRecord.Email__c == emailInput){
-            idCheck = true;
-        }
-        if (idCheck){
             ChargentBase__Gateway__c srecGateway = [SELECT Id, Name 
                                                     FROM ChargentBase__Gateway__c 
                                                     WHERE Name = 'SREC' 
