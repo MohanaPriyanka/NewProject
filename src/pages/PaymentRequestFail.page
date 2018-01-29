@@ -12,13 +12,13 @@
         font-family: Helvetica; 
         border-top: 1px solid lightgray;
         color: #ffffff;
-        background-color: #ededed; 
+        background-color: #266092; 
       }
       .footertext {
         line-height: 20px;
-        color: #000000;
+        color: #ffffff;
         font-family: Helvetica; 
-        background-color: #ededed; 
+        background-color: #266092; 
       }
     </style> 
     <br></br>
