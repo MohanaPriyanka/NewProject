@@ -8,7 +8,7 @@
 			var docInterval = window.setInterval($A.getCallback(function() {
 	            helper.checkForLink(component,retVal, helper);
 	        }), 2000);
-	       	window.setTimeout(function() {clearInterval(docInterval)},8000)
+	       	window.setTimeout(function() {clearInterval(docInterval)},16000)
 	    }));
     },
 })
