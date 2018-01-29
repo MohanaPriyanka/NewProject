@@ -115,6 +115,14 @@
         $A.enqueueAction(actionCreateDocQss);
     },   
 
+    refreshTaxCredits : function(component, event, helper) {
+        component.set("v.calculatedQSS.Modified_State_Tax_Credit__c", component.get("v.calculatedQSS.State_Tax_Incentive__c"));
+        component.set("v.calculatedQSS.Modified_ITC__c", component.get("v.calculatedQSS.ITC_Estimated__c"));
+        $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
+        const updatedQSS = component.get("v.calculatedQSS");
+        helper.updateQSS(component, updatedQSS);
+    },
+
     refreshTable : function(component, event, helper) {
          $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
          var qssToUpdate = component.get("v.calculatedQSS");
