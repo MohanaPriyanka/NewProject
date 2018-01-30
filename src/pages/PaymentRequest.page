@@ -1,0 +1,67 @@
+<apex:page showheader="false" standardStylesheets="true" id="page"> 
+  <apex:outputPanel id="header" layout="block" style="background-color: #266092;  position: sticky; height:100%;">
+    <style type="text/css">
+      .footer {
+        text-align: center;
+        margin-top:40px;
+        color: black;
+        font-size: 14px;
+        position: sticky;
+        bottom:0;
+        width: 100%;
+        font-family: Helvetica; 
+        border-top: 1px solid lightgray;
+        color: #ffffff;
+        background-color: #266092; 
+      }
+      .footertext {
+        line-height: 20px;
+        color: #ffffff;
+        font-family: Helvetica; 
+        background-color: #266092; 
+      }
+      .topText {
+        display: block;
+        text-align: center; 
+        font-size: 14px; 
+        margin-bottom: 5px;
+        color: #ffffff;
+        font-family: Helvetica; 
+        background-color: #266092; 
+      }
+      .topTextBold {
+        display: block;
+        text-align: center; 
+        font-size: 18px; 
+        color: #ffffff;
+        font-family: Helvetica; 
+        background-color: #266092; 
+        margin-bottom: 5px;      
+      }
+      .topTextBigMargin {
+        display: block;
+        text-align: center; 
+        font-size: 14px; 
+        margin-bottom: 20px;
+        font-family: Helvetica; 
+        color: #ffffff;
+        background-color: #266092; 
+      }
+    </style> 
+    <br></br>
+      <apex:image value="{!$Resource.WhiteLogo}" width="35%" style="background-color: #266092; display: block; margin: auto; margin-bottom: 10px;"/>
+    <ChargentOrders:SitePaymentComponent showAddress="false" 
+                                        cancel="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestCancel" 
+                                        success="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestSuccess" 
+                                        fail="https://uat2-bluewavememberportal.cs78.force.com/apply/apex/PaymentRequestFail"/>
+    <br></br>
+    <apex:outputPanel layout="block" styleclass="footer">
+        <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
+                      styleClass="footertext"/>
+        <br></br>
+        <apex:outputText value="Have a question? Please email customercare@bluewavesolar.com or call (844) 786-4100 to access our Customer Care team." 
+                      styleClass="footertext"/>
+    </apex:outputPanel>
+  </apex:outputPanel>
+
+</apex:page>
