@@ -14,6 +14,7 @@ public without sharing class CreateOrderandPaymentRequest {
             ChargentOrders__ChargentOrder__c chOrder = new ChargentOrders__ChargentOrder__c(
                                                                 Comments__c = 'Created For Payment Request',
                                                                 ChargentOrders__Subtotal__c = 0.01,
+                                                                ChargentOrders__Billing_Email__c = emailInput,
                                                                 ChargentOrders__Charge_Amount__c = 0.01,
                                                                 ChargentOrders__Gateway__c = srecGateway.Id,
                                                                 Opportunity__c = oppId); 
