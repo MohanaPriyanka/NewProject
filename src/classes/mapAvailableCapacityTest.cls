@@ -13,7 +13,7 @@ Insert newServiceTerritory;
 shared_solar_system__c newSSS = new shared_solar_system__c( 
 
 name = 'Florence', 
-service_territory__c = 'NEMA',
+Service_Territories__c = 'NEMA',
 total_system_size_kWh_DC__c = 2000,
 Expected_Yield_kWh_kW__c = 1450,
 System_Utility__c = 'Eversource',
@@ -24,7 +24,7 @@ insert newSSS;
 shared_solar_system__c newSSS2 = new shared_solar_system__c( 
 
 name = 'Spartanburg', 
-service_territory__c = 'NEMA',
+Service_Territories__c = 'NEMA',
 total_system_size_kWh_DC__c = 10000,
 Expected_Yield_kWh_kW__c = 1450,
 System_Utility__c = 'Eversource',

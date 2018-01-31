@@ -31,6 +31,7 @@ public class CustomerCommunicationHandlerTest{
         Shared_Solar_System__c sss1 = 
                 new Shared_Solar_System__c(Name = 'SSS1',
                                            Service_Territory__c = 'SEMA',
+                                           Service_Territories__c = 'SEMA',
                                            Open__c = true,
                                            Reserved_Capacity_kW_DC__c = '0',
                                            Capacity_Committed_kW_DC__c = 0,
@@ -50,6 +51,7 @@ public class CustomerCommunicationHandlerTest{
             Shared_Solar_System__c sss2 = 
                 new Shared_Solar_System__c(Name = 'SSS2',
                                            Service_Territory__c = 'SEMA',
+                                           Service_Territories__c = 'SEMA',
                                            Open__c = true,
                                            Reserved_Capacity_kW_DC__c = '0',
                                            Capacity_Committed_kW_DC__c = 0,
@@ -70,6 +72,7 @@ public class CustomerCommunicationHandlerTest{
             Shared_Solar_System__c sss3 = 
                 new Shared_Solar_System__c(Name = 'SSS3',
                                            Service_Territory__c = 'SEMA',
+                                           Service_Territories__c = 'SEMA',
                                            Open__c = true,
                                            Reserved_Capacity_kW_DC__c = '0',
                                            Capacity_Committed_kW_DC__c = 0,

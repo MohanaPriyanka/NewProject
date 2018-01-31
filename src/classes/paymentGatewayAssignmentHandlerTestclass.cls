@@ -24,7 +24,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         insert new List <Entity__c>{entity1, entity2, entity3};
 
         Shared_Solar_System__c sharedSolarSystemOxfordBarretSt = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barret St',
-                                                                                                                                Service_Territory__c = 'WCMA',
+                                                                                                                                Service_Territories__c = 'WCMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity1.Id,
                                                                                                                                 
@@ -40,7 +40,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                                                 Assemblage_Count__c = 1,
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
         Shared_Solar_System__c sharedSolarSystemMedfieldCountryWay = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Medfield Country Way',
-                                                                                                                                Service_Territory__c = 'NEMA',
+                                                                                                                                Service_Territories__c = 'NEMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity2.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
@@ -57,7 +57,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
 
         Shared_Solar_System__c sharedSolarSystemFairhavenMillRd = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Fairhaven Mill Rd',
-                                                                                                                                Service_Territory__c = 'NEMA',
+                                                                                                                                Service_Territories__c = 'NEMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity3.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,

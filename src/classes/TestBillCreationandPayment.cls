@@ -48,6 +48,7 @@ public class TestBillCreationandPayment {
         Shared_Solar_System__c sss1 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                        Service_Territory__c = 'SEMA',
+                                       Service_Territories__c = 'SEMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,
@@ -66,6 +67,7 @@ public class TestBillCreationandPayment {
         Shared_Solar_System__c sss2 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                                        Service_Territory__c = 'SEMA',
+                                       Service_Territories__c = 'SEMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '0',
                                        Capacity_Committed_kW_DC__c = 0,

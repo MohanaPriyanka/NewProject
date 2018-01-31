@@ -82,7 +82,7 @@ public class CSCPChartHandlerTest {
 
 		Shared_Solar_System__c sss1 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-			Service_Territory__c = 'WCMA',
+			Service_Territories__c = 'WCMA',
 			Open__c = true,
 			BWC_Project_Entity_Manual__c = entityone.Id,
 			Auto_Payment_Form__c = false,
@@ -99,7 +99,7 @@ public class CSCPChartHandlerTest {
 			Maximum_Subscription_Assemblage__c = 25);
 		Shared_Solar_System__c sss2 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-			Service_Territory__c = 'WCMA',
+			Service_Territories__c = 'WCMA',
 			Open__c = true,
 			BWC_Project_Entity_Manual__c = entitytwo.Id,
 			Auto_Payment_Form__c = true,

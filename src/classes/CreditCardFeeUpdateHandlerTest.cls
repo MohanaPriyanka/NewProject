@@ -68,7 +68,7 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
 // Create Shared Solar Systems 
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                                                                                                                Service_Territory__c = 'SEMA',
+                                                                                                                                Service_Territories__c = 'SEMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity1.Id,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
@@ -87,7 +87,7 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
       //  insert sss1;
 
         Shared_Solar_System__c sss2 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-                                                                                                                                Service_Territory__c = 'SEMA',
+                                                                                                                                Service_Territories__c = 'SEMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 BWC_Project_Entity_Manual__c = entity2.Id,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',

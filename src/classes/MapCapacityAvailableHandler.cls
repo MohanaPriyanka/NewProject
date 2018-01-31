@@ -42,7 +42,7 @@ public with sharing class MapCapacityAvailableHandler {
         string utility;
         decimal totalavailablecapacity = 0;
 
-        List <Shared_Solar_System__c> listSSS = [SELECT Id, Name, System_Utility__c, Service_Territory__c, Credit_Score_Requirement__c, 
+        List <Shared_Solar_System__c> listSSS = [SELECT Id, Name, System_Utility__c, Service_Territories__c, Credit_Score_Requirement__c, 
                                                 Sales_Partners__c, Project_Capacity_Available_kW_DC__c
                                                 FROM Shared_Solar_System__c
                                                 WHERE Open__c = True];
@@ -69,7 +69,7 @@ public with sharing class MapCapacityAvailableHandler {
                 }
 
                 if(listSSS.get(k).System_Utility__c == utility 
-                  && listSSS.get(k).Service_Territory__c == loadzone 
+                  && listSSS.get(k).Service_Territories__c.contains(loadzone)
                   && listSSS.get(k).Credit_Score_Requirement__c <= fico){
                       system.debug(listSSS.get(k).Sales_Partners__c);
 
