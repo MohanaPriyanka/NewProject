@@ -10,7 +10,7 @@ private class LeadTriggerHandlerTest {
         insert nmcRate;
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                                                                                                                Service_Territory__c = 'WCMA',
+                                                                                                                                Service_Territories__c = 'WCMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,
@@ -30,7 +30,7 @@ private class LeadTriggerHandlerTest {
         
      
         //Shared_Solar_System__c sss2 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-        //                                                                                                                        Service_Territory__c = 'WCMA',
+        //                                                                                                                        Service_Territories__c = 'WCMA',
         //                                                                                                                        Open__c = true,
         //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
         //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
@@ -39,7 +39,7 @@ private class LeadTriggerHandlerTest {
         //                                                                                                                        Credit_Score_Requirement__c = 200,
         //                                                                                                                        Assignment_order__c = '2'));
         //Shared_Solar_System__c sss3 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P3',
-        //                                                                                                                        Service_Territory__c = 'WCMA',
+        //                                                                                                                        Service_Territories__c = 'WCMA',
         //                                                                                                                        Open__c = true,
         //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
         //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
@@ -50,7 +50,7 @@ private class LeadTriggerHandlerTest {
 
 
         //Shared_Solar_System__c sss4 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P4',
-        //                                                                                                                        Service_Territory__c = 'WCMA',
+        //                                                                                                                        Service_Territories__c = 'WCMA',
         //                                                                                                                        Open__c = true,
         //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
         //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
@@ -110,7 +110,7 @@ private class LeadTriggerHandlerTest {
         lead2.Status = 'Qualified';
         update lead;
 
-        System.debug([Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territory__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id]);
+        System.debug([Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id]);
 
 
         Utility_Account_Log__c ual = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Lead__c = lead.Id,
@@ -126,7 +126,7 @@ private class LeadTriggerHandlerTest {
 
         Test.startTest();
         System.debug('Starting LeadTriggerHandlerTest');
-        System.debug('Debug SSS - ' + [Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territory__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id ]);
+        System.debug('Debug SSS - ' + [Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id ]);
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];

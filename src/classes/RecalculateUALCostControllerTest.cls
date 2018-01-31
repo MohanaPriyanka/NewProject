@@ -38,7 +38,7 @@ public class RecalculateUALCostControllerTest {
 
         Shared_Solar_System__c sss1 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -53,7 +53,7 @@ public class RecalculateUALCostControllerTest {
                                        Maximum_Subscription_Assemblage__c = 25);
         Shared_Solar_System__c sss2 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -64,7 +64,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '2');
         Shared_Solar_System__c sss3 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P3',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -75,7 +75,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '3');
         Shared_Solar_System__c sss4 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P4',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -86,7 +86,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '4');
         Shared_Solar_System__c sss5 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P5',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = true,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -96,7 +96,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '5');
         Shared_Solar_System__c sss6 = 
             new Shared_Solar_System__c(Name = 'Closed Schedule Zed P1',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -106,7 +106,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '3');
         Shared_Solar_System__c sss7 = 
             new Shared_Solar_System__c(Name = 'Closed Schedule Zed P2',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -116,7 +116,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '4');
         Shared_Solar_System__c sss8 = 
             new Shared_Solar_System__c(Name = 'Closed Not Zed P1',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -126,7 +126,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '4');
         Shared_Solar_System__c sss9 = 
             new Shared_Solar_System__c(Name = 'Closed Not Zed P2',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,
@@ -140,7 +140,7 @@ public class RecalculateUALCostControllerTest {
                                        Assignment_order__c = '5');
         Shared_Solar_System__c sss10 = 
             new Shared_Solar_System__c(Name = 'Closed Not Zed P3',
-                                       Service_Territory__c = 'WCMA',
+                                       Service_Territories__c = 'WCMA',
                                        Open__c = false,
                                        Reserved_Capacity_kW_DC__c = '100',
                                        Capacity_Committed_kW_DC__c = 100,

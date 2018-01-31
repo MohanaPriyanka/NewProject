@@ -35,7 +35,7 @@ Static testMethod void UASTestClass()
         shared_solar_system__c newSSS = new shared_solar_system__c( 
 
         name = 'test', 
-        service_territory__c = 'NEMA',
+        Service_Territories__c = 'NEMA',
         total_system_size_kWh_DC__c = 950,
         Expected_Yield_kWh_kW__c = 1450,
         system_utility__c = 'Eversource',
@@ -53,7 +53,7 @@ Static testMethod void UASTestClass()
         nmc_tariff__c = newNMC.id,
         closeDate= myDate, 
         Utilitymapper__c = 'Eversource', 
-        service_territory__c = 'NEMA', 
+        Service_Territories__c = 'NEMA', 
         parcel_zip__c = '02052',
         Project_Assignment__c = 'Manual',
         shared_solar_system__c = newSSS.id,  

@@ -25,7 +25,7 @@ insert pcr1;
 Date myDate = Date.newInstance(2015, 2, 17);
 
         Shared_Solar_System__c myProject = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                                                 Service_Territory__c = 'SEMA',
+                                                                 Service_Territories__c = 'SEMA',
                                                                  Open__c = true,
                                                                  Reserved_Capacity_kW_DC__c = '0',
                                                                  Capacity_Committed_kW_DC__c = 0,

@@ -159,11 +159,11 @@ public with sharing class LeadTriggerHandler {
         }
 
         //Get the Shared Solar Systems based on the Lead Details that are still open
-        String sssQuery = 'Select Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c, Utility_NMC_Tariff__c, Credit_Score_Requirement__c  ';
+        String sssQuery = 'Select Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c, Utility_NMC_Tariff__c, Credit_Score_Requirement__c  ';
         sssQuery +=       'From Shared_Solar_System__c ';
         sssQuery +=       'Where Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
-        sssQuery +=       'AND Service_Territory__c = \'' + lead.Load_Zone__c + '\' ';
+        sssQuery +=       'AND Service_Territories__c includes (\'' + lead.Load_Zone__c + '\') ';
         sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
         sssQuery +=       'AND Sales_Partners__c includes( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
 
@@ -192,6 +192,7 @@ public with sharing class LeadTriggerHandler {
                                                   Shared_Solar_System__c = sss.Id,
                                                   Reserved_System_Capacity_kW_DC2__c = sss.Reserved_Capacity_kW_DC__c,
                                                   Available_System_Capacity_kW_DC__c = sss.Project_Capacity_Available_kW_DC__c,
+                                                  Product__c = sss.Product__c,
                                                   System_Assigned__c = true,
                                                   NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
                                                   Name = lead.FirstName + ' ' + lead.LastName,

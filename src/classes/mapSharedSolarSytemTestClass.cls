@@ -21,7 +21,7 @@ private class mapSharedSolarSytemTestClass{
             Open__c = TRUE,
             Total_System_Size_kW_AC__c = 750,
             Estimated_COD_Date_Manual__c = codDate,
-            Service_territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
             System_Utility__c = 'Eversource',
             credit_score_requirement__c = 600);
                 insert systemOne;
@@ -33,7 +33,7 @@ private class mapSharedSolarSytemTestClass{
             Assignment_Order__c = '2',
             Total_System_Size_kW_AC__c = 750,
             Estimated_COD_Date_Manual__c = codDateTwo,
-            Service_territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
             System_Utility__c = 'Eversource',
             credit_score_requirement__c = 700);
                 insert systemTwo;
@@ -50,7 +50,7 @@ private class mapSharedSolarSytemTestClass{
             StageName='New',
             Product_line__c = 'Community Solar',
             Project_assignment__c = 'Automatic - COD Date/Available Capacity',
-            Service_territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
             UtilityMapper__c = 'Eversource',
             Personal_Credit_Report2__c = creditReport.id); 
             
@@ -61,7 +61,7 @@ private class mapSharedSolarSytemTestClass{
             StageName='New',
             Product_line__c = 'Community Solar',
             Project_assignment__c = 'Automatic - Assignment Order',
-            Service_territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
             UtilityMapper__c = 'Eversource',
             Personal_Credit_Report2__c = creditReport.id); 
 
