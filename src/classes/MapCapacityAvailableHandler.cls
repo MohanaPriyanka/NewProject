@@ -68,6 +68,10 @@ public with sharing class MapCapacityAvailableHandler {
                     ssspartner = listsss.get(k).Sales_Partners__c;
                 }
 
+                if(loadzone == NULL){
+                    loadzone = 'blank';
+                }
+
                 if(listSSS.get(k).System_Utility__c == utility 
                   && listSSS.get(k).Service_Territories__c.contains(loadzone)
                   && listSSS.get(k).Credit_Score_Requirement__c <= fico){
