@@ -53,7 +53,7 @@ Static testMethod void UASTestClass()
         nmc_tariff__c = newNMC.id,
         closeDate= myDate, 
         Utilitymapper__c = 'Eversource', 
-        Service_Territories__c = 'NEMA', 
+        Service_Territory__c = 'NEMA', 
         parcel_zip__c = '02052',
         Project_Assignment__c = 'Manual',
         shared_solar_system__c = newSSS.id,  
