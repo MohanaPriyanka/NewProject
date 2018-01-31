@@ -10,7 +10,7 @@ private class LeadTriggerHandlerTest {
         insert nmcRate;
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                                                                                                                Service_Territories__c = 'WCMA',
+                                                                                                                                Service_Territories__c = 'WCMA; SEMA',
                                                                                                                                 Open__c = true,
                                                                                                                                 Reserved_Capacity_kW_DC__c = '0',
                                                                                                                                 Capacity_Committed_kW_DC__c = 0,
