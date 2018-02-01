@@ -60,7 +60,6 @@ public with sharing class LeadTriggerHandler {
         opp.Annual_Independent_Income__c = lead.Annual_Income_Currency__c;
         opp.Application_Date__c = lead.Application__c;
         opp.Application_Type__c = lead.Application_Type__c;
-        opp.Assigned_CS_Project__c = lead.Project__c;
         opp.Avidia_Checking_Account__c = lead.Avidia_Checking_Account__c;
         opp.Business_Title__c = lead.Business_Title__c;
         opp.CS_Capacity_Allocated__c = lead.Capacity_Allocation__c;
