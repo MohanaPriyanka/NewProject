@@ -2,9 +2,17 @@
   <aura:attribute name="OppId" type="String" default=""/>
   <aura:attribute name="errorMessage" type="String" default="Invalid Email"/>
   <aura:attribute name="showError" type="Boolean" default="false"/>
+  <aura:attribute name="ShowSuccess" type="Boolean" default="false"/>
   <aura:attribute name="showEmail" type="Boolean" default="true"/>
   <aura:attribute name="PaymentLink" type="String" default=""/>
   <aura:attribute name="emailInput" type="String" default=""/>
+  <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"                
+    default="{ 'sobjectType': 'ChargentOrders__ChargentOrder__c',
+                    'ChargentOrders__Bank_Account_Number__c' : '',
+                    'ChargentOrders__Bank_Routing_Number__c':'',
+                    'ChargentOrders__Bank_Account_Name__c':'',
+                    'ChargentOrders__Bank_Name__c':'',
+                    'ChargentOrders__Bank_Account_Type__c':'Checking'}"/>   
 
   <div class="slds-form slds-form_stacked slds-p-bottom_large slds-align_absolute-center white">
     <fieldset class="slds-form-element"> 
@@ -14,10 +22,10 @@
       <h3 class="slds-text-body_large slds-p-bottom_large slds-align_absolute-center white">
         (please confirm your email so we can get you your SREC payments at the speed of light)*
       </h3>
+      <aura:if isTrue="{!v.showError}"> 
+        <ui:outputText class="slds-output slds-text-heading_medium red slds-align_absolute-center" value="{!v.errorMessage}"/>
+      </aura:if>
       <aura:if isTrue="{!v.showEmail}"> 
-        <aura:if isTrue="{!v.showError}"> 
-            <ui:outputText class="slds-output slds-text-body_large red slds-align_absolute-center" value="{!v.errorMessage}"/>
-        </aura:if>
         <div aura:id="Confirm" class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white">
           <label class="slds-text-heading_medium slds-align_absolute-center white" >Please Confirm Email:</label>
           <ui:inputText class="slds-input" value="{!v.emailInput}"/>
@@ -26,26 +34,51 @@
           <lightning:button aura:id="viewLoanData" 
                               name="submitTable"
                               label="Submit"
-                              onclick="{!c.checkLoanNum}"
-                              class="slds-button slds-button_neutral slds-align_absolute-center">
-          </lightning:button> 
+                              onclick="{!c.checkEmail}"
+                              class="slds-button slds-button_neutral slds-align_absolute-center"/>
         </div>
         <aura:set attribute="else"> 
-          <h3 class="slds-text-body_medium slds-align_absolute-center white">
-            By providing my bank account information, I confirm that I am opting out of receiving paper checks
-          </h3>
-          <h3 class="slds-text-body_medium slds-align_absolute-center white">
-            and recognize that my SREC payments will be deposited into this account on a quarterly basis.
-          </h3>
-          <h3 class="slds-text-body_medium slds-p-bottom_large slds-align_absolute-center white">
-            I allow BlueWave to charge and then refund this account $0.01 in order to validate its existence.
-          </h3>
-            <lightning:button aura:id="viewLoanData" 
-                              name="submitTable"
-                              label=""
-                              class="slds-button slds-button_neutral slds-align_absolute-center">
-            <a href="{!v.PaymentLink}">I Agree, Continue</a>
-            </lightning:button>
+          <aura:if isTrue="{!v.ShowSuccess}">
+              <h3 class="slds-text-heading_medium slds-p-bottom_large slds-align_absolute-center white">
+                Thank you. You should recieve a confirmation email momentarily.
+              </h3>
+            <aura:set attribute="else">
+              <h3 class="slds-text-body_medium slds-align_left white">
+                By providing my bank account information, I confirm that I am opting out of receiving paper checks
+              </h3>
+              <h3 class="slds-text-body_medium slds-p-bottom_large slds-align_absolute-center white">
+                and recognize that my SREC payments will be deposited into this account on a quarterly basis.
+              </h3>
+              <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white">
+                <label class="slds-text-body_medium slds-align_absolute-center white">Routing Number:</label>
+                <ui:inputText aura:id="routing" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}"/>
+              </div>
+              <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white">
+                <label class="slds-text-body_medium slds-align_absolute-center white">Bank Account Number:</label>
+                <ui:inputText aura:id="accountnumber" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Number__c}"/>
+              </div>
+              <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white">
+                <label class="slds-text-body_medium slds-align_absolute-center white">Name on Account:</label>
+                <ui:inputText aura:id="accountname" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Name__c}"/>
+              </div>
+              <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white">
+                <label class="slds-text-body_medium slds-align_absolute-center white">Bank Name:</label>
+                <ui:inputText aura:id="bankname" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Name__c}"/>
+              </div>
+              <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white  slds-p-bottom_large ">
+                <label class="slds-text-body_medium slds-align_absolute-center white">Account Type:</label>
+                <ui:inputSelect aura:id="" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Type__c}" >
+                  <ui:inputSelectOption label="Checking" value="Checking"/>
+                  <ui:inputSelectOption label="Savings" value="Savings"/>
+                </ui:inputSelect>
+              </div>
+                <lightning:button aura:id="viewLoanData" 
+                                  name="submitTable"
+                                  label="Submit"
+                                  onclick="{!c.submitOrder}"
+                                  class="slds-button slds-button_neutral slds-align_absolute-center"/>            
+            </aura:set>
+          </aura:if>
         </aura:set>
       </aura:if>
     </fieldset>
