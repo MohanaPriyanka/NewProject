@@ -101,7 +101,7 @@ public without sharing class CAPController {
                   WHERE Id =: lead.Id];
         boolean forceUpdate = false;
         if (l.Date_of_Application__c == null) {
-            lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
+            lead.Date_of_Application__c = System.now().format('YYYY-MM-dd-hh:mm');
         }
         if (l != null && l.Personal_Credit_Report__c == null) {
             lead.LASERCA__Pull_Credit_Report__c = true;

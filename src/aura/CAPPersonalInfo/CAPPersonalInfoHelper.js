@@ -212,6 +212,12 @@
             lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c =
                 lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c.replace(/-/g,"");
         }
+        if (component.get('v.billingAddressSame')) {
+            lead.Street = lead.LASERCA__Home_Address__c;
+            lead.City = lead.LASERCA__Home_City__c;
+            lead.State = helper.US_STATES[lead.LASERCA__Home_State__c];
+            lead.PostalCode = lead.LASERCA__Home_Zip__c;
+        }
 
         var leadClone = helper.cleanLead(component);
         var leadPromise, contactPromise;
