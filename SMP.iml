@@ -659,6 +659,14 @@
                             <option name="name" value="MarketingInventoryTestClass" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateOrderandPaymentRequest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateOrderandPaymentRequestTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -835,6 +843,26 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="UnderConstruction" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentRequest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentRequestCancel" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentRequestFail" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentRequestLanding" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentRequestSuccess" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1337,6 +1365,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="BlueWavePicklist" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateOrder" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateOrderApp" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

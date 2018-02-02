@@ -141,7 +141,7 @@ public with sharing class CAPControllerTest {
             FROM Lead
             WHERE LastName = 'Swain'];
         System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
-        System.assertEquals(System.now().format('YYYY-MM-DD'), leadList[0].Date_of_Application_2__c);
+        System.assertEquals(System.now().format('YYYY-MM-dd'), leadList[0].Date_of_Application_2__c);
 
         // LCA should set pull credit once the future method fires
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
