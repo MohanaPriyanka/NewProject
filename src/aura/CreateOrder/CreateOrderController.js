@@ -1,8 +1,8 @@
 ({
     checkEmail : function(component, event, helper) {
-    	const oppID = component.get("v.OppId");
+        const oppID = component.get("v.OppId");
         const emailInput = component.get("v.emailInput");
-    	helper.checkOppEmail(component, oppID, emailInput, helper);
+        helper.checkOppEmail(component, oppID, emailInput, helper);
     },
 
     submitOrder : function(component, event, helper) {

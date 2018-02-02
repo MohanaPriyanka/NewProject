@@ -20,7 +20,7 @@
         Solar Renewable Energy Certificate (SREC) Direct Deposit Form
       </h3>
       <h3 class="slds-text-body_large slds-p-bottom_large slds-align_absolute-center white">
-        (please confirm your email so we can get you your SREC payments at the speed of light)*
+        (please confirm your email so we can get you your SREC payments at the speed of light)
       </h3>
       <aura:if isTrue="{!v.showError}"> 
         <ui:outputText class="slds-output slds-text-heading_medium red slds-align_absolute-center" value="{!v.errorMessage}"/>
