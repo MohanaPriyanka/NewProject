@@ -69,7 +69,7 @@
                             onclick="{!c.openCSWindow}"/>
         </li>
       </aura:if>
-      <li class="slds-context-bar__item slds-context-bar__item--divider-right slds-context-bar__item--divider-left">
+      <li class="slds-context-bar__item slds-context-bar__item--divider-right">
         <a href="slpaddcustomer" class="slds-m-top_xx-small">          
             <lightning:button aura:id="slpaddcustomer"
                               label="Add Solar Loan Customer"
