@@ -13,7 +13,7 @@
                     component.set("v.licenseType", true);
                     $A.util.removeClass(component.find("disbursalsMenuItem"), 'noDisplay');
                 }
-                if (disableCS === 'false'){
+                if (disableCS === 'true'){
                     component.set("v.referralCode", referralCode);
                 } else {
                     component.set("v.showCSTab", false);

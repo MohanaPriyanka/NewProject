@@ -33,7 +33,7 @@ public without sharing class BlueWaveParent {
         String templateHtml = template.HtmlValue;
         templateHtml = templateHtml.replace(templateField, replaceText);
 
-        Messaging.SendEmailResult[] result = MessagingService.createAndSendEmail(template.HtmlValue, orgWideEmail, subjectLine, addressList);
+        Messaging.SendEmailResult[] result = MessagingService.createAndSendEmail(templateHtml, orgWideEmail, subjectLine, addressList);
         for(Messaging.SendEmailResult rr : result){
             if(rr.IsSuccess()){
                 return 'EmailSent';
