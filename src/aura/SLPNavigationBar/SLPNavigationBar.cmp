@@ -10,7 +10,7 @@
 <aura:attribute name="emailSuccess" type="Boolean" default="false" />     
 <aura:attribute name="emailInput" type="String"/>      
 <aura:attribute name="referralCode" type="String"/>    
-<aura:attribute name="showCSTab" type="Boolean" default="true"/>     
+<aura:attribute name="showCSTab" type="Boolean" default="false"/>     
 
 <style>
     @font-face {

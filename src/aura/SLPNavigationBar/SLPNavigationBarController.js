@@ -15,9 +15,8 @@
                 }
                 if (disableCS === 'true'){
                     component.set("v.referralCode", referralCode);
-                } else {
-                    component.set("v.showCSTab", false);
-                }
+                    component.set("v.showCSTab", true);
+                } 
             }    
             else {
                 $A.log("Errors", resp.getError());
