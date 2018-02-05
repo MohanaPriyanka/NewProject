@@ -19,7 +19,8 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static String getLicenseType() {
-      return profile.LicenseType;
+      String partnerProfileString = profile.licenseType + '/' + profile.referralCode + '/' + profile.csDisabled;
+      return partnerProfileString;
   }
 
   //The getCustomerInformation method returns an equipment list to show system information, and other customer information on the customer window

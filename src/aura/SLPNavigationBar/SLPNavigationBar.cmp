@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" extends="c:BlueWaveParent" access="global">
 <ltng:require styles="{!$Resource.animations}" />
 <aura:attribute name="licenseType" type="Boolean"  />     
 <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
@@ -6,6 +6,12 @@
 <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />   
 <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" /> 
 <aura:handler event="c:SLPSendApplicationEmailEvent" action="{!c.closeEmailCustomerModal}" /> 
+<aura:attribute name="CSWindow" type="Boolean" default="false" />   
+<aura:attribute name="emailSuccess" type="Boolean" default="false" />     
+<aura:attribute name="emailInput" type="String"/>      
+<aura:attribute name="referralCode" type="String"/>    
+<aura:attribute name="showCSTab" type="Boolean" default="true"/>     
+
 <style>
     @font-face {
     font-family: proximaNovaFont;
@@ -22,7 +28,7 @@
     }
     .proximaNovaDataStream {
         font-family: proximaNovaFont;   
-    font-size:100%;
+    font-size:90%;
       color: #00b2a9;
     }
     @font-face {
@@ -42,56 +48,97 @@
         font-family: proximaNovaFont;   
     font-size:90%;
       color: #7C98AB;
-    }                 
+    }  
+    .proximaNovaDataMountaintopSmallTeal {
+      font-family: proximaNovaFont;   
+      font-size:95%;
+      color: #00b2a9;
+    }                  
 </style>
 <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div>   
 <div aura:id="header" class="slds-context-bar ">
-  <div class="slds-context-bar__primary slds-context-bar__item--divider-right">
-    <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
-      <div class="slds-context-bar__icon-action">
-        <div class="slds-dropdown slds-dropdown--right">
-          <ul class="slds-dropdown__list" role="menu">
-            <li class="slds-dropdown__item" role="presentation">
-              <a href="/slportal/s/loansheet" role="menuitem" tabindex="-1">
-                <span class="slds-truncate proximaNovaDataMountaintopSmall">Loan Summary Sheet</span>
-              </a>
-            </li>
-          </ul>
-        </div>         
-      </div>
-      <span class="slds-context-bar__label-action slds-context-bar__app-name ">
-        <ui:outputURL class="slds-truncate proximaNovaDataStream slds-m-top_xx-small" value="/slportal/s/slpaddcustomer" label="Add a Customer"/>    
-      </span>
-    </div>
-  </div>
   <!-- if adding other navigation targets, update SLPNavigationBarRenderer to remove button styling -->
   <nav class="slds-context-bar__secondary " role="navigation">
     <ul class="slds-grid">
+      <aura:if isTrue="{!v.showCSTab}">
+        <li class="slds-context-bar__item slds-cell-buffer_left slds-context-bar__item--divider-right slds-context-bar__item--divider-left">
+          <div class="slds-m-top_xx-small"></div>
+          <lightning:button aura:id="slpCommunitySolar"
+                            label="Add Community Solar Customer"
+                            class="slds-context-bar__label-action slds-truncate proximaNovaDataMountaintopSmallTeal"
+                            onclick="{!c.OpenCSWindow}"/>
+        </li>
+      </aura:if>
+      <li class="slds-context-bar__item slds-context-bar__item--divider-right slds-context-bar__item--divider-left">
+        <a href="slpaddcustomer" class="slds-m-top_xx-small">          
+            <lightning:button aura:id="slpaddcustomer"
+                              label="Add Solar Loan Customer"
+                              class="slds-context-bar__label-action slds-truncate proximaNovaDataMountaintopSmallTeal"/>
+        </a>
+      </li>
+      <li class="slds-context-bar__item">
+        <a href="loansheet" class="slds-m-top_xx-small">          
+            <lightning:button aura:id="slpsummarysheet"
+                              label="Create Loan Summary Sheet"
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
+        </a>
+      </li>
       <li class="slds-context-bar__item">
         <a href="slpdashboard" class="slds-m-top_xx-small">          
             <lightning:button aura:id="slpdashboard"
                               label="Customers"
-                              class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
         </a>
       </li>
       <!-- aura:if doesn't render the menu item properly as a button, so add 
            noDisplay and have doInit remove the class for Executives -->
       <li aura:id="disbursalsMenuItem" class="slds-context-bar__item noDisplay">
-      	<a href="slpdisbursals" class="slds-m-top_xx-small">          
+        <a href="slpdisbursals" class="slds-m-top_xx-small">          
             <lightning:button aura:id="slpdisbursals"
                               label="Disbursals" 
-                              class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
           </a>
       </li>
-
       <li class="slds-context-bar__item">
           <a href="slpalerts" class="slds-m-top_xx-small">
               <lightning:button aura:id="slpalerts"
                                 label="Alerts" 
-                                class="slds-context-bar__label-action proximaNovaDataMountaintop"/>
+                                class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
           </a>
       </li>                    
     </ul>
   </nav>
 </div>
+<aura:if isTrue="{!v.CSWindow}">
+  <div>
+    <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header blueBackground">
+            <h3 class="slds-text-body_small white">
+              Community Solar Application
+            <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeCSWindow}" size="small" alternativeText="close" />
+            </h3>
+        </header>
+        <div aura:id="windowBody" class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+          <aura:if isTrue="{!v.emailSuccess}">
+            <h3 class="slds-text-body_small slds-align_absolute-center slds-p-around_small">Email Sent Successfully</h3>
+            <aura:set attribute="else">
+              <ui:inputText label="Send to Email:"
+                            class="slds-input slds-p-bottom_medium"
+                            labelClass="slds-form-element__label"
+                            value="{!v.emailInput}"/>
+                <div aura:id="sendButton" class="slds-align_absolute-center slds-p-top_medium"><br></br>
+                  <ui:button label="Send" class="slds-button slds-button--neutral blueBackground" press="{!c.sendCSApplication}"/>
+                  <a href="{!'https://forms.bluewaverenewables.com/381687?tfa_531=' + v.referralCode}" target="blank">
+                    <ui:button label="Open" class="slds-button slds-button--neutral blueBackground"/>
+                  </a>
+                </div>
+            </aura:set>
+          </aura:if>
+        </div>
+      </div>
+    </section>
+    <div aura:id="greyout" class="slds-backdrop slds-backdrop_open"></div>
+  </div>
+</aura:if>
 </aura:component>

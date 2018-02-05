@@ -24,14 +24,20 @@ public without sharing class SLPUserHelper {
         public string salesRepEmail;
 
         public String partnerMarkets;
+
+        public String referralCode;
+
+        public Boolean csDisabled;
     }
 
     @AuraEnabled 
     public static PartnerProfile getPartnerProfile() {
         PartnerProfile partnerProfile = new PartnerProfile();
 
-        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
-                         PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name  
+        User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
+                    Contact.Account.Enable_CS_Application_in_Portal__c, Contact.Sales_Representative__r.Custom_ID__c,
+                    Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
+                    PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name  
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
         if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
@@ -42,6 +48,12 @@ public without sharing class SLPUserHelper {
              partnerProfile.partnerId = String.valueOf(u.Partner_Id__c).subString(0,15);
              partnerProfile.salesRepId = String.valueOf(u.Sales_Representative_Id__c).subString(0,15);
              partnerProfile.partnerMarkets = String.valueof(u.Contact.Account.State_Market__c);
+             if(u.Contact.Sales_Representative__r.Custom_ID__c != null){
+                partnerProfile.referralCode = String.valueof(u.Contact.Sales_Representative__r.Custom_ID__c);
+             } else {
+                partnerProfile.referralCode = 'bluewave';
+             }
+             partnerProfile.csDisabled = u.Contact.Account.Enable_CS_Application_in_Portal__c;
              if (String.isNotBlank(u.Sales_Representative_Email__c)) {
                  partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);                
              }
