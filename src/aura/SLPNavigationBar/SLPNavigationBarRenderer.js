@@ -13,5 +13,8 @@
         $A.util.removeClass(component.find("slpcustomer"),"slds-button--neutral");
         $A.util.removeClass(component.find("slpdisbursals"),"slds-button--neutral");
         $A.util.removeClass(component.find("slpalerts"),"slds-button--neutral");
+        $A.util.removeClass(component.find("slpCommunitySolar"),"slds-button--neutral");
+        $A.util.removeClass(component.find("slpaddcustomer"),"slds-button--neutral");
+        $A.util.removeClass(component.find("slpsummarysheet"),"slds-button--neutral");
     }
 })
