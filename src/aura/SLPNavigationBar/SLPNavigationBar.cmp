@@ -66,7 +66,7 @@
           <lightning:button aura:id="slpCommunitySolar"
                             label="Add Community Solar Customer"
                             class="slds-context-bar__label-action slds-truncate proximaNovaDataMountaintopSmallTeal"
-                            onclick="{!c.OpenCSWindow}"/>
+                            onclick="{!c.openCSWindow}"/>
         </li>
       </aura:if>
       <li class="slds-context-bar__item slds-context-bar__item--divider-right slds-context-bar__item--divider-left">
