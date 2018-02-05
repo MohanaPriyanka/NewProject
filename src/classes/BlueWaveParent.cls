@@ -28,7 +28,9 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled 
-    public static String sendAnEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
+    public static Boolean sendAnEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
+        Boolean hasSuccess = false;
+        Boolean hasFailure = false;
         EmailTemplate template = MessagingService.getHtml(emailTemplateName);
         String templateHtml = template.HtmlValue;
         templateHtml = templateHtml.replace(templateField, replaceText);
@@ -36,10 +38,18 @@ public without sharing class BlueWaveParent {
         Messaging.SendEmailResult[] result = MessagingService.createAndSendEmail(templateHtml, orgWideEmail, subjectLine, addressList);
         for(Messaging.SendEmailResult rr : result){
             if(rr.IsSuccess()){
-                return 'EmailSent';
+                hasSuccess = true;
+            } else {
+                hasFailure = true;
             }
         } 
-        return 'EmailNotSent';
+        if(hasFailure){
+            return false;
+        } else if (hasSuccess){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @AuraEnabled 

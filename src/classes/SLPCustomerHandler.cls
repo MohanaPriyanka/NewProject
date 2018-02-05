@@ -19,7 +19,7 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static String getLicenseType() {
-      String partnerProfileString = profile.licenseType + '/' + profile.referralCode + '/' + profile.csDisabled;
+      String partnerProfileString = profile.licenseType + '/' + profile.referralCode + '/' + profile.csEnabled;
       return partnerProfileString;
   }
 

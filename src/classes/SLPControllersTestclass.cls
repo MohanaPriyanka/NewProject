@@ -344,8 +344,8 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals('Manager/test/true', partnerProfile);
             List<String> addressList = new List<String>();
             addressList.add('Jpentaleri@bluewavesolar.com');
-            String emailSuccess = BlueWaveParent.sendAnEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
-            System.assertEquals('EmailSent', emailSuccess);
+            Boolean emailSuccess = BlueWaveParent.sendAnEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
+            System.assertEquals(true, emailSuccess);
         }
 
         for (Lead leadRecord : leadList) {

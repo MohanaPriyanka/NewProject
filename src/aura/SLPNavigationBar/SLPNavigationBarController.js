@@ -3,13 +3,13 @@
         //The following block of code retrieves the user's license type to determine what to display on the UI
         var actionLicenseType = component.get("c.getLicenseType");        
         actionLicenseType.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if(resp.getState() === 'SUCCESS') {
                 const partnerProfile = resp.getReturnValue();
                 const listParams = partnerProfile.split("/",3);
                 const licenseType = listParams[0];
                 const referralCode = listParams[1];
                 const disableCS = listParams[2];
-                if (licenseType == 'Executive'){
+                if (licenseType === 'Executive'){
                     component.set("v.licenseType", true);
                     $A.util.removeClass(component.find("disbursalsMenuItem"), 'noDisplay');
                 }
@@ -49,7 +49,7 @@
         }); 
 
         actionSendEmail.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS' && resp.getReturnValue() == 'EmailSent') {
+            if(resp.getState() === 'SUCCESS' && resp.getReturnValue() === true) {
                 component.set("v.emailSuccess", true);   
             } else {
                 alert('Please enter a valid email address');

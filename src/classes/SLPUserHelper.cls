@@ -27,7 +27,7 @@ public without sharing class SLPUserHelper {
 
         public String referralCode;
 
-        public Boolean csDisabled;
+        public Boolean csEnabled;
     }
 
     @AuraEnabled 
@@ -53,7 +53,7 @@ public without sharing class SLPUserHelper {
              } else {
                 partnerProfile.referralCode = 'bluewave';
              }
-             partnerProfile.csDisabled = u.Contact.Account.Enable_CS_Application_in_Portal__c;
+             partnerProfile.csEnabled = u.Contact.Account.Enable_CS_Application_in_Portal__c;
              if (String.isNotBlank(u.Sales_Representative_Email__c)) {
                  partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);                
              }
