@@ -75,14 +75,12 @@
                     <div class="slds-form-element__row">
                       <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b>&nbsp;
-                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
-                                                               The applicant's requested loan amount is the difference between 
+                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments.
+                                                               The applicant's requested loan amount is the difference between
                                                                total system cost and down payment."/>
                         </label>
-                        <div class="slds-form-element__control">
-                          <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}" required="true"/>
-                        </div>
-                      </div>      
+                        <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}"/>
+                      </div>
                       <div aura:id="downPaymentElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment on System</b>&nbsp;
                           <c:BlueWaveInputToolTip placementLeft="true" popoverText="If the customer has made a down payment on their system, 
@@ -94,9 +92,7 @@
                     <div class="slds-form-element__row">
                       <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
-                        <div class="slds-form-element__control">
-                          <ui:outputCurrency aura:id="loanAmount" class="slds-input" value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"/>
-                        </div>
+                        <ui:outputCurrency aura:id="loanAmount" class="slds-input input uiInput--input" value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"/>
                       </div>
                     </div>
                   </div>

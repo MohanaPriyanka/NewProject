@@ -1,6 +1,14 @@
 ({
     log : function(component, event) {
+        var defaultOptions = {
+            suppressAlert: false,
+            suppressDBSave: false
+        };
         var errors = event.getParam("errors");
+        var options = event.getParam('options');
+        if (!options) {
+            options = defaultOptions;
+        }
         if (errors) {
             if (errors[0]) {
                 var messageText;
@@ -17,21 +25,25 @@
                 } else {
                     messageText = errors;
                 }
-                alert("Sorry, we encountered an error! Please try again or contact us with this error message:\n\n" +
-                      messageText);
+                if (!options.suppressAlert) {
+                    alert("Sorry, we encountered an error! Please try again or contact us with this error message:\n\n" +
+                          messageText);
+                }
 
-                var action = component.get("c.logNow");
-                var devInfo = JSON.stringify(event.getParam("developerInfo"),
-                                             function replacer(key, value) {
-                                                 var blacklist = ['LASERCA__SSN__c']
-                                                 return blacklist.indexOf(key) === -1 ? value : undefined
-                                             },
-                                             2);
-                action.setParams({className : event.getParam("className"),
-                            methodName : event.getParam("methodName"),
-                            message : messageText + "\n\n" + (devInfo?devInfo:'')});
-                action.setCallback(this, function(resp){});
-                $A.enqueueAction(action);                
+                if (!options.suppressDBSave) {
+                    var action = component.get("c.logNow");
+                    var devInfo = JSON.stringify(event.getParam("developerInfo"),
+                        function replacer(key, value) {
+                            var blacklist = ['LASERCA__SSN__c']
+                            return blacklist.indexOf(key) === -1 ? value : undefined
+                        },
+                        2);
+                    action.setParams({className : event.getParam("className"),
+                        methodName : event.getParam("methodName"),
+                        message : messageText + "\n\n" + (devInfo?devInfo:'')});
+                    action.setCallback(this, function(resp){});
+                    $A.enqueueAction(action);
+                }
             }
         }
     }

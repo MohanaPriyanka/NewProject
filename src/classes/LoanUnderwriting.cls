@@ -45,12 +45,15 @@ global without sharing class LoanUnderwriting {
             coAppFifthDetail = getFifthDetail(lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             primaryPCR = getPCRDebt(lead.lead.Personal_Credit_Report__r.Id);
             coAppPCR = getPCRDebt(lead.lead.Personal_Credit_Report_Co_Applicant__r.Id);
-        } else {
+        } else if (lead.lead.Personal_Credit_Report__r != null) {
             hasCoApp = false;
             bestFICO = Integer.valueOf(Util.nullToZero(lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
             primaryFifthCode = getFifthCode(lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             primaryFifthDetail = getFifthDetail(lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             primaryPCR = getPCRDebt(lead.lead.Personal_Credit_Report__r.Id);
+        } else {
+            // No PCR on the lead - something is wrong
+            return;
         }
 
         Decimal mainIncome=0, mainDebt=0, coAppIncome=0, coAppDebt=0;

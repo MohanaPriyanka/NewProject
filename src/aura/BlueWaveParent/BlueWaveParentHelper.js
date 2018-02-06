@@ -259,6 +259,17 @@
         appEvent.fire();
     },
 
+    // Options allows the error to be just logged to the database or just displayed to the user
+    raiseError : function(className, methodName, errorMessage, developerInfo, options) {
+        var appEvent = $A.get("e.c:ApexCallbackError");
+        appEvent.setParams({"className" : className,
+            "methodName" : methodName,
+            "errors" : errorMessage,
+            "developerInfo" : developerInfo,
+            "options" : options});
+        appEvent.fire();
+    },
+
     //setSearchableValues sets the component's searchable attribute with map of lists all of which hold each text field queried on the record.
     //this makes it easier to search through as the system only has to check if each value in the map holds the text, if so, return the keyValue.
     setSearchableValues : function(component, event, helper, recordsAttribute, originalRecordsAttribute, searchableValuesAttribute, runSetSearchable) {

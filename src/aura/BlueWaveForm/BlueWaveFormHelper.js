@@ -85,7 +85,7 @@
     setInputToError : function(component, fieldId, animation) {
         $A.util.addClass(component.find(fieldId), 'slds-has-error'); 
         if (animation != null) {
-	    $A.util.addClass(component.find(fieldId), animation);          	
+            $A.util.addClass(component.find(fieldId), animation);
         }
     },     
 

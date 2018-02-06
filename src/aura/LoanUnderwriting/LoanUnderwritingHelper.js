@@ -18,12 +18,22 @@
                         component.set("v.bestFICO",
                                       Math.max((lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c || 0),
                                                (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0)));
+                        resolve(ltg);
                     } else if (lead.Personal_Credit_Report__r) {
                         component.set("v.mainPCRAttachment", leadWithAttachments.mainPCRAttachment);
                         component.set("v.bestFICO",
                                       (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c || 0));
+                        resolve(ltg);
+                    } else {
+                        var appEvent = $A.get("e.c:ApexCallbackError");
+                        appEvent.setParams({"className" : "LoanUnderwritingController",
+                            "methodName" : "doInit",
+                            "errors" : 'This lead did not have a Credit Report on it. ' +
+                                       'Perhaps credit was frozen, and a blank credit report was returned which prevented it from being processed. ' +
+                                       'Investigate this application from the Lead page before trying again.'});
+                        appEvent.fire();
+                        reject(resp);
                     }
-                    resolve(ltg);
                 } else {
                     var appEvent = $A.get("e.c:ApexCallbackError");
                     appEvent.setParams({"className" : "LoanUnderwritingController",

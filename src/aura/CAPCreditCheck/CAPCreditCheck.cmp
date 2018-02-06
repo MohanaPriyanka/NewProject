@@ -6,6 +6,8 @@
   <aura:attribute name="creditStatusTimeout" type="Integer"/>
   <aura:attribute name="creditStatusTimeoutID" type="Integer"/>
   <aura:attribute name="creditStatusErrorText" type="String"/>
+  <aura:attribute name="creditCheckErrors" type="Integer" default="0"
+                  description="We get intermittent errors when calling checkCreditStatus. Suppress three errors, but bubble more than that up"/>
   <aura:attribute name="primaryChecked" type="Boolean" default="false"/>
   <aura:attribute name="coAppChecked" type="Boolean" default="false"/>
   <aura:attribute name="allProducts" type="Object"/>

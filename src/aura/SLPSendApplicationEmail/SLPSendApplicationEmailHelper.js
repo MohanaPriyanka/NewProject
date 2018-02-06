@@ -7,7 +7,7 @@
         errorMessage = errorMessage +
                        helper.getFieldError(component,
                            {'fieldValue': lead.System_Cost__c, 'fieldId': "systemCostElement", 'fieldType': 'currency', 'errorMessage': 'Please enter a System Cost'});
-   
+
         if (lead.LASERCA__Home_State__c == "Select") {
             helper.setInputToError(component, "stateElement", "shake");
             errorMessage = errorMessage + "Please enter a valid State" + "\n" + "\n";
@@ -24,7 +24,15 @@
             helper.setInputToError(component, "systemCostElement", "shake");
             errorMessage = errorMessage + "You may not enter a negative system cost." + "\n" + "\n";
         } else {
-            helper.setInputToCorrect(component, "systemCostElement" );
+            if (lead.System_Cost__c) {
+                helper.setInputToCorrect(component, "systemCostEmailElement" );
+            }
+        }
+        if (!lead.Requested_Loan_Amount__c) {
+            helper.setInputToError(component, "loanAmountElement", "shake");
+            errorMessage = errorMessage + "You need to have a Requested Loan Amount (by specifying a System Cost and Down Payment)." + "\n" + "\n";
+        } else {
+            helper.setInputToCorrect(component, "loanAmountElement" );
         }
         if (lead.LASERCA__Home_State__c === 'MA') {
             if (!lead.Product__c) {
@@ -94,7 +102,11 @@
                     $A.log("Errors", resp.getError());
                 }
             });
-            $A.enqueueAction(action);
+            if (newLead.Requested_Loan_Amount__c) {
+                $A.enqueueAction(action);
+            } else {
+                helper.logError("SLPSendApplicationEmailEvent", "createLead", 'Requested Loan Amount is blank, please refresh and try again.', newLead);
+            }
         });
     },
 

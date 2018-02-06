@@ -10,13 +10,39 @@
             if (resp.getState() === "SUCCESS") {
                 helper.checkCreditResponse(component, helper, lead.Application_Type__c, resp.getReturnValue());
             } else {
-                helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError(), lead);
-                window.clearInterval(component.get("v.creditStatusPoller"));
-                window.clearTimeout(component.get("v.creditStatusTimeoutID"));
-                $A.util.addClass(component.find("editPencil"), 'noDisplay');
+                var creditCheckErrors = component.get('v.creditCheckErrors');
+                if (creditCheckErrors < 3 && resp.getError()) {
+                    component.set('v.creditCheckErrors', creditCheckErrors + 1);
+                    helper.raiseError("CAPCreditCheckHelper", "checkCreditStatus",
+                        'Error received, but trying again for '
+                        + (3 - creditCheckErrors) + ' times: ' + helper.getFirstError(resp.getError()), lead, {suppressAlert: true});
+                } else {
+                    helper.logError("CAPCreditCheckHelper", "checkCreditStatus", resp.getError(), lead);
+                    window.clearInterval(component.get("v.creditStatusPoller"));
+                    window.clearTimeout(component.get("v.creditStatusTimeoutID"));
+                    $A.util.addClass(component.find("editPencil"), 'noDisplay');
+                    component.set("v.creditStatusErrorText", helper.getFirstError(resp.getError()));
+                    helper.handleCreditCheckResponse(component, helper, 'creditResultError');
+                }
             }
         });
         $A.enqueueAction(action);
+    },
+
+    getFirstError : function(errors) {
+        var firstError = '';
+        if (errors[0] && errors[0].message) {
+            firstError = errors[0].message;
+        } else if (errors[0] && errors[0].pageErrors && errors[0].pageErrors.length > 0) {
+            firstError = errors[0].pageErrors[0].message;
+        } else if (errors[0] && errors[0].fieldErrors && errors[0].fieldErrors.length > 0) {
+            // There might be more than one field error for different fields. Just get the first field which has
+            // a status code, column, and message.
+
+            const fieldWithError = errors[0].fieldErrors[Object.keys(errors[0].fieldErrors)[0]][0];
+            firstError = fieldWithError.columnApiName + ': ' + fieldWithError.message;
+        }
+        return firstError;
     },
 
     checkCreditResponse : function(component, helper, applicationType, returnValue) {
