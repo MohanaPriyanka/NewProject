@@ -155,7 +155,7 @@
           <div class="slds-form-element__row slds-p-top--small slds-text-body--regular">
             <ui:outputText value="Thanks for submitting your application. Please allow 1-2 business days for our
             underwriting team to review, but customers with credit freezes may encounter delays. If you have questions,
-            please email Partner Support (partnersupport@bluewaveoslar.com) for an update."/>
+            please email Partner Support (partnersupport@bluewavesolar.com) for an update."/>
           </div>
           <div class="slds-form-element__row slds-p-top--small ">
             <ui:outputText class ="slds-text-body--regular" value="You can close this window or logout now."/>

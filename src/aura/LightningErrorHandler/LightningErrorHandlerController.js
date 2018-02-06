@@ -6,8 +6,14 @@
                 var messageText;
                 if (errors[0] && errors[0].message) {
                     messageText = errors[0].message;
-                } else if (errors[0] && errors[0].pageErrors) {
+                } else if (errors[0] && errors[0].pageErrors && errors[0].pageErrors.length > 0) {
                     messageText = errors[0].pageErrors[0].message;
+                } else if (errors[0] && errors[0].fieldErrors && errors[0].fieldErrors.length > 0) {
+                    // There might be more than one field error for different fields. Just get the first field which has
+                    // a status code, column, and message.
+
+                    const fieldWithError = errors[0].fieldErrors[Object.keys(errors[0].fieldErrors)[0]][0];
+                    messageText = fieldWithError.columnApiName + ': ' + fieldWithError.message;
                 } else {
                     messageText = errors;
                 }

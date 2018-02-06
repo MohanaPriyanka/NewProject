@@ -3,7 +3,8 @@ public without sharing class SLPControllersTestclass {
     @testSetup public static void setupTestData(){
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
-        Account accountRecord = new Account(Name = 'BlueWave Customer Care');
+        Account accountRecord = new Account(Name = 'BlueWave Customer Care', 
+                                            Enable_CS_Application_in_Portal__c = true);
         insert accountRecord;
 
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
@@ -339,6 +340,12 @@ public without sharing class SLPControllersTestclass {
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
+            String partnerProfile = SLPCustomerHandler.getLicenseType();
+            System.assertEquals('Manager/test/true', partnerProfile);
+            List<String> addressList = new List<String>();
+            addressList.add('Jpentaleri@bluewavesolar.com');
+            Boolean emailSuccess = BlueWaveParent.sendAnEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
+            System.assertEquals(true, emailSuccess);
         }
 
         for (Lead leadRecord : leadList) {
