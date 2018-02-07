@@ -19,10 +19,14 @@ public without sharing class SLPCustomerHandler {
 
   @AuraEnabled
   public static String getLicenseType() {
+      return profile.LicenseType;
+  }
+
+  @AuraEnabled
+  public static String getLicenseTypeandReferralCode() {
       String partnerProfileString = profile.licenseType + '/' + profile.referralCode + '/' + profile.csEnabled;
       return partnerProfileString;
   }
-
   //The getCustomerInformation method returns an equipment list to show system information, and other customer information on the customer window
   @AuraEnabled
   public static Residential_Equipment__c getCustomerInformation (String loanId) {

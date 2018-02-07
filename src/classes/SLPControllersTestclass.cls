@@ -340,7 +340,7 @@ public without sharing class SLPControllersTestclass {
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
-            String partnerProfile = SLPCustomerHandler.getLicenseType();
+            String partnerProfile = SLPCustomerHandler.getLicenseTypeandReferralCode();
             System.assertEquals('Manager/test/true', partnerProfile);
             List<String> addressList = new List<String>();
             addressList.add('Jpentaleri@bluewavesolar.com');

@@ -1,7 +1,7 @@
 ({
     doInit : function(component, event, helper) {
         //The following block of code retrieves the user's license type to determine what to display on the UI
-        var actionLicenseType = component.get("c.getLicenseType");        
+        var actionLicenseType = component.get("c.getLicenseTypeandReferralCode");        
         actionLicenseType.setCallback(this,function(resp){
             if(resp.getState() === 'SUCCESS') {
                 const partnerProfile = resp.getReturnValue();
