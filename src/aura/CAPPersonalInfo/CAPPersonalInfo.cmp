@@ -93,7 +93,7 @@
         <div aura:id="checkEligibilityButton" class="slds-m-bottom_small slds-m-top_medium slds-m-left_small">
           <lightning:button class="slds-button"
                             label="{!v.lead.IBLS_Category__c=='None'?'Apply for a BlueWave Solar Loan':'Continue this application'}"
-                            onclick="{!c.closeDisbursalModal}"/>
+                            onclick="{!v.lead.IBLS_Category__c=='None'?c.openBWSLTransferAlert:c.setToMSLPEligible}"/>
         </div>
       </aura:if>
     </fieldset>
