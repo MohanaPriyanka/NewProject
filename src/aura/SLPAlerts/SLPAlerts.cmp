@@ -15,10 +15,9 @@
         <p><ui:outputRichText value="{!v.partnerAlert.Alert_Body__c}" class="partnerAlertRTE"/></p>
       </div>
       <div class="slds-modal__footer slds-theme--default">
-        <ui:button aura:id="importantAlertButton"
-                   class="slds-button--brand"
-                   label="Close"
-                   press="{!c.closeAlert}"/>
+        <lightning:button aura:id="importantAlertButton" 
+                          onclick="{!c.closeAlert}" 
+                          label="Close"/>
        </div>
      </div>
    </div>
@@ -39,10 +38,11 @@
               <tr>
                 <th scope="row"> <b>{!alert.Name}</b> </th>
                 <th scope="row"> <b>{!alert.Date__c}</b> </th>
-                <th><ui:button label="View"
-                 class="{!alert.Id}"
-                 labelClass="label"
-                 press="{!c.openAlert}"/></th>
+                <th>
+                  <lightning:button onclick="{!c.openAlert}" 
+                                    class="{!alert.Id}"
+                                    label="View"/>
+               </th>
                </tr>
              </aura:iteration>
            </tbody>

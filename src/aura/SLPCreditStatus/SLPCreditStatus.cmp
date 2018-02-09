@@ -23,10 +23,8 @@
     <br></br>
     <br></br>
     <div aura:id="creditStatusBackButton" class="slds-align_absolute-center">
-      <ui:button label="Back"
-       class="slds-button--brand"
-       labelClass="label"
-       press="{!c.exitProductSelection}"/>
+      <lightning:button label="Back"
+                        onclick="{!c.exitProductSelection}"/>
      </div>
      <aura:set attribute="else">
        <div aura:id = "allCustomers" class="">
@@ -68,16 +66,14 @@
                     <th scope="row"> <ui:outputCurrency class="proximaNovaDataGreenSmall" value="{!Customer.Total_Funds_Disbursed__c}" /></th>
                     <th>
                      <aura:if isTrue="{!Customer.Status == 'Pre-Qualified'}">
-                        <ui:button label="Continue Application"
-                                     class="{!Customer}"
-                                     labelClass="label"
-                                     press="{!c.getProducts}"/>
+                      <lightning:button class="{!Customer}"
+                                        label="Continue Application"
+                                        onclick="{!c.getProducts}"/>
                        <aura:set attribute="else">
                         <aura:if isTrue="{!Customer.Status == 'Unqualified'}">
-                         <ui:button label="Add Co-Signer"
-                                    labelClass="label"
-                                        class="{!Customer}"
-                                  press="{!c.openAddCoApplicant}"/>
+                          <lightning:button class="{!Customer}"
+                                            label="Add Co-Signer"
+                                            onclick="{!c.openAddCoApplicant}"/>
                          <aura:set attribute="else">
                           <th></th>
                          </aura:set>
@@ -149,16 +145,12 @@
           </table>
           <br></br>
           <div aura:id="customerEmailButton" class="floatRightPadding noDisplay">
-            <ui:button label="Continue Application (email)"
-                       class="slds-button--brand"
-                       labelClass="label"
-                       press="{!c.sendCustomerApplication}"/>
+            <lightning:button label="Continue Application (email)"
+                              onclick="{!c.sendCustomerApplication}"/>
           </div>
           <div aura:id="creditStatusBackButton" class="">
-            <ui:button label="Back"
-                       class="slds-button--brand"
-                       labelClass="label"
-                       press="{!c.exitProductSelection}"/>
+            <lightning:button label="Back"
+                              onclick="{!c.exitProductSelection}"/>
           </div>
          </div>
        </div>

@@ -92,6 +92,11 @@
     font-size:100%;
     color: #00AEAA;
 }
+.THIS .slds-text-heading--medium--white {
+    font-family: proximaNovaFont;
+    font-size:100%;
+    color: #ffffff;
+}
 .THIS .slds-section-title--divider {
     font-family: proximaNovaFont;
     font-size:100%;

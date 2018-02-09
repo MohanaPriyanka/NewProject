@@ -169,7 +169,12 @@
       </div>
       <div aura:id="sendEmailModalButtons" class="slds-float_right">
         <aura:if isTrue="{!not(v.disableOrigination)}">
-          <lightning:button aura:id="sendEmailButton" class="slds-button slds-button--brand" iconName="utility:email" iconPosition="right" onclick="{!c.createLeadAndSendApplication}" label="Email"/>
+          <lightning:button aura:id="sendEmailButton" 
+                            class="slds-button" 
+                            iconName="utility:email" 
+                            iconPosition="right" 
+                            onclick="{!c.createLeadAndSendApplication}" 
+                            label="Email"/>
         </aura:if>
       </div>
       <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>

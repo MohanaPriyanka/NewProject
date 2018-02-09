@@ -91,7 +91,9 @@
       </aura:if>
       <aura:if isTrue="{!v.lead.IBLS_Category__c != 'No Category Selected'}">
         <div aura:id="checkEligibilityButton" class="slds-m-bottom_small slds-m-top_medium slds-m-left_small">
-          <ui:button label="{!v.lead.IBLS_Category__c=='None'?'Apply for a BlueWave Solar Loan':'Continue this application'}" class="slds-button slds-button--brand" press="{!v.lead.IBLS_Category__c=='None'?c.openBWSLTransferAlert:c.setToMSLPEligible}"></ui:button>
+          <lightning:button class="slds-button"
+                            label="{!v.lead.IBLS_Category__c=='None'?'Apply for a BlueWave Solar Loan':'Continue this application'}"
+                            onclick="{!c.closeDisbursalModal}"/>
         </div>
       </aura:if>
     </fieldset>
@@ -111,8 +113,12 @@
             If you would like to check to see if you qualify for the Massachusetts Solar Loan Program instead, you can <u><a class="slds-type-focus" target="_blank" href="http://www.masssolarloan.com/loan-support-incentives">learn more here</a></u>, or check with your solar contractor. Eligibility determinations for the Massachusetts Solar Loan Program are not made by BlueWave. Otherwise, please click Continue to apply for one of BlueWave's traditional loan products available from its bank partner.</p>
         </div>
         <footer class="slds-modal__footer">
-          <ui:button label="Continue" class="slds-button slds-button--brand" press="{!c.changeApplicationToBWSL}"></ui:button>
-          <ui:button label="Go Back" class="slds-button slds-button--brand" press="{!c.closeBWSLTransferAlert}"></ui:button>
+          <lightning:button class="slds-button"
+                            label="Continue"
+                            onclick="{!c.changeApplicationToBWSL}"/>
+          <lightning:button class="slds-button"
+                            label="Go Back" 
+                            onclick="{!c.closeBWSLTransferAlert}"/>
         </footer>
       </div>
     </section>

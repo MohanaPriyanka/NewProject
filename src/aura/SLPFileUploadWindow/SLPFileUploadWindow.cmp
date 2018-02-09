@@ -92,8 +92,18 @@
         </div>
         <footer aura:id="windowFooter" class="slds-modal__footer">
           <h2 aura:id="successText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_x-small proximaNovaWhite blueText noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
-          <div><ui:button aura:id="saveButton" label="Save" class="slds-button slds-button--neutral slds-align--absolute-center blueBackground" press="{!c.fileUpload}"/></div>
-          <div aura:id="doneButton" class="noDisplay"><br></br><ui:button label="Done" class="slds-button slds-button--neutral slds-align--absolute-center blueBackground" press="{!c.doneButton}"/></div>
+          <div>
+            <lightning:button aura:id="saveButton"
+                              class="slds-align--absolute-center"
+                              label="Save"
+                              onclick="{!c.fileUpload}"/>
+            <div aura:id="doneButton" class="noDisplay">
+              <br></br>
+              <lightning:button class="slds-align--absolute-center"
+                                label="Done"
+                                onclick="{!c.doneButton}"/>
+            </div>
+          </div>
         </footer>
       </div>
     </section>

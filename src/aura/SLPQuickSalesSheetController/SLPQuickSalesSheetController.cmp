@@ -289,12 +289,12 @@
                 </tbody>
               </table>
             <div class="slds-align--absolute-center"> 
-              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
-               <lightning:button aura:id="documentCreatebutton"
-                  name="generateDocFromTable"
-                  label="Generate Loan Summary Sheet"
-                  class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard noDisplay"
-                  onclick="{!c.clickCreateDocument}"/>
+              <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">
+                <lightning:button aura:id="documentCreatebutton"
+                                  name="generateDocFromTable"
+                                  label="Generate Loan Summary Sheet"
+                                  class="slds-align--absolute-center noDisplay"
+                                  onclick="{!c.clickCreateDocument}"/>
               </c:BlueWaveInputToolTip>
             </div>
             </article>  
@@ -333,18 +333,16 @@
             <div class="slds-form-element">
               <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            
               <lightning:button aura:id="submitQSSbutton"
-                  name="submitUpfront"
-                  label="Generate Loan Summary Sheet"
-                  class="slds-button slds-button--brand bwcolorforcard"
-                  onclick="{!c.clickCreateQSS}"/>
+                                name="submitUpfront"
+                                label="Generate Loan Summary Sheet"
+                                onclick="{!c.clickCreateQSS}"/>
               </c:BlueWaveInputToolTip>
               &nbsp;
               <c:BlueWaveInputToolTip popoverText="Use this button to preview monthly payments and tax credits before generating a document.">            
               <lightning:button aura:id="viewLoanData"
-                  name="submitTable"
-                  label="View Loan Data"
-                  class="slds-button slds-button--brand bwcolorforcard"
-                  onclick="{!c.clickCreateQSS}"/>
+                                name="submitTable"
+                                label="View Loan Data"
+                                onclick="{!c.clickCreateQSS}"/>
               </c:BlueWaveInputToolTip>
             </div>      
           </form>
@@ -352,3 +350,4 @@
     </div>      
   </div>
 </aura:component>
+

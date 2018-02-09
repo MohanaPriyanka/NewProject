@@ -49,7 +49,7 @@
     font-size:90%;
       color: #7C98AB;
     }  
-    .proximaNovaDataMountaintopSmallTeal {
+    .proximaNovaStreamSmall {
       font-family: proximaNovaFont;   
       font-size:95%;
       color: #00b2a9;
@@ -61,30 +61,30 @@
   <nav class="slds-context-bar__secondary " role="navigation">
     <ul class="slds-grid">
       <aura:if isTrue="{!v.showCSTab}">
-        <li class="slds-context-bar__item slds-cell-buffer_left slds-context-bar__item--divider-right slds-context-bar__item--divider-left">
+        <li class="slds-context-bar__item slds-cell-buffer_left slds-context-bar__item--divider-left">
           <div class="slds-m-top_xx-small"></div>
           <lightning:button aura:id="slpCommunitySolar"
                             label="Add Community Solar Customer"
-                            class="slds-context-bar__label-action slds-truncate proximaNovaDataMountaintopSmallTeal"
+                            class="slds-context-bar__label-action slds-truncate proximaNovaStreamSmall"
                             onclick="{!c.openCSWindow}"/>
         </li>
       </aura:if>
       <li class="slds-context-bar__item slds-context-bar__item--divider-right">
-        <a href="slpaddcustomer" class="slds-m-top_xx-small">          
+        <div class="slds-m-top_xx-small"></div>
             <lightning:button aura:id="slpaddcustomer"
                               label="Add Solar Loan Customer"
-                              class="slds-context-bar__label-action slds-truncate proximaNovaDataMountaintopSmallTeal"/>
-        </a>
+                              class="slds-context-bar__label-action slds-truncate proximaNovaStreamSmall"
+                              onclick="{!c.navigateToLoanApplication}"/>
       </li>
       <li class="slds-context-bar__item">
-        <a href="loansheet" class="slds-m-top_xx-small">          
+        <a href="loansheet" class="slds-m-top_xx-small">
             <lightning:button aura:id="slpsummarysheet"
                               label="Create Loan Summary Sheet"
                               class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
         </a>
       </li>
       <li class="slds-context-bar__item">
-        <a href="slpdashboard" class="slds-m-top_xx-small">          
+        <a href="slpdashboard" class="slds-m-top_xx-small">
             <lightning:button aura:id="slpdashboard"
                               label="Customers"
                               class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
@@ -127,11 +127,12 @@
                             class="slds-input slds-p-bottom_medium"
                             labelClass="slds-form-element__label"
                             value="{!v.emailInput}"/>
-                <div aura:id="sendButton" class="slds-align_absolute-center slds-p-top_medium"><br></br>
-                  <ui:button label="Send" class="slds-button slds-button--neutral blueBackground" press="{!c.sendCSApplication}"/>
-                  <a href="{!'https://forms.bluewaverenewables.com/381687?tfa_531=' + v.referralCode}" target="blank">
-                    <ui:button label="Open" class="slds-button slds-button--neutral blueBackground"/>
-                  </a>
+                <div aura:id="sendButton" class="slds-align_absolute-center slds-p-top_medium">
+                  <br></br>
+                  <lightning:button label="Send"
+                                    onclick="{!c.sendCSApplication}"/>
+                  <lightning:button label="Open"
+                                    onclick="{!c.navigateToCommunitySolarApplication}"/>
                 </div>
             </aura:set>
           </aura:if>

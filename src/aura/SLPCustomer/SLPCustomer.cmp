@@ -101,22 +101,16 @@
         <h1>{!v.customer.Loan__r.Name}</h1>
       </div>
       <div class="slds-align-right">
-        <ui:button aura:id="additionalFileUpload"
-                   class="slds-button--brand"
-                   labelClass="proximaNova95"
-                   label="Upload Applicant Files"
-                   press="{!c.openAdditionalFileUpload}"/>
-        <ui:button aura:id="customerInformationButton"
-                   class="slds-button--brand"
-                   labelClass="proximaNova95"
-                   label="View Loan and System Information"
-                   press="{!c.openCustomerModal}"/>
+        <lightning:button aura:id="additionalFileUpload"
+                          label="Upload Applicant Files"
+                          onclick="{!c.openAdditionalFileUpload}"/>
+        <lightning:button aura:id="customerInformationButton"
+                          label="View Loan and System Information"
+                          onclick="{!c.openCustomerModal}"/>
         <aura:if isTrue="{!v.licenseType}">
-          <ui:button aura:id="disbursalInformationButton"
-                     class="slds-button--brand"
-                     labelClass="proximaNova95"
-                     label="View Disbursal Information"
-                     press="{!c.openDisbursalInformation}"/>
+          <lightning:button aura:id="disbursalInformationButton"
+                            label="View Disbursal Information"
+                            onclick="{!c.openDisbursalInformation}"/>
         </aura:if>
       </div>
       <hr></hr>
@@ -171,10 +165,7 @@
            class="slds-modal  slds-modal--large">
         <div  class="slds-modal__container ">
           <div class="slds-modal__header blueBackground">
-            <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
-              <span class="slds-assistive-text">Close</span>
-            </button>
-            <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+            <h2 id="header43" class="slds-text-heading--medium--white">{!v.customer.Loan__r.Name}</h2>
           </div>
           <div aura:id="systemInformationInputs">
           <div class="slds-modal__content slds-p-around--medium">
@@ -260,11 +251,11 @@
             <lightning:button aura:id="closeCustomerModalButton"
                               class="slds-button"
                               onclick="{!c.closeCustomerModal}"
-                              label="Close"></lightning:button>
+                              label="Close"/>
             <lightning:button aura:id="saveCustomerModalButton"
-                              class="slds-button slds-button--brand"
+                              class="slds-button"
                               onclick="{!c.saveSystemInformation}"
-                              label="Save"></lightning:button>
+                              label="Save"/>
             <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>
           </div>
         </div>
@@ -778,9 +769,9 @@
               </fieldset>
             </div>
             <lightning:button aura:id="closeSrecModalButton" class="slds-button marginTopp5"
-                              onclick="{!c.closeInterconnectionModal}" label="Close"></lightning:button>
-            <lightning:button aura:id="saveSrecModalButton" class="slds-button slds-button--brand marginTopp5"
-                              onclick="{!c.saveEquipmentInformation}" label="Save"></lightning:button>
+                              onclick="{!c.closeInterconnectionModal}" label="Close"/>
+            <lightning:button aura:id="saveSrecModalButton" class="slds-button marginTopp5"
+                              onclick="{!c.saveEquipmentInformation}" label="Save"/>
             <ui:spinner aura:id="srecSaveSpinner" class="floatRight" isVisible="false"/>
           </div>
         </div>
@@ -815,6 +806,7 @@
               <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>
               <th>
                 <aura:if isTrue="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
+
                   <ui:button aura:id="viewButton"
                              label="{!task.Action_Label__c}"
                              class="{!task.Name}"
@@ -837,7 +829,7 @@
               <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
                 <span class="slds-assistive-text">Close</span>
               </button>
-              <h2 id="header43" class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+              <h2 id="header43" class="slds-text-heading--medium--white">{!v.customer.Loan__r.Name}</h2>
             </div>
             <div class="slds-modal__content slds-p-around--medium">
               <div aura:id="completeDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay">
@@ -906,8 +898,8 @@
             </div>
             <div class="slds-modal__footer">
               <lightning:button aura:id="closeDisbursalModal"
-                                class="slds-button slds-button--brand floatRight"
-                                onclick="{!c.closeDisbursalModal}" label="Close"></lightning:button>
+                                class="slds-button floatRight"
+                                onclick="{!c.closeDisbursalModal}" label="Close"/>
             </div>
           </div>
         </div>
