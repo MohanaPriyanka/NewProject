@@ -181,7 +181,7 @@
             </p>
             <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
               <p class="slds-m-around_medium  proximaNovaDataBlue">
-                For Massachusetts customers, BlueWave requires that solar loan customers sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time. 
+                For our customers in Massachusetts, BlueWave requires that solar loan customers sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time.
               </p>
             </aura:if>
             <p class="slds-m-around_medium  proximaNovaDataBlue">

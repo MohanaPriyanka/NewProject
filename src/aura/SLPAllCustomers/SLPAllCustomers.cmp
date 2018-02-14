@@ -118,12 +118,12 @@
  </aura:if>
   <aura:if isTrue="{!or(v.selectedTable == 'customersInProcess', v.loansInProcessSearchSelected)}">
     <c:BlueWaveDataTable name = "BWDataTableLoansInProcess"
-                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Status', 'Owner','Loan Amount', 'Funded', 'Action']" 
+                         headerLabels="['Customer', 'Sales Agent', 'Product', 'Owner', 'Status' ,'Loan Amount', 'Funded', 'Action']"
                          numberOfRecordsPerPage="50"
                          tableRecords="{!v.loansInProcess}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name', 'Partner_Tasks__r[0].Owner__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Owner__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
                          defaultButtonLabels="View"
                          defaultButtonEvents="openCustomerWindow"
                          profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
@@ -134,13 +134,13 @@
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Status','Loan Amount', 'Funded', 'Action']" 
                          numberOfRecordsPerPage="50"
                          tableRecords="{!v.completedLoans}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Name','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
                          defaultButtonLabels="View"
                          defaultButtonEvents="openCustomerWindow"
                          profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"
-                         nullValueMap="{'Partner_Tasks__r[0].Name': 'Complete'}"/>
+                         nullValueMap="{'Partner_Tasks__r[0].Task_Label__c': 'Complete'}"/>
  <br></br>
  </aura:if>
   <aura:if isTrue="{!or(v.selectedTable == 'declinedApplicants', v.declinedApplicantsSearchSelected)}">
@@ -162,7 +162,7 @@
                          tableRecords="{!v.expiredApplicants}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Requested_Loan_Amount__c']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Name': '#00B2A9'}"/>
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"/>
  <br></br>
  </aura:if>
  </div>

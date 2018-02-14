@@ -33,7 +33,7 @@ public class DisbursalHandler {
         }
     }   
 
-    public List<Disbursal__c> createDisbursalsFromDisbursalTermsField (Loan__c loanRecord) {
+    public static List<Disbursal__c> createDisbursalsFromDisbursalTermsField (Loan__c loanRecord) {
         Integer count = 1;
         List<Disbursal__c> disbursalList = new List<Disbursal__c>();       
         List<String> disbursalSubStrings = loanRecord.Product__r.Disbursal_Terms__c.split(',');
@@ -49,7 +49,7 @@ public class DisbursalHandler {
         return disbursalList;
     }        
 
-    public Disbursal__c createDisbursal (Decimal rate, String name, String disbursalType, Integer sequence, Loan__c loanRecord) {
+    public static Disbursal__c createDisbursal (Decimal rate, String name, String disbursalType, Integer sequence, Loan__c loanRecord) {
             Disbursal__c disbursal = new Disbursal__c(
             Name = name  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
             Unique_ID__c = loanRecord.Id + ' ' + name + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,

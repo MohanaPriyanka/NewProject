@@ -1,0 +1,15 @@
+<aura:component description="Turns a multi-select picklist into a set of checkboxes" controller="BlueWaveParent" access="global" extends="c.BlueWaveParent">
+  <aura:attribute name="sObject" type="String"/>
+  <aura:attribute name="field" type="String" description="sobject picklist or multi-select field name"/>
+  <aura:attribute name="picklistOptions" type="List" description="A list of label and values from picklist options"/>
+  <aura:attribute name="valueString" type="String"
+                  description="Semicolon separated selected checkboxes used to set the field, populated on valueArray change"/>
+  <aura:attribute name="valueArray" type="List"
+                  description="Array of selected checkboxes or picklist options, populated by init and updated by BlueWaveCheckbox"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <aura:handler name="change" value="{!v.valueArray}" action="{!c.setValueString}"/>
+
+  <aura:iteration items="{!v.picklistOptions}" var="option">
+    <c:BlueWaveCheckbox label="{!option.label}" text="{!option.value}" selectedItems="{!v.valueArray}"/>
+  </aura:iteration>
+</aura:component>

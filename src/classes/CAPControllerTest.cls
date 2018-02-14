@@ -213,8 +213,8 @@ public with sharing class CAPControllerTest {
     }
 
     @isTest static void testGetProducts() {
-        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
-        System.assertEquals(8, products.size());
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = false];
+        System.assertEquals(9, products.size());
 
         products = CAPController.getProducts('MA', 'Residential Loan');
         System.assertEquals(7, products.size());

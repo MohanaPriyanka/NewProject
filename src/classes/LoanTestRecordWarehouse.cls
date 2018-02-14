@@ -72,13 +72,14 @@ public class LoanTestRecordWarehouse {
         productLoanMATerm20Rate875.Program__c = 'MSLP';
         productLoanMATerm20Rate875.IBLS_Category__c = 'Category 2';
         productLoanMATerm20Rate875.Lender_of_Record__c = 'Avidia';
-
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
+        Product2 productLoanNY = getDefaultProduct('NY', 1.23, 5, 5, '680', '699', capitalPool.Id);
+        Product2 productNonLoan = getCSProduct();
 
         return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
-                productLoanMATerm20Rate725, productLoanRI, productLoanMATerm20Rate875,
+                productLoanMATerm20Rate725, productLoanRI, productLoanMATerm20Rate875, productLoanNY, productNonLoan,
                 getJunctionRequired(productLoanMATerm10Rate599), getJunctionRequired(productLoanMATerm10Rate699),
                 getJunctionRequired(productLoanMATerm10Rate725), getJunctionRequired(productLoanMATerm20Rate599), 
                 getJunctionRequired(productLoanMATerm20Rate699), getJunctionRequired(productLoanMATerm20Rate725), 
@@ -91,18 +92,22 @@ public class LoanTestRecordWarehouse {
         insert productsToInsert;
 
         for (Product2 product : productsToInsert) {
-            if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 5.99) {
-                productMap.put('productLoanMATerm10Rate599', product.Id);
-            } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 6.99) {
-                productMap.put('productLoanMATerm10Rate699', product.Id);
-            } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 7.25) {
-                productMap.put('productLoanMATerm10Rate725', product.Id);
-            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 5.99) {
-                productMap.put('productLoanMATerm20Rate599', product.Id);
-            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 6.99) {
-                productMap.put('productLoanMATerm20Rate699', product.Id);
-            } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 7.25) {
-                productMap.put('productLoanMATerm20Rate725', product.Id);
+            if (product.Product_Type__c == 'Residential Loan') {
+                if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 5.99) {
+                    productMap.put('productLoanMATerm10Rate599', product.Id);
+                } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 6.99) {
+                    productMap.put('productLoanMATerm10Rate699', product.Id);
+                } else if (product.Loan_Term__c/12 == 10 && product.Loan_Interest_Rate__c == 7.25) {
+                    productMap.put('productLoanMATerm10Rate725', product.Id);
+                } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 5.99) {
+                    productMap.put('productLoanMATerm20Rate599', product.Id);
+                } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 6.99) {
+                    productMap.put('productLoanMATerm20Rate699', product.Id);
+                } else if (product.Loan_Term__c/12 == 20 && product.Loan_Interest_Rate__c == 7.25) {
+                    productMap.put('productLoanMATerm20Rate725', product.Id);
+                } else if (product.Loan_Interest_Rate__c == 1.23) {
+                    productMap.put('productNY', product.Id);
+                }
             }
         }
 
@@ -206,7 +211,6 @@ public class LoanTestRecordWarehouse {
                                                 Product__c = productMap.get('productLoanMATerm10Rate699'),
                                                 Automatic_Product_Assignment__c = false,
                                                 Status = 'Ready for Credit Check');
-
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725,
                                 leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead};
 
@@ -310,8 +314,6 @@ public class LoanTestRecordWarehouse {
                                                                                 LASERCA__Monthly_Payment__c = 250);
         insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade};
         insert pcrCoApplicantTrade;
-        //
-
         return leadList;
     }
 
@@ -383,20 +385,42 @@ public class LoanTestRecordWarehouse {
                                                 Program__c = 'MSLP',
                                                 Lender_of_Record__c = 'BlueWave',
                                                 isActive = TRUE);
+        Product2 nyLoan = new Product2(
+            Name = 'BlueWave Solar Loan - NY - 1 Year Term - 1.23%',
+            Family = 'Solar Loan',
+            Product_Type__c = 'Residential Loan',
+            State__c = 'NY',
+            Loan_Interest_Rate__c = 1.23,
+            Loan_Term__c = 12,
+            Loan_Interest_Only_Period__c = 12,
+            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
+            Technology_Platform_Fee__c = 7,
+            Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection',
+            ProductCode = 'BlueWave Solar Loan - NY - 1 Year Term - 1.23%',
+            Loan_base_rate__c = .0123,
+            Loan_Internal_Lender_rate__c = .0499,
+            Credit_Maximum__c = '999',
+            Credit_Minimum__c = '750',
+            Loan_Capital_Pool__c = capitalPool.Id,
+            Loan_Tranche_Type__c = 'Standard',
+            Program__c = 'BlueWave Solar Loan',
+            Lender_of_Record__c = 'BlueWave',
+            isActive = TRUE);
 
-
-        insert new List<Product2>{productRecord, productRecordMSLP};
+        insert new List<Product2>{productRecord, productRecordMSLP, nyLoan};
     }
 
     public static List<Lead> getLoanHandlerLeadRecords () {
         Map<String, Id> productMap = new Map<String, Id>();
         getLoanHandlerProductRecords();
         for (Product2 product : [SELECT Id, Name, Disbursal_Terms__c, Program__c, State__c, Family, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c, Technology_Platform_Fee__c, ProductCode, Credit_Minimum__c, Credit_Maximum__c FROM Product2]) {
-             if (product.Program__c == 'BlueWave Solar Loan') {
-                productMap.put('BWSL', product.Id);
-            } else if (product.Program__c == 'MSLP') {
-                productMap.put('MSLP', product.Id);
-            }           
+             if (product.Program__c == 'BlueWave Solar Loan' && product.State__c == 'MA') {
+                 productMap.put('BWSL', product.Id);
+             } else if (product.Program__c == 'BlueWave Solar Loan' && product.State__c == 'NY') {
+                 productMap.put('NY', product.Id);
+             } else if (product.Program__c == 'MSLP') {
+                 productMap.put('MSLP', product.Id);
+             }
         }
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
@@ -423,6 +447,7 @@ public class LoanTestRecordWarehouse {
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
+                                    Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
                                     Viewed_by_Partner_Admin__c = false,
                                     Viewed_by_Partner_Agent__c = false);
         Lead leadRecordSelfEmployed = new lead(FirstName = 'SelfEmployed',
@@ -446,6 +471,7 @@ public class LoanTestRecordWarehouse {
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
                                     Status = 'Ready for Credit Check',
+                                    Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
                                     Viewed_by_Partner_Admin__c = false,
                                     Viewed_by_Partner_Agent__c = false);
         Lead leadRecordDOER = new Lead(FirstName = 'DOER',
@@ -472,13 +498,40 @@ public class LoanTestRecordWarehouse {
                                    Technical_Approval_Verified__c = true,
                                    Income_Verified__c = true,
                                    Is_there_a_Partner_Record__c = true,
+                                   Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
                                    Viewed_by_Partner_Admin__c = false,
                                    Viewed_by_Partner_Agent__c = false);
+        Lead leadRecordNY = new Lead(FirstName = 'NY',
+            LastName = 'Test',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Retired__c = false,
+            Self_Employed__c = true,
+            Product_Line__c = 'Residential Loan',
+            DOER_Solar_Loan__c = false,
+            LASERCA__Home_State__c = 'NY',
+            Requested_Loan_Amount__c = 25000,
+            Custom_Id__c = 'test',
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Loan_Term__c = 120,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('NY'),
+            Automatic_Product_Assignment__c = true,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Status = 'Ready for Credit Check',
+            Technical_Approval_Verified__c = true,
+            Income_Verified__c = true,
+            Is_there_a_Partner_Record__c = true,
+            Viewed_by_Partner_Admin__c = false,
+            Viewed_by_Partner_Agent__c = false);
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);
-        Insert leadList;
-
+        leadList.add(leadRecordNY);
+        insert leadList;
 
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
                                                                                             Name = 'Personal Credit Report 1',
@@ -504,8 +557,16 @@ public class LoanTestRecordWarehouse {
                                                                                             LASERCA__Code_4__c = '001',
                                                                                             LASERCA__Credit_Score_TransUnion__c = '790',
                                                                                             LASERCA__Lead__c = leadRecordDOER.Id);
+        LASERCA__Personal_Credit_Report__c creditReportRecordNY = new LASERCA__Personal_Credit_Report__c(
+            Name = 'Personal Credit Report 4',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '790',
+            LASERCA__Lead__c = leadRecordNY.Id);
 
-        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP};
+        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP, creditReportRecordNY};
 
         LASERCA__Trade_Accounts__c tradeAccountRecordRetired = new LASERCA__Trade_Accounts__c(
                                                                                 Name = 'Personal Credit Report Trade 1',
@@ -519,7 +580,11 @@ public class LoanTestRecordWarehouse {
                                                                                 Name = 'Personal Credit Report Trade 1',
                                                                                 LASERCA__Personal_Credit_Report__c = creditReportRecordMSLP.Id,
                                                                                 LASERCA__Monthly_Payment__c = 100);
-        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP};
+        LASERCA__Trade_Accounts__c tradeAccountRecordNY = new LASERCA__Trade_Accounts__c(
+            Name = 'Personal Credit Report Trade 4',
+            LASERCA__Personal_Credit_Report__c = creditReportRecordNY.Id,
+            LASERCA__Monthly_Payment__c = 100);
+        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP, tradeAccountRecordNY};
 
         return leadList;
 
@@ -549,6 +614,20 @@ public class LoanTestRecordWarehouse {
                             Debt_To_Income_Maximum__c = 50,
                             Lender_of_Record__c = 'BlueWave',
                             isActive = TRUE);
+    }
+
+    public static Product2 getCSProduct() {
+        return new Product2( Name = 'BlueWave Community Solar',
+                      Family = 'Community Solar',
+                      Product_Type__c = 'Community Solar',
+                      State__c = 'MA',
+                      ProductCode = 'CS - BlueWave - 10%',
+                      IsActive = True,
+                      Lender_of_Record__c = 'BlueWave',
+                      NMC_Discount__c = 10,
+                      Annual_kWh_Maximum__c = 100000000,
+                      NM_Rate_Floor__c = 0,
+                      Monthly_Late_Fee__c = 1);
     }
 
     public static Product2 getJunctionRequired(Product2 prod) {

@@ -60,10 +60,19 @@
             <div class="slds-form-element slds-size_1-of-1">
               <lightning:input type="number"
                                formatter="currency" 
-                               label="Requested Loan Amount" 
+                               label="{!v.lead.LASERCA__Home_State__c=='FL'?'Requested Loan Amount *':'Requested Loan Amount'}"
                                value="{!v.lead.Requested_Loan_Amount__c}" 
                                disabled="true">
               </lightning:input>
+              <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'FL'}">
+                <p class="slds-text-body--small slds-p-top_x-small">
+                  Requested Loan Amount excludes the Florida Documentary Stamp Tax. Under Florida law we are required
+                  to collect and transmit this tax to the State of Florida on the your behalf. The amount of this tax,
+                  which is slightly more than .0035 times the requested loan amount (or just over $35 for a $10,000 loan),
+                  will be added to your loan amount if your loan request is approved and funded. Your final loan amount
+                  will include the tax, will be paid on your behalf, and is not included in the quoted APR.
+                </p>
+              </aura:if>
             </div>
           </div>
         </div>
@@ -98,14 +107,6 @@
         </p>
       </aura:if>
 
-      <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
-        <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
-          {!$Label.c.START_Disclosure_Income_Doc_MSLP}
-          <aura:set attribute="else">
-            {!$Label.c.START_Disclosure_Income_Doc}
-          </aura:set>
-        </aura:if>
-      </p>
       <div class="slds-form-element__row slds-m-top--medium">
         <lightning:button aura:id="confirmDisclaimer" label="Next" onclick="{!c.finishStage}"/>
       </div>

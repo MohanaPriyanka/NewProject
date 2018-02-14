@@ -82,13 +82,20 @@ public class DisbursalHandlerTest {
 
         opportunityRecord.Contract_Status__c = 'Completed';
         opportunityRecord.BlueWave_Signature_Status__c = 'Completed';
-        update opportunityRecord;        
+        update opportunityRecord;
+        System.debug(LoggingLevel.ERROR, 'Setup done: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
     }
 
     @isTest static void testCreateDisbursalsFromOpportunity() {
+        System.debug(LoggingLevel.ERROR, 'Starting testCreateDisbursalsFromOpportunity: ' +
+            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
+        Test.startTest();
+        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
+        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
+            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
         Decimal totalAmount = 0;
         Decimal totalPercentage = 0;
-        Opportunity opportunityRecord = [SELECT Id, Name, 
+        Opportunity opportunityRecord = [SELECT Id, Name,
                                             (SELECT Id, Name FROM Loans__r)
                                          FROM Opportunity];
 
@@ -103,12 +110,16 @@ public class DisbursalHandlerTest {
         }
         System.assertEquals(30000, totalAmount);
         System.assertEquals(100, totalPercentage);
+        Test.stopTest();
     }
 
     @isTest static void testUpdateDisbursalsOnOpportunityUpdate() {
         Date myDate = Date.newInstance(2018, 2, 17);
         Test.startTest();
-            Opportunity opportunityRecord = [SELECT Id, Name, 
+        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
+        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
+            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
+            Opportunity opportunityRecord = [SELECT Id, Name,
                                                 (SELECT Id, Name FROM Loans__r)
                                              FROM Opportunity];
             opportunityRecord.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
@@ -153,7 +164,10 @@ public class DisbursalHandlerTest {
         Date myDate = Date.newInstance(2018, 2, 17);
         Decimal totalAmount = 0;
         Test.startTest();
-            Opportunity opportunityRecord = [SELECT Id, Name, 
+        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
+        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
+            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
+            Opportunity opportunityRecord = [SELECT Id, Name,
                                                 (SELECT Id, Name FROM Loans__r)
                                              FROM Opportunity];
 

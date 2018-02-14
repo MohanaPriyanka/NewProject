@@ -363,7 +363,11 @@
             case 'Provide All System Information':
                 helper.openCustomerModal(component, event, helper);
                 return;
-                
+
+            case 'Building Permit':
+                helper.openBuildingPermitModal(component, event, helper);
+                return;
+
             case 'Mechanical Installation':
                 helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, oppId, "Mechanical Installation Documentation", taskHelpText);
                 return;
@@ -393,5 +397,89 @@
     
     handleAfterFileUpload : function(component, event, helper) {
         helper.refreshPartnerTasks(component)                               
+    },
+
+    setInterconnectedTrue : function(component, event, helper) {
+    },
+
+    setInterconnectedFalse : function(component, event, helper) {
+    },
+
+    checkForOtherLabor : function(component, event, helper) {
+        var laborPerformed = component.get('v.customerInformation.Labor_Performed__c');
+        if (laborPerformed && laborPerformed.indexOf('Other') >= 0) {
+            component.set('v.otherLaborPerformed', true);
+        } else {
+            component.set('v.otherLaborPerformed', false);
+        }
+    },
+
+    checkForOtherMaterials : function(component, event, helper) {
+        var materialsSupplied = component.get('v.customerInformation.Materials_Supplied__c');
+        if (materialsSupplied && materialsSupplied.indexOf('Other') >= 0) {
+            component.set('v.otherMaterialsSupplied', true);
+        } else {
+            component.set('v.otherMaterialsSupplied', false);
+        }
+    },
+
+    handlePermitUpload : function(component, event, helper) {
+        const equipment = component.get('v.customerInformation');
+        helper.startSpinner(component, "buildingPermitUploadSpinner");
+        helper.uploadFiles(component,
+            event.getSource().get('v.files'),
+            component.get('v.customerInformation.Id'),
+            helper.getCustomerAttachments,
+            'Building Permit',
+            helper);
+    },
+
+    saveBuildingPermit : function(component, event, helper) {
+        var re = component.get('v.customerInformation');
+        if (!re.Labor_Performed__c  ||
+            !re.Materials_Supplied__c ||
+            !component.get('v.buildingPermits')) {
+            alert('You must specify Labor Performed, Materials Supplied, and upload a building permit');
+            return;
+        }
+        if ((component.get('v.otherLaborPerformed') &&
+             !component.get('v.customerInformation.Other_Labor_Performed__c')) ||
+            component.get('v.otherMaterialsSupplied') &&
+            !component.get('v.customerInformation.Other_Materials_Supplied__c')) {
+            alert('If selecting "Other", please describe the other Labor Performed or Materials Supplied');
+            return;
+        }
+        helper.startSpinner(component, "buildingPermitSaveSpinner");
+        $A.util.addClass(component.find("saveBuildingPermitModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("closeBuildingPermitModalButton"), 'noDisplay');
+
+        var equipment = {
+            sobjectType: 'Residential_Equipment__c',
+            Id: re.Id,
+            Labor_Performed__c: re.Labor_Performed__c,
+            Other_Labor_Performed__c: component.get('v.otherLaborPerformed')?re.Other_Labor_Performed__c:'',
+            Materials_Supplied__c: re.Materials_Supplied__c,
+            Other_Materials_Supplied__c: component.get('v.otherMaterialsSupplied')?re.Other_Materials_Supplied__c:''
+        };
+        var updateAction = component.get("c.updateBuildingPermit");
+        updateAction.setParams({
+            "equipment" : equipment
+        });
+
+        updateAction.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                helper.stopSpinner(component, "buildingPermitSaveSpinner");
+                helper.confirmBuildingPermitSaved(component);
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(updateAction);
+    },
+
+    closeBuildingPermitModal : function(component, event, helper) {
+        component.set('v.showBuildingPermitModal', false);
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.refreshPartnerTasks(component);
     },
 })

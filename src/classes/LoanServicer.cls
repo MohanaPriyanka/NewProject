@@ -536,17 +536,16 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             // in the second distribution as there are in the Loan Term
             secondDistributionMonth = 0;
 
-            if (product.Disbursal_Terms__c == 
-                '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection') {
-                firstDistribution = 1;
-                secondDistribution = 0;
-            } else if (product.Disbursal_Terms__c == 
-                       '35% Contract Signature, 65% Interconnection') {
+            // DOER pays out differently than all other loans
+            if (product.Disbursal_Terms__c == '35% Contract Signature, 65% Interconnection') {
                 firstDistribution = .35;
                 secondDistribution = .65;
             } else {
-                throw new LoanProductException('Disbural Terms: ' + product.Disbursal_Terms__c + 
-                                               ' is not handled');
+                // e.g. '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection or
+                // 30% Building Permit Approved, 60% Mechanical Installation, 10% Interconnection or
+                // 30%, 60%, 10%
+                firstDistribution = 1;
+                secondDistribution = 0;
             }
 
             fees = nullToZero(loan.Financing_Fee__c);

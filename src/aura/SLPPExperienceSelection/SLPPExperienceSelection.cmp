@@ -18,16 +18,12 @@
             <p><ui:outputRichText value="{!v.partnerAlerts[0].Alert_Body__c}" class="partnerAlertRTE" /></p>
           </div>
           <div class="slds-modal__footer slds-theme--default">
-            <ui:button aura:id="importantAlertButton"
-                       class="slds-button--brand"
-                       labelClass=".slds-text-body--regular"
-                       label="Okay"
-                       press="{!c.acknowledgeAlert}"/>
-             <ui:button aura:id="importantAlertButton"
-                        class="slds-button--brand"
-                        labelClass=".slds-text-body--regular"
-                        label="Remind me later"
-                        press="{!c.closeAlert}"/>
+            <lightning:button aura:id="importantAlertButton"
+                              label="Okay" 
+                              onclick="{!c.acknowledgeAlert}"/>
+            <lightning:button aura:id="importantAlertButton"
+                              label="Remind me later" 
+                              onclick="{!c.closeAlert}"/>
              </div>
            </div>
          </div>

@@ -95,69 +95,109 @@
         $A.util.removeClass(component.find(page), 'noDisplay');
     },
 
+    getCustomerInformation : function(component, helper, loanId) {
+        var ltg = helper;
+        if (!loanId) {
+            loanId = component.get('v.customerInformation.Loan__c');
+        }
+        var promise = new Promise(function(resolve) {
+            //retrieve the customer's full information to display in the component
+            var customerInformationAction = component.get("c.getCustomerInformation");
+            customerInformationAction.setParams({loanId : loanId})
+            customerInformationAction.setCallback(this,function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    component.set("v.customerInformation", resp.getReturnValue());
+                    component.set("v.customer", resp.getReturnValue());
+                    if (resp.getReturnValue().Loan__r.Opportunity__r &&
+                        resp.getReturnValue().Loan__r.Opportunity__r.Contract_Status__c != null) {
+                        component.set("v.contractSent", true);
+                    }
+                    helper.parsePermitAttachments(component, ltg);
+                    resolve();
+                } else {
+                    ltg.logError('SLPCustomerHelper', 'getCustomerInformation', 'Couldn\'t get Residential Equipment information', resp);
+                }
+            });
+            $A.enqueueAction(customerInformationAction);
+        });
+        return promise;
+    },
+
+    getCustomerAttachments : function(component, helper) {
+        const ltg = helper;
+        const loanId = component.get('v.customerInformation.Loan__c');
+        const promise = new Promise(function(resolve) {
+            //retrieve the customer's full information to display in the component
+            var customerInformationAction = component.get("c.getCustomerInformation");
+            customerInformationAction.setParams({loanId : loanId})
+            customerInformationAction.setCallback(this,function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    const customerInfo = resp.getReturnValue();
+                    component.set("v.customerInformation.Attachments", customerInfo.Attachments);
+                    helper.parsePermitAttachments(component, ltg);
+                    helper.stopSpinner(component, "buildingPermitUploadSpinner");
+                    resolve();
+                } else {
+                    helper.stopSpinner(component, "buildingPermitUploadSpinner");
+                    ltg.logError('SLPCustomerHelper', 'getCustomerAttachments', 'Couldn\'t get Residential Equipment information', resp);
+                }
+            });
+            $A.enqueueAction(customerInformationAction);
+        });
+        return promise;
+    },
+
     openCustomerWindow : function(component, event, helper, loanId) {
-        //remove the noDisplayBar class from the Component - brining the page to display.
+        //remove the noDisplayBar class from the Component - bringing the page to display.
         var customerPage = component.find("customerPage");
         $A.util.removeClass(customerPage, 'noDisplayBar');
 
-        //retrieve the customer's full information to display in the component
-        var customerInformationAction = component.get("c.getCustomerInformation");
-        customerInformationAction.setParams({loanId : loanId})
-        customerInformationAction.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                console.log("checkS");
-                console.log(resp.getReturnValue());
-                component.set("v.customerInformation", resp.getReturnValue());
-                component.set("v.customer", resp.getReturnValue());
-            } else {
-                console.log("check");
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(customerInformationAction);
-        var i;
-        var partnerTaskList = component.get("c.getLoanCustomerTasks");
-        var componentCustomerId = component.get("v.customer");
-        partnerTaskList.setParams({loanId : loanId});
-        partnerTaskList.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.partnerTaskList", resp.getReturnValue());
-                for (i=0; i<resp.getReturnValue().length; i++) {
-                    if (resp.getReturnValue()[i].Name == "Interconnection") {
-                        component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
-                    } else {
-                        continue;
+        var promise = helper.getCustomerInformation(component, helper, loanId);
+        promise.then($A.getCallback(function resolve() {
+            var i;
+            var partnerTaskList = component.get("c.getLoanCustomerTasks");
+            var componentCustomerId = component.get("v.customer");
+            partnerTaskList.setParams({loanId : loanId});
+            partnerTaskList.setCallback(this,function(resp) {
+                if (resp.getState() == 'SUCCESS') {
+                    component.set("v.partnerTaskList", resp.getReturnValue());
+                    for (i=0; i<resp.getReturnValue().length; i++) {
+                        if (resp.getReturnValue()[i].Name == "Interconnection") {
+                            component.set("v.interconnectionTaskStatus", resp.getReturnValue()[i].Status__c);
+                        } else {
+                            continue;
+                        }
                     }
+                } else {
+                    $A.log("Errors", resp.getError());
                 }
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(partnerTaskList);
+            });
+            $A.enqueueAction(partnerTaskList);
 
-        var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
-        completeLoanDisbursals.setParams({loanId : loanId});
-        completeLoanDisbursals.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.completeDisbursalList", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
+            var completeLoanDisbursals = component.get("c.getCompleteLoanDisbursals");
+            completeLoanDisbursals.setParams({loanId : loanId});
+            completeLoanDisbursals.setCallback(this,function(resp) {
+                if (resp.getState() == 'SUCCESS') {
+                    component.set("v.completeDisbursalList", resp.getReturnValue());
+                } else {
+                    $A.log("Errors", resp.getError());
+                }
+            });
 
-        var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
-        incompleteLoanDisbursals.setParams({loanId : loanId});
-        incompleteLoanDisbursals.setCallback(this,function(resp) {
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.incompleteDisbursalList", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        });
+            var incompleteLoanDisbursals = component.get("c.getIncompleteLoanDisbursals");
+            incompleteLoanDisbursals.setParams({loanId : loanId});
+            incompleteLoanDisbursals.setCallback(this,function(resp) {
+                if (resp.getState() == 'SUCCESS') {
+                    component.set("v.incompleteDisbursalList", resp.getReturnValue());
+                } else {
+                    $A.log("Errors", resp.getError());
+                }
+            });
 
-        $A.enqueueAction(completeLoanDisbursals);
-        $A.enqueueAction(incompleteLoanDisbursals);
-    },    
+            $A.enqueueAction(completeLoanDisbursals);
+            $A.enqueueAction(incompleteLoanDisbursals);
+        }));
+    },
 
     openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, oppId, nameFile, helpText){
       var body = component.get("v.body");  
@@ -176,9 +216,6 @@
             var body = component.get("v.body");
             body.push(newButton);
             component.set("v.body", body);
-          }
-          else {
-            console.log("Error: " + errorMessage);
           }
        	}
       );       
@@ -250,5 +287,44 @@
         $A.util.removeClass(component.find("systemInformationInputs"), 'noDisplay');
         $A.util.addClass(component.find("systemInformationSubmitConfirmation"), 'noDisplay');
         $A.util.removeClass(component.find("saveCustomerModalButton"), 'noDisplay');    
-    },     
+    },
+
+    parsePermitAttachments : function(component, helper) {
+        const equipment = component.get('v.customerInformation');
+        if (equipment.Attachments) {
+            const permits = [];
+            equipment.Attachments.forEach(function(attachment) {
+                const desc = attachment.Description;
+                if (desc === 'Building Permit') {
+                    permits.push(attachment.Name);
+                }
+            });
+            component.set('v.buildingPermits', permits);
+        }
+    },
+
+    openBuildingPermitModal : function(component, event, helper) {
+        helper.parsePermitAttachments(component, helper);
+        var disbursalPromise = new Promise(function(resolve) {
+            var disbursalAction = component.get("c.getFirstDisbursal");
+            disbursalAction.setParams({"loanId": component.get('v.customerInformation.Loan__r.Id')});
+            disbursalAction.setCallback(this,function(resp){
+                if (resp.getState() === 'SUCCESS') {
+                    component.set('v.firstDisbursalAmount', resp.getReturnValue());
+                    component.set('v.showBuildingPermitModal', true);
+                    $A.util.addClass(component.find('modalBackDrop'), 'slds-backdrop');
+                    resolve(helper);
+                } else {
+                    helper.logError('SLPCustomerHelper', 'openBuildingPermitModal', 'Couldn\'t get first disbursal amount');
+                }
+            });
+            $A.enqueueAction(disbursalAction);
+        });
+    },
+
+    confirmBuildingPermitSaved : function(component, event, helper) {
+        $A.util.removeClass(component.find("closeBuildingPermitModalButton"), 'noDisplay');
+        $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
+        $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
+    },
 })

@@ -51,6 +51,7 @@
     },
 
     createLeadAndSendApplication : function(component, event, helper) {
+        component.set('v.newLead.System_Size_kW_DC__c', component.get('v.systemInfoObj.generator_nameplate_capacity__c'));
         helper.startApplication(component, event, helper, {'email':true, 'open':false});
     },
 

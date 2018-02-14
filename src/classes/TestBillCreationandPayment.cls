@@ -1,23 +1,11 @@
 @isTest
 public class TestBillCreationandPayment {
     @testSetup public static void CSTestRecordWarehouse(){
-        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
-                                                                       Utility__c = 'Eversource', 
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Current_Billing_Rate__c = TRUE);
-
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
                                                                        Class__c = 'Class 2',
                                                                        Value_of_Net_Metering_Credit__c = 0.1848,
                                                                        Sizing_Rate__c = TRUE);
-
-        Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c (Name = 'National Grid WCMA Class 2', 
-                                                                        Utility__c = 'National Grid', 
-                                                                        Class__c = 'Class 2',
-                                                                        Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                        Current_Billing_Rate__c = TRUE);
 
         Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c (Name = 'National Grid WCMA Class 2', 
                                                                         Utility__c = 'National Grid', 
@@ -25,7 +13,7 @@ public class TestBillCreationandPayment {
                                                                         Value_of_Net_Metering_Credit__c = 0.1848,
                                                                         Sizing_Rate__c = TRUE);
 
-        insert new List<Utility_NMC_Tariff__c>{everbillNMC, eversizeNMC, ngridsizeNMC, ngridbillNMC};
+        insert new List<Utility_NMC_Tariff__c>{eversizeNMC, ngridsizeNMC};
         
         Load_U__c everLZU = new Load_U__c (Name = '02633', 
                                            Load_zone__c = 'SEMA Eversource', 
@@ -109,11 +97,26 @@ public class TestBillCreationandPayment {
                                        Name_on_Account__c = 'jordan jordan');
         insert ualog;
 
+        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+                      Family = 'Community Solar',
+                      Product_Type__c = 'Community Solar',
+                      State__c = 'MA',
+                      ProductCode = 'CS - BlueWave - 10%',
+                      IsActive = True,
+                      Lender_of_Record__c = 'BlueWave', 
+                      NMC_Discount__c = 10,
+                      Annual_kWh_Maximum__c = 100000000,
+                      NM_Rate_Floor__c = 0,
+                      Days_In_Bill_Period__c = 20,
+                      Monthly_Late_Fee__c = 1);
+        insert normalCSProduct;
+
         Opportunity opportunityone = 
             new Opportunity(Name = 'Jordan Jordan',
                             AccountId = accountA.Id,
                             Shared_Solar_System__c = sss1.Id,
                             StageName = 'Complete',
+                            Product__c = normalCSProduct.Id,
                             CS_Capacity_Allocated__c = 25,
                             CloseDate = System.today());
 
@@ -122,6 +125,7 @@ public class TestBillCreationandPayment {
                             AccountId = accountA.Id,
                             Shared_Solar_System__c = sss2.Id,
                             StageName = 'Complete',
+                            Product__c = normalCSProduct.Id,
                             CS_Capacity_Allocated__c = 20,
                             CloseDate = System.today()); 
         insert new List<Opportunity>{opportunityone, opportunitytwo};
@@ -173,7 +177,7 @@ public class TestBillCreationandPayment {
                 Production__c = 90000,
                 Due_Date__c = myDateJan,
                 Billing_Period_End_Date__c = myDateFeb,
-                Total_System_NMCs__c = 45000,
+                Total_System_NMCs__c = 16632,
                 Date__c = myDateJan 
                 );
 
@@ -185,7 +189,7 @@ public class TestBillCreationandPayment {
                 Production__c = 120000,
                 Due_Date__c = myDateFeb,
                 Billing_Period_End_Date__c = myDateMar,
-                Total_System_NMCs__c = 45000,
+                Total_System_NMCs__c = 22176,
                 Date__c = myDateFeb
                 );
                 
@@ -197,7 +201,7 @@ public class TestBillCreationandPayment {
                 Production__c = 140000,
                 Due_Date__c = myDateMar,
                 Billing_Period_End_Date__c = myDateApr,
-                Total_System_NMCs__c = 34000,
+                Total_System_NMCs__c = 25872,
                 Date__c = myDateMar
                 );
                 
@@ -226,6 +230,10 @@ public class TestBillCreationandPayment {
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, TRUE)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), TRUE)).size());
         System.AssertEquals( 3, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), FALSE)).size());
+
+        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, TRUE);
+        System.AssertEquals(345.10, uasbList[0].PreGen_Discounted_Bill__c);
+        System.AssertEquals(383.45, uasbList[0].PreGen_NMCs_Allocated__c);
     }
 
     @isTest public static void testPaymentPlan() {    

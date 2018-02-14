@@ -26,6 +26,11 @@
             helper.logError("CAPConsentsController", "saveTCAskSREC", helper.checkProjectIDErrors(component));
             return;
         }
+        if (!component.get('v.tcDocs') ||
+            component.get('v.tcDocs').length === 0){
+            alert('Please upload your technical confirmation before continuing');
+            return;
+        }
 
         const lead = component.get('v.lead');
         var leadToSave = {
@@ -33,8 +38,10 @@
             Id: lead.Id,
             Project_Identification_Number__c: lead.Project_Identification_Number__c
         };
-        helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
-        component.set('v.page', 'SREC');
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        leadPromise.then($A.getCallback(function resolve(retVal) {
+            component.set('v.page', 'SREC');
+        }));
     },
 
     saveSRECAskDisbursal : function(component, event, helper) {
@@ -44,8 +51,10 @@
             Id: lead.Id,
             SREC_Product__c: lead.SREC_Product__c
         };
-        helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
-        component.set('v.page', 'Disbursal');
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        leadPromise.then($A.getCallback(function resolve(retVal) {
+            component.set('v.page', 'Disbursal');
+        }));
     },
 
     saveDisbursal : function(component, event, helper) {
@@ -56,9 +65,15 @@
             Electronic_Disbursal_Authorized__c: lead.Electronic_Disbursal_Authorized__c,
             Unfinished_Lead__c: false
         };
+        var leadToSaveUpdateDummy = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Update_Dummy__c: !lead.Update_Dummy__c
+        };
         var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
         leadPromise.then($A.getCallback(function resolve(retVal) {
             helper.finishStage(component, event, helper);
+            helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSaveUpdateDummy);
         }));
     },
 })

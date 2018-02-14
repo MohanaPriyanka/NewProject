@@ -3,8 +3,10 @@ public without sharing class SLPControllersTestclass {
     @testSetup public static void setupTestData(){
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
-        Account accountRecord = new Account(Name = 'BlueWave Customer Care', 
-                                            Enable_CS_Application_in_Portal__c = true);
+        Account accountRecord = new Account(
+            Name = 'BlueWave Customer Care',
+            State_Market__c = 'MA',
+            Enable_CS_Application_in_Portal__c = true);
         insert accountRecord;
 
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
@@ -336,16 +338,17 @@ public without sharing class SLPControllersTestclass {
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
+            System.assertEquals(4, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
             String partnerProfile = SLPCustomerHandler.getLicenseTypeandReferralCode();
             System.assertEquals('Manager/test/true', partnerProfile);
             List<String> addressList = new List<String>();
             addressList.add('Jpentaleri@bluewavesolar.com');
             Boolean emailSuccess = BlueWaveParent.sendAnEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
-            System.assertEquals(true, emailSuccess);
+            // emailSuccess should be true, but in case Deliverability is turned off:
+            System.assertEquals(1, MessagingService.emailsSent.size());
         }
 
         for (Lead leadRecord : leadList) {
@@ -404,10 +407,10 @@ public without sharing class SLPControllersTestclass {
         Loan__c loan = [SELECT Id FROM Loan__c LIMIT 1];
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(2, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             System.assertEquals(1, loanRecords.expiredApplicants.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(2, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
+            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loan.Id);
         }
 
@@ -724,11 +727,14 @@ public without sharing class SLPControllersTestclass {
 
     @isTest static void testOrigination() {
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Require_Junctions_to_Enable__c = false];
-        System.assertEquals(10, products.size());
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = false];
+        System.assertEquals(12, products.size());
 
-        System.assertEquals(new List<String>{'MA', 'RI'}, SLPAddCustomer.getActiveStates());
-        System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        System.runAs(partnerUser) {
+            System.assertEquals(new List<String>{'MA'}, SLPAddCustomer.getActiveStates());
+            System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
+        }
 
         products = SLPAddCustomer.getProducts('MA');
         System.assertEquals(9, products.size());

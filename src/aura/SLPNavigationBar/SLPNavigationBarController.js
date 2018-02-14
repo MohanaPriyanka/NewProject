@@ -9,14 +9,16 @@
                 const licenseType = listParams[0];
                 const referralCode = listParams[1];
                 const disableCS = listParams[2];
+                if (disableCS === 'true'){
+                    component.set("v.referralCode", referralCode);
+                    component.set("v.showCSTab", true);
+                } else {
+                    component.set("v.showCSTab", false);
+                }
                 if (licenseType === 'Executive'){
                     component.set("v.licenseType", true);
                     $A.util.removeClass(component.find("disbursalsMenuItem"), 'noDisplay');
                 }
-                if (disableCS === 'true'){
-                    component.set("v.referralCode", referralCode);
-                    component.set("v.showCSTab", true);
-                } 
             }    
             else {
                 $A.log("Errors", resp.getError());
@@ -25,29 +27,37 @@
         $A.enqueueAction(actionLicenseType);
     },
 
-    navigateToLoanApplication : function(component, event, helper) {
-            var urlEvent = $A.get("e.force:navigateToURL");
-            urlEvent.setParams({
-              "url": '/slpaddcustomer'
-            });
-            urlEvent.fire();
+    navigateToTab : function(component, event, helper) {
+        var btnClicked = event.getSource().get("v.name");
+        helper.activateTab(component, event, helper, btnClicked);
+
+        var btnClickedWithSlash = '/' + btnClicked;
+        var urlEvent = $A.get("e.force:navigateToURL");
+        urlEvent.setParams({
+            "url": btnClickedWithSlash
+        });
+        urlEvent.fire();        
     },
 
     navigateToCommunitySolarApplication : function(component, event, helper) {
-            var urlEvent = $A.get("e.force:navigateToURL");
-            urlEvent.setParams({
-              "url": 'https://forms.bluewaverenewables.com/381687?tfa_531=' + component.get('v.referralCode')
-            });
-            urlEvent.fire();
+        var urlEvent = $A.get("e.force:navigateToURL");
+        urlEvent.setParams({
+            "url": 'https://forms.bluewaverenewables.com/381687?tfa_531=' + component.get('v.referralCode')
+        });
+        urlEvent.fire();
     },
 
     openCSWindow : function(component, event, helper) {
         component.set("v.CSWindow", true);
         component.set("v.emailSuccess", false);
+        helper.activateTab(component, event, helper, 'slpcommunitySolar');
     },
 
     closeCSWindow : function(component, event, helper) {
         component.set("v.CSWindow", false);
+        component.set("v.emailInput", "");
+        helper.deactivateTab(component, event, helper, 'slpcommunitySolar');
+        helper.activateTab(component, event, helper, component.get("v.currentTab"));
     },
 
     sendCSApplication : function(component, event, helper) {

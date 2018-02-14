@@ -197,7 +197,7 @@
               <header class="slds-form-element__label"> 
                 <b>Express Consent:</b>
               </header>
-              <p class="slds-text-body--small"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
+              <p class="slds-text-body--regular"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
               <div  class="slds-text-body--regular animated">
                 <lightning:input type="checkbox" 
                  checked="{!v.lead.Express_Consent__c}"
@@ -346,11 +346,11 @@
             <b>Please provide us with some additional information about your Driver's License.</b>
           </header>
           <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-form-element slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="licenseNumberElement">
               <label class="slds-form-element__label">Driver's License Number</label>
               <ui:inputSecret class="slds-input" value="{!v.lead.License_Number_Encrypted__c}" disabled="{!v.piLocked}"/>
             </div>
-            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="stateElement">
+            <div class="slds-p-horizontal--small slds-size_1-of-2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="stateElement">
               <label class="slds-form-element__label">State of Issuance</label>
               <ui:inputSelect aura:id="state" class="slds-input" value="{!v.lead.State_of_Issuance__c}" disabled="{!v.piLocked}"> 
                 <ui:inputSelectOption label="Select" value=""/>
@@ -400,7 +400,8 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="incomeElement">
-            <label class="slds-form-element__label">Annual Income</label>
+            <label class="slds-form-element__label">Gross Annual Income</label>
+            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040"/>
             <ui:inputCurrency value="{!v.lead.Annual_Income_Currency__c}" disabled="{!v.piLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mortgageElement">
@@ -413,7 +414,7 @@
             <header class="slds-section__title"> 
               <b>{!$Label.c.NY_Credit_Disclosure_Header}</b>
             </header>
-            <p class="slds-text-body--small"><i>{!$Label.c.NY_Credit_Disclosure}</i></p>
+            <p class="slds-text-body--regular"><i>{!$Label.c.NY_Credit_Disclosure}</i></p>
           </div>
         </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top--small">
@@ -514,54 +515,68 @@
             </div>
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppPhoneElement">
-            <label class="slds-form-element__label">Phone</label>
-            <ui:inputPhone value="{!v.lead.CoApplicant_Contact__r.Phone}" disabled="{!v.coAppLocked}"/>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppPhoneElement">
+              <label class="slds-form-element__label">Phone</label>
+              <ui:inputPhone value="{!v.lead.CoApplicant_Contact__r.Phone}" disabled="{!v.coAppLocked}"/>
+            </div>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppEmailElement">
+              <label class="slds-form-element__label">Email</label>
+              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.Email}" disabled="{!v.coAppLocked}"/>
+            </div>
           </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppEmailElement">
-            <label class="slds-form-element__label">Email</label>
-            <ui:inputText value="{!v.lead.CoApplicant_Contact__r.Email}" disabled="{!v.coAppLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
-            <aura:if isTrue="{!v.coSigner}">
-              <lightning:input type="checkbox" 
-                               checked="{!v.coAppAddressSame}"
-                               label="Co-signers's home address is the same as primary's"
-                               disabled="{!v.coAppLocked}"/>
-              <aura:set attribute="else">
-                <lightning:input type="checkbox" 
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1">
+              <aura:if isTrue="{!v.coSigner}">
+                <lightning:input type="checkbox"
                                  checked="{!v.coAppAddressSame}"
-                                 label="Co-applicant's home address is the same as primary's"
+                                 label="Co-signers's home address is the same as primary's"
                                  disabled="{!v.coAppLocked}"/>
-              </aura:set>
-            </aura:if>
-          </div>
-        </div>
-        <aura:if isTrue="{!not(v.coAppAddressSame)}">
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppHomeAddressElement">
-              <label class="slds-form-element__label">Street Address</label>
-              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Address__c}" disabled="{!v.coAppLocked}"/>
-            </div>
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppCityElement">
-              <label class="slds-form-element__label">City</label>
-              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_City__c}" disabled="{!v.coAppLocked}"/>
+                <aura:set attribute="else">
+                  <lightning:input type="checkbox"
+                                   checked="{!v.coAppAddressSame}"
+                                   label="Co-applicant's home address is the same as primary's"
+                                   disabled="{!v.coAppLocked}"/>
+                </aura:set>
+              </aura:if>
             </div>
           </div>
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppStateElement">
-              <label class="slds-form-element__label">State</label>
-              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_State__c}" disabled="{!v.coAppLocked}"/>
+          <aura:if isTrue="{!not(v.coAppAddressSame)}">
+            <div class="slds-grid slds-wrap slds-form-element__row">
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppHomeAddressElement">
+                <label class="slds-form-element__label">Street Address</label>
+                <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Address__c}" disabled="{!v.coAppLocked}"/>
+              </div>
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppCityElement">
+                <label class="slds-form-element__label">City</label>
+                <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_City__c}" disabled="{!v.coAppLocked}"/>
+              </div>
             </div>
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppZipCodeElement">
-              <label class="slds-form-element__label">Zip Code</label>
-              <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Zip__c}" disabled="{!v.coAppLocked}"/>
+            <div class="slds-grid slds-wrap slds-form-element__row">
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppStateElement">
+                <label class="slds-form-element__label">State</label>
+                <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_State__c}" disabled="{!v.coAppLocked}"/>
+              </div>
+              <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppZipCodeElement">
+                <label class="slds-form-element__label">Zip Code</label>
+                <ui:inputText value="{!v.lead.CoApplicant_Contact__r.LASERCA__Home_Zip__c}" disabled="{!v.coAppLocked}"/>
+              </div>
+            </div>
+          </aura:if>
+        </fieldset>
+        <aura:if isTrue="{!v.lead.CoApplicant_Contact__r.Phone}">
+          <div class="slds-p-around--small slds-m-top--medium">
+            <header class="slds-form-element__label">
+              <b>Express Consent:</b>
+            </header>
+            <p class="slds-text-body--regular"><i>By providing a telephone number for a cellular phone, other wireless device, or a landline number that is later converted to a wireless device, you are expressly consenting to receiving communications regarding this application for credit and related credit agreement at that number, including, but not limited to, prerecorded or artificial voice message calls, text messages, and calls made by an automatic telephone dialing system from us or our affiliates and agents. This express consent applies to each such telephone number that you have provided or will provide to us now or in the future and permits such calls regardless of their purpose, including for debt collection purposes. You understand that these calls and messages may result in access fees from your cellular provider and that the messages may be heard by family members or third parties.  The consent granted under this paragraph is a condition of this application for credit and related credit agreement and cannot be revoked unless otherwise provided by law.</i></p>
+            <div  class="slds-text-body--regular animated">
+              <lightning:input type="checkbox"
+                               checked="{!v.lead.CoApplicant_Contact__r.Express_Consent__c}"
+                               label="I express consent."
+                               aura:id="expressConsent"/>
             </div>
           </div>
         </aura:if>
-      </fieldset>
         <div class="slds-form-element__row slds-m-top--medium">
           <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.saveCoAppPI}"/>
         </div>
@@ -592,7 +607,8 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppIncomeElement">
-            <label class="slds-form-element__label">Annual Income</label>
+            <label class="slds-form-element__label">Gross Annual Income</label>
+            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040"/>
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">

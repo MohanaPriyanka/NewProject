@@ -29,28 +29,35 @@ public without sharing class PreviewProductionUpdateResults{
     	List<UASB__c> newBillList = new List<UASB__c> ();
     	if (isProdUpdate) {
 	    	Energy_Usage_Update__c production = [SELECT Name, Id, Shared_Solar_System__c, YearDate__c, Credits_on_Bill_Period__c,
-	    											MonthDate__c, Total_System_NMCs__c, Generate_Bills__c
+	    											MonthDate__c, Total_System_NMCs__c, Production__c, Generate_Bills__c
 	    										FROM Energy_Usage_Update__c
 	    										WHERE Id = : parentId];
 	    	List<Utility_Account_Subscription__c> uasList = [	
 	    			SELECT 	Name, Customer_Subscription_KW_DC_STATIC__c, Opportunity__r.Shared_Solar_System__c,
-	    					Name_on_Account_From_Log__c, Share_of_System__c, Next_Schedule_Z_Status__c, Opportunity_Stage__c
+	    					Name_on_Account_From_Log__c, Share_of_System__c, Next_Schedule_Z_Status__c, Opportunity_Stage__c,
+	    					Opportunity__r.Product__r.Solar_Electricity_Rate__c, Opportunity__r.Product__r.NMC_Discount__c,
+	    					Opportunity__r.Product__r.Pricing_Structure__c
 	    			FROM Utility_Account_Subscription__c
 	    			WHERE Utility_Account_Log__c != null
 					AND Opportunity__c != null 
 					AND Opportunity_Stage__c = 'Complete'
-					AND Customer_Group__c != 'Anchor'
 					AND Next_Schedule_Z_Status__c != 'Cancelled'
 					AND Next_Schedule_Z_Status__c != 'Not Enacted: Addition'
 			        AND Opportunity__r.Shared_Solar_System__c = : production.Shared_Solar_System__c 
 			        ORDER BY Name_on_Account_From_Log__c];
 			for (Utility_Account_Subscription__c uas : uasList) {
 				if (uas.Customer_Subscription_KW_DC_STATIC__c != NULL) {
+					Decimal discountedBill = 0;
+					if (uas.Opportunity__r.Product__r.Pricing_Structure__c == 'Use Solar Electric Rate'){
+						discountedBill = (uas.Share_of_System__c.setScale(4)/100 * production.Production__c)*uas.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
+					} else {
+						discountedBill = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c)*(1-(uas.Opportunity__r.Product__r.NMC_Discount__c/100));
+					}
 					UASB__c newBill = new UASB__c (	
 						Name = 'PreGenerated Bill',
 						PreGen_IsPreGen__c = production.Generate_Bills__c, 
-						PreGen_Discounted_Bill__c = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c)*.9,
-						PreGen_NMCs_Allocated__c = uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c,
+						PreGen_Discounted_Bill__c = discountedBill.setScale(2),
+						PreGen_NMCs_Allocated__c = (uas.Share_of_System__c.setScale(4)/100 * production.Total_System_NMCs__c).setScale(2),
 						Utility_Account_Subscription__c = uas.Id,
 						PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,
 						PreGen_Production_Update__c = production.MonthDate__c + ' '+ production.YearDate__c,
@@ -68,12 +75,13 @@ public without sharing class PreviewProductionUpdateResults{
 	    	
 	    	List<Utility_Account_Subscription__c> uasListFromAcct = [	
 	    			SELECT 	Name, Customer_Subscription_KW_DC_STATIC__c, Opportunity__r.Shared_Solar_System__r.Id,
-	    					Name_on_Account_From_Log__c, Share_of_System__c, Next_Schedule_Z_Status__c, Opportunity_Stage__c
+	    					Name_on_Account_From_Log__c, Share_of_System__c, Next_Schedule_Z_Status__c, Opportunity_Stage__c,
+	    					Opportunity__r.Product__r.Solar_Electricity_Rate__c, Opportunity__r.Product__r.NMC_Discount__c,
+	    					Opportunity__r.Product__r.Pricing_Structure__c
 	    			FROM Utility_Account_Subscription__c
 	    			WHERE Utility_Account_Log__c != null
 					AND Opportunity__c != null 
 					AND Opportunity_Stage__c = 'Complete'
-					AND Customer_Group__c != 'Anchor'
 					AND Next_Schedule_Z_Status__c != 'Cancelled'
 					AND Next_Schedule_Z_Status__c != 'Not Enacted: Addition'
 					AND Utility_Account_Log__r.Account__r.Id = : parentId
@@ -82,7 +90,7 @@ public without sharing class PreviewProductionUpdateResults{
 				sssList.add(uasOne.Opportunity__r.Shared_Solar_System__c); 
 			}
 			List<Energy_Usage_Update__c> productionList = [SELECT Name, Id, Shared_Solar_System__c, Generate_Bills__c,
-															Total_System_NMCs__c, Shared_Solar_System__r.Id, Credits_on_Bill_Period__c
+															Total_System_NMCs__c, Production__c, Shared_Solar_System__r.Id, Credits_on_Bill_Period__c
 	    													FROM Energy_Usage_Update__c
 	    													WHERE Shared_Solar_System__r.Id IN : sssList
 	    													AND Total_System_NMCs__c != null
@@ -91,11 +99,17 @@ public without sharing class PreviewProductionUpdateResults{
 				for (Energy_Usage_Update__c productionUpdate : productionList) {
 					if (subscription.Opportunity__r.Shared_Solar_System__r.Id == productionUpdate.Shared_Solar_System__r.Id
 					 	&& !productionUpdate.Generate_Bills__c) {	
+							Decimal discountedBill = 0;
+							if (subscription.Opportunity__r.Product__r.Pricing_Structure__c == 'Use Solar Electric Rate'){
+								discountedBill = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Production__c)*subscription.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
+							} else {
+								discountedBill = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c)*(1-(subscription.Opportunity__r.Product__r.NMC_Discount__c/100));
+							}
 							UASB__c newBill = new UASB__c (	
 								Name = 'PreGenerated Bill',
 								PreGen_IsPreGen__c = False, 
-								PreGen_Discounted_Bill__c = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c)*.9,
-								PreGen_NMCs_Allocated__c = subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c,
+								PreGen_Discounted_Bill__c = discountedBill.setScale(2),
+								PreGen_NMCs_Allocated__c = (subscription.Share_of_System__c.setScale(4)/100 * productionUpdate.Total_System_NMCs__c).setScale(2),
 								PreGen_Name_on_Account__c = subscription.Name_on_Account_From_Log__c,
 								PreGen_Production_Update__c = productionUpdate.Name,
 								Utility_Account_Subscription__c = subscription.Id,

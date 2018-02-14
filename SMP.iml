@@ -408,10 +408,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="ProjectTestAddReservedCapacity" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="RecalculateUALCostController" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -616,10 +612,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="oppTestAddReservedCapacity" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="paymentGatewayAssignmentHandlerTestclass" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -657,6 +649,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MarketingInventoryTestClass" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PublicCSTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateUALController" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -846,6 +846,10 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
+                            <option name="name" value="CreateUALWrapper" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
                             <option name="name" value="PaymentRequestLanding" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -910,10 +914,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="PCRApprovalTrigger" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="ProjectaddReservedCapacity" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1349,6 +1349,22 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="BlueWavePicklist" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="BlueWaveMultiCheck" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="BlueWaveCheckbox" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateUAL" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CreateUALApp" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>

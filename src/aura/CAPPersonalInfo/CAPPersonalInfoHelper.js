@@ -145,6 +145,10 @@
                                                        'fieldId': "coAppEmailElement",
                                                        'fieldType': "email",
                                                        'errorMessage': "Enter " + firstname + "'s email"});
+        if (!lead.CoApplicant_Contact__r.Express_Consent__c) {
+            errorMessage += 'You must express consent in order to continue.';
+            $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+        }
         if (!component.get("v.coAppAddressSame")) {
             errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.LASERCA__Home_Address__c,
                                                            'fieldId': "coAppHomeAddressElement",
@@ -248,7 +252,8 @@
                                Privacy_Policy_Acknowledged__c: lead.CoApplicant_Contact__r.Privacy_Policy_Acknowledged__c,
                                Other_Bank_Executive__c: lead.CoApplicant_Contact__r.Other_Bank_Executive__c,
                                Avidia_Service_Provider__c: lead.CoApplicant_Contact__r.Avidia_Service_Provider__c,
-                               Type_of_Avidia_Service_Provider__c: lead.CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c}
+                               Type_of_Avidia_Service_Provider__c: lead.CoApplicant_Contact__r.Type_of_Avidia_Service_Provider__c,
+                               Express_Consent__c: lead.CoApplicant_Contact__r.Express_Consent__c}
                 if (leadClone.CoApplicant_Contact__c) {
                     contact.Id = leadClone.CoApplicant_Contact__c;
                     contactPromise = helper.saveSObject(component, contact.Id, 'Contact', null, null, contact);

@@ -101,7 +101,7 @@
 
     openAddressPI : function(component, event, helper) {
         if (helper.checkPIErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "savePI", helper.checkPIErrors(component), '', {suppressDBSave: true});
             return;
         }
         component.set('v.page', 'AddressPI');
@@ -121,7 +121,7 @@
 
     savePI : function(component, event, helper) {
         if (helper.checkAddressPIErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "savePI", helper.checkAddressPIErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "savePI", helper.checkAddressPIErrors(component), '', {suppressDBSave: true});
             return;
         }
 
@@ -143,7 +143,7 @@
 
     saveLicenseInfo : function(component, event, helper) {
         if (helper.checkLicenseErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "saveLicenseInfo", helper.checkLicenseErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "saveLicenseInfo", helper.checkLicenseErrors(component), '', {suppressDBSave: true});
             return;
         }
 
@@ -157,7 +157,7 @@
 
     saveSSN : function(component, event, helper) {
         if (helper.checkSSNErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "saveSSN", helper.checkSSNErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "saveSSN", helper.checkSSNErrors(component), '', {suppressDBSave: true});
             return;
         }
 
@@ -178,7 +178,7 @@
 
     saveCoAppPI : function(component, event, helper) {
         if (helper.checkCoAppPIErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "saveCoAppPI", helper.checkCoAppPIErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "saveCoAppPI", helper.checkCoAppPIErrors(component), '', {suppressDBSave: true});
             return;
         }
 
@@ -187,7 +187,7 @@
 
     saveCoAppSSN : function(component, event, helper) {
         if (helper.checkCoAppSSNErrors(component)) {
-            helper.logError("CAPPersonalInfoController", "saveCoAppSSN", helper.checkCoAppSSNErrors(component));
+            helper.raiseError("CAPPersonalInfoController", "saveCoAppSSN", helper.checkCoAppSSNErrors(component), '', {suppressDBSave: true});
             return;
         }
 

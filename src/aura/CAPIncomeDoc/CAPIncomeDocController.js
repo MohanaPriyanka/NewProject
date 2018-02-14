@@ -53,25 +53,43 @@
     setEmploymentLength: function(component, event, helper) {
         var lead = component.get('v.lead');
         var value = event.currentTarget.value;
-        if (value == 'true') {
-            component.set('v.lead.Year_Employment__c', true);
-            component.set('v.lead.Employed_less_than_a_year__c', false);
-        } else {
-            component.set('v.lead.Year_Employment__c', false);
-            component.set('v.lead.Employed_less_than_a_year__c', true);
-        }
+        var leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Year_Employment__c: (value==='true'?true:false),
+            Employed_less_than_a_year__c: (value==='true'?false:true)
+        };
+        var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        promise.then($A.getCallback(function resolve(retVal) {
+            if (value == 'true') {
+                component.set('v.lead.Year_Employment__c', true);
+                component.set('v.lead.Employed_less_than_a_year__c', false);
+            } else {
+                component.set('v.lead.Year_Employment__c', false);
+                component.set('v.lead.Employed_less_than_a_year__c', true);
+            }
+        }));
     },
 
     setCoAppEmploymentLength: function(component, event, helper) {
         var lead = component.get('v.lead');
         var value = event.currentTarget.value;
-        if (value == 'true') {
-            component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', true);
-            component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', false);
-        } else {
-            component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', false);
-            component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', true);
-        }
+        var contact = {
+            sobjectType: 'Contact',
+            Id: lead.CoApplicant_Contact__c,
+            Year_Employment__c: (value==='true'?true:false),
+            Employed_less_than_a_year__c: (value==='true'?false:true)
+        };
+        var promise = helper.saveSObject(component, contact.Id, 'Contact', null, null, contact);
+        promise.then($A.getCallback(function resolve(retVal) {
+            if (value == 'true') {
+                component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', true);
+                component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', false);
+            } else {
+                component.set('v.lead.CoApplicant_Contact__r.Year_Employment__c', false);
+                component.set('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c', true);
+            }
+        }));
     },
 
     setSelfEmployment: function(component, event, helper) {
@@ -124,16 +142,23 @@
 
 
     saveAndAskSelfEmployed : function(component, event, helper) {
+        var primaryPaystubs = component.get('v.primaryPaystubs');
         var longerThanYear = component.get('v.lead.Year_Employment__c');
         var shorterThanYear = component.get('v.lead.Employed_less_than_a_year__c');
+        var jointPaystubs = component.get('v.jointPaystubs');
         var coAppLongerThanYear = component.get('v.lead.CoApplicant_Contact__r.Year_Employment__c');
         var coAppShorterThanYear = component.get('v.lead.CoApplicant_Contact__r.Employed_less_than_a_year__c');
-        if (!longerThanYear && !shorterThanYear) {
+        if ((primaryPaystubs || component.get('v.lead.Application_Type__c') === 'Individual') && !longerThanYear && !shorterThanYear) {
             alert('Please specify your length of employment.')
             return;
         }
-        if (component.get('v.lead.Application_Type__c') === 'Joint' && !coAppLongerThanYear && !coAppShorterThanYear) {
+        if (jointPaystubs && component.get('v.lead.Application_Type__c') === 'Joint' && !coAppLongerThanYear && !coAppShorterThanYear) {
             alert('Please specify ' + component.get('v.lead.Co_Applicant_First_Name__c') + '\'s employment length.')
+            return;
+        }
+        if (!component.get('v.paystubs') ||
+            component.get('v.paystubs').length === 0) {
+            alert('Please upload paystubs as income documentation before continuing');
             return;
         }
 
@@ -194,6 +219,11 @@
     },
 
     saveAndAskRetirement : function(component, event, helper) {
+        if (!component.get('v.lastYearReturns') || component.get('v.lastYearReturns').length === 0 ||
+            !component.get('v.twoYearReturns') || component.get('v.twoYearReturns').length === 0){
+            alert('Please document self-employment income by uploading two years of federal tax returns');
+            return;
+        }
         component.set('v.page', 'RetirementQuestion');
     },
 
@@ -222,6 +252,11 @@
     },
 
     saveAndAskVeteran : function(component, event, helper) {
+        if (!component.get('v.retirementIncome') ||
+            component.get('v.retirementIncome').length === 0){
+            alert('Please upload supporting retirement income documentation');
+            return;
+        }
         component.set('v.page', 'VeteranQuestion');
     },
 
@@ -250,6 +285,11 @@
     },
 
     saveAndAskAlimony : function(component, event, helper) {
+        if (!component.get('v.veteranIncome') ||
+            component.get('v.veteranIncome').length === 0){
+            alert('Please upload supporting veteran income documentation');
+            return;
+        }
         component.set('v.page', 'AlimonyQuestion');
     },
 
@@ -297,6 +337,15 @@
     saveAndAskOther : function(component, event, helper) {
         const lead = component.get('v.lead');
         var errorMessage = "";
+        if (!lead.Monthly_Income__c && !lead.Monthly_Income_2__c) {
+            errorMessage += 'Please enter a Monthly Income Amount, or go back and choose to No to relying on Alimony, Child Support, or Separate Maintenance Payments.';
+        }
+        if (lead.Monthly_Income__c && !lead.Monthly_Income_Details__c) {
+            errorMessage += 'Please provide a details for the Monthly Income Amount';
+        }
+        if (lead.Monthly_Income_2__c && !lead.Monthly_Income_Details_2__c) {
+            errorMessage += 'Please provide a details for the Second Monthly Income Amount';
+        }
         errorMessage += helper.getFieldError(component, {
             'fieldValue': lead.Monthly_Income_Details__c,
             'fieldId': 'alimonyDetails',
@@ -390,4 +439,19 @@
     handleOtherIncome : function(component, event, helper) {
         helper.handleAttachment(component, event, helper, helper.OTHER_INCOME);
     },
+
+    goBack : function(component, event, helper) {
+        var pageMap = new Map();
+        pageMap.set('GetPayStubs', 'EmployedQuestion');
+        pageMap.set('SelfEmployedQuestion', 'EmployedQuestion');
+        pageMap.set('GetTaxReturns', 'SelfEmployedQuestion');
+        pageMap.set('RetirementQuestion', 'SelfEmployedQuestion');
+        pageMap.set('GetRetirementIncome', 'RetirementQuestion');
+        pageMap.set('VeteranQuestion', 'RetirementQuestion');
+        pageMap.set('GetVeteranIncome', 'VeteranQuestion');
+        pageMap.set('AlimonyQuestion', 'VeteranQuestion');
+        pageMap.set('GetAlimonyIncome', 'AlimonyQuestion');
+        pageMap.set('OtherIncome', 'AlimonyQuestion');
+        component.set('v.page', pageMap.get(event.getSource().get('v.name')));
+    }
 })

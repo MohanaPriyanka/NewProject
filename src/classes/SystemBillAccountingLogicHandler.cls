@@ -52,6 +52,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                                                     Distribute_This_Balance_as_Payment_Plan__c,
                                                     Payment_Plan_Balance_to_Distribute__c, 
                                                     Savings__c, Opportunity_ID__c, 
+                                                    Production_kWH__c,
                                                     Entity_ID__c
                                                 FROM System_Bill__c
                                                 WHERE Property_Account_ID__c 
@@ -83,6 +84,7 @@ public with sharing class SystemBillAccountingLogicHandler {
             Decimal twelveppbalance = 0;
             Decimal ytdbilled = 0;
             Decimal ytdpayments = 0;
+            Decimal ytdProduction = 0;
             Boolean morerecentbills = FALSE;
             Decimal dueThisMonth = trigsb.Discounted_Bill__c ;  
             Decimal extraAdjustment = 0;
@@ -94,6 +96,7 @@ public with sharing class SystemBillAccountingLogicHandler {
             trigsb.Balance_Net_Late_Payments__c = checkForNull(trigsb.Balance_Net_Late_Payments__c);
             trigsb.Late_Fee_Payments__c = checkForNull(trigsb.Late_Fee_Payments__c);
             trigsb.Late_Fees__c = checkForNull(trigsb.Late_Fees__c);
+            trigsb.Monthly_Late_Fee_Interest__c = checkForNull(trigsb.Monthly_Late_Fee_Interest__c);
             trigsb.Adjustments__c = checkForNull(trigsb.Adjustments__c);
             trigsb.Carry_Forward_Adjustments__c = checkForNull(trigsb.Carry_Forward_Adjustments__c);
             trigsb.Carry_Forward_Payments__c = checkForNull(trigsb.Carry_Forward_Payments__c);
@@ -149,6 +152,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                               && sbill.Bill_Number__c >= pasttwelvebills) {
                                 ytdbilled = ytdbilled + sbill.Discounted_Bill__c + sbill.Late_Fees__c + sbill.Adjustments__c;
                                 ytdpayments = ytdpayments + sbill.Total_Payments_This_Month__c;
+                                ytdProduction = ytdProduction + sbill.Production_kWH__c;
                         } 
                     }      
                 } 
@@ -159,14 +163,15 @@ public with sharing class SystemBillAccountingLogicHandler {
                 trigsb.Past_Bill_Payment__c = pastbillpayment;
                 trigsb.YTD_Billed__c = ytdbilled;
                 trigsb.YTD_Payments__c = ytdpayments;
+                trigsb.YTD_kWh_Production__c = ytdProduction;
                 trigsb.Adjustments__c = 0;     
                 if (ppbalance > 0) {
                     trigsb.Payment_Plan_Balance__c = ppbalance.setScale(2);
                 } else if (twelveppbalance > 0) {
                     trigsb.Payment_Plan_Balance__c = twelveppbalance.setScale(2);
                 }           
-                if (!trigsb.Waive_Late_Fees__c && overdue > 0) {
-                    trigsb.Late_Fees__c = (0.01*overdue).setScale(2);
+                if (!trigsb.Waive_Late_Fees__c && overdue > 0) { 
+                    trigsb.Late_Fees__c = ((trigsb.Monthly_Late_Fee_Interest__c/100)*overdue).setScale(2);
                 } else if (trigsb.Waive_Late_Fees__c) {
                     trigsb.Late_Fees__c = 0;
                 }

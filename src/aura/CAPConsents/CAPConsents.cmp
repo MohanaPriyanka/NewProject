@@ -103,8 +103,8 @@
                             label="{!$Label.c.CD_Disbursal_Consent}"
                             class="slds-input"
                             value="{!v.lead.Electronic_Disbursal_Authorized__c}">
-              <ui:inputSelectOption text="Yes"/>
-              <ui:inputSelectOption text="No"/>
+              <ui:inputSelectOption text="Yes" label="Disburse funds directly to installers electronically"/>
+              <ui:inputSelectOption text="No" label="Receive a two-party paper check for signature"/>
             </ui:inputSelect>
           </div>
         </div>

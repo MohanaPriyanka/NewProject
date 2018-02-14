@@ -25,7 +25,21 @@
     'Product__c':'',
     'DOER_Solar_Loan__c':'',
     'SREC_Product__c':'',
-    }"/>  
+    'System_Size_kW_DC__c': '',
+    'Loan_System_Information__c':'',
+    }"/>
+
+  <aura:attribute name="systemInfoObj" type="SObject" 
+    default="{ 'number_of_modules__c': '',
+    'module_manufacturer__c': '',
+    'module_model_number__c':'',
+    'number_of_inverters__c': '',
+    'inverter_manufacturer__c': '',
+    'inverter_model_number__c': '',
+    'commencement_datee__c': '',
+    'generator_nameplate_capacity__c': '',
+    }"/>
+
   <div id="emailCustomerModal" aura:id="emailCustomerModal">
     <div aura:id="emailCustomerModal2">
       <div class="slds-m-bottom_small" aura:id="emailForm">
@@ -37,15 +51,15 @@
             <aura:set attribute="else">
               <div class="slds-tabs--default box">
                 <fieldset class="slds-form--compound slds-m-top_small">
-                  <div class="proximaNovaStream slds-m-left_small slds-m-bottom_small slds-m-top_small"> <b><h3>Applicant Information </h3></b> </div>
+                  <div class="slds-text-heading--medium slds-m-left_small slds-m-bottom_small slds-m-top_small"> <b>Applicant Information</b></div>
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="firstNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"> <b>First Name</b> </label>
+                        <label class="slds-form-element__label"> <b>First Name</b> </label>
                         <ui:inputText aura:id="firstName" class="slds-input" value="{!v.newLead.FirstName}"  />
                       </div>
                       <div aura:id="lastNameElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"> <b>Last Name</b> </label>
+                        <label class="slds-form-element__label"> <b>Last Name</b> </label>
                         <ui:inputText aura:id="lastName" class="slds-input" value="{!v.newLead.LastName}"  />
                       </div>
                     </div>
@@ -55,11 +69,11 @@
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="emailAddressElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"> <b>Email Address</b> </label>
+                        <label class="slds-form-element__label"> <b>Email Address</b> </label>
                         <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
                       </div>
                       <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"><b>Home State</b></label>
+                        <label class="slds-form-element__label"><b>Home State</b></label>
                         <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" change="{!c.getAvailableProducts}"> 
                           <ui:inputSelectOption text="Select"/> 
                           <aura:iteration items="{!v.activeStates}" var="state">
@@ -74,15 +88,15 @@
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
                       <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"><b>Total System Cost</b>&nbsp;
-                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments.
-                                                               The applicant's requested loan amount is the difference between
+                        <label class="slds-form-element__label"><b>Total System Cost</b>&nbsp;
+                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
+                                                               The applicant's requested loan amount is the difference between 
                                                                total system cost and down payment."/>
                         </label>
                         <ui:inputCurrency aura:id="systemCost" class="slds-input" value="{!v.newLead.System_Cost__c}"/>
                       </div>
                       <div aura:id="downPaymentElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"><b>Down Payment on System</b>&nbsp;
+                        <label class="slds-form-element__label"><b>Down Payment on System</b>&nbsp;
                           <c:BlueWaveInputToolTip placementLeft="true" popoverText="If the customer has made a down payment on their system, 
                                                                                     please enter its value here. The applicant's requested loan amount will be the difference of the total system cost and this down payment."/>
                         </label>
@@ -91,14 +105,23 @@
                     </div>
                     <div class="slds-form-element__row">
                       <div aura:id="loanAmountElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
-                        <label class="slds-form-element__label proximaNovaBlue"><b>Requested Loan Amount</b></label>
+                        <label class="slds-form-element__label"><b>Requested Loan Amount{!v.newLead.LASERCA__Home_State__c == 'FL'?' *':''}</b></label>
                         <ui:outputCurrency aura:id="loanAmount" class="slds-input input uiInput--input" value="{!if(v.downPayment!=null,v.newLead.System_Cost__c - v.downPayment,v.newLead.System_Cost__c)}"/>
+                        <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'FL'}">
+                          <p class="slds-text-body--small slds-p-top_x-small">
+                            Requested Loan Amount excludes the Florida Documentary Stamp Tax. Under Florida law we are required
+                            to collect and transmit this tax to the State of Florida on the customer's behalf. The amount of this tax,
+                            which is slightly more than .0035 times the requested loan amount (or just over $35 for a $10,000 loan),
+                            will be added to the loan amount if the loan request is approved and funded. The final loan amount will
+                            include the tax, will be paid on the customer's behalf, and is not included in the quoted APR.
+                          </p>
+                        </aura:if>
                       </div>
                     </div>
                   </div>
                   <div class="slds-form-element__row">
                     <div aura:id="productElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-                      <label class="slds-form-element__label proximaNovaBlue"><b>Product</b></label>
+                      <label class="slds-form-element__label"><b>Product</b></label>
                       <div class="slds-form-element__control">
                         <ui:inputSelect aura:id="productSelection" class="slds-input" value="{!v.newLead.Product__c}" change="{!c.setProductProgram}">
                           <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
@@ -119,7 +142,7 @@
                   <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
                     <div class="slds-form-element__row">
                       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-                        <label class="slds-form-element__label proximaNovaBlue"><b>SREC Product</b></label>
+                        <label class="slds-form-element__label"><b>SREC Product</b></label>
                         <div class="slds-form-element__control">
                           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.newLead.SREC_Product__c}">
                             <ui:inputSelectOption label="Select"/>
@@ -135,7 +158,6 @@
                     <div class="slds-form-element__row slds-p-horizontal--small slds-m-top_medium slds-form-element__label">
                       <b>
                         Applicants will need to meet the Massachusetts Clean Energy Technology Center's (MassCEC) Income-Based Loan Support (IBLS) requirements to apply for a Mass Solar Loan Program (MSLP) loan from BlueWave's bank partner.  Applicants who do not meet IBLS requirements may still be eligible for a MSLP loan through MassCEC.
-
                         <c:BlueWaveInputToolTip placementLeft="false"> 
                           <aura:set attribute="popoverBody">
                             <c:SLPIBLSRequirements/>
@@ -145,24 +167,76 @@
                     </div>
                   </aura:if>
                 </fieldset>
-              </div>
-            </aura:set>
-          </aura:if>
-        </div>
-      </div>
-      <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
-        <div class="slds-p-around--medium">
-          <div class="slds-align--absolute-center ">
-            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
+                <aura:if isTrue="{!v.newLead.Product__c != 'MSLP'}">
+                  <div class="slds-m-bottom_small slds-m-top_medium">
+                    <label class="slds-text-heading--medium slds-m-left_small"><b>System Information (Optional)</b>&nbsp;
+                      <c:BlueWaveInputToolTip popoverText="This is optional and will only save you time in advance. If you have this information ready, we suggest you provide it now. You can always update it later if it changes. "/>
+                    </label>
+                  </div>
+                  <fieldset class="slds-form--compound">
+                    <div class="slds-form-element__group">
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="slds-form-element__label" for="input-03"><b>System Size (kW)</b></label>
+                          <ui:inputText aura:id="systemSize" class="slds-input" value="{!v.systemInfoObj.generator_nameplate_capacity__c}"/>
+                          </div>
+                          <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
+                            <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
+                            <div class="slds-form-element__control">
+                              <c:BlueWaveDate value="{!v.systemInfoObj.commencement_datee__c}" label="Estimated Date of Completion"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="slds-form-element__row">
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Module Manufacturer</b></label>
+                            <ui:inputText aura:id="moduleManfuacturer" class="slds-input" value="{!v.systemInfoObj.module_manufacturer__c}"/>
+                          </div>
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Module Model Number/Type</b></label>
+                            <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.systemInfoObj.module_model_number__c}"/>
+                          </div>
+                          <div class="slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
+                            <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.systemInfoObj.number_of_modules__c}"/>
+                          </div>
+                        </div>
+                        <div class="slds-form-element__row">
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
+                            <ui:inputText aura:id="inverterManufacturer" class="slds-input" value="{!v.systemInfoObj.inverter_manufacturer__c}"/>
+                          </div>
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Inverter Model Number/Type</b></label>
+                            <ui:inputText aura:id="inverterType" class="slds-input" value="{!v.systemInfoObj.inverter_model_number__c}"/>
+                          </div>
+                          <div class="slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
+                            <ui:inputText aura:id="inverterNumber" class="slds-input" value="{!v.systemInfoObj.number_of_inverters__c}"/>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </aura:if>
+                </div>
+              </aura:set>
+            </aura:if>
           </div>
-          <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
-            <div>
-              <b>If you plan on opening the application from this computer, please logout first.</b>
+        </div>
+        <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
+          <div class="slds-p-around--medium">
+            <div class="slds-align--absolute-center ">
+              <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
             </div>
-            <div>
-              <form action="/slportal/secur/logout.jsp">
-                <input type="submit" value="Logout"/>
-              </form>
+            <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
+              <div>
+                <b>If you plan on opening the application from this computer, please logout first.</b>
+              </div>
+              <div>
+                <form action="/slportal/secur/logout.jsp">
+                  <input type="submit" value="Logout"/>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -179,7 +253,6 @@
       </div>
       <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
     </div>
-  </div>
-</aura:component>
+  </aura:component>
 
 

@@ -35,18 +35,26 @@
     },
 
     getPicklistOptions : function(component, objectName, fieldName, inputSelect) {
-        var action = component.get("c.getPicklistFields");
-        action.setParams({"objectName": objectName,
-                          "fieldName": fieldName});
-        action.setStorable();
-        var opts=[];
-        action.setCallback(this, function(a) {
-            for(var i=0;i< a.getReturnValue().length;i++){
-                opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
-            }
-            inputSelect.set("v.options", opts);
+        this.setAttributeWithPicklistOptions(component, objectName, fieldName, inputSelect, 'v.options');
+    },
+
+    setAttributeWithPicklistOptions : function(component, objectName, fieldName, inputSelect, attributeName) {
+        var promise = new Promise(function(resolve) {
+            var action = component.get("c.getPicklistFields");
+            action.setParams({"objectName": objectName,
+                "fieldName": fieldName});
+            action.setStorable();
+            var opts=[];
+            action.setCallback(this, function(a) {
+                for (var i=0; i< a.getReturnValue().length; i++) {
+                    opts.push({"class": "optionClass", label: a.getReturnValue()[i], value: a.getReturnValue()[i]});
+                }
+                inputSelect.set(attributeName, opts);
+                return(resolve);
+            });
+            $A.enqueueAction(action);
         });
-        $A.enqueueAction(action);
+        return promise;
     },
 
     US_STATES : {'AL':'Alabama', 'AK':'Alaska', 'AZ':'Arizona', 'AR':'Arkansas', 'CA':'California', 

@@ -328,7 +328,13 @@
               </a>
             </div> 
             <div aura:id="downloadQSStext" class="slds-form-element">  
-              <div class="slds-text-align_center"><b>Download</b></div>
+              <div class="slds-text-align_center slds-p-bottom_large"><b>Download</b></div>
+              <a href="loansheet">
+                <lightning:button 
+                  name="start over"
+                  label="Create New Sheet"
+                  class="slds-button slds-button--brand slds-align--absolute-center bwcolorforcard"/>
+              </a>
             </div>
             <div class="slds-form-element">
               <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">            

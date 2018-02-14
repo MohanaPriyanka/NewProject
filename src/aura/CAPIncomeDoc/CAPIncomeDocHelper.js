@@ -28,6 +28,8 @@
         if (lead.Attachments) {
             const paystubs = [];
             const taxreturns = [];
+            const lastYearReturns = [];
+            const twoYearReturns = [];
             const retirement = [];
             const veteran = [];
             const otherIncome = [];
@@ -35,11 +37,12 @@
                 const desc = attachment.Description;
                 if (desc === helper.PAYSTUB) {
                     paystubs.push(attachment.Name);
-                } else if (
-                    desc === helper.TAX_PREV_YEAR ||
-                    desc === helper.TAX_TWO_YEARS_PRIOR
-                ) {
+                } else if (desc === helper.TAX_PREV_YEAR) {
                     taxreturns.push(attachment.Name);
+                    lastYearReturns.push(attachment.Name);
+                } else if (desc === helper.TAX_TWO_YEARS_PRIOR) {
+                    taxreturns.push(attachment.Name);
+                    twoYearReturns.push(attachment.Name);
                 } else if (
                     desc === helper.SSN ||
                     desc === helper.PENSION ||
@@ -54,6 +57,8 @@
             });
             component.set('v.paystubs', paystubs);
             component.set('v.taxreturns', taxreturns);
+            component.set('v.lastYearReturns', lastYearReturns);
+            component.set('v.twoYearReturns', twoYearReturns);
             component.set('v.retirementIncome', retirement);
             component.set('v.veteranIncome', veteran);
             component.set('v.otherIncome', otherIncome);

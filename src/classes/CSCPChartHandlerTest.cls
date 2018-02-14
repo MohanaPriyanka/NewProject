@@ -80,6 +80,19 @@ public class CSCPChartHandlerTest {
 
 		insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
+		Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+                      Family = 'Community Solar',
+                      Product_Type__c = 'Community Solar',
+                      State__c = 'MA',
+                      ProductCode = 'CS - BlueWave - 10%',
+                      IsActive = True,
+                      Lender_of_Record__c = 'BlueWave', 
+                      NMC_Discount__c = 10,
+                      Annual_kWh_Maximum__c = 100000000,
+                      NM_Rate_Floor__c = 0,
+                      Monthly_Late_Fee__c = 1);
+        insert normalCSProduct;
+
 		Shared_Solar_System__c sss1 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
 			Service_Territories__c = 'WCMA',
@@ -116,6 +129,7 @@ public class CSCPChartHandlerTest {
 			CloseDate = System.today(),
 			AccountId = propertyAcc.Id,
 			Shared_Solar_System__c = sss1.Id,
+			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
 			Customer_Group__c = 'Residential',
 			CS_Capacity_Allocated__c = 25);
@@ -125,6 +139,7 @@ public class CSCPChartHandlerTest {
 			CloseDate = System.today(),
 			AccountId = propertyAcc.Id,
 			Shared_Solar_System__c = sss2.Id,
+			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
 			Customer_Group__c = 'Residential',
 			CS_Capacity_Allocated__c = 25);
@@ -134,6 +149,7 @@ public class CSCPChartHandlerTest {
 			CloseDate = System.today(),
 			AccountId = propertyAcc2.Id,
 			Shared_Solar_System__c = sss2.Id,
+			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
 			Customer_Group__c = 'Residential',
 			CS_Capacity_Allocated__c = 25); 
@@ -262,6 +278,7 @@ public class CSCPChartHandlerTest {
 			CS_Billing_Log__c = uab.Id,
 			Date__c = billingDate1,
 			Size_off_NMCs__c = true,
+			NMC_Discount__c	= 10,
 			Share_of_System__c = 0.01,   
 			Total_System_Production_kWh__c = 150000,   
 			Total_System_NMCs__c = 150000,                                       
@@ -277,6 +294,7 @@ public class CSCPChartHandlerTest {
 			CS_Billing_Log__c = uab2.Id,
 			Date__c = billingDate1,
 			Size_off_NMCs__c = true,
+			NMC_Discount__c	= 10,
 			Share_of_System__c = 0.01,   
 			Total_System_Production_kWh__c = 150000,   
 			Total_System_NMCs__c = 150000,                                    

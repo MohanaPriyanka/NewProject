@@ -13,20 +13,20 @@ public class LoanHandlerTestClass {
     }
     @isTest static void testLoanHandlerCreateLoan() {
         // The insertion of the lead sets it as qualified due to the credit reports inserted with it.
-
-        for (Lead leadRecordAssertion : [SELECT Id, Name, DOER_Solar_Loan__c, (SELECT Id, Product__r.Name FROM Loans__r), 
+        for (Lead leadRecordAssertion : [SELECT Id, Name, DOER_Solar_Loan__c, (SELECT Id, Product__r.Name, Commencement_Datee__c FROM Loans__r),
                                          (SELECT Id FROM Partner_Tasks__r), 
                                          (SELECT Id FROM Residential_Equipment__r) 
                                          FROM Lead
-                                         WHERE DOER_Solar_Loan__c = false]) {
+                                         WHERE DOER_Solar_Loan__c = false
+                                         AND LASERCA__Home_State__c = 'MA']) {
             //Assert that a loan was created when the lead was set to qualified.
-            System.AssertEquals(1, leadRecordAssertion.Loans__r.size());
-            //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
-            System.AssertEquals(8, leadRecordAssertion.Partner_Tasks__r.size());     
-        }    
+            System.assertEquals(1, leadRecordAssertion.Loans__r.size());
+            //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified.
+            System.assertEquals(8, leadRecordAssertion.Partner_Tasks__r.size());
+        }
         //Assert that the equipment record mapped to the loan on creation
         for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
-            System.AssertEquals(1, loanRecordAssertion.ResidentiaL_Equipment__r.size());
+            System.assertEquals(1, loanRecordAssertion.ResidentiaL_Equipment__r.size());
         }
     }
 
@@ -37,38 +37,37 @@ public class LoanHandlerTestClass {
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
 
         Test.startTest();      
-      List<Lead> leadList = [SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c 
+        List<Lead> leadList = [SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c
                                FROM Lead
                                WHERE DOER_Solar_Loan__c = false];
-        System.debug('the lead list is ' + leadList);                               
       for (Lead leadRecord : leadList) {
-            //test income documentation 
+            //test income documentation
 
-            //Insert the PayStub subTask         
+            //Insert the PayStub subTask
             Attachment attachmentPaystub = new Attachment();
             attachmentPaystub.Name =  String.valueOf('test.txt');
             attachmentPaystub.body = bodyBlob;
             attachmentPaystub.ParentId = leadRecord.Id;
             attachmentPaystub.Description = 'PayStub' + ' ' + leadRecord.Id;
-            Insert attachmentPaystub;
+            insert attachmentPaystub;
 
             if(leadRecord.Retired__c && !leadRecord.Self_Employed__c) {
-                //Insert the SSN/Pension Award Letter or Bank Statement subTask               
+                //Insert the SSN/Pension Award Letter or Bank Statement subTask
                 Attachment attachmentSSNAwardLetter = new Attachment();
                 attachmentSSNAwardLetter.Name =  String.valueOf('test.txt');
                 attachmentSSNAwardLetter.body = bodyBlob;
                 attachmentSSNAwardLetter.ParentId = leadRecord.Id;
                 attachmentSSNAwardLetter.Description = 'SSN Award Letter' + ' ' + leadRecord.Id;
-                Insert attachmentSSNAwardLetter;
+                insert attachmentSSNAwardLetter;
             }
             if(!leadRecord.Retired__c && leadRecord.Self_Employed__c) {
-                //Insert the Tax Return               
+                //Insert the Tax Return
                 Attachment attachmentTaxReturnTwoYears = new Attachment();
                 attachmentTaxReturnTwoYears.Name =  String.valueOf('test.txt');
                 attachmentTaxReturnTwoYears.body = bodyBlob;
                 attachmentTaxReturnTwoYears.ParentId = leadRecord.Id;
                 attachmentTaxReturnTwoYears.Description = 'Tax Return (Two Years Previous)' + ' ' + leadRecord.Id;
-                Insert attachmentTaxReturnTwoYears;
+                insert attachmentTaxReturnTwoYears;
 
                 //Insert the Tax Return          
                 Attachment attachmentOneYear = new Attachment();
@@ -76,7 +75,7 @@ public class LoanHandlerTestClass {
                 attachmentOneYear.body = bodyBlob;
                 attachmentOneYear.ParentId = leadRecord.Id;
                 attachmentOneYear.Description = 'Provide Tax Return (Previous Year)' + ' ' + leadRecord.Id;
-                Insert attachmentOneYear;
+                insert attachmentOneYear;
             }    
 
             //Insert the Sales agreement               
@@ -85,7 +84,7 @@ public class LoanHandlerTestClass {
             attachmentSalesAgreement.body = bodyBlob;
             attachmentSalesAgreement.ParentId = leadRecord.Id;
             attachmentSalesAgreement.Description = 'Sales Agreement' + ' ' + leadRecord.Id;
-            Insert attachmentSalesAgreement;
+            insert attachmentSalesAgreement;
 
         }
         for (Loan__c loanRecord : [SELECT Id, Commencement_Datee__c, Product__r.Name FROM Loan__c WHERE DOER_Solar_Loann__c = false]) {
@@ -118,30 +117,30 @@ public class LoanHandlerTestClass {
         for (Partner_Task__c partnerTaskAssertion : partnerTaskList) {
             if(partnerTaskAssertion.Child_MSLP_Identifier__c == false) {
                 if(partnerTaskAssertion.Name == 'Provide PayStub Documentation') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Provide SSN/Pension Award Letter or Bank Statement') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Provide Tax Return (Previous Year)') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Provide Tax Return (Two Years Previous)') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
             }
             if(partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c == false) {
                 if(partnerTaskAssertion.Name == 'Provide Income Documentation') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Provide all System Information') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Provide all Customer Information') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
                 if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                    System.AssertEquals('Pending', partnerTaskAssertion.Status__c);
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }
             }
         }         
@@ -149,57 +148,60 @@ public class LoanHandlerTestClass {
 
     @isTest static void testAfterLeadConversionCustomerSignature() {
         Date myDate = Date.newInstance(2015, 2, 17);
-      List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
-      List<Opportunity> oppListToUpdate = new List<Opportunity>();
-      List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];
+        List<Opportunity> oppListToUpdate = new List<Opportunity>();
+        List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Test.startTest();
 
         convertLeads(leadlist);
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
                                                     FROM Partner_Task__c 
-                                                    WHERE Loan__r.DOER_Solar_Loann__c = false]) {
+                                                    WHERE Loan__r.DOER_Solar_Loann__c = FALSE AND Loan__r.State__c = 'MA']) {
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);          
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }    
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);          
+                System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }              
-      }
-      for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c, 
+        }
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
-                                      WHERE DOER_Solar_Loan__c = false]) {
+                                      WHERE DOER_Solar_Loan__c = FALSE
+                                      AND Community_Solar_State__c = 'MA']) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
-            System.AssertEquals(1, oppRecord.Residential_Equipment__r.size());
+            System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
             if(!oppRecord.DOER_Solar_Loan__c) {
                 //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
-                System.AssertEquals(8, oppRecord.Partner_Tasks__r.size());    
-            }else {
+                System.assertEquals(8, oppRecord.Partner_Tasks__r.size());
+            } else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
-                System.AssertEquals(5, oppRecord.Partner_Tasks__r.size());     
+                System.assertEquals(5, oppRecord.Partner_Tasks__r.size());
             }                       
 
             oppRecord.Contract_Status__c = 'Completed';
             oppListToUpdate.add(oppRecord);
-      }
+        }
 
-      update oppListToUpdate;    
+        update oppListToUpdate;
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
-                                                     FROM Partner_Task__c WHERE Loan__r.DOER_Solar_Loann__c = false]) {
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = FALSE
+                                                     AND Loan__r.State__c = 'MA']) {
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);          
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
-                    System.AssertEquals( 'Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals( 'Pending', partnerTaskAssertion.Status__c);
                 }                 
             } else {
                 if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
-                    System.AssertEquals( 'Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals( 'Pending', partnerTaskAssertion.Status__c);
                 }                 
             }                
       }
@@ -217,12 +219,12 @@ public class LoanHandlerTestClass {
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
                                                     FROM Partner_Task__c 
-                                                    WHERE Loan__r.DOER_Solar_Loann__c = false]) {
+                                                    WHERE Loan__r.DOER_Solar_Loann__c = FALSE]) {
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }       
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+                System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }                   
         }
         for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Product__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c, 
@@ -230,11 +232,12 @@ public class LoanHandlerTestClass {
                                       (SELECT Id FROM Partner_Tasks__r),
                                       (SELECT Id, Product__r.Disbursal_Terms__c FROM Loans__r)
                                       FROM Opportunity
-                                      WHERE DOER_Solar_Loan__c = false]) {
+                                      WHERE DOER_Solar_Loan__c = FALSE
+                                      AND Community_Solar_State__c = 'MA']) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
-            System.AssertEquals(1, oppRecord.Residential_Equipment__r.size());
+            System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
-            System.AssertEquals(8, oppRecord.Partner_Tasks__r.size());                      
+            System.assertEquals(8, oppRecord.Partner_Tasks__r.size());
             oppRecord.Contract_Status__c = 'Completed';
             oppRecord.BlueWave_Signature_Status__c = 'Completed';
             oppListToUpdate.add(oppRecord);
@@ -242,18 +245,20 @@ public class LoanHandlerTestClass {
 
         update oppListToUpdate;
 
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
-                                                     FROM Partner_Task__c WHERE Loan__r.DOER_Solar_Loann__c = false]) {
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = FALSE
+                                                     AND Loan__r.State__c = 'MA']) {
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c );                
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c );
             }
             if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-                    System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }   
             }else {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
-                    System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }                 
             }                       
         }
@@ -284,12 +289,13 @@ public class LoanHandlerTestClass {
       
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
                                                      FROM Partner_Task__c
-                                                     WHERE Loan__r.DOER_Solar_Loann__c = false]) {
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = FALSE
+                                                     AND Loan__r.State__c = 'MA']) {
             if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);          
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }    
             if(partnerTaskAssertion.Name == 'Interconnection') {
-                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);          
+                System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }              
       }
       for (Residential_Equipment__c equipment : equipmentList){
@@ -343,14 +349,15 @@ public class LoanHandlerTestClass {
       }
       
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
-                                                     FROM Partner_Task__c]) {
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.State__c = 'MA']) {
             if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Interconnection') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }   
             }else {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }                       
             }              
       }              
@@ -366,18 +373,18 @@ public class LoanHandlerTestClass {
                                          FROM Lead
                                          WHERE DOER_Solar_Loan__c = true]) {
             //Assert that a loan was created when the lead was set to qualified.
-            System.AssertEquals(1, leadRecordAssertion.Loans__r.size());
+            System.assertEquals(1, leadRecordAssertion.Loans__r.size());
             if(!leadRecordAssertion.DOER_Solar_Loan__c) {
                 //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
-                System.AssertEquals(6, leadRecordAssertion.Partner_Tasks__r.size());    
+                System.assertEquals(6, leadRecordAssertion.Partner_Tasks__r.size());
             }else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
-                System.AssertEquals(6, leadRecordAssertion.Partner_Tasks__r.size());    
+                System.assertEquals(6, leadRecordAssertion.Partner_Tasks__r.size());
             }       
         }    
         //Assert that the equipment record mapped to the loan on creation
         for (Loan__c loanRecordAssertion : [SELECT Id, (SELECT Id FROM Residential_Equipment__r) FROM Loan__c]) {
-            System.AssertEquals(1, loanRecordAssertion.ResidentiaL_Equipment__r.size());
+            System.assertEquals(1, loanRecordAssertion.ResidentiaL_Equipment__r.size());
         }
     }
 
@@ -400,7 +407,7 @@ public class LoanHandlerTestClass {
             attachmentPaystub.body = bodyBlob;
             attachmentPaystub.ParentId = leadRecord.Id;
             attachmentPaystub.Description = 'PayStub' + ' ' + leadRecord.Id;
-            Insert attachmentPaystub;
+            insert attachmentPaystub;
 
             if(leadRecord.Retired__c && !leadRecord.Self_Employed__c) {
                 //Insert the SSN/Pension Award Letter or Bank Statement subTask                     
@@ -409,7 +416,7 @@ public class LoanHandlerTestClass {
                 attachmentSSNAwardLetter.body = bodyBlob;
                 attachmentSSNAwardLetter.ParentId = leadRecord.Id;
                 attachmentSSNAwardLetter.Description = 'SSN Award Letter' + ' ' + leadRecord.Id;
-                Insert attachmentSSNAwardLetter;
+                insert attachmentSSNAwardLetter;
             }
             if(!leadRecord.Retired__c&& leadRecord.Self_Employed__c) {
                 //Insert the Tax Return                     
@@ -418,7 +425,7 @@ public class LoanHandlerTestClass {
                 attachmentTaxReturnTwoYears.body = bodyBlob;
                 attachmentTaxReturnTwoYears.ParentId = leadRecord.Id;
                 attachmentTaxReturnTwoYears.Description = 'Tax Return (Two Years Previous)' + ' ' + leadRecord.Id;
-                Insert attachmentTaxReturnTwoYears;
+                insert attachmentTaxReturnTwoYears;
 
                 //Insert the Tax Return             
                 Attachment attachmentOneYear = new Attachment();
@@ -426,7 +433,7 @@ public class LoanHandlerTestClass {
                 attachmentOneYear.body = bodyBlob;
                 attachmentOneYear.ParentId = leadRecord.Id;
                 attachmentOneYear.Description = 'Provide Tax Return (Previous Year)' + ' ' + leadRecord.Id;
-                Insert attachmentOneYear;
+                insert attachmentOneYear;
             }     
 
             //Insert the Sales agreement                    
@@ -435,7 +442,7 @@ public class LoanHandlerTestClass {
             attachmentSalesAgreement.body = bodyBlob;
             attachmentSalesAgreement.ParentId = leadRecord.Id;
             attachmentSalesAgreement.Description = 'Sales Agreement' + ' ' + leadRecord.Id;
-            Insert attachmentSalesAgreement;
+            insert attachmentSalesAgreement;
 
             if(leadRecord.DOER_Solar_Loan__c) {
                 //Insert the Sales agreement                    
@@ -444,7 +451,7 @@ public class LoanHandlerTestClass {
                 attachmentTechnicalApplication.body = bodyBlob;
                 attachmentTechnicalApplication.ParentId = leadRecord.Id;
                 attachmentTechnicalApplication.Description = 'MSLP Technical Confirmation' + ' ' + leadRecord.Id;
-                Insert attachmentTechnicalApplication;                
+                insert attachmentTechnicalApplication;
             }
         }
         for (Loan__c loanRecord : [SELECT Id, Commencement_Datee__c, Product__r.Name FROM Loan__c WHERE DOER_Solar_Loann__c = true]) {
@@ -478,35 +485,35 @@ public class LoanHandlerTestClass {
 
         for (Partner_Task__c partnerTaskAssertion : partnerTaskList) {
             if(partnerTaskAssertion.Name == 'Provide PayStub Documentation') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide SSN/Pension Award Letter or Bank Statement') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Tax Return (Previous Year)') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Tax Return (Two Years Previous)') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Income Documentation') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide all System Information') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Provide all Customer Information') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);
+                System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }
             if(partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Provide Technical Confirmation Documentation') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
             }
         }           
@@ -523,10 +530,10 @@ public class LoanHandlerTestClass {
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c FROM Partner_Task__c WHERE Loan__r.DOER_Solar_Loann__c = true]) {
             if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
-                System.Assert(partnerTaskAssertion.Status__c == 'Complete');                
+                System.assert(partnerTaskAssertion.Status__c == 'Complete');
             }       
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.Assert(partnerTaskAssertion.Status__c == 'Pending');             
+                System.assert(partnerTaskAssertion.Status__c == 'Pending');
             }                   
         }
         for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c,
@@ -535,14 +542,14 @@ public class LoanHandlerTestClass {
                                       FROM Opportunity
                                       WHERE DOER_Solar_Loan__c = true]) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
-            System.AssertEquals(1, oppRecord.Residential_Equipment__r.size());
+            System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
             if(!oppRecord.DOER_Solar_Loan__c) {
                 //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
-                System.AssertEquals(6, oppRecord.Partner_Tasks__r.size());    
+                System.assertEquals(6, oppRecord.Partner_Tasks__r.size());
             }else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
-                System.AssertEquals(6, oppRecord.Partner_Tasks__r.size());     
+                System.assertEquals(6, oppRecord.Partner_Tasks__r.size());
             }              
 
             oppRecord.Contract_Status__c = 'Completed';
@@ -565,14 +572,14 @@ public class LoanHandlerTestClass {
                                    FROM Loan__c 
                                    WHERE DOER_Solar_Loann__c = true]) {
             if (!loanRecord.DOER_Solar_Loann__c){
-                System.AssertEquals(3, loanRecord.Disbursals__r.size());
+                System.assertEquals(3, loanRecord.Disbursals__r.size());
             }else {
-                System.AssertEquals(2, loanRecord.Disbursals__r.size());
+                System.assertEquals(2, loanRecord.Disbursals__r.size());
             }
             for (Disbursal__c disbursal : loanRecord.Disbursals__r) {
-                System.AssertEquals(disbursal.Date_of_Disbursal__c, myDate);
-                System.AssertEquals(disbursal.Status__c, 'Complete');
-                System.AssertEquals(disbursal.Disbursal_Method__c, 'ACH');
+                System.assertEquals(disbursal.Date_of_Disbursal__c, myDate);
+                System.assertEquals(disbursal.Status__c, 'Complete');
+                System.assertEquals(disbursal.Disbursal_Method__c, 'ACH');
             }
         }
 
@@ -580,15 +587,15 @@ public class LoanHandlerTestClass {
                                                      FROM Partner_Task__c 
                                                      WHERE Loan__r.DOER_Solar_Loann__c = true]) {
             if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
             if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-                    System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }   
             }else {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
-                    System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }                 
             }                       
         }
@@ -596,7 +603,7 @@ public class LoanHandlerTestClass {
     }
 
     @isTest static void testEquipmentUpdatesMSLP() {
-        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
+        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Attachment> attachList = new List<Attachment>();        
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
@@ -606,28 +613,30 @@ public class LoanHandlerTestClass {
         convertLeads(leadList);
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
-                                                        FROM Residential_Equipment__c];
+                                                        FROM Residential_Equipment__c
+                                                        WHERE Loan__r.State__c = 'MA'
+                                                        AND DOER_Solar_Loan__c = FALSE
+                                                        AND Lead__r.Retired__c = TRUE];
         for (Residential_Equipment__c equipment : equipmentList){
-            if(!equipment.DOER_Solar_Loan__c) {
-                equipment.Mechanically_Installed__c = true;
-                equipmentListToUpdate.add(equipment);
-            }
+            equipment.Mechanically_Installed__c = true;
+            equipmentListToUpdate.add(equipment);
         }
         update equipmentListToUpdate;
         equipmentListToUpdate.clear();
         
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
                                                      FROM Partner_Task__c
-                                                     WHERE Loan__r.DOER_Solar_Loann__c = true]) {
-            if(partnerTaskAssertion.Name == 'Mechanical Installation') {
-                System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = TRUE
+                                                     AND Loan__r.State__c = 'MA'
+                                                     AND Lead__r.Retired__c = TRUE]) {
+            if (partnerTaskAssertion.Name == 'Mechanical Installation') {
+                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }       
-            if(partnerTaskAssertion.Name == 'Provide Sales Agreement') {
-                System.AssertEquals('Pending', partnerTaskAssertion.Status__c);             
+            if (partnerTaskAssertion.Name == 'Provide Sales Agreement') {
+                System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }                   
         }
         for (Residential_Equipment__c equipment : equipmentList){
-            equipment.Interconnected__c = true;
             equipment.Interconnected__c = true;
             equipment.Annual_Production_kWh_kW__c = 1400;
             equipment.Interconnection_Date__c = mydate;
@@ -671,21 +680,23 @@ public class LoanHandlerTestClass {
             attachList.add(attach);            
         }
         
-        insert attachList; 
+        insert attachList;
 
-        if(equipmentListToUpdate.size() > 0 ) {
+        if (equipmentListToUpdate.size() > 0) {
             update equipmentListToUpdate;           
         }
         
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
-                                                     FROM Partner_Task__c]) {
-            if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
-                if(partnerTaskAssertion.Name == 'Interconnection') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.State__c = 'MA'
+                                                     AND Lead__r.Retired__c = TRUE]) {
+            if (!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
+                if (partnerTaskAssertion.Name == 'Interconnection') {
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }   
-            }else {
-                if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
-                    System.AssertEquals('Complete', partnerTaskAssertion.Status__c);                
+            } else {
+                if (partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }                       
             }                   
         }               
@@ -734,6 +745,40 @@ public class LoanHandlerTestClass {
             leadListToUpdate.add(leadRecord);
         }
         update leadListToUpdate;
-    }    
+    }
+
+    @isTest static void testNYApprovedBuildingPermit() {
+        Lead nyLead = [SELECT Id FROM Lead WHERE FirstName = 'NY' LIMIT 1];
+        List<Partner_Task__c> partnerTasks = [
+            SELECT Id, Name, Status__c
+            FROM Partner_Task__c
+            WHERE Name = 'Building Permit'
+            AND Lead__c = :nyLead.Id
+        ];
+        System.assertEquals(1, partnerTasks.size());
+        System.assertEquals('Incomplete', partnerTasks[0].Status__c);
+
+        List<Residential_Equipment__c> res = [SELECT Id FROM Residential_Equipment__c WHERE Lead__c = :nyLead.Id];
+        System.assertEquals(1, res.size());
+        Residential_Equipment__c re = res[0];
+        re.Labor_Performed__c = 'Other';
+        re.Materials_Supplied__c = 'Other';
+
+        Attachment permit = new Attachment();
+        permit.Name =  String.valueOf('test.txt');
+        permit.body = Blob.valueOf('Unit Test Attachment Body');
+        permit.ParentId = re.Id;
+        permit.Description = 'Building Permit';
+        insert permit;
+        update re;
+
+        partnerTasks = [
+            SELECT Id, Name, Status__c
+            FROM Partner_Task__c
+            WHERE Name = 'Building Permit'
+            AND Lead__c = :nyLead.Id
+        ];
+        System.assertEquals('Complete', partnerTasks[0].Status__c);
+    }
 
 }

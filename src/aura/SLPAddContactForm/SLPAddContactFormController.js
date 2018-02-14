@@ -1,10 +1,12 @@
 ({  
     createContact : function(component, event, helper) {
+        $A.util.addClass(component.find("buttonLink"), 'noDisplay'); 
         var newContact = component.get("v.contactInfo");
         var errors = helper.errorCheck(component, helper, newContact);        
         if (errors != "") {
             component.set("v.errorText" , errors);
             $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
+            $A.util.removeClass(component.find("buttonLink"), 'noDisplay'); 
             return;
         } else {
             $A.util.addClass(component.find("errorTextLine"), 'noDisplay'); 

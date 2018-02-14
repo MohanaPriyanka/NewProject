@@ -20,15 +20,23 @@
   <aura:attribute name="incompleteDisbursalList" type="Object"/>
   <aura:attribute name="taskViewButtonToggle" type="Boolean"/>
   <aura:attribute name="blueWaveReviewAlert" type="Boolean"/>
+  <aura:attribute name="contractSent" type="Boolean"/>
   <aura:attribute name="vendorIdLabel" type="String"/>
   <aura:attribute name="interconnectionTaskStatus" type="String"/>
   <aura:attribute name="parentId" type="Id"/>
+  <aura:attribute name="firstDisbursalAmount" type="Decimal"/>
+  <aura:attribute name="showBuildingPermitModal" type="Boolean"/>
+  <aura:attribute name="otherLaborPerformed" type="Boolean"/>
+  <aura:attribute name="otherMaterialsSupplied" type="Boolean"/>
+  <aura:attribute name="buildingPermits" type="Object"/>
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>
   <aura:handler event="c:SLPafterFileUpload" action="{!c.handleAfterFileUpload}"/> 
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
   <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>
+  <aura:handler name="change" value="{!v.customerInformation.Labor_Performed__c}" action="{!c.checkForOtherLabor}"/>
+  <aura:handler name="change" value="{!v.customerInformation.Materials_Supplied__c}" action="{!c.checkForOtherMaterials}"/>
   <ltng:require styles="{!$Resource.animations}"/>
   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en"/>
   <aura:attribute name="equipmentUpdate"
@@ -174,17 +182,19 @@
                 <div class="slds-form-element__row">
                   <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                     <label class="slds-form-element__label" for="input-03"><b>System Size</b></label>
-                    <ui:inputNumber aura:id="systemSize" class="slds-input"
+                    <ui:inputNumber aura:id="systemSize" 
+                                    class="slds-input"
                                     value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}"
-                                    placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>
+                                    placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"
+                                    disabled="{!v.contractSent}"/>
                   </div>
                   <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
                     <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
                     <div class="slds-form-element__control">              
                       <c:BlueWaveDate value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"
-                        label="Estimated Date of Completion"/>
+                        label="Estimated Date of Completion" disabled="{!v.contractSent}"/>
                       </div>
-                    </div>                  
+                    </div>
                 </div>
               </div>
             </fieldset>
@@ -194,21 +204,27 @@
                   <div class="slds-form-element__row">
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Module Manufacturer</b></label>
-                      <ui:inputText aura:id="moduleManfuacturer" class="slds-input"
+                      <ui:inputText aura:id="moduleManfuacturer" 
+                                    class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Manufacturer__c}"
-                                    placeholder="{!v.customerInformation.Module_Manufacturer__c}"/>
+                                    placeholder="{!v.customerInformation.Module_Manufacturer__c}"
+                                    disabled="{!v.contractSent}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Module Model Number/Type</b></label>
-                      <ui:inputText aura:id="moduleType" class="slds-input"
+                      <ui:inputText aura:id="moduleType" 
+                                    class="slds-input"
                                     value="{!v.equipmentUpdate.Module_Model_Number__c}"
-                                    placeholder="{!v.customerInformation.Module_Model_Number__c}"/>
+                                    placeholder="{!v.customerInformation.Module_Model_Number__c}"
+                                    disabled="{!v.contractSent}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
-                      <ui:inputNumber aura:id="moduleNumber" class="slds-input"
+                      <ui:inputNumber aura:id="moduleNumber" 
+                                      class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Modules__c}"
-                                      placeholder="{!v.customerInformation.Number_of_Modules__c}"/>
+                                      placeholder="{!v.customerInformation.Number_of_Modules__c}"
+                                      disabled="{!v.contractSent}"/>
                     </div>
                   </div>
                 </div>
@@ -218,21 +234,27 @@
                   <div class="slds-form-element__row">
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
-                      <ui:inputText aura:id="inverterManufacturer" class="slds-input"
+                      <ui:inputText aura:id="inverterManufacturer" 
+                                    class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Manufacturer__c}"
-                                    placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"/>
+                                    placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"
+                                    disabled="{!v.contractSent}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Inverter Model Number/Type</b></label>
-                      <ui:inputText aura:id="inverterType" class="slds-input"
+                      <ui:inputText aura:id="inverterType" 
+                                    class="slds-input"
                                     value="{!v.equipmentUpdate.Inverter_Model_Number__c}"
-                                    placeholder="{!v.customerInformation.Inverter_Model_Number__c}"/>
+                                    placeholder="{!v.customerInformation.Inverter_Model_Number__c}"
+                                    disabled="{!v.contractSent}"/>
                     </div>
                     <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                       <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
-                      <ui:inputNumber aura:id="inverterNumber" class="slds-input"
+                      <ui:inputNumber aura:id="inverterNumber" 
+                                      class="slds-input"
                                       value="{!v.equipmentUpdate.Number_of_Inverters__c}"
-                                      placeholder="{!v.customerInformation.Number_of_Inverters__c}"/>
+                                      placeholder="{!v.customerInformation.Number_of_Inverters__c}"
+                                      disabled="{!v.contractSent}"/>
                     </div>
                   </div>
                 </div>
@@ -776,6 +798,107 @@
           </div>
         </div>
       </div>
+
+
+      <aura:if isTrue="{!v.showBuildingPermitModal}">
+        <div aura:id="buildingPermitModal"
+             role="dialog" tabindex="-1"
+             class="slds-modal slds-modal--large slds-fade-in-open">
+          <div  class="slds-modal__container ">
+            <div class="slds-modal__header blueBackground">
+              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2 class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
+            </div>
+            <ui:scrollerWrapper>
+              <div>
+                <div class="slds-modal__content slds-p-around--medium">
+                  <fieldset aura:id="buildingPermitInputs" class="slds-form--compound slds-p-bottom_small">
+                    <div class="slds-form-element__group">
+                      <div class="slds-p-bottom_small">
+                        In order to disburse funds, we need you to certify that {!v.customer.Loan__r.Partner__r.Name} has incurred at least <ui:outputCurrency value="{!v.firstDisbursalAmount}"/> for the time required to perform the following
+                        labor and for materials supplied to {!v.customer.Loan__r.Name} to date.
+                      </div>
+                      <div>
+                        <b>Labor Performed:</b>
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <c:BlueWaveMultiCheck sObject="Residential_Equipment__c"
+                                                  field="Labor_Performed__c"
+                                                  valueString="{!v.customerInformation.Labor_Performed__c}"/>
+                          </div>
+                        </div>
+                        <aura:if isTrue="{!v.otherLaborPerformed}">
+                          <lightning:input type="text" label="Other Labor Performed:" value="{!v.customerInformation.Other_Labor_Performed__c}"/>
+                        </aura:if>
+                      </div>
+                    </div>
+
+                    <div class="slds-p-top_medium slds-p-bottom_medium">
+                      <b>Materials Supplied:</b>
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <c:BlueWaveMultiCheck sObject="Residential_Equipment__c"
+                                                field="Materials_Supplied__c"
+                                                valueString="{!v.customerInformation.Materials_Supplied__c}"/>
+                        </div>
+                      </div>
+                      <aura:if isTrue="{!v.otherMaterialsSupplied}">
+                        <lightning:input type="text" label="Other Materials Supplied" value="{!v.customerInformation.Other_Materials_Supplied__c}"/>
+                      </aura:if>
+                    </div>
+
+                    <lightning:input type="file"
+                                     label="Upload your approved building permit"
+                                     onchange="{!c.handlePermitUpload}"/>
+                    <ui:spinner aura:id="buildingPermitUploadSpinner" class="slds-icon" isVisible="false"/>
+                    <aura:if isTrue="{!not(empty(v.buildingPermits))}">
+                      <div class="slds-box_border slds-text-body_small slds-p-top_small">
+                        Uploaded building permit:
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col slds-size--1-of-1">
+                            <table class="slds-table">
+                              <tbody>
+                              <aura:iteration items="{!v.buildingPermits}" var="attachment">
+                                <tr>
+                                  <td>
+                                    <div class="slds-text-body_small">{!attachment}</div>
+                                  </td>
+                                </tr>
+                              </aura:iteration>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </aura:if>
+                  </fieldset>
+                  <div aura:id="buildingPermitSubmitConfirmation" class="noDisplay">
+                    <div  class="slds-p-around--medium">
+                      <div class="slds-align--absolute-center ">
+                        <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The building permit information has been saved, thank you! </b></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-float_right">
+                    <lightning:button aura:id="closeBuildingPermitModalButton"
+                                      class="slds-button marginTopp5"
+                                      onclick="{!c.closeBuildingPermitModal}"
+                                      label="Close"/>
+                    <lightning:button aura:id="saveBuildingPermitModalButton"
+                                      class="slds-button marginTopp5"
+                                      onclick="{!c.saveBuildingPermit}"
+                                      label="Certify"/>
+                    <ui:spinner aura:id="buildingPermitSaveSpinner" class="floatRight" isVisible="false"/>
+                  </div>
+                </div>
+              </div>
+            </ui:scrollerWrapper>
+          </div>
+        </div>
+      </aura:if>
+
       <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>
       <!--  _________________________________TASK TABLE ___________________________________ -->
       <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">

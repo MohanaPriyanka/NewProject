@@ -10,7 +10,8 @@
 <aura:attribute name="emailSuccess" type="Boolean" default="false" />     
 <aura:attribute name="emailInput" type="String"/>      
 <aura:attribute name="referralCode" type="String"/>    
-<aura:attribute name="showCSTab" type="Boolean" default="false"/>     
+<aura:attribute name="showCSTab" type="Boolean" default="true"/>   
+<aura:attribute name="currentTab" type="String"/>      
 
 <style>
     @font-face {
@@ -61,50 +62,56 @@
   <nav class="slds-context-bar__secondary " role="navigation">
     <ul class="slds-grid">
       <aura:if isTrue="{!v.showCSTab}">
-        <li class="slds-context-bar__item slds-cell-buffer_left slds-context-bar__item--divider-left">
+        <li class="slds-context-bar__item slds-cell-buffer_left">
           <div class="slds-m-top_xx-small"></div>
           <lightning:button aura:id="slpCommunitySolar"
                             label="Add Community Solar Customer"
-                            class="slds-context-bar__label-action slds-truncate proximaNovaStreamSmall"
+                            name="slpcommunitySolar"
+                            class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"
                             onclick="{!c.openCSWindow}"/>
         </li>
       </aura:if>
-      <li class="slds-context-bar__item slds-context-bar__item--divider-right">
+      <li class="slds-context-bar__item">
         <div class="slds-m-top_xx-small"></div>
             <lightning:button aura:id="slpaddcustomer"
                               label="Add Solar Loan Customer"
-                              class="slds-context-bar__label-action slds-truncate proximaNovaStreamSmall"
-                              onclick="{!c.navigateToLoanApplication}"/>
+                              name="slpaddcustomer"
+                              class="slds-context-bar__label-action proximaNovaStreamSmall"
+                              onclick="{!c.navigateToTab}"/>
       </li>
       <li class="slds-context-bar__item">
-        <a href="loansheet" class="slds-m-top_xx-small">
-            <lightning:button aura:id="slpsummarysheet"
+        <div class="slds-m-top_xx-small"></div>
+            <lightning:button aura:id="loansheet"
                               label="Create Loan Summary Sheet"
-                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
-        </a>
+                              name="loansheet"
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"
+                              onclick="{!c.navigateToTab}"/>
       </li>
       <li class="slds-context-bar__item">
-        <a href="slpdashboard" class="slds-m-top_xx-small">
+        <div class="slds-m-top_xx-small"></div>
             <lightning:button aura:id="slpdashboard"
                               label="Customers"
-                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
-        </a>
+                              name="slpdashboard"
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"
+                              onclick="{!c.navigateToTab}"/>
       </li>
       <!-- aura:if doesn't render the menu item properly as a button, so add 
            noDisplay and have doInit remove the class for Executives -->
       <li aura:id="disbursalsMenuItem" class="slds-context-bar__item noDisplay">
-        <a href="slpdisbursals" class="slds-m-top_xx-small">          
+        <div class="slds-m-top_xx-small"></div>
             <lightning:button aura:id="slpdisbursals"
                               label="Disbursals" 
-                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
-          </a>
+                              name="slpdisbursals"
+                              class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"
+                              onclick="{!c.navigateToTab}"/>
       </li>
       <li class="slds-context-bar__item">
-          <a href="slpalerts" class="slds-m-top_xx-small">
+          <div class="slds-m-top_xx-small"></div>
               <lightning:button aura:id="slpalerts"
                                 label="Alerts" 
-                                class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"/>
-          </a>
+                                name="slpalerts"
+                                class="slds-context-bar__label-action proximaNovaDataMountaintopSmall"
+                                onclick="{!c.navigateToTab}"/>
       </li>                    
     </ul>
   </nav>
@@ -129,9 +136,9 @@
                             value="{!v.emailInput}"/>
                 <div aura:id="sendButton" class="slds-align_absolute-center slds-p-top_medium">
                   <br></br>
-                  <lightning:button label="Send"
+                  <lightning:button label="Send Application"
                                     onclick="{!c.sendCSApplication}"/>
-                  <lightning:button label="Open"
+                  <lightning:button label="Open Application"
                                     onclick="{!c.navigateToCommunitySolarApplication}"/>
                 </div>
             </aura:set>

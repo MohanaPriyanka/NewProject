@@ -9,6 +9,7 @@ public without sharing class LoanHandler{
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
 
+    public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
     // Default constructor
     public LoanHandler() {
     }
@@ -26,7 +27,7 @@ public without sharing class LoanHandler{
 
     //On Before Update of Lead Record
     public void onBeforeLeadUpdate(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap) {
-        //map the loan, equipment and partner tasks to the opporunity upon conversion
+        // map the loan, equipment and partner tasks to the opportunity upon conversion
         mapLoanToOpportunity(updatedLeadMap, oldLeadMap);
         mapEquipmentToOpportunity(updatedLeadMap, oldLeadMap);
         mapPartnerTasksToOpportunity(updatedLeadMap, oldLeadMap);
@@ -113,6 +114,7 @@ public without sharing class LoanHandler{
                 }
             }
         }
+
         if (!completedOppIds.isEmpty()) {
             List<Loan__c> completedOpportunityLoans = [SELECT Id, Name, Lead__c, Loan_Tranche__c, DOER_Solar_Loann__c,
                                                         Interest_Ratee__c, Unique_ID__c, Sales_Agent__c, Financing_Fee__c,
@@ -124,7 +126,7 @@ public without sharing class LoanHandler{
             for (Loan__c loanRecord : tranchedLoans) {
                 loanRecord.Contracted__c = true;
             }
-            upsert new list<Loan__c>(tranchedLoans) Unique_ID__c;
+            upsert new List<Loan__c>(tranchedLoans) Unique_ID__c;
         }
         // System Cost can change on the Opportunity because of customer downpayments - we pull that
         // field into DocuSign.
@@ -176,26 +178,41 @@ public without sharing class LoanHandler{
         return partnerTasks;
     }
 
-    public void onAfterResidentialEquipmentUpdate(List<Residential_Equipment__c> newEquipment, List<Residential_Equipment__c> oldEquipment) {
+    public void onAfterResidentialEquipmentUpdate(Map<Id, Residential_Equipment__c> newEquipmentMap, Map<Id,Residential_Equipment__c> oldEquipmentMap) {
+        List<String> equipmentLeadIdListNYBuildingPermit = new List<String>();
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
 
-        Map<Id, Residential_Equipment__c> newEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.newMap;
-        Map<Id, Residential_Equipment__c> oldEquipmentMap = (Map<Id,Residential_Equipment__c>) Trigger.oldMap;
+        List<Residential_Equipment__c> newEquipment = [
+            SELECT Id, Interconnection_Update_Dummy__c, Mechanically_Installed__c, DOER_Solar_Loan__c,
+                Lead__c, Lead__r.Id, State__c, Labor_Performed__c, Materials_Supplied__c, Annual_Production_kWh_kW__c,
+                Interconnected__c, Interconnection_Date__c, Percentage_of_System_Shaded__c, SREC_Opt_In_Calendar_Quarter__c,
+                Generator_Type__c, MA_Facility_Sector__c, Generator_Nameplate_Capacity__c, Contract_Execution_Date__c,
+                Generator_Interconnection_Date__c, Generator_Installation_Date__c, Generator_Energized_Online_Date__c,
+                Module_Manufacturer__c, Module_Model_Number__c, Module_Power_Rating__c, Number_of_Modules__c,
+                Module_Array_Mounting_Type__c, Module_Array_Azimuth__c,  Module_Array_Tilt__c, Module_Mounting_Location__c,
+                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Meters__c, Solar_Meter_Manufacturer__c,
+                Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, (SELECT Id, Name, Description FROM Attachments)
+            FROM Residential_Equipment__c
+            WHERE Id IN :newEquipmentMap.keySet()
+        ];
 
         for (Residential_Equipment__c equipment : newEquipment) {
-            if (newEquipmentMap.get(equipment.Id).Mechanically_Installed__c
-                && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
-                    equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
+            if (equipment.Mechanically_Installed__c && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
+                equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
             }
-            if (newEquipmentMap.get(equipment.Id).Interconnected__c
-                && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
-                    equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            if (equipment.Interconnected__c && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
+                equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
-            if (newEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c
-                != oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
-                    equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            if (equipment.Interconnection_Update_Dummy__c != oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
+                equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
             }
+            if (nyBuildingPermitApproved(equipment, oldEquipmentMap)) {
+                equipmentLeadIdListNYBuildingPermit.add(equipment.Lead__r.Id);
+            }
+        }
+        if (equipmentLeadIdListNYBuildingPermit.size() > 0 ) {
+            updatePartnerTaskNYBuildingPermit(newEquipment, getPartnerTasks(equipmentLeadIdListNYBuildingPermit));
         }
          //if the equipment gets set to mechanically installed update the partner task to be complete.
         if (equipmentLeadIdListMechInstall.size() > 0 ) {
@@ -206,6 +223,27 @@ public without sharing class LoanHandler{
             updatePartnerTaskInterconnection(newEquipment, getPartnerTasks(equipmentLeadIdListInterconnection));
         }
     }
+
+    public boolean nyBuildingPermitApproved(Residential_Equipment__c re, Map<Id, Residential_Equipment__c> oldEquipmentMap) {
+        if (re.State__c != 'NY') {
+            return false;
+        } else {
+            Boolean hasAttachment = false;
+            for (Attachment a : re.Attachments) {
+                if (a.Description == 'Building Permit') {
+                    hasAttachment = true;
+                }
+            }
+            if (hasAttachment &&
+                String.isNotBlank(re.Labor_Performed__c) &&
+                String.isNotBlank(re.Materials_Supplied__c)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     public void createResidentialEquipment(List<Lead> newLeadList) {
         Map<String, RecordType> recordTypeMap = new Map<String, RecordType>();
         for (RecordType recordTypeVar : [SELECT Id, Name
@@ -217,18 +255,21 @@ public without sharing class LoanHandler{
         List<Residential_Equipment__c> newEquipmentList = new List<Residential_Equipment__c>();
         integer i;
         for (i = 0; i < newLeadList.size(); i++) {
+            Residential_Equipment__c equipmentRecord = new Residential_Equipment__c();
             if (newLeadList.get(i).Product_Line__c == 'Residential Loan') {
                 if (newLeadList.get(i).DOER_Solar_Loan__c == false) {
-                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
-                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
-                        Lead__c = newLeadList.get(i).Id,
-                        RecordTypeId = recordTypeMap.get('BlueWave Solar Loan').Id);
-                    newEquipmentList.add(equipmentRecord);
+                    equipmentRecord.Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName;
+                    equipmentRecord.Lead__c = newLeadList.get(i).Id;
+                    equipmentRecord.RecordTypeId = recordTypeMap.get('BlueWave Solar Loan').Id;
                 } else {
-                    Residential_Equipment__c equipmentRecord = new Residential_Equipment__c(
-                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
-                        Lead__c = newLeadList.get(i).Id,
-                        RecordTypeId = recordTypeMap.get('MSLP').Id);
+                    equipmentRecord.Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName;
+                    equipmentRecord.Lead__c = newLeadList.get(i).Id;
+                    equipmentRecord.RecordTypeId = recordTypeMap.get('MSLP').Id;
+                }
+                if (newLeadList.get(i).Loan_System_Information__c != null) {
+                    Residential_Equipment__c equipment = (Residential_Equipment__c)mapJSONToObject(newLeadList.get(i), 'Loan_System_Information__c', new Set<String>{'commencement_datee__c'}, 'Residential_Equipment__c', equipmentRecord);
+                    newEquipmentList.add(equipment);
+                } else {
                     newEquipmentList.add(equipmentRecord);
                 }
             }
@@ -241,49 +282,69 @@ public without sharing class LoanHandler{
                                           FROM Loan_Traunch__c
                                           WHERE Name = 'Tranche Assignment Pending' LIMIT 1];
         List<Loan__c> newLoanList = new List<Loan__c>();
-        integer i;
-        for (i = 0; i < newLeadList.size(); i++) {
-            if (newLeadList.get(i).Product_Line__c == 'Residential Loan') {
-                if (newLeadList.get(i).DOER_Solar_Loan__c == false) {
-                    Loan__c loan = new loan__c(
-                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
-                        Lead__c = newLeadList.get(i).Id,
-                        Loan_Tranche__c = tranchePending.Id,
-                        DOER_Solar_Loann__c = newLeadList.get(i).DOER_Solar_Loan__c,
-                        Interest_Ratee__c = newLeadLIst.get(i).Product__r.Loan_Interest_rate__c,
-                        Unique_ID__c = newLeadList.get(i).id,
-                        Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
-                        Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
-                        Requested_Loan_Amount__c = newLeadList.get(i).Requested_Loan_Amount__c,
-                        System_Costt__c = newLeadList.get(i).System_Cost__c,
-                        Partner__c = newLeadList.get(i).Partner_Lookup__c,
-                        State__c = newLeadList.get(i).LASERCA__Home_State__c,
-                        Lead_ID__c = newLeadList.get(i).Id,
-                        Product__c = newLeadList.get(i).Product__c);
-                    newLoanList.add(loan);
+        for (Lead lead : newLeadList) {
+            if (lead.Product_Line__c == 'Residential Loan') {
+                Loan__c loan = new Loan__c();
+                loan.Name = lead.FirstName + ' ' + lead.LastName;
+                loan.Lead__c = lead.Id;
+                loan.Loan_Tranche__c = tranchePending.Id;
+                loan.Interest_Ratee__c = lead.Product__r.Loan_Interest_rate__c;
+                loan.Unique_ID__c = lead.id;
+                loan.Sales_Agent__c = lead.BS_Sales_ID__c;
+                loan.Financing_Fee__c = lead.Loan_Financing_Fee__c;
+                loan.Requested_Loan_Amount__c = lead.Requested_Loan_Amount__c;
+                loan.System_Costt__c = lead.System_Cost__c;
+                loan.Partner__c = lead.Partner_Lookup__c;
+                loan.State__c = lead.LASERCA__Home_State__c;
+                loan.Lead_ID__c = lead.Id;
+                loan.Product__c = lead.Product__c;
+                loan.DOER_Solar_Loann__c = lead.DOER_Solar_Loan__c;
+                loan.Loan_Fee_1__c = lead.Loan_Fee_1__c;
+                if (lead.DOER_Solar_Loan__c) {
+                    loan.Interest_Only_Period_DOER__c = lead.Product__r.Loan_Interest_Only_period__c;
+                }
+                if (lead.Loan_System_Information__c != null) {
+                    Loan__c loanRecord = (Loan__c)mapJSONToObject(lead,
+                        'Loan_System_Information__c', new Set<String>{'number_of_modules__c', 'module_manufacturer__c','module_model_number__c', 'number_of_inverters__c', 'inverter_manufacturer__c', 'inverter_model_number__c', 'generator_nameplate_capacity__c'},
+                        'Loan__c', loan);
+                    newLoanList.add(loanRecord);
                 } else {
-                    Loan__c loan = new loan__c(
-                        Name = newLeadList.get(i).FirstName + ' ' + newLeadList.get(i).LastName,
-                        DOER_Solar_Loann__c = true,
-                        Lead__c = newLeadList.get(i).Id,
-                        Loan_Tranche__c = tranchePending.Id,
-                        Interest_Only_Period_DOER__c = newLeadList.get(i).Product__r.Loan_Interest_Only_period__c,
-                        Interest_Ratee__c = newLeadLIst.get(i).Product__r.Loan_Interest_rate__c,
-                        Unique_ID__c = newLeadList.get(i).id,
-                        Sales_Agent__c = newLeadList.get(i).BS_Sales_ID__c,
-                        Financing_Fee__c = newLeadList.get(i).Loan_Financing_Fee__c,
-                        Requested_Loan_Amount__c = newLeadList.get(i).Requested_Loan_Amount__c,
-                        System_Costt__c = newLeadList.get(i).System_Cost__c,
-                        Partner__c = newLeadList.get(i).Partner_Lookup__c,
-                        State__c = newLeadList.get(i).LASERCA__Home_State__c,
-                        Lead_ID__c = newLeadList.get(i).Id,
-                        Product__c = newLeadList.get(i).Product__c);
                     newLoanList.add(loan);
                 }
             }
         }
-        upsert new list<Loan__c>(newLoanList) Unique_ID__c;
+        upsert newLoanList Unique_ID__c;
         assignResidentialEquipmentToLoan(newLoanList);
+    }
+
+    public Map<String, Object> deserializeField(SObject obj, String field) {
+        return (Map<String, Object>)JSON.deserializeUntyped(String.valueOf(obj.get(field)));
+    }
+
+    public SObject mapJSONToObject(SObject jsonObj, String jsonField, Set<String> fieldsToIgnore, String objectType, Sobject recordToUpdate) {
+        Map<String, Object> fieldMap = new Map<String, Object>(deserializeField(jsonObj, jsonField));
+        Schema.SObjectType ctype = globalDescribe.get(objectType); 
+        Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();
+        for (String field : fieldMap.keySet()) {
+            String stringVal = String.valueOf(fieldMap.get(field));
+            if (fieldMap.get(field) != null && !fieldsToIgnore.contains(field) && String.isNotBlank(String.valueOf(fieldMap.get(field)))) {
+                for (String label : fmap.keySet()) {
+                    if (fieldMap.keySet().contains(label)) {
+                        Schema.DisplayType fieldResult = fmap.get(field).getDescribe().getType();
+                        if (fieldResult == Schema.DisplayType.Double) {
+                            Decimal decimalValue = Decimal.valueOf(stringVal);
+                            recordToUpdate.put(field, decimalValue);
+                        } else if (fieldResult == Schema.DisplayType.Date) {
+                            Date dateValue = Date.parse(stringVal);
+                            recordToUpdate.put(field, dateValue);
+                        } else {
+                            recordToUpdate.put(field, fieldMap.get(field));
+                        }
+                    }
+                }
+            }
+        }
+        return recordToUpdate;
     }
 
     public void mapLoanToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap) {
@@ -491,6 +552,13 @@ public without sharing class LoanHandler{
                                   parentPartnerTaskRecordType, parentTaskInsertList, null, null,
                                   parentTaskAssignmentMap, null, 'Countersign');
             partnerSequenceCounter += 1;
+            if (loanRecord.State__c == 'NY') {
+                createPartnerTask(loanRecord, 'GrandParent', 'Building Permit', 'Building Permit',
+                    partnerSequenceCounter, 'Incomplete', 'Building Installation', null,  null,
+                    parentPartnerTaskRecordType, parentTaskInsertList, null, null,
+                    parentTaskAssignmentMap, null, 'Install');
+                partnerSequenceCounter += 1;
+            }
             if (!loanRecord.DOER_Solar_Loann__c) {
                 Partner_Task__c mechanicalInstallationTask =
                     createPartnerTask(loanRecord, 'GrandParent', 'Mechanical Installation', 'Mechanical Installation',
@@ -1095,6 +1163,27 @@ public without sharing class LoanHandler{
         update nextTasksToUpdate;
     }
 
+    public void updatePartnerTaskNYBuildingPermit(List<Residential_Equipment__c> equipmentList, Map<String, Partner_Task__c> taskMap) {
+        String taskUniqueId;
+        List<Partner_Task__c> taskUpdateList = new List<Partner_Task__c>();
+        List<Partner_Task__c> nextTasksToUpdate = new List<Partner_Task__c>();
+        List<String> equipmentLeadIdList = new List<String>();
+
+        for (Residential_Equipment__c equipmentLoopVar : equipmentList) {
+            taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Building Permit';
+            if (!equipmentLoopVar.DOER_Solar_Loan__c && taskMap.get(taskUniqueId).Status__c != 'Complete') {
+                taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Building Permit';
+                taskMap.get(taskUniqueId).Status__c = 'Complete';
+                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                taskUpdateList.add(taskMap.get(taskUniqueId));
+                equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
+            }
+        }
+        update taskUpdateList;
+        nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
+        update nextTasksToUpdate;
+    }
+
     //update the mechanical install partner task when the equipment is reported as mechanically installed.
     public void updatePartnerTaskMechanicalInstallation(List<Residential_Equipment__c> equipmentList, Map<String, Partner_Task__c> taskMap) {
         String taskUniqueId;
@@ -1116,7 +1205,7 @@ public without sharing class LoanHandler{
         update nextTasksToUpdate;
     }
 
-    // updat the interconnection partner task when the equipment is reported as interconnected
+    // update the interconnection partner task when the equipment is reported as interconnected
     public void updatePartnerTaskInterconnection(List<Residential_Equipment__c> equipmentList, Map<String, Partner_Task__c> taskMap) {
         String taskUniqueId;
         Boolean ptoDocumentProvided = false;
@@ -1159,10 +1248,10 @@ public without sharing class LoanHandler{
                 }
             }
         }
-            update taskUpdateList;
-            nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
-            update nextTasksToUpdate;
-        }
+        update taskUpdateList;
+        nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
+        update nextTasksToUpdate;
+    }
 
     public static Boolean checkNullOrBlankField(Residential_Equipment__c equipment, List<String> fieldNames) {
         Boolean checkResult = true;

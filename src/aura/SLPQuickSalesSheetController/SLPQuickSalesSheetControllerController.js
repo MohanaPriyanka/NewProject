@@ -5,6 +5,9 @@
         var genDoc = false;
         if (btnClicked == 'submitUpfront') {
             genDoc = true;
+            $A.util.addClass(component.find("submitQSSbutton"), 'noDisplay');
+            $A.util.addClass(component.find("viewLoanData"), 'noDisplay');
+            $A.util.addClass(component.find("inputTable"), 'noDisplay');
         } else if (btnClicked == 'refreshbutton'){
             $A.util.addClass(component.find("loaninfocard"), 'noDisplay');
         }

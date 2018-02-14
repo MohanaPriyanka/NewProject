@@ -42,6 +42,7 @@ public without sharing class SLPAddCustomer {
         newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
+
         if (String.isNotBlank(profile.salesRepEmail)) {
             newLead.Partner_Email__c = profile.salesRepEmail;
         } else if (String.isNotBlank(profile.partnerEmail)) {
@@ -218,10 +219,12 @@ public without sharing class SLPAddCustomer {
 
     @AuraEnabled
     public static List<String> getActiveStates() {
+        List<String> states = profile.partnerMarkets.split(';',15);
         List<AggregateResult> activeProducts = [SELECT State__c
                                                 FROM Product2
                                                 WHERE IsActive = true
                                                 AND Product_Type__c = 'Residential Loan'
+                                                AND State__c in :states
                                                 GROUP BY State__c
                                                 ORDER BY State__c];
         List<String> options = new List<String>();

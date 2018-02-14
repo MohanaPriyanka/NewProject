@@ -90,7 +90,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>PreQual Disclosure</shortDescription>
-    <value>Pre-Qualification does not guarantee that a loan will be granted. All loans issued will require full documentation of income in order to be fully approved. If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.</value>
+    <value>Pre-Qualification does not guarantee that a loan will be granted. All loan applicants must provide income documentation in order to be approved. If you are pre-qualified, you will need to provide this additional documentation and complete the application in order to fully process your loan.</value>
   </labels>
   <labels>
     <fullName>START_Disclosure_PreQual_MSLP</fullName>
@@ -98,7 +98,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>PreQual Disclosure for MSLP</shortDescription>
-    <value>Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved. If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.</value>
+    <value>Pre-Qualification does not guarantee that a loan will be granted. All loan applications under the Mass Solar Loan Program require income documentation, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be approved.</value>
   </labels>
   <labels>
     <fullName>START_Disclosure_MA_SREC</fullName>
@@ -106,7 +106,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>MA SREC Disclosure</shortDescription>
-    <value>For Massachusetts customers, BlueWave requires that solar loan customers to sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time.</value>
+    <value>For our customers in Massachusetts, BlueWave requires that solar loan customers sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time.</value>
   </labels>
   <labels>
     <fullName>START_Disclosure_MSLP_SREC</fullName>
@@ -115,22 +115,6 @@
     <protected>false</protected>
     <shortDescription>MA SREC Disclosure</shortDescription>
     <value>Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.</value>
-  </labels>
-  <labels>
-    <fullName>START_Disclosure_Income_Doc</fullName>
-    <categories>Customer Application Portal</categories>
-    <language>en_US</language>
-    <protected>false</protected>
-    <shortDescription>Income Disclosure</shortDescription>
-    <value>The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application, you will need to provide proof of your stated income, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.</value>
-  </labels>
-  <labels>
-    <fullName>START_Disclosure_Income_Doc_MSLP</fullName>
-    <categories>Customer Application Portal</categories>
-    <language>en_US</language>
-    <protected>false</protected>
-    <shortDescription>Income Disclosure MSLP</shortDescription>
-    <value>The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver's license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.</value>
   </labels>
   <labels>
     <fullName>PI_Individual_or_Joint</fullName>
@@ -280,7 +264,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Employment Question</shortDescription>
-    <value>Are you employed? We'll ask about self-employment later.</value>
+    <value>Do you get a paystub from an employer? Don't worry if you're self-employed, we'll ask about that next.</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Employment_Question</fullName>
@@ -288,7 +272,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Employment Question</shortDescription>
-    <value>Are you or {0} employed? We'll ask about self-employment later.</value>
+    <value>Do you or {0} get paystubs from an employer? Don't worry if you or {0} are self-employed, we'll ask about that next.</value>
   </labels>
   <labels>
     <fullName>ID_Paystub_Request</fullName>
@@ -296,8 +280,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
-    <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
-      last 30 days).
+    <value>Please upload your most recent paystub (dated within the last 30 days).
     </value>
   </labels>
   <labels>
@@ -306,8 +289,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request First Quarter</shortDescription>
-    <value>We'll need supporting income documentation for you. Please upload your most recent paystubs (dated within the
-      last 30 days) AND either your {0} W-2 or last pay stub for {0}.
+    <value>Please upload your most recent paystub (dated within the last 30 days) AND either your {0} W-2 or last paystub for {0}.
     </value>
   </labels>
   <labels>
@@ -316,8 +298,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Paystub Request</shortDescription>
-    <value>We'll need supporting income documentation for {0} as well. Please upload their most recent paystubs
-      (dated within the last 30 days)
+    <value>Please upload their most recent paystub (dated within the last 30 days)
     </value>
   </labels>
   <labels>
@@ -326,8 +307,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Paystub Request First Quarter</shortDescription>
-    <value>We'll need supporting income documentation for {0} as well. Please upload their most recent paystubs
-      (dated within the last 30 days) AND either their {1} W-2 or last pay stub for {1}.
+    <value>Please upload their most recent paystub (dated within the last 30 days) AND either their {1} W-2 or last paystub for {1}.
     </value>
   </labels>
   <labels>
@@ -352,7 +332,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need personal and business tax returns (federal only) supporting your income. Please upload returns with all applicable schedules:</value>
+    <value>We'll need your personal and business tax returns (federal only) supporting your income. Please upload returns with all applicable schedules:</value>
   </labels>
   <labels>
     <fullName>ID_Tax_Details</fullName>
@@ -376,9 +356,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Tax Request</shortDescription>
-    <value>We'll need {0}'s personal and business tax returns (federal only) supporting their income. If applicable, please upload returns with all applicable
-      schedules:
-    </value>
+    <value>We'll need their personal and business tax returns (federal only) supporting their income. Skip this if you've already uploaded a joint return that includes their return, but otherwise, please upload returns with all applicable schedules:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Tax_Details</fullName>
@@ -418,7 +396,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Retirement Request</shortDescription>
-    <value>We'll need supporting income documentation for you. If applicable, please upload:</value>
+    <value>We'll need supporting income documentation for you. Please upload your:</value>
   </labels>
   <labels>
     <fullName>ID_Pension</fullName>
@@ -450,7 +428,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Retirement Request</shortDescription>
-    <value>We'll need supporting income documentation for {0} as well. If applicable, please upload their:</value>
+    <value>We'll need supporting income documentation for {0}. Please upload their:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Pension</fullName>
@@ -482,15 +460,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Veteran Question</shortDescription>
-    <value>Are you a veteran or receive disability</value>
-  </labels>
-  <labels>
-    <fullName>ID_Joint_Veteran_Question</fullName>
-    <categories>Customer Application Portal</categories>
-    <language>en_US</language>
-    <protected>false</protected>
-    <shortDescription>Veteran Question</shortDescription>
-    <value>Are you or {0} a veteran or receive disability</value>
+    <value>Will you rely on a veteran pension or disability compensation to pay your loan? You don't have to disclose this unless you will rely on these payments.</value>
   </labels>
   <labels>
     <fullName>ID_Veteran_Request</fullName>
@@ -498,7 +468,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Veteran Request</shortDescription>
-    <value>We'll need supporting documentation of veteran status or disability for you:</value>
+    <value>We'll need supporting documentation of a veteran pension or disability compensation for you:</value>
   </labels>
   <labels>
     <fullName>ID_Joint_Veteran_Request</fullName>
@@ -506,7 +476,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Joint Veteran Request</shortDescription>
-    <value>We'll need supporting documentation of veteran status or disability for {0}:</value>
+    <value>We'll need supporting documentation of a veteran pension or disability compensation for {0}:</value>
   </labels>
   <labels>
     <fullName>ID_Alimony_Question</fullName>
@@ -589,9 +559,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Electronic Disbursal</shortDescription>
-    <value>Please let us know how funds should be disbursed. If not done electronically (the default), your installer
-      will need to schedule another visit and have you sign the disbursal check.
-    </value>
+    <value>By default we send loan funds directly to your installer via electronic transfer. If you would rather pay your installer using a two-party paper check you will need to select this option below and arrange with your installer to sign this check.</value>
   </labels>
   <labels>
     <fullName>CD_Disbursal_Consent</fullName>
@@ -599,8 +567,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Electronic Disbursal</shortDescription>
-    <value>I consent to have funds distributed directly to my solar installer. All customers can choose to receive paper
-      checks by selecting No.
+    <value>Please let us know how you would like us to pay your installer.
     </value>
   </labels>
   <labels>
@@ -652,7 +619,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
-    <value>Have you been with your current employer for more than one year?
+    <value>Have you been with your employer for more than one year?
     </value>
   </labels>
   <labels>
@@ -661,7 +628,7 @@
     <language>en_US</language>
     <protected>false</protected>
     <shortDescription>Asks how long the joint applicant has been with their employer.</shortDescription>
-    <value>If {0} is employed, have then been with their employer for more than one year?
+    <value>Have they been with their employer for more than one year?
     </value>
   </labels>
   <labels>
