@@ -534,8 +534,8 @@ public class TestBillCreationandPayment {
              FROM System_Bill__c
              ORDER BY Bill_Number__c];
 
-        System.assertEquals(280.54, updatedsystemBillList[2].Total_Due__c );
-        System.assertEquals(283.37, updatedsystemBillList[2].Balance_Net_late_Payments__c );
+        System.assertEquals(280.53, updatedsystemBillList[2].Total_Due__c );
+        System.assertEquals(283.36, updatedsystemBillList[2].Balance_Net_late_Payments__c );
         System.assertEquals(-119.25, updatedsystemBillList[2].Previous_Overpayments__c );
         System.assertEquals(0, updatedsystemBillList[2].Adjustments_UASB__c );
     }

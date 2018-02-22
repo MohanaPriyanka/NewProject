@@ -279,9 +279,9 @@ public class CSCPChartHandlerTest {
 			Date__c = billingDate1,
 			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
-			Share_of_System__c = 0.01,   
+			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   
-			Total_System_NMCs__c = 150000,                                       
+			Total_System_NMCs__c = 18000,                                       
 			Utility_Account_Subscription__c = uas.Id,
 			Opportunity__c = Opp1.Id,
 			System_Bill__c = sb.Id,
@@ -295,9 +295,9 @@ public class CSCPChartHandlerTest {
 			Date__c = billingDate1,
 			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
-			Share_of_System__c = 0.01,   
+			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   
-			Total_System_NMCs__c = 150000,                                    
+			Total_System_NMCs__c = 18000,                                    
 			Utility_Account_Subscription__c = uas2.Id,
 			Opportunity__c = Opp2.Id,
 			System_Bill__c = sb2.Id,
@@ -375,8 +375,9 @@ public class CSCPChartHandlerTest {
 		User portalUser = [SELECT Id, Parent_Account_ID__c FROM User WHERE Username = 'communityuser@test.com'];		
 		System.runAs (portalUser) {
 			CSCPChartHandler.SolarGenerationSavingsResult result = CSCPChartHandler.getGenerationSavingsData();
+			// Production of 3750 kWh, NMCs = $450 with Savings of $45
 			System.assertEquals(result.generation.get(0), 3750);
-			System.assertEquals(result.savings.get(0), 1.5);
+			System.assertEquals(result.savings.get(0), 45);
 			System.assertEquals(result.yearMonth.get(0), '2 2015');
 		}		
 	}    

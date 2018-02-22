@@ -96,11 +96,14 @@ public with sharing class SystemBillAccountingLogicHandler {
             trigsb.Balance_Net_Late_Payments__c = checkForNull(trigsb.Balance_Net_Late_Payments__c);
             trigsb.Late_Fee_Payments__c = checkForNull(trigsb.Late_Fee_Payments__c);
             trigsb.Late_Fees__c = checkForNull(trigsb.Late_Fees__c);
-            trigsb.Monthly_Late_Fee_Interest__c = checkForNull(trigsb.Monthly_Late_Fee_Interest__c);
             trigsb.Adjustments__c = checkForNull(trigsb.Adjustments__c);
             trigsb.Carry_Forward_Adjustments__c = checkForNull(trigsb.Carry_Forward_Adjustments__c);
             trigsb.Carry_Forward_Payments__c = checkForNull(trigsb.Carry_Forward_Payments__c);
             trigsb.Early_Payments__c = checkForNull(trigsb.Early_Payments__c);
+            
+            if ( trigsb.Monthly_Late_Fee_Interest__c == NULL) {
+                trigsb.Monthly_Late_Fee_Interest__c = 1;
+            }
 
             for (System_Bill__c newerbills : listsystemBills) {
                 if (newerbills.Opportunity_ID__c == parentID 
