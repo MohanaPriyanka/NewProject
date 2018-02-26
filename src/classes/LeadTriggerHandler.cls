@@ -22,6 +22,12 @@ public with sharing class LeadTriggerHandler {
             && firstRun){
             customerSubscriptionProcess(updatedLeads[0]);
             firstRun = false;
+        } 
+
+        for (Lead convertedLead : updatedLeads){
+            if ( convertedLead.IsConverted && !oldLeadMap.get(convertedLead.Id).IsConverted){
+                convertCasestoAccount(convertedLead);
+            }
         }
     }
     
@@ -265,6 +271,24 @@ public with sharing class LeadTriggerHandler {
         }
         if(oppListToUpdate.size() > 0) update oppListToUpdate;
 
+    }
+
+    private void convertCasestoAccount(Lead convertedLead){
+        List<Case> casesList = [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, 
+                                    Lead_Lookup__r.isConverted, AccountId, ContactId
+                                FROM Case 
+                                WHERE Lead_Lookup__r.Id = : convertedLead.id
+                                AND (AccountId = NULL OR ContactId = NULL)];
+
+        for (Case caseToUpdate : casesList) {
+            if ( caseToUpdate.AccountId == NULL){
+                caseToUpdate.AccountId = convertedLead.ConvertedAccountId;
+            }
+            if ( caseToUpdate.ContactId == NULL){
+                caseToUpdate.ContactId = convertedLead.ConvertedContactId;
+            }
+        }
+        update casesList;
     }
 
 }

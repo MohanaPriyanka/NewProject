@@ -150,4 +150,68 @@ private class LeadTriggerHandlerTest {
         System.assertEquals(1, oppList.size());
         Test.stopTest();
     }
+
+    @isTest static void testCaseConversion() {
+        Map<Id,Id> leadContactIdMap = new Map<Id,Id>();
+
+        Lead leadOne = new Lead (   FirstName = 'leadOne',
+                                    LastName = 'Test',
+                                    Company = 'CompanyCo',
+                                    Email = 'EmailOne@bluewavesolar.com',
+                                    Status = 'Qualified');
+
+        Lead leadTwo = new Lead (   FirstName = 'leadTwo',
+                                    LastName = 'Test',
+                                    Company = 'CompanyCo',
+                                    Email = 'EmailTwo@bluewavesolar.com',
+                                    Status = 'Qualified');
+        List<Lead> leadList = new List<Lead>{leadOne, leadTwo};
+        insert leadList;
+
+        leadOne.Status = 'Qualified';
+        leadTwo.Status = 'Qualified';
+        update leadList;
+
+        Case caseOne = new Case (
+            Subject = 'Test Case One', 
+            Lead_Lookup__c = leadOne.Id);
+
+        Case caseTwo = new Case (
+            Subject = 'Test Case Two',
+            Lead_Lookup__c = leadTwo.id);
+
+        Case caseThree = new Case (
+            Subject = 'Test Case Three' );
+
+        insert new List<Case>{caseOne, caseTwo, caseThree};
+        Test.startTest();    
+
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+
+        for (Lead l :leadList){
+            Database.LeadConvert lc = new Database.LeadConvert();
+            lc.setLeadId(l.Id);
+            lc.setConvertedStatus(convertStatus.MasterLabel);
+            leadConverts.add(lc);
+        }   
+
+        List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
+        for (Database.LeadConvertResult lcr : lcrs)  {
+            System.assert(lcr.isSuccess());
+        }     
+        Test.stopTest();
+
+        for (Lead convertedLead : [SELECT Id, ConvertedAccountId, ConvertedContactId, isConverted
+                                    FROM Lead] ) {
+            leadContactIdMap.put(convertedLead.Id, convertedLead.ConvertedContactId);
+        }
+
+        List<Case> casesList =  [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, 
+                                    Lead_Lookup__r.isConverted, AccountId, ContactId
+                                FROM Case
+                                WHERE Lead_Lookup__r.isConverted = true];
+        System.assertEquals(casesList[0].ContactId, leadContactIdMap.get(casesList[0].Lead_Lookup__c));
+        System.assertEquals(casesList[1].ContactId, leadContactIdMap.get(casesList[1].Lead_Lookup__c));
+    }
 }
