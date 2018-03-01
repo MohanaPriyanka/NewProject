@@ -13,6 +13,19 @@ Static testMethod void utilityAccountLogConversion()
         newLZU.town__c = 'Medfield';
         insert newLZU;
 
+        Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
+                              Family = 'Community Solar',
+                              Product_Type__c = 'Community Solar',
+                              State__c = 'MA',
+                              ProductCode = 'CS - BlueWave - 10%',
+                              IsActive = True,
+                              Lender_of_Record__c = 'BlueWave',
+                              NMC_Discount__c = 10,
+                              Annual_kWh_Maximum__c = 100000000,
+                              NM_Rate_Floor__c = 0,
+                              Monthly_Late_Fee__c = 1);
+        insert csProduct;
+
         lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', company = 'BlueWave', status = 'Qualified', Parcel_Zip__c = '02052') ;
         newLead.FirstName = 'Cole';
         newLead.Product_Line__c = 'Community Solar';
@@ -21,6 +34,7 @@ Static testMethod void utilityAccountLogConversion()
         newLead.Company = 'BlueWave';
         newLead.Status = 'Qualified';
         newLead.Parcel_Zip__C = '02052';
+        newLead.Product__c = csProduct.Id;
         newLead.Electricity_Provider__c = 'Eversource';
         insert newLead;   
 

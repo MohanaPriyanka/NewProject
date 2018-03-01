@@ -9,6 +9,19 @@ private class LeadTriggerHandlerTest {
                                                                                                                     Date__c = Date.today()));
         insert nmcRate;
 
+        Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
+                              Family = 'Community Solar',
+                              Product_Type__c = 'Community Solar',
+                              State__c = 'MA',
+                              ProductCode = 'CS - BlueWave - 10%',
+                              IsActive = True,
+                              Lender_of_Record__c = 'BlueWave',
+                              NMC_Discount__c = 10,
+                              Annual_kWh_Maximum__c = 100000000,
+                              NM_Rate_Floor__c = 0,
+                              Monthly_Late_Fee__c = 1);
+        insert csProduct;
+
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                                                                                                                 Service_Territories__c = 'WCMA; SEMA',
                                                                                                                                 Open__c = true,
@@ -20,6 +33,7 @@ private class LeadTriggerHandlerTest {
                                                                                                                                 Credit_Score_Requirement__c = 200,
                                                                                                                                 Assignment_order__c = '1',
                                                                                                                                 Utility_NMC_Tariff__c = nmcRate.Id,
+                                                                                                                                Product__c = csProduct.Id,
                                                                                                                                 Expected_Yield_kWh_kW__c = 1300,
                                                                                                                                 Assemblage_Count__c = 1,  
                                                                                                                                 Maximum_Subscription_Assemblage__c = 25));
@@ -81,6 +95,7 @@ private class LeadTriggerHandlerTest {
                                                              Company = 'Cloud Jedi',
                                                              Status = 'Qualified',
                                                              Product_Line__c = 'Community Solar',
+                                                             Product__c = csProduct.Id,
                                                              Custom_ID__c = 'partner',
                                                              System_Assignment__c = 'Automatic - Assignment Order'));
         insert lead;
@@ -94,6 +109,7 @@ private class LeadTriggerHandlerTest {
                                      Company = 'Cloud Jedi',
                                      Status = 'Qualified',
                                      Product_Line__c = 'Community Solar',
+                                     Product__c = csProduct.Id,
                                      System_Assignment__c = 'Automatic - Assignment Order');
         insert lead2;
 
