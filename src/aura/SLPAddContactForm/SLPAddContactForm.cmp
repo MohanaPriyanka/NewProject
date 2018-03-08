@@ -175,7 +175,7 @@
         </div>                
       </fieldset>
       <div aura:id="buttonLink" class="">
-       <lightning:button label="Submit" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.createContact}"/>
+       <lightning:button label="Submit" class="slds-button slds-align_absolute-center" onclick="{!c.createContact}"/>
       </div>
   </div>   
 </aura:component>

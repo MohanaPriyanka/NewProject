@@ -61,16 +61,16 @@
        </div>
       <footer aura:id="windowFooter" class="slds-modal__footer">
        <div aura:id="buttonLink" class="buttonLeftNoPadding">
-           <lightning:button label="Enter Information Here" class="slds-button blueBackground" onclick="{!c.enterInfoNow}"/>
+           <lightning:button label="Enter Information Here" class="slds-button" onclick="{!c.enterInfoNow}"/>
        </div>
        <div aura:id="buttonEmail" class="buttonRightNoPadding">
-           <lightning:button label="Email Form to Co-Signer" iconName="utility:email" iconPosition="right" class="slds-button blueBackground" onclick="{!c.sendLinktoCoAppForm}"/>
+           <lightning:button label="Email Form to Co-Signer" iconName="utility:email" iconPosition="right" class="slds-button" onclick="{!c.sendLinktoCoAppForm}"/>
        </div>   
        <div aura:id="continueButton" class="noDisplay">
-           <lightning:button label="Continue" class="slds-button slds-align--absolute-center blueBackground" onclick="{!c.continueAnyway}"/>
+           <lightning:button label="Continue" class="slds-button slds-align--absolute-center" onclick="{!c.continueAnyway}"/>
        </div>
        <div aura:id="doneRedirect" class="noDisplay">
-        <lightning:button label="Done" class="slds-button slds-align_absolute-center blueBackground" onclick="{!c.doneRedirect}"/>
+        <lightning:button label="Done" class="slds-button slds-align_absolute-center" onclick="{!c.doneRedirect}"/>
        </div>
       </footer>
     </div>
