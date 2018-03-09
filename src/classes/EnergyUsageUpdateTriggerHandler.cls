@@ -75,21 +75,29 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         for (Utility_Account_Subscription__c uas : uasList) {
             if (sssIdToEUUMap.containsKey(uas.Opportunity__r.Shared_Solar_System__c)) {    
                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
+                String abUniqueID = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
 
-                if(uas.Max_Account_Bill_Number__c == 0) {            
-                    abCounter = 1;
-                } else {
-                    abCounter = (uas.Max_Account_Bill_Number__c).intValue() + 1;
+                /*  Joe Cadette Issue: Unique Id is used to match Account Bills from different 
+                    production updates. Ie, all of Joe's bills are child records of his March Account 
+                    Bill, which has a unique Id. However, we don't want to upsert an Account Bill 
+                    twice from the same Production Update because the bill number will increase by 1 
+                    (this shouldn't happen on others - should not be 2 opportunities for same project)
+                */
+                if (!abKeyToAccountBillMap.containsKey(abUniqueID)) {
+                    if(uas.Max_Account_Bill_Number__c == 0) {            
+                        abCounter = 1;
+                    } else {
+                        abCounter = (uas.Max_Account_Bill_Number__c).intValue() + 1;
+                    }
+                    Account_Bill__c ab = new Account_Bill__c(Name = uas.Opportunity__r.Account.Name + ' ' + 
+                                                             euu.MonthDate__c + ' ' + euu.YearDate__c, 
+                                                             Date__c =  euu.Date__c,
+                                                             Parent_Account__c = uas.Opportunity__r.Account.Id,
+                                                             Bill_Number__c = abCounter,
+                                                             Last_Shared_Solar_System_ID__c = uas.Opportunity__r.Shared_Solar_System__r.Id);
+                    ab.Unique_Id__c = abUniqueID;
+                    abKeyToAccountBillMap.put(abUniqueID, ab);
                 }
-
-                Account_Bill__c ab = new Account_Bill__c(Name = uas.Opportunity__r.Account.Name + ' ' + 
-                                                         euu.MonthDate__c + ' ' + euu.YearDate__c, 
-                                                         Date__c =  euu.Date__c,
-                                                         Parent_Account__c = uas.Opportunity__r.Account.Id,
-                                                         Bill_Number__c = abCounter,
-                                                         Last_Shared_Solar_System_ID__c = uas.Opportunity__r.Shared_Solar_System__r.Id);
-                ab.Unique_Id__c = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
-                abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
             }
         }
 

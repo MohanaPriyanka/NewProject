@@ -54,10 +54,10 @@ public with sharing class SystemBillPaymentRollUpHandler {
             List<System_Bill__c> systemBills = [SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c, 
                                                       Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c, Account_Bill__r.Name,
                                                       Shared_Solar_System_ID__c, Entity_ID__c, Opportunity_Id__c, Account_Bill__c,
-                                                      Bill_Number__c, Property_Account_ID__c, Early_Payments__c, Carry_Forward_Payments__c
+                                                      Account_Bill_Number__c, Property_Account_ID__c, Early_Payments__c, Carry_Forward_Payments__c
                                                 FROM System_Bill__c
                                                 WHERE Property_Account_ID__c IN : propertyaccountIdsstring 
-                                                ORDER BY Bill_Number__c];
+                                                ORDER BY Account_Bill_Number__c];
 
             List<Account> propertyaccounts = [ SELECT Id, Date_of_last_Payment__c
                                                 FROM Account
@@ -91,7 +91,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
                     for (System_Bill__c sbill : systemBills) {
                         if (sbill.Property_Account_ID__c == parentID && sbill.Entity_ID__c == entityId) {
                             groupedSystemBillsList.add(sbill);
-                            maxbillnumber = sbill.Bill_Number__c;
+                            maxbillnumber = sbill.Account_Bill_Number__c;
                             system.debug(maxbillnumber);
                         }
                     } 
@@ -165,7 +165,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
         for (System_Bill__c bills : groupedSystemBillsList) {
             Decimal balanceOnBill = bills.Balance_Net_Late_Payments__c.setScale(2);
             // ** pay off late bills first
-            if (balanceOnBill > 0 && bills.Bill_Number__c < maxbillnumber) {
+            if (balanceOnBill > 0 && bills.Account_Bill_Number__c < maxbillnumber) {
                 if (payment >= balanceOnBill)  {
                     bills.Late_Payments__c = bills.Late_Payments__c + balanceOnBill; 
                     addToPaymentsMap(bills.Opportunity_Id__c, balanceOnBill, paymentsmap);
@@ -178,7 +178,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
                 groupedSystemBillstoUpdate.add(bills);
             }
             // ** if there's anything left, pay off this month's bill
-            if (bills.Bill_Number__c == maxbillnumber) {
+            if (bills.Account_Bill_Number__c == maxbillnumber) {
                 if (payment >= balanceOnBill && balanceOnBill > 0) {
                     bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + balanceOnBill;
                     addToPaymentsMap(bills.Opportunity_Id__c, balanceOnBill, paymentsmap);
