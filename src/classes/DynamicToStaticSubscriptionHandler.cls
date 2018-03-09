@@ -41,8 +41,8 @@ global with sharing class DynamicToStaticSubscriptionHandler {
             }
 
         }   
-        update uasList;
-        update oppList;
+        Database.executeBatch(new GenericBatchDMLOperation(uasList, 'Update'));
+        Database.executeBatch(new GenericBatchDMLOperation(oppList, 'Update'));
         return null;
     }
 }

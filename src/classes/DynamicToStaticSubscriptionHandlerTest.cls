@@ -56,8 +56,9 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
             }
             answer += uas.Customer_Subscription_KW_DC__C;
         }
-        
+        Test.startTest();
         DynamicToStaticSubscriptionHandler.DynamicToStaticSubscriptionHandler(sss9.Id);
+        Test.stopTest();
 
         sss9 = [SELECT Id, Name,
                 (SELECT Id, Name, CS_Capacity_Allocated__c
