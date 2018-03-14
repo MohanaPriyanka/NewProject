@@ -1,3 +1,0 @@
-<design:component>
-	<design:attribute name="supportURL" label="Support URL" description="This is the URL for Support." />
-</design:component>

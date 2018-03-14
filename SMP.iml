@@ -659,10 +659,6 @@
                             <option name="name" value="CreateOrderandPaymentRequestTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="ExcelTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -952,10 +948,6 @@
                             <option name="name" value="MarketingInventoryItemOrderTrigger" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="DisbursalTrigger" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexTrigger" />
@@ -1081,10 +1073,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="DashboardMenu" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="DashboardMenuApp" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1344,31 +1332,7 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="CSPAccountInfo" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CSPDashboard" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CSPFooter" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CSPHeader" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CSPMyAccount" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CSPReferAFriend" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="defaultTokens" />
+                            <option name="name" value="NavHeader" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1531,10 +1495,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="partnerImageFiles" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="clientImageFiles" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

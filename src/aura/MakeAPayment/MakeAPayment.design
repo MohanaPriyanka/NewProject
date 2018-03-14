@@ -1,3 +1,0 @@
-<design:component >
-	<design:attribute name="paymentURL" label="Payment URL" description="This is the URL used for payments." />
-</design:component>
