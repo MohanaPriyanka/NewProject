@@ -121,7 +121,7 @@
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Owner', 'Status' ,'Loan Amount', 'Funded', 'Action']"
                          numberOfRecordsPerPage="50"
                          tableRecords="{!v.loansInProcess}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Owner__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Partner_Tasks__r[0].Owner__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
                          columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
                          defaultButtonLabels="View"
@@ -134,7 +134,7 @@
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Status','Loan Amount', 'Funded', 'Action']" 
                          numberOfRecordsPerPage="50"
                          tableRecords="{!v.completedLoans}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
                          columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
                          defaultButtonLabels="View"
@@ -160,7 +160,7 @@
                          headerLabels="['Customer', 'Sales Agent', 'Product', 'Loan Amount']" 
                          numberOfRecordsPerPage="50"
                          tableRecords="{!v.expiredApplicants}" 
-                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.ProductCode', 'Requested_Loan_Amount__c']"
+                         recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Requested_Loan_Amount__c']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency'}"
                          columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"/>
  <br></br>

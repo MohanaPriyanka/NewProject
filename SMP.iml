@@ -20,14 +20,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="AccountInfoController" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="AccountInfoControllerTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="AccountTriggerHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -667,6 +659,10 @@
                             <option name="name" value="CreateOrderandPaymentRequestTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="ExcelTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -956,6 +952,10 @@
                             <option name="name" value="MarketingInventoryItemOrderTrigger" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="DisbursalTrigger" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexTrigger" />
@@ -965,10 +965,6 @@
                         <list>
                           <MetadataEntry>
                             <option name="name" value="AccountBillingInfo" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="AccountInfo" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1084,19 +1080,11 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="DashboardHeader" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="DashboardMenu" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="DashboardMenuApp" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="Footer" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1144,27 +1132,11 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="MakeAPayment" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="MyAccountSolarDashboard" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="MySolarFarm" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="NavHeader" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="NavSubHeaderAccountInfo" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="NavSubHeaderHome" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1189,10 +1161,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="ProductProfile" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="ReferAFriend" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1375,6 +1343,34 @@
                             <option name="name" value="CreateOrderApp" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPAccountInfo" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPDashboard" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPFooter" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPHeader" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPMyAccount" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPReferAFriend" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="defaultTokens" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="AuraDefinitionBundle" />
@@ -1535,6 +1531,10 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="partnerImageFiles" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="clientImageFiles" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

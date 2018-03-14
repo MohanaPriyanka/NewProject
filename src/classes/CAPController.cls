@@ -206,7 +206,7 @@ public without sharing class CAPController {
 
         // If the lead is pre-qualified and has a Product, we want to add that product to the product list
         // even if it's deactivated.
-        Lead lead = [SELECT Id, Product__c, Product__r.Name, Product__r.Product_Type__c, Product__r.Program__c, 
+        Lead lead = [SELECT Id, Product__c, Product__r.Name, Product__r.External_Name__c, Product__r.Product_Type__c, Product__r.Program__c,
                      Product__r.Debt_To_Income_Maximum__c, Product__r.Credit_Minimum__c, Product__r.Credit_Maximum__c, 
                      Product__r.Loan_Interest_Rate__c, Product__r.Loan_Term__c, Product__r.State__c, 
                      Personal_Credit_Report__r.Avidia_Review_Status__c

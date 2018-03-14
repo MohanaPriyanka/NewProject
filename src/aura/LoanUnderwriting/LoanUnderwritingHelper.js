@@ -10,6 +10,13 @@
                     var leadWithAttachments = resp.getReturnValue();
                     var lead = leadWithAttachments.lead;
                     component.set("v.lead", lead);
+                    var monthlyPayment = lead.Monthly_Payment__c;
+                    if (lead.Product__r.DTI_After_Rate_Gross_Up__c) {
+                        monthlyPayment =
+                            (lead.Loan_Principal__c*(lead.Product__r.Loan_Interest_Rate__c+lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12) /
+                            (1-Math.pow((1+(lead.Product__r.Loan_Interest_Rate__c+lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12),(-1*lead.Product__r.Loan_Term__c)));
+                    }
+                    component.set("v.monthlyPayment", monthlyPayment);
                     if (lead.Personal_Credit_Report_Co_Applicant__r &&
                         lead.Personal_Credit_Report__r) {
                         component.set("v.coAppPCRAttachment", leadWithAttachments.coAppPCRAttachment);
@@ -73,7 +80,8 @@
         var lead = component.get("v.lead");
         var mainPCR = lead.Personal_Credit_Report__r;
         var coAppPCR = lead.Personal_Credit_Report_Co_Applicant__r;
-        var loanPayment = lead.Monthly_Payment__c;
+        
+        var loanPayment = component.get('v.monthlyPayment');
         if (mainPCR.Adjusted_DTI__c != null) {
             component.set("v.bestDTI", mainPCR.Adjusted_DTI__c);
         } else {

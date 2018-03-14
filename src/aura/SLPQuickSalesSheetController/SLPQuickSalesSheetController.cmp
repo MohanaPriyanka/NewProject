@@ -13,6 +13,7 @@
   <aura:attribute name="qssLinkToFile" type="String" default="notgeneratedinportal"/> 
   <aura:attribute name="ProductListAttribute" type="List"/> 
   <aura:attribute name="modifiedTaxIncentive" type="Boolean" default="false"/>
+  <aura:attribute name="isAdjustable" type="Boolean" default="false"/>
 
   <div class="slds-page-header" role="banner">
     <div class="slds-grid">
@@ -39,7 +40,7 @@
                                     value="{!v.quicksalessheet.Product__c}" >
                       <ui:inputSelectOption label="Select" text=""/>
                       <aura:iteration items="{!v.ProductListAttribute}" var="product">
-                        <ui:inputSelectOption label="{!product.ProductCode}" text="{!product.Id}"/>
+                        <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
                       </aura:iteration>
                     </ui:inputSelect>
                 </div>                  
@@ -132,7 +133,33 @@
                       <div class="slds-truncate" title="IO Value"><ui:outputCurrency value="{!v.calculatedQSS.Interest_Payment__c}"/></div>
                     </td>
                   </tr>
-                  <aura:if isTrue="{!v.modifiedTaxIncentive}"> 
+                  <aura:if isTrue="{!v.isAdjustable}">
+                    <tr class="slds-hint-parent">
+                      <th scope="row">
+                        <div class="slds-truncate" title="MaxPI">Maximum Principal and Interest Payment</div>
+                      </th>
+                      <td>
+                        <div class="slds-truncate" title="Max PI Value"><ui:outputCurrency value="{!v.calculatedQSS.Maximum_Payment__c}"/></div>
+                      </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                      <th scope="row">
+                        <div class="slds-truncate" title="Year2TCO">Year 2 TCO (does not include any applicable state credits)</div>
+                      </th>
+                      <td>
+                        <div class="slds-truncate" title="Year2TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_2_Payoff_Amount__c}"/></div>
+                      </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                      <th scope="row">
+                        <div class="slds-truncate" title="Year4TCO">Year 4 TCO (does not include any applicable state credits)</div>
+                      </th>
+                      <td>
+                        <div class="slds-truncate" title="Year4TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_4_Payoff_Amount__c}"/></div>
+                      </td>
+                    </tr>
+                  </aura:if>
+                  <aura:if isTrue="{!v.modifiedTaxIncentive}">
                     <tr class="slds-hint-parent">
                       <th scope="row">
                         <div class="slds-truncate" title="ITC">Federal Tax Credit
@@ -232,7 +259,7 @@
                                       change="{!c.refreshTable}">
                           <ui:inputSelectOption label="Select" text=""/>
                           <aura:iteration items="{!v.ProductListAttribute}" var="product">
-                            <ui:inputSelectOption label="{!product.ProductCode}" text="{!product.Id}"/>
+                            <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
                           </aura:iteration>
                         </ui:inputSelect>
                       </div>

@@ -5,7 +5,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         
         Account parentAccount = [SELECT Id, Name
                             FROM Account
-                            WHERE Name = 'Account Parent'];
+                        WHERE Name = 'Account Parent'];
 
         Profile communityProfile = [SELECT Id 
                                     FROM Profile 
@@ -96,6 +96,19 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                                          
         Test.startTest();
           System.runAs(communityUser){
+
+            //test the getContactInfo() method
+            Contact ContactfromUser = MyAccountController.getContactInfo(); 
+            System.assertEquals('First', ContactfromUser.FirstName);
+
+            //test the updateContactInfo() method
+            ContactfromUser.Email = 'jpentaleri@bluewavesolar.com'; 
+            MyAccountController.updateContactInfo(ContactfromUser); 
+
+            //test the getUser() method
+            User userInfo = MyAccountController.getUser(); 
+            System.assertEquals('Test', userInfo.FirstName);
+
             // test the getMenuLabelList() method
             List<Account> menuLabelRespList = new List<Account>(MyAccountController.getMenuLabelList());
             System.AssertEquals(1, menuLabelRespList.size());

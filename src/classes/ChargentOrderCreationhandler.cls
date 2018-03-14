@@ -15,6 +15,8 @@ public with sharing class ChargentOrderCreationhandler {
       String oldACH = oldvaluesmap.get(newvalueID).ACH_Name_on_Account__c;
       if (newACH != null && oldACH == null){
         oppToUpdateList.add(opp);
+      } else if (opp.CC_Account_Number__c != null && oldvaluesmap.get(newvalueID).CC_Account_Number__c == null){
+        oppToUpdateList.add(opp);
       }
     }
 
@@ -25,16 +27,28 @@ public with sharing class ChargentOrderCreationhandler {
                                           LIMIT 1];   
 
       for(Opportunity opp : oppToUpdateList) {
+        String paymentMethod;
+        if (opp.CC_Account_Number__c != null) {
+          paymentMethod = 'Credit Card';
+        } else {
+          paymentMethod = 'Check';
+        }
         ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
                                                           ChargentOrders__Account__c = opp.AccountId,
                                                           ChargentOrders__Gateway__c = gateway.Id,
                                                           ChargentOrders__Shipping_Name__c = gateway.Entity_ID__c,                              
-                                                          ChargentOrders__Payment_Method__c = 'Check',
+                                                          ChargentOrders__Payment_Method__c = paymentMethod,
                                                           ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
                                                           ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,
                                                           ChargentOrders__Bank_Account_Type__c = opp.ACH_Account_Type__c,
                                                           ChargentOrders__Bank_Account_Number__c = opp.ACH_Account_Number__c,
-                                                          ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c);
+                                                          ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c,
+                                                          ChargentOrders__Card_Type__c = opp.CC_Card_Type__c,
+                                                          ChargentOrders__Card_Number__c = opp.CC_Account_Number__c,
+                                                          ChargentOrders__Card_Security_Code__c = opp.CC_CVV__c,
+                                                          ChargentOrders__Billing_Last_Name__c = opp.CC_CardHolder_Name__c,
+                                                          ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
+                                                          ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
         insert orderA;  
         accountids.add(opp.AccountId);
         opp.ACH_Bank_Name__c = 'removed';
@@ -42,6 +56,13 @@ public with sharing class ChargentOrderCreationhandler {
         opp.ACH_Account_Type__c = 'removed';
         opp.ACH_Account_Number__c = 'removed';
         opp.ACH_Name_on_Account__c = 'removed';   
+        opp.CC_Card_Type__c = 'removed';
+        opp.CC_Account_Number__c = 'removed';
+        opp.CC_CardHolder_Name__c = 'removed';
+        opp.CC_CVV__c = 'rmvd';
+        opp.CC_Expiration_Month__c = 'rd';
+        opp.CC_Expiration_Year__c = 'rmvd';   
+
       }   
 
       List<Account> accountList = [SELECT Name, Id, Recurring_Billing__c 

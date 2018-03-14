@@ -130,6 +130,7 @@ public class LoanHandlerTestClass {
                 }
             }
             if(partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c == false) {
+                System.debug(LoggingLevel.ERROR, partnerTaskAssertion);
                 if(partnerTaskAssertion.Name == 'Provide Income Documentation') {
                     System.assertEquals('Complete', partnerTaskAssertion.Status__c);
                 }
@@ -144,6 +145,57 @@ public class LoanHandlerTestClass {
                 }
             }
         }         
+    }
+
+    @isTest static void testVeteranPartnerTask() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
+        BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
+        Lead veteran = new Lead(
+            FirstName = 'Veteran',
+            LastName = 'Testcase',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            Veteran_Disability__c = true,
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 25000,
+            Loan_Term__c = 120,
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
+        insert veteran;
+        veteran.Status = 'Pending Information';
+        update veteran;
+
+        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+        Date myDate = Date.newInstance(2015, 2, 17);
+        List<Loan__c> loanListToUpdate = new List<Loan__c>();
+
+        Test.startTest();
+        //Insert the Veteran documentation
+        Attachment attachmentPaystub = new Attachment();
+        attachmentPaystub.Name =  String.valueOf('test.txt');
+        attachmentPaystub.body = bodyBlob;
+        attachmentPaystub.ParentId = veteran.Id;
+        attachmentPaystub.Description = 'Veteran Income Documentation' + ' ' + veteran.Id;
+        insert attachmentPaystub;
+
+        changeLeadUpdateDummy(new List<Lead>{veteran});
+        List<Partner_Task__c> partnerTasks = [
+            SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id,
+            Loan__r.DOER_Solar_Loann__c, Child_MSLP_Identifier__c, Unique_id__c
+            FROM Partner_Task__c
+            WHERE Parent_Task__r.Parent_Task__r.Lead__r.Id = :veteran.Id
+            AND Name = 'Provide All Income Documentation'
+        ];
+
+        System.debug(LoggingLevel.ERROR, partnerTasks);
+        System.assertEquals(1, partnerTasks.size());
+        System.assertEquals('Complete', partnerTasks[0].Status__c);
     }
 
     @isTest static void testAfterLeadConversionCustomerSignature() {
@@ -723,16 +775,10 @@ public class LoanHandlerTestClass {
     }
 
     public static void changeLeadUpdateDummy(List<Lead> leadList) {
-      List<Lead> leadListToUpdate = new List<Lead>();
       for (Lead leadRecord : leadList) {
-        if(leadRecord.Update_Dummy__c == true) {
-          leadRecord.Update_Dummy__c = false;
-        }else {
-          leadRecord.Update_Dummy__c = true;
-        }
-        leadListToUpdate.add(leadRecord);
+          leadRecord.Update_Dummy__c = !leadRecord.Update_Dummy__c;
       }
-      update leadListToUpdate;
+      update leadList;
     }    
     public static void changeLeadUpdateDummyMSLP(List<Lead> leadList) {
         List<Lead> leadListToUpdate = new List<Lead>();

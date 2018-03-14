@@ -7,11 +7,13 @@
         }); 
         
         actionGetUrl.setCallback(this,function(response) {
-            if(response.getState() == "SUCCESS") { 
-                component.set("v.calculatedQSS", response.getReturnValue());
-                if(response.getReturnValue().Link_to_File__c != "notgenerated"){
-                    component.set("v.qssLinkToFile", response.getReturnValue().Link_to_File__c);
-                    component.set("v.calculatedQSS", response.getReturnValue()); 
+            if(response.getState() === "SUCCESS") {
+                var qss = response.getReturnValue();
+                component.set("v.calculatedQSS", qss);
+                component.set("v.isAdjustable", (qss.Product__r.Index_Rate_for_Adjustment__c?true:false));
+                if(qss.Link_to_File__c != "notgenerated"){
+                    component.set("v.qssLinkToFile", qss.Link_to_File__c);
+                    component.set("v.calculatedQSS", qss);
                     $A.util.addClass(component.find("spinnerandtext"), 'noDisplay');
                     $A.util.removeClass(component.find("downloadQSSbutton"), 'noDisplay');   
                     $A.util.removeClass(component.find("downloadQSStext"), 'noDisplay');

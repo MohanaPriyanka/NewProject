@@ -21,7 +21,8 @@
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+
         'Bill_Attach_Version__c, Credits_on_Bill_Period__c, '+
-        'Parent_Account__r.Send_Bills_Contact__r.Email '+
+        'Parent_Account__r.Send_Bills_Contact__r.Email, '+
+        'Parent_Account__r.Additional_Contact__r.Email ' +
         'FROM Account_Bill__c WHERE Ready_for_Email_Send__c = TRUE';
         return Database.getQueryLocator(query);
     }
@@ -61,6 +62,9 @@
             if (acctBill.Parent_Account__r.Send_Bills_Contact__r.Email != NULL) {
                 if ( attachIDMap.containsKey(acctBill.Id) ) {
                     addressList.add(acctBill.Parent_Account__r.Send_Bills_Contact__r.Email);  
+                    if(acctBill.Parent_Account__r.Additional_Contact__r.Email != null){
+                        addressList.add(acctBill.Parent_Account__r.Additional_Contact__r.Email); 
+                    } 
                     htmlBody = htmlBody.replace('{!AccountName}', acctBill.Property_Account_Name__c);
                     htmlBody = htmlBody.replace('{!Account_Bill_Property_Id}', acctBill.Property_Account_ID__c);
                     htmlBody = htmlBody.replace('{!Credits_Period}', acctBill.Credits_on_Bill_Period__c ); 

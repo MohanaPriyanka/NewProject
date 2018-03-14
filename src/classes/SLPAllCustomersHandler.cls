@@ -64,7 +64,7 @@ public without sharing class SLPAllCustomersHandler {
     LoanRecords LoanRecords = new LoanRecords();
     List<Loan__c> loanList = new List<Loan__c>();
     String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, createdDate, Total_Funds_Disbursed__c, Sales_Agent__r.Name, Opportunity__r.StageName,' + 
-    					         'Product__r.ProductCode, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name, Task_Label__c, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
+    					         'Product__r.External_Name__c, Sales_Agent__r.Id, Lead__r.Date_of_Application_2__c, (SELECT Id, Name, Task_Label__c, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)' ;
     loanQuery += '      FROM Loan__c' ;
     loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
     if (profile.LicenseType != 'Executive') {

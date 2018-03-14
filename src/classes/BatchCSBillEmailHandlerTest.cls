@@ -17,7 +17,15 @@ private class BatchCSBillEmailHandlerTest {
                                             Email = 'jpentaleri@bluewavesolar.com');
         insert contactOne;
 
+
+        Contact contactTwo = new Contact (  FirstName = 'First',
+                                            LastName = 'Second',
+                                            AccountId = parentAccount.Id,
+                                            Email = 'pentalerij@gmail.com');
+        insert contactTwo;
+
         propertyAccount.Send_Bills_Contact__c = contactOne.Id;
+        propertyAccount.Additional_Contact__c = contactTwo.Id;
         update propertyAccount;
 
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');

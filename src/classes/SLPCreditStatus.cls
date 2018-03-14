@@ -111,7 +111,7 @@ public without sharing class SLPCreditStatus {
   
   @AuraEnabled 
   public static Product2 getSelectedProduct (String productId) {
-    List<Product2> productList = [SELECT Id, Name, ProductCode, Loan_Term__c, Program__c 
+    List<Product2> productList = [SELECT Id, Name, External_Name__c, Loan_Term__c, Program__c
                                   FROM Product2 
                                   WHERE Id = : productId]; 
     return productList[0];                      

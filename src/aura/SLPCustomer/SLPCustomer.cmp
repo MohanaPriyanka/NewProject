@@ -141,7 +141,7 @@
           <tr>
             <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>
             <th scope="row"> <b>{!v.customer.Loan__r.Sales_Agent__r.Name}</b> </th>
-            <th scope="row"> <b>{!v.customer.Loan__r.Product__r.ProductCode}</b> </th>
+            <th scope="row"> <b>{!v.customer.Loan__r.Product__r.External_Name__c}</b> </th>
             <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.Requested_Loan_Amount__c}"/></th>
             <aura:if isTrue="{!v.licenseType}">
               <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream"

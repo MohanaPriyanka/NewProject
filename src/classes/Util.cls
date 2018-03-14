@@ -49,7 +49,7 @@ public without sharing class Util {
     // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
     // or to generate a quick sales sheet (SLPQuickSalesSheet).
     private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
-        List<Product2> productList = [SELECT Id, Name, External_Name__c, Program__c, ProductCode, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
+        List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
                                       (SELECT Id FROM Partner_Product_Junctions__r 
                                        WHERE Partner__c = :partnerId
                                        AND Active__c = true)
@@ -79,6 +79,16 @@ public without sharing class Util {
         Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
         Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
         return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
+    }
+
+    // Because Math.min and Math.max only supports two arguments
+    public static Decimal min(List<Decimal> decimalValues) {
+        decimalValues.sort();
+        return(decimalValues[0]);
+    }
+    public static Decimal max(List<Decimal> decimalValues) {
+        decimalValues.sort();
+        return(decimalValues[decimalValues.size()-1]);
     }
 
     public class BWException extends Exception {}

@@ -10,9 +10,35 @@ public without sharing class MyAccountController {
 
     public static User customerUser = new User();
     static {
-        customerUser = [SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  
+        customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  
                         FROM User 
                         WHERE Id = :UserInfo.getUserId()];
+    }
+
+    @AuraEnabled
+    public static Contact getContactInfo() {
+        User u =  [Select Id, ContactId from User where Id = :UserInfo.getUserId()];
+        Contact c;
+        if(u.ContactId != null) {
+            try {
+                c = [Select Id, Phone, MobilePhone, Email, FirstName, LastName, MailingStreet, MailingCity, MailingState, MailingPostalCode from Contact where Id = :u.ContactId];
+            }
+            catch(Exception ex) {
+                
+            }
+        }
+        return c;
+    }
+    
+    @AuraEnabled
+    public static Contact updateContactInfo(Contact contactToUpdate) {
+        update contactToUpdate;
+        return contactToUpdate;
+    }
+
+    @AuraEnabled
+    public static User getUser() {
+        return customerUser;
     }
 
     @AuraEnabled

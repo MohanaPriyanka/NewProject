@@ -1,0 +1,51 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+  <aura:attribute name="logoFile" type="String"/>
+
+  <div style="height: 100px;"/>
+  <header class="slds-global-header_container">
+    <div class="slds-global-header slds-grid slds-grid_align-spread">
+      <div class="slds-global-header__item">
+        <div class="slds-global-header__logo global-header__icon">
+            <img src="{!'/resource/clientImageFiles/' + v.logoFile + '.png'}" style="max-height:40px;" class="fadeIn"/>
+        </div>
+      </div>
+    <div class="slds-global-header__item slds-text-color_inverse">
+        <div class="logout">
+          <a href="/secur/logout.jsp">
+            <span class="slds-truncate">Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="slds-tabs--default">
+      <ul class="slds-tabs--default__nav" role="tablist">
+        <li class="slds-tabs_default__item" title="Dashboard" role="presentation">
+            <a class="slds-tabs--default__link slds-text-body_small" href="/s/">
+                <b>Dashboard</b>
+            </a>
+        </li>
+        <li class="slds-tabs_default__item" title="My Account" role="presentation">
+            <a class="slds-tabs--default__link slds-text-body_small" href="myaccount">
+                <b>My Account</b>
+            </a>
+        </li>
+        <li class="slds-tabs_default__item" title="My Solar" role="presentation">
+            <a class="slds-tabs--default__link slds-text-body_small" href="mysolar">
+                <b>My Solar</b>
+            </a>
+        </li>
+        <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
+            <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
+                <b>Refer a Friend</b>
+            </a>
+        </li>    
+        <li class="slds-tabs_default__item" title="Account Settings" role="presentation">
+            <a class="slds-tabs--default__link slds-text-body_small" href="accountinfo" >
+                <b>Settings</b>
+            </a>
+        </li>      
+      </ul>
+    </div>
+  </header>
+</aura:component>

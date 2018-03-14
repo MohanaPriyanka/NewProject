@@ -1,0 +1,16 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+  <div class="slds-p-top_x-large slds-align--absolute-center">
+    <ul class="slds-accordion slds-size_5-of-12">
+      <li class="slds-accordion__list-item"/>
+      <li class="slds-accordion__list-item"/>
+    </ul>
+  </div>
+  <div>
+    <ui:outputText  class="slds-text-body_small slds-align--absolute-center slds-text-color_weak slds-p-top_medium" 
+                    value="Have a question? Contact the BlueWave Customer Care Team:"/>
+  </div>
+  <div class="slds-p-bottom_medium slds-align--absolute-center">
+    <ui:outputText class="slds-text-body_small slds-text-color_weak" value="customercare@bluewavesolar.com"/>
+    <ui:outputText class="slds-text-body_small slds-text-color_weak slds-p-left_medium" value="888-786-4100"/>
+  </div>
+ </aura:component>

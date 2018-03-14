@@ -30,8 +30,23 @@ public class TestBillCreationandPayment {
         insert new List<Load_U__c>{everLZU, ngridLZU};
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        Account clientAccount = new Account(name = 'Client Account', 
+                                            Client_Brand_Key__c = 'AmpBlack');
+        insert clientAccount; 
+
+        Account clientAccount2 = new Account(name = 'Client Account 2', 
+                                            Client_Brand_Key__c = 'AmpBlack');
+        insert clientAccount2; 
+
+        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1',
+                                           Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
+                                           Client_Account__c = clientAccount.Id);
         insert entity1;
+
+        Entity__c entity2 = new Entity__c (Name = 'Oxford Barrett St. P2',
+                                           Send_Checks_Address__c = '200 Other Street, City MA 02114',
+                                           Client_Account__c = clientAccount2.Id);
+        insert entity2;
         
         Shared_Solar_System__c sss1 = 
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
@@ -68,6 +83,7 @@ public class TestBillCreationandPayment {
                                        Expected_Yield_kWh_kW__c = 1300,
                                        Assemblage_Count__c = 1,
                                        Sales_Partners__c = 'All',
+                                       BWC_Project_Entity_Manual__c = entity2.Id,
                                        Maximum_Subscription_Assemblage__c = 25);
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
@@ -112,7 +128,7 @@ public class TestBillCreationandPayment {
         insert normalCSProduct;
 
         Opportunity opportunityone = 
-            new Opportunity(Name = 'Jordan Jordan',
+            new Opportunity(Name = 'AOpp One',
                             AccountId = accountA.Id,
                             Shared_Solar_System__c = sss1.Id,
                             StageName = 'Complete',
@@ -121,7 +137,7 @@ public class TestBillCreationandPayment {
                             CloseDate = System.today());
 
         Opportunity opportunitytwo = 
-            new Opportunity(Name = 'Jordan Jordan',
+            new Opportunity(Name = 'BOpp Two',
                             AccountId = accountA.Id,
                             Shared_Solar_System__c = sss2.Id,
                             StageName = 'Complete',
@@ -494,12 +510,15 @@ public class TestBillCreationandPayment {
           } 
         }
 
-        Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c
+        Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c, 
+                                    Send_Checks_Address__c, Client_Brand_Key__c
                                     FROM Account
                                     WHERE Id = : propertyAccountId];                                            
 
         System.assertNotEquals(oldCheckAddressField, propertyAccount.Directions_To_Write_Paper_Check__c);
         System.assert(propertyAccount.Directions_To_Write_Paper_Check__c.contains('Oxford Barrett St. P1'));
+        System.assertEquals('Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114', propertyAccount.Send_Checks_Address__c);
+        System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
 
         Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Generate_Bills__c = false];
         prodUpdate.Generate_Bills__c = True;
@@ -538,5 +557,45 @@ public class TestBillCreationandPayment {
         System.assertEquals(283.36, updatedsystemBillList[2].Balance_Net_late_Payments__c );
         System.assertEquals(-119.25, updatedsystemBillList[2].Previous_Overpayments__c );
         System.assertEquals(0, updatedsystemBillList[2].Adjustments_UASB__c );
+    }
+
+    @isTest public static void testMultipleEntities() {
+        List<Opportunity> oppSSS2 = [SELECT Id, Name, Shared_Solar_System__c, AccountId FROM Opportunity ORDER BY Name];
+
+        Account_Bill__c acctBillToInsert = new Account_Bill__c (Bill_Number__c = 10,
+                                             Parent_Account__c = oppSSS2[0].AccountId,
+                                             Name = 'First Last Month 2016 B',
+                                             Published__c = true,
+                                             Unique_ID__c = '0001110001110022222AS');
+        insert acctBillToInsert;
+
+        System_Bill__c sysBillToInsert = new System_Bill__c (Opportunity__c = oppSSS2[0].Id,
+                                            Shared_Solar_System__c = oppSSS2[0].Shared_Solar_System__c,
+                                            Shared_Solar_System_ID2__c = oppSSS2[0].Shared_Solar_System__c,
+                                            Bill_Number__c = 10,
+                                            Account_Bill__c = acctBillToInsert.id,
+                                            Property_Account__c = oppSSS2[0].AccountId,
+                                            Name = 'First Last March 2016 B',
+                                            Unique_ID__c = '0001110001222211FAS');
+        insert sysBillToInsert;
+
+        System_Bill__c sysBillToInsertTwo = new System_Bill__c (Opportunity__c = oppSSS2[1].Id,
+                                            Shared_Solar_System__c = oppSSS2[1].Shared_Solar_System__c,
+                                            Shared_Solar_System_ID2__c = oppSSS2[1].Shared_Solar_System__c,
+                                            Bill_Number__c = 10,
+                                            Account_Bill__c = acctBillToInsert.id,
+                                            Property_Account__c = oppSSS2[1].AccountId,
+                                            Name = 'First Last March 2016 B',
+                                            Unique_ID__c = '0001110001222222FAS');
+        insert sysBillToInsertTwo;
+
+        Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c, 
+                                    Send_Checks_Address__c, Client_Brand_Key__c
+                                    FROM Account
+                                    WHERE Name = 'Account A'];  
+
+        System.assertEquals('No Payment Due', propertyAccount.Directions_To_Write_Paper_Check__c);
+        System.assertEquals('BlueWave 137 Newbury Street Boston, MA 02114', propertyAccount.Send_Checks_Address__c);
+        System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
     }
 }

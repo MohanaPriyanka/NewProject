@@ -57,24 +57,24 @@ public class LoanTestRecordWarehouse {
 
         Product2 productLoanMATerm10Rate599 = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
         Product2 productLoanMATerm10Rate699 = getDefaultProduct('MA', 6.99, 10, 5, '700', '749', capitalPool.Id);
-        Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm10Rate725 = getDefaultProduct('MA', 7.25, 10, 0, '681', '699', capitalPool.Id);
         Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
         Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
-        Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '681', '699', capitalPool.Id);
         productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate725.Program__c = 'MSLP';
         productLoanMATerm20Rate725.IBLS_Category__c = 'Category 1';
         productLoanMATerm20Rate725.Lender_of_Record__c = 'Avidia';
-        Product2 productLoanMATerm20Rate875 = getDefaultProduct('MA', 8.75, 20, 5, '680', '699', capitalPool.Id);
+        Product2 productLoanMATerm20Rate875 = getDefaultProduct('MA', 8.75, 20, 5, '681', '699', capitalPool.Id);
         productLoanMATerm20Rate875.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate875.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate875.Program__c = 'MSLP';
         productLoanMATerm20Rate875.IBLS_Category__c = 'Category 2';
         productLoanMATerm20Rate875.Lender_of_Record__c = 'Avidia';
-        Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '680', '699', capitalPool.Id);
+        Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '681', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
-        Product2 productLoanNY = getDefaultProduct('NY', 1.23, 5, 5, '680', '699', capitalPool.Id);
+        Product2 productLoanNY = getDefaultProduct('NY', 1.23, 5, 5, '681', '699', capitalPool.Id);
         Product2 productNonLoan = getCSProduct();
 
         return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
@@ -413,7 +413,7 @@ public class LoanTestRecordWarehouse {
     public static List<Lead> getLoanHandlerLeadRecords () {
         Map<String, Id> productMap = new Map<String, Id>();
         getLoanHandlerProductRecords();
-        for (Product2 product : [SELECT Id, Name, Disbursal_Terms__c, Program__c, State__c, Family, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c, Technology_Platform_Fee__c, ProductCode, Credit_Minimum__c, Credit_Maximum__c FROM Product2]) {
+        for (Product2 product : [SELECT Id, Name, Disbursal_Terms__c, Program__c, State__c, Family, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c, Technology_Platform_Fee__c, External_Name__c, Credit_Minimum__c, Credit_Maximum__c FROM Product2]) {
              if (product.Program__c == 'BlueWave Solar Loan' && product.State__c == 'MA') {
                  productMap.put('BWSL', product.Id);
              } else if (product.Program__c == 'BlueWave Solar Loan' && product.State__c == 'NY') {

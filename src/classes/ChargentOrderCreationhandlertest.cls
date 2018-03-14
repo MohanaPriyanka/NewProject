@@ -57,25 +57,48 @@ Static testMethod void ChargentOrderCreationhandlertest (){
 
         update oppone;
 
-        List <ChargentOrders__ChargentOrder__c > orderlist = [  SELECT Id, ChargentOrders__Bank_Name__c,
+        Opportunity opptwo = new Opportunity(Name = 'Jordan Testcase',
+                                             AccountId = accountA.Id,
+                                             Shared_Solar_System__c = sss1.Id,
+                                             StageName = 'Complete',
+                                             CS_Capacity_Allocated__c = 25,
+                                             CloseDate = System.today());
+        insert opptwo;
+        
+        opptwo.CC_Account_Number__c = '1112223334545';
+        opptwo.CC_CardHolder_Name__c = 'Jordan Testcase';
+        opptwo.CC_Card_Type__c = 'MasterCard';
+        opptwo.CC_CVV__c = '123';
+        opptwo.CC_Expiration_Month__c = '02';
+        opptwo.CC_Expiration_Year__c = '2020';
+
+        update opptwo;
+
+        List<ChargentOrders__ChargentOrder__c > orderlist = [  SELECT Id, ChargentOrders__Bank_Name__c,
                                                                 ChargentOrders__Bank_Routing_Number__c, 
                                                                 ChargentOrders__Bank_Account_Type__c,
                                                                 ChargentOrders__Bank_Account_Number__c, 
                                                                 ChargentOrders__Bank_Account_Name__c,
-                                                                ChargentOrders__Gateway__c 
+                                                                ChargentOrders__Gateway__c,
+                                                                ChargentOrders__Card_Number__c,
+                                                                ChargentOrders__Card_Security_Code__c,
+                                                                ChargentOrders__Card_Expiration_Month__c,
+                                                                ChargentOrders__Card_Expiration_Year__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
-
         Test.StartTest();
-        
-        for (ChargentOrders__ChargentOrder__c choOrder : orderList) {
-            System.assertEquals('Bank of America', choOrder.ChargentOrders__Bank_Name__c);
-            System.assertEquals('129383578', choOrder.ChargentOrders__Bank_Routing_Number__c);
-            System.assertEquals('Checking', choOrder.ChargentOrders__Bank_Account_Type__c);
-            System.assertEquals('123456790', choOrder.ChargentOrders__Bank_Account_Number__c);
-            System.assertEquals('Jordan Pentaleri', choOrder.ChargentOrders__Bank_Account_Name__c);
-            System.assertEquals(chGateway.Id, choOrder.ChargentOrders__Gateway__c);
-        }
+            System.assertEquals(2, orderList.size());
+            System.assertEquals('Bank of America', orderlist[0].ChargentOrders__Bank_Name__c);
+            System.assertEquals('129383578', orderlist[0].ChargentOrders__Bank_Routing_Number__c);
+            System.assertEquals('Checking', orderlist[0].ChargentOrders__Bank_Account_Type__c);
+            System.assertEquals('123456790', orderlist[0].ChargentOrders__Bank_Account_Number__c);
+            System.assertEquals('Jordan Pentaleri', orderlist[0].ChargentOrders__Bank_Account_Name__c);
+            System.assertEquals(chGateway.Id, orderlist[0].ChargentOrders__Gateway__c);
 
+            System.assertEquals('1112223334545', orderlist[1].ChargentOrders__Card_Number__c);
+            System.assertEquals('123', orderlist[1].ChargentOrders__Card_Security_Code__c);
+            System.assertEquals('02', orderlist[1].ChargentOrders__Card_Expiration_Month__c);
+            System.assertEquals('2020', orderlist[1].ChargentOrders__Card_Expiration_Year__c);
+            System.assertEquals(chGateway.Id, orderlist[1].ChargentOrders__Gateway__c);
         Test.StopTest();
         
 }

@@ -201,7 +201,7 @@
         <tbody>
           <aura:iteration items="{!v.allProducts}" var="product">
             <tr>
-              <th scope="row"> <b>{!product.Name}</b> </th>
+              <th scope="row"> <b>{!product.External_Name__c}</b> </th>
               <th> 
                 <div class="slds-form-element">
                   <label class="slds-checkbox--toggle slds-grid">

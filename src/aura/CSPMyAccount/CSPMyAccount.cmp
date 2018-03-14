@@ -1,0 +1,194 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="myBill" type="Decimal"  />  
+  <aura:attribute name="menuLabels" type="Account[]" />
+  <aura:attribute name="menuOpen" type="Boolean" default="false"/>
+  <aura:attribute name="selectedAccount" type="String" default="All" />
+  <aura:attribute name="SystemBills" type="Decimal" />
+  <aura:attribute name="AccountBills" type="Object" /> 
+  <aura:attribute name="PaymentLogs" type="Object" />  
+  <aura:attribute name="recurringCheck" type="Boolean"/>   
+  <aura:attribute name="paymentURL" type="String" /> 
+  
+  <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+    <div class="slds-col slds-size_1-of-12"/>
+    <div class="slds-col slds-size_11-of-12">
+      <h3 class="slds-text-heading_large slds-p-bottom_x-large slds-p-top_large slds-text-color_default">
+          <b>My Account</b>
+      </h3>
+    </div>
+  </div>    
+  <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+    <div class="slds-col slds-size_1-of-12"/>
+    <div class="slds-col slds-size_5-of-12">
+      <h3 class="slds-text-title_caps"><b>Current Balance Due:</b></h3>
+      <h3 class="slds-text-heading_large slds-p-top_small slds-p-bottom_large slds-text-color_default">
+        <b><ui:outputCurrency value="{!v.myBill}"/></b>
+      </h3>
+      <aura:if isTrue="{!v.recurringCheck}">
+        <h3 class="slds-text-heading_small slds-text-color_default">
+          Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100
+        </h3>
+        <aura:set attribute="else">
+          <a  target="_blank" 
+              href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
+                          'tfa_799=' + v.myBill + '&amp;' +
+                      
+                          'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
+                          'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
+                          'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
+                          'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
+                      
+                          'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
+                          'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
+                          'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
+                          'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
+                      
+                          'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
+                          'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
+                          'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
+                          'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
+                                            
+                          'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
+                          'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
+                          'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
+                          'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
+                      
+                          'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
+                          'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
+                          'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
+                          'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
+                      
+                          'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
+                          'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
+                          'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
+                          'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
+                      
+                          'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
+                          'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
+                          'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
+                          'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
+                      
+                          'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
+                          'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
+                          'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
+                          'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
+                      
+                          'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
+                          'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
+                          'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
+                          'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}">
+          <lightning:button aura:id="makeAPayment"
+                            name="makeAPayment"
+                            label="Make A Payment"
+                            class="slds-text-body_small slds-button--brand 
+                            slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+          </a>
+        </aura:set>
+      </aura:if>
+    </div>
+    <div class="slds-col slds-size_5-of-12">
+      <h3 class="slds-text-title_caps slds-p-bottom_small "><b>My Community Solar Accounts:</b></h3>
+      <aura:if isTrue="{!v.menuOpen}">
+        <lightning:button variant="base" onclick="{!c.closeMenu}">
+          <lightning:icon iconName="utility:chevrondown" size="x-small"/>
+        </lightning:button>
+        <ui:menu>       
+          <ui:menuList aura:id="MenuTable"
+                       class="slds-dropdown_medium" 
+                       visible="true"
+                       closeOnClickOutside="false">
+            <ui:actionMenuItem  label="All" 
+                                click="{!c.accountMenuOutput}" 
+                                disabled="false" 
+                                class="All"
+                                hideMenuAfterSelected="false" 
+                                selected='true'/>
+            <aura:iteration items="{!v.menuLabels}" var="menuLabel">
+              <ui:actionMenuItem  aura:id="{!menuLabel.Id}" 
+                                  label="{!menuLabel.Id}" 
+                                  body="{!menuLabel.Name}" 
+                                  class="{!menuLabel.Name}"
+                                  click="{!c.accountMenuOutput}" 
+                                  disabled="false"/>
+            </aura:iteration> 
+          </ui:menuList>
+        </ui:menu>
+        <aura:set attribute="else">
+          <lightning:button variant="base" onclick="{!c.openMenu}">
+            <div class="slds-text-heading_small slds-text-color_default">
+              <lightning:icon class="slds-p-right_medium" iconName="utility:chevronright" size="x-small"/>
+              {!v.selectedAccount}
+            </div>
+          </lightning:button>
+        </aura:set>      
+      </aura:if>           
+    </div>
+    <div class="slds-col slds-size_1-of-12"/>
+  </div>
+  <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+    <div class="slds-col slds-size_1-of-12"/>
+    <div class="slds-col slds-size_10-of-12">
+      <div class="slds-p-top_xx-large"> 
+        <h3 class="slds-text-title_caps slds-p-bottom_small"><b>My Statements:</b></h3> 
+        <table class="slds-table slds-table--bordered slds-table--striped">
+          <thead>
+            <tr class="slds-text-heading--label" >
+              <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>              
+              <th scope="col"><span class="slds-truncate"><b>Statement Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Due Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Balance</b></span></th>   
+            </tr>
+          </thead>
+          <tbody class="slds-text-body_small">
+            <aura:iteration items="{!v.AccountBills}" var="accountBill">
+              <tr>
+                <th scope="row">{!accountBill.Parent_Account__r.Name}</th>                
+                <th scope="row">{!accountBill.Date__c}</th>
+                <th scope="row">{!accountBill.Bill_Due_Date__c}</th> 
+                <th scope="row"> 
+                  <aura:if isTrue="{!accountBill.Bill_Attach_Document__c != NULL}"> 
+                    <a href="{!'/s/myaccount?openFile=' + accountBill.Bill_Attach_Document__c}">View Statement</a> 
+                    <aura:set attribute="else">
+                      Statement
+                    </aura:set>
+                  </aura:if>
+                </th>
+                <th scope="row"><ui:outputCurrency value="{!accountBill.Total_Due_Minus_Payment_Plan__c}" /></th>
+                <th scope="row"><ui:outputCurrency value="{!accountBill.Balance_Net_Late_Payments__c}" /></th>    
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table>
+      </div>
+      <div class="slds-p-top_xx-large">
+        <h3 class="slds-text-title_caps slds-p-bottom_small"><b>My Transactions:</b></h3>
+        <table class="slds-table slds-table--bordered slds-table--striped ">
+          <thead>
+            <tr class="slds-text-heading--label" >
+              <th scope="col"><span class="slds-truncate"><b>Account Name</b></span></th>                      
+              <th scope="col"><span class="slds-truncate"><b>Transaction Date</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Solar Project</b></span></th>   
+              <th scope="col"><span class="slds-truncate"><b>Activity</b></span></th>
+              <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+            </tr>
+          </thead>
+          <tbody class="slds-text-body_small">
+            <aura:iteration items="{!v.PaymentLogs}" var="paymentLog">
+              <tr>
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name} </th> 
+                <th scope="row"> {!paymentLog.Date_of_Transaction__c} </th>                
+                <th scope="row"> {!paymentLog.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name} </th>                 
+                <th scope="row"> {!paymentLog.ChargentOrders__Type__c} </th>
+                <th scope="row"><ui:outputCurrency value="{!paymentLog.Negative_Amount__c}" /></th>
+              </tr>
+            </aura:iteration>
+          </tbody>
+        </table> 
+      </div>
+    </div>
+    <div class="slds-col slds-size_1-of-12"/>
+  </div>
+</aura:component>

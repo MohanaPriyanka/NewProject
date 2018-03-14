@@ -433,17 +433,18 @@ public without sharing class PCRApprovalHandler {
 
         private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer,
                                        Integer creditMinimum, Decimal dtiMaximum) {
-            if (doer) {
+            // 681-689 => 40% 690-699 => 45% 700+ =>50% and handle low product as a non-DOER product for purposes of pre-approval
+            if (doer && creditMinimum == 681) {
                 if (creditScore >= 700 && DTIafter <= dtiMaximum) {
                     return APPROVED;
                 } else if (creditScore >= 690 && DTIafter <= 45) {
                     return APPROVED;
-                } else if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
+                } else if (creditScore >= creditMinimum && DTIafter <= 40) {
                     return APPROVED;
-                } else if (creditScore >= creditMinimum && DTIafter > dtiMaximum) {
-                    return PENDINGREVIEW;
-                } else {
+                } else if (creditScore < creditMinimum) {
                     return DECLINED;
+                } else {
+                    return PENDINGREVIEW;
                 }
             } else {
                 if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
@@ -620,9 +621,9 @@ public without sharing class PCRApprovalHandler {
             
             // This is the superset of all products that might be applicable for the leads being
             // checked. We'll filter them out for a particular lead later on.
-            products = [SELECT Id, Name, Product_Type__c, Program__c, State__c, Debt_To_Income_Maximum__c,
+            products = [SELECT Id, Name, External_Name__c, Product_Type__c, Program__c, State__c, Debt_To_Income_Maximum__c,
                         Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c,
-                        Require_Junctions_to_Enable__c, Maximum_Loan_Size__c, IBLS_Category__c,
+                        Require_Junctions_to_Enable__c, Maximum_Loan_Size__c, IBLS_Category__c, DTI_After_Rate_Gross_Up__c,
                         (SELECT Id, Enabled_Product__c, Partner__c 
                          FROM Partner_Product_Junctions__r
                          WHERE Active__c = true)
@@ -681,7 +682,7 @@ public without sharing class PCRApprovalHandler {
                                                                    Decimal monthlyIncome, Decimal monthlyDebt) {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
-            Decimal interestRate = product.Loan_Interest_Rate__c / 100;
+            Decimal interestRate = (product.Loan_Interest_Rate__c + Util.nullToZero(product.DTI_After_Rate_Gross_Up__c)) / 100;
             // IBLS is based on household income. Even if we use joint income, we don't know 
             // if the customer will get IBLS, so don't base DTI After on IBLS
             paymentNumerator = leadRecord.Loan_Principal__c * interestRate / 12;

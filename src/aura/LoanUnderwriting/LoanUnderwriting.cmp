@@ -6,6 +6,7 @@
   <aura:handler event="c:LoanUnderwritingDebtAdjustment" action="{!c.handleEvent}"/>
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="monthlyPayment" type="Decimal"/>
   <aura:attribute name="hasCoApp" type="Boolean" default="false"/>
   <aura:attribute name="bestFICO" type="Integer"/>
   <aura:attribute name="bestDTI" type="Decimal"/>
@@ -59,7 +60,7 @@
       <div class = "lightCell slds-col slds-size--1-of-6">
         Payment Amount:
         <br></br>
-        <ui:outputCurrency value="{!v.lead.Monthly_Payment__c}"/>
+        <ui:outputCurrency value="{!v.monthlyPayment}"/>
       </div>
       <div class = "lightCell slds-col slds-size--1-of-6">
         System Cost:

@@ -36,7 +36,7 @@ public without sharing class SLPCustomerHandler {
         'Opportunity__r.Id, Loan__r.Lead__r.Update_Dummy__c, Annual_Production_kWh_kW__c, Loan__r.Lead__r.Annual_Income_Currency__c, ' +
         'Loan__r.Lead__r.Id, Loan__r.Product__r.Name,Loan__r.Requested_Loan_Amount__c,  Loan__r.Commencement_Datee__c, ' +
         'Loan__r.Principall__c, Loan__r.Principal__c, Loan__r.Product__r.Program__c, Loan__r.Id, Loan__r.DOER_Solar_Loann__c,' +
-        'Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.ProductCode, Loan__r.Partner__r.Name, ' +
+        'Loan__r.Total_Funds_Disbursed__c, Loan__r.Sales_Agent__r.Name, Loan__r.Product__r.External_Name__c, Loan__r.Partner__r.Name, ' +
         'Billing_City__c, Billing_Zip__c, CEC_Production_Tracking_System_ID_Number__c, Commonwealth_Solar_Rebate_Program__c, ' +
         'Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, ' +
         'Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, ' +

@@ -348,24 +348,25 @@ public without sharing class LoanHandler{
     }
 
     public void mapLoanToOpportunity(Map<Id, Lead> updatedLeadMap, Map<Id, Lead> oldLeadMap) {
-        List<Loan__c>loanListToUpdate = new List<Loan__c>();
-        Map<Id, Id> feedback2OppId = new Map<Id, Id>();
-        Map<Id, Id> opportunityMap = new Map<Id, Id>();
+        List<Loan__c> loanListToUpdate = new List<Loan__c>();
+        List<Opportunity> oppListToUpdate = new List<Opportunity>();
+        Map<Id, Id> rlLeadToOppMap = new Map<Id, Id>();
 
-        for(Lead leadRecord : updatedLeadMap.values()) {
+        for (Lead leadRecord : updatedLeadMap.values()) {
             if (leadRecord.IsConverted
                 && !oldLeadMap.get(leadRecord.Id).IsConverted
                 && leadRecord.Product_Line__c == 'Residential Loan') {
-                feedback2OppId.put(leadRecord.Id, leadRecord.ConvertedOpportunityId);
-                opportunityMap.put(leadRecord.ConvertedOpportunityId,leadRecord.ConvertedOpportunityId);
+                rlLeadToOppMap.put(leadRecord.Id, leadRecord.ConvertedOpportunityId);
             }
         }
-        if (!opportunityMap.values().isEmpty()) {
-            for(Loan__c loanRecord : [SELECT Lead__c, Opportunity__c FROM Loan__c WHERE Lead__c IN : feedback2OppId.keySet()]) {
-                loanRecord.Opportunity__c = feedBack2OppId.get(loanRecord.Lead__c);
+        if (!rlLeadToOppMap.values().isEmpty()) {
+            for(Loan__c loanRecord : [SELECT Id, APR__c, Lead__c, Opportunity__c FROM Loan__c WHERE Lead__c IN : rlLeadToOppMap.keySet()]) {
+                loanRecord.Opportunity__c = rlLeadToOppMap.get(loanRecord.Lead__c);
                 loanListToUpdate.add(loanRecord);
+                oppListToUpdate.add(new Opportunity(Id = loanRecord.Opportunity__c, APR__c = loanRecord.APR__c));
             }
             update loanListToUpdate;
+            update oppListToUpdate;
         }
     }
 
@@ -511,7 +512,7 @@ public without sharing class LoanHandler{
         for (Loan__c loanRecord : [SELECT Id, Name, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c, State__c,
                                    Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
                                    Lead__r.Requested_Loan_Amount__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
-                                   Sales_Agent__r.Id
+                                   Sales_Agent__r.Id, Lead__r.Employed__c, Lead__r.Veteran_Disability__c
                                    FROM Loan__c
                                    WHERE Id IN : newLoanList]) {
             Partner_Task__c creditTask =
@@ -592,13 +593,14 @@ public without sharing class LoanHandler{
                                       childPartnerTaskRecordType, null, subParentTaskInsertList, null,
                                       null, subParentTaskAssignmentMap, null);
             }
-            if (loanRecord.Lead__r.Self_Employed__c == false && loanRecord.lead__r.Retired__c == false) {
+            if (loanRecord.Lead__r.Employed__c) {
                 Partner_Task__c payStubDocumentationTask =
                     createPartnerTask(loanRecord, 'Child', 'Provide PayStub Documentation', 'PayStub Documentation',
                                       null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask,
                                       childPartnerTaskRecordType, null, null, subTaskInsertList,
                                       null, null, null);
-            } else if (loanRecord.Lead__r.Self_Employed__c == true && loanRecord.lead__r.Retired__c == false) {
+            }
+            if (loanRecord.Lead__r.Self_Employed__c == true) {
                 Partner_Task__c selfEmploymentTaxReturnPreviousYearTask =
                     createPartnerTask(loanRecord, 'Child', 'Provide Tax Return (Previous Year)', 'Tax Return (Previous Year)',
                                       null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask,
@@ -609,13 +611,15 @@ public without sharing class LoanHandler{
                                       null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask,
                                       childPartnerTaskRecordType, null, null, subTaskInsertList,
                                       null, null, null);
-            } else if (loanRecord.Lead__r.Self_Employed__c == false && loanRecord.lead__r.Retired__c == true) {
+            }
+            if (loanRecord.lead__r.Retired__c == true) {
                 Partner_Task__c retirementIncomeDocumentationTask =
                     createPartnerTask(loanRecord, 'Child', 'Provide SSN/Pension Award Letter or Bank Statement', 'SSN/Pension Award Letter or Bank Statement',
                                       null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask,
                                       childPartnerTaskRecordType, null, null, subTaskInsertList,
                                       null, null, null);
-            } else if (loanRecord.Lead__r.Self_Employed__c == true && loanRecord.lead__r.Retired__c == true) {
+            }
+            if (loanRecord.Lead__r.Veteran_Disability__c) {
                 Partner_Task__c allIncomeDocumentationTask =
                     createPartnerTask(loanRecord, 'Child', 'Provide All Income Documentation', 'All Income Documentation',
                                       null, 'Incomplete', 'Customer Information', 'Income Documentation', incomeDocumentationTask,
@@ -791,62 +795,24 @@ public without sharing class LoanHandler{
 
     public List<Partner_Task__c> checkLoanIncomeFiles(List<Lead> leadList, Map<String, Partner_Task__c> taskMap) {
         String taskUniqueId;
-        String customerIncomeType;
-        List<Id> leadIdList = new List<Id>();
-        List<String> loanIdList = new List<String>();
-        List<Attachment> payStubList = new List<Attachment>();
         List<Partner_Task__c> completedTaskList = new List<Partner_Task__c>();
         List<Partner_Task__c> incompleteTaskList = new List<Partner_Task__c>(taskMap.values());
-        Map<String, String> customerIncomeTypeMap = new Map<String, String>();
 
+        List<Id> leadIds = new List<Id>();
         for (Lead leadRecord : leadList) {
-            leadIdList.add(leadRecord.Id);
-            if (leadRecord.Self_Employed__c == false && leadRecord.Retired__c == false) {
-                customerIncomeType = 'Standard';
-            } else if (leadRecord.Self_Employed__c == true && leadRecord.Retired__c == false) {
-                customerIncomeType = 'selfEmployed';
-            } else if (leadRecord.Self_Employed__c == false && leadRecord.Retired__c == true) {
-                customerIncomeType = 'retired';
-            } else if (leadRecord.Self_Employed__c == true && leadRecord.Retired__c == true) {
-                customerIncomeType = 'selfEmployedRetired';
-            }
-            customerIncomeTypeMap.put(leadRecord.Id, customerIncomeType);
+            leadIds.add(leadRecord.Id);
         }
 
         for (Attachment incomeAttachment : [SELECT Id, Name, Body, ParentId, Description
                                             FROM Attachment
-                                            WHERE Description != null AND ParentId IN : leadIdList]) {
-            for (String customerIncomeLeadId : customerIncomeTypeMap.keySet()) {
-                if (customerIncomeLeadId == incomeAttachment.ParentId) {
-                    if (customerIncomeTypeMap.get(customerIncomeLeadId) == 'Standard') {
-                        if (incomeAttachment.Description.contains('Paystub')) {
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'PayStub Documentation';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                            completedTaskList.add(taskMap.get(taskUniqueId));
-                        }
-                    } else if (customerIncomeTypeMap.get(customerIncomeLeadId) == 'selfEmployed') {
-                        if (incomeAttachment.Description.contains('Tax Return (Previous Year)')) {
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'Tax Return (Previous Year)';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                            completedTaskList.add(taskMap.get(taskUniqueId));
-                        } else if (incomeAttachment.Description.contains('Tax Return (Two Years Previous)')) {
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'Tax Return (Two Years Previous)';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                            completedTaskList.add(taskMap.get(taskUniqueId));
-                        }
-                    } else if (customerIncomeTypeMap.get(customerIncomeLeadId) == 'retired') {
-                        if (incomeAttachment.Description.contains('SSN Award Letter')
-                            || incomeAttachment.Description.contains('Pension Award Letter')
-                            || incomeAttachment.Description.contains('Bank Statement (SSN Income)') ) {
-                            taskUniqueId = incomeAttachment.ParentId + ' ' + 'SSN/Pension Award Letter or Bank Statement';
-                            taskMap.get(taskUniqueId).Status__c = 'Complete';
-                            taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                            completedTaskList.add(taskMap.get(taskUniqueId));
-                        }
-                    }
+                                            WHERE Description != NULL AND ParentId IN : leadIds]) {
+            for (String attachmentDescription : attachmentToTaskMap.keySet()) {
+                if (incomeAttachment.Description.contains(attachmentDescription)) {
+                    taskUniqueId = incomeAttachment.ParentId + ' ' + attachmentToTaskMap.get(attachmentDescription);
+                    if (taskMap.get(taskUniqueId) == null) {continue;}
+                    taskMap.get(taskUniqueId).Status__c = 'Complete';
+                    taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                    completedTaskList.add(taskMap.get(taskUniqueId));
                 }
             }
         }
@@ -856,6 +822,16 @@ public without sharing class LoanHandler{
             return incompleteTaskList;
         }
     }
+
+    private Map<String, String> attachmentToTaskMap = new Map<String, String>{
+        'Paystub' => 'Paystub Documentation',
+        'Tax Return (Previous Year)' => 'Tax Return (Previous Year)',
+        'Tax Return (Two Years Previous)' => 'Tax Return (Two Years Previous)',
+        'SSN Award Letter' => 'SSN/Pension Award Letter or Bank Statement',
+        'Pension Award Letter' => 'SSN/Pension Award Letter or Bank Statement',
+        'Bank Statement (SSN Income)' => 'SSN/Pension Award Letter or Bank Statement',
+        'Veteran Income Documentation' => 'All Income Documentation'
+    };
 
     public List<Partner_Task__c> checkSalesAgreementFiles(List<Opportunity> oppList, Map<String, Partner_Task__c> taskMap) {
          String taskUniqueId;

@@ -87,7 +87,7 @@
                   <td>
                     Payment Amount:<br/>
                     <apex:outputText value="{0, Number, Currency}">
-                      <apex:param value="{!lead.lead.Monthly_Payment__c}"/>
+                      <apex:param value="{!monthlyPayment}"/>
                     </apex:outputText>
                   </td>
                   <td>

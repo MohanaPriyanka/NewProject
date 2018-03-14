@@ -81,7 +81,7 @@ public class DisbursalHandlerTest {
                                          FROM Opportunity];
 
         opportunityRecord.Contract_Status__c = 'Completed';
-        opportunityRecord.BlueWave_Signature_Status__c = 'Completed';
+        opportunityRecord.StageName = 'Complete';
         update opportunityRecord;
         System.debug(LoggingLevel.ERROR, 'Setup done: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
     }
