@@ -54,6 +54,15 @@
         actionGetAccountBills.setCallback(this,function(resp){
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.AccountBills", resp.getReturnValue());
+                var abList = resp.getReturnValue();
+                var files = component.get("v.fileNames"); 
+                var abStep;
+                for (abStep = 0; abStep < abList.length; abStep++) {
+                    if (abList[abStep].Bill_Attach_Document__c != null) {
+                        var specFile = abList[abStep].Bill_Attach_Document__c;
+                        files.push(specFile); 
+                    }
+                }
             }
             else {
                 $A.log("Errors", resp.getError());

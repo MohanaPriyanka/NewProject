@@ -20,6 +20,14 @@
         component.set("v.menuOpen", false);                                       
     },
 
+    openSingleFile: function(component, event, helper) {
+        var btnClicked = event.getSource().get("v.name");
+        $A.get('e.lightning:openFiles').fire({
+            recordIds: component.get("v.fileNames"),
+            selectedRecordId: btnClicked
+        });
+    },
+
     doInit : function(component, event, helper) {
         var actionGetPropertyAccounts = component.get("c.getMenuLabelList");         
         actionGetPropertyAccounts.setCallback(this,function(resp){

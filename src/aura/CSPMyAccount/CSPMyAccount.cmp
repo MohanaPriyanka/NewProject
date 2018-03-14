@@ -9,6 +9,7 @@
   <aura:attribute name="PaymentLogs" type="Object" />  
   <aura:attribute name="recurringCheck" type="Boolean"/>   
   <aura:attribute name="paymentURL" type="String" /> 
+  <aura:attribute name="fileNames" type="String[]"/>
   
   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
     <div class="slds-col slds-size_1-of-12"/>
@@ -150,8 +151,10 @@
                 <th scope="row">{!accountBill.Bill_Due_Date__c}</th> 
                 <th scope="row"> 
                   <aura:if isTrue="{!accountBill.Bill_Attach_Document__c != NULL}"> 
-                    <a href="{!'/s/myaccount?openFile=' + accountBill.Bill_Attach_Document__c}">View Statement</a> 
-                    <aura:set attribute="else">
+                    <lightning:button variant="base" onclick="{!c.openSingleFile}" name="{!accountBill.Bill_Attach_Document__c}">                      
+                      View Statement
+                    </lightning:button>                    
+                  <aura:set attribute="else">
                       Statement
                     </aura:set>
                   </aura:if>
