@@ -50,7 +50,6 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                                     FROM Utility_Account_Subscription__c 
                                                     WHERE Utility_Account_Log__c != null 
                                                     AND Opportunity__c != null 
-                                                    AND Customer_Group__c != 'Anchor'
                                                     AND Opportunity__r.StageName = 'Complete'          
                                                     AND Next_Schedule_Z_Status__c != 'Not Enacted: Addition'     
                                                     AND Next_Schedule_Z_Status__c != 'Cancelled'                                      

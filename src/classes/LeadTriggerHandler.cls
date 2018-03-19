@@ -170,7 +170,6 @@ public with sharing class LeadTriggerHandler {
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
         sssQuery +=       'AND Service_Territories__c includes (\'' + lead.Load_Zone__c + '\') ';
         sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
-        sssQuery +=       'AND Product__c = \'' + lead.Product__c + '\' ';
         sssQuery +=       'AND Sales_Partners__c includes( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
 
         if(lead.System_Assignment__c == 'Automatic - COD Date/Available Capacity' || lead.System_Assignment__c == null){

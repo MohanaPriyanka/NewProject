@@ -94,6 +94,6 @@ private class mapAvailableCapacityTest{
         List<Lead> leadList = [SELECT Id, Name, Available_Capacity__c
                                 FROM Lead];
 
-        System.assertEquals(12000, leadList[0].Available_Capacity__c);
+        System.assertEquals(32000, leadList[0].Available_Capacity__c);
 	}
 }

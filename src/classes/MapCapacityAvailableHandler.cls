@@ -43,7 +43,6 @@ public with sharing class MapCapacityAvailableHandler {
                                                 FROM Shared_Solar_System__c
                                                 WHERE Open__c = True
                                                 AND Sales_Partners__c != NULL 
-                                                AND Product__c != NULL
                                                 AND Service_Territories__c != NULL
                                                 AND System_Utility__c != NULL];
 
@@ -54,13 +53,11 @@ public with sharing class MapCapacityAvailableHandler {
             }
             if (trigLead.Partner_Name__c != NULL 
                 && trigLead.Load_Zone__c != NULL 
-                && trigLead.Utility_1__c != NULL
-                && trigLead.Product__c != NULL) {
+                && trigLead.Utility_1__c != NULL) {
                     for (Shared_Solar_System__c sss : listSSS){
                         if (sss.System_Utility__c == trigLead.Utility_1__c 
                             && sss.Service_Territories__c.contains(trigLead.Load_Zone__c)
                             && sss.Credit_Score_Requirement__c <= fico
-                            && sss.Product__c == trigLead.Product__c
                             && (sss.Sales_Partners__c == 'All' || sss.Sales_Partners__c.contains(trigLead.Partner_Name__c))){
                                 totalavailablecapacity = totalavailablecapacity + sss.Project_Capacity_Available_kW_DC__c;
                         }
