@@ -37,7 +37,6 @@ public with sharing class SharedSolarSystemHandler {
 
         for (Utility_Account_Subscription__c uas: relateduas){
             if (uas.Customer_Group__c != 'Anchor'
-                && uas.Customer_Subscription_KW_DC__c <= 26 
                 && uas.Next_Schedule_Z_Status__c != 'Cancelled'
                 && (uas.Opportunity_Stage__c == 'Pending BlueWave Signature'
                 || uas.Opportunity_Stage__c == 'QC in Process'
@@ -47,8 +46,7 @@ public with sharing class SharedSolarSystemHandler {
 
             if (uas.Opportunity_Stage__c == 'Complete' 
                 && uas.Customer_Group__c != 'Anchor'
-                && uas.Next_Schedule_Z_Status__c != 'Cancelled'
-                && uas.Customer_Subscription_KW_DC_STATIC__c <= 26){
+                && uas.Next_Schedule_Z_Status__c != 'Cancelled'){
                     committedCapacityList.add(uas);
             }
         }
