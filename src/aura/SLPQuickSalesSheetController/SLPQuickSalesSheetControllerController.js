@@ -129,6 +129,7 @@
     refreshTable : function(component, event, helper) {
          $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
          var qssToUpdate = component.get("v.calculatedQSS");
+         component.set("v.modifiedTaxIncentive", false);
          helper.updateQSS(component, qssToUpdate);
     },
     
