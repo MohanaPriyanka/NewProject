@@ -263,9 +263,9 @@ public without sharing class SLPCustomerHandler {
             if (profile.partnerId != null && profile.salesRepId != null) {
               startApplicationUrl += '?partnerId=' + profile.partnerId + '&salesRepId=' + profile.salesRepId;
             }
-       } else if (profile.csApplicationType == 'FormAssembly') {
+       } else {
             startApplicationUrl = 'https://forms.bluewaverenewables.com/381687?tfa_531=' + profile.referralCode;
-       }
+       } 
        return MessagingService.createAndSendDynamicTemplateEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Start Your Community Solar Application Here', 
                                                                      emailAddress, 'applicationURL', startApplicationUrl);
     }
