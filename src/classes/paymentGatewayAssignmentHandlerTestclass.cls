@@ -100,7 +100,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                                 AccountId = propertyAccountColesCakes.Id,
                                                                                 Shared_Solar_System__c = sharedSolarSystemOxfordBarretSt.Id,
                                                                                 StageName = 'Complete',
-                                                                                Cs_Capacity_Allocated__c = 25,
                                                                                 CloseDate = System.today()));
 
         insert oppColesCakes;   

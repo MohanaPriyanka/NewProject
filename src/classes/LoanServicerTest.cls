@@ -360,12 +360,13 @@ public with sharing class LoanServicerTest {
         Test.startTest();
 
         Loan__c loan = [
-            SELECT Id, Product__c, Lead__c, Partner__c, APR__c, Requested_Loan_Amount__c, Commencement_Datee__c
+            SELECT Id, Product__c, Lead__c, Partner__c, APR__c, Requested_Loan_Amount__c, Commencement_Datee__c,
+                First_Adjustable_Monthly_Payment_Amount__c
             FROM Loan__c
             WHERE Lead__c =: testLead.Id
             LIMIT 1
         ];
-
+        
         checkLoan(loan, arlJSON, 180);
         System.assertEquals(5.66, loan.APR__c.setScale(2));
 
@@ -382,8 +383,21 @@ public with sharing class LoanServicerTest {
         lc.setConvertedStatus(convertStatus.MasterLabel);
         Database.LeadConvertResult lcr = Database.convertLead(lc);
 
-        Opportunity opp = [SELECT Id, APR__c FROM Opportunity WHERE Id =: lcr.getOpportunityId()];
+        Opportunity opp = [
+            SELECT Id, APR__c, First_Adjustable_Monthly_Payment_Amount__c, Second_Adjustable_Monthly_Payment_Amount__c,
+                Third_Adjustable_Monthly_Payment_Amount__c, Fourth_Adjustable_Monthly_Payment_Amount__c,
+                Fifth_Adjustable_Monthly_Payment_Amount__c, Sixth_Adjustable_Monthly_Payment_Amount__c,
+                Total_Loan_Payments__c
+            FROM Opportunity
+            WHERE Id =: lcr.getOpportunityId()];
         System.assertEquals(5.66, opp.APR__c.setScale(2));
+        System.assertEquals(252.22, opp.First_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(262.83, opp.Second_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(272.60, opp.Third_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(281.46, opp.Fourth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(281.54, opp.Fifth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(281.54, opp.Sixth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(46008.41, opp.Total_Loan_Payments__c.setScale(2));
 
         Index_Rate__c ir = [SELECT Id, Index_Rate__c FROM Index_Rate__c LIMIT 1];
         ir.Index_Rate__c = 10;
@@ -392,10 +406,69 @@ public with sharing class LoanServicerTest {
         opp.Requested_Loan_Amount__c = 31000;
         update opp;
 
-        opp = [SELECT Id, APR__c FROM Opportunity WHERE Id =: lcr.getOpportunityId()];
+        opp = [
+            SELECT Id, APR__c, First_Adjustable_Monthly_Payment_Amount__c, Second_Adjustable_Monthly_Payment_Amount__c,
+                Third_Adjustable_Monthly_Payment_Amount__c, Fourth_Adjustable_Monthly_Payment_Amount__c,
+                Fifth_Adjustable_Monthly_Payment_Amount__c, Sixth_Adjustable_Monthly_Payment_Amount__c, Total_Loan_Payments__c
+            FROM Opportunity
+            WHERE Id =: lcr.getOpportunityId()];
         System.assertEquals(5.84, opp.APR__c.setScale(2));
+        System.assertEquals(260.63, opp.First_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(271.59, opp.Second_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(281.69, opp.Third_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(290.84, opp.Fourth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(298.96, opp.Fifth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(302.52, opp.Sixth_Adjustable_Monthly_Payment_Amount__c.setScale(2));
+        System.assertEquals(48334.50, opp.Total_Loan_Payments__c.setScale(2));
 
         Test.stopTest();
+    }
+
+    static testMethod void testAdjustableQSS() {
+        Product2 arl = [
+            SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
+            FROM Product2
+            WHERE Name = 'ARL - MA - 15 Year - 4.49%' LIMIT 1
+        ];
+        Quick_Sales_Sheet__c qss = new Quick_Sales_Sheet__c(
+            Product__c = arl.Id,
+            System_Cost__c = 20000,
+            System_Size__c = 20
+        );
+        insert qss;
+        qss = [
+            SELECT Id, APR__c, Max_Payment__c, Year_2_Payoff__c, Year_4_Payoff__c,
+                Average_Adjustable_Payment__c, Average_Adjustable_Payment_With_Buydown__c
+            FROM Quick_Sales_Sheet__c
+            WHERE System_Cost__c = 20000 LIMIT 1
+        ];
+        System.assertEquals(5.66, qss.APR__c.setScale(2));
+        System.assertEquals(195.18, qss.Max_Payment__c.setScale(2));
+        System.assertEquals(15512, qss.Year_2_Payoff__c);
+        System.assertEquals(16636, qss.Year_4_Payoff__c);
+        System.assertEquals(170.40, qss.Average_Adjustable_Payment__c.setScale(2));
+        System.assertEquals(119.28, qss.Average_Adjustable_Payment_With_Buydown__c.setScale(2));
+
+        LoanServicer.qssAlreadyRun = false;
+        Product2 ma10Yr = [
+            SELECT Id, Loan_Interest_Rate__c, Loan_Term__c, Loan_Interest_Only_Period__c
+            FROM Product2
+            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%' LIMIT 1
+        ];
+        qss.Product__c = ma10Yr.Id;
+        update qss;
+        qss = [
+            SELECT Id, APR__c, Max_Payment__c, Year_2_Payoff__c, Year_4_Payoff__c,
+                Average_Adjustable_Payment__c, Average_Adjustable_Payment_With_Buydown__c
+            FROM Quick_Sales_Sheet__c
+            WHERE System_Cost__c = 20000 LIMIT 1
+        ];
+        System.assertEquals(null, qss.APR__c);
+        System.assertEquals(null, qss.Max_Payment__c);
+        System.assertEquals(null, qss.Year_2_Payoff__c);
+        System.assertEquals(null, qss.Year_4_Payoff__c);
+        System.assertEquals(null, qss.Average_Adjustable_Payment__c);
+        System.assertEquals(null, qss.Average_Adjustable_Payment_With_Buydown__c);
     }
 
     static void checkLoan(Loan__c loan, String answer, Integer expectedLoanPayments) {

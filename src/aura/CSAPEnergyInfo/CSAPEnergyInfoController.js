@@ -1,0 +1,82 @@
+({
+    handleNavEvent : function(component, event, helper) {
+        helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
+        
+        if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
+            helper.getUSStates(component, "v.abbrevStates", true);
+        }
+    },
+
+    goToUtilityAccountInformation : function(component, event, helper) {
+        component.set("v.page", "UtilityAccountInformation");
+    },
+    goToGridUsageHistory : function(component, event, helper) {
+        //Upsert ual record
+        if(helper.validatePageFields(component)){
+            var ual = component.get("v.ual");
+            var lead = component.get("v.lead");
+
+            //TODO - Add the Electricty_Provider__c on the ual
+            //Save the lead record for the Utility
+            //lead.Electricty_Provider__c = ual.Electricty_Provider__c;
+            helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
+
+            if(ual.Lead__c == null){
+                ual.Lead__c = lead.Id;
+            }
+            if(ual.Id){
+                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+                ualPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set("v.ual", retVal);
+                    component.set("v.page", "GridUsageHistory");
+                }));
+            }else{
+                var ualPromise = helper.insertSObject(component, ual);
+                ualPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set("v.ual", retVal);
+                    component.set("v.page", "GridUsageHistory");
+                }));
+            }
+        }
+    },
+    goToUAServiceAddress : function(component, event, helper) {
+        if(helper.validatePageFields(component)){
+            var ual = component.get("v.ual");
+            var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+            ualPromise.then($A.getCallback(function resolve(retVal) {
+                component.set("v.page", "UAServiceAddress");
+            }));
+        }
+    },
+    cancelAddUAL : function(component, event, helper) {
+        if(confirm("Are you sure you want to cancel adding another Utility Account Log?")){
+            helper.finishStage(component, event, helper);
+        }
+    },
+
+    addUAL : function(component, event, helper) {
+        var ual = {
+            sobjectType: "Utility_Account_Log__c"
+        };
+        //Go back to the Utility Account Information Page
+        var ualList = component.get("v.ualList");
+        ualList.push(ual);
+        component.set("v.ual", ual);
+        component.set("v.ualList", ualList);
+        component.set("v.page", "UtilityAccountInformation");
+    },
+    handleEBill1 : function(component, event, helper) {
+        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
+    },
+    finishStage : function(component, event, helper) {
+        var ual = component.get("v.ual");
+        if(ual.Id){
+            var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+            ualPromise.then($A.getCallback(function resolve(retVal) {
+                helper.finishStage(component, event, helper);
+            }));
+        }else{
+            helper.finishStage(component, event, helper);
+        }
+    },
+})

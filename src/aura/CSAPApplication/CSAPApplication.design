@@ -1,0 +1,6 @@
+<design:component >
+  <design:attribute name="leadId" label="Id from URL" description="Hack to get value from URL, should be {!leadId}"/>
+  <design:attribute name="email" label="Email from URL" description="Hack to get value from URL, should be {!email}"/>
+  <design:attribute name="partnerId" label="Partner Id from URL" description="Hack to get value from URL, should be {!partnerId}"/>
+  <design:attribute name="salesRepId" label="Sales Rep Id from URL" description="Hack to get value from URL, should be {!salesRepId}"/>
+</design:component>

@@ -133,7 +133,6 @@ public class TestBillCreationandPayment {
                             Shared_Solar_System__c = sss1.Id,
                             StageName = 'Complete',
                             Product__c = normalCSProduct.Id,
-                            CS_Capacity_Allocated__c = 25,
                             CloseDate = System.today());
 
         Opportunity opportunitytwo = 
@@ -142,7 +141,6 @@ public class TestBillCreationandPayment {
                             Shared_Solar_System__c = sss2.Id,
                             StageName = 'Complete',
                             Product__c = normalCSProduct.Id,
-                            CS_Capacity_Allocated__c = 20,
                             CloseDate = System.today()); 
         insert new List<Opportunity>{opportunityone, opportunitytwo};
 
@@ -191,7 +189,7 @@ public class TestBillCreationandPayment {
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 90000,
-                Due_Date__c = myDateJan,
+                Net_Metering_Rate_Applied__c = 0.1848,
                 Billing_Period_End_Date__c = myDateFeb,
                 Total_System_NMCs__c = 16632,
                 Date__c = myDateJan 
@@ -203,7 +201,7 @@ public class TestBillCreationandPayment {
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 120000,
-                Due_Date__c = myDateFeb,
+                Net_Metering_Rate_Applied__c = 0.1848,
                 Billing_Period_End_Date__c = myDateMar,
                 Total_System_NMCs__c = 22176,
                 Date__c = myDateFeb
@@ -215,7 +213,7 @@ public class TestBillCreationandPayment {
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 140000,
-                Due_Date__c = myDateMar,
+                Net_Metering_Rate_Applied__c = 0.1848,
                 Billing_Period_End_Date__c = myDateApr,
                 Total_System_NMCs__c = 25872,
                 Date__c = myDateMar
@@ -280,11 +278,9 @@ public class TestBillCreationandPayment {
 
         for (UASB__c uabill : uablist) {
           if (uabill.System_Bill__r.Bill_Number__c == 1){
-              System.assertEquals(myDateJan, uabill.Due_Date__c);
               System.assertEquals(myDateFeb, uabill.Billing_Period_End_Date__c);
           }
           if (uabill.System_Bill__r.Bill_Number__c == 2){
-              System.assertEquals(myDateFeb, uabill.Due_Date__c);
               System.assertEquals(myDateMar, uabill.Billing_Period_End_Date__c);
           }
         }

@@ -1,15 +1,12 @@
 ({
-    convertArrayOfObjectsToCSV : function(component,objectRecords){
-        var csvStringResult, counter, keys, columnDivider, lineDivider;
+    convertArrayOfObjectsToCSV : function(component,objectRecords,keys){
+        var csvStringResult, counter, columnDivider, lineDivider;
        
         if (objectRecords == null || !objectRecords.length) {
             return null;
          }
         columnDivider = ',';
         lineDivider =  '\n';
- 
-        keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c', 
-               'PreGen_Production_Update__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
         
         csvStringResult = '';
         csvStringResult += keys.join(columnDivider);

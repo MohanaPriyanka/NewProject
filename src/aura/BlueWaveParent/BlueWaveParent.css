@@ -110,6 +110,24 @@
     font-family: proximaNovaFont;
     color: #266092;
 }
+.THIS .slds-section__title_mountain-top {
+    font-family: proximaNovaFont;
+    color: #7C98AB;
+}
+.THIS .slds-section__title_stream {
+    font-family: proximaNovaFont;
+    color: #00b2a9;
+}
+.THIS .slds-section__title--large {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #266092;
+}
+.THIS .slds-section__title--large--stream {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #00AEAA;
+}
 .THIS .slds-type-focus {
     font-family: proximaNovaFont;
     color: #00AEAA;
@@ -122,4 +140,58 @@
     font-family: proximaNovaFont;
     font-size:110%;
     color: #7C98AB;
+}
+.THIS .slds-text-body--large-dark {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #4B5A66;
+}
+
+.THIS .nimbusBackground {
+    background-color: #DFDFE0;
+}
+
+.THIS .nimbusBackground100 {
+    background-color: #AAACAC;
+}
+
+.THIS .nimbusBackground45 {
+    background-color: #DFDFE0;
+}
+
+.THIS .nimbusBackground25 {
+    background-color: #ECECEC;
+}
+
+.THIS .blueBackground {
+    background-color: #266092;
+}
+
+.THIS .selectedBackground {
+    background-color: #E8F2F8;
+}
+
+.THIS .mountainTopBackground {
+    background-color: #7C98AB;
+}
+.THIS .slds-text-body--large--blue {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #266092;
+}
+.THIS .slds-text-body--large--stream {
+    font-family: proximaNovaFont;
+    font-size:110%;
+    color: #00AEAA;
+}
+.THIS .slds-text-body--xx_large--stream {
+    font-family: proximaNovaFont;
+    font-size:130%;
+    color: #00AEAA;
+}
+.THIS .whiteIcon svg{ 
+    fill: white; 
+}
+.THIS .blueIcon svg{ 
+    fill: #266092; 
 }

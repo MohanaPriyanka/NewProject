@@ -179,13 +179,14 @@ public without sharing class LoanHandler{
     }
 
     public void onAfterResidentialEquipmentUpdate(Map<Id, Residential_Equipment__c> newEquipmentMap, Map<Id,Residential_Equipment__c> oldEquipmentMap) {
+        DisbursalHandler disbursalHandler = new DisbursalHandler ();
         List<String> equipmentLeadIdListNYBuildingPermit = new List<String>();
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
-
+        List<String> oppIdList = new List<String>();
         List<Residential_Equipment__c> newEquipment = [
-            SELECT Id, Interconnection_Update_Dummy__c, Mechanically_Installed__c, DOER_Solar_Loan__c,
-                Lead__c, Lead__r.Id, State__c, Labor_Performed__c, Materials_Supplied__c, Annual_Production_kWh_kW__c,
+            SELECT Id, Interconnection_Update_Dummy__c, Mechanically_Installed__c, DOER_Solar_Loan__c, Opportunity__r.Id,
+                Lead__c, Lead__r.Id, State__c, Labor_Performed__c, Materials_Supplied__c, Annual_Production_kWh_kW__c, Opportunity__r.Lender_of_Record__c,
                 Interconnected__c, Interconnection_Date__c, Percentage_of_System_Shaded__c, SREC_Opt_In_Calendar_Quarter__c,
                 Generator_Type__c, MA_Facility_Sector__c, Generator_Nameplate_Capacity__c, Contract_Execution_Date__c,
                 Generator_Interconnection_Date__c, Generator_Installation_Date__c, Generator_Energized_Online_Date__c,
@@ -196,7 +197,11 @@ public without sharing class LoanHandler{
             FROM Residential_Equipment__c
             WHERE Id IN :newEquipmentMap.keySet()
         ];
-
+        for (Residential_Equipment__c equipment : newEquipment) {
+            oppIdList.add(equipment.Opportunity__r.Id);
+        }
+        Map<String,Disbursal__c> disbursalMap = disbursalHandler.getDisbursalMap(oppIdList);
+        List<Disbursal__c> disbursalList = new List<Disbursal__c>();
         for (Residential_Equipment__c equipment : newEquipment) {
             if (equipment.Mechanically_Installed__c && !oldEquipmentMap.get(equipment.Id).Mechanically_Installed__c) {
                 equipmentLeadIdListMechInstall.add(equipment.Lead__r.Id);
@@ -209,6 +214,16 @@ public without sharing class LoanHandler{
             }
             if (nyBuildingPermitApproved(equipment, oldEquipmentMap)) {
                 equipmentLeadIdListNYBuildingPermit.add(equipment.Lead__r.Id);
+            }
+            if (disbursalMap.get(equipment.Opportunity__r.Id + 'Building Permit Approved') != null) {
+                if (nyBuildingPermitApproved(equipment, oldEquipmentMap)) {
+                    disbursalList.add(disbursalHandler.setDisbursalStatus('Building Permit Approved', equipment.Opportunity__r.Id, disbursalMap, 'Due', 'Disbursed'));
+                } else {
+                    disbursalList.add(disbursalHandler.setDisbursalStatus('Building Permit Approved', equipment.Opportunity__r.Id, disbursalMap, 'Pending', 'Disbursed'));
+                }
+            }
+            if (!disbursalList.isEmpty()) {
+                update disbursalList;
             }
         }
         if (equipmentLeadIdListNYBuildingPermit.size() > 0 ) {
@@ -359,11 +374,29 @@ public without sharing class LoanHandler{
                 rlLeadToOppMap.put(leadRecord.Id, leadRecord.ConvertedOpportunityId);
             }
         }
+        // We calculate APR and all of the Monthly Payment fields on Loan, because the Opportunity doesn't exist yet.
         if (!rlLeadToOppMap.values().isEmpty()) {
-            for(Loan__c loanRecord : [SELECT Id, APR__c, Lead__c, Opportunity__c FROM Loan__c WHERE Lead__c IN : rlLeadToOppMap.keySet()]) {
+            for(Loan__c loanRecord : [
+                SELECT Id, APR__c, Lead__c, Opportunity__c,
+                    First_Adjustable_Monthly_Payment_Amount__c, Second_Adjustable_Monthly_Payment_Amount__c,
+                    Third_Adjustable_Monthly_Payment_Amount__c, Fourth_Adjustable_Monthly_Payment_Amount__c,
+                    Fifth_Adjustable_Monthly_Payment_Amount__c, Sixth_Adjustable_Monthly_Payment_Amount__c,
+                    Total_Loan_Payments_Override__c
+                FROM Loan__c
+                WHERE Lead__c IN : rlLeadToOppMap.keySet()]) {
                 loanRecord.Opportunity__c = rlLeadToOppMap.get(loanRecord.Lead__c);
                 loanListToUpdate.add(loanRecord);
-                oppListToUpdate.add(new Opportunity(Id = loanRecord.Opportunity__c, APR__c = loanRecord.APR__c));
+                oppListToUpdate.add(new Opportunity(
+                    Id = loanRecord.Opportunity__c,
+                    APR__c = loanRecord.APR__c,
+                    First_Adjustable_Monthly_Payment_Amount__c = loanRecord.First_Adjustable_Monthly_Payment_Amount__c,
+                    Second_Adjustable_Monthly_Payment_Amount__c = loanRecord.Second_Adjustable_Monthly_Payment_Amount__c,
+                    Third_Adjustable_Monthly_Payment_Amount__c = loanRecord.Third_Adjustable_Monthly_Payment_Amount__c,
+                    Fourth_Adjustable_Monthly_Payment_Amount__c = loanRecord.Fourth_Adjustable_Monthly_Payment_Amount__c,
+                    Fifth_Adjustable_Monthly_Payment_Amount__c = loanRecord.Fifth_Adjustable_Monthly_Payment_Amount__c,
+                    Sixth_Adjustable_Monthly_Payment_Amount__c = loanRecord.Sixth_Adjustable_Monthly_Payment_Amount__c,
+                    Total_Loan_Payments_Override__c = loanRecord.Total_Loan_Payments_Override__c
+                ));
             }
             update loanListToUpdate;
             update oppListToUpdate;

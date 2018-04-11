@@ -30,11 +30,6 @@ public with sharing class SharedSolarSystemHandler {
                                                                 FROM Utility_Account_Subscription__c
                                                                 WHERE SSS_Id__c IN : sssidlist];
 
-        List <Opportunity> relatedanchors = [ SELECT Id, StageName, Customer_Group__c, Shared_Solar_System__c, 
-                                                Shared_Solar_System_Name__c, CS_Capacity_Allocated__c
-                                                FROM Opportunity
-                                                WHERE Customer_Group__c = 'Anchor'];
-
         for (Utility_Account_Subscription__c uas: relateduas){
             if (uas.Customer_Group__c != 'Anchor'
                 && uas.Next_Schedule_Z_Status__c != 'Cancelled'
@@ -48,6 +43,13 @@ public with sharing class SharedSolarSystemHandler {
                 && uas.Customer_Group__c != 'Anchor'
                 && uas.Next_Schedule_Z_Status__c != 'Cancelled'){
                     committedCapacityList.add(uas);
+            }
+
+            if ( (uas.Customer_Group__c == 'Anchor' ||
+                uas.Customer_Group__c == 'Public Offtake')
+                && uas.Opportunity_Stage__c != 'new' 
+                && uas.Opportunity_Stage__c != 'Dead'){
+                    anchorCapacityList.add(uas);
             }
         }
 
@@ -76,14 +78,11 @@ public with sharing class SharedSolarSystemHandler {
                     }
                 }
             }
-            if (relatedanchors.size()>0){
-                for (Opportunity anc: relatedanchors){
-                    system.debug(anc.Shared_Solar_System__c);
-                    if (anc.Shared_Solar_System_Name__c == sssSummary.Name 
-                        && anc.CS_Capacity_Allocated__c != null 
-                        && anc.StageName != 'new' 
-                        &&  anc.StageName != 'Dead') {
-                            summarizedAnchorCapacity = anc.CS_Capacity_Allocated__c + summarizedAnchorCapacity;
+           if (anchorCapacityList.size()>0){
+                for (Utility_Account_Subscription__c anchor : anchorCapacityList){
+                    if (anchor.SSS_Id__c == sssSummary.Id 
+                        && anchor.Customer_Subscription_KW_DC_STATIC__c != null){    
+                        summarizedAnchorCapacity = anchor.Customer_Subscription_KW_DC_STATIC__c + summarizedAnchorCapacity;
                     }
                 }
             }

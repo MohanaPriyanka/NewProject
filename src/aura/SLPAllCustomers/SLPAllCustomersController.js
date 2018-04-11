@@ -8,10 +8,8 @@
                 component.set("v.loansInProcess", resp.getReturnValue().loansInProcess);
                 component.set("v.completedLoans", resp.getReturnValue().completedLoans);
                 component.set("v.expiredApplicants", resp.getReturnValue().expiredApplicants);
-                console.log(resp.getReturnValue().expiredApplicants);
             }
             else {
-                console.log('hey');
                 $A.log("Errors", resp.getError());
             }
 

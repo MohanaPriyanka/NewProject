@@ -1,0 +1,63 @@
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
+  <aura:attribute name="hasCapacity" type="String"/>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="loadingText" type="Boolean"/>
+  <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
+  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <ltng:require styles="{!$Resource.animations}"/>
+
+  <aura:if isTrue="{!v.page == 'CapacityCheck'}">
+    <aura:if isTrue="{!v.loading}">
+      <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Description of the icon when needed">
+        <div class="slds-icon-eq__bar"></div>
+        <div class="slds-icon-eq__bar"></div>
+        <div class="slds-icon-eq__bar"></div>
+        <span class="slds-assistive-text">Text alternative when needed</span>
+      </div>
+      <div class="slds-text-body--regular slds-align_absolute-center">
+        {!v.loadingText}
+      </div>
+    </aura:if>
+    <aura:if isTrue="{!not(v.loading)}">
+      <aura:if isTrue="{!v.hasCapacity == 'Yes'}">
+        <lightning:layout aura:id="greatNews" class="animated" multipleRows="true" horizontalAlign="center">
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center">
+              <p><b class="slds-text-body--xx_large--stream animated">Great news!</b></p>
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center">
+              <p><b class="slds-text-body--large--blue">We have a project in your area! Click below to continue your application!</b></p>
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+            <div class="slds-align--absolute-center">
+              <lightning:button label="Continue Application" onclick="{!c.finishStage}"/>
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+      </aura:if>
+
+      <aura:if isTrue="{!v.hasCapacity == 'No'}">
+        <lightning:layout multipleRows="true" horizontalAlign="center">
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center slds-text-body--large--blue">
+              <b>Unfortunately, we do not have any projects in your area.</b>
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center slds-text-body--large--blue">
+              <b>You've been added to our waitlist and will be notified if and when we have a project in your area!</b>
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center slds-text-body--large--blue">
+              <b>You can now close this application.</b>
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+      </aura:if>
+    </aura:if>
+  </aura:if>
+</aura:component>

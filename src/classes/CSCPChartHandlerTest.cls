@@ -131,8 +131,7 @@ public class CSCPChartHandlerTest {
 			Shared_Solar_System__c = sss1.Id,
 			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
-			Customer_Group__c = 'Residential',
-			CS_Capacity_Allocated__c = 25);
+			Customer_Group__c = 'Residential');
 
 		Opportunity opp1A = new Opportunity(Name = 'Opp1A',
 			StageName = 'Complete',
@@ -141,8 +140,7 @@ public class CSCPChartHandlerTest {
 			Shared_Solar_System__c = sss2.Id,
 			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
-			Customer_Group__c = 'Residential',
-			CS_Capacity_Allocated__c = 25);
+			Customer_Group__c = 'Residential');
 
 		Opportunity opp2 = new Opportunity(Name = 'Opp2',
 			StageName = 'Complete',
@@ -151,8 +149,7 @@ public class CSCPChartHandlerTest {
 			Shared_Solar_System__c = sss2.Id,
 			Product__c = normalCSProduct.Id,
 			NMC_Tariff__c = nmcRate.id,
-			Customer_Group__c = 'Residential',
-			CS_Capacity_Allocated__c = 25); 
+			Customer_Group__c = 'Residential'); 
 		insert new List<Opportunity>{opp1, opp1A, opp2};                                          
 
 		Utility_Account_Log__c ual = 

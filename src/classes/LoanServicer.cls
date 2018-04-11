@@ -13,13 +13,13 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     public static final String CURRENT = 'Current';
     public static final String CLOSED = 'Closed';
     public static final String LATE = 'Late';
+    public static Boolean qssAlreadyRun = false;
 
     public Boolean anyLoansToService;
     private LoanPaymentRepo repo;
     private Map<Id, Loan__c> triggerOldMap;
     private List<SObject> loansToService = new List<SObject>();
     private Boolean handleInsert;
-    private String log = '';
 
     // handleInsert does two things: if true, doesn't check for params being updated to do the upsert, and
     // sets the first Bill Status to be Current and all others to be Future.
@@ -50,7 +50,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
 
     public void finish(Database.BatchableContext batchableContext) {
         String emailTo;
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.isEmpty() ||
             systemProperties[0].Error_Email__c == null) {
             emailTo = 'product@bluewavesolar.com';
@@ -72,7 +72,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     // If the loan change is valid, the existing Loan Payments would be deleted and
     // recreated
     public void validateLoanChange() {
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (!systemProperties.isEmpty() &&
             systemProperties[0].Disable_LoanServicer_Validation__c) {
             // Don't validate
@@ -92,7 +92,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     public static Integer getBatchSize(List<Loan__c> loanList) {
         Decimal maxTerm = 1;
         for (Loan__c loan : loanList) {
-            if (loan.Loan_Term__c > maxterm) {
+            if (loan.Loan_Term__c > maxTerm) {
                 maxTerm = loan.Loan_Term__c;
             }
         }
@@ -138,6 +138,25 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                                                        WHERE Loan_Payment__r.Loan__r.Id = :loansNeedingTAReapplication];
             TransactionApplicationHandler tah = new TransactionApplicationHandler(taList);
             tah.rollupAndCalculate();
+        }
+    }
+
+    // Called before insert or update from QSSTrigger
+    public void calcQSSAPR(Quick_Sales_Sheet__c qss) {
+        if (!qssAlreadyRun) {
+            repo.init(qss);
+            repo.calcAdjustableAPRandAverage(qss);
+            repo.calcAdjustableMaxPayment(qss);
+        }
+    }
+
+    // Called after insert or update
+    public void calcQSSAverageWithBuydown(Quick_Sales_Sheet__c qss) {
+        if (!qssAlreadyRun) {
+            LoanServicer.qssAlreadyRun = true;
+            repo.init(qss);
+            repo.calcAdjustableTCO(qss);
+            repo.calcAdjustableAverageWithBuydown(qss);
         }
     }
 
@@ -227,6 +246,12 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             queryIndexRates();
         }
 
+        public void init(Quick_Sales_Sheet__c qss) {
+            registerProduct(qss);
+            queryProducts();
+            queryIndexRates();
+        }
+
         private void executeDML() {
             upsertLoanPayments();
             deleteLoanPayments();
@@ -236,7 +261,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private void createLoanPaymentsAndSetAPR(Loan__c loan, Boolean isInsert) {
             LoanParams params = new LoanParams(loan, productMap, indexRates);
 
-            Loan_Payment__c priorLP =null;
+            Loan_Payment__c priorLP = null;
             Loan_Payment__c currentLP = null;
             for (Integer period = LoanServicer.STARTINGPERIOD;
                  period < params.loanTerm + LoanServicer.STARTINGPERIOD; 
@@ -246,7 +271,134 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 priorLP = currentLP;
             }
             if (params.isAdjustable) {
-                setAPR(loan);
+                setAPRAndSummary(loan, params);
+            }
+        }
+
+        // Called after insert or update because Applied Tax Credits is a cross-object formula
+        private void calcAdjustableTCO(Quick_Sales_Sheet__c qss) {
+            Loan__c loan = new Loan__c(
+                Product__c = qss.Product__c,
+                Requested_Loan_Amount__c = qss.Loan_Amount__c
+            );
+            LoanParams params = new LoanParams(loan, productMap, indexRates);
+            params.loanAmount = qss.Loan_Amount__c;
+            Decimal year2Payoff = null, year4Payoff = null, cumulativeInterest = 0;
+            if (params.isAdjustable) {
+                Loan_Payment__c priorLP = null;
+                Loan_Payment__c currentLP = null;
+                List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
+                for (Integer period = LoanServicer.STARTINGPERIOD;
+                    period < params.loanTerm + LoanServicer.STARTINGPERIOD;
+                    period++) {
+                    if (period == params.monthsOfIO + 1) {
+                        params.loanAmount = params.loanAmount - qss.Applied_Tax_Credits__c;
+                    }
+                    currentLP = createLP(period, loan, params, priorLP, true);
+                    loanPayments.add(currentLP);
+                    priorLP = currentLP;
+                    cumulativeInterest += currentLP.Amort_Interest_Due__c;
+                    if (period == 24) {
+                        year2Payoff = cumulativeInterest + currentLP.Amort_Cumulative_Principal__c + currentLP.Amort_Starting_Principal__c;
+                    } else if (period == 48) {
+                        year4Payoff = cumulativeInterest + currentLP.Amort_Cumulative_Principal__c + currentLP.Amort_Starting_Principal__c;
+                    }
+                }
+            }
+            Quick_Sales_Sheet__c qssClone = new Quick_Sales_Sheet__c(
+                Id = qss.Id,
+                Year_2_Payoff__c = year2Payoff==null?null:Math.round(year2Payoff),
+                Year_4_Payoff__c = year4Payoff==null?null:Math.round(year4Payoff)
+            );
+            update qssClone;
+        }
+
+        // Called after insert or update because Applied Tax Credits is a cross-object formula
+        private void calcAdjustableAverageWithBuydown(Quick_Sales_Sheet__c qss) {
+            Loan__c loan = new Loan__c(
+                Product__c = qss.Product__c,
+                Requested_Loan_Amount__c = qss.Loan_Amount__c - qss.Applied_Tax_Credits__c
+            );
+
+            LoanParams params = new LoanParams(loan, productMap, indexRates);
+            params.loanAmount = qss.Loan_Amount__c - qss.Applied_Tax_Credits__c;
+            Decimal averagePaymentWithBuydown = null;
+            if (params.isAdjustable) {
+                Loan_Payment__c priorLP = null;
+                Loan_Payment__c currentLP = null;
+                Decimal totalPayments = 0;
+                List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
+                for (Integer period = LoanServicer.STARTINGPERIOD;
+                    period < params.loanTerm + LoanServicer.STARTINGPERIOD;
+                    period++) {
+                    currentLP = createLP(period, loan, params, priorLP, true);
+                    loanPayments.add(currentLP);
+                    totalPayments += currentLP.Actual_PI_Due__c;
+                    priorLP = currentLP;
+                }
+                averagePaymentWithBuydown = totalPayments/params.loanTerm;
+            }
+            Quick_Sales_Sheet__c qssClone = new Quick_Sales_Sheet__c(
+                Id = qss.Id,
+                Average_Adjustable_Payment_With_Buydown__c = averagePaymentWithBuydown
+            );
+            update qssClone;
+        }
+
+        private void calcAdjustableAPRandAverage(Quick_Sales_Sheet__c qss) {
+            Loan__c loan = new Loan__c(
+                Product__c = qss.Product__c,
+                Requested_Loan_Amount__c = qss.Loan_Amount__c
+            );
+            LoanParams params = new LoanParams(loan, productMap, indexRates);
+            params.loanAmount = qss.Loan_Amount__c;
+            if (params.isAdjustable) {
+                Loan_Payment__c priorLP = null;
+                Loan_Payment__c currentLP = null;
+                Decimal totalPayments = 0;
+                List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
+                for (Integer period = LoanServicer.STARTINGPERIOD;
+                    period < params.loanTerm + LoanServicer.STARTINGPERIOD;
+                    period++) {
+                    currentLP = createLP(period, loan, params, priorLP, true);
+                    loanPayments.add(currentLP);
+                    totalPayments += currentLP.Actual_PI_Due__c;
+                    priorLP = currentLP;
+                }
+                qss.APR__c = getXIRRforAPR(qss, loanPayments).estimateIRR(.15);
+                qss.Average_Adjustable_Payment__c = totalPayments/params.loanTerm;
+            } else {
+                qss.APR__c = null;
+                qss.Average_Adjustable_Payment__c = null;
+            }
+        }
+        private void calcAdjustableMaxPayment(Quick_Sales_Sheet__c qss) {
+            Loan__c loan = new Loan__c(
+                Product__c = qss.Product__c,
+                Requested_Loan_Amount__c = qss.Loan_Amount__c
+            );
+            LoanParams params = new LoanParams(loan, productMap, indexRates);
+            params.loanAmount = qss.Loan_Amount__c;
+            // Force amort schedule to go to the ceiling rate to get the max payment
+            params.indexRate = 99;
+            if (params.isAdjustable) {
+                Decimal maxPayment = 0;
+                Loan_Payment__c priorLP = null;
+                Loan_Payment__c currentLP = null;
+                List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
+                for (Integer period = LoanServicer.STARTINGPERIOD;
+                    period < params.loanTerm + LoanServicer.STARTINGPERIOD;
+                    period++) {
+                    currentLP = createLP(period, loan, params, priorLP, true);
+                    loanPayments.add(currentLP);
+                    priorLP = currentLP;
+                    if (currentLP.Actual_PI_Due__c > maxPayment) {
+                        maxPayment = currentLP.Actual_PI_Due__c;
+                    }
+                }
+                qss.Max_Payment__c = maxPayment;
+            } else {
+                qss.Max_Payment__c = null;
             }
         }
 
@@ -282,20 +434,20 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 }
             }
             loanPayment.Loan__c = loan.Id;
-            loanPayment.Unique_Id__c = loan.Loan_Number__c + '|' + period;
+            loanPayment.Unique_ID__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
             loanPayment.Payment_Due_Date2__c = 
                 loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period - LoanServicer.STARTINGPERIOD);
 
             loanPayment.Funds_Distributed__c = 
-                (params.loanAmount*params.firstDistribution+params.Fees)*payFirstDistribution+
+                (params.loanAmount*params.firstDistribution+params.fees)*payFirstDistribution+
                 params.loanAmount*params.secondDistribution*paySecondDistribution;
             loanPayment.Funds_Distributed__c.setScale(2, RoundingMode.HALF_UP);
             Decimal monthlyRate = getAdjustedMonthlyRate(params, period);
             loanPayment.Adjusted_Interest_Rate__c = (monthlyRate * 12 * 100).setScale(13);
 
             loanPayment.Amort_Cumulative_Principal__c =
-                priorLP==null?0:(priorLP.Amort_Cumulative_Principal__c + priorLP.Amort_Principal_Due__c).setScale(16);
+                priorLP == null?0:(priorLP.Amort_Cumulative_Principal__c + priorLP.Amort_Principal_Due__c).setScale(16);
             loanPayment.Amort_Starting_Principal__c =
                 (loanPayment.Funds_Distributed__c - loanPayment.Amort_Cumulative_Principal__c).setScale(16);
 
@@ -323,7 +475,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
 
         private void checkLoanForLPsToDelete(Loan__c loan) {
-            loanIdsToDeleteLPs.add(loan.Id);
+            loanIdstoDeleteLPs.add(loan.Id);
         }
 
         // Only delete loan payments that weren't manually created and not upserted. This
@@ -333,15 +485,15 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             List<Loan_Payment__c> loanPaymentsToDelete = new List<Loan_Payment__c>();
             Map<String, Loan_Payment__c> loanPaymentMap = new Map<String, Loan_Payment__c>();
             for (Loan_Payment__c lp : loanPaymentsToCreate) {
-                loanPaymentMap.put(lp.Unique_Id__c, lp);
+                loanPaymentMap.put(lp.Unique_ID__c, lp);
             }
-            if (!loanIdsToDeleteLPs.isEmpty()) {
-                List<Loan_Payment__c> loanPayments = [SELECT Id, Unique_Id__c
+            if (!loanIdstoDeleteLPs.isEmpty()) {
+                List<Loan_Payment__c> loanPayments = [SELECT Id, Unique_ID__c
                                                       FROM Loan_Payment__c
-                                                      WHERE Loan__c in :loanIdsToDeleteLPs
-                                                      AND Period__c != null];
+                                                      WHERE Loan__c IN :loanIdstoDeleteLPs
+                                                      AND Period__c != NULL];
                 for (Loan_Payment__c lp : loanPayments) {
-                    if (loanPaymentMap.get(lp.Unique_Id__c) == null) {
+                    if (loanPaymentMap.get(lp.Unique_ID__c) == null) {
                         loanPaymentsToDelete.add(lp);
                     }
                 }
@@ -352,7 +504,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
 
         private void upsertLoanPayments() {
-            upsert loanPaymentsToCreate Unique_Id__c;
+            upsert loanPaymentsToCreate Unique_ID__c;
         }
 
         private void updateLoansAndOpps() {
@@ -367,8 +519,9 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         private void registerProduct(Loan__c loan) {
             productIds.add(loan.Product__c);
         }
-        private void registerProduct(Product2 product) {
-            productIds.add(product.Id);
+
+        private void registerProduct(Quick_Sales_Sheet__c qss) {
+            productIds.add(qss.Product__c);
         }
 
         public void queryProducts() {
@@ -544,25 +697,57 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             }
         }
 
-        public void setAPR(Loan__c loan) {
+        public Excel.XIRR getXIRRAndSummary(Decimal loanAmount, List<Loan_Payment__c> loanPayments, PaymentSummary summary) {
             Date today = Date.newInstance(2018,1,1);
             Excel.XIRR xirr = new Excel.XIRR();
-            xirr.addCashflow(new Excel.Cashflow(today.addMonths(1-LoanServicer.STARTINGPERIOD), -loan.Requested_Loan_Amount__c));
-            for (Loan_Payment__c lp : loanPaymentsToCreate) {
-                if (lp.Loan__c == loan.Id) {
-                    xirr.addCashflow(new Excel.Cashflow(today.addMonths((Integer) lp.Period__c), lp.Amort_Interest_Due__c + lp.Amort_Principal_Due__c));
+            xirr.addCashflow(new Excel.Cashflow(today.addMonths(1-LoanServicer.STARTINGPERIOD), -loanAmount));
+            for (Loan_Payment__c lp : loanPayments) {
+                xirr.addCashflow(new Excel.Cashflow(today.addMonths((Integer) lp.Period__c), lp.Amort_Interest_Due__c + lp.Amort_Principal_Due__c));
+                if (summary != null) {
+                    if (lp.Period__c >= summary.params.firstAdjustment &&
+                        Math.mod((Integer) (lp.Period__c - summary.params.firstAdjustment), summary.params.monthsBetweenAdjustment) == 0 &&
+                        // We only need 5 adjustments for loans that start at 4.49 and go up to 9.99 at 1% increments
+                        (lp.Period__c - summary.params.firstAdjustment)/summary.params.monthsBetweenAdjustment < 6) {
+                        summary.adjustedPayments[(Integer) (lp.Period__c - summary.params.firstAdjustment)/summary.params.monthsBetweenAdjustment] =
+                            lp.Amort_Principal_Due__c + lp.Amort_Interest_Due__c;
+                    }
+                    summary.totalPayments += lp.Amort_Interest_Due__c + lp.Amort_Principal_Due__c;
                 }
             }
+            return xirr;
+        }
+
+        public Excel.XIRR getXIRRforAPR(Quick_Sales_Sheet__c qss, List<Loan_Payment__c> loanPayments) {
+            return getXIRRAndSummary(qss.Loan_Amount__c, loanPayments, null);
+        }
+
+        public void setAPRAndSummary(Loan__c loan, LoanParams params) {
+            PaymentSummary summary = new PaymentSummary(params);
+            Excel.XIRR xirr = getXIRRAndSummary(loan.Requested_Loan_Amount__c, loanPaymentsToCreate, summary);
             // Because this can be called from an after update, we need to create a new instance of the loan to update
             Loan__c loanForAPR = new Loan__c(
                 Id = loan.Id,
-                APR__c = xirr.estimateIRR(.15)
+                APR__c = xirr.estimateIRR(.15),
+                First_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[0],
+                Second_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[1],
+                Third_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[2],
+                Fourth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[3],
+                Fifth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[4],
+                Sixth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[5],
+                Total_Loan_Payments_Override__c = summary.totalPayments
             );
             loansToUpdate.add(loanForAPR);
             if (loan.Opportunity__c != null) {
                 Opportunity oppForAPR = new Opportunity(
                     Id = loan.Opportunity__c,
-                    APR__c = xirr.estimateIRR(.15)
+                    APR__c = xirr.estimateIRR(.15),
+                    First_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[0],
+                    Second_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[1],
+                    Third_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[2],
+                    Fourth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[3],
+                    Fifth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[4],
+                    Sixth_Adjustable_Monthly_Payment_Amount__c = summary.adjustedPayments[5],
+                    Total_Loan_Payments_Override__c = summary.totalPayments
                 );
                 oppsToUpdate.add(oppForAPR);
             }
@@ -621,7 +806,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             }
 
             fees = nullToZero(loan.Financing_Fee__c);
-            loanAmount = loan.Principal__c - fees;
+            loanAmount = nullToZero(loan.Principal__c) - fees;
             loanAmountPlusFees = loanAmount + fees;
             annualRate = nullToZero(product.Loan_Interest_Rate__c)/100;
             monthlyRate = annualRate / 12;
@@ -642,7 +827,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
     }
 
     public static Decimal nullToZero(Decimal value) {
-        return (value==null?0:value);
+        return (value == null?0:value);
     }
 
     public static String nullToZero(String value) {
@@ -669,6 +854,18 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             monthlyRate = params.monthlyRate;
         }
         return monthlyRate;
+    }
+
+    private class PaymentSummary {
+        List<Decimal> adjustedPayments;
+        Decimal totalPayments;
+        LoanParams params;
+
+        PaymentSummary(LoanParams params) {
+            adjustedPayments = new List<Decimal>{null, null, null, null, null, null};
+            totalPayments = 0;
+            this.params = params;
+        }
     }
 
     public class LoanProductException extends Exception{}

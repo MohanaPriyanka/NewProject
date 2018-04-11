@@ -37,6 +37,11 @@ public class DisbursalHandlerTest {
         Product2 productRecord = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
         insert productRecord;
 
+        Product2 productRecordNY = LoanTestRecordWarehouse.getDefaultProduct('NY', 5.99, 10, 7, '750', '999', capitalPool.Id);
+        productRecordNY.Disbursal_Terms__c = '30% Building Permit Approved, 60% Mechanical Installation, 10% Interconnection';
+        productRecordNY.Lender_of_Record__c = 'Avidia';
+        insert productRecordNY;
+
         Lead leadRecord = new lead(FirstName = 'Cole',
                                     LastName = 'Swain',
                                     Loan_Amount__c = 30000,
@@ -48,8 +53,6 @@ public class DisbursalHandlerTest {
                                     LASERCA__Home_State__c = 'MA',
                                     Requested_Loan_Amount__c = 30000,
                                     DOER_Solar_Loan__c = false,
-                                    Custom_Id__c = 'test',
-                                    Loan_Term__c = 120,
                                     Unfinished_Lead__c = true,
                                     Partner_Lookup__c = partner.Id,
                                     Bs_Sales_ID__c = salesRep.Id,
@@ -79,84 +82,30 @@ public class DisbursalHandlerTest {
         Opportunity opportunityRecord = [SELECT Id, Name, 
                                             (SELECT Id, Name FROM Loans__r)
                                          FROM Opportunity];
-
         opportunityRecord.Contract_Status__c = 'Completed';
         opportunityRecord.StageName = 'Complete';
         update opportunityRecord;
-        System.debug(LoggingLevel.ERROR, 'Setup done: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
     }
 
     @isTest static void testCreateDisbursalsFromOpportunity() {
-        System.debug(LoggingLevel.ERROR, 'Starting testCreateDisbursalsFromOpportunity: ' +
-            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
         Test.startTest();
-        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
-        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
-            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
-        Decimal totalAmount = 0;
-        Decimal totalPercentage = 0;
-        Opportunity opportunityRecord = [SELECT Id, Name,
-                                            (SELECT Id, Name FROM Loans__r)
-                                         FROM Opportunity];
-
-        List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c 
-                                               FROM Disbursal__c 
-                                               WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id];
-
-        System.assertEquals(3, disbursalRecords.size());
-        for (Disbursal__c disbursal : disbursalRecords) {
-            totalAmount = totalAmount + disbursal.Amount__c;
-            totalPercentage = totalPercentage + disbursal.Disbursal_Percentage__c;
-        }
-        System.assertEquals(30000, totalAmount);
-        System.assertEquals(100, totalPercentage);
-        Test.stopTest();
-    }
-
-    @isTest static void testUpdateDisbursalsOnOpportunityUpdate() {
-        Date myDate = Date.newInstance(2018, 2, 17);
-        Test.startTest();
-        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
-        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
-            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
+            Decimal totalAmount = 0;
+            Decimal totalPercentage = 0;
             Opportunity opportunityRecord = [SELECT Id, Name,
                                                 (SELECT Id, Name FROM Loans__r)
                                              FROM Opportunity];
-            opportunityRecord.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
-            update opportunityRecord;
 
-            opportunityRecord.Disbursal_Type_Contract__c = 'ACH Disbursal';
-            update opportunityRecord;
-
-            opportunityRecord.Disbursal_2_Mechanical_Install_Checkbox__c = myDate;
-            update opportunityRecord;
-            
-            opportunityRecord.Disbursal_Type_Mech_Completion__c = 'ACH';
-            update opportunityRecord;
-
-            opportunityRecord.Disbursal_3_Full_Install_Checkbox__c = myDate;
-            opportunityRecord.Disbursal_Type_Interconnect__c = 'ACH Disbursal';
-            update opportunityRecord;
-
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Date_of_Disbursal__c, Disbursal_Method__c 
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c 
                                                    FROM Disbursal__c 
                                                    WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id];
 
             System.assertEquals(3, disbursalRecords.size());
             for (Disbursal__c disbursal : disbursalRecords) {
-                System.assertEquals(myDate, disbursal.Date_of_Disbursal__c);
-                System.assertEquals('ACH', disbursal.Disbursal_Method__c);
+                totalAmount = totalAmount + disbursal.Amount__c;
+                totalPercentage = totalPercentage + disbursal.Disbursal_Percentage__c;
             }
-
-            opportunityRecord.Disbursal_3_Full_Install_Checkbox__c = null;
-            opportunityRecord.Disbursal_Type_Interconnect__c = null;
-            update opportunityRecord;
-
-            Disbursal__c disbursalRecord = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Date_of_Disbursal__c, Disbursal_Method__c 
-                                                   FROM Disbursal__c 
-                                                   WHERE Disbursal_Sequence__c = 3];
-            System.assertEquals(null, disbursalRecord.Date_of_Disbursal__c);
-            System.assertEquals(null, disbursalRecord.Disbursal_Method__c);
+            System.assertEquals(30000, totalAmount);
+            System.assertEquals(100, totalPercentage);
         Test.stopTest();
     }
 
@@ -164,35 +113,205 @@ public class DisbursalHandlerTest {
         Date myDate = Date.newInstance(2018, 2, 17);
         Decimal totalAmount = 0;
         Test.startTest();
-        // Believe it or not, if the next debug line is commented out, the next SOQL statement triggers Too many SOQL queries
-        System.debug(LoggingLevel.ERROR, 'After startTest: ' +
-            Limits.getQueries() + ' of ' + Limits.getLimitQueries() + ' used');
             Opportunity opportunityRecord = [SELECT Id, Name,
                                                 (SELECT Id, Name FROM Loans__r)
                                              FROM Opportunity];
-
-            opportunityRecord.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
-            opportunityRecord.Disbursal_Type_Contract__c = 'ACH Disbursal';
             opportunityRecord.StageName = 'New';
             update opportunityRecord;
-
-            opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 28000;
-            update opportunityRecord.Loans__r.get(0);
 
             List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
                                                    FROM Disbursal__c 
                                                    WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
                                                    ORDER BY Disbursal_Sequence__c];
+            disbursalRecords.get(0).Status__c = 'Disbursed';
+            update disbursalRecords;
 
-            for (Disbursal__c disbursal : disbursalRecords) {
+            opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 28000;
+            update opportunityRecord.Loans__r.get(0);
+
+
+            List<Disbursal__c> updatedDisbursals = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            for (Disbursal__c disbursal : updatedDisbursals) {
                 totalAmount = totalAmount + disbursal.Amount__c;
             }
-
-            System.assertEquals('Complete', disbursalRecords.get(0).Status__c);
-            System.assertEquals(9000, disbursalRecords.get(0).Amount__c);
-            System.assertEquals(16200, disbursalRecords.get(1).Amount__c);
-            System.assertEquals(2800, disbursalRecords.get(2).Amount__c);
+            System.assertEquals(9000, updatedDisbursals.get(0).Amount__c);
+            System.assertEquals(16200, updatedDisbursals.get(1).Amount__c);
+            System.assertEquals(2800, updatedDisbursals.get(2).Amount__c);
             System.assertEquals(28000, totalAmount);
-            Test.stopTest();                
-    }        
+        Test.stopTest();
+    }
+
+    @isTest static void testOppStageCompleteContractDisbursalReady() {
+        Test.startTest();
+            Opportunity opportunityRecord = [SELECT Id, Name,
+                                                (SELECT Id, Name FROM Loans__r)
+                                             FROM Opportunity];
+
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecords.get(0).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testOppStageReversionFromCompleteContractDisbursalPending() {
+        Test.startTest();
+            Opportunity opportunityRecord = [SELECT Id, Name,
+                                                (SELECT Id, Name FROM Loans__r)
+                                             FROM Opportunity];
+            opportunityRecord.StageName = 'New';
+            update opportunityRecord;
+
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecords.get(0).Status__c, 'Pending');
+        Test.stopTest();
+    }
+
+    @isTest static void testEquipmentMechInstallDisbursalReady() {
+        Test.startTest();
+            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id 
+                                                  FROM Residential_Equipment__c 
+                                                  LIMIT 1];
+            equipment.Mechanically_Installed__c = true;
+            update equipment;
+
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : equipment.Loan__r.Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecords.get(1).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testEquipmentInterconnectDisbursalReady() {
+        Test.startTest();
+            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id 
+                                                  FROM Residential_Equipment__c 
+                                                  LIMIT 1];
+            equipment.Interconnected__c = true;
+            update equipment;
+
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : equipment.Loan__r.Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecords.get(2).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testFBOFundedActions() {
+        Test.startTest();
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Funds_in_FBO_Account__c
+                                                   FROM Disbursal__c 
+                                                   ORDER BY Disbursal_Sequence__c];
+            disbursalRecords.get(0).Funds_in_FBO_Account__c = true;
+            update disbursalRecords.get(0);
+
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
+                                                              FROM Disbursal__c 
+                                                              ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Ready for Disbursement');
+        Test.stopTest();
+    }
+
+    @isTest static void testDisbursalToHold() {
+        Test.startTest();
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Hold_on_Disbursal__c
+                                                   FROM Disbursal__c 
+                                                   ORDER BY Disbursal_Sequence__c];
+            disbursalRecords.get(0).Hold_on_Disbursal__c = true;
+            update disbursalRecords.get(0);
+
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
+                                                              FROM Disbursal__c 
+                                                              ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Hold');
+        Test.stopTest();
+    }
+
+    @isTest static void testDisbursalNoHold() {
+        Test.startTest();
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Hold_on_Disbursal__c
+                                                   FROM Disbursal__c 
+                                                   ORDER BY Disbursal_Sequence__c];
+            disbursalRecords.get(0).Hold_on_Disbursal__c = false;
+            update disbursalRecords.get(0);
+
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
+                                                              FROM Disbursal__c 
+                                                              ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testNYBuildingPermitDisbursalReady() {
+        Test.startTest();
+            List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
+            Partner_Task__c permitTask = new Partner_Task__c();
+            Id nyProductId = [SELECT Id FROM Product2 WHERE State__c = 'NY' LIMIT 1].Id;
+            delete [SELECT Id, Status__c FROM Disbursal__c ORDER BY Disbursal_Sequence__c];
+            Opportunity opportunityRecord = [SELECT Id, Name, Lead_Id__c,
+                                                (SELECT Id, Name, Product__c FROM Loans__r)
+                                             FROM Opportunity];
+            opportunityRecord.StageName = 'New';
+            opportunityRecord.Product__c = nyProductId;
+            System.debug('ny opp test');
+            update opportunityRecord;
+
+            opportunityRecord.Loans__r.get(0).Product__c = nyProductId;
+            opportunityRecord.Loans__r.get(0).State__c = 'NY';
+            update opportunityRecord.Loans__r.get(0);
+
+            opportunityRecord.StageName = 'Complete';
+            update opportunityRecord;
+
+            permitTask.Name = 'Building Permit';
+            permitTask.Partner__c = [SELECT Id FROM Partner__c LIMIT 1].Id;
+            insert permitTask;
+
+            for (Partner_Task__c partnerTask : [SELECT Task_Sequence__c FROM Partner_Task__c WHERE Task_Sequence__c >= 7 ORDER BY Task_Sequence__c]) {
+                partnerTask.Task_Sequence__c = partnerTask.Task_Sequence__c + 1;
+                partnerTaskList.add(partnerTask);
+                permitTask = partnerTask;
+            }
+            update partnerTaskList;
+
+            String leadId = [SELECT Id FROM Lead LIMIT 1].Id;
+
+            permitTask.Task_Type__c = 'Building Installation';
+            permitTask.Task_Sequence__c = 7;
+            permitTask.Unique_ID__c = leadId + ' ' + 'Building Permit';
+            update permitTask;
+
+            Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Labor_Performed__c, Materials_Supplied__c, Interconnected__c, Loan__r.Id 
+                                                  FROM Residential_Equipment__c 
+                                                  LIMIT 1];
+
+            Attachment buildingPermitDoc = new Attachment();
+            buildingPermitDoc.ParentId = equipment.Id;
+            buildingPermitDoc.Description = 'Building Permit';
+            buildingPermitDoc.Name =  String.valueOf('test.txt');
+            buildingPermitDoc.Body = bodyBlob;
+            insert buildingPermitDoc;
+
+            equipment.Labor_Performed__c = 'Application for Building Permit';
+            equipment.Materials_Supplied__c = 'Modules';
+            update equipment;
+
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Type__c
+                                                   FROM Disbursal__c 
+                                                   WHERE Loan__r.Id = : equipment.Loan__r.Id
+                                                   ORDER BY Disbursal_Sequence__c];
+            System.assertEquals(disbursalRecords.get(0).Type__c, 'Building Permit Approved');
+            System.assertEquals(disbursalRecords.get(0).Status__c, 'Due');
+        Test.stopTest();
+    }
 }

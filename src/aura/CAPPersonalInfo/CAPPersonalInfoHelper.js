@@ -11,10 +11,10 @@
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LastName,
                                                        'fieldId': "lastNameElement",
                                                        'errorMessage': "Enter your last name without special characters"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.Phone,
-                                                       'fieldId': "phoneElement",
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.MobilePhone,
+                                                       'fieldId': "mobilePhoneElement",
                                                        'fieldType' : "phone",
-                                                       'errorMessage': "Enter your phone number, e.g. 555-555-1212"});
+                                                       'errorMessage': "Enter your mobile phone number, e.g. 555-555-1212"});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Email,
                                                        'fieldId': "emailElement",
                                                        'fieldType': "email",
@@ -209,6 +209,7 @@
         var lead = component.get("v.lead");
         helper.finishLead(lead);
         lead.Application_Source_Phase_1__c = 'SLPortal Emailed CAP Application';
+        lead.Company = lead.FirstName + ' ' + lead.LastName;
         if (lead.LASERCA__SSN__c) {
             lead.LASERCA__SSN__c = lead.LASERCA__SSN__c.replace(/-/g,"");
         }

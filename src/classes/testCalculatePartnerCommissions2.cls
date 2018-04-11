@@ -11,8 +11,8 @@ insert newPartner;
 
 partner__c partnerQueryBS = [SELECT id FROM partner__c WHERE partner__c.name = 'Boston Solar'];
 
-Opportunity newOpportunity = new Opportunity(name = 'Tester', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 5, partner_tag__c = 'Boston Solar',partner_tag_lookup__c = partnerQueryBS.id); 
-Opportunity newOpportunity2 = new Opportunity(name = 'Tester2', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 3.2, partner_tag__c = 'Boston Solar', partner_tag_lookup__c = partnerQueryBS.id); 
+Opportunity newOpportunity = new Opportunity(name = 'Tester', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Boston Solar',partner_tag_lookup__c = partnerQueryBS.id); 
+Opportunity newOpportunity2 = new Opportunity(name = 'Tester2', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Boston Solar', partner_tag_lookup__c = partnerQueryBS.id); 
 
 test.startTest(); 
   
@@ -37,8 +37,8 @@ insert newPartner2;
 
 partner__c partnerQueryNBS = [SELECT id FROM partner__c WHERE partner__c.name = 'Vivint'];
 
-Opportunity newOpportunity3 = new Opportunity(name = 'Tester3', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 3, partner_tag__c = 'Vivint', partner_tag_lookup__c = partnerQueryNBS.id); 
-Opportunity newOpportunity4 = new Opportunity(name = 'Tester4', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 8, partner_tag__c = 'Vivint', partner_tag_lookup__c = partnerQueryNBS.id);
+Opportunity newOpportunity3 = new Opportunity(name = 'Tester3', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Vivint', partner_tag_lookup__c = partnerQueryNBS.id); 
+Opportunity newOpportunity4 = new Opportunity(name = 'Tester4', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Vivint', partner_tag_lookup__c = partnerQueryNBS.id);
 
 test.startTest(); 
   

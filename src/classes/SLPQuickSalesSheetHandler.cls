@@ -44,8 +44,8 @@ public without sharing class SLPQuickSalesSheetHandler {
                 Interest_Only_Payments__c, Interest_Payment__c, State_Tax_Incentive_Bool__c,
                 State_Tax_Incentive__c, Modified_State_Tax_Credit__c, Modified_ITC__c,
                 Product__c, Product__r.Name, System_Size__c, System_Cost__c, Down_Payment__c, Send_to_Email__c,
-                Product__r.Index_Rate_for_Adjustment__c, Year_2_Payoff_Amount__c, Year_4_Payoff_Amount__c,
-                Maximum_Payment__c
+                Product__r.Index_Rate_for_Adjustment__c, Year_2_Payoff__c, Year_4_Payoff__c,
+                Max_Payment__c, APR__c
             FROM Quick_Sales_Sheet__c
             WHERE Id = : newlycreatedQSSid LIMIT 1];
 

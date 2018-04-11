@@ -1,0 +1,16 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="CSAPController" access="global" extends="c:CSAPParent">
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="email" type="String"/>
+  <aura:attribute name="partnerId" type="String"/>
+  <aura:attribute name="salesRepId" type="String"/>
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <c:LightningErrorHandler/>
+  <c:CSAPStart supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}"/>
+  <c:CSAPPersonalInfo supressWaiting="true" leadId="{!v.leadId}" partnerId="{!v.partnerId}" salesRepId="{!v.salesRepId}"/>
+  <c:CSAPCapacityCheck supressWaiting="true"/>
+  <c:CSAPCreditCheck supressWaiting="true"/>
+  <c:CSAPEnergyInfo supressWaiting="true"/>
+  <c:CSAPComplete supressWaiting="true"/>
+</aura:component>

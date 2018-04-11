@@ -45,7 +45,6 @@ Static testMethod void ChargentOrderCreationhandlertest (){
                                              AccountId = accountA.Id,
                                              Shared_Solar_System__c = sss1.Id,
                                              StageName = 'Complete',
-                                             CS_Capacity_Allocated__c = 25,
                                              CloseDate = System.today());
         insert oppone;
         
@@ -61,7 +60,6 @@ Static testMethod void ChargentOrderCreationhandlertest (){
                                              AccountId = accountA.Id,
                                              Shared_Solar_System__c = sss1.Id,
                                              StageName = 'Complete',
-                                             CS_Capacity_Allocated__c = 25,
                                              CloseDate = System.today());
         insert opptwo;
         

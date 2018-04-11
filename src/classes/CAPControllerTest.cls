@@ -121,7 +121,6 @@ public with sharing class CAPControllerTest {
                 Credit_Check_Acknowledged__c = true,
                 Privacy_Policy_Acknowledged__c = true,
                 Automatic_Product_Assignment__c = true,
-                Loan_Term__c = 120,
                 Product_Program__c = 'BlueWave Solar Loan',
                 Pre_Approval_Form__c = true,
                 Unfinished_Lead__c = true,

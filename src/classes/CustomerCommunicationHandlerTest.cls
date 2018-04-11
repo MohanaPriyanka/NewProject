@@ -143,7 +143,6 @@ public class CustomerCommunicationHandlerTest{
                                 AccountId = propAcct1.Id,
                                 Shared_Solar_System__c = sss1.Id,
                                 StageName = 'Complete',
-                                CS_Capacity_Allocated__c = 25,
                                 CloseDate = System.today());
             
             Opportunity opportunitytwo = 
@@ -151,7 +150,6 @@ public class CustomerCommunicationHandlerTest{
                                 AccountId = propAcct2.Id,
                                 Shared_Solar_System__c = sss2.Id,
                                 StageName = 'Complete',
-                                CS_Capacity_Allocated__c = 25,
                                 CloseDate = System.today());
 
             Opportunity opportunitythree = 
@@ -159,7 +157,6 @@ public class CustomerCommunicationHandlerTest{
                                 AccountId = propAcct2.Id,
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
-                                CS_Capacity_Allocated__c = 25,
                                 CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};  
            
@@ -210,6 +207,7 @@ public class CustomerCommunicationHandlerTest{
                 Shared_Solar_System__c = sssID,
                 Production__c = 140000,
                 Total_System_NMCs__c = 34000,
+                Net_Metering_Rate_Applied__c = 0.2429,
                 Date__c = billDate
         );
         insert productionupdate;

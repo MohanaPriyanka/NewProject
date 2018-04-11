@@ -431,5 +431,14 @@
             $A.enqueueAction(action);
         });
     },
-
+    validatePageFields : function(component) {
+        var pageFields = component.find('field');
+        if (!pageFields) return;
+        var isAllValid = [].concat(pageFields).reduce(function (validSoFar, inputCmp) {
+            inputCmp.showHelpMessageIfInvalid();
+            return validSoFar && inputCmp.get('v.validity').valid;
+            }, true
+        );
+        return isAllValid;
+    },
 })

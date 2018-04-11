@@ -183,16 +183,22 @@
             </div>
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="phoneElement">
-              <label class="slds-form-element__label">Phone</label>
-              <ui:inputPhone value="{!v.lead.Phone}" disabled="{!v.piLocked}"/>
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mobilePhoneElement">
+              <label class="slds-form-element__label">Mobile Phone</label>
+              <ui:inputPhone value="{!v.lead.MobilePhone}" disabled="{!v.piLocked}"/>
             </div>
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="emailElement">
               <label class="slds-form-element__label">Email</label>
               <ui:inputText value="{!v.lead.Email}" disabled="{!v.piLocked}"/>
             </div>
           </div>
-          <aura:if isTrue="{!v.lead.Phone}">
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="phoneElement">
+              <label class="slds-form-element__label">Home Phone (optional)</label>
+              <ui:inputPhone value="{!v.lead.Phone}" disabled="{!v.piLocked}"/>
+            </div>
+          </div>
+          <aura:if isTrue="{!v.lead.MobilePhone}">
             <div class="slds-p-around--small slds-m-top--medium">
               <header class="slds-form-element__label"> 
                 <b>Express Consent:</b>

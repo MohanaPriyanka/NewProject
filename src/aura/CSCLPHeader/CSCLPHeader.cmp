@@ -1,0 +1,21 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="NavHeaderController">
+  <aura:attribute name="userName" type="String"/>
+  <aura:attribute name="link" type="String" default="/clientportal/secur/logout.jsp"/>
+  <aura:attribute name="showLogout" type="Boolean" default="true"/>
+  <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+  <div aura:id="header" class="header gradLeftRight ">
+    <a href="{!v.link}">
+      <div class="w3-container">
+        <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
+      </div>
+    </a>
+    <aura:if isTrue="{!v.showLogout}">
+      <div class="logout">
+        <a href="/clientportal/secur/logout.jsp">
+          <span class="slds-truncate proximaNovaWhite">Logout</span>
+        </a>
+      </div>
+  </aura:if>
+</div>
+</aura:component>

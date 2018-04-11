@@ -9,40 +9,40 @@
  - * Tested By: DynamicToStaticSubscriptionHandlerTest / RecalculateUALCostControllerTest
  - *************************************************************************************/
 
-
 global with sharing class DynamicToStaticSubscriptionHandler {
+    /* Used by the "Update Subscriptions" button on the Shared Solar System to mass update UASes
+    once a new schedule z has been enacted */
     webservice static string DynamicToStaticSubscriptionHandler (String sssId){
-        //String sssId;
-        integer i;
-        integer j;
-        decimal updatedSubscriptionValueOnOpp = 0;
-        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
-        List<Opportunity> oppList = new List<Opportunity>();
-
-        for(Opportunity  opp : [SELECT Id, Name, Cs_capacity_allocated__c, (SELECT Id, Name, Customer_Subscription_KW_DC_STATIC__c, 
-                                    Customer_Subscription_KW_DC__c, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
-                                   FROM Opportunity
-                                   WHERE Shared_Solar_System__r.id = : sssId]){
-            // If there are multiple opportunities, make sure each opp gets it's own subscription value counter
-            updatedSubscriptionValueOnOpp = 0;
-            for(Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r){
-                uasList.add(uas);
-                updatedSubscriptionValueOnOpp = updatedSubscriptionValueOnOpp + uas.Customer_Subscription_KW_DC__c;
+        List<Utility_Account_Subscription__c> uasList = [SELECT Id, Name, Customer_Subscription_KW_DC_STATIC__c, 
+                                                          Customer_Subscription_KW_DC__c, Next_Schedule_Z_Status__c 
+                                                          FROM Utility_Account_Subscription__c
+                                                          WHERE Opportunity__r.Shared_Solar_System__c = : sssId];
+        for (Utility_Account_Subscription__c uas : uasList){
+            uas.Customer_Subscription_KW_DC_STATIC__c = uas.Customer_Subscription_KW_DC__c;
+            if (uas.Next_Schedule_Z_Status__c == 'Not Enacted: Addition'){
+                uas.Next_Schedule_Z_Status__c = 'Enacted';
+            } else if (uas.Next_Schedule_Z_Status__c == 'Enacted: Removed'){
+                uas.Next_Schedule_Z_Status__c = 'Cancelled';
             }
-            opp.Cs_capacity_allocated__c = updatedSubscriptionValueOnOpp;
-            oppList.add(opp);
-        }
-        for(i=0;i<uasList.size();i++){
-            uasList.get(i).Customer_Subscription_KW_DC_STATIC__c = uasList.get(i).Customer_Subscription_KW_DC__c;
-            if (uasList.get(i).Next_Schedule_Z_Status__c == 'Not Enacted: Addition'){
-                uaslist.get(i).Next_Schedule_Z_Status__c = 'Enacted';
-            } else if (uasList.get(i).Next_Schedule_Z_Status__c == 'Enacted: Removed'){
-                uaslist.get(i).Next_Schedule_Z_Status__c = 'Cancelled';
-            }
-
         }   
         Database.executeBatch(new GenericBatchDMLOperation(uasList, 'Update'));
-        Database.executeBatch(new GenericBatchDMLOperation(oppList, 'Update'));
         return null;
+    }
+
+    /* Used by DocuSign buttons on the opportunity to sum UASes under that opportunity
+    for a merge field on the CS contract right before the contract is sent */
+    webservice static void sumUASes (Id opportunityId){
+        Opportunity opp = [SELECT Id, Name, DocuSign_Subscription_Size__c
+                           FROM Opportunity
+                           WHERE Id = : opportunityId
+                           LIMIT 1];
+
+        AggregateResult uasSUM = [SELECT SUM(Customer_Subscription_KW_DC__c) subscriptionSum
+                                  FROM Utility_Account_Subscription__c 
+                                  WHERE Opportunity__c = : opportunityId];
+
+        opp.DocuSign_Subscription_Size__c = (Decimal)uasSUM.get('subscriptionSum');
+
+        update opp;
     }
 }

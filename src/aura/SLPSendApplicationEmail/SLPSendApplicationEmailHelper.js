@@ -4,6 +4,24 @@
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.Email, "emailAddressElement", "shake", null, 50, true, true, false, "Please enter a valid email address. The email you entered is: " + lead.Email, false, "email");
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.FirstName, "firstNameElement", "shake", null, 30, true, true, true, "Please enter a valid first name. The first name you entered is: " + lead.FirstName, false, "standard");
         errorMessage = errorMessage + helper.checkFieldValidity(component, lead.LastName, "lastNameElement", "shake", null, 30, true, true, true, "Please enter a valid last name. The last name you entered is: " + lead.lastName, false, "standard");
+        if (component.get('v.systemInfoObj.generator_nameplate_capacity__c') != null) {
+            if (component.get('v.systemInfoObj.generator_nameplate_capacity__c').toString().length > 5) {
+                helper.setInputToError(component, "systemSize", "shake");
+                errorMessage = errorMessage + "Please enter system size, in kilowatts, less than 99,999. If you have a system larger, please contacts partner support." + "\n" + "\n";
+            }
+        }
+        if (component.get('v.systemInfoObj.number_of_inverters__c') != null) {
+            if (component.get('v.systemInfoObj.number_of_inverters__c').toString().length > 5) {
+                helper.setInputToError(component, "inverterNumber", "shake");
+                errorMessage = errorMessage + "Please enter a number less than 99,999 for the number of inverters field." + "\n" + "\n";
+            }
+        }
+        if (component.get('v.systemInfoObj.number_of_modules__c') != null) {
+            if (component.get('v.systemInfoObj.number_of_modules__c').toString().length > 5) {
+                helper.setInputToError(component, "moduleNumber", "shake");
+                errorMessage = errorMessage + "Please enter a number less than 99,999 for the number of modules field." + "\n" + "\n";
+            }
+        }
         errorMessage = errorMessage +
                        helper.getFieldError(component,
                            {'fieldValue': lead.System_Cost__c, 'fieldId': "systemCostElement", 'fieldType': 'currency', 'errorMessage': 'Please enter a System Cost'});
@@ -54,6 +72,8 @@
         }
         if (errorMessage.length > 0) {
             return errorMessage;
+        } else {
+            return null;
         }
     },
 

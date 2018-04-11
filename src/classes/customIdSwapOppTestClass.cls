@@ -49,7 +49,6 @@ private class customIdSwapOppTestClass {
                                     Requested_Loan_Amount__c = 25000,
                                     Unfinished_Lead__c = true,
                                     Custom_Id__c = 'test',
-                                    Loan_Term__c = 120,
                                     Partner_Lookup__c = partner.Id,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = null,

@@ -1,6 +1,7 @@
 ({   
     clickCreateQSS : function(component, event, helper) {
-        var newSheet = component.get("v.quicksalessheet"); 
+        $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
+        var newSheet = component.get("v.quicksalessheet");
         var btnClicked = event.getSource().get("v.name");
         var genDoc = false;
         if (btnClicked == 'submitUpfront') {
@@ -18,12 +19,11 @@
             "generateDoc": genDoc
         });
         
-        actionAddNewQss.setCallback(this,function(resp) {       
-            if(resp.getState() == "SUCCESS" && genDoc) {                
+        actionAddNewQss.setCallback(this,function(resp) {
+            if(resp.getState() == "SUCCESS" && genDoc) {
                 $A.util.addClass(component.find("submitQSSbutton"), 'noDisplay');
                 $A.util.addClass(component.find("viewLoanData"), 'noDisplay');
-                $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
-                                              
+
                     window.setTimeout(function() {
                         $A.util.removeClass(component.find("docStatus"), 'noDisplay');
                         component.set("v.docStatusText", "Calculating Your Loan Stats...");
@@ -46,9 +46,9 @@
                             component.set("v.docStatusText", "An Error Occurred While Creating Your Document, Please Contact BlueWave");
                             $A.util.addClass(component.find("qssSpinner"), 'noDisplay');
                         }
-                        }, 30000);
+                    }, 30000);
             }
-            else if(resp.getState() == "SUCCESS" && !genDoc) { 
+            else if(resp.getState() == "SUCCESS" && !genDoc) {
                 var qssIdVar = resp.getReturnValue().Id;
                 helper.getQSS(component,qssIdVar);
                 helper.refreshTable(component);
@@ -74,12 +74,13 @@
     },    
     
     clickCreateDocument : function(component, event, helper) {
+        $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
         var qssToUpdate = component.get("v.calculatedQSS");
         var qssIdVarible = component.get("v.calculatedQSS.Id");
         var modified = component.get("v.modifiedTaxIncentive");
         var actionCreateDocQss = component.get("c.updateQSS");
         component.set("v.calculatedQSS.Generate_Doc__c", true);
-        
+
         actionCreateDocQss.setParams({
             "updatedQSS" : qssToUpdate,
             "generateDoc" : true, 
@@ -87,7 +88,6 @@
         });
         
         actionCreateDocQss.setCallback(this,function(resp) {
-            $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
             $A.util.addClass(component.find("documentCreatebutton"), 'noDisplay');
             $A.util.addClass(component.find("loaninfocard"), 'noDisplay');
        
@@ -111,8 +111,8 @@
                     if (successLink == "notgeneratedinportal") {
                         component.set("v.docStatusText", "An Error Occurred While Creating Your Document, Please Contact BlueWave at partnersupport@bluewavesolar.com");
                         $A.util.addClass(component.find("qssSpinner"), 'noDisplay');
-                   }
-                   }, 30000);
+                    }
+            }, 30000);
         });
         
         $A.enqueueAction(actionCreateDocQss);
@@ -127,6 +127,7 @@
     },
 
     refreshTable : function(component, event, helper) {
+         $A.util.removeClass(component.find("qssSpinner"), 'noDisplay');
          $A.util.addClass(component.find("loaninfocard"), 'noDisplay')
          var qssToUpdate = component.get("v.calculatedQSS");
          component.set("v.modifiedTaxIncentive", false);
@@ -151,5 +152,4 @@
             helper.updateQSS(component, qssToUpdate);
         }
     },
-
 })

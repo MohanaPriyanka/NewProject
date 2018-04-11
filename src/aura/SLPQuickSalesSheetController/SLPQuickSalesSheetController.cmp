@@ -1,5 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPQuickSalesSheetHandler" access="global">
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="docStatusText" type="String"/>
   <aura:attribute name="docStatusPoller" type="Integer"/>
   <aura:attribute name="quicksalessheet" type="Quick_Sales_Sheet__c"                
@@ -95,118 +95,108 @@
             </div>
             <br></br>
             <div aura:id="loaninfocard">
-                <p class="slds-text-heading_small"><b>Loan Info</b></p>
+                <p class="slds-text-heading_small"><b>Loan Info<sup>a</sup></b></p>
             <br></br>
             <article class="slds-card">
               <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
                 <tbody>
-                  <tr class="slds-hint-parent">
-                    <th scope="row">
-                      <div class="slds-truncate" title="MP">Monthly Principal and Interest Payment (assuming tax savings applied)
-                      </div>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="IO">Monthly Interest Only Payment
+                    </div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="IO Value"><ui:outputCurrency value="{!v.calculatedQSS.Interest_Payment__c}"/></div>
+                  </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MP">Monthly Principal and Interest Payment (assuming tax savings applied)</div>
                     </th>
                     <td>
                       <div class="slds-truncate" title="MP Value">
-                          <span class="slds-text-body_medium">
-                            <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/>
-                          *</span>
+                        <span class="slds-text-body_medium">
+                          <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment_After_Buydown__c}"/><sup>b<aura:if isTrue="{!v.isAdjustable}">, c</aura:if></sup>
+                        </span>
                       </div>
                     </td>
-                  </tr>
+                </tr>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="MPNB">Monthly Principal and Interest Payment (no tax savings applied)</div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="MPNB Value">
+                      <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/><aura:if isTrue="{!v.isAdjustable}"><sup>c</sup></aura:if>
+                    </div>
+                  </td>
+                </tr>
+                <aura:if isTrue="{!v.isAdjustable}">
                   <tr class="slds-hint-parent">
                     <th scope="row">
-                      <div class="slds-truncate" title="MPNB">Monthly Principal and Interest Payment (no tax savings applied)
-                      </div>
+                      <div class="slds-truncate" title="MaxPI">Maximum Principal and Interest Payment</div>
                     </th>
                     <td>
-                      <div class="slds-truncate" title="MPNB Value">
-                        <ui:outputCurrency value="{!v.calculatedQSS.Monthly_Payment__c}"/>
-                      </div>
+                      <div class="slds-truncate" title="Max PI Value"><ui:outputCurrency value="{!v.calculatedQSS.Max_Payment__c}"/><sup>d</sup></div>
                     </td>
                   </tr>
+                </aura:if>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <div class="slds-truncate" title="System Cost">Total System Cost</div>
+                  </th>
+                  <td>
+                    <div class="slds-truncate" title="System Cost Value"><ui:outputCurrency value="{!v.calculatedQSS.System_Cost__c}"/></div>
+                  </td>
+                </tr>
+                <aura:if isTrue="{!v.modifiedTaxIncentive}">
                   <tr class="slds-hint-parent">
                     <th scope="row">
-                      <div class="slds-truncate" title="IO">Monthly Interest Only Payment
+                      <div class="slds-truncate" title="ITC">Federal Tax Credit
                       </div>
                     </th>
-                    <td>
-                      <div class="slds-truncate" title="IO Value"><ui:outputCurrency value="{!v.calculatedQSS.Interest_Payment__c}"/></div>
-                    </td>
+                    <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower.">
+                      <td>
+                        <div class="slds-truncate">
+                          <ui:inputCurrency value="{!v.calculatedQSS.Modified_ITC__c}"
+                                            placeholder="{!v.calculatedQSS.ITC_Estimated__c}"
+                                            change="{!c.checkTaxCredit}"/><sup>b</sup>
+                        </div>
+                      </td>
+                    </c:BlueWaveInputToolTip>
                   </tr>
-                  <aura:if isTrue="{!v.isAdjustable}">
+                  <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}">
                     <tr class="slds-hint-parent">
                       <th scope="row">
-                        <div class="slds-truncate" title="MaxPI">Maximum Principal and Interest Payment</div>
+                        <div class="slds-truncate" title="State">State Tax Credit
+                        </div>
                       </th>
-                      <td>
-                        <div class="slds-truncate" title="Max PI Value"><ui:outputCurrency value="{!v.calculatedQSS.Maximum_Payment__c}"/></div>
-                      </td>
-                    </tr>
-                    <tr class="slds-hint-parent">
-                      <th scope="row">
-                        <div class="slds-truncate" title="Year2TCO">Year 2 TCO (does not include any applicable state credits)</div>
-                      </th>
-                      <td>
-                        <div class="slds-truncate" title="Year2TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_2_Payoff_Amount__c}"/></div>
-                      </td>
-                    </tr>
-                    <tr class="slds-hint-parent">
-                      <th scope="row">
-                        <div class="slds-truncate" title="Year4TCO">Year 4 TCO (does not include any applicable state credits)</div>
-                      </th>
-                      <td>
-                        <div class="slds-truncate" title="Year4TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_4_Payoff_Amount__c}"/></div>
-                      </td>
+                      <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower.">
+                        <td>
+                          <div class="slds-truncate">
+                            <ui:inputCurrency value="{!v.calculatedQSS.Modified_State_Tax_Credit__c}"
+                                              placeholder="{!v.calculatedQSS.State_Tax_Incentive__c}"
+                                              change="{!c.checkTaxCredit}"/><sup>b</sup>
+                          </div>
+                        </td>
+                      </c:BlueWaveInputToolTip>
                     </tr>
                   </aura:if>
-                  <aura:if isTrue="{!v.modifiedTaxIncentive}">
+                  <aura:set attribute="else">
                     <tr class="slds-hint-parent">
                       <th scope="row">
                         <div class="slds-truncate" title="ITC">Federal Tax Credit
                         </div>
                       </th>
-                      <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
                       <td>
-                        <div class="slds-truncate"> 
-                          <ui:inputCurrency value="{!v.calculatedQSS.Modified_ITC__c}" 
-                                              placeholder="{!v.calculatedQSS.ITC_Estimated__c}" 
-                                              change="{!c.checkTaxCredit}"/>
+                        <div class="slds-truncate" title="ITC Value">
+                            <span class="slds-text-body_medium">
+                              <ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/><sup>b</sup>
+                            </span>
                         </div>
                       </td>
-                      </c:BlueWaveInputToolTip>
-                    </tr> 
-                    <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}"> 
-                      <tr class="slds-hint-parent">
-                        <th scope="row">
-                          <div class="slds-truncate" title="State">State Tax Credit  
-                          </div>
-                        </th>
-                        <c:BlueWaveInputToolTip popoverText="Limited to calculated value or lower."> 
-                        <td>
-                          <div class="slds-truncate"> 
-                            <ui:inputCurrency value="{!v.calculatedQSS.Modified_State_Tax_Credit__c}" 
-                                              placeholder="{!v.calculatedQSS.State_Tax_Incentive__c}" 
-                                              change="{!c.checkTaxCredit}"/>
-                          </div>
-                        </td>
-                        </c:BlueWaveInputToolTip>
-                      </tr>
-                    </aura:if> 
-                    <aura:set attribute="else">
-                      <tr class="slds-hint-parent">
-                        <th scope="row">
-                          <div class="slds-truncate" title="ITC">Federal Tax Credit
-                          </div>
-                        </th>
-                        <td>
-                          <div class="slds-truncate" title="ITC Value">
-                            <span class="slds-text-body_medium">
-                              <ui:outputCurrency value="{!v.calculatedQSS.ITC_Estimated__c}"/>
-                            *</span>
-                          </div>
-                        </td>
-                      </tr> 
-                    <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}"> 
+                    </tr>
+                    <aura:if isTrue="{!v.calculatedQSS.State_Tax_Incentive_Bool__c}">
                       <tr class="slds-hint-parent">
                         <th scope="row">
                           <div class="slds-truncate" title="ITC">State Tax Credit
@@ -215,32 +205,64 @@
                         <td>
                           <div class="slds-truncate" title="ITC Value">
                             <span class="slds-text-body_medium">
-                              <ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/>
-                            *</span>
+                              <ui:outputCurrency value="{!v.calculatedQSS.State_Tax_Incentive__c}"/><sup>b</sup>
+                            </span>
                           </div>
                         </td>
                       </tr>
-                    </aura:if> 
-                    </aura:set>
-                  </aura:if> 
+                    </aura:if>
+                  </aura:set>
+                </aura:if>
+                <aura:if isTrue="{!v.isAdjustable}">
                   <tr class="slds-hint-parent">
                     <th scope="row">
-                      <ui:inputCheckbox aura:id="checkbox-1" 
-                                    class="myCheckbox"
-                                    labelClass="slds-form-element__label padding" 
-                                    label="Reduce State or Federal Tax Credits" 
-                                    value="{!v.modifiedTaxIncentive}"
-                                    change="{!c.refreshTaxCredits}"/>
+                      <div class="slds-truncate" title="Year2TCO">Estimated Total Cost of Ownership if loan paid off in year 2</div>
                     </th>
-                    <td></td>
+                    <td>
+                      <div class="slds-truncate" title="Year2TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_2_Payoff__c}"/><sup>e</sup></div>
+                    </td>
                   </tr>
+                  <tr class="slds-hint-parent">
+                    <th scope="row">
+                      <div class="slds-truncate" title="Year4TCO">Estimated Total Cost of Ownership if loan paid off in year 4</div>
+                    </th>
+                    <td>
+                      <div class="slds-truncate" title="Year4TCO Value"><ui:outputCurrency value="{!v.calculatedQSS.Year_4_Payoff__c}"/><sup>e</sup></div>
+                    </td>
+                  </tr>
+                  <tr class="slds-hint-parent">
+                    <th scope="row">
+                      <div class="slds-truncate" title="APR">Estimated Annual Percentage Rate</div>
+                    </th>
+                    <td>
+                      <div class="slds-truncate" title="APR Value">
+                        <lightning:formattedNumber style="percent" minimumFractionDigits="2" value="{!if(empty(v.calculatedQSS.APR__c),0,v.calculatedQSS.APR__c/100)}"/>
+                      </div>
+                    </td>
+                  </tr>
+                </aura:if>
+                <tr class="slds-hint-parent">
+                  <th scope="row">
+                    <ui:inputCheckbox aura:id="checkbox-1"
+                                      class="myCheckbox"
+                                      labelClass="slds-form-element__label padding"
+                                      label="Reduce State or Federal Tax Credits"
+                                      value="{!v.modifiedTaxIncentive}"
+                                      change="{!c.refreshTaxCredits}"/>
+                  </th>
+                  <td></td>
+                </tr>
                 </tbody>
               </table>
-            <footer class="slds-card__footer">
-              <span class="slds-assistive-text">disclaimer</span>
-                  <div class="smallText">BlueWave is not the lender of record. We work with partners to provide loans to consumers.</div>
-                  <div class="smallText">*The federal and state tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for the federal and state tax credits identified above, and that you apply savings from these tax credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.</div>
-            </footer> 
+              <footer class="slds-p-top_small smallText slds-text-longform">
+                a. BlueWave is not the lender of record. We work with partners to provide loans to consumers.<br/>
+                b. The federal and state tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for the federal and state tax credits identified above, and that you apply savings from these tax credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.<br/>
+                <aura:if isTrue="{!v.isAdjustable}">
+                  c. Represents principal and interest payment for FixRate loan or principal and interest payment for FlexRate loan during the fixed rate period before the first adjustment in month 61.<br/>
+                  d. Assumes a fully indexed payment at the loan ceiling rate of 9.99%. This payment could not be reached until year 9 for the 20 year loan and year 10 for the 15 year loan.<br/>
+                  e. Estimated Total Cost of Ownership does not include the value of Federal or State Tax Credits<br/>
+                </aura:if>
+              </footer>
             </article>
             <article class="slds-card">
               <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
@@ -315,7 +337,7 @@
                   </tr> 
                 </tbody>
               </table>
-            <div class="slds-align--absolute-center"> 
+            <div class="slds-align--absolute-center slds-p-around_x-small">
               <c:BlueWaveInputToolTip popoverText="If an email is supplied, the document will be automatically sent when it is generated.">
                 <lightning:button aura:id="documentCreatebutton"
                                   name="generateDocFromTable"
@@ -325,25 +347,6 @@
               </c:BlueWaveInputToolTip>
             </div>
             </article>  
-            </div>
-            <div aura:id="spinnerandtext">
-                <br></br>
-                <div class="slds-form-element">
-                  <div class="slds-spinner_container">
-                      <div aura:id= "qssSpinner" role="status" class="slds-spinner slds-spinner--medium">
-                        <span class="slds-assistive-text">Loading...</span>
-                        <div class="slds-spinner__dot-a"></div>
-                        <div class="slds-spinner__dot-b"></div>
-                    </div>
-                  </div>
-                </div> 
-                <br></br>
-                <br></br>
-                <div class="slds-form-element"> 
-                    <div aura:id="docStatus" class="slds-align--absolute-center paddingTop1x5 noDisplay">
-                        <ui:outputText value="{!v.docStatusText}"/>
-                    </div>
-                </div>
             </div>
             <div class="slds-form-element">
               <a aura:id="downloadQSSbutton" href="{!v.qssLinkToFile}" target="_blank" class="slds-align--absolute-center paddingTop1x5 noDisplay">   
@@ -357,8 +360,7 @@
             <div aura:id="downloadQSStext" class="slds-form-element">  
               <div class="slds-text-align_center slds-p-bottom_large"><b>Download</b></div>
               <a href="loansheet">
-                <lightning:button 
-                  name="start over"
+                <lightning:button name="start over"
                   label="Create New Sheet"
                   class="slds-button slds-align--absolute-center"/>
               </a>
@@ -377,10 +379,29 @@
                                 label="View Loan Data"
                                 onclick="{!c.clickCreateQSS}"/>
               </c:BlueWaveInputToolTip>
-            </div>      
+            </div>
+            <div aura:id="spinnerandtext" class="noDisplay">
+              <br></br>
+              <div class="slds-form-element">
+                <div class="slds-spinner_container">
+                  <div aura:id= "qssSpinner" role="status" class="slds-spinner slds-spinner--medium">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                  </div>
+                </div>
+              </div>
+              <br></br>
+              <br></br>
+              <div class="slds-form-element">
+                <div aura:id="docStatus" class="slds-align--absolute-center sld-p-top_small noDisplay">
+                  <ui:outputText value="{!v.docStatusText}"/>
+                </div>
+              </div>
+            </div>
+
           </form>
       </fieldset>
     </div>      
   </div>
 </aura:component>
-

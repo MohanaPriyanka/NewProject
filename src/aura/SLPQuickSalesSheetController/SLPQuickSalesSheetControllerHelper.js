@@ -17,8 +17,8 @@
                     $A.util.addClass(component.find("spinnerandtext"), 'noDisplay');
                     $A.util.removeClass(component.find("downloadQSSbutton"), 'noDisplay');   
                     $A.util.removeClass(component.find("downloadQSStext"), 'noDisplay');
-                    $A.util.addClass(component.find("downloadQSSbutton"), 'bounce');   
-                } 
+                    $A.util.addClass(component.find("downloadQSSbutton"), 'bounce');
+                }
             } 
         });                                 
         $A.enqueueAction(actionGetUrl);
@@ -30,12 +30,14 @@
        $A.util.addClass(component.find("inputTable"), 'noDisplay');
        $A.util.removeClass(component.find("loaninfocard"), 'noDisplay');
        $A.util.removeClass(component.find("documentCreatebutton"), 'noDisplay');
+       $A.util.addClass(component.find("spinnerandtext"), 'noDisplay');
     },
     
     updateQSS : function(component, qssToUpdate){
         var modified = component.get("v.modifiedTaxIncentive");
         var actionUpdateQss = component.get("c.updateQSS");
-        
+        $A.util.removeClass(component.find("spinnerandtext"), 'noDisplay');
+
         actionUpdateQss.setParams({
            "updatedQSS" : qssToUpdate,
            "generateDoc" : false,
@@ -43,7 +45,7 @@
         });
        
         actionUpdateQss.setCallback(this,function(response) {
-            if(response.getState() == "SUCCESS") { 
+            if(response.getState() == "SUCCESS") {
                 var qssIdVar = response.getReturnValue().Id;
                 this.getQSS(component,qssIdVar);
                 this.refreshTable(component);

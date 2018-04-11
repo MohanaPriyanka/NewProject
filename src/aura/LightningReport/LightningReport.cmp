@@ -1,0 +1,23 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="LightningReportsController" access="global">
+	<aura:attribute name="reportObject" type="Object"/>
+	<aura:attribute name="reportId" type="String"/>
+	<aura:attribute name="clientId" type="String"/>
+	<aura:attribute name="selectedReport" type="String"/>
+	<aura:attribute name="expandAllButton" type="Boolean"/>
+	<aura:attribute name="loading" type="Boolean"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<div class="slds-scrollable">
+		<aura:if isTrue="{!v.loading}">
+			<div role="status" class="slds-spinner slds-spinner_medium">
+				<div class="slds-spinner__dot-a"></div>
+				<div class="slds-spinner__dot-b"></div>
+			</div>
+			<aura:set attribute="else">
+				<c:LightningReportGroupComponent reportObject="{!v.reportObject}" expandAllButton="{!v.expandAllButton}"/>
+				<a class="slds-float_right slds-m-left_small" onclick="{!c.exportToCSV}"> 
+					<lightning:icon iconName="utility:download" size="xx-small"/> export
+				</a>
+			</aura:set>
+		</aura:if>
+	</div>
+</aura:component>

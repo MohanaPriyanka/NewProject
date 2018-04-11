@@ -6,7 +6,8 @@ public without sharing class SLPControllersTestclass {
         Account accountRecord = new Account(
             Name = 'BlueWave Customer Care',
             State_Market__c = 'MA',
-            Enable_CS_Application_in_Portal__c = true);
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP');
         insert accountRecord;
 
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
@@ -86,7 +87,6 @@ public without sharing class SLPControllersTestclass {
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
-            Loan_Term__c = 120,
             Product_Program__c = 'BlueWave Solar Loan',
             Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
@@ -261,7 +261,6 @@ public without sharing class SLPControllersTestclass {
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
-            Loan_Term__c = 120,
             Product_Program__c = 'BlueWave Solar Loan',
             Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
@@ -299,7 +298,6 @@ public without sharing class SLPControllersTestclass {
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
-            Loan_Term__c = 120,
             Product_Program__c = 'BlueWave Solar Loan',
             Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
@@ -346,7 +344,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals('Manager/test/true', partnerProfile);
             List<String> addressList = new List<String>();
             addressList.add('Jpentaleri@bluewavesolar.com');
-            Boolean emailSuccess = BlueWaveParent.sendAnEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
+            Boolean emailSuccess = MessagingService.createAndSendDynamicTemplateEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
             // emailSuccess should be true, but in case Deliverability is turned off:
             System.assertEquals(1, MessagingService.emailsSent.size());
         }
@@ -571,7 +569,6 @@ public without sharing class SLPControllersTestclass {
             Credit_Check_Acknowledged__c = true,
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
-            Loan_Term__c = 120,
             Product_Program__c = 'BlueWave Solar Loan',
             Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
@@ -738,5 +735,14 @@ public without sharing class SLPControllersTestclass {
 
         products = SLPAddCustomer.getProducts('MA');
         System.assertEquals(9, products.size());
+    }
+
+    @isTest static void testSendCommunitySolarApplication() {
+        List<String> emailList = new List<String>();
+        emailList.add('cswain@bluewavesolar.com');
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        System.runAs(partnerUser) {
+            System.assertEquals(true,SLPCustomerHandler.sendCommunitySolarApplication(emailList));
+        }
     }
 }

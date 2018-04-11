@@ -3,7 +3,7 @@
  * Description: Implementation of the financial functions pmt, fv, ppmt, ipmt.
  *              Derived from Apache POI
  * https://apache.googlesource.com/poi/+/trunk/src/java/org/apache/poi/ss/formula/functions/Finance.java
- * Test: LoanServicerTest
+ * Test: LoanServicerTest and ExcelTest
  *************************************************************************************/
 
 public with sharing class Excel {
@@ -205,7 +205,6 @@ public with sharing class Excel {
                 Boolean hasPositive = false;
                 Boolean hasNegative = false;
                 for(Cashflow c : this.cashflows) {
-                    System.debug('## checking cashflow with amount: ' + c.amount);
                     if(c.amount > 0.0) hasPositive = true;
                     else if(c.amount < 0.0) hasNegative = true;
                 }
@@ -252,13 +251,10 @@ public with sharing class Excel {
                 }
                 Decimal f = calc_summed_f(current);
                 Decimal df = calc_summed_df(current);
-                System.debug('f = ' + f + ', df = ' + df);
-                System.debug('current before = ' + current);
                 next = current - (f/df);
                 prevDiff = diff;
                 diff = System.Math.abs(next - current);
                 current = next;
-                System.debug('current = ' + current + ', diff = ' + diff);
             }
 
             return current;
@@ -284,10 +280,6 @@ public with sharing class Excel {
                 Cashflow pi = cashflows[i];
                 if(pi.amount == null) throw new Util.BWException('Found a cashflow with amount null');
                 Decimal daysBetween = d1.daysBetween(pi.cashflowDate);
-                //System.debug('pi.amount = ' + pi.amount);
-                //System.debug('denom = ' + System.Math.pow((Double)(1.0+r), (Double)(daysBetween/365.0)));
-                //System.debug('rate = ' + r);
-                //System.debug('daysBetween = ' + daysBetween);
                 Decimal base = 1.0+r;
                 Decimal exp = daysBetween/365.0;
                 Integer expInt = exp.intValue();
@@ -297,7 +289,6 @@ public with sharing class Excel {
                  *        i=0   r^((di - d0)/365)
                  */
                 result += pi.amount/System.Math.pow((Double)(1.0+r), (Double)(daysBetween/365.0));
-                System.debug('Adding term: ' + pi.amount + '/(' + base.doubleValue() + ')^(' + expInt + ')');
             }
             return result;
         }

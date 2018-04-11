@@ -15,13 +15,13 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
         assignServiceTerritoryHandler.OnBeforeUpdate(Trigger.new);
         utilityAccountLogConversionHandler.OnBeforeUpdate(Trigger.new);
         mapCapacityAvailableHandler.OnBeforeUpdate(Trigger.new);
-        referralCodeHandler.OnBeforeUpdate(Trigger.oldMap, Trigger.newMap);   
+        referralCodeHandler.OnBeforeUpdate(Trigger.oldMap, Trigger.newMap);
         loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
     }  
     else if(Trigger.isInsert && Trigger.isBefore){
-         leadTriggerHandler.OnBeforeInsert(Trigger.new);
-         assignServiceTerritoryHandler.OnBeforeInsert(Trigger.new);
-         mapCapacityAvailableHandler.OnBeforeInsert(Trigger.new);
-         referralCodeHandler.OnBeforeInsert(Trigger.new);
+        leadTriggerHandler.OnBeforeInsert(Trigger.new);
+        assignServiceTerritoryHandler.OnBeforeInsert(Trigger.new);
+        mapCapacityAvailableHandler.OnBeforeInsert(Trigger.new);
+        referralCodeHandler.OnBeforeInsert(Trigger.new);
     }
 }

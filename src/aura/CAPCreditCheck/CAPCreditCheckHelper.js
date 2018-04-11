@@ -2,7 +2,7 @@
     checkCreditStatus : function(component, helper) {
         var action = component.get("c.checkCreditStatus");
         const lead = {
-            sObjectType: 'Lead',
+            sobjectType: 'Lead',
             Id: component.get('v.lead.Id')
         };
         action.setParams({"leadToQuery" : lead});

@@ -28,21 +28,6 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled 
-    public static Boolean sendAnEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
-        EmailTemplate template = MessagingService.getHtml(emailTemplateName);
-        String templateHtml = template.HtmlValue;
-        templateHtml = templateHtml.replace(templateField, replaceText);
-
-        Messaging.SendEmailResult[] result = MessagingService.createAndSendEmail(templateHtml, orgWideEmail, subjectLine, addressList);
-        for(Messaging.SendEmailResult rr : result){
-            if(!rr.IsSuccess()){
-                return false;
-            } 
-        } 
-        return true;
-    }
-
-    @AuraEnabled 
     public static List<String> getPicklistFields(String objectName, String fieldName){
         Schema.SObjectType ctype = globalDescribe.get(objectName); 
         Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();

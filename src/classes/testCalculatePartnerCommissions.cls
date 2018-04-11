@@ -6,8 +6,8 @@ Static testMethod void calculatePartnerSales(){
 Date myDate = Date.newInstance(2015, 2, 17);
 
 partner__c newPartner = new partner__c(name = 'Boston Solar', total_commission__c = 11.6);
-Opportunity newOpportunity = new Opportunity(name = 'Tester', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 8.4, partner_tag__c = 'Boston Solar'); 
-Opportunity newOpportunity2 = new Opportunity(name = 'Tester2', type = 'New Business', closeDate = myDate, stageName='New', CS_Capacity_Allocated__c = 3.2, partner_tag__c = 'Boston Solar'); 
+Opportunity newOpportunity = new Opportunity(name = 'Tester', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Boston Solar'); 
+Opportunity newOpportunity2 = new Opportunity(name = 'Tester2', type = 'New Business', closeDate = myDate, stageName='New', partner_tag__c = 'Boston Solar'); 
 
 newPartner.name = 'Boston Solar';
 newPartner.total_commission__c = 11.6;
@@ -18,14 +18,12 @@ newOpportunity.name = 'Tester';
 newOpportunity.type = 'New Business';
 newOpportunity.closedate = myDate;
 newOpportunity.stageName = 'New';
-newOpportunity.CS_Capacity_Allocated__c = 8.4;
 newOpportunity.partner_Tag__c = 'Boston Solar';
 
 newOpportunity2.name = 'Tester2';
 newOpportunity2.type = 'New Business';
 newOpportunity2.closedate = myDate;
 newOpportunity2.stageName = 'New';
-newOpportunity2.CS_Capacity_Allocated__c = 3.2;
 newOpportunity2.partner_Tag__c = 'Boston Solar';
 
 test.startTest();

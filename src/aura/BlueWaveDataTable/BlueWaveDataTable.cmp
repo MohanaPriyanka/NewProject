@@ -43,32 +43,32 @@
       <aura:iteration items="{!v.tableRecords}" var="record">
         <tr>
           <aura:iteration items="{!v.recordFieldNames}" var="fieldName">
-            <th scope="col">
+            <td scope="col">
               <span class="slds-truncate">
-                <b>
-                  <c:BlueWaveDataTableRow objectRecord="{!record}"
-                                          fieldName="{!fieldName}"
-                                          conditionalColorField="{!v.conditionalColorField}"
-                                          conditionalColorMap="{!v.conditionalColorMap}"
-                                          columnColorMap="{!v.columnColorMap}"
-                                          fieldTypeMap="{!v.fieldTypeMap}"
-                                          defaultButtonLabels="{!v.defaultButtonLabels}"
-                                          defaultButtonEvents="{!v.defaultButtonEvents}"
-                                          buttonConditionalField="{!v.buttonConditionalField}"
-                                          buttonConditionalLabelMap="{!v.buttonConditionalLabelMap}"
-                                          buttonConditionalEventMap="{!v.buttonConditionalEventMap}"
-                                          profileSecurityMap="{!v.profileSecurityMap}"
-                                          licenseType="{!v.licenseType}"
-                                          nullValueMap="{!v.nullValueMap}"/>
-                </b>
+                  <b>
+                    <c:BlueWaveDataTableRow objectRecord="{!record}"
+                                            fieldName="{!fieldName}"
+                                            conditionalColorField="{!v.conditionalColorField}"
+                                            conditionalColorMap="{!v.conditionalColorMap}"
+                                            columnColorMap="{!v.columnColorMap}"
+                                            fieldTypeMap="{!v.fieldTypeMap}"
+                                            defaultButtonLabels="{!v.defaultButtonLabels}"
+                                            defaultButtonEvents="{!v.defaultButtonEvents}"
+                                            buttonConditionalField="{!v.buttonConditionalField}"
+                                            buttonConditionalLabelMap="{!v.buttonConditionalLabelMap}"
+                                            buttonConditionalEventMap="{!v.buttonConditionalEventMap}"
+                                            profileSecurityMap="{!v.profileSecurityMap}"
+                                            licenseType="{!v.licenseType}"
+                                            nullValueMap="{!v.nullValueMap}"/>
+                  </b>
               </span>
-            </th>
+            </td>
           </aura:iteration>
         </tr>
       </aura:iteration>
     </tbody>
   </table>
-  <aura:if isTrue="{!v.tableRecords.length > 0}">  
+  <aura:if isTrue="{!v.tableRecords.length > numberOfRecordsPerPage}">  
     <div class="slds-grid">
       <div class="slds-col">
         <button aura:id="previousPageButton" class="slds-button slds-button_icon slds-float_left slds-m-top_x-small" onclick="{!c.previousPage}">

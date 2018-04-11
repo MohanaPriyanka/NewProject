@@ -178,7 +178,7 @@
                       <div class="slds-form-element__row">
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                           <label class="slds-form-element__label" for="input-03"><b>System Size (kW)</b></label>
-                          <ui:inputText aura:id="systemSize" class="slds-input" value="{!v.systemInfoObj.generator_nameplate_capacity__c}"/>
+                          <ui:inputNumber aura:id="systemSize" maxlength="5" class="slds-input" value="{!v.systemInfoObj.generator_nameplate_capacity__c}"/>
                           </div>
                           <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
                             <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
@@ -198,7 +198,7 @@
                           </div>
                           <div class="slds-p-horizontal--small slds-size_1-of-3">
                             <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
-                            <ui:inputText aura:id="moduleNumber" class="slds-input" value="{!v.systemInfoObj.number_of_modules__c}"/>
+                            <ui:inputNumber aura:id="moduleNumber" maxlength="5" class="slds-input" value="{!v.systemInfoObj.number_of_modules__c}"/>
                           </div>
                         </div>
                         <div class="slds-form-element__row">
@@ -212,7 +212,7 @@
                           </div>
                           <div class="slds-p-horizontal--small slds-size_1-of-3">
                             <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
-                            <ui:inputText aura:id="inverterNumber" class="slds-input" value="{!v.systemInfoObj.number_of_inverters__c}"/>
+                            <ui:inputNumber aura:id="inverterNumber" maxlength="5" class="slds-input" value="{!v.systemInfoObj.number_of_inverters__c}"/>
                           </div>
                         </div>
                       </div>

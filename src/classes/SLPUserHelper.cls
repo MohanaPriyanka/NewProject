@@ -28,6 +28,8 @@ public without sharing class SLPUserHelper {
         public String referralCode;
 
         public Boolean csEnabled;
+
+        public String csApplicationType;
     }
 
     @AuraEnabled 
@@ -37,7 +39,7 @@ public without sharing class SLPUserHelper {
         User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
                     Contact.Account.Enable_CS_Application_in_Portal__c, Contact.Sales_Representative__r.Custom_ID__c,
                     Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
-                    PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name  
+                    PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name, Contact.Account.Community_Solar_Application_Type__c
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
         if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
@@ -54,18 +56,21 @@ public without sharing class SLPUserHelper {
                 partnerProfile.referralCode = 'bluewave';
              }
              partnerProfile.csEnabled = u.Contact.Account.Enable_CS_Application_in_Portal__c;
+             if (u.Contact.Account.Enable_CS_Application_in_Portal__c) {
+               partnerProfile.csApplicationType = u.Contact.Account.Community_Solar_Application_Type__c;
+             }
              if (String.isNotBlank(u.Sales_Representative_Email__c)) {
-                 partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);                
+                 partnerProfile.salesRepEmail = String.valueOf(u.Sales_Representative_Email__c);
              }
              if (u.UserRole.Name.Contains('User')) {
-                 partnerProfile.licenseType = 'User';                
+                 partnerProfile.licenseType = 'User';
              } else if (u.UserRole.Name.Contains('Manager')) {
                 partnerProfile.licenseType = 'Manager';
              } else if (u.UserRole.Name.Contains('Executive')) {
                 partnerProfile.licenseType = 'Executive';
              }
-             partnerProfile.partnerName = u.Contact.Partner_Lookup__r.Name;     
-             partnerProfile.partnerEmail = u.Contact.Partner_Lookup__r.Email__c;        
+             partnerProfile.partnerName = u.Contact.Partner_Lookup__r.Name;
+             partnerProfile.partnerEmail = u.Contact.Partner_Lookup__r.Email__c;
         }
         return partnerProfile;
     }

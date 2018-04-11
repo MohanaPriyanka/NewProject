@@ -10,7 +10,7 @@ Date myDate = Date.newInstance(2015, 2, 17);
 shared_solar_system__c myProject = new shared_solar_system__c(name = 'Tester');
 insert myProject;
 
-Opportunity newOpportunity = new Opportunity(name = 'Tester', account = myAccount, project_assignment__c = 'Manual', Shared_Solar_System_picklist__c = 'Tester', type = 'New Business', stageName = 'Complete', waitlist__c = FALSE, closeDate = myDate, CS_Capacity_Allocated__c = 100, shared_solar_system__c = myProject.id ); 
+Opportunity newOpportunity = new Opportunity(name = 'Tester', account = myAccount, project_assignment__c = 'Manual', Shared_Solar_System_picklist__c = 'Tester', type = 'New Business', stageName = 'Complete', waitlist__c = FALSE, closeDate = myDate, shared_solar_system__c = myProject.id ); 
 
 test.startTest();
  

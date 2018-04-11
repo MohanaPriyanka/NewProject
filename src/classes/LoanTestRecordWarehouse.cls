@@ -61,20 +61,24 @@ public class LoanTestRecordWarehouse {
         Product2 productLoanMATerm20Rate599 = getDefaultProduct('MA', 5.99, 20, 7, '750', '999', capitalPool.Id);
         Product2 productLoanMATerm20Rate699 = getDefaultProduct('MA', 6.99, 20, 7, '700', '749', capitalPool.Id);
         Product2 productLoanMATerm20Rate725 = getDefaultProduct('MA', 7.25, 20, 5, '681', '699', capitalPool.Id);
+
         productLoanMATerm20Rate725.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate725.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate725.Program__c = 'MSLP';
         productLoanMATerm20Rate725.IBLS_Category__c = 'Category 1';
         productLoanMATerm20Rate725.Lender_of_Record__c = 'Avidia';
         Product2 productLoanMATerm20Rate875 = getDefaultProduct('MA', 8.75, 20, 5, '681', '699', capitalPool.Id);
+
         productLoanMATerm20Rate875.Loan_Financing_Fee_Terms__c = 'No Financing Fee';
         productLoanMATerm20Rate875.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productLoanMATerm20Rate875.Program__c = 'MSLP';
         productLoanMATerm20Rate875.IBLS_Category__c = 'Category 2';
         productLoanMATerm20Rate875.Lender_of_Record__c = 'Avidia';
+        
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '681', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
         Product2 productLoanNY = getDefaultProduct('NY', 1.23, 5, 5, '681', '699', capitalPool.Id);
+
         Product2 productNonLoan = getCSProduct();
 
         return new List<Product2>{productLoanMATerm10Rate599, productLoanMATerm10Rate699,
@@ -130,7 +134,6 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm10Rate699'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -148,7 +151,6 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 120,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm10Rate725'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -166,7 +168,6 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 240,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm20Rate699'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
@@ -183,7 +184,6 @@ public class LoanTestRecordWarehouse {
                                                 Custom_Id__c = 'test',
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
-                                                Loan_Term__c = 240,
                                                 Product_Program__c = 'MSLP',
                                                 Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
@@ -438,7 +438,6 @@ public class LoanTestRecordWarehouse {
                                     Requested_Loan_Amount__c = 25000,
                                     DOER_Solar_Loan__c = false,
                                     Custom_Id__c = 'test',
-                                    Loan_Term__c = 120,
                                     Unfinished_Lead__c = true,
                                     Partner_Lookup__c = partner.Id,
                                     Bs_Sales_ID__c = salesRep.Id,
@@ -465,7 +464,6 @@ public class LoanTestRecordWarehouse {
                                     Unfinished_Lead__c = true,
                                     Partner_Lookup__c = partner.Id,
                                     Bs_Sales_ID__c = salesRep.Id,
-                                    Loan_Term__c = 120,
                                     Annual_Income_Currency__c = 150000,
                                     Product__c = productMap.get('BWSL'),
                                     Product_Program__c = 'BlueWave Solar Loan',
@@ -489,7 +487,6 @@ public class LoanTestRecordWarehouse {
                                    Unfinished_Lead__c = true,
                                    Partner_Lookup__c = partner.Id,
                                    Bs_Sales_ID__c = salesRep.Id,
-                                   Loan_Term__c = 120,
                                    Annual_Income_Currency__c = 150000,
                                    Product__c = productMap.get('MSLP'),
                                    Automatic_Product_Assignment__c = true,
@@ -516,7 +513,6 @@ public class LoanTestRecordWarehouse {
             Unfinished_Lead__c = true,
             Partner_Lookup__c = partner.Id,
             Bs_Sales_ID__c = salesRep.Id,
-            Loan_Term__c = 120,
             Annual_Income_Currency__c = 150000,
             Product__c = productMap.get('NY'),
             Automatic_Product_Assignment__c = true,

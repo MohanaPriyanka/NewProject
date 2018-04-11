@@ -88,6 +88,8 @@
 
         if (errorMessage.length > 0) {
             return errorMessage;
+        } else {
+            return null;
         }
     },
 

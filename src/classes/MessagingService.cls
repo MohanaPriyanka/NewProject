@@ -8,7 +8,22 @@
 public class MessagingService {
     public static Messaging.Email[] emailsSent;
 
-    public static EmailTemplate getHtml (String templateDevName) {       
+    @AuraEnabled 
+    public static Boolean createAndSendDynamicTemplateEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
+        EmailTemplate template = getHtml(emailTemplateName);
+        String templateHtml = template.HtmlValue;
+        templateHtml = templateHtml.replace(templateField, replaceText);
+
+        Messaging.SendEmailResult[] result = createAndSendEmail(templateHtml, orgWideEmail, subjectLine, addressList);
+        for(Messaging.SendEmailResult rr : result){
+            if(!rr.IsSuccess()){
+                return false;
+            }
+        } 
+        return true;
+    }
+
+    public static EmailTemplate getHtml (String templateDevName) {
         EmailTemplate template = [SELECT Id, HtmlValue, Body 
                                   FROM EmailTemplate 
                                   WHERE DeveloperName = : templateDevName];

@@ -36,7 +36,7 @@
         urlEvent.setParams({
             "url": btnClickedWithSlash
         });
-        urlEvent.fire();        
+        urlEvent.fire();
     },
 
     navigateToCommunitySolarApplication : function(component, event, helper) {
@@ -61,21 +61,16 @@
     },
 
     sendCSApplication : function(component, event, helper) {
-        var actionSendEmail = component.get("c.sendAnEmail");
-        const toEmail = component.get("v.emailInput");
-        const salesCode = component.get("v.referralCode");
+        var emailAddressList = [];
+        emailAddressList.push(component.get("v.emailInput"));
+        var actionSendEmail = component.get("c.sendCommunitySolarApplication");
 
         actionSendEmail.setParams({
-            "emailTemplateName": 'SLP_Community_Solar_Application',
-            "orgWideEmail": 'customercare@bluewavesolar.com',
-            "subjectLine": 'Start Your Community Solar Application Here',
-            "addressList": toEmail,
-            "templateField" : '{!ReferralCode}',
-            "replaceText" : salesCode,
+            "emailAddress": emailAddressList
         }); 
 
         actionSendEmail.setCallback(this,function(resp){
-            if(resp.getState() === 'SUCCESS' && resp.getReturnValue() === true) {
+            if(resp.getState() === 'SUCCESS' && resp.getReturnValue()) {
                 component.set("v.emailSuccess", true);
             } else {
                 alert('Please enter a valid email address');

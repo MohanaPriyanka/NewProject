@@ -1,0 +1,18 @@
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
+  <aura:set attribute="STAGENAME" value="NAV_Complete"/>
+  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:if isTrue="{!v.page == 'Complete'}">
+        <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center">
+              <p><b class="slds-text-body--large--blue"> Your submission has been received. You will receive an email from BlueWave momentarily. </b></p>
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center">
+              <p><b class="slds-text-body--large--stream"> Thank you!</b></p>
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+  </aura:if>
+</aura:component>

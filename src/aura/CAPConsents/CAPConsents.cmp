@@ -56,8 +56,17 @@
   <aura:if isTrue="{!v.page == 'SREC'}">
     <div class="slds-form-element__row">
       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-        <label class="slds-form-element__label slds-text-heading--medium">
-          <b>{!$Label.c.CD_SREC} <a class="proximaNovaBlue" href="http://bluewavesolar.com/home-solar-loan-faqs/" target="_blank"> here</a></b>
+        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+          Please note that the current SREC II solar program will be replaced by a new solar program called the SMART (Solar Massachusetts Renewable Target) program. While Massachusetts will continue to provide incentives based on the production of your solar system, your payments and the way you receive them will change under the SMART program. You can read more details on this transition <a href="https://www.mass.gov/service-details/development-of-the-solar-massachusetts-renewable-target-smart-program" target="_blank">here.</a>
+        </label>
+        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+          The timing of the transition from the SREC program to the SMART program, currently expected to occur in summer 2018, has not yet been finalized by the MA Department of Energy Resources. The incentives you will receive are based on the date your solar system is connected to the electric grid; if your system is connected after the SMART program begins, your payments will be issued under that program. When the start date of the SMART program has been finalized, we will inform all MA loan customers and approved or in-process applicants.
+        </label>
+        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+          <b>Because of this transition, although you are signing an SREC agreement as part of your loan application, this agreement will not come into effect if the SMART program starts before your system is connected to the grid.</b> If your system falls under the SMART program, your incentive payments will be issued according to the terms of that program. If that is the case, we will notify you and provide additional details as soon as they are available.
+        </label>
+        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+          You have chosen the following SREC option with your installer but you may select a different option below.
         </label>
         <div class="slds-form-element__control">
           <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">

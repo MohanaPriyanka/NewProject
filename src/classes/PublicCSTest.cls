@@ -108,7 +108,6 @@ public class PublicCSTest {
                             Shared_Solar_System__c = sss1.Id,
                             StageName = 'Complete',
                             Product__c = publicCSProduct.Id,
-                            CS_Capacity_Allocated__c = 25,
                             CloseDate = System.today());
         insert new List<Opportunity>{opportunityPublic};
 
@@ -134,7 +133,7 @@ public class PublicCSTest {
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 400000,
-                Due_Date__c = myDateJan,
+                Net_Metering_Rate_Applied__c = 0.1125,
                 Billing_Period_End_Date__c = myDateFeb,
                 Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 45000,
@@ -147,7 +146,7 @@ public class PublicCSTest {
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
                 Production__c = 60000,
-                Due_Date__c = myDateFeb,
+                Net_Metering_Rate_Applied__c = 0.05, 
                 Billing_Period_End_Date__c = myDateMar,
                 Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 3000,

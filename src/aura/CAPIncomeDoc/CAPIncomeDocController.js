@@ -2,7 +2,8 @@
     handleNavEvent : function(component, event, helper) {
         helper.handleNavEvent(component, event, helper, 'EmployedQuestion');
         var now = new Date();
-        if (now.getMonth() <= 2) {
+        // getMonth starts at 0, and we need to collect W-2s through April (per Mickey at Avidia)
+        if (now.getMonth() <= 3) {
             component.set('v.inFirstQuarter', true);
             component.set('v.lastYear', now.getFullYear() - 1);
         } else {

@@ -27,6 +27,7 @@ public without sharing class SLPCustomerHandler {
       String partnerProfileString = profile.licenseType + '/' + profile.referralCode + '/' + profile.csEnabled;
       return partnerProfileString;
   }
+
   //The getCustomerInformation method returns an equipment list to show system information, and other customer information on the customer window
   @AuraEnabled
   public static Residential_Equipment__c getCustomerInformation (String loanId) {
@@ -94,7 +95,7 @@ public without sharing class SLPCustomerHandler {
     List<Disbursal__c> disbursalList = new List<Disbursal__c>();
     String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Disbursal_Method__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
     disbursalQuery += '      FROM Disbursal__c' ;
-    disbursalQuery += '      WHERE Status__c = \'' + 'Complete' + '\' ' ;
+    disbursalQuery += '      WHERE Status__c = \'' + 'Disbursed' + '\' ' ;
     disbursalQuery += '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
 
     if (loanId != null && searchValue == null) {
@@ -118,7 +119,7 @@ public without sharing class SLPCustomerHandler {
     List<Disbursal__c> disbursalList = new List<Disbursal__c>();
     String disbursalQuery = 'SELECT Id, Name, Partner_Confirmation__c, Disbursal_Method__c, Date_of_Disbursal__c, Loan__r.Name, Disbursal_Percentage__c, Status__c, Amount__c, Type__c, Loan__r.Sales_Agent__r.Id ' ;
     disbursalQuery += '      FROM Disbursal__c' ;
-    disbursalQuery += '      WHERE Status__c = \'' + 'Not yet disbursed' + '\' ' ;
+    disbursalQuery += '      WHERE Status__c != \'' + 'Disbursed' + '\' ' ;
     disbursalQuery += '      AND Partner__r.Id =  \'' + profile.partnerId +  '\' ' ;
 
     if (loanId != null && searchValue == null) {
@@ -252,4 +253,21 @@ public without sharing class SLPCustomerHandler {
           WHERE Id = :loanId];
       return DisbursalHandler.createDisbursalsFromDisbursalTermsField(loan)[0].Amount__c;
   }
+
+    @AuraEnabled 
+    public static Boolean sendCommunitySolarApplication (String[] emailAddress) {
+        String startApplicationUrl;
+        if (profile.csApplicationType == 'CSAP') {
+            String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+            startApplicationUrl = host + 'apply/s/csap';
+            if (profile.partnerId != null && profile.salesRepId != null) {
+              startApplicationUrl += '?partnerId=' + profile.partnerId + '&salesRepId=' + profile.salesRepId;
+            }
+       } else if (profile.csApplicationType == 'FormAssembly') {
+            startApplicationUrl = 'https://forms.bluewaverenewables.com/381687?tfa_531=' + profile.referralCode;
+       }
+       return MessagingService.createAndSendDynamicTemplateEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Start Your Community Solar Application Here', 
+                                                                     emailAddress, 'applicationURL', startApplicationUrl);
+    }
 }
+

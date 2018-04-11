@@ -7,7 +7,13 @@
 public with sharing class ReferralCodeHandler {
 
     public void OnBeforeInsert (Lead[] newLead) {
-        assignAcquisitionObjectFromCustomId(newLead);
+        List<Lead> leadsToUpdate = new List<Lead>();
+        for (Lead lead : newLead) {
+            if (lead.Product_Line__c == 'Community Solar') {
+                leadsToUpdate.add(lead);
+            }
+        }
+        assignAcquisitionObjectFromCustomId(leadsToUpdate);
     }
 
     public void OnBeforeUpdate(Map<Id, Lead> oldLeadMap, Map<Id, Lead> newLeadMap) {
@@ -21,10 +27,10 @@ public with sharing class ReferralCodeHandler {
     }
 
     public void assignAcquisitionObjectFromCustomId(list<Lead> leads) {
+        BSST__c holderPartner = new BSST__C();
         List <String> leadReferralCodeList = new List<String>();
         Map <String, Contact> contactReferralMap = new Map <String, Contact>();
         Map <String, BSST__c> partnerMap = new Map <String, BSST__c>();
-
         for (Lead leadRecord : leads) {
             if (leadRecord.Custom_ID__c != null) {
                 leadReferralCodeList.add(leadRecord.Custom_Id__c);
@@ -46,27 +52,30 @@ public with sharing class ReferralCodeHandler {
                                 WHERE Custom_Id__c IN : leadReferralCodeList]) {
             contactReferralMap.put(contact.Custom_Id__c, contact);
         }
-
         for (lead leadRecord : leads) {
-            BSST__c holderPartner = partnerMap.get('holder');
-            if (leadRecord.Custom_Id__c == null && holderPartner != null) {
-                leadRecord.Partner_Lookup__c = holderPartner.Partner__r.Id;
-                leadRecord.Bs_sales_id__c = holderPartner.Id;
-                leadRecord.Partner_Email__c = holderPartner.Email__c;
-            } else {
-                if (partnerMap.containsKey(leadRecord.Custom_Id__c)) {
-                    BSST__c partner = partnerMap.get(leadRecord.Custom_Id__c);
-                    leadRecord.Partner_Lookup__c = partner.Partner__r.Id;
-                    leadRecord.Bs_sales_id__c = partner.Id;
-                    leadRecord.Partner_Email__c = partner.Email__c;
-                } else if (contactReferralMap.containsKey(leadRecord.Custom_Id__c)) {
-                    Contact contact = contactReferralMap.get(leadRecord.Custom_Id__c);
-                    leadRecord.Customer_referral__c = contact.Id;
-                    leadRecord.Referral_email__c = contact.Email;
-                } else if (leadRecord.Product_Line__c == 'Community Solar' && holderPartner != null) {
+            if (leadRecord.Application_Source_Phase_1__c != 'CSAP with Partner') {
+                if (leadRecord.Partner_Lookup__c == null && leadRecord.Bs_Sales_Id__c == null) {
+                    holderPartner = partnerMap.get('holder');
+                }
+                if (leadRecord.Custom_Id__c == null && holderPartner != null) {
                     leadRecord.Partner_Lookup__c = holderPartner.Partner__r.Id;
                     leadRecord.Bs_sales_id__c = holderPartner.Id;
                     leadRecord.Partner_Email__c = holderPartner.Email__c;
+                } else {
+                    if (partnerMap.containsKey(leadRecord.Custom_Id__c)) {
+                        BSST__c partner = partnerMap.get(leadRecord.Custom_Id__c);
+                        leadRecord.Partner_Lookup__c = partner.Partner__r.Id;
+                        leadRecord.Bs_sales_id__c = partner.Id;
+                        leadRecord.Partner_Email__c = partner.Email__c;
+                    } else if (contactReferralMap.containsKey(leadRecord.Custom_Id__c)) {
+                        Contact contact = contactReferralMap.get(leadRecord.Custom_Id__c);
+                        leadRecord.Customer_referral__c = contact.Id;
+                        leadRecord.Referral_email__c = contact.Email;
+                    } else if (leadRecord.Product_Line__c == 'Community Solar' && holderPartner != null) {
+                        leadRecord.Partner_Lookup__c = holderPartner.Partner__r.Id;
+                        leadRecord.Bs_sales_id__c = holderPartner.Id;
+                        leadRecord.Partner_Email__c = holderPartner.Email__c;
+                    }
                 }
             }
         }

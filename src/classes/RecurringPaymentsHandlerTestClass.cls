@@ -157,21 +157,18 @@ Static testMethod void RecurringPaymentsHandlerTestClass() {
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss1.Id,
                                                                                 StageName = 'Complete',
-                                                                                CS_Capacity_Allocated__c = 25,
                                                                                 CloseDate = System.today()));
 
  Opportunity opportunitytwo = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss2.Id,
                                                                                 StageName = 'Complete',
-                                                                                CS_Capacity_Allocated__c = 20,
                                                                                 CloseDate = System.today())); 
 
 Opportunity opportunitythree = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Nick Speyer',
                                                                                 AccountId = accountB.Id,
                                                                                 Shared_Solar_System__c = sss2.Id,
                                                                                 StageName = 'Complete',
-                                                                                CS_Capacity_Allocated__c = 12,
                                                                                 CloseDate = System.today())); 
                                                                                 
  insert opportunityone;

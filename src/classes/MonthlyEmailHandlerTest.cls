@@ -57,7 +57,6 @@ public class MonthlyEmailHandlerTest{
                                                    StageName = 'Complete',
                                                    Product_Line__c = 'Community Solar',
                                                    Disable_Emails__c = False,
-                                                   CS_Capacity_Allocated__c = 25,
                                                    CloseDate = System.today());
     insert opportunityone;
 

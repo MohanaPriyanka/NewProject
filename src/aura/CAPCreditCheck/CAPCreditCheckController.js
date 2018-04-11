@@ -54,7 +54,7 @@
             if(resp.getState() == "SUCCESS") {
                 window.setTimeout(function() {
                     $A.util.removeClass(component.find("creditStatus"), 'noDisplay');
-                    component.set("v.creditStatusText", "Sending request to TransUnion");
+                    component.set("v.creditStatusText", "Sending request to TransUnion...");
                 }, 3000);
                 window.setTimeout(function() {
                     component.set("v.creditStatusText", "Waiting for TransUnion to process...");

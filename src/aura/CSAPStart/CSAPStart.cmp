@@ -1,0 +1,44 @@
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="leadEmail" type="String"/>
+  
+  <aura:set attribute="STAGENAME" value="NAV_Getting_Started"/>
+  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <!-- LOGIN FORM -->
+  <aura:if isTrue="{!v.page == 'Login'}">
+    <div aria-labelledby="loginForm">
+        <fieldset class="slds-box slds-theme--default slds-container_center">
+        <legend id="loginForm" class="slds-text-heading--small slds-p-vertical--medium">
+          Login
+        </legend>
+        <form class="slds-form--stacked">
+          Enter the email associated with this loan application to confirm your identity before starting or continuing your application.
+          <lightning:layout horizontalAlign="spread">
+            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:input name="leadEmail"
+                               aura:id="field"
+                               type="email"
+                               placeholder="yourname@email.com"
+                               label="Email"
+                               value="{!v.leadEmail}"
+                               required="true"/> 
+            </lightning:layoutItem>
+          </lightning:layout>
+
+          <div class="slds-clearfix slds-p-top_medium">
+            <div class="slds-float_left">
+            </div>
+            <div class="slds-float_right">
+              <lightning:button label="Next" onclick="{!c.login}"/>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </aura:if>
+  <!-- / LOGIN FORM -->
+</aura:component>

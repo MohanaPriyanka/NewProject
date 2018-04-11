@@ -5,12 +5,15 @@ private class PCRApprovalHandlerTest {
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
     }
 
+
     static testMethod void testNonDOERPCRApproval() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        
         Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
         mslp1.Program__c = 'MSLP';
         mslp1.IBLS_Category__c = 'Category 1';
+        
         Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
         mslp2.Program__c = 'MSLP';
         mslp2.IBLS_Category__c = 'Category 2';
@@ -60,11 +63,20 @@ private class PCRApprovalHandlerTest {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
         insert coApplicantAccount;
+
         Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        bwsl1.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        bwsl1.Lender_of_Record__c = 'Avidia';
+
         Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp1.Lender_of_Record__c = 'Avidia';
         mslp1.Program__c = 'MSLP';
         mslp1.IBLS_Category__c = 'Category 1';
+
         Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp2.Lender_of_Record__c = 'Avidia';
         mslp2.Program__c = 'MSLP';
         mslp2.IBLS_Category__c = 'Category 2';
         insert new List<Product2>{bwsl1, mslp1, mslp2};
@@ -135,9 +147,13 @@ private class PCRApprovalHandlerTest {
     static testMethod void testDOERLowFICOPCRApproval() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
-        mslp1.Program__c = 'MSLP';
+        mslp1.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp1.Lender_of_Record__c = 'Avidia';
         mslp1.IBLS_Category__c = 'Category 2';
+
         Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '650', '680', null);
+        mslp2.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp2.Lender_of_Record__c = 'Avidia';
         mslp2.Program__c = 'MSLP';
         mslp2.IBLS_Category__c = 'Category 2';
         insert new List<Product2>{mslp1, mslp2};
@@ -167,10 +183,16 @@ private class PCRApprovalHandlerTest {
 
     static testMethod void testPreQualified() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
-        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
+
+        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp.Lender_of_Record__c = 'Avidia';
         mslp.Program__c = 'MSLP';
         insert new List<Product2>{productVar, mslp};
+        
         Lead leadAG = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
         insert leadAG;
 
@@ -210,7 +232,9 @@ private class PCRApprovalHandlerTest {
 
     static testMethod void testExclude() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
         insert productVar;
 
         Test.startTest();
@@ -481,9 +505,12 @@ private class PCRApprovalHandlerTest {
     static testMethod void testNoIBLSInDTI() {
         Test.startTest();
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp.Lender_of_Record__c = 'Avidia';
         mslp.Program__c = 'MSLP';
         insert mslp;
+        
         Lead lead = getLead(60000, 10000, null, true, false, partner.Id);
         insert lead;
 
@@ -690,8 +717,13 @@ private class PCRApprovalHandlerTest {
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
 
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
-        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
+        
+        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp.Lender_of_Record__c = 'Avidia';
         mslp.Program__c = 'MSLP';
         insert new List<Product2>{
             productVar, mslp

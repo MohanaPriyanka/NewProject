@@ -80,8 +80,12 @@
 <div>
    <div class="slds-grid">
     <div class="slds-col">
-      <span class="slds-text-heading--small">Download CSV </span>&nbsp;
-      <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadCsv}" alternativeText="Download"/>
+      <span class="slds-text-heading--small">Download All Data CSV </span>&nbsp;
+      <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadCsv}" alternativeText="Download" class="slds-p-right_large"/>
+      <aura:if isTrue="{!v.IsProdUpdate}">
+        <span class="slds-text-heading--small">Download Transfer Sheet CSV </span>&nbsp;
+        <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadTransferSheet}" alternativeText="Download"/>
+      </aura:if>
     </div>
    </div>
 </div>

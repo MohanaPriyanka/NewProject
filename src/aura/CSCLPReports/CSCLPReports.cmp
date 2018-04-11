@@ -1,0 +1,24 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="CSCLPController" access="global">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<aura:attribute name="reports" type="Object"/>
+	<aura:attribute name="reportIds" type="List"/>
+	<aura:attribute name="reportNames" type="List"/>
+	<aura:attribute name="sssNames" type="List"/>
+	<aura:attribute name="selectedProject" type="String"/>
+	<aura:attribute name="selectedReportName" type="String"/>
+	<aura:attribute name="selectedReportId" type="String"/>
+	<aura:attribute name="clientId" type="String"/>
+	<aura:handler name="change" value="{!v.selectedReportName}" action="{!c.setReportId}"/>
+	<div class="slds-form-element">
+		<div class="slds-grid">
+			<div class="slds-col slds-size_1-of-4">
+				<c:BluewavePicklist options="{!v.reportNames}" label="Select Report" value="{!v.selectedReportName}" default="{!v.reportNames[0]}"/>
+			</div>
+		</div>
+	</div>
+	<aura:iteration var="reportId" items="{!v.reportIds}" indexVar="i">
+		<aura:if isTrue="{!reportId == v.selectedReportId}">
+			<c:LightningReport reportId="{!reportId}" clientId="{!v.clientId}" expandAllButton="true" selectedReport="{!v.selectedReportName}"/>
+		</aura:if>
+	</aura:iteration>
+</aura:component>

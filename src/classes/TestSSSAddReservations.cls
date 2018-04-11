@@ -80,44 +80,22 @@ Customer_group__c = 'Anchor',
 Personal_Credit_Report2__c = pcr1.Id,
 waitlist__c = FALSE, 
 closeDate = myDate, 
-CS_Capacity_Allocated__c = 22,
-//CS_Capacity_Allocated__c = 100, 
 shared_solar_system__c = myProject.id ); 
 
 insert newOpportunity3;
 
-     
-/*
-Opportunity newOpportunity2 = new Opportunity(name = 'Cole3', 
-account = myAccount, 
-project_assignment__c = 'Manual', 
-type = 'New Business', 
-stageName = 'Pending BlueWave Signature',
-Product_line__c = 'Community Solar',
-Customer_group__c = 'Residential', 
-Personal_Credit_Report2__c = pcr1.Id,
-waitlist__c = FALSE, 
-closeDate = myDate, 
-//CS_Capacity_Allocated__c = 100, 
-shared_solar_system__c = myProject.id ); 
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(Account__c = myAccount.Id,
+                                                                Annual_Cost_of_Electricity__c = 500000,
+                                                                Name_on_Account__c = 'Anchor');
+        insert ual2;
 
-insert newOpportunity2;
+        Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(Utility_Account_Log__c = ual2.Id,
+                                                                Name = '102342340',
+                                                                Opportunity__c = newOpportunity3.id,
+                                                                Customer_Subscription_KW_DC_STATIC__c = 22,
+                                                                Annual_Cost_of_Electricity__c = 500000);
+        insert uas2;
 
-
-        Utility_Account_Log__c ual3 = new Utility_Account_Log__c(Account__c = myAccount.Id,
-                                                                Annual_Cost_of_Electricity__c = 10000,
-                                                                Name_on_Account__c = 'Joey Chan');
-        insert ual3;
-
-        Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(Utility_Account_Log__c = ual3.Id,
-                                                                Name = '012348932',
-                                                                Opportunity__c = newOpportunity2.id,
-                                                                Customer_Subscription_KW_DC_STATIC__c = 14,
-                                                                Annual_Cost_of_Electricity__c = 1200);
-        insert uas3;
-
-        system.debug(uas3);
-    */
 update myProject;
 
 List <Shared_Solar_System__c> ssslist = [SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
@@ -140,74 +118,3 @@ test.stopTest();
  
 }
 }
-
-/* OLD VERSION ****_________________
-@isTest
-private class TestSSSAddReservations {
-
-Static testMethod void SSSAddReservations(){
-
-Account myAccount = new Account(name = 'Test Account');
-insert myAccount;
-
-Date myDate = Date.newInstance(2015, 2, 17);
-shared_solar_system__c myProject = new shared_solar_system__c(name = 'Tester');
-insert myProject;
-
-Opportunity newOpportunity = new Opportunity(name = 'Cole', 
-account = myAccount, 
-project_assignment__c = 'Manual', 
-Shared_Solar_System_picklist__c = 'Tester', 
-type = 'New Business', 
-stageName = 'Complete',
-Product_line__c = 'Community Solar',
-Customer_group__c = 'Residential',  
-waitlist__c = FALSE, 
-closeDate = myDate, 
-CS_Capacity_Allocated__c = 100, 
-shared_solar_system__c = myProject.id ); 
-
-Opportunity newOpportunity3 = new Opportunity(name = 'Cole2', 
-account = myAccount, 
-project_assignment__c = 'Manual', 
-Shared_Solar_System_picklist__c = 'Tester', 
-type = 'New Business', 
-stageName = 'Complete',
-Product_line__c = 'Community Solar',
-Customer_group__c = 'Anchor',  
-waitlist__c = FALSE, 
-closeDate = myDate, 
-CS_Capacity_Allocated__c = 100, 
-shared_solar_system__c = myProject.id ); 
-
-Opportunity newOpportunity2 = new Opportunity(name = 'Cole3', 
-account = myAccount, 
-project_assignment__c = 'Manual', 
-Shared_Solar_System_picklist__c = 'Tester', 
-type = 'New Business', 
-stageName = 'Pending BlueWave Signature',
-Product_line__c = 'Community Solar',
-Customer_group__c = 'Residential', 
-waitlist__c = FALSE, 
-closeDate = myDate, 
-CS_Capacity_Allocated__c = 100, 
-shared_solar_system__c = myProject.id ); 
-
-test.startTest();
-
-insert newOpportunity;
-insert newOpportunity2;
-insert newOpportunity3;
-update newOpportunity;
-update newOpportunity2;
-update newOpportunity3;
-
-update myProject;
-
-
-test.stopTest();
-
- 
-}
-}
-*/

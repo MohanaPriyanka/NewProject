@@ -129,14 +129,12 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss1.Id,
                                                                                 StageName = 'Complete',
-                                                                                CS_Capacity_Allocated__c = 25,
                                                                                 CloseDate = System.today()));
 
  Opportunity opportunitytwo = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss2.Id,
                                                                                 StageName = 'Complete',
-                                                                                CS_Capacity_Allocated__c = 20,
                                                                                 CloseDate = System.today())); 
                                                                                 
  insert opportunityone;

@@ -33,6 +33,7 @@ public without sharing class SLPAddCustomer {
         if (newLead.LASERCA__Home_State__c.length() > 2) {
             newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
         }
+        
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Unfinished_Lead__c = true;
@@ -55,7 +56,6 @@ public without sharing class SLPAddCustomer {
 
     @AuraEnabled
     public static Lead updateLeadRecord (Lead updatedLead) {
-        system.debug(updatedLead);
         String propertyString = updatedLead.firstName + ' ' + updatedLead.lastName;
         updatedLead.Company = propertyString;
         updatedLead.Email_Re_Enter__c = updatedLead.Email;
@@ -139,7 +139,8 @@ public without sharing class SLPAddCustomer {
                  WHERE RecordTypeId = :partnerRT.Id LIMIT 1)
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];
-    }     
+    }  
+       
     @AuraEnabled 
     public static String sendApplication (Lead newLead, Decimal loanAmount) {
         String startApplicationUrl;

@@ -144,7 +144,7 @@ public class LoanHandlerTestClass {
                     System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }
             }
-        }         
+        }
     }
 
     @isTest static void testVeteranPartnerTask() {
@@ -159,7 +159,6 @@ public class LoanHandlerTestClass {
             Product_Line__c = 'Residential Loan',
             LASERCA__Home_State__c = 'MA',
             Requested_Loan_Amount__c = 25000,
-            Loan_Term__c = 120,
             Unfinished_Lead__c = true,
             Partner_Lookup__c = partner.Id,
             Bs_Sales_ID__c = salesRep.Id,
@@ -217,12 +216,12 @@ public class LoanHandlerTestClass {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }              
         }
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c,
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
                                       WHERE DOER_Solar_Loan__c = FALSE
-                                      AND Community_Solar_State__c = 'MA']) {
+                                      AND (State_ab__c = 'MA' OR Community_Solar_State__c ='MA')]) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
             System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
@@ -232,7 +231,8 @@ public class LoanHandlerTestClass {
             } else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
                 System.assertEquals(5, oppRecord.Partner_Tasks__r.size());
-            }                       
+            }
+
 
             oppRecord.Contract_Status__c = 'Completed';
             oppListToUpdate.add(oppRecord);
@@ -279,13 +279,13 @@ public class LoanHandlerTestClass {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }                   
         }
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Product__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c, Disbursal_2_Mechanical_Install_Checkbox__c, 
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Product__c, 
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r),
                                       (SELECT Id, Product__r.Disbursal_Terms__c FROM Loans__r)
                                       FROM Opportunity
                                       WHERE DOER_Solar_Loan__c = FALSE
-                                      AND Community_Solar_State__c = 'MA']) {
+                                      AND (State_ab__c = 'MA' OR Community_Solar_State__c ='MA')]) {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
             System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
@@ -311,8 +311,8 @@ public class LoanHandlerTestClass {
             }else {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
                     System.assertEquals('Pending', partnerTaskAssertion.Status__c);
-                }                 
-            }                       
+                }
+            }
         }
         Test.stopTest();
     }
@@ -588,7 +588,7 @@ public class LoanHandlerTestClass {
                 System.assert(partnerTaskAssertion.Status__c == 'Pending');
             }                   
         }
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Disbursal_1_Contract_Signature_Checkbox__c, Disbursal_3_Full_Install_Checkbox__c, Disbursal_Type_Contract__c, Disbursal_Type_Interconnect__c,
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
@@ -610,30 +610,6 @@ public class LoanHandlerTestClass {
         }
 
         update oppListToUpdate;
-
-        for (Opportunity opp : oppListToUpdate) {
-            opp.Disbursal_1_Contract_Signature_Checkbox__c = myDate;
-            opp.Disbursal_3_Full_Install_Checkbox__c = myDate;
-            opp.Disbursal_Type_Contract__c = 'ACH Disbursal';
-            opp.Disbursal_Type_Interconnect__c = 'ACH Disbursal';
-        }
-
-        update oppListToUpdate;
-
-        for (Loan__c loanRecord : [SELECT Id, DOER_Solar_Loann__c, (SELECT Id,Date_of_Disbursal__c, Status__c, Disbursal_Method__c FROM Disbursals__r) 
-                                   FROM Loan__c 
-                                   WHERE DOER_Solar_Loann__c = true]) {
-            if (!loanRecord.DOER_Solar_Loann__c){
-                System.assertEquals(3, loanRecord.Disbursals__r.size());
-            }else {
-                System.assertEquals(2, loanRecord.Disbursals__r.size());
-            }
-            for (Disbursal__c disbursal : loanRecord.Disbursals__r) {
-                System.assertEquals(disbursal.Date_of_Disbursal__c, myDate);
-                System.assertEquals(disbursal.Status__c, 'Complete');
-                System.assertEquals(disbursal.Disbursal_Method__c, 'ACH');
-            }
-        }
 
         for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
                                                      FROM Partner_Task__c 

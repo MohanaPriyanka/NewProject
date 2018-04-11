@@ -42,41 +42,6 @@ private class LeadTriggerHandlerTest {
         sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
         insert sss1;
         
-     
-        //Shared_Solar_System__c sss2 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-        //                                                                                                                        Service_Territories__c = 'WCMA',
-        //                                                                                                                        Open__c = true,
-        //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
-        //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
-        //                                                                                                                        Total_System_Size_kWh_DC__c = 100,
-        //                                                                                                                        System_Utility__c = 'National Grid',
-        //                                                                                                                        Credit_Score_Requirement__c = 200,
-        //                                                                                                                        Assignment_order__c = '2'));
-        //Shared_Solar_System__c sss3 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P3',
-        //                                                                                                                        Service_Territories__c = 'WCMA',
-        //                                                                                                                        Open__c = true,
-        //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
-        //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
-        //                                                                                                                        Total_System_Size_kWh_DC__c = 100,
-        //                                                                                                                        System_Utility__c = 'National Grid',
-        //                                                                                                                        Credit_Score_Requirement__c = 200,
-        //                                                                                                                        Assignment_order__c = '3'));
-
-
-        //Shared_Solar_System__c sss4 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P4',
-        //                                                                                                                        Service_Territories__c = 'WCMA',
-        //                                                                                                                        Open__c = true,
-        //                                                                                                                        Reserved_Capacity_kW_DC__c = '100',
-        //                                                                                                                        Capacity_Committed_kW_DC__c = 100,
-        //                                                                                                                        Total_System_Size_kWh_DC__c = 100,
-        //                                                                                                                        System_Utility__c = 'National Grid',
-        //                                                                                                                        Credit_Score_Requirement__c = 200,
-        //                                                                                                                        Assignment_order__c = '4'));
-        //insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
-
-        system.debug(sss1.Capacity_Available_to_be_Reserved__c);
-        system.debug(sss1);      
-        
         Partner__c Partner = new Partner__c(Name = 'Boston Solar');
         insert Partner;
         
@@ -126,7 +91,6 @@ private class LeadTriggerHandlerTest {
         lead2.Status = 'Qualified';
         update lead;
 
-        System.debug([Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id]);
 
 
         Utility_Account_Log__c ual = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Lead__c = lead.Id,
@@ -141,8 +105,6 @@ private class LeadTriggerHandlerTest {
 
 
         Test.startTest();
-        System.debug('Starting LeadTriggerHandlerTest');
-        System.debug('Debug SSS - ' + [Select Id, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c, System_Utility__c From Shared_Solar_System__c Where Id = :sss1.Id ]);
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
@@ -158,28 +120,42 @@ private class LeadTriggerHandlerTest {
         ld.setDoNotCreateOpportunity(true);
         Database.LeadConvertResult ldr = Database.convertLead(ld);
        
-        System.debug('Verifying the opportunity:');
         List<Opportunity> oppList = [Select Id, Name, AccountId, Shared_Solar_System__c, Shared_Solar_System__r.Name From Opportunity ];
-        for(Opportunity opp : oppList){
-            System.debug(opp);
-        }
+
         System.assertEquals(1, oppList.size());
         Test.stopTest();
-    }
+    } 
 
-    @isTest static void testCaseConversion() {
+    @isTest static void testCaseandContactConversion() {
         Map<Id,Id> leadContactIdMap = new Map<Id,Id>();
+        Map<Id,Id> leadAccountIdMap = new Map<Id,Id>();
+        List<Id> accountIdList = new List<Id>();
+
+        Account accountA = new Account (Name = 'Parent AccountA') ;
+
+        insert accountA;
+
+        Contact contactA = new Contact (FirstName = 'ParentA',
+                                        LastName = 'Last',
+                                        AccountId = accountA.Id,
+                                        Email = 'jpentaleri@bluewavesolar.com');
+        insert contactA;
 
         Lead leadOne = new Lead (   FirstName = 'leadOne',
                                     LastName = 'Test',
                                     Company = 'CompanyCo',
                                     Email = 'EmailOne@bluewavesolar.com',
+                                    Parent_Account__c = accountA.Id,
+                                    Product_Line__c = 'Community Solar',
+                                    Contacted__c = true,
                                     Status = 'Qualified');
 
+        // NOT COMMUNITY SOLAR, DO NOT DELETE CONTACT
         Lead leadTwo = new Lead (   FirstName = 'leadTwo',
                                     LastName = 'Test',
-                                    Company = 'CompanyCo',
+                                    Company = 'CompanyOther',
                                     Email = 'EmailTwo@bluewavesolar.com',
+                                    Contacted__c = true,
                                     Status = 'Qualified');
         List<Lead> leadList = new List<Lead>{leadOne, leadTwo};
         insert leadList;
@@ -199,35 +175,51 @@ private class LeadTriggerHandlerTest {
         Case caseThree = new Case (
             Subject = 'Test Case Three' );
 
-        insert new List<Case>{caseOne, caseTwo, caseThree};
+        insert new List<Case>{caseOne, caseTwo, caseThree}; 
         Test.startTest();    
 
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
-        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
 
-        for (Lead l :leadList){
+        for (Lead l : leadList){
             Database.LeadConvert lc = new Database.LeadConvert();
             lc.setLeadId(l.Id);
             lc.setConvertedStatus(convertStatus.MasterLabel);
-            leadConverts.add(lc);
+            Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+            System.assert(lcr.isSuccess());
         }   
 
-        List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
-        for (Database.LeadConvertResult lcr : lcrs)  {
-            System.assert(lcr.isSuccess());
-        }     
         Test.stopTest();
 
         for (Lead convertedLead : [SELECT Id, ConvertedAccountId, ConvertedContactId, isConverted
                                     FROM Lead] ) {
             leadContactIdMap.put(convertedLead.Id, convertedLead.ConvertedContactId);
+            leadAccountIdMap.put(convertedLead.Id, convertedLead.ConvertedAccountId);
+        }        
+
+        Boolean accountInserted = false;
+        for (Account relatedAccount : [SELECT Id, Name, Send_Bills_Contact__c
+                                        FROM Account]){
+            if (relatedAccount.Name == 'CompanyCo'){
+                System.assertEquals(contactA.Id, relatedAccount.Send_Bills_Contact__c);
+                accountInserted = true;
+            } else {
+                System.assertEquals(null, relatedAccount.Send_Bills_Contact__c);
+            }
         }
+        System.assertEquals(accountInserted, true);
+
+        List<Contact> relatedContacts = [SELECT Id, FirstName, AccountId
+                                        FROM Contact
+                                        ORDER BY FirstName];
+        System.assertEquals(2, relatedContacts.size());
+        System.assertEquals(accountA.Id, relatedContacts[1].AccountId);
+        System.assertNotEquals(accountA.Id, relatedContacts[0].AccountId);
 
         List<Case> casesList =  [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, 
                                     Lead_Lookup__r.isConverted, AccountId, ContactId
                                 FROM Case
                                 WHERE Lead_Lookup__r.isConverted = true];
-        System.assertEquals(casesList[0].ContactId, leadContactIdMap.get(casesList[0].Lead_Lookup__c));
+        System.assertEquals(casesList[0].AccountId, leadAccountIdMap.get(casesList[0].Lead_Lookup__c));
         System.assertEquals(casesList[1].ContactId, leadContactIdMap.get(casesList[1].Lead_Lookup__c));
     }
 }
