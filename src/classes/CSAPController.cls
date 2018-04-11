@@ -74,18 +74,21 @@ public without sharing class CSAPController {
                 creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
             }
             
-            Lead lead = [SELECT Id, Status, Utility__c FROM Lead WHERE Id = :leadId];
+            Lead lead = [SELECT Id, Status, Partner_Name__c, Utility__c FROM Lead WHERE Id = :leadId];
             String sssQuery = 'SELECT Id, Credit_Score_Requirement__c ';
             sssQuery +=       'FROM Shared_Solar_System__c ';
             sssQuery +=       'WHERE Open__c = true ';
             sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
             sssQuery +=       'AND System_Utility__c IN (\'' + lead.Utility__c + '\') ';
+            if (lead.Partner_Name__c != null){
+                sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
+            } else {
+                sssQuery +=       'AND Public__c = true ';
+            }
             sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
             sssQuery += 'LIMIT 1 ';
 
             List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
-            System.debug(creditscore);
-            System.debug(sssList);
             creditQualification = (sssList.size() > 0 && creditScore >= sssList[0].Credit_Score_Requirement__c) ? 'Qualified' : 'Unqualified';
         }
 
@@ -152,9 +155,8 @@ public without sharing class CSAPController {
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
         sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
-
         if (lead.Partner_Name__c != null){
-            sssQuery +=       'AND Sales_Partners__c IN( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
+            sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
         } else {
             sssQuery +=       'AND Public__c = true ';
         }
