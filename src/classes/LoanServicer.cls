@@ -326,17 +326,19 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             if (params.isAdjustable) {
                 Loan_Payment__c priorLP = null;
                 Loan_Payment__c currentLP = null;
-                Decimal totalPayments = 0;
+                Decimal totalPIPayments = 0;
                 List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
                 for (Integer period = LoanServicer.STARTINGPERIOD;
                     period < params.loanTerm + LoanServicer.STARTINGPERIOD;
                     period++) {
                     currentLP = createLP(period, loan, params, priorLP, true);
                     loanPayments.add(currentLP);
-                    totalPayments += currentLP.Actual_PI_Due__c;
+                    if (period >= params.firstAdjustment) {
+                        totalPIPayments += currentLP.Actual_PI_Due__c;
+                    }
                     priorLP = currentLP;
                 }
-                averagePaymentWithBuydown = totalPayments/params.loanTerm;
+                averagePaymentWithBuydown = totalPIPayments /(params.loanTerm - params.firstAdjustment + 1);
             }
             Quick_Sales_Sheet__c qssClone = new Quick_Sales_Sheet__c(
                 Id = qss.Id,
@@ -355,18 +357,20 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             if (params.isAdjustable) {
                 Loan_Payment__c priorLP = null;
                 Loan_Payment__c currentLP = null;
-                Decimal totalPayments = 0;
+                Decimal totalPIPayments = 0;
                 List<Loan_Payment__c> loanPayments = new List<Loan_Payment__c>();
                 for (Integer period = LoanServicer.STARTINGPERIOD;
                     period < params.loanTerm + LoanServicer.STARTINGPERIOD;
                     period++) {
                     currentLP = createLP(period, loan, params, priorLP, true);
                     loanPayments.add(currentLP);
-                    totalPayments += currentLP.Actual_PI_Due__c;
+                    if (period >= params.firstAdjustment) {
+                        totalPIPayments += currentLP.Actual_PI_Due__c;
+                    }
                     priorLP = currentLP;
                 }
                 qss.APR__c = getXIRRforAPR(qss, loanPayments).estimateIRR(.15);
-                qss.Average_Adjustable_Payment__c = totalPayments/params.loanTerm;
+                qss.Average_Adjustable_Payment__c = totalPIPayments /(params.loanTerm - params.firstAdjustment + 1);
             } else {
                 qss.APR__c = null;
                 qss.Average_Adjustable_Payment__c = null;

@@ -446,8 +446,8 @@ public with sharing class LoanServicerTest {
         System.assertEquals(195.18, qss.Max_Payment__c.setScale(2));
         System.assertEquals(15512, qss.Year_2_Payoff__c);
         System.assertEquals(16636, qss.Year_4_Payoff__c);
-        System.assertEquals(170.40, qss.Average_Adjustable_Payment__c.setScale(2));
-        System.assertEquals(119.28, qss.Average_Adjustable_Payment_With_Buydown__c.setScale(2));
+        System.assertEquals(183.89, qss.Average_Adjustable_Payment__c.setScale(2));
+        System.assertEquals(128.72, qss.Average_Adjustable_Payment_With_Buydown__c.setScale(2));
 
         LoanServicer.qssAlreadyRun = false;
         Product2 ma10Yr = [

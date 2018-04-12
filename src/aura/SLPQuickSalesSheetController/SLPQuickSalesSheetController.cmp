@@ -254,14 +254,17 @@
                 </tr>
                 </tbody>
               </table>
-              <footer class="slds-p-top_small smallText slds-text-longform">
+              <footer class="slds-p-top_small slds-p-left_large slds-p-right_large smallText slds-text-longform">
                 a. BlueWave is not the lender of record. We work with partners to provide loans to consumers.<br/>
                 b. The federal and state tax credits shown above are estimates that assume you are eligible for these credits. The principal and interest payment shown above is an estimate that assumes you are eligible for the federal and state tax credits identified above, and that you apply savings from these tax credits to pay down your loan amount. You may not be eligible for these tax credits or for the full amount of these incentives.  BlueWave is not providing tax advice, and you should consult a tax professional to learn more about your eligibility for solar tax credits.<br/>
                 <aura:if isTrue="{!v.isAdjustable}">
                   c. Represents principal and interest payment for FixRate loan or principal and interest payment for FlexRate loan during the fixed rate period before the first adjustment in month 61.<br/>
                   d. Assumes a fully indexed payment at the loan ceiling rate of 9.99%. This payment could not be reached until year 9 for the 20 year loan and year 10 for the 15 year loan.<br/>
-                  e. Estimated Total Cost of Ownership does not include the value of Federal or State Tax Credits<br/>
+                  e. Estimated Total Cost of Ownership subtracts the value of Federal or State Tax Credits (see B above)<br/>
                 </aura:if>
+              </footer>
+              <footer class="slds-p-top_small slds-p-left_large slds-p-right_large slds-p-bottom_small">
+                NOT INTENDED FOR CONSUMER DISTRIBUTION
               </footer>
             </article>
             <article class="slds-card">
