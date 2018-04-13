@@ -127,19 +127,13 @@ public class DisbursalHandler {
         for (Residential_Equipment__c equipment : queriedEquipment) {
             if (disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation') != null) {
                 if (fieldHasChanged(equipment, newMap, oldMap, 'Mechanically_Installed__c', 'true', null)) {
-                    if (!equipment.Opportunity__r.DOER_Solar_Loan__c) {
-                        disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, 'Due', null));
-                    } else {
-                        disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, 'Ready for FBO Funding', null));
-                    }
+                    disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, 'Due', null));
                 } 
             }
-            if (disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation') != null) {
+            if (disbursalMap.get(equipment.Opportunity__r.Id + 'Interconnection') != null) {
                 if (fieldHasChanged(equipment, newMap, oldMap, 'Interconnected__c', 'true', null)) {
                     if (!equipment.Opportunity__r.DOER_Solar_Loan__c) {
                         disbursalList.add(setDisbursalStatus('Interconnection', equipment.Opportunity__r.Id, disbursalMap,  'Due', null));
-                    } else {
-                        disbursalList.add(setDisbursalStatus('Interconnection', equipment.Opportunity__r.Id, disbursalMap, 'Ready for FBO Funding', null));
                     }
                 } 
             }
