@@ -742,7 +742,8 @@ public without sharing class SLPControllersTestclass {
         emailList.add('cswain@bluewavesolar.com');
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         System.runAs(partnerUser) {
-            System.assertEquals(true,SLPCustomerHandler.sendCommunitySolarApplication(emailList));
+            SLPCustomerHandler.sendCommunitySolarApplication(emailList);
+            System.assertEquals(1, MessagingService.emailsSent.size());
         }
     }
 }

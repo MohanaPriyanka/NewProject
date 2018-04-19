@@ -67,7 +67,7 @@ private class BatchCSBillEmailHandlerTest {
         ContentVersion csBillCV = new ContentVersion (Title ='Community Solar Bill.pdf',
                                                       PathOnClient='/Community Solar Bill.pdf' );
         csBillCV.VersionData = Blob.valueOf('This is the body of the pdf');
-        insert csBillCV;
+        Util.insertSObj(csBillCV);
         ContentVersion testContent = [  SELECT ContentDocumentId 
                                         FROM ContentVersion 
                                         WHERE Id = : csBillCV.Id]; 
