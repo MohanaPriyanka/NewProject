@@ -62,8 +62,6 @@ Static testMethod void RecurringPaymentsHandlerTestClass() {
         insert everLZU;
         insert ngridLZU;
         
-        system.debug(ngridLZU);
-
         Entity__c entityone = new Entity__c (
                 Name = 'BarrettProjCo') ;
 
@@ -206,17 +204,6 @@ uasthree.Customer_Subscription_KW_DC_STATIC__c = 20;
 update uasone;
 update uastwo;
 update uasthree;
-
-system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
-
-    /*    List <Utility_Account_Subscription__c> uaslist = [SELECT Id, Customer_Subscription_KW_DC_STATIC__c, Subscribed_Annual_Cost_of_Electricity__c, Calculated_Annual_Cost_of_Electricity__c, Shared_Solar_System_Name__c FROM Utility_Account_Subscription__c];
-
-        for(Utility_Account_Subscription__c uas : uaslist) {
-        system.debug(uas.Customer_Subscription_KW_DC_STATIC__c);
-        system.debug(uas.Subscribed_Annual_Cost_of_Electricity__c);
-        system.debug(uas.Calculated_Annual_Cost_of_Electricity__c);
-        }
-    */
 
 // Log Production Update - First Month
 
@@ -429,10 +416,14 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
 
         Test.startTest();    
 
+                // Test scheduling of batch:
                 Datetime dt = Datetime.now().addMinutes(0);
-                RecurringPaymentsHandler m = new RecurringPaymentsHandler();
+                RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
                 String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-                System.schedule('RecurringPaymentsHandler', CRON_EXP, m );  
+                System.schedule('RecurringPaymentsHandler', CRON_EXP, batchToRun);   
+
+                // Run batch directly to be able to test results:
+                database.executeBatch(batchToRun,50);
 
         Test.stopTest();
 
@@ -444,18 +435,18 @@ system.debug(uasone.Customer_Subscription_KW_DC_STATIC__c);
         List<ChargentOrders__ChargentOrder__c> orderlist = [SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c, Reason_for_Recurring_Stop__c,
                                                                 Account_Bill__r.Bill_Number__c, Account_Bill__r.Name, ChargentOrders__Charge_Amount__c
                                                             FROM ChargentOrders__ChargentOrder__c];
-        
+        System.assertEquals(orderlist.size(),3);
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '25') {
-                system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);  
-                system.assertEquals(87.7521, cho.ChargentOrders__Charge_Amount__c); 
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);  
+                System.assertEquals(87.75, cho.ChargentOrders__Charge_Amount__c); 
             } else if (cho.ChargentOrders__Charge_Date__c == '30') {
-                system.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
-                system.assertEquals(437.701, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+                System.assertEquals(437.70, cho.ChargentOrders__Charge_Amount__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '15') {
-                system.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
-                system.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
-                system.assertNotEquals(NULL, cho.Reason_for_Recurring_Stop__c);
+                System.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
+                System.assertNotEquals(NULL, cho.Reason_for_Recurring_Stop__c);
             }
         }
 }

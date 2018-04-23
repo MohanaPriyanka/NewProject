@@ -9,10 +9,10 @@
  + * Tested By: RecurringPaymentsHandlerTestClass
  + *************************************************************************************/
 
-
-
-global class RecurringPaymentsHandler Implements Schedulable {
-
+public without sharing class RecurringPaymentsHandler implements Database.Batchable<sObject>, Schedulable { 
+    public void execute(SchedulableContext sc){
+       Database.executeBatch(this);
+    }
 
     public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
         orderToStop.ChargentOrders__Charge_Amount__c = 0;
@@ -20,11 +20,20 @@ global class RecurringPaymentsHandler Implements Schedulable {
         orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
         return orderToStop;
     }
-  
-    global void execute(SchedulableContext sc){
-       
+
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+        String query =  'SELECT Id, ChargentOrders__Payment_Status__c,' +
+                        ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
+                        ' Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c,' +
+                        ' Property_Account_ID__c, Reason_for_Recurring_Stop__c' +
+                        ' FROM ChargentOrders__ChargentOrder__c' +
+                        ' WHERE ChargentOrders__Payment_Status__c = \'' + 'Recurring' + '\'';
+        return Database.getQueryLocator(query);
+    }
+
+    public void execute(Database.BatchableContext bc, List<ChargentOrders__ChargentOrder__c> scope){ 
         String uniqueId;
-        Decimal newBillNumber; 
+        Integer newBillNumber; 
         Decimal newchargeamount;
         String accBillId;
         String abMapKey;
@@ -35,13 +44,7 @@ global class RecurringPaymentsHandler Implements Schedulable {
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
 
-        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Amount__c, Account_Bill__c,
-                                                            Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c, Property_Account_ID__c,
-                                                            Reason_for_Recurring_Stop__c    
-                                                            FROM ChargentOrders__ChargentOrder__c 
-                                                            WHERE ChargentOrders__Payment_Status__c = 'Recurring'];
-
-        for (ChargentOrders__ChargentOrder__c recOrders : ordersList) {
+        for (ChargentOrders__ChargentOrder__c recOrders : scope) {
             accountIDList.add(recOrders.Property_Account_ID__c);
         }
 
@@ -65,15 +68,15 @@ global class RecurringPaymentsHandler Implements Schedulable {
             aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue') );
         }
 
-        for (ChargentOrders__ChargentOrder__c recurOrder : ordersList) {
-            if (recurOrder.Account_Bill__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
-                newBillNumber = recurOrder.Account_Bill__r.Bill_Number__c + 1;
+        for (ChargentOrders__ChargentOrder__c recurOrder : scope) {
+            if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
+                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
                 chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
                     if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
                         newchargeamount = aggregateSbMap.get(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
-                        recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount;
+                        recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2);
                     } else {
                         recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id); 
                     }
@@ -84,6 +87,21 @@ global class RecurringPaymentsHandler Implements Schedulable {
                 recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series'); 
             }
         }
-        update ordersList;
+        update scope;
     }
+    public void finish(Database.BatchableContext bc){
+        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
+                            JobItemsProcessed,
+                            TotalJobItems, CreatedBy.Email
+                            FROM AsyncApexJob
+                            WHERE Id = :bc.getJobId()];
+
+        String emailBody = 'Recurring Orders Have Been Updated! Job Id: '+ job.Id 
+                            + '  Errors: ' + job.NumberOfErrors 
+                            + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
+        List<String> postJobEmailAddresses = new List<String>{'jpentaleri@bluewavesolar.com'};   
+        if (!Test.isRunningTest()){
+            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
+        }
+    }  
 }   
