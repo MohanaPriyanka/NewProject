@@ -11,7 +11,7 @@
 
 public without sharing class RecurringPaymentsHandler implements Database.Batchable<sObject>, Schedulable { 
     public void execute(SchedulableContext sc){
-       Database.executeBatch(this);
+       Database.executeBatch(this, 20);
     }
 
     public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
@@ -98,10 +98,10 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
         String emailBody = 'Recurring Orders Have Been Updated! Job Id: '+ job.Id 
                             + '  Errors: ' + job.NumberOfErrors 
-                            + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
+                            + '  Total Jobs Processed (groups of 20): ' + job.JobItemsProcessed;
         List<String> postJobEmailAddresses = new List<String>{'jpentaleri@bluewavesolar.com'};   
         if (!Test.isRunningTest()){
-            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
+            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Recurring Processing Complete', postJobEmailAddresses);
         }
     }  
 }   
