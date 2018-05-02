@@ -37,6 +37,7 @@
         }); 
        
         actionGetTransactions.setCallback(this,function(resp){
+            component.set("v.recurringCheck", false);
             if(resp.getState() == 'SUCCESS') {
                 component.set("v.PaymentLogs", resp.getReturnValue());
                 var transactionList = resp.getReturnValue();
