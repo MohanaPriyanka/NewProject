@@ -1,0 +1,3 @@
+<design:component >
+  <design:attribute name="bk" label="bk" description="Brand Key to determine Login Page Branding"/>
+</design:component>
