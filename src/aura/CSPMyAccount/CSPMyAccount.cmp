@@ -31,60 +31,67 @@
           Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100
         </h3>
         <aura:set attribute="else">
-          <a  target="_blank" 
-              href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
-                          'tfa_799=' + v.myBill + '&amp;' +
-                      
-                          'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
-                          'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
-                          'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
-                          'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
-                      
-                          'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
-                          'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
-                          'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
-                          'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
-                      
-                          'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
-                          'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
-                          'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
-                          'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
-                                            
-                          'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
-                          'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
-                          'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
-                          'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
-                      
-                          'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
-                          'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
-                          'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
-                          'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
-                      
-                          'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
-                          'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
-                          'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
-                          'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
-                      
-                          'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
-                          'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
-                          'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
-                          'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
-                      
-                          'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
-                          'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
-                          'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
-                          'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
-                      
-                          'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
-                          'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
-                          'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
-                          'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}">
-          <lightning:button aura:id="makeAPayment"
-                            name="makeAPayment"
-                            label="Make A Payment"
-                            class="slds-text-body_small slds-button--brand 
-                            slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
-          </a>
+          <aura:if isTrue="{!greaterthan(v.myBill,0)}">
+            <a  target="_blank" 
+                href="{!'https://forms.bluewaverenewables.com/381612?tfa_752=' + v.myBill + '&amp;' +                      
+                            'tfa_799=' + v.myBill + '&amp;' +
+                        
+                            'tfa_797=' + v.SystemBills[0].Account_Bill__c + '&amp;' +
+                            'tfa_803=' + v.SystemBills[0].carryover + '&amp;' +
+                            'tfa_801=' + v.SystemBills[0].entity + '&amp;' +
+                            'tfa_804=' + v.SystemBills[0].fahelp + '&amp;' +
+                        
+                            'tfa_975=' + v.SystemBills[1].Account_Bill__c + '&amp;' +
+                            'tfa_810=' + v.SystemBills[1].carryover + '&amp;' +
+                            'tfa_812=' + v.SystemBills[1].entity + '&amp;' +
+                            'tfa_816=' + v.SystemBills[1].fahelp + '&amp;' +
+                        
+                            'tfa_826=' + v.SystemBills[2].Account_Bill__c + '&amp;' +
+                            'tfa_818=' + v.SystemBills[2].carryover + '&amp;' +
+                            'tfa_820=' + v.SystemBills[2].entity + '&amp;' +
+                            'tfa_824=' + v.SystemBills[2].fahelp + '&amp;' +
+                                              
+                            'tfa_977=' + v.SystemBills[3].Account_Bill__c + '&amp;' +
+                            'tfa_828=' + v.SystemBills[3].carryover + '&amp;' +
+                            'tfa_832=' + v.SystemBills[3].entity + '&amp;' +
+                            'tfa_834=' + v.SystemBills[3].fahelp + '&amp;' +
+                        
+                            'tfa_836=' + v.SystemBills[4].Account_Bill__c + '&amp;' +
+                            'tfa_838=' + v.SystemBills[4].carryover + '&amp;' +
+                            'tfa_842=' + v.SystemBills[4].entity + '&amp;' +
+                            'tfa_850=' + v.SystemBills[4].fahelp + '&amp;' +
+                        
+                            'tfa_979=' + v.SystemBills[5].Account_Bill__c + '&amp;' +
+                            'tfa_840=' + v.SystemBills[5].carryover + '&amp;' +
+                            'tfa_844=' + v.SystemBills[5].entity + '&amp;' +
+                            'tfa_852=' + v.SystemBills[5].fahelp + '&amp;' +
+                        
+                            'tfa_854=' + v.SystemBills[6].Account_Bill__c + '&amp;' +
+                            'tfa_856=' + v.SystemBills[6].carryover + '&amp;' +
+                            'tfa_860=' + v.SystemBills[6].entity + '&amp;' +
+                            'tfa_870=' + v.SystemBills[6].fahelp + '&amp;' +
+                        
+                            'tfa_981=' + v.SystemBills[7].Account_Bill__c + '&amp;' +
+                            'tfa_858=' + v.SystemBills[7].carryover + '&amp;' +
+                            'tfa_863=' + v.SystemBills[7].entity + '&amp;' +
+                            'tfa_872=' + v.SystemBills[7].fahelp + '&amp;' +
+                        
+                            'tfa_991=' + v.SystemBills[8].Account_Bill__c + '&amp;' +
+                            'tfa_983=' + v.SystemBills[8].carryover + '&amp;' +
+                            'tfa_985=' + v.SystemBills[8].entity + '&amp;' +
+                            'tfa_989=' + v.SystemBills[8].fahelp + '&amp;'}">
+            <lightning:button aura:id="makeAPayment"
+                              name="makeAPayment"
+                              label="Make A Payment"
+                              class="slds-text-body_small slds-button--brand 
+                              slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+            </a>
+          <aura:set attribute="else">
+            <h3 class="slds-text-heading_small slds-text-color_default">
+              Your current balance is zero. No payments are needed. 
+            </h3>
+          </aura:set>
+          </aura:if>
         </aura:set>
       </aura:if>
     </div>
