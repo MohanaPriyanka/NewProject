@@ -118,12 +118,19 @@ public without sharing class CSAPController {
         lead.State = BlueWaveParent.convertAbbreviationToState(lead.State);
         lead.Parent_Account__c = account.Id;
         lead.Parcel_Zip__c = lead.LASERCA__Home_Zip__c;
+        if (lead.Application_Type__c == 'Residential') {
+            lead.Customer_Type__c = 'Residential';
+        } 
+        if (lead.Application_Type__c == 'Non-Residential') {
+            lead.Customer_Type__c = 'Business';
+        }
         if (String.isNotBlank(partnerId)) {
             lead.Partner_lookup__c = partnerId;
         }
         if (String.isNotBlank(salesRepId)) {
             lead.Bs_Sales_ID__c = salesRepId;
         }
+        lead.Product__c = '01t0a000004Uk2x';
         upsert lead;
 
         //Update the Account with the lookup back to the lead
