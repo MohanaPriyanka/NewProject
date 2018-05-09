@@ -83,6 +83,10 @@
     },
 
     saveSObject : function(component, id, objectName, field, value, objToUpdate) {
+        return this.saveSObjectErrorOption(component, id, objectName, field, value, objToUpdate, {suppressAlert: false});
+    },
+
+    saveSObjectErrorOption : function(component, id, objectName, field, value, objToUpdate, messageOption) {
         return new Promise(function(resolve, reject) {
             var sobj = new Object();
             if (!objToUpdate) {
@@ -103,8 +107,9 @@
                     appEvent.setParams({"className" : "BlueWaveParentHelper",
                                         "methodName" : "updateSObject",
                                         "errors" : resp.getError(),
-                                        "developerInfo" : sobj});
-                    appEvent.fire();
+                                        "developerInfo" : sobj,
+                                        "options" : messageOption});
+                    appEvent.fire();                    
                     reject(resp.getError());
                 } else {
                     reject(Error("Unknown error"));

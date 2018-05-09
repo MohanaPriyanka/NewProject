@@ -1,7 +1,19 @@
 ({
     handleNavEvent : function(component, event, helper) {
         helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
-        
+        if (component.get('v.STAGENAME') == 'NAV_Energy_Information' && component.get('v.page') == 'UtilityAccountInformation') {
+            var action = component.get("c.getProduct");
+            var productId = event.getParam("lead").Product__c;
+            action.setParams({"productId" : productId});
+            action.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    component.set('v.selectedProduct', resp.getReturnValue());
+                } else {
+                    helper.logError("CSAPEnergyInfoController", "getProduct", resp.getError(), lead);
+                }
+            });
+            $A.enqueueAction(action);
+        }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
@@ -68,6 +80,15 @@
     handleEBill1 : function(component, event, helper) {
         helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
     },
+
+    handleEBill2 : function(component, event, helper) {
+        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_2);
+    },
+
+    handleAnnualElectricHistory : function(component, event, helper) {
+        helper.handleAttachment(component, event, helper, helper.ANNUAL_ELECTRIC_HISTORY);
+    },
+    
     finishStage : function(component, event, helper) {
         var ual = component.get("v.ual");
         if(ual.Id){

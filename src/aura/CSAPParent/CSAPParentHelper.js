@@ -35,18 +35,10 @@
     handleNavEvent : function(component, event, helper, defaultPage) {
         if (event.getParam("eventType") === "INITIATED" &&
             event.getParam("stageName") === component.get("v.STAGENAME")) {
-            console.log(component.get("v.STAGENAME"));
-            console.log(defaultPage);
-            console.log('......................................................');
             component.set("v.lead", event.getParam("lead"));
             component.set("v.page", defaultPage);
             component.set("v.supressWaiting", false);
         } else if ((event.getParam("eventType") === "INITIATED" && event.getParam("stageName") !== component.get("v.STAGENAME"))) {
-            console.log('closed');
-            console.log(component.get("v.STAGENAME"));
-            console.log(event.getParam("stageName"));
-            console.log(event.getParam("eventType"));
-            console.log('______________________________________________________');
             component.set("v.page", "");
             component.set("v.supressWaiting", true);
         }

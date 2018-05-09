@@ -40,12 +40,24 @@
     },
 
     navigateToCommunitySolarApplication : function(component, event, helper) {
-        var urlEvent = $A.get("e.force:navigateToURL");
-        urlEvent.setParams({
-            "url": 'https://forms.bluewaverenewables.com/381687?tfa_531=' + component.get('v.referralCode')
+        var action = component.get("c.getCommunitySolarApplicationURL");
+        action.setCallback(this,function(resp){
+            if(resp.getState() === 'SUCCESS') {
+                var urlEvent = $A.get("e.force:navigateToURL");
+                urlEvent.setParams({
+                    "url": resp.getReturnValue()
+                });
+                urlEvent.fire();
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
         });
-        urlEvent.fire();
-    },
+        $A.enqueueAction(action);
+        component.set("v.CSWindow", false);
+        component.set("v.emailInput", "");
+        helper.deactivateTab(component, event, helper, 'slpcommunitySolar');
+        helper.activateTab(component, event, helper, component.get("v.currentTab"));    },
 
     openCSWindow : function(component, event, helper) {
         component.set("v.CSWindow", true);

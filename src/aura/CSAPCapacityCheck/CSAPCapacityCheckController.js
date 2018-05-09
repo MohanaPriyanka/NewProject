@@ -10,7 +10,7 @@
             component.set("v.loadingText", "Just a second...");
             component.set("v.hasCapacity", "");
             var lead = component.get("v.lead");
-            if(lead.Id){
+            if (lead && lead.Id){
                 component.set("v.loadingText", "Returning the results...");
                 var hasAvailableCapacityAction = component.get("c.hasAvailableCapacity");
                 hasAvailableCapacityAction.setParams({

@@ -1,6 +1,7 @@
 ({
     ELECTRIC_BILL_1: "Electric Bill",
-
+    ELECTRIC_BILL_2: "Electric Bill 2",
+    ANNUAL_ELECTRIC_HISTORY: "Annual Electric History",
     showUploadSuccess : function(component, helper) {
         var action = component.get("c.getAttachments");
         action.setParams({
@@ -27,6 +28,8 @@
         const attachments = component.get("v.attachments");
         if (attachments) {
             const electricBill1 = [];
+            const electricBill2 = [];
+            const annualElectricHistory = [];
             attachments.forEach(function(attachment) {
                 const desc = attachment.Description;
                 if (desc === helper.ELECTRIC_BILL_1) {
@@ -34,11 +37,11 @@
                 } 
             });
             component.set("v.electricBill1", electricBill1);
+            component.set("v.electricBill2", electricBill2);
+            component.set("v.annualElectricHistory", annualElectricHistory);
         }
     },
 
-
-    
     handleAttachment : function(component, event, helper, description) {
         var files = event.getSource().get("v.files")
         var parentId = component.get("v.ual.Id");

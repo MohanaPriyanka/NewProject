@@ -181,36 +181,36 @@
 
         // if the file type needs something specific, do it here, otherwise update the update dummy
         if (fileName === 'Mechanical Installation Documentation') {
-            actionOne = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Mechanical_Installation_Date__c', newDate);
-            actionTwo = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Mechanically_Installed__c', true);
+            actionOne = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Mechanical_Installation_Date__c', newDate, null, {suppressAlert: true});
+            actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Mechanically_Installed__c', true, null, {suppressAlert: true});
             if (oppId != undefined || oppId != NULL) {
-                actionThree = helper.saveSObject(component, oppId, 'Opportunity', 'Mechanical_Install_Date_From_RE__c', newDate);
-                actionFour = helper.saveSObject(component, oppId, 'Opportunity', 'Mechanically_Installed__c', true);
+                actionThree = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Mechanical_Install_Date_From_RE__c', newDate, null, {suppressAlert: true});
+                actionFour = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Mechanically_Installed__c', true, null, {suppressAlert: true});
             }
         } else if (fileName === 'Interconnection Documentation') {
-            actionOne = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate);
-            actionTwo = helper.saveSObject(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true);
+            actionOne = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate, null, {suppressAlert: true});
+            actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true,  null, {suppressAlert: true});
             if (oppId != undefined || oppId != NULL) {
-                actionThree = helper.saveSObject(component, oppId, 'Opportunity', 'Interconnection_Date_From_RE__c', newDate);
-                actionFour = helper.saveSObject(component, oppId, 'Opportunity', 'Interconnected__c', true);
+                actionThree = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Interconnection_Date_From_RE__c', newDate,  null, {suppressAlert: true});
+                actionFour = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Interconnected__c', true,  null, {suppressAlert: true});
             } 
         } else if (fileName === 'Sales Agreement') {
             if (oppId != undefined || oppId != NULL) {
-                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed');
-                actionTwo = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
-                actionThree = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', false);
+                actionOne = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed',  null, {suppressAlert: true});
+                actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', true,  null, {suppressAlert: true});
+                actionThree = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', false,  null, {suppressAlert: true});
             } 
         } else if (fileName === 'Home Owners Insurance') {
             if (oppId != undefined || oppId != NULL) {
-                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Homeowner_s_Insurance_Status__c', 'Received: in QC');
+                actionOne = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Homeowner_s_Insurance_Status__c', 'Received: in QC',  null, {suppressAlert: true});
             } 
         } else { 
             if (parentId.substring(0,3) === '00Q') {
-                actionOne = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', true);
-                actionTwo = helper.saveSObject(component, parentId, 'Lead', 'Update_Dummy__c', false);
+                actionOne = helper.saveSObjectErrorOption(component, parentId, 'Lead', 'Update_Dummy__c', true,  null, {suppressAlert: true});
+                actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Lead', 'Update_Dummy__c', false,  null, {suppressAlert: true});
             } else if (oppId != undefined || oppId != NULL) {
-                actionOne = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', true);
-                actionTwo = helper.saveSObject(component, parentId, 'Opportunity', 'Update_Dummy__c', false);
+                actionOne = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', true,  null, {suppressAlert: true});
+                actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', false,  null, {suppressAlert: true});
             } else {
                 $A.util.addClass(component.find("spinner"), 'noDisplay'); 
                 component.set("v.errorText", 'Error: Not Linked to a Lead or Opp');
@@ -221,22 +221,23 @@
         } 
         actionOne.then(
             $A.getCallback(function(result) {
-                $A.util.addClass(component.find("spinner"), 'noDisplay'); 
-                $A.util.removeClass(component.find("successText"), 'noDisplay'); 
-                $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
-                $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
-                $A.util.addClass(component.find("headerText"), 'noDisplay'); 
-                $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
-                $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
+                self.postUploadAction(component);
             }) ,
             $A.getCallback(function() {
-                $A.util.addClass(component.find("spinner"), 'noDisplay'); 
-                component.set("v.errorText", 'File Uploaded without Updating Record');
-                self.addErrorMessaging(component);
-                $A.util.addClass(component.find("saveButton"), 'noDisplay');
+                self.postUploadAction(component);
                 return;
             })
         );
+    },
+
+    postUploadAction : function (component) {
+        $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+        $A.util.removeClass(component.find("successText"), 'noDisplay'); 
+        $A.util.removeClass(component.find("doneButton"), 'noDisplay'); 
+        $A.util.addClass(component.find("windowBody"), 'noDisplay'); 
+        $A.util.addClass(component.find("headerText"), 'noDisplay'); 
+        $A.util.addClass(component.find("saveButton"), 'noDisplay'); 
+        $A.util.addClass(component.find("closeButton"), 'noDisplay'); 
     },
     
     fileUploadError : function (component) {
@@ -266,9 +267,10 @@
     },
     
     addErrorMessaging : function(component) {
-	    $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
+        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
         $A.util.addClass(component.find("uploadButton"), 'shake'); 
         $A.util.removeClass(component.find("saveButton"), 'noDisplay');
+        $A.util.addClass(component.find("spinner"), 'noDisplay'); 
     },
     
     removeErrorMessaging : function(component) {

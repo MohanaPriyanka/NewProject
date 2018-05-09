@@ -746,4 +746,11 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(1, MessagingService.emailsSent.size());
         }
     }
+
+    @isTest static void testGetCommunitySolarApplicationURL() {
+        User partnerUser = [SELECT Id, Contact.Partner_Lookup__r.Id, Contact.Sales_Representative__r.Id FROM User WHERE Email = 'tropicole34@aol.com'];
+        System.runAs(partnerUser) {
+            SLPCustomerHandler.getCommunitySolarApplicationURL();
+        }
+    }
 }

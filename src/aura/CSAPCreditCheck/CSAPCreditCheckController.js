@@ -22,9 +22,7 @@
             var lead = component.get("v.lead");
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             component.set('v.loading', true);
-            // helper.startSpinner(component, "creditSpinner");
-            // component.set("v.creditStatusText", "Pulling credit report...");
-            // $A.util.removeClass(component.find("creditStatus"), "noDisplay");
+
             var action = component.get("c.pullCreditStatus");
             action.setParams({"lead" : lead});
             action.setCallback(this, function(resp) {
@@ -65,6 +63,7 @@
         }
     },
     finishStage : function(component, event, helper) {
+        component.set('v.programType','SREC');
         helper.finishStage(component, event, helper);
     },
 })

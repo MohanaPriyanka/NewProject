@@ -17,19 +17,34 @@
 
     checkCreditResponse : function(component, helper, returnValue) {
         var lead = component.get("v.lead");
-        if (returnValue === "Ready for Credit Check") {
+        if (returnValue.sssCreditQualification === "Ready for Credit Check") {
             // Do not do anything, credit check is not done yet
         } else if (
-            returnValue === "Qualified" ||
-            returnValue === "Unqualified") {
-            lead.Status = returnValue;
+            returnValue.sssCreditQualification === "Qualified" ||
+            returnValue.sssCreditQualification === "Unqualified") {
+            lead.Status = returnValue.sssCreditQualification;
+            if (returnValue.sssCreditQualification === "Qualified") {
+                if (returnValue.srecProduct != null && returnValue.smartProduct != null) {
+                    component.set("v.showProgramPicklist", true);
+                    component.set("v.srecProduct", returnValue.srecProduct);
+                    component.set("v.smartProduct", returnValue.smartProduct);
+                }
+                if (returnValue.srecProduct != null && returnValue.smartProduct == null) {
+                    component.set("v.showProgramPicklist", false);
+                    component.set("v.lead.Product__c", returnValue.srecProduct.Id);
+                }
+                if (!returnValue.srecProduct == null && returnValue.smartProduct != null) {
+                    component.set("v.showProgramPicklist", false);
+                    component.set("v.lead.Product__c", returnValue.smartProduct.Id);
+                }
+            }
             component.set("v.creditChecked", true);
             component.set("v.lead", lead);
             $A.util.addClass(component.find("passedCreditText"), 'tada');
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             helper.handleCreditCheckResponse(component, helper);
         } else {
-            component.set("v.creditStatusErrorText", returnValue);
+            component.set("v.creditStatusErrorText", returnValue.sssCreditQualification);
             helper.handleCreditCheckResponse(component, helper, "creditResultError");
         }
     },

@@ -34,36 +34,35 @@ public with sharing class MapCapacityAvailableHandler {
     }      
     
     private void mapCapacityAvailable (List <Lead> trigleads){
-        Integer j;
-        Integer k;
         Integer fico = 900;
 
         List<Shared_Solar_System__c> listSSS = [SELECT Id, Name, System_Utility__c, Service_Territories__c, Credit_Score_Requirement__c, 
                                                 Sales_Partners__c, Project_Capacity_Available_kW_DC__c, Product__c
                                                 FROM Shared_Solar_System__c
-                                                WHERE Open__c = True
+                                                WHERE Open__c = TRUE
                                                 AND Sales_Partners__c != NULL 
                                                 AND Service_Territories__c != NULL
                                                 AND System_Utility__c != NULL];
 
-        for (Lead trigLead : trigleads){          
-            Decimal totalavailablecapacity = 0;
-            if (trigLead.LASER_Credit_Score__c != NULL){
-                fico = Integer.valueof(trigLead.LASER_Credit_Score__c);
+        for (Lead trigLead : trigleads) {
+            Decimal totalAvailableCapacity = 0;
+            if (trigLead.LASER_Credit_Score__c != null) {
+                fico = Integer.valueOf(trigLead.LASER_Credit_Score__c);
             }
-            if (trigLead.Partner_Name__c != NULL 
-                && trigLead.Load_Zone__c != NULL 
-                && trigLead.Utility_1__c != NULL) {
-                    for (Shared_Solar_System__c sss : listSSS){
+            if (trigLead.Partner_Name__c != null
+                && trigLead.Load_Zone__c != null
+                && trigLead.Utility_1__c != null) {
+                    for (Shared_Solar_System__c sss : listSSS) {
                         if (sss.System_Utility__c == trigLead.Utility_1__c 
                             && sss.Service_Territories__c.contains(trigLead.Load_Zone__c)
                             && sss.Credit_Score_Requirement__c <= fico
-                            && (sss.Sales_Partners__c == 'All' || sss.Sales_Partners__c.contains(trigLead.Partner_Name__c))){
-                                totalavailablecapacity = totalavailablecapacity + sss.Project_Capacity_Available_kW_DC__c;
+                            && (sss.Sales_Partners__c == 'All' || sss.Sales_Partners__c.contains(trigLead.Partner_Name__c))
+                            && (trigLead.Product__c == null || (trigLead.Product__c == sss.Product__c))) {
+                                totalAvailableCapacity = totalAvailableCapacity + sss.Project_Capacity_Available_kW_DC__c;
                         }
                     }
             }
-            trigLead.Available_Capacity__c = totalavailablecapacity;   
+            trigLead.Available_Capacity__c = totalAvailableCapacity;
         }      
     }
 }

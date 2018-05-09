@@ -79,21 +79,44 @@ private class mapAvailableCapacityTest{
 										Total_CS_Capacity__c = 500);
 		insert newSSS3;
 
-		Lead newLead = new Lead(FirstName = 'Cole', 
-								Product_Line__c = 'Community Solar', 
-								LastName = 'Swain', 
-								Email = 'cswain@bluewave-capital.com', 
-								Company = 'BlueWave', 
-								Status = 'contacted', 
-								Parcel_Zip__c = '02052', 
-								Custom_Id__c = 'Partner1',
-								Product__c = csProduct.Id);
-		insert newLead;
-		update newLead;
+		Lead newLead = new Lead(
+			FirstName = 'Cole',
+			Product_Line__c = 'Community Solar',
+			LastName = 'Swain',
+			Email = 'cswain@bluewave-capital.com',
+			Company = 'BlueWave',
+			Status = 'contacted',
+			Parcel_Zip__c = '02052',
+			Custom_Id__c = 'Partner1',
+			Product__c = csProduct.Id);
+		Lead noProductLead = new Lead(FirstName = 'Kale',
+			Product_Line__c = 'Community Solar',
+			LastName = 'Swain',
+			Email = 'cswain@bluewave-capital.com',
+			Company = 'BlueWave',
+			Status = 'contacted',
+			Parcel_Zip__c = '02052',
+			Custom_Id__c = 'Partner1');
+		List<Lead> leads = new List<Lead>{newLead, noProductLead};
+		insert leads;
+		update leads;
 
-        List<Lead> leadList = [SELECT Id, Name, Available_Capacity__c
-                                FROM Lead];
+        Lead lead = [
+			SELECT Id, Name, Available_Capacity__c
+			FROM Lead
+			WHERE FirstName = 'Cole'
+			LIMIT 1
+		];
 
-        System.assertEquals(32000, leadList[0].Available_Capacity__c);
+        System.assertEquals(12000, lead.Available_Capacity__c);
+
+		lead = [
+			SELECT Id, Name, Available_Capacity__c
+			FROM Lead
+			WHERE FirstName = 'Kale'
+			LIMIT 1
+		];
+
+		System.assertEquals(32000, lead.Available_Capacity__c);
 	}
 }

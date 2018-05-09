@@ -8,6 +8,7 @@
   <aura:attribute name="contact" type="Contact" default="{'sobjectType':'Contact', 
                                                         'LastName': ''}"/>
   <aura:attribute name="page" type="String"/>
+  <aura:attribute name="programType" type="String"/>
   <aura:attribute name="STAGENAME" type="String"/>
   <aura:attribute name="waiting" type="Boolean" default="false"/>
   <aura:attribute name="supressWaiting" type="Boolean" default="false"/>

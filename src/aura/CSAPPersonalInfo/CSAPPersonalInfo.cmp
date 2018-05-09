@@ -10,8 +10,8 @@
   <aura:attribute name="loadingText" type="Boolean"/>
   <aura:attribute name="Residential" type="Boolean"/>
   <aura:attribute name="NonResidential" type="Boolean"/>
-  
-  
+
+
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
@@ -42,13 +42,13 @@
                 <lightning:input aura:id="field" name="leadFirstName"
                          label="First Name"
                          value="{!v.lead.FirstName}"
-                         required="true"/> 
+                         required="true"/>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 <lightning:input aura:id="field" name="leadLastName"
                          label="Last Name"
                          value="{!v.lead.LastName}"
-                         required="true"/> 
+                         required="true"/>
               </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout multipleRows="true">
@@ -57,7 +57,7 @@
                                  type="email"
                                  label="Email"
                                  value="{!v.lead.Email}"
-                                 required="true"/> 
+                                 required="true"/>
               </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="leadMobilePhone"
@@ -67,7 +67,7 @@
                                    pattern="[0-9]{10}"
                                    messageWhenPatternMismatch="Please enter your 10 digit mobile phone number"
                                    maxlength="10"
-                                   required="true"/> 
+                                   required="true"/>
                </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout multipleRows="true">
@@ -82,7 +82,7 @@
                                  type="tel"
                                  label="Home Phone (optional)"
                                  value="{!v.lead.Phone}"
-                                 maxlength="10"/> 
+                                 maxlength="10"/>
               </lightning:layoutItem>
             </lightning:layout>
 
@@ -188,7 +188,7 @@
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
               <b class="slds-section__title--large">What is your Primary  </b>
-              <b class="slds-section__title--large--stream"> Home Adress?</b>
+              <b class="slds-section__title--large--stream"> Home Address?</b>
             </legend>
             <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
@@ -199,19 +199,19 @@
                   <lightning:input aura:id="field" name="leadHomeAddress"
                            label="Street Address"
                            value="{!v.lead.LASERCA__Home_Address__c}"
-                           required="true"/> 
+                           required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="leadHomeCity"
                            label="City"
                            value="{!v.lead.LASERCA__Home_City__c}"
-                           required="true"/> 
+                           required="true"/>
                 </lightning:layoutItem>
               </lightning:layout>
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="leadHomeState" 
-                                    label="State" 
+                  <lightning:select aura:id="field" name="leadHomeState"
+                                    label="State"
                                     value="{!v.lead.LASERCA__Home_State__c}"
                                     required="true">
                       <option value="">Choose state...</option>
@@ -227,14 +227,14 @@
                                    required="true"
                                    maxlength="5"
                                    minlength="5"
-                                   messageWhenBadInput="Please enter a 5 digit zip-code"/> 
+                                   messageWhenBadInput="Please enter a 5 digit zip-code"/>
                 </lightning:layoutItem>
               </lightning:layout>
 
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="sendBillToHome" 
-                                    label="Is this where you would like us to send your bill?" 
+                  <lightning:select aura:id="field" name="sendBillToHome"
+                                    label="Is this where you would like us to send your bill?"
                                     value="{!v.sendBillToHome}"
                                     required="true">
                       <option value="">Choose one...</option>
@@ -261,19 +261,19 @@
                   <lightning:input aura:id="field" name="leadStreet"
                            label="Street Address"
                            value="{!v.lead.Street}"
-                           required="true"/> 
+                           required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="leadCity"
                            label="City"
                            value="{!v.lead.City}"
-                           required="true"/> 
+                           required="true"/>
                 </lightning:layoutItem>
               </lightning:layout>
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="leadState" 
-                                    label="State" 
+                  <lightning:select aura:id="field" name="leadState"
+                                    label="State"
                                     value="{!v.lead.State}"
                                     required="true">
                       <option value="">Choose state...</option>
@@ -286,7 +286,7 @@
                   <lightning:input aura:id="field" name="leadZip"
                                    label="Zip Code"
                                    value="{!v.lead.PostalCode}"
-                                   required="true"/> 
+                                   required="true"/>
                 </lightning:layoutItem>
               </lightning:layout>
             </form>
@@ -309,11 +309,11 @@
                   <lightning:input aura:id="field" name="leadCompany"
                            label="Name of Business"
                            value="{!v.lead.Company}"
-                           required="false"/> 
+                           required="false"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  <lightning:select aura:id="field" name="leadTypeOfBusiness" 
-                                    label="Type of Business" 
+                  <lightning:select aura:id="field" name="leadTypeOfBusiness"
+                                    label="Type of Business"
                                     value="{!v.lead.Type_of_Business__c}"
                                     required="false">
                       <option value="">Choose one...</option>
@@ -348,7 +348,7 @@
                   <lightning:input aura:id="field" name="leadBusinessTitle"
                            label="Business Title"
                            value="{!v.lead.Business_Title__c}"
-                           required="false"/> 
+                           required="false"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 </lightning:layoutItem>
@@ -362,7 +362,7 @@
                            max="200"
                            label="How many years has the business been in operation?"
                            value="{!v.lead.Number_of_Years_in_Business__c}"
-                           required="false"/> 
+                           required="false"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 </lightning:layoutItem>
@@ -375,7 +375,7 @@
                            max="200"
                            label="How many years has the business been at its current location?"
                            value="{!v.lead.Number_of_Years_at_Location__c}"
-                           required="false"/> 
+                           required="false"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 </lightning:layoutItem>

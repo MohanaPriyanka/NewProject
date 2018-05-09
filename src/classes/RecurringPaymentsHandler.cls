@@ -1,15 +1,17 @@
 /*************************************************************************************
- + * Created By:  Jordan Pentaleri 
+ + * Created By:  Jordan Pentaleri
  + * This class moves Recurring Chargent Orders from an old Account Bill to the new AB
- + * and updates the Charge Amount field with the Total Due amount from the new bill. For 
+ + * and updates the Charge Amount field with the Total Due amount from the new bill. For
  + * AB's with more than 1 ProjectCo (entity), updates both orders under that AB.
  + * Scheduling this class to run on the dya bills are generated will allow this to only
  + * run once, and should include any adjustments that occur on the bills that day.
- + * 
- + * Tested By: RecurringPaymentsHandlerTestClass
+ + *
+   * - If a ChargentOrder status is reoccuring, set the parent account autopay checkbox to true
+   * - If a ChargentOrder status is anything else, set the partent account autopay checkbox to false
++ * Tested By: RecurringPaymentsHandlerTestClass
  + *************************************************************************************/
 
-public without sharing class RecurringPaymentsHandler implements Database.Batchable<sObject>, Schedulable { 
+public without sharing class RecurringPaymentsHandler implements Database.Batchable<sObject>, Schedulable {
     public void execute(SchedulableContext sc){
        Database.executeBatch(this, 20);
     }
@@ -31,9 +33,9 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         return Database.getQueryLocator(query);
     }
 
-    public void execute(Database.BatchableContext bc, List<ChargentOrders__ChargentOrder__c> scope){ 
+    public void execute(Database.BatchableContext bc, List<ChargentOrders__ChargentOrder__c> scope){
         String uniqueId;
-        Integer newBillNumber; 
+        Integer newBillNumber;
         Decimal newchargeamount;
         String accBillId;
         String abMapKey;
@@ -55,7 +57,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             newAcctBillList.add(newAcctBill);
             abMapKey = newAcctBill.Bill_Number__c + '_' + newAcctBill.Property_Account_ID__c;
             abMap.put(abMapKey, newAcctBill);
-        }                                                                                                    
+        }
 
         for (AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
                                             FROM System_Bill__c
@@ -78,30 +80,81 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                         newchargeamount = aggregateSbMap.get(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
                         recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2);
                     } else {
-                        recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id); 
+                        recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
                     }
                 } else {
-                        recurOrder = setChargentOrderToStopped(recurOrder,  'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey); 
+                        recurOrder = setChargentOrderToStopped(recurOrder,  'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
                 }
             } else {
-                recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series'); 
+                recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series');
             }
         }
         update scope;
     }
+
     public void finish(Database.BatchableContext bc){
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
+        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
                             JobItemsProcessed,
                             TotalJobItems, CreatedBy.Email
                             FROM AsyncApexJob
                             WHERE Id = :bc.getJobId()];
 
-        String emailBody = 'Recurring Orders Have Been Updated! Job Id: '+ job.Id 
-                            + '  Errors: ' + job.NumberOfErrors 
-                            + '  Total Jobs Processed (groups of 20): ' + job.JobItemsProcessed;
-        List<String> postJobEmailAddresses = new List<String>{'jpentaleri@bluewavesolar.com'};   
+        String emailBody = 'Recurring Orders Have Been Updated! Job Id: '+ job.Id
+                            + '  Errors: ' + job.NumberOfErrors
+                            + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
+        List<String> postJobEmailAddresses = new List<String>{'jpentaleri@bluewavesolar.com'};
         if (!Test.isRunningTest()){
             MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Recurring Processing Complete', postJobEmailAddresses);
         }
-    }  
-}   
+    }
+
+    public static void updateAccountAutopay(List<ChargentOrders__ChargentOrder__c> newOrders) {
+        List<String> ordersIdList = new List<String>();
+        for (ChargentOrders__ChargentOrder__c order : newOrders) {
+            ordersIdList.add(order.Id);
+        }
+
+        List<ChargentOrders__ChargentOrder__c> orderList = [
+        	SELECT Id,
+               ChargentOrders__Payment_Status__c,
+               Property_Account_ID__c,
+               Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Id IN : ordersIdList
+        ];
+
+        /*
+        	Since this is triggered after ChargentOrders is updated the below list should
+        	exclude any 'Recurring' ChargentOrders that have been changed to 'Stopped'
+        */
+        List<ChargentOrders__ChargentOrder__c> ordersWithAutopay = new List<ChargentOrders__ChargentOrder__c>([
+    		SELECT Property_Account_ID__c
+    		FROM ChargentOrders__ChargentOrder__c
+    		WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            AND Id NOT IN: ordersIdList
+        ]);
+
+        Set<String> accountsWithAutopay = new Set<String>();
+
+        for (ChargentOrders__ChargentOrder__c order : ordersWithAutopay) {
+          accountsWithAutopay.add(order.Property_Account_ID__c);
+        }
+
+        List<Account> accountsToUpdate = new List<Account>();
+
+        for (ChargentOrders__ChargentOrder__c order : orderList) {
+            if (order.Account_Bill__r != null ) {
+                if (order.ChargentOrders__Payment_Status__c == 'Recurring') {
+                    order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = true;
+                    accountsToUpdate.add(order.Account_Bill__r.Parent_Account__r);
+                } else if (!accountsWithAutopay.contains(order.Property_Account_ID__c)){
+                    order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = false;
+                    accountsToUpdate.add(order.Account_Bill__r.Parent_Account__r);
+                }
+
+            }
+        }
+
+        update accountsToUpdate;
+    }
+}
