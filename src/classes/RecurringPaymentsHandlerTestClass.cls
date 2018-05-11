@@ -563,7 +563,7 @@ private class RecurringPaymentsHandlerTestClass{
         insert a recurring ChargentOrder after collecting all the other account orders
         because we'll change those, but we want the account to stay flagged as 'autopay'
         */
-        ChargentOrders__ChargentOrder__c recurringPayment  = new ChargentOrders__ChargentOrder__c(
+        ChargentOrders__ChargentOrder__c recurringPayment1  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountOrders[0].Account_Bill__c,
             ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
             ChargentOrders__Shipping_Name__c = accountOrders[0].ChargentOrders__Shipping_Name__c,
@@ -584,7 +584,29 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Payment_Start_Date__c = system.today(),
             ChargentOrders__Charge_Date__c = '15');
 
-        insert recurringPayment;
+        ChargentOrders__ChargentOrder__c recurringPayment2  = new ChargentOrders__ChargentOrder__c(
+            Account_Bill__c = accountOrders[0].Account_Bill__c,
+            ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
+            ChargentOrders__Shipping_Name__c = accountOrders[0].ChargentOrders__Shipping_Name__c,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 555.44,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = system.today(),
+            ChargentOrders__Charge_Date__c = '15');
+
+
+        insert new List<ChargentOrders__ChargentOrder__c>{recurringPayment1, recurringPayment2};
 
         System.assertEquals(true, oldAccountC.Recurring_Billing__c);
 

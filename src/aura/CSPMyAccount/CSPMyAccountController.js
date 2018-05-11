@@ -31,7 +31,7 @@
     doInit : function(component, event, helper) {
         var actionGetPropertyAccounts = component.get("c.getMenuLabelList");         
         actionGetPropertyAccounts.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if(resp.getState() === 'SUCCESS') {
                 component.set("v.menuLabels", resp.getReturnValue());
             }
             else {
@@ -40,5 +40,9 @@
         });    
         $A.enqueueAction(actionGetPropertyAccounts);
         helper.refreshTableData(component, 'All');
-    }
+    },
+
+    openPaymentWindow : function(component, event, helper) { 
+        component.set("v.ShowPaymentForm", true);                                       
+    },
 })

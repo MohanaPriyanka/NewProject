@@ -1,0 +1,7 @@
+.THIS .brandColor {
+    background-color : t(colorBrand);
+}
+
+.THIS .borderColor {
+    background-color : t(colorBorder);
+}

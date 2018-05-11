@@ -34,7 +34,9 @@
                 component.set("v.lead", lead);
                 helper.finishStage(component, event, helper);
             } else {
-                alert("There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review.");
+                helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
+                    'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
+                    JSON.stringify(actionResult.getError()));
                 component.set("v.loading", false);
                 component.set("v.page", "AboutYourself");
             }

@@ -87,14 +87,6 @@ public class TestBillCreationandPayment {
                                        Maximum_Subscription_Assemblage__c = 25);
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
-        ChargentBase__Gateway__c chGateway  = 
-        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                                         ChargentBase__Merchant_ID__c = '235986',
-                                         Shared_Solar_System__c = sss1.id,
-                                         Entity__c = entity1.Id,
-                                         ChargentBase__Active__c = TRUE);
-        insert chGateway;
-
         Id parentAccountRT = 
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
         
@@ -102,9 +94,42 @@ public class TestBillCreationandPayment {
                                        RecordTypeId = parentAccountRT);
         insert accountParent;  
 
-        Account accountA = new Account(name = 'Account A', 
+        Contact contactA = new Contact( FirstName = 'Contact', 
+                                        LastName = 'A',
+                                        AccountId = accountParent.Id);
+        insert contactA;  
+
+        Account accountA = new Account(name = 'Account A',
                                       Parent_Account__c = accountParent.Id);
-        insert accountA;     
+        insert accountA;   
+
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];  
+
+        User userRecord = new User(
+            FirstName = 'Jordan',
+            Lastname ='Testcase',
+            Alias = 'xxx234',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Emailencodingkey ='UTF-8',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactA.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='testBillCreationandPay@bluewavesolar.com');
+        Util.insertSobjs(new list<User>{userRecord});
+
+        ChargentBase__Gateway__c chGateway  = 
+        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                                         ChargentBase__Merchant_ID__c = '235986',
+                                         Shared_Solar_System__c = sss1.id,
+                                         ChargentBase__Debug__c = True,
+                                         Entity__c = entity1.Id,
+                                         OwnerId = userRecord.Id,
+                                         ChargentBase__Active__c = TRUE);
+        insert chGateway;
 
         Utility_Account_Log__c ualog = 
             new Utility_Account_Log__c(Name = '0000234',
@@ -232,7 +257,7 @@ public class TestBillCreationandPayment {
         update newConga;
     }
 
-    @isTest public static void testPreviewBills(){
+   @isTest public static void testPreviewBills(){
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Id, Name FROM Energy_Usage_Update__c ORDER BY Date__c];
         Account accountA = [SELECT Id, Name, Parent_Account__r.Id
                             FROM Account
@@ -593,5 +618,120 @@ public class TestBillCreationandPayment {
         System.assertEquals('No Payment Due', propertyAccount.Directions_To_Write_Paper_Check__c);
         System.assertEquals('BlueWave 137 Newbury Street Boston, MA 02114', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
+    }
+
+    @isTest public static void testOnlinePayment(){
+        List<SObject> chOrderList = new List<SObject>();
+        User userA = [  SELECT Id
+                        FROM User
+                        WHERE Username='testBillCreationandPay@bluewavesolar.com'];
+
+        Account accountA = [SELECT Id, Name 
+                            FROM Account
+                            WHERE Name = 'Account A'];
+
+        List<Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+                                                    FROM Account_Bill__c];
+        
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+
+        update listaccountBills;
+
+        System.runAs(userA){
+            List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
+            for (AggregateResult lineItem : systemBills) {
+                ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
+                                Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
+                                ChargentOrders__Subtotal__c = (Decimal)lineItem.get('ChargentOrders__Subtotal__c'),
+                                ChargentOrders__Shipping_Name__c = (String)lineItem.get('ChargentOrders__Shipping_Name__c'));
+                chOrderList.add(billsToCharge);
+            }
+            System.assertEquals(1, chOrderList.size());
+            ChargentOrders__ChargentOrder__c paymentInfoACH = 
+                        new ChargentOrders__ChargentOrder__c( 
+                                ChargentOrders__Payment_Method__c = 'Check',
+                                ChargentOrders__Bank_Name__c = 'Bank of America',
+                                ChargentOrders__Bank_Routing_Number__c = '123456789',
+                                ChargentOrders__Bank_Account_Type__c = 'Checking',
+                                ChargentOrders__Bank_Account_Number__c = '123456533',
+                                ChargentOrders__Bank_Account_Name__c = 'Jordan Testcase',
+                                ChargentOrders__Card_Type__c = '',
+                                ChargentOrders__Card_Number__c = '',
+                                ChargentOrders__Card_Security_Code__c = '',
+                                ChargentOrders__Card_Expiration_Month__c = '',
+                                ChargentOrders__Card_Expiration_Year__c = '',
+                                ChargentOrders__Billing_Address__c = '',
+                                ChargentOrders__Billing_City__c = '',
+                                ChargentOrders__Billing_State__c = '',
+                                ChargentOrders__Billing_Zip_Postal__c  = '',
+                                ChargentOrders__Billing_First_Name__c = '',
+                                ChargentOrders__Billing_Last_Name__c = '');
+
+            ChargentOrders__ChargentOrder__c paymentInfoCC = 
+                        new ChargentOrders__ChargentOrder__c( 
+                                ChargentOrders__Payment_Method__c = 'Credit Card',
+                                ChargentOrders__Bank_Name__c = '',
+                                ChargentOrders__Bank_Routing_Number__c = '',
+                                ChargentOrders__Bank_Account_Type__c = '',
+                                ChargentOrders__Bank_Account_Number__c = '',
+                                ChargentOrders__Bank_Account_Name__c = '',
+                                ChargentOrders__Card_Number__c = '111111111',
+                                ChargentOrders__Card_Security_Code__c = '121',
+                                ChargentOrders__Card_Expiration_Month__c = '02',
+                                ChargentOrders__Card_Expiration_Year__c = '2020',
+                                ChargentOrders__Billing_Address__c = '200 Street',
+                                ChargentOrders__Billing_City__c = 'City',
+                                ChargentOrders__Billing_State__c = 'MA',
+                                ChargentOrders__Billing_Zip_Postal__c  = '02114',
+                                ChargentOrders__Billing_First_Name__c = 'Jordan',
+                                ChargentOrders__Billing_Last_Name__c = 'Testcase');
+            Test.StartTest();
+            List<String> getStatesList = CreateOrderandPaymentRequest.getStates();
+            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH);
+            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC);
+
+            List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, 
+                                                                Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
+                                                                FROM ChargentOrders__ChargentOrder__c
+                                                                ORDER BY ChargentOrders__Payment_Method__c];
+            System.assertEquals(50, getStatesList.size());
+
+            // Checking that the orders were inserted and that the merged data mapped correctly:
+            System.assertEquals(2, newOrders.size());
+            System.assertNotEquals(null, newOrders[0].Account_Bill__c);
+            System.assertNotEquals(null, newOrders[1].Account_Bill__c);
+            System.assertEquals(606.51, newOrders[0].ChargentOrders__Subtotal__c);
+            System.assertEquals(606.51, newOrders[1].ChargentOrders__Subtotal__c);
+            System.assertEquals('2020', newOrders[0].ChargentOrders__Card_Expiration_Year__c);
+            System.assertEquals('Bank of America', newOrders[1].ChargentOrders__Bank_Name__c);
+
+            String chargeResultOne = CreateOrderandPaymentRequest.chargeOrder(resultOne[0]);        
+            String chargeResultTwo = CreateOrderandPaymentRequest.chargeOrder(resultTwo[0]);                
+
+            System.assertEquals('Approved', chargeResultOne.right(8));
+            System.assertEquals('Approved', chargeResultTwo.right(8));
+            Test.StopTest();
+
+            List<ChargentOrders__Transaction__c> newTransactions = [SELECT Id, Distributed_Among_System_Bills__c,
+                                                                    ChargentOrders__Order__r.ChargentOrders__Payment_Status__c
+                                                                    FROM ChargentOrders__Transaction__c
+                                                                    ORDER BY ChargentOrders__Order__r.ChargentOrders__Payment_Method__c];
+
+            System.assertEquals(2,newTransactions.size());
+
+            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id}, true);
+            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id}, false);
+
+            List<ChargentOrders__Transaction__c> updatedTransactions = [SELECT Id, Distributed_Among_System_Bills__c,
+                                                                        ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                                                                        Property_Account_ID__c
+                                                                        FROM ChargentOrders__Transaction__c
+                                                                        ORDER BY ChargentOrders__Order__r.ChargentOrders__Payment_Method__c];
+
+            System.assertEquals('Recurring', updatedTransactions[0].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c);
+            System.assertNotEquals('Recurring', updatedTransactions[1].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c);
+        }
     }
 }

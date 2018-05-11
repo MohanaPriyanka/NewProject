@@ -17,7 +17,7 @@
         });
 
         actionGetSystemBills.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if(resp.getState() === 'SUCCESS') {
                 component.set("v.SystemBills", resp.getReturnValue());
             } else {
                 $A.log("Errors", resp.getError());
@@ -29,7 +29,7 @@
                     component.set("v.myBill", 0);
                 } else {
                     for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {
-                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].carryover*100);
+                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].ChargentOrders__Subtotal__c*100);
                     }
                     var roundedBalance = totalOutstandingBalance/100;
                     component.set("v.myBill", roundedBalance);
@@ -38,12 +38,12 @@
        
         actionGetTransactions.setCallback(this,function(resp){
             component.set("v.recurringCheck", false);
-            if(resp.getState() == 'SUCCESS') {
+            if(resp.getState() === 'SUCCESS') {
                 component.set("v.PaymentLogs", resp.getReturnValue());
                 var transactionList = resp.getReturnValue();
                 var tranStep;
                     for (tranStep = 0; tranStep < transactionList.length; tranStep++) {
-                        if (transactionList[tranStep].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c == 'Recurring') {
+                        if (transactionList[tranStep].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c === 'Recurring') {
                             component.set("v.recurringCheck", true);
                         }
                     }
@@ -53,7 +53,7 @@
         }); 
         
         actionGetAccountBills.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if(resp.getState() === 'SUCCESS') {
                 component.set("v.AccountBills", resp.getReturnValue());
                 var abList = resp.getReturnValue();
                 var files = component.get("v.fileNames"); 

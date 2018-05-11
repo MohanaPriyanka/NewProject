@@ -1,4 +1,4 @@
-<aura:component controller="PreviewProductionUpdateResults" access="global">	
+<aura:component controller="PreviewProductionUpdateResults" access="global">  
  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="SchZBillList" type="UASB__c[]"/>
  <aura:attribute name="parentId" type="String"/>    
@@ -22,6 +22,12 @@
         <div class="slds-truncate" title="Name on Account">Name on Account</div>
       </th>
       <th scope="col">
+        <div class="slds-truncate" title="Additional Utility Id">Additional Utility Id</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Subscription Production">Subscription Production</div>
+      </th>
+      <th scope="col">
         <div class="slds-truncate" title="System Share">NMCs Allocated </div>
       </th>
       <th scope="col">
@@ -38,18 +44,18 @@
   <tbody>     
    <aura:iteration items="{!v.SchZBillList}" var="uasbs">
       <tr>
-          <td >
-		   <div class="slds-truncate">     
+        <td >
+        <div class="slds-truncate">     
                <aura:if isTrue="{!uasbs.PreGen_IsPreGen__c}">
                 <lightning:icon iconName="utility:check" size="small" alternativeText="Generated"/>
                    <aura:set attribute="else">
                      <lightning:icon iconName="utility:event" size="small" alternativeText="Generated"/>
                    </aura:set>
                </aura:if>
-		   </div>
+        </div>
           </td>
           <td >
-		   <div class="slds-truncate"><ui:outputText value="{!uasbs.PreGen_Production_Update__c}"/></div>
+        <div class="slds-truncate"><ui:outputText value="{!uasbs.PreGen_Production_Update__c}"/></div>
           </td>
           <td>
             <div class="slds-truncate"><a href="{!'https://na54.salesforce.com/' + uasbs.Utility_Account_Subscription__c}" target="_blank"><ui:outputText value="{!uasbs.PreGen_Utility_Acct__c}"/></a></div>
@@ -60,6 +66,12 @@
           <td> 
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Name_on_Account__c}"/></div>
           </td> 
+          <td> 
+            <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Additional_Id__c}"/></div>
+          </td> 
+          <td>
+            <div class="slds-truncate" ><ui:outputNumber value="{!uasbs.PreGen_Subscription_Production__c}"/></div>
+          </td>
           <td>
             <div class="slds-truncate" ><ui:outputCurrency value="{!uasbs.PreGen_NMCs_Allocated__c}"/></div>
           </td>
@@ -72,7 +84,7 @@
           <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Schedule_Z_Status__c}"/></div>
           </td>
-    </tr>
+      </tr>
    </aura:iteration>
   </tbody>
 </table> 

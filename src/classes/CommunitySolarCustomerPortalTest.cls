@@ -2,10 +2,12 @@
 public without sharing class CommunitySolarCustomerPortalTest {
     @testSetup static void setupTestData() {
         TestBillCreationandPayment.CSTestRecordWarehouse();
-        
+    }
+    @isTest static void testMethodOne() {
+        Test.startTest();
         Account parentAccount = [SELECT Id, Name
-                            FROM Account
-                        WHERE Name = 'Account Parent'];
+                                FROM Account
+                                WHERE Name = 'Account Parent'];
 
         Profile communityProfile = [SELECT Id 
                                     FROM Profile 
@@ -75,14 +77,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                        ChargentOrders__Type__c = 'Charge',
                                                        ChargentOrders__Payment_Method__c = 'Credit Card',                                    
                                                        Activity_Type__c = 'Payment');
-        insert transA;
-    }        
-
-    @isTest static void testMethodOne() {
-         
-        User communityUser = [ SELECT Id, ContactId, Parent_account_id__c, Contact.Account.Id, Username 
-                                FROM User
-                                WHERE Username = 'communityuser@test.com']; 
+        insert transA;  
         
         Map<String, Account> customerAccountMap = new Map<String, Account>();
         for (Account customerAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
@@ -94,7 +89,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                 FROM Entity__c 
                                 WHERE Name = 'Oxford Barrett St. P1'];
                                                                          
-        Test.startTest();
           System.runAs(communityUser){
 
             //test the getContactInfo() method
@@ -111,15 +105,15 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             // test the getMenuLabelList() method
             List<Account> menuLabelRespList = new List<Account>(MyAccountController.getMenuLabelList());
-            System.AssertEquals(1, menuLabelRespList.size());
-            System.AssertEquals(customerAccountMap.get('Account A').Id, menuLabelRespList.get(0).Id);
+            System.assertEquals(1, menuLabelRespList.size());
+            System.assertEquals(customerAccountMap.get('Account A').Id, menuLabelRespList.get(0).Id);
 
             //test the getSystemBills() method
             String propertyAccountId = String.valueOf(customerAccountMap.get('Account A').Id).subString(0,15);
             List<AggregateResult> systemBillPrAccRespList = new List<AggregateResult>(MyAccountController.getSystemBills(propertyAccountId)); 
             List<AggregateResult> systemBillallList = new List<AggregateResult>(MyAccountController.getSystemBills('all'));
-            System.AssertEquals(606.51, systemBillPrAccRespList[0].get('carryover'));
-            System.AssertEquals(entity1.Id, systemBillallList[0].get('entity'));
+            System.assertEquals(606.51, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
+            System.assertEquals(entity1.Id, systemBillallList[0].get('ChargentOrders__Shipping_Name__c'));
 
             //test the getAccountBills() method
             propertyAccountId = String.valueOf(customerAccountMap.get('Account A').Id);

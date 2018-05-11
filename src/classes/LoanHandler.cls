@@ -857,7 +857,7 @@ public without sharing class LoanHandler{
     }
 
     private Map<String, String> attachmentToTaskMap = new Map<String, String>{
-        'Paystub' => 'Paystub Documentation',
+        'PayStub' => 'PayStub Documentation',
         'Tax Return (Previous Year)' => 'Tax Return (Previous Year)',
         'Tax Return (Two Years Previous)' => 'Tax Return (Two Years Previous)',
         'SSN Award Letter' => 'SSN/Pension Award Letter or Bank Statement',

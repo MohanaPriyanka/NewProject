@@ -43,7 +43,9 @@ public without sharing class PreviewProductionUpdateResults{
                                                         Next_Schedule_Z_Status__c, Opportunity_Stage__c,
                                                         Opportunity__r.Product__r.Solar_Electricity_Rate__c, 
                                                         Opportunity__r.Product__r.NMC_Discount__c,
-                                                        Opportunity__r.Product__r.Pricing_Structure__c
+                                                        Opportunity__r.Product__r.Pricing_Structure__c,
+                                                        Utility_Account_Log__r.Premise_Number__c,
+                                                        Utility_Account_Log__r.Name
                                                         FROM Utility_Account_Subscription__c
                                                         WHERE Utility_Account_Log__c != null
                                                         AND Opportunity__c != null 
@@ -82,7 +84,9 @@ public without sharing class PreviewProductionUpdateResults{
                                                                 Next_Schedule_Z_Status__c, Opportunity_Stage__c,
                                                                 Opportunity__r.Product__r.Solar_Electricity_Rate__c, 
                                                                 Opportunity__r.Product__r.NMC_Discount__c,
-                                                                Opportunity__r.Product__r.Pricing_Structure__c
+                                                                Opportunity__r.Product__r.Pricing_Structure__c,
+                                                                Utility_Account_Log__r.Premise_Number__c,
+                                                                Utility_Account_Log__r.Name
                                                                 FROM Utility_Account_Subscription__c
                                                                 WHERE Utility_Account_Log__c != null
                                                                 AND Opportunity__c != null 
@@ -130,7 +134,8 @@ public without sharing class PreviewProductionUpdateResults{
                                   Utility_Account_Subscription__r.Share_of_System__c, 
                                   Production_Update__r.Name, Credits_on_Bill_Period__c,
                                   Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-                                  Net_Metering_Credits_Allocated__c, Discounted_Bill__c
+                                  Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
+                                  Subscription_Production_kWh__c
                                   FROM UASB__c
                                   WHERE System_Bill__r.Property_Account_ID__c = : parentId
                                   ORDER BY Date__c DESC];
@@ -140,6 +145,7 @@ public without sharing class PreviewProductionUpdateResults{
           Name = 'Old Bill',
           PreGen_IsPreGen__c = True, 
           PreGen_Discounted_Bill__c = oldBill.Discounted_Bill__c,
+          PreGen_Subscription_Production__c = oldBill.Subscription_Production_kWh__c,
           PreGen_NMCs_Allocated__c = oldBill.Net_Metering_Credits_Allocated__c,
           PreGen_Name_on_Account__c = oldBill.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
           PreGen_Production_Update__c = oldBill.Production_Update__r.Name ,
@@ -185,6 +191,7 @@ public without sharing class PreviewProductionUpdateResults{
         Name = 'PreGenerated Bill',
         PreGen_IsPreGen__c = production.Generate_Bills__c, 
         PreGen_Discounted_Bill__c = discountedBill.setScale(2),
+        PreGen_Subscription_Production__c = (uas.Share_of_System__c/100 * totalProduction).setScale(2),
         PreGen_NMCs_Allocated__c = (uas.Share_of_System__c.setScale(4)/100 * totalNMCs).setScale(2),
         Utility_Account_Subscription__c = uas.Id,
         PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,
@@ -194,6 +201,9 @@ public without sharing class PreviewProductionUpdateResults{
         PreGen_System_Share__c = uas.Share_of_System__c.setScale(4),
         PreGen_Utility_Acct__c = uas.Name
     );
+    if (uas.Utility_Account_Log__r.Premise_Number__c != null) {
+        newBill.PreGen_Additional_Id__c = uas.Utility_Account_Log__r.Premise_Number__c;
+    }
     return newBill;
   }
 }

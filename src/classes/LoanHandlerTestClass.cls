@@ -197,6 +197,56 @@ public class LoanHandlerTestClass {
         System.assertEquals('Complete', partnerTasks[0].Status__c);
     }
 
+    @isTest static void testPaystubPartnerTask() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
+        BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User' LIMIT 1];
+        Lead employed = new Lead(
+            FirstName = 'Veteran',
+            LastName = 'Testcase',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            Employed__c = true,
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 25000,
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
+        insert employed;
+        employed.Status = 'Pending Information';
+        update employed;
+
+        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+        Date myDate = Date.newInstance(2015, 2, 17);
+        List<Loan__c> loanListToUpdate = new List<Loan__c>();
+
+        Test.startTest();
+        //Insert the Veteran documentation
+        Attachment attachmentPaystub = new Attachment();
+        attachmentPaystub.Name =  String.valueOf('test.txt');
+        attachmentPaystub.body = bodyBlob;
+        attachmentPaystub.ParentId = employed.Id;
+        attachmentPaystub.Description = 'PayStub' + ' ' + employed.Id;
+        insert attachmentPaystub;
+
+        changeLeadUpdateDummy(new List<Lead>{employed});
+        List<Partner_Task__c> partnerTasks = [
+            SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id,
+                Loan__r.DOER_Solar_Loann__c, Child_MSLP_Identifier__c, Unique_id__c
+            FROM Partner_Task__c
+            WHERE Parent_Task__r.Parent_Task__r.Lead__r.Id = :employed.Id
+            AND Name = 'Provide PayStub Documentation'
+        ];
+
+        System.debug(LoggingLevel.ERROR, partnerTasks);
+        System.assertEquals(1, partnerTasks.size());
+        System.assertEquals('Complete', partnerTasks[0].Status__c);
+    }
+
     @isTest static void testAfterLeadConversionCustomerSignature() {
         Date myDate = Date.newInstance(2015, 2, 17);
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];

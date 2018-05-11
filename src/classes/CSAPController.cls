@@ -172,8 +172,24 @@ public without sharing class CSAPController {
             lead.Bs_Sales_ID__c = profile.salesRepId;
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
-        upsert lead;
-
+        try {
+            upsert lead;
+        } catch (Exception e) {
+            if (e.getMessage().contains('INVALID_FIELD_FOR_INSERT_UPDATE, Lead: bad field names on insert/update call: bs_Sales_Id__c')) {
+                Logger.logNow('CSAPController','upsertCSAPRecords',
+                    'lead upsert failed: ' + e.getMessage() +
+                        '\n\nlead:' + JSON.serializePretty(lead) +
+                        ' \n\ntrying again putting bs_Sales_ID__c into Sales_Person__c - manually update this later.');
+                lead.Sales_Person__c = lead.bs_Sales_ID__c;
+                lead.bs_Sales_ID__c = null;
+                String leadJSON = JSON.serialize(lead, true);
+                Lead cleanedLead = (Lead) JSON.deserialize(leadJSON, Lead.class);
+                upsert cleanedLead;
+                lead.Id = cleanedLead.Id;
+            } else {
+                throw new AuraHandledException(e.getMessage());
+            }
+        }
         //Update the Account with the lookup back to the lead
         account.Lead__c = lead.Id;
         update account;

@@ -11,6 +11,6 @@
   </div>
   <div class="slds-p-bottom_medium slds-align--absolute-center">
     <ui:outputText class="slds-text-body_small slds-text-color_weak" value="customercare@bluewavesolar.com"/>
-    <ui:outputText class="slds-text-body_small slds-text-color_weak slds-p-left_medium" value="888-786-4100"/>
+    <ui:outputText class="slds-text-body_small slds-text-color_weak slds-p-left_medium" value="844-786-4100"/>
   </div>
  </aura:component>

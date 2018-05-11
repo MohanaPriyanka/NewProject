@@ -1,5 +1,5 @@
 ({
-    PAYSTUB: 'Paystub',
+    PAYSTUB: 'PayStub',
     TAX_PREV_YEAR: 'Tax Return (Previous Year)',
     TAX_TWO_YEARS_PRIOR: 'Tax Return (Two Years Previous)',
     SSN: 'SSN Award Letter',

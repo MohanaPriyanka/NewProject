@@ -140,21 +140,21 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
           accountsWithAutopay.add(order.Property_Account_ID__c);
         }
 
-        List<Account> accountsToUpdate = new List<Account>();
+        Map<String, Account> accountsToUpdate = new Map<String, Account>();
 
         for (ChargentOrders__ChargentOrder__c order : orderList) {
             if (order.Account_Bill__r != null ) {
                 if (order.ChargentOrders__Payment_Status__c == 'Recurring') {
                     order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = true;
-                    accountsToUpdate.add(order.Account_Bill__r.Parent_Account__r);
+                    accountsToUpdate.put(order.Property_Account_ID__c, order.Account_Bill__r.Parent_Account__r);
                 } else if (!accountsWithAutopay.contains(order.Property_Account_ID__c)){
                     order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = false;
-                    accountsToUpdate.add(order.Account_Bill__r.Parent_Account__r);
+                    accountsToUpdate.put(order.Property_Account_ID__c, order.Account_Bill__r.Parent_Account__r);
                 }
 
             }
         }
 
-        update accountsToUpdate;
+        update accountsToUpdate.values();
     }
 }

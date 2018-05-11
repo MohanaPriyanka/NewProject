@@ -14,7 +14,7 @@
                     component.set("v.myBill", 0);
               } else {
                   for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {
-                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].carryover*100);
+                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].ChargentOrders__Subtotal__c*100);
                   }
                   var roundedBalance = totalOutstandingBalance/100;
                   component.set("v.myBill", roundedBalance);

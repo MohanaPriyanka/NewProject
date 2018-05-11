@@ -72,9 +72,8 @@ public without sharing class MyAccountController {
                 maxBillNumber = acctBillsParent.get(maxbill).Bill_Number__c;
             }
             for (AggregateResult systemBillsListParent : [  SELECT Account_Bill__c, 
-                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, 
-                                                                MAX(FormAssembly_Order_Helper__c) fahelp,
-                                                                SUM(Carry_Over_Balance__c) carryover
+                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
+                                                                SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__c IN : acctBillsParent
                                                             AND Account_Bill__r.Bill_Number__c = : maxBillNumber
@@ -95,9 +94,8 @@ public without sharing class MyAccountController {
               acctBillsPropertyIds.add(acctBillsProperty.get(maxbill).Id);
             }
             for( AggregateResult systemBillsListProperty : [SELECT Account_Bill__c, 
-                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, 
-                                                                MAX(FormAssembly_Order_Helper__c) fahelp,
-                                                                SUM(Carry_Over_Balance__c) carryover
+                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
+                                                                SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__r.Id IN : acctBillsPropertyIds
                                                             AND Carry_Over_Balance__c > 0.01
