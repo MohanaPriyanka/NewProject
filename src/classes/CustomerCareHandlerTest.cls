@@ -65,9 +65,9 @@
         insert new List<Task>{testTask1, testTask2, testTask3};
     }
 
-    Static testMethod void testCreateCase() {
+    static testMethod void testCreateCase() {
 
-    	List<Task> testTasks = [SELECT Subject, Id, Customer_Care_Case__c, WhoId FROM Task];
+    	List<Task> testTasks = [SELECT Subject, Id, Customer_Care_Case__c, WhoId FROM Task WHERE Subject LIKE 'This is the subject%'];
     	System.assertEquals(3, testTasks.size());
 
     	List<Case> testCases = [SELECT Lead_Lookup__c, ContactId, Subject, Status, RecordTypeId, Id FROM Case];
