@@ -198,7 +198,7 @@ public class PublicCSTest {
         // Second Bill Should Hit the NM Rate Floor
         System.assertEquals(false, uablist[1].Above_NM_Rate_Floor__c);
         System.assertEquals(41.50,systembillList[1].Net_Metering_Credits_Allocated__c);
-        System.assertEquals(829.96,systembillList[1].Production_kWH__c);
+        System.assertEquals(829.98,systembillList[1].Production_kWH__c);
         Decimal secondBillAmount = (829.96*0.09).setScale(2); 
         System.assertEquals(secondBillAmount,systembillList[1].Due_This_Month__c);
 

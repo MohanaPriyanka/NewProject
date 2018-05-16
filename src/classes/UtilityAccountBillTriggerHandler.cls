@@ -136,7 +136,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     Pricing_Structure__c = uas.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = uas.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
                                     Size_off_NMCs__c = uab.Size_off_NMCs__c,
-                                    Share_of_System__c = uas.Share_of_System__c);
+                                    Share_of_System__c = uas.Share_of_System__c.setScale(4));
         return generatedUASB;     
     }
 
