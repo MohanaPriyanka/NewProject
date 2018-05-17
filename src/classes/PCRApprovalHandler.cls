@@ -96,7 +96,7 @@ public without sharing class PCRApprovalHandler {
              DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
              Adjusted_Monthly_Personal_Debt__c, DOER_Application__c, 
              Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
-             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c, PreApproval_Form__c, 
+             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c, PreApproval_Form__c,
              LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
              PCR_Lead_ID__c, Partner_Email__c,
              Credit_Denial_Email_Sent__c
@@ -433,27 +433,13 @@ public without sharing class PCRApprovalHandler {
 
         private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer,
                                        Integer creditMinimum, Decimal dtiMaximum) {
-            // 681-689 => 40% 690-699 => 45% 700+ =>50% and handle low product as a non-DOER product for purposes of pre-approval
-            if (doer && creditMinimum == 681) {
-                if (creditScore >= 700 && DTIafter <= dtiMaximum) {
-                    return APPROVED;
-                } else if (creditScore >= 690 && DTIafter <= 45) {
-                    return APPROVED;
-                } else if (creditScore >= creditMinimum && DTIafter <= 40) {
-                    return APPROVED;
-                } else if (creditScore < creditMinimum) {
-                    return DECLINED;
-                } else {
-                    return PENDINGREVIEW;
-                }
+            // 650 - 680 => 45%, 681+ => 50% and handle low product as a non-DOER product for purposes of pre-approval
+            if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
+                return APPROVED;
+            } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
+                return PENDINGREVIEW;
             } else {
-                if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
-                    return APPROVED;
-                } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
-                    return PENDINGREVIEW;
-                } else {
-                    return DECLINED;
-                }
+                return DECLINED;
             }
         }
 

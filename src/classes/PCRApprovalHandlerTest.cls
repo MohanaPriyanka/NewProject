@@ -91,13 +91,13 @@ private class PCRApprovalHandlerTest {
                 '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":45.00}, ' +
+                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
                 '  {"income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
                 '  {"income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":48.00}, ' +
+                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
                 '  {"income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
                 '  {"income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
-                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":49.99} ' +
+                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -717,7 +717,7 @@ private class PCRApprovalHandlerTest {
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
 
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
         productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productVar.Lender_of_Record__c = 'Avidia';
         
