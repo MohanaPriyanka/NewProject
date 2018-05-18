@@ -105,6 +105,7 @@
             return;
         }
         component.set('v.page', 'AddressPI');
+        helper.getPicklistOptions(component, 'Lead', 'Property_Type__c', component.find('propertyType'));
     },
 
     setResidenceOwner: function(component, event, helper) {

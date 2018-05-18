@@ -63,6 +63,10 @@
                                        rendered="{!lead.lead.Product__r.Debt_To_Income_Maximum__c != null}"/>)
                     </span>
                   </div>
+                  <div>
+                    Property Type:
+                    <apex:outputText value="{!lead.lead.Property_Type__c}"/>
+                  </div>
                 </apex:pageBlock>
               </div>
             </div>

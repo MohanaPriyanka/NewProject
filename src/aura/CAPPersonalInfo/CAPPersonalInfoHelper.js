@@ -43,8 +43,11 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        var residenceOwner = component.get('v.lead.Residence_Owner__c');
-        var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
+        var eligiblePropertyTypes = ['Single Family Home (1-4 Units)', 'Second Home (1-4 Units)'];
+        if (!eligiblePropertyTypes.includes(lead.Property_Type__c)) {
+            errorMessage += lead.Property_Type__c;
+            errorMessage += ' properties are not eligible for financing. \n';
+        }
         if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
             errorMessage += 'Please select whether or not you own the property located at the installation address. You must own the property to continue applying for this loan.';
         }

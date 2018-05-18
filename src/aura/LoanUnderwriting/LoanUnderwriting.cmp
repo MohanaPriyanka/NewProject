@@ -36,6 +36,12 @@
           </aura:if>)
         </div>
       </aura:if>
+      <aura:if isTrue="{!v.lead.Property_Type__c != null}">
+        <div class="slds-text-body_small slds-text-color_inverse">
+          Property Type:
+          <ui:outputText value="{!v.lead.Property_Type__c}"/>
+        </div>
+      </aura:if>
     </div>
   </div>
   

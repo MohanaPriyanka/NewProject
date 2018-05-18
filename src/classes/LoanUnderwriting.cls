@@ -125,7 +125,7 @@ global without sharing class LoanUnderwriting {
             SELECT FirstName, LastName, Name, Loan_Principal__c,
                 Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
                 Product__r.Loan_Interest_Rate__c, Product__r.DTI_After_Rate_Gross_Up__c,
-                Product__r.Loan_Term__c,
+                Product__r.Loan_Term__c, Property_Type__c,
                 Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment__c,
                 Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                 Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
