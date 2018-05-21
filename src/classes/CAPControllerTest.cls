@@ -122,7 +122,6 @@ public with sharing class CAPControllerTest {
                 Privacy_Policy_Acknowledged__c = true,
                 Automatic_Product_Assignment__c = true,
                 Product_Program__c = 'BlueWave Solar Loan',
-                Pre_Approval_Form__c = true,
                 Unfinished_Lead__c = true,
                 Utility_Bill_Access_Acknowledged__c = true,
                 Status = 'Ready for Credit Check',
@@ -148,7 +147,7 @@ public with sharing class CAPControllerTest {
                                                          WHERE LASERCA__Lead__c = :leadList[0].Id];
         System.assertEquals(pcrs.size(), 1);
 
-        System.assertEquals(CAPController.checkCreditStatus(leadList[0]), 'Pending Credit Review');
+        System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(leadList[0]));
 
         System.assertEquals(null, CAPController.getLead(newLead.id, newLead.email).Joint_Applicant_Type__c);
         newLead.Application_Type__c = 'Joint';

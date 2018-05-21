@@ -23,6 +23,7 @@ public with sharing class LoanServicerTest {
         Lead testLead = new Lead(FirstName = 'Test',
                                  LastName = 'Testerson',
                                  Product_Line__c = 'Residential Loan',
+                                 Unfinished_Lead__c = true,
                                  Company = 'Testco');
         insert testLead;
 

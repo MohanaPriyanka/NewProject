@@ -36,7 +36,6 @@
     'Automatic_Product_Assignment__c':'true',
     'Loan_Term__c':'',
     'Product_Program__c':'',
-    'Pre_Approval_Form__c':'true',
     'Unfinished_Lead__c':'true',
     'Utility_Bill_Access_Acknowledged__c':'',
     'LASERCA__Birthdate__c':'',

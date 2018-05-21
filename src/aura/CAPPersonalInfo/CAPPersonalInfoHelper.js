@@ -21,7 +21,7 @@
                                                        'errorMessage': "Enter your email"});
         if (!lead.Express_Consent__c) {
           errorMessage += 'You must express consent in order to continue.';
-          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
         }
         return errorMessage;
       },
@@ -43,8 +43,6 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
-        var residenceOwner = component.get('v.lead.Residence_Owner__c');
-        var notResidenceOwner = component.get('v.lead.Not_Residence_Owner__c');
         if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
             errorMessage += 'Please select whether or not you own the property located at the installation address. You must own the property to continue applying for this loan.';
         }
@@ -288,15 +286,15 @@
     },
 
     // Need to set the Status in order for the PCRApprovalHandler to pull credit (skips it if it's "Unfinished")
-    // Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
+    // (Removed) Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
     finishLead : function(lead) {
+        // Could we use lead.Unfinished_Lead__c here instead?
         if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
             if ((lead.Application_Type__c === 'Individual') ||
                 (lead.Application_Type__c === 'Joint' &&
                  lead.CoApplicant_Contact__r &&
                  lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
                 lead.Status = 'Ready for Credit Check';
-                lead.Pre_Approval_Form__c = true;
             }
         }
     },

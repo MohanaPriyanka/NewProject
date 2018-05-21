@@ -137,7 +137,6 @@ public class LoanTestRecordWarehouse {
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm10Rate699'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
-                                                Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
@@ -154,7 +153,6 @@ public class LoanTestRecordWarehouse {
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm10Rate725'),
                                                 Product_Program__c = 'BlueWave Solar Loan',
-                                                Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Automatic_Product_Assignment__c = true,
                                                 Status = 'Ready for Credit Check');
@@ -185,7 +183,6 @@ public class LoanTestRecordWarehouse {
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Product_Program__c = 'MSLP',
-                                                Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 150000,
                                                 Product__c = productMap.get('productLoanMATerm20Rate725'),
@@ -205,7 +202,6 @@ public class LoanTestRecordWarehouse {
                                                 Partner_Lookup__c = partner.Id,
                                                 Bs_Sales_ID__c = salesRep.Id,
                                                 Product_Program__c = 'BlueWave Solar Loan',
-                                                Pre_Approval_Form__c = true,
                                                 Unfinished_Lead__c = true,
                                                 Annual_Income_Currency__c = 1000,
                                                 Product__c = productMap.get('productLoanMATerm10Rate699'),

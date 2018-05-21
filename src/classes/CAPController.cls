@@ -17,7 +17,7 @@ public without sharing class CAPController {
                         Type_of_Avidia_Service_Provider__c, Avidia_Service_Provider__c, DOER_Solar_Loan__c, Year_Employment__c,
                         Monthly_Income__c, Monthly_Income_2__c, Monthly_Income_Details__c, Monthly_Income_Details_2__c, Product_Program__c,
                         Employed_less_than_a_year__c, Retired__c, Not_Retired__c, Not_Self_Employed__c, Self_Employed__c, No_Veteran_Disability__c, Veteran_Disability__c,
-                        Employed__c, Not_Employed__c, Electronic_Disbursal_Authorized__c, Pre_Approval_Form__c, Express_Consent__c,
+                        Employed__c, Not_Employed__c, Electronic_Disbursal_Authorized__c, Express_Consent__c,
                         Product__c, Product__r.Lender_of_Record__c, Reliant_on_Alimony_Child_Support_Other__c, Not_Reliant_on_Alimony_Child_Support_Oth__c,
                         CoApplicant_Contact__c, CoApplicant_Contact__r.FirstName, CoApplicant_Contact__r.LastName,
                         CoApplicant_Contact__r.LASERCA__Home_Address__c, CoApplicant_Contact__r.Year_Employment__c,

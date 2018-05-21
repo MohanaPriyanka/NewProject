@@ -88,7 +88,6 @@ public without sharing class SLPControllersTestclass {
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
             Product_Program__c = 'BlueWave Solar Loan',
-            Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
             );
@@ -262,7 +261,6 @@ public without sharing class SLPControllersTestclass {
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
             Product_Program__c = 'BlueWave Solar Loan',
-            Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
             );
@@ -299,7 +297,6 @@ public without sharing class SLPControllersTestclass {
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
             Product_Program__c = 'BlueWave Solar Loan',
-            Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
             );
@@ -570,7 +567,6 @@ public without sharing class SLPControllersTestclass {
             Privacy_Policy_Acknowledged__c = true,
             Automatic_Product_Assignment__c = true,
             Product_Program__c = 'BlueWave Solar Loan',
-            Pre_Approval_Form__c = true,
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
             );

@@ -91,13 +91,13 @@ private class PCRApprovalHandlerTest {
                 '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":45.00}, ' +
+                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
                 '  {"income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
                 '  {"income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":48.00}, ' +
+                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
                 '  {"income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
                 '  {"income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
-                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":49.99} ' +
+                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -193,7 +193,7 @@ private class PCRApprovalHandlerTest {
         mslp.Program__c = 'MSLP';
         insert new List<Product2>{productVar, mslp};
         
-        Lead leadAG = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
+        Lead leadAG = newLead(90000, 20000, productVar.Id, false, partner.Id);
         insert leadAG;
 
         Test.startTest();
@@ -238,7 +238,7 @@ private class PCRApprovalHandlerTest {
         insert productVar;
 
         Test.startTest();
-        Lead lead = getLead(50000, 45000, productVar.Id, true, true, partner.Id);
+        Lead lead = newLead(50000, 45000, productVar.Id, true, partner.Id);
         insert lead;
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = lead.Id,
             LASERCA__Credit_Score_TransUnion__c = '888');
@@ -285,7 +285,7 @@ private class PCRApprovalHandlerTest {
     static testMethod void testDTIAfterOverLimit() {
         Test.startTest();
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Lead lead = getLead(50000, 1000000, null, false, false, partner.Id);
+        Lead lead = newLead(50000, 1000000, null, false, partner.Id);
         insert lead;
 
         LASERCA__Personal_Credit_Report__c pcr =
@@ -314,7 +314,7 @@ private class PCRApprovalHandlerTest {
     static testMethod void testCreditLowDTIAfterOverLimit() {
         Test.startTest();
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Lead lead = getLead(81000, 10000, null, true, false, partner.Id);
+        Lead lead = newLead(81000, 10000, null, true, partner.Id);
         insert lead;
 
         LASERCA__Personal_Credit_Report__c pcr =
@@ -347,7 +347,7 @@ private class PCRApprovalHandlerTest {
             WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%'
             LIMIT 1
         ];
-        Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
+        Lead lead = newLead(81000, 10000, null, false, partner.Id);
         insert lead;
 
         lead.Status = 'Pending Information';
@@ -367,7 +367,7 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
 
         lead = [
-            SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+            SELECT Id, DOER_Solar_Loan__c, Status,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
@@ -410,7 +410,7 @@ private class PCRApprovalHandlerTest {
             LIMIT 1
         ];
         insert ppj;
-        Lead lead = getLead(81000, 10000, null, false, false, partner.Id);
+        Lead lead = newLead(81000, 10000, null, false, partner.Id);
         lead.Product__c = bwsl.Id;
         insert lead;
 
@@ -431,7 +431,7 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
 
         lead = [
-            SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+            SELECT Id, DOER_Solar_Loan__c, Status,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
@@ -466,7 +466,7 @@ private class PCRApprovalHandlerTest {
         Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
             Partner__c = partner.Id);
         insert ppj;
-        Lead lead = getLead(81000, 50000, null, false, false, partner.Id);
+        Lead lead = newLead(81000, 50000, null, false, partner.Id);
         insert lead;
 
         lead.Status = 'Ready for Credit Check';
@@ -486,7 +486,7 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
 
         lead = [
-            SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+            SELECT Id, DOER_Solar_Loan__c, Status,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
@@ -511,7 +511,7 @@ private class PCRApprovalHandlerTest {
         mslp.Program__c = 'MSLP';
         insert mslp;
         
-        Lead lead = getLead(60000, 10000, null, true, false, partner.Id);
+        Lead lead = newLead(60000, 10000, null, true, partner.Id);
         insert lead;
 
         lead.Status = 'Pending Information';
@@ -530,7 +530,7 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
 
         lead = [
-            SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+            SELECT Id, DOER_Solar_Loan__c, Status,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
@@ -587,7 +587,7 @@ private class PCRApprovalHandlerTest {
             DTI_After_Rate_Gross_Up__c = 2
         );
         insert arl;
-        Lead lead = getLead(60000, 10000, arl.Id, false, false, partner.Id);
+        Lead lead = newLead(60000, 10000, arl.Id, false, partner.Id);
         lead.LASERCA__Home_State__c = 'NJ';
         insert lead;
 
@@ -607,7 +607,7 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
 
         lead = [
-            SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status,
+            SELECT Id, DOER_Solar_Loan__c, Status,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.DTI_After__c,
                 Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
@@ -625,8 +625,8 @@ private class PCRApprovalHandlerTest {
             lead.Personal_Credit_Report__r.DTI_After__c);
     }
 
-    private static Lead getLead(Integer annualIncome, Integer loanAmount, Id productId,
-        Boolean doerLoan, Boolean preApproval, Id partnerId) {
+    private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId,
+        Boolean doerLoan, Id partnerId) {
         return(new Lead(LastName = 'testcase',
             FirstName = 'test',
             Automatic_Product_Assignment__c = false,
@@ -642,8 +642,7 @@ private class PCRApprovalHandlerTest {
             Product_Line__c = 'Residential Loan',
             Product_Program__c = doerLoan ? 'MSLP' : 'BlueWave Solar Loan',
             LASERCA__Home_State__c = 'MA',
-            Unfinished_Lead__c = true,
-            Pre_Approval_Form__c = preApproval));
+            Unfinished_Lead__c = true));
     }
 
     private static LASERCA__Credit_Report_Log__c getCRL(LASERCA__Personal_Credit_Report__c pcr) {
@@ -655,7 +654,7 @@ private class PCRApprovalHandlerTest {
     // committed before 
     static testMethod void testMultipleTradeAccountInserts() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Lead lead = getLead(50000, 1000000, null, false, false, partner.Id);
+        Lead lead = newLead(50000, 1000000, null, false, partner.Id);
         insert lead;
 
         Test.startTest();
@@ -717,7 +716,7 @@ private class PCRApprovalHandlerTest {
         List<LASERCA__Personal_Credit_Report__c> insertpcrlist = new List<LASERCA__Personal_Credit_Report__c>();
         List<LASERCA__Trade_Accounts__c> inserttradeacct = new List<LASERCA__Trade_Accounts__c>();
 
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
         productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productVar.Lender_of_Record__c = 'Avidia';
         
@@ -728,7 +727,7 @@ private class PCRApprovalHandlerTest {
         insert new List<Product2>{
             productVar, mslp
         };
-        Lead leadAG = getLead(90000, 20000, productVar.Id, false, true, partner.Id);
+        Lead leadAG = newLead(90000, 20000, productVar.Id, false, partner.Id);
         leadAG.Avidia_Service_Provider__c = true;
         leadAG.Avidia_Executive__c = true;
         insert leadAG;
@@ -815,7 +814,6 @@ private class PCRApprovalHandlerTest {
                     Product_Program__c = app.doer ? 'MSLP' : 'BlueWave Solar Loan',
                     LASERCA__Home_State__c = 'MA',
                     Unfinished_Lead__c = true,
-                    Pre_Approval_Form__c = true,
                     IBLS_Category__c = app.ibls,
                     Application_Type__c = app.applicationType,
                     Co_Applicant_Income__c = app.coAppIncome,
