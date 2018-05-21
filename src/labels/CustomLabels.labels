@@ -104,7 +104,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Capacity Check</shortDescription>
-        <value>Capacity Check</value>
+        <value>Community Solar Availability</value>
     </labels>
     <labels>
         <fullName>CSAP_NAV_Complete</fullName>
@@ -120,7 +120,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Credit Check</shortDescription>
-        <value>Credit Check</value>
+        <value>Qualification Check</value>
     </labels>
     <labels>
         <fullName>CSAP_NAV_Energy_Information</fullName>
@@ -128,7 +128,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Energy Information</shortDescription>
-        <value>Energy Information</value>
+        <value>Energy Use</value>
     </labels>
     <labels>
         <fullName>CSAP_NAV_Getting_Started</fullName>
@@ -144,7 +144,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Personal Information</shortDescription>
-        <value>Personal Information</value>
+        <value>Personal Details</value>
     </labels>
     <labels>
         <fullName>Co_Applicant_PI_Next</fullName>

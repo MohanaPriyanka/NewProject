@@ -20,13 +20,15 @@
     <div aria-labelledby="ssnForm">
         <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large">We need some information in order to run a</b>
-          <b class="slds-section__title--large--stream"> credit check</b>
-          <b class="slds-section__title--large"> on you!</b>
+          <b class="slds-section__title--large">We need to check that you qualify for </b>
+          <b class="slds-section__title--large--stream">Community Solar</b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:helptext
+                title="Social Security Number Help Text"
+                content="In order to qualify for Community Solar, we need your social security number to run a credit check (and make sure you pay your bills on time). This information is securely stored and we do not disclose it to any outside party."/>
               <lightning:input aura:id="field" name="leadSSN"
                        type="password"
                        label="Social Security Number"
@@ -37,8 +39,6 @@
                        required="true"/> 
             </lightning:layoutItem>
           </lightning:layout>
-
-          <div class="slds-p-around--small slds-text-body--regular">We need your social security number to make sure you pay your bills on time, and qualify for Community Solar. This information is securely stored and we do not disclose it to any outside party.</div>
 
           <lightning:formattedUrl value="https://bluewavesolar.com/about-us/privacy-policy/" label="Please take a moment to review our Privacy Policy" target="_blank" class="slds-p-around--small "/>
 
@@ -92,8 +92,8 @@
         <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
           <b class="slds-section__title--large">Please</b>
-          <b class="slds-section__title--large--stream"> verify the information</b>
-          <b class="slds-section__title--large"> is correct before running credit!</b>
+          <b class="slds-section__title--large--stream"> verify your information</b>
+          <b class="slds-section__title--large"> is correct before we check your score.</b>
         </legend>
 
         <form class="slds-form--stacked">
