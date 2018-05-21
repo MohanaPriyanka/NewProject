@@ -119,7 +119,7 @@
                   <tr>
                     <th scope="row">{!accountBill.Parent_Account__r.Name}</th>                
                     <th scope="row">{!accountBill.Date__c}</th>
-                    <th scope="row">{!accountBill.Bill_Due_Date__c}</th> 
+                    <th scope="row">{!accountBill.Due_Date_SB__c}</th> 
                     <th scope="row"> 
                       <aura:if isTrue="{!accountBill.Bill_Attach_Document__c != NULL}"> 
                         <lightning:button variant="base" onclick="{!c.openSingleFile}" name="{!accountBill.Bill_Attach_Document__c}">                      

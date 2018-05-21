@@ -116,7 +116,7 @@ public without sharing class MyAccountController {
                                                         Carry_Over_Balance__c, Bill_number__c, Bill_Attach_Document__c,
                                                         Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
                                                         Balance_Net_Late_Payments__c, Date_of_Last_Payment__c, 
-                                                        Bill_Due_Date__c, Total_due_minus_payment_plan__c
+                                                        Due_Date_SB__c, Total_due_minus_payment_plan__c
                                                     FROM Account_Bill__c
                                                     WHERE Account_ID__c = : u.Parent_Account_ID__c
                                                     AND Published__c = true
@@ -129,7 +129,7 @@ public without sharing class MyAccountController {
                                                             Due_this_month__c, Balance_Net_Late_Payments__c,
                                                             Total_Due_This_Month__c, Total_due_minus_payment_plan__c,
                                                             Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
-                                                            Total_Due__c, Bill_Due_Date__c, Carry_Over_Balance__c, 
+                                                            Total_Due__c, Due_Date_SB__c, Carry_Over_Balance__c, 
                                                             Bill_number__c, Bill_Attach_Document__c
                                                         FROM Account_Bill__c
                                                         WHERE Parent_Account__r.Id = : propertyAccountId
