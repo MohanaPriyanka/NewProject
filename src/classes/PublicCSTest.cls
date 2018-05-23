@@ -170,7 +170,7 @@ public class PublicCSTest {
              Property_Account__r.Directions_To_Write_Paper_Check__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Net_Metering_Credits_Allocated__c, Production_kWH__c,
              Adjustments_UASB__c, 
@@ -198,7 +198,7 @@ public class PublicCSTest {
         // Second Bill Should Hit the NM Rate Floor
         System.assertEquals(false, uablist[1].Above_NM_Rate_Floor__c);
         System.assertEquals(41.50,systembillList[1].Net_Metering_Credits_Allocated__c);
-        System.assertEquals(829.96,systembillList[1].Production_kWH__c);
+        System.assertEquals(829.98,systembillList[1].Production_kWH__c);
         Decimal secondBillAmount = (829.96*0.09).setScale(2); 
         System.assertEquals(secondBillAmount,systembillList[1].Due_This_Month__c);
 

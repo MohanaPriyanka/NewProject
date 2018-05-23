@@ -28,7 +28,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                             Opportunity__r.Name,
                                             Opportunity__r.Shared_Solar_System__r.Name
                                             FROM System_Bill__c 
-                                            WHERE Id != null]){
+                                            WHERE Account_Bill__r.Published__c = false]){
             systemBillMap.put(systemBill.Unique_Id__c, systemBill);
         }        
         Set<UASB__c> uasbSet = new Set<UASB__c>();
@@ -136,7 +136,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     Pricing_Structure__c = uas.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = uas.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
                                     Size_off_NMCs__c = uab.Size_off_NMCs__c,
-                                    Share_of_System__c = uas.Share_of_System__c);
+                                    Share_of_System__c = uas.Share_of_System__c.setScale(4));
         return generatedUASB;     
     }
 

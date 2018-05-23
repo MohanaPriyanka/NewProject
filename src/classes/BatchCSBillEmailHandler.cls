@@ -21,6 +21,7 @@
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+
         'Bill_Attach_Version__c, Credits_on_Bill_Period__c, '+
+        'Parent_Account__r.Client_Brand_Key__c, ' +
         'Parent_Account__r.Send_Bills_Contact__r.Email, '+
         'Parent_Account__r.Additional_Contact__r.Email ' +
         'FROM Account_Bill__c WHERE Ready_for_Email_Send__c = TRUE';
@@ -41,11 +42,13 @@
             attachIDMap.put(bill.Id, bill.Bill_Attach_Version__c);
         }
 
-        EmailTemplate template = [  SELECT Id, HtmlValue, Body, DeveloperName
-                                    FROM EmailTemplate
-                                    WHERE DeveloperName = : 'CS_Monthly_Invoice_Email' LIMIT 1]; 
+        Map<String, EmailTemplate> templatesMap = new Map<String, EmailTemplate>();
 
-        String originalHtmlbody = template.HtmlValue;
+        for (EmailTemplate template :   [SELECT Id, HtmlValue, Body, DeveloperName
+                                        FROM EmailTemplate
+                                        WHERE DeveloperName LIKE '%CS_Monthly_Invoice_Email%']) {
+            templatesMap.put(template.DeveloperName, template);
+        }
 
         OrgWideEmailAddress senderEmail = [ SELECT Id, Address 
                                             FROM OrgWideEmailAddress
@@ -53,9 +56,18 @@
                                             LIMIT 1];
 
         for (Account_Bill__c acctBill : scope) {
-            system.debug(acctBill);
+            String billTemplateName = 'CS_Monthly_Invoice_Email_' + acctBill.Parent_Account__r.Client_Brand_Key__c;
+            if (acctBill.Parent_Account__r.Client_Brand_Key__c != null) {
+                if (templatesMap.containsKey(billTemplateName)){
+                    htmlBody = templatesMap.get(billTemplateName).HtmlValue;
+                } else {
+                    Logger.logNow('BatchCSBillEmailHandler', 'execute', 'Cannot Find Email Template: ' + billTemplateName);
+                    break;
+                }
+            } else {
+                htmlBody = templatesMap.get('CS_Monthly_Invoice_Email_BluewaveLogo').HtmlValue;
+            }
             errorCode = '';
-            htmlBody = originalHtmlbody;
             addressList.clear();
             attachmentIds.clear();
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
@@ -110,9 +122,11 @@
                             FROM AsyncApexJob
                             WHERE Id = :bc.getJobId()];
 
-            String emailBody = 'CS Bill Emails Have Been Sent! Job Id: '+ job.Id 
+            String emailBody = 'CS Bill Processing has Completed. Job Id: '+ job.Id 
                                 + '  Errors: ' + job.NumberOfErrors 
-                                + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
+                                + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed                                
+                                + '  *If the template does not exist, an error log will be created' 
+                                + ' and the account bill will not be marked as published';
             List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
         if(!Test.isRunningTest()){
             MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);

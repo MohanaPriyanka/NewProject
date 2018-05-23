@@ -284,7 +284,7 @@ public class TestBillCreationandPayment {
              Property_Account__r.Directions_To_Write_Paper_Check__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Adjustments_UASB__c, 
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -360,7 +360,7 @@ public class TestBillCreationandPayment {
              Property_Account__r.Directions_To_Write_Paper_Check__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Adjustments_UASB__c, 
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -370,9 +370,9 @@ public class TestBillCreationandPayment {
         System.assertEquals(9, updatedsystemBillList.size());
         for (System_Bill__c sbs : updatedsystemBillList) {
             if (sbs.Bill_Number__c == 2) {
-                System.assertEquals(627.92, sbs.Payment_Plan_Balance_to_Distribute__c);
+                System.assertEquals(627.93, sbs.Payment_Plan_Balance_to_Distribute__c);
             } else if (sbs.Bill_Number__c == 3 || sbs.Bill_Number__c == 4  || sbs.Bill_Number__c == 8) {
-                System.assertEquals(104.65, sbs.Payment_Plan_Balance__c);
+                System.assertEquals(104.66, sbs.Payment_Plan_Balance__c);
             } else if (sbs.Bill_Number__c == 9) {
                 System.assertEquals(0, sbs.Payment_Plan_Balance__c);
             }
@@ -388,7 +388,7 @@ public class TestBillCreationandPayment {
              Property_Account__r.Directions_To_Write_Paper_Check__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Adjustments_UASB__c, 
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -396,9 +396,9 @@ public class TestBillCreationandPayment {
              ORDER BY Bill_Number__c];
 
         System.AssertEquals(282.82,systemBillList[0].Total_Due__c);
-        System.AssertEquals(606.51,systembillList[1].Total_Due__c);
+        System.AssertEquals(606.52,systembillList[1].Total_Due__c);
         System.AssertEquals(258.82,systembillList[0].Due_This_Month__c);
-        System.AssertEquals(345.10,systembillList[1].Due_This_Month__c);
+        System.AssertEquals(345.11,systembillList[1].Due_This_Month__c);
         System.AssertEquals(24,systembillList[0].Adjustments_UASB__c);
         System.AssertEquals(0,systembillList[1].Adjustments_UASB__c);
         System.AssertEquals(24,systembillList[0].Balance_Adjustment__c);
@@ -484,7 +484,7 @@ public class TestBillCreationandPayment {
                                                     FROM Bill_Adjustment__c
                                                     WHERE Overpayment__c = TRUE];
         System.AssertEquals(1, adjustList.size());
-        System.AssertEquals(-119.25, adjustList[0].Adjustment_Amount__c);
+        System.AssertEquals(-119.24, adjustList[0].Adjustment_Amount__c);
         
         List<Adjustment_Application__c> adjustApp = [SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
                                                      Overpayment_Amount__c, Adjustment_Amount__c,
@@ -502,7 +502,7 @@ public class TestBillCreationandPayment {
              Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Adjustments_UASB__c, 
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -517,7 +517,7 @@ public class TestBillCreationandPayment {
         System.Assert(updatedsystemBillListOne[1].Total_Due__c > 0);
         System.AssertNotEquals(0, updatedsystemBillListOne[1].Late_Fees__c );
         System.AssertEquals(0, updatedsystemBillListOne[1].Late_Payments__c );
-        System.AssertEquals(630.75, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
+        System.AssertEquals(630.76, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
 
         String oldCheckAddressField; 
         String propertyAccountId;
@@ -557,7 +557,7 @@ public class TestBillCreationandPayment {
                                                             FROM Adjustment_Application__c
                                                             WHERE Bill_Adjustment__r.Overpayment__c = true];
         System.AssertEquals(1, secondAdjustApp.size());
-        System.AssertEquals(-119.25, secondAdjustApp[0].Overpayment_Amount__c);
+        System.AssertEquals(-119.24, secondAdjustApp[0].Overpayment_Amount__c);
 
         List<System_Bill__c> updatedsystemBillList = 
             [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
@@ -567,16 +567,16 @@ public class TestBillCreationandPayment {
              Property_Account__r.Directions_To_Write_Paper_Check__c,
              Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
              Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
+             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
              Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
              Adjustments_UASB__c, 
              Billing_Period_End_Date__c, Billing_Period_Start_Date__c
              FROM System_Bill__c
              ORDER BY Bill_Number__c];
 
-        System.assertEquals(280.53, updatedsystemBillList[2].Total_Due__c );
-        System.assertEquals(283.36, updatedsystemBillList[2].Balance_Net_late_Payments__c );
-        System.assertEquals(-119.25, updatedsystemBillList[2].Previous_Overpayments__c );
+        System.assertEquals(280.55, updatedsystemBillList[2].Total_Due__c );
+        System.assertEquals(283.38, updatedsystemBillList[2].Balance_Net_late_Payments__c );
+        System.assertEquals(-119.24, updatedsystemBillList[2].Previous_Overpayments__c );
         System.assertEquals(0, updatedsystemBillList[2].Adjustments_UASB__c );
     }
 
@@ -702,8 +702,8 @@ public class TestBillCreationandPayment {
             System.assertEquals(2, newOrders.size());
             System.assertNotEquals(null, newOrders[0].Account_Bill__c);
             System.assertNotEquals(null, newOrders[1].Account_Bill__c);
-            System.assertEquals(606.51, newOrders[0].ChargentOrders__Subtotal__c);
-            System.assertEquals(606.51, newOrders[1].ChargentOrders__Subtotal__c);
+            System.assertEquals(606.52, newOrders[0].ChargentOrders__Subtotal__c);
+            System.assertEquals(606.52, newOrders[1].ChargentOrders__Subtotal__c);
             System.assertEquals('2020', newOrders[0].ChargentOrders__Card_Expiration_Year__c);
             System.assertEquals('Bank of America', newOrders[1].ChargentOrders__Bank_Name__c);
 

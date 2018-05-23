@@ -191,7 +191,7 @@ public without sharing class PreviewProductionUpdateResults{
         Name = 'PreGenerated Bill',
         PreGen_IsPreGen__c = production.Generate_Bills__c, 
         PreGen_Discounted_Bill__c = discountedBill.setScale(2),
-        PreGen_Subscription_Production__c = (uas.Share_of_System__c/100 * totalProduction).setScale(2),
+        PreGen_Subscription_Production__c = (uas.Share_of_System__c.setScale(4)/100 * totalProduction).setScale(2),
         PreGen_NMCs_Allocated__c = (uas.Share_of_System__c.setScale(4)/100 * totalNMCs).setScale(2),
         Utility_Account_Subscription__c = uas.Id,
         PreGen_Name_on_Account__c = uas.Name_on_Account_From_Log__c,

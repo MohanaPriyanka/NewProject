@@ -179,7 +179,9 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         //Create the Utility Account Bills
         if (!Test.isRunningTest()) {
             // Upsert asynchronously to avoid CPU limit
-            Database.executeBatch(new GenericBatchDMLOperation(new List<Utility_Account_Bill__c>(uabSet), 'Upsert'));
+            List<System_Properties__c> csBillSettings = System_Properties__c.getall().values();
+            Integer batchSizeToExecute = Integer.valueOf(csBillSettings[0].CS_Bill_Batch_Size__c); 
+            Database.executeBatch(new GenericBatchDMLOperation(new List<Utility_Account_Bill__c>(uabSet), 'Upsert'),batchSizeToExecute);
         } else {
             upsert new List<Utility_Account_Bill__c>(uabSet);
         }

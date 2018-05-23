@@ -96,7 +96,7 @@ public without sharing class PCRApprovalHandler {
              DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
              Adjusted_Monthly_Personal_Debt__c, DOER_Application__c, 
              Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
-             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c, PreApproval_Form__c,
+             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c,
              LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
              PCR_Lead_ID__c, Partner_Email__c,
              Credit_Denial_Email_Sent__c
@@ -143,7 +143,7 @@ public without sharing class PCRApprovalHandler {
             }
         }
 
-        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Product__c,
+        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Status, Product__c,
                                     Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                                     Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                                     Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
@@ -161,20 +161,21 @@ public without sharing class PCRApprovalHandler {
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
-                pcr.LASERCA__Lead__c != NULL) {
-                Lead ld = leadMap.get(pcr.LASERCA__Lead__c);
+                pcr.LASERCA__Lead__c != NULL &&
+                leadMap.get(pcr.LASERCA__Lead__c).Product_Line__c != 'Community Solar') {
+                Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
                 Integer creditScore = 
                     pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
                     Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
                 Decimal monthlyIncome = 
-                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
+                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
                 if (pcr.LASERCA__Contact__c != NULL) {
                     monthlyIncome = 
-                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(ld.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
+                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
                     creditScore = Math.max(creditScore,
-                                           Integer.valueOf(LoanServicer.nullToZero(ld.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
+                                           Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
                 }
 
                 if (monthlyIncome == 0) {
@@ -188,7 +189,7 @@ public without sharing class PCRApprovalHandler {
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
-                    productRepo.getCreditSummary(ld, 
+                    productRepo.getCreditSummary(lead,
                                                  creditScore, monthlyIncome, 
                                                  pcr.Adjusted_Monthly_Personal_Debt__c,
                                                  pcr.DOER_Application__c);
@@ -199,15 +200,15 @@ public without sharing class PCRApprovalHandler {
                 pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
-                if (ld.Product__c == null) {
+                if (lead.Product__c == null) {
                     if (creditSummary.bestStatus == APPROVED) {
-                        ld.Product__c = creditSummary.mostExpensiveQualifiedProduct;
+                        lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
                     } else {
-                        ld.Product__c = creditSummary.leastExpensiveQualifiedProduct;
+                        lead.Product__c = creditSummary.leastExpensiveQualifiedProduct;
                     }
                 } else {
-                    if (creditSummary.bestStatus == APPROVED && !creditSummary.approvedProducts.contains(ld.Product__c)) {
-                        ld.Product__c = creditSummary.mostExpensiveQualifiedProduct;
+                    if (creditSummary.bestStatus == APPROVED && !creditSummary.approvedProducts.contains(lead.Product__c)) {
+                        lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
                     }
                 }
 
@@ -222,7 +223,7 @@ public without sharing class PCRApprovalHandler {
                     creditSummary.bestStatus = PENDINGREVIEW;
                 }
                 if (creditSummary.bestStatus == APPROVED &&
-                    (ld.Avidia_Executive__c || ld.Avidia_Service_Provider__c || ld.Other_Bank_Executive__c)) {
+                    (lead.Avidia_Executive__c || lead.Avidia_Service_Provider__c || lead.Other_Bank_Executive__c)) {
                     creditSummary.bestStatus = PENDINGREVIEW;
                 }
 
@@ -237,19 +238,19 @@ public without sharing class PCRApprovalHandler {
                            pcr.Solar_Loan_Manual_Decline__c) {
                     pcr.Solar_Loan_Approval_Status__c = DECLINED;
                 } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW ||
-                           ld.Application_Type__c == 'Joint') {
+                           lead.Application_Type__c == 'Joint') {
                     pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
                 } else {
                     pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
                 }
 
-                if (ld.Status == READYFORCREDITCHECK || 
-                    ld.Status == PENDINGCREDITREVIEW || 
-                    ld.Status == UNQUALIFIED ||
-                    ld.Status == PREQUALIFIED ||
+                if (lead.Status == READYFORCREDITCHECK ||
+                    lead.Status == PENDINGCREDITREVIEW ||
+                    lead.Status == UNQUALIFIED ||
+                    lead.Status == PREQUALIFIED ||
                     pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
-                    setLeadStatus(pcr.Solar_Loan_Approval_Status__c, ld);
-                    leadsToUpdate.add(ld);
+                    setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
+                    leadsToUpdate.add(lead);
                 }
 
                 if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) { 
@@ -258,7 +259,6 @@ public without sharing class PCRApprovalHandler {
 
                 // SEND PREAPPROVAL EMAIL 
                 if (!pcr.Credit_PreApproval_Email_Sent__c &&
-                    pcr.PreApproval_Form__c &&
                     pcr.LASERCA__Contact__c == NULL &&
                     pcr.First_Name_from_Lead__c != NULL &&
                     pcr.Last_Name_from_Lead__c != NULL &&
@@ -296,7 +296,6 @@ public without sharing class PCRApprovalHandler {
                     }
                 } else if (!pcr.Credit_PreApproval_Email_Sent__c &&
                            !pcr.Credit_Denial_Email_Sent__c &&
-                           pcr.PreApproval_Form__c &&
                            pcr.LASERCA__Contact__c == NULL &&
                            pcr.First_Name_from_Lead__c != NULL &&
                            pcr.Last_Name_from_Lead__c != NULL &&
@@ -477,7 +476,7 @@ public without sharing class PCRApprovalHandler {
         List<Decimal> incomeList = new List<Decimal>();
         List<Product2> productList = new List<Product2>();
         List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
-        List<lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Pre_Approval_Form__c, Status, Co_Applicant_Income__c,
+        List<lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Status, Co_Applicant_Income__c,
                                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
                                LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
                                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,

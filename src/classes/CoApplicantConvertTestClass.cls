@@ -63,7 +63,6 @@ Static testMethod void CoApplicantConvertTestClass()
                                     Product__c = null,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = true,
-                                    Pre_Approval_Form__c = TRUE,
                                     Status = 'Ready for Credit Check');
         insert newLead;
         newLead.Unfinished_Lead__c = false;
