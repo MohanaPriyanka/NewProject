@@ -1,16 +1,19 @@
 /*************************************************************************************
  * Created By:  Cole Swain
- * Description: This is the handler for the Disbursal object.
+ * Description: Called from Opportunity Trigger, Loan Trigger, Disbursal Trigger,
+ * ResidentialEquipmentTrigger,LoanHandler, SLPCustomersHandler
  * Test: DisbursalHandlerTest
  *************************************************************************************/
 public class DisbursalHandler {
 
     public void createDisbursalsFromOpportunity(Map<Id,Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         List<Loan__c> loanList = new List<Loan__c>();
+        Set<Id> loansWithDisbursedPayments = new Set<Id>();
         List<String> opportunityIdList = new List<String>();
         List<Disbursal__c> disbursalsToInsert = new List<Disbursal__c>();
 
         for (Opportunity oppRecord : newMap.values()) {
+            // Returns True if Field changed to Complete, otherwise false.
             if (fieldHasChanged(oppRecord, newMap, oldMap, 'StageName', 'Complete', null) && oppRecord.Product_Line__c == 'Residential Loan') {
                 opportunityIdList.add(newMap.get(oppRecord.Id).Id);
             }
@@ -24,11 +27,25 @@ public class DisbursalHandler {
                                     WHERE Id IN : opportunityIdList]) {
                 loanList.add(opp.Loans__r);
             }
+
+            List<Disbursal__c> disbursedDisbursals = [
+                SELECT Id, Loan__c
+                FROM Disbursal__c
+                WHERE Status__c = 'Disbursed'
+            ];
+
+            for (Disbursal__c disbursal : disbursedDisbursals) {
+                loansWithDisbursedPayments.add(disbursal.Loan__c);
+            }
+
             for (Loan__c loanRecord : loanList) {
-                for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
-                    disbursalsToInsert.add(disbursal);
+                if (!loansWithDisbursedPayments.contains(loanRecord.Id)) {
+                    for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
+                        disbursalsToInsert.add(disbursal);
+                    }
                 }
             }
+            System.debug(LoggingLevel.ERROR, 'Opp Updated');
             upsert disbursalsToInsert Unique_ID__c;
         }
     }
@@ -146,6 +163,9 @@ public class DisbursalHandler {
     public Disbursal__c setDisbursalStatus (String disbursalType, String opportunityId, Map<String,Disbursal__c> disbursalMap, String status, String doNotSetStatusValue) {
         Disbursal__c disbursal = disbursalMap.get(opportunityId + disbursalType);
         if (disbursal != null) {
+            if (disbursal.Status__c == 'Disbursed') {
+                status = 'Disbursed';
+            }
             if (doNotSetStatusValue != null) {
                 if (disbursal.Status__c == doNotSetStatusValue) {
                     return disbursal;
