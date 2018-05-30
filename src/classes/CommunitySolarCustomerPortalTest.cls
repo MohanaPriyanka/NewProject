@@ -112,7 +112,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String propertyAccountId = String.valueOf(customerAccountMap.get('Account A').Id).subString(0,15);
             List<AggregateResult> systemBillPrAccRespList = new List<AggregateResult>(MyAccountController.getSystemBills(propertyAccountId)); 
             List<AggregateResult> systemBillallList = new List<AggregateResult>(MyAccountController.getSystemBills('all'));
-            System.assertEquals(606.52, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
+            System.assertEquals(606.83, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
             System.assertEquals(entity1.Id, systemBillallList[0].get('ChargentOrders__Shipping_Name__c'));
 
             //test the getAccountBills() method

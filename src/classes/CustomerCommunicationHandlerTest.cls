@@ -138,11 +138,39 @@ public class CustomerCommunicationHandlerTest{
 
             insert new List<Utility_Account_Log__c>{ualog1, ualog2, ualog3};
 
+            Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - BlueWave - 10%',
+                IsActive = True,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 10,
+                Annual_kWh_Maximum__c = 100000000,
+                NM_Rate_Floor__c = 0,
+                Days_In_Bill_Period__c = 30,
+                Monthly_Late_Fee__c = 1);
+
+            Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - Bluewave - Public CS - 20%',
+                IsActive = True,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 20,
+                Annual_kWh_Maximum__c = 63000,
+                NM_Rate_Floor__c = 0.09,
+                Days_In_Bill_Period__c = 30,
+                Monthly_Late_Fee__c = 0.8333);
+            insert new List<Product2>{normalCSProduct, publicCSProduct};
+
             Opportunity opportunityone =
                 new Opportunity(Name = 'Jordan Jordan',
                                 AccountId = propAcct1.Id,
                                 Shared_Solar_System__c = sss1.Id,
                                 StageName = 'Complete',
+                                Product__c = normalCSProduct.Id,
                                 CloseDate = System.today());
 
             Opportunity opportunitytwo =
@@ -150,6 +178,7 @@ public class CustomerCommunicationHandlerTest{
                                 AccountId = propAcct2.Id,
                                 Shared_Solar_System__c = sss2.Id,
                                 StageName = 'Complete',
+                                Product__c = normalCSProduct.Id,
                                 CloseDate = System.today());
 
             Opportunity opportunitythree =
@@ -157,6 +186,7 @@ public class CustomerCommunicationHandlerTest{
                                 AccountId = propAcct2.Id,
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
+                                Product__c = normalCSProduct.Id,
                                 CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
 
@@ -164,49 +194,60 @@ public class CustomerCommunicationHandlerTest{
                 new Utility_Account_Subscription__c(Name = '0000234',
                                                     Utility_Account_Log__c = ualog1.Id,
                                                     Opportunity__c = opportunityone.Id,
-                                                    Next_Schedule_Z_Status__c = 'Enacted: Removed',
+                                                    Next_Schedule_Z_Status__c = 'Inactive Subscription',
+                                                    Annual_kwh_subscription_future__c = 4000,
                                                     Calculated_Annual_Cost_of_Electricity__c = 4000,
                                                     Subscribed_Annual_Cost_of_Electricity__c = 4000);
             Utility_Account_Subscription__c uasTwo =
                 new Utility_Account_Subscription__c(Name = '0000236',
                                                     Utility_Account_Log__c = ualog2.Id,
                                                     Opportunity__c = opportunitytwo.Id,
-                                                    Next_Schedule_Z_Status__c = 'Enacted',
+                                                    Next_Schedule_Z_Status__c = 'Active Subscription',
+                                                    Annual_kwh_subscription_future__c = 8000,
                                                     Calculated_Annual_Cost_of_Electricity__c = 8000,
                                                     Subscribed_Annual_Cost_of_Electricity__c = 8000);
             Utility_Account_Subscription__c uasThree =
                 new Utility_Account_Subscription__c(Name = '0000238',
                                                     Utility_Account_Log__c = ualog3.Id,
                                                     Opportunity__c = opportunitythree.Id,
-                                                    Next_Schedule_Z_Status__c = 'Enacted',
+                                                    Next_Schedule_Z_Status__c = 'Active Subscription',
+                                                    Annual_kwh_subscription_future__c = 300,
                                                     Calculated_Annual_Cost_of_Electricity__c = 300,
                                                     Subscribed_Annual_Cost_of_Electricity__c = 300);
 
             insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
             uasOne.Customer_Subscription_KW_DC_STATIC__c = 25;
             uasTwo.Customer_Subscription_KW_DC_STATIC__c = 10;
-            uasTwo.Customer_Subscription_KW_DC_STATIC__c = 5;
+            uasThree.Customer_Subscription_KW_DC_STATIC__c = 5;
             update new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
 
-            createBills(System.Today() - 110, sss1.Id); // 90 days late
-            createBills(System.Today() - 50, sss2.Id); // 30 days late
-            createBills(System.Today() - 17, sss3.Id); // 3 day warning
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Billing'
+        );
 
-            List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-                                                        FROM Account_Bill__c];
+        insert scheduleZ1;
 
-            for (Account_Bill__c acctBill : listaccountBills) {
-                acctBill.Published__c = True;
-            }
-            update listaccountBills;
+
     }
 
     public static void createBills(Date billDate, Id sssID){
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssID,
+            Status__c = 'Billing'
+        );
+
+        insert scheduleZ1;
+
         Energy_Usage_Update__c productionupdate = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sssID,
-                Production__c = 140000,
-                Total_System_NMCs__c = 34000,
+                Size_off_NMCs__c = true,
+                Schedule_Z__c = scheduleZ1.Id,
+                Production__c = 160000,
+                Total_System_NMCs__c = 36000,
                 Net_Metering_Rate_Applied__c = 0.2429,
                 Date__c = billDate
         );
@@ -217,6 +258,25 @@ public class CustomerCommunicationHandlerTest{
 
     public static testmethod void scheduleJob(){
         Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 110, sss[0].Id); // 90 days late
+        createBills(System.Today() - 50, sss[1].Id); // 30 days late
+        createBills(System.Today() - 17, sss[2].Id); // 3 day warning
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        List<Schedule_Z_Subscription__c> SZS = [SELECT Id, Percent_Share__c, Number_of_Decimal_Places__c FROM Schedule_Z_Subscription__c];
+        List<UASB__c> uASB = [SELECT Id, Discounted_Bill__c, Solar_Share_Rate_Bill_Value__c, Bill_Value__c, Floor_Price_Bill_Value__c FROM UASB__c];
+        List <System_Bill__c> systemBills = [Select Id, Due_This_Month__c, Late_Fees__c, Adjustments__c, Previous_Overpayments__c FROM System_Bill__c];
+
         Datetime dt = Datetime.now();
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';

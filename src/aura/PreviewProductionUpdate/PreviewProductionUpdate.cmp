@@ -1,11 +1,34 @@
-<aura:component access="global">	
+<aura:component controller="PreviewProductionUpdateResults" access="global">
+ <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="prodUpdate" type="String"/>
  <aura:attribute name="prodName" type="String"/>
  <aura:attribute name="totalNMCs" type="String"/>
-    
+ <aura:attribute name="scheduleZs" type="Schedule_Z__c[]"/>
+ <aura:attribute name="selectedScheduleZ" type="Id"/>
+ <aura:attribute name="SchZBillList" type="UASB__c[]"/>
+
+
  <h1 class="slds-text-heading--large"><ui:outputText value="{!v.prodName}"/></h1>   
- <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>	
- <br></br>
- <c.PregeneratedBillsTable parentId="{!v.prodUpdate}" IsProdUpdate="TRUE"/>
- 
+ <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>
+  <div class="slds-p-top_small slds-p-bottom_small">
+   <ui:inputSelect aura:id="scheduleZ"
+     class="slds-input slds-size_1-of-3"
+     change="{!c.getBills}"
+     value="{!v.selectedScheduleZ}">
+     <ui:inputSelectOption label="Choose a Schedule Z!" text="Choose a Schedule Z!"/>
+     <aura:iteration items="{!v.scheduleZs}" var="scheduleZ">
+        <ui:inputSelectOption label="{!scheduleZ.Name + ' - ' + scheduleZ.Status__c}" text="{!scheduleZ.Id}"/>
+     </aura:iteration>
+   </ui:inputSelect>
+    <br/>
+    <lightning:button label="Save Schedule Z to Production Update" onclick="{!c.saveToProdUpdate}"/>
+  </div>
+
+ <aura:if isTrue="{!v.selectedScheduleZ}">
+   <c.PregeneratedBillsTable
+     parentId="{!v.prodUpdate}"
+     IsProdUpdate="TRUE"
+     SchZBillList="{!v.SchZBillList}"/>
+ </aura:if>
+
 </aura:component>
