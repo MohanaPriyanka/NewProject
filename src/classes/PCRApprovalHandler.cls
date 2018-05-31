@@ -165,17 +165,28 @@ public without sharing class PCRApprovalHandler {
                 leadMap.get(pcr.LASERCA__Lead__c).Product_Line__c != 'Community Solar') {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
-                Integer creditScore = 
-                    pcr.LASERCA__Credit_Score_TransUnion__c==null?0:
-                    Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
+                Integer creditScore;
+                if (pcr.LASERCA__Credit_Score_TransUnion__c == null) {
+                    creditScore = 0;
+                } else {
+                    creditScore = Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
+                }
 
-                Decimal monthlyIncome = 
-                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
+                Decimal monthlyIncome;
+                if (pcr.Adjusted_Income__c == null) {
+                    monthlyIncome = LoanServicer.nullToZero(lead.Annual_Income_Currency__c) / 12;
+                } else {
+                    monthlyIncome = pcr.Adjusted_Income__c / 12;
+                }
+
                 if (pcr.LASERCA__Contact__c != NULL) {
-                    monthlyIncome = 
-                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
-                    creditScore = Math.max(creditScore,
-                                           Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
+                    if (pcr.Adjusted_Income__c == null) {
+                        monthlyIncome = LoanServicer.nullToZero(lead.Co_Applicant_Income__c) / 12;
+                    } else {
+                        monthlyIncome = pcr.Adjusted_Income__c/12;
+                    }
+                    Integer primaryAppCreditScore = Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                    creditScore = Math.max(creditScore, primaryAppCreditScore);
                 }
 
                 if (monthlyIncome == 0) {
@@ -191,8 +202,7 @@ public without sharing class PCRApprovalHandler {
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
                     productRepo.getCreditSummary(lead,
                                                  creditScore, monthlyIncome, 
-                                                 pcr.Adjusted_Monthly_Personal_Debt__c,
-                                                 pcr.DOER_Application__c);
+                                                 pcr.Adjusted_Monthly_Personal_Debt__c);
 
                 pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
                 pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
@@ -201,6 +211,7 @@ public without sharing class PCRApprovalHandler {
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
                 if (lead.Product__c == null) {
+                    // whats the point of this?
                     if (creditSummary.bestStatus == APPROVED) {
                         lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
                     } else {
@@ -214,6 +225,7 @@ public without sharing class PCRApprovalHandler {
 
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
 
+                // set to pending if any codes are present
                 if (creditSummary.bestStatus == APPROVED &&
                     flaggedCreditCodes != null &&
                     (flaggedCreditCodes.contains(pcr.LASERCA__Code__c) ||
@@ -222,6 +234,7 @@ public without sharing class PCRApprovalHandler {
                      flaggedCreditCodes.contains(pcr.LASERCA__Code_4__c))) {
                     creditSummary.bestStatus = PENDINGREVIEW;
                 }
+                // If credit has been approved & their associated with a bank
                 if (creditSummary.bestStatus == APPROVED &&
                     (lead.Avidia_Executive__c || lead.Avidia_Service_Provider__c || lead.Other_Bank_Executive__c)) {
                     creditSummary.bestStatus = PENDINGREVIEW;
@@ -230,20 +243,19 @@ public without sharing class PCRApprovalHandler {
                 if (creditScore == 0 || creditScore == NULL) {
                     creditSummary.bestStatus = PENDINGREVIEW;
                 }
-
+                // overwrite statuses if Avidia has reviewed
                 if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
                     pcr.Solar_Loan_Manual_Approval__c) {
                     pcr.Solar_Loan_Approval_Status__c = APPROVED;
                 } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
                            pcr.Solar_Loan_Manual_Decline__c) {
                     pcr.Solar_Loan_Approval_Status__c = DECLINED;
-                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW ||
-                           lead.Application_Type__c == 'Joint') {
+                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
                     pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
                 } else {
                     pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
                 }
-
+                // If lead is in any stage of the process update the status
                 if (lead.Status == READYFORCREDITCHECK ||
                     lead.Status == PENDINGCREDITREVIEW ||
                     lead.Status == UNQUALIFIED ||
@@ -370,15 +382,17 @@ public without sharing class PCRApprovalHandler {
         public PCRApprovalHandler.ProductRepo repo;
         public List<PCRApprovalHandler.CreditStatusResult> resultList;
         public Set<Id> approvedProducts;
+        public Lead lead;
 
         public CreditResultSummary(Lead lead, Integer creditScore, 
-                                   Decimal monthlyIncome, Decimal monthlyDebt, Boolean doer) {
+                                   Decimal monthlyIncome, Decimal monthlyDebt) {
+            this.lead = lead;
             this.incomeSupport = lead.Income_Support__c;
             this.loanPrincipal = lead.Loan_Principal__c;
             this.monthlyIncome = monthlyIncome.setScale(2);
             this.monthlyDebt = monthlyDebt.setScale(2);
             this.creditScore = creditScore;
-            this.doer = doer;
+            this.doer = lead.DOER_Solar_Loan__c;
             this.highestDTI = 0;
             this.bestStatus = PCRApprovalHandler.DECLINED;
             this.resultList = new List<PCRApprovalHandler.CreditStatusResult>();
@@ -388,8 +402,7 @@ public without sharing class PCRApprovalHandler {
         public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result, Product2 product) {
             Integer creditMinimum = Integer.valueOf(product.Credit_Minimum__c);
             Decimal dtiMaximum = product.Debt_To_Income_Maximum__c;
-            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, doer,
-                                                  creditMinimum, dtiMaximum);
+            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, creditMinimum, dtiMaximum);
             resultList.add(result);
             if (latestStatus == APPROVED) {
                 approvedProducts.add(product.Id);
@@ -400,6 +413,7 @@ public without sharing class PCRApprovalHandler {
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
             }
+            // huh??
             if (result.dtiAfter <= dtiMaximum && 
                 creditScore >= creditMinimum) {
                 if (highestMonthlyPayment == null ||
@@ -412,6 +426,13 @@ public without sharing class PCRApprovalHandler {
                     result.monthlyLoanPayment < lowestMonthlyPayment) {
                     lowestMonthlyPayment = result.monthlyLoanPayment;
                     leastExpensiveQualifiedProduct = result.productId;
+                }
+            }
+            if (lead.Application_Type__c == 'Joint') {
+                if (latestStatus == DECLINED && (bestStatus == null || bestStatus == DECLINED)) {
+                    bestStatus = latestStatus;
+                } else {
+                    bestStatus = PENDINGREVIEW;
                 }
             }
         }
@@ -430,8 +451,7 @@ public without sharing class PCRApprovalHandler {
             return summary;
         }
 
-        private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, boolean doer,
-                                       Integer creditMinimum, Decimal dtiMaximum) {
+        private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, Integer creditMinimum, Decimal dtiMaximum) {
             // 650 - 680 => 45%, 681+ => 50% and handle low product as a non-DOER product for purposes of pre-approval
             if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
                 return APPROVED;
@@ -620,10 +640,9 @@ public without sharing class PCRApprovalHandler {
         }
 
         public PCRApprovalHandler.CreditResultSummary getCreditSummary(Lead lead, Integer creditScore, 
-                                                                       Decimal monthlyIncome, Decimal monthlyDebt,
-                                                                       Boolean doer) {
-            PCRApprovalHandler.CreditResultSummary creditResultSummary = 
-                new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt, doer);
+                                                                       Decimal monthlyIncome, Decimal monthlyDebt) {
+            PCRApprovalHandler.CreditResultSummary creditResultSummary =
+                new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt);
 
             for (Product2 product : getApplicableProducts(lead, creditScore)) {
                 PCRApprovalHandler.CreditStatusResult result = calcDTIAfter(product, lead, monthlyIncome, monthlyDebt);
