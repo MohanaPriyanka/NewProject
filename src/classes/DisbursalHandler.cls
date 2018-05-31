@@ -4,9 +4,9 @@
  * Test: DisbursalHandlerTest
  *************************************************************************************/
 public class DisbursalHandler {
-
     public void createDisbursalsFromOpportunity(Map<Id,Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         List<Loan__c> loanList = new List<Loan__c>();
+        Set<Id> loansWithDisbursedPayments = new Set<Id>();
         List<String> opportunityIdList = new List<String>();
         List<Disbursal__c> disbursalsToInsert = new List<Disbursal__c>();
 
@@ -16,6 +16,7 @@ public class DisbursalHandler {
             }
         }
         if (!opportunityIdList.isEmpty()) {
+            List<Id> loanIds = new List<Id>();
             for(Opportunity opp : [SELECT Id, Name,
                                      (SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name,
                                         Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id 
@@ -23,10 +24,27 @@ public class DisbursalHandler {
                                     FROM Opportunity
                                     WHERE Id IN : opportunityIdList]) {
                 loanList.add(opp.Loans__r);
+                for (Loan__c loan : opp.Loans__r) {
+                    loanIds.add(loan.Id);
+                }
             }
+
+            List<Disbursal__c> disbursedDisbursals = [
+                SELECT Id, Loan__c
+                FROM Disbursal__c
+                WHERE Status__c = 'Disbursed'
+                AND Loan__c IN : loanIds
+            ];
+
+            for (Disbursal__c disbursal : disbursedDisbursals) {
+                loansWithDisbursedPayments.add(disbursal.Loan__c);
+            }
+
             for (Loan__c loanRecord : loanList) {
-                for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
-                    disbursalsToInsert.add(disbursal);
+                if (!loansWithDisbursedPayments.contains(loanRecord.Id)) {
+                    for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
+                        disbursalsToInsert.add(disbursal);
+                    }
                 }
             }
             upsert disbursalsToInsert Unique_ID__c;
@@ -146,6 +164,9 @@ public class DisbursalHandler {
     public Disbursal__c setDisbursalStatus (String disbursalType, String opportunityId, Map<String,Disbursal__c> disbursalMap, String status, String doNotSetStatusValue) {
         Disbursal__c disbursal = disbursalMap.get(opportunityId + disbursalType);
         if (disbursal != null) {
+            if (disbursal.Status__c == 'Disbursed') {
+                status = 'Disbursed';
+            }
             if (doNotSetStatusValue != null) {
                 if (disbursal.Status__c == doNotSetStatusValue) {
                     return disbursal;
