@@ -4,7 +4,7 @@
  * Description: Controller for the LoanUnderwriting lightning component to help Avidia
  *              review loans
  *
- Tested By: LoanUnderwritingControllerTest
+ Tested By: LoanUnderwritingTest
  *************************************************************************************/
 
 global without sharing class LoanUnderwriting {
