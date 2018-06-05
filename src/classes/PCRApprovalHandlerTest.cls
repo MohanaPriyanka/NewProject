@@ -638,10 +638,11 @@ private class PCRApprovalHandlerTest {
         mslp2.IBLS_Category__c = 'Category 2';
         insert new List<Product2>{bwsl1, mslp1, mslp2};
 
+        // fico + income must be unique, otherwise leads are not created correctly. see: app.getKey()
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":400, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":701, "coAppFico":701, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
                 '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
                 '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review primary fail"} ' +
                 ']}';
@@ -649,6 +650,7 @@ private class PCRApprovalHandlerTest {
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
         Test.startTest();
+        applicationSet.connectJointPCRs();
         applicationSet.insertTradeAccounts();
         applicationSet.insertCreditReportLogs();
 
@@ -976,6 +978,31 @@ private class PCRApprovalHandlerTest {
                 }
             }
             insert crls;
+        }
+
+        public void connectJointPCRs() {
+            List<LASERCA__Personal_Credit_Report__c> contactPCRs = [
+                SELECT Id, LASERCA__Contact__c, Lead_from_Contact__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE LASERCA__Contact__c != null
+            ];
+            Map<Id, Id> relatedLeads = new Map<Id, Id>();
+
+            for (LASERCA__Personal_Credit_Report__c pcr : contactPCRs) {
+                relatedLeads.put(pcr.Lead_from_Contact__c, pcr.Id);
+            }
+
+            List<Lead> contactLeads = [
+                SELECT Id, Personal_Credit_Report_Co_Applicant__c
+                FROM Lead
+                WHERE Id IN : relatedLeads.keySet()
+            ];
+
+            for (Lead lead : contactLeads) {
+                lead.Personal_Credit_Report_Co_Applicant__c = relatedLeads.get(lead.Id);
+            }
+
+            update contactLeads;
         }
 
         public LASERCA__Personal_Credit_Report__c getPCR(Integer fico) {

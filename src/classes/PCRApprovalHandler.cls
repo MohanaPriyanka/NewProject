@@ -436,10 +436,10 @@ public without sharing class PCRApprovalHandler {
             if (lead.Application_Type__c == 'Joint') {
                 String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
                 System.debug(LoggingLevel.ERROR, lead);
-                System.debug(LoggingLevel.ERROR, primaryAppCreditScore);
-                System.debug(LoggingLevel.ERROR, primaryDecision);
-                System.debug(LoggingLevel.ERROR, coAppCreditScore);
-                System.debug(LoggingLevel.ERROR, coAppDecision);
+                System.debug(LoggingLevel.ERROR, 'Primary Fico: ' + primaryAppCreditScore);
+                System.debug(LoggingLevel.ERROR, 'Primary Decision: ' + primaryDecision);
+                System.debug(LoggingLevel.ERROR, 'Co App Fico: ' + coAppCreditScore);
+                System.debug(LoggingLevel.ERROR, 'Co App Decision: ' + coAppDecision);
                 if (primaryDecision != DECLINED || coAppDecision != primaryDecision) {
                     bestStatus = PENDINGREVIEW;
                 }
