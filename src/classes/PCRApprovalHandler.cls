@@ -130,7 +130,7 @@ public without sharing class PCRApprovalHandler {
     private void onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
         List<String> leadlist = new List<String>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
-        List<Lead> leadstoUpdate = new List<Lead>();
+        Map<Id, Lead> leadstoUpdate = new Map<Id, Lead>();
         List<Product2> products;
         Boolean hasCoApp = FALSE;
 
@@ -262,7 +262,7 @@ public without sharing class PCRApprovalHandler {
                     lead.Status == PREQUALIFIED ||
                     pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
                     setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
-                    leadsToUpdate.add(lead);
+                    leadsToUpdate.put(lead.Id, lead);
                 }
 
                 if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) { 
@@ -327,7 +327,7 @@ public without sharing class PCRApprovalHandler {
             }
         }
         if (!leadsToUpdate.isEmpty()) {
-            update leadsToUpdate;
+            update leadsToUpdate.values();
         }
     }
 
@@ -373,7 +373,7 @@ public without sharing class PCRApprovalHandler {
         public Decimal monthlyIncome;
         public Decimal monthlyDebt;
         public Decimal loanPrincipal;
-        public Integer creditScore;
+        public Integer primaryAppCreditScore, coAppCreditScore;
         public Boolean doer;
         public Id mostExpensiveQualifiedProduct;
         public Decimal highestMonthlyPayment;
@@ -391,7 +391,12 @@ public without sharing class PCRApprovalHandler {
             this.loanPrincipal = lead.Loan_Principal__c;
             this.monthlyIncome = monthlyIncome.setScale(2);
             this.monthlyDebt = monthlyDebt.setScale(2);
-            this.creditScore = creditScore;
+            if (lead.Personal_Credit_Report__c != null) {
+                this.primaryAppCreditScore = Integer.valueOf(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c);
+            }
+            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
+                this.coAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c));
+            }
             this.doer = lead.DOER_Solar_Loan__c;
             this.highestDTI = 0;
             this.bestStatus = PCRApprovalHandler.DECLINED;
@@ -402,20 +407,20 @@ public without sharing class PCRApprovalHandler {
         public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result, Product2 product) {
             Integer creditMinimum = Integer.valueOf(product.Credit_Minimum__c);
             Decimal dtiMaximum = product.Debt_To_Income_Maximum__c;
-            String latestStatus = checkFICOandDTI(creditScore, result.dtiAfter, creditMinimum, dtiMaximum);
+            String primaryDecision = checkFICOandDTI(primaryAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
             resultList.add(result);
-            if (latestStatus == APPROVED) {
+            if (primaryDecision == APPROVED) {
                 approvedProducts.add(product.Id);
             }
-            if (betterThan(latestStatus, bestStatus)) {
-                bestStatus = latestStatus;
+            if (betterThan(primaryDecision, bestStatus)) {
+                bestStatus = primaryDecision;
             }
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
             }
             // huh??
-            if (result.dtiAfter <= dtiMaximum && 
-                creditScore >= creditMinimum) {
+            if (result.dtiAfter <= dtiMaximum &&
+                primaryAppCreditScore >= creditMinimum) {
                 if (highestMonthlyPayment == null ||
                     result.monthlyLoanPayment > highestMonthlyPayment) {
                     highestMonthlyPayment = result.monthlyLoanPayment;
@@ -429,9 +434,13 @@ public without sharing class PCRApprovalHandler {
                 }
             }
             if (lead.Application_Type__c == 'Joint') {
-                if (latestStatus == DECLINED && (bestStatus == null || bestStatus == DECLINED)) {
-                    bestStatus = latestStatus;
-                } else {
+                String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
+                System.debug(LoggingLevel.ERROR, lead);
+                System.debug(LoggingLevel.ERROR, primaryAppCreditScore);
+                System.debug(LoggingLevel.ERROR, primaryDecision);
+                System.debug(LoggingLevel.ERROR, coAppCreditScore);
+                System.debug(LoggingLevel.ERROR, coAppDecision);
+                if (primaryDecision != DECLINED || coAppDecision != primaryDecision) {
                     bestStatus = PENDINGREVIEW;
                 }
             }
@@ -439,7 +448,7 @@ public without sharing class PCRApprovalHandler {
 
         public override String toString() {
             String summary = 'PCRApprovalHandler Summary: ' +
-                'CreditScore: ' + creditScore + ', ' +
+                'CreditScore: ' + primaryAppCreditScore + ', ' +
                 'DOER: ' + doer + ', ' +
                 'Income Support if DOER: ' + incomeSupport + ', ' +
                 'Monthly Income: ' + monthlyIncome + ', ' +
@@ -639,7 +648,7 @@ public without sharing class PCRApprovalHandler {
                         AND State__c IN :stateList];
         }
 
-        public PCRApprovalHandler.CreditResultSummary getCreditSummary(Lead lead, Integer creditScore, 
+        public PCRApprovalHandler.CreditResultSummary getCreditSummary(Lead lead, Integer creditScore,
                                                                        Decimal monthlyIncome, Decimal monthlyDebt) {
             PCRApprovalHandler.CreditResultSummary creditResultSummary =
                 new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt);

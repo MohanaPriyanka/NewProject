@@ -640,8 +640,10 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":20000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":500, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":20000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"} ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":400, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review primary fail"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -802,9 +804,10 @@ private class PCRApprovalHandlerTest {
         public String ibls, applicationType;
         public Integer coAppIncome, coAppFICO;
         public Integer fico, debt, balance;
+        public Decimal coAppDebt, coAppBalance;
         public String code1, code2, code3, code4;
         public String coAppCode1, coAppCode2, coAppCode3, coAppCode4;
-        public Id leadId, pcrId, coAppPCRId;
+        public Id leadId, pcrId, coAppPCRId, contactId;
         public String expectedSLAStatus, expectedStatus;
         public Boolean denialSent;
         public Decimal expectedDTIBefore, expectedDTIAfter;
@@ -855,24 +858,39 @@ private class PCRApprovalHandlerTest {
                     Unfinished_Lead__c = true,
                     IBLS_Category__c = app.ibls,
                     Application_Type__c = app.applicationType,
-                    Co_Applicant_Income__c = app.coAppIncome,
+                    Co_Applicant_Income__c = Util.nullToZero(app.coAppIncome),
                     // Just need a key to use later
                     AnnualRevenue = app.getKey());
-                if (app.applicationType == 'Joint') {
-                    //need to create a contact
-                    newLead.Co_Applicant_First_Name__c = 'test';
-                    newLead.Co_Applicant_Last_Name__c = 'Testcase';
-                }
                 leads.add(newLead);
             }
             insert leads;
             Map<Integer, Id> incomeToLeadID = new Map<Integer, Id>();
+            List<Contact> newContacts = new List<Contact>();
             for (Lead l : leads) {
                 incomeToLeadID.put((Integer) l.AnnualRevenue, l.Id);
+                if (l.Application_Type__c == 'Joint') {
+                    Contact newContact = new Contact(
+                        FirstName = 'CoApplicant',
+                        LastName = 'Contact',
+                        Lead__c = l.Id,
+                        Income__c = l.Co_Applicant_Income__c
+                    );
+                    newContacts.add(newContact);
+                }
+            }
+            insert newContacts;
+            Map<Id, Contact> contactsByLead = new Map<Id, Contact>();
+            for (Contact contact : newContacts) {
+                contactsByLead.put(contact.Lead__c, contact);
             }
             for (Application app : application) {
-                app.leadId = incomeToLeadID.get(app.getKey());
+                Id leadId = incomeToLeadID.get(app.getKey());
+                app.leadId = leadId;
+                if (contactsByLead.containsKey(leadId)) {
+                    app.contactId = contactsByLead.get(leadId).Id;
+                }
             }
+
         }
 
         public void insertPCRs() {
@@ -889,7 +907,7 @@ private class PCRApprovalHandlerTest {
                 ));
                 if (app.applicationType == 'Joint') {
                     coAppPCRs.add(new LASERCA__Personal_Credit_Report__c(
-                        LASERCA__Lead__c = app.leadId,
+                        LASERCA__Contact__c = app.contactId,
                         LASERCA__Code__c = app.coAppCode1,
                         LASERCA__Code_2__c = app.coAppCode2,
                         LASERCA__Code_3__c = app.coAppCode3,
@@ -900,13 +918,23 @@ private class PCRApprovalHandlerTest {
             }
             insert pcrs;
             insert coAppPCRs;
+            System.debug(LoggingLevel.ERROR, coAppPCRs);
             Map<Id, Id> leadIdToPCRId = new Map<Id, Id>();
             Map<Id, Id> leadIdToCoAppPCRId = new Map<Id, Id>();
+            List<Id> coAppPCRIds = new List<Id>();
             for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
                 leadIdToPCRId.put(pcr.LASERCA__Lead__c, pcr.Id);
             }
             for (LASERCA__Personal_Credit_Report__c pcr : coAppPCRs) {
-                leadIdToCoAppPCRId.put(pcr.LASERCA__Lead__c, pcr.Id);
+                coAppPCRIds.add(pcr.Id);
+            }
+            coAppPCRs = [
+                SELECT Id, Lead_from_Contact__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE Id IN : coAppPCRIds
+            ];
+            for (LASERCA__Personal_Credit_Report__c pcr : coAppPCRs) {
+                leadIdToCoAppPCRId.put(pcr.Lead_from_Contact__c, pcr.Id);
             }
             for (Application app : application) {
                 app.pcrId = leadIdToPCRId.get(app.leadId);
@@ -918,11 +946,19 @@ private class PCRApprovalHandlerTest {
         public void insertTradeAccounts() {
             List<LASERCA__Trade_Accounts__c> tradeAccts = new List<LASERCA__Trade_Accounts__c>();
             for (Application app : application) {
+                System.debug(LoggingLevel.ERROR, app);
                 tradeAccts.add(new LASERCA__Trade_Accounts__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
                     LASERCA__Monthly_Payment__c = app.debt,
                     LASERCA__Account_Balance__c = app.balance
                 ));
+                if (app.applicationType == 'Joint') {
+                    tradeAccts.add(new LASERCA__Trade_Accounts__c(
+                        LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
+                        LASERCA__Account_Balance__c = Util.nullToZero(app.coAppBalance)
+                    ));
+                }
             }
             insert tradeAccts;
         }
@@ -933,6 +969,11 @@ private class PCRApprovalHandlerTest {
                 crls.add(new LASERCA__Credit_Report_Log__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
                     LASERCA__Status__c = 'Completed'));
+                if (app.coAppPCRId != null) {
+                    crls.add(new LASERCA__Credit_Report_Log__c(
+                        LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Status__c = 'Completed'));
+                }
             }
             insert crls;
         }
