@@ -1,44 +1,36 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global" extends="c.BlueWaveParent">
-  <aura:attribute name="loanList" type="Object"/>
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global"
+                extends="c.BlueWaveParent">
   <aura:attribute name="customer" type="Object"/>
   <aura:attribute name="customerInformation" type="Object"/>
-  <aura:attribute name="customerDates" type="String"/>
-  <aura:attribute name="taskType" type="String" access="global"/>
-  <aura:attribute name="parentSubTaskButton" type="Boolean"/>
   <aura:attribute name="licenseType" type="Boolean"/>
   <aura:attribute name="partnerTaskList" type="Object"/>
-  <aura:attribute name="parentSubTaskList" type="Object"/>
   <aura:attribute name="subTaskList" type="Object"/>
   <aura:attribute name="srecQuarters" type="List"/>
-  <aura:attribute name="dateToggle" type="Boolean"/>
   <aura:attribute name="ptoFileAttached" type="Boolean"/>
   <aura:attribute name="ptoFileName" type="String"/>
-  <aura:attribute name="customerWindowLoanList" type="Object"/>
-  <aura:attribute name="customerWindowTaskList" type="Object"/>
-  <aura:attribute name="taskMap" type="Map"/>
   <aura:attribute name="completeDisbursalList" type="Object"/>
   <aura:attribute name="incompleteDisbursalList" type="Object"/>
-  <aura:attribute name="taskViewButtonToggle" type="Boolean"/>
   <aura:attribute name="blueWaveReviewAlert" type="Boolean"/>
-  <aura:attribute name="contractSent" type="Boolean"/>
+  <aura:attribute name="disbursed" type="Boolean"/>
+  <aura:attribute name="bwExecuted" type="Boolean"/>
   <aura:attribute name="vendorIdLabel" type="String"/>
   <aura:attribute name="interconnectionTaskStatus" type="String"/>
-  <aura:attribute name="parentId" type="Id"/>
   <aura:attribute name="firstDisbursalAmount" type="Decimal"/>
   <aura:attribute name="showBuildingPermitModal" type="Boolean"/>
   <aura:attribute name="otherLaborPerformed" type="Boolean"/>
   <aura:attribute name="otherMaterialsSupplied" type="Boolean"/>
+  <aura:attribute name="contractSent" type="Boolean"/>
   <aura:attribute name="buildingPermits" type="Object"/>
   <aura:registerEvent name="customerEvent" type="c:SLPCustomerEvent"/>
-  <aura:handler event="c:SLPafterFileUpload" action="{!c.handleAfterFileUpload}"/> 
+  <aura:handler event="c:SLPafterFileUpload" action="{!c.handleAfterFileUpload}"/>
   <aura:handler event="c:SLPDashboardEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler event="c:SLPAllCustomersEvent" action="{!c.openCustomerWindow}"/>
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
   <aura:handler name="change" value="{!v.customerInformation}" action="{!c.fieldChanges}"/>
   <aura:handler name="change" value="{!v.customerInformation.Labor_Performed__c}" action="{!c.checkForOtherLabor}"/>
-  <aura:handler name="change" value="{!v.customerInformation.Materials_Supplied__c}" action="{!c.checkForOtherMaterials}"/>
+  <aura:handler name="change" value="{!v.customerInformation.Materials_Supplied__c}"
+                action="{!c.checkForOtherMaterials}"/>
   <ltng:require styles="{!$Resource.animations}"/>
-  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en"/>
   <aura:attribute name="equipmentUpdate"
                   type="Residential_Equipment__c"
                   default="{'sobjectType' : 'Residential_Equipment__c',
@@ -86,10 +78,18 @@
                            }"/>
   <aura:attribute name="loanUpdate" type="Loan__c"
                   default="{'sobjectType' : 'Loan__c',
-                           'Commencement_Datee__c': '',
+                           'Estimated_Completion_Date__c': '',
                            'Requested_Loan_Amount__c':'',
                            }"/>
-  <!-- main issues inclue the ability to break out subTasks within the task
+  <aura:attribute name="changeOrder" type="Object"/>
+  <aura:handler name="change" value="{!v.changeOrder}" action="{!c.enableRequestButton}"/>
+  <aura:attribute name="requestButtonText" type="String" default="Save"/>
+  <aura:attribute name="docuSignPresent" type="Boolean"/>
+  <aura:attribute name="requestButtonEnabled" type="Boolean"/>
+  <aura:attribute name="completionDateString" type="String"/>
+  <aura:attribute name="confirmMessage" type="String"/>
+
+  <!-- main issues include the ability to break out subTasks within the task
        table. The tasks break out for each task with subTasks,
        filtering them by task type has been proven difficult due to
        sequence of the attribute's value after the loading of the
@@ -98,12 +98,12 @@
        also a solution that solves the framework error for accessing
        the attribute when unaccessible (this is a framework error)
        however it throws off the whole chart. The other issue is with
-       regards to the view and canacel button. There is a rendering
-       issue with making them dissapear and appear correctly. It only
+       regards to the view and cancel button. There is a rendering
+       issue with making them disappear and appear correctly. It only
        occurs when the task list is reloaded by clicking the view
        button on the dashboard page -->
 
-  <div aura:id = "customerPage" class="noDisplayBar">
+  <div aura:id="customerPage" class="noDisplayBar">
     <div aura:id="customerName" class="main2 slds-grid">
       <div class="proximaNovaBrand slds-col slds-align-left">
         <h1>{!v.customer.Loan__r.Name}</h1>
@@ -113,7 +113,7 @@
                           label="Upload Applicant Files"
                           onclick="{!c.openAdditionalFileUpload}"/>
         <lightning:button aura:id="customerInformationButton"
-                          label="View Loan and System Information"
+                          label="Change Loan and System Information"
                           onclick="{!c.openCustomerModal}"/>
         <aura:if isTrue="{!v.licenseType}">
           <lightning:button aura:id="disbursalInformationButton"
@@ -121,164 +121,294 @@
                             onclick="{!c.openDisbursalInformation}"/>
         </aura:if>
       </div>
-      <hr></hr>
+      <hr/>
     </div>
     <div>
-      <!--  _________________________________CUSTOMER INFO HEADER ___________________________________ -->
-      <table class="slds-table slds-table--bordered  slds-table--striped box">
-        <thead>
-          <tr class="slds-text-heading--label  proximaNovaDataBlue" >
-            <th scope="col"><span class="slds-truncate"><b>Partner</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Sales Agent</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Product</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Requested Loan Amount</b></span></th>
-            <aura:if isTrue="{!v.licenseType}">
-              <th scope="col"><span class="slds-truncate"><b>Funded</b></span></th>
-            </aura:if>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row"> <b>{!v.customer.Loan__r.Partner__r.Name}</b> </th>
-            <th scope="row"> <b>{!v.customer.Loan__r.Sales_Agent__r.Name}</b> </th>
-            <th scope="row"> <b>{!v.customer.Loan__r.Product__r.External_Name__c}</b> </th>
-            <th scope="row"> <ui:outputCurrency value="{!v.customer.Loan__r.Requested_Loan_Amount__c}"/></th>
-            <aura:if isTrue="{!v.licenseType}">
-              <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream"
-                                                  value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}"/></th>
-            </aura:if>
-          </tr>
-        </tbody>
-      </table>
-      <br></br>
-      <aura:if isTrue="{!v.blueWaveReviewAlert}">
-        <h3> In some cases, the review stage may require BlueWave to reach out to
-          borrowers to obtain sensitive information. Please be aware that this
-          may take longer than the other stages. You will be notified when it is
-          completed.
-        </h3>
-        <br></br>
-      </aura:if>
-      <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c}">
-        <div aura:id="cusomterInformationTextMSLP" class="noDisplay paddingBottom1">
-          <h3>
-            All relevant customer information has been, or will be provided through the MCEC Technical Application.
-            Please update this customer's income documentation if you have not already done so and submit your
-            sales agreement with the customer
-          </h3>
+      <!--  _________________________________CUSTOMER INFO CARD ___________________________________ -->
+      <div class="slds-card-wrapper slds-grid slds-wrap slds-form slds-p-bottom_small">
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Sales Agent</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customer.Loan__r.Sales_Agent__r.Name}"/>
+          </div>
         </div>
-      </aura:if>
-      <!--  _________________________________Customer Information Modals ___________________________________ -->
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Product</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customer.Loan__r.Product__r.External_Name__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Requested Loan Amount</label>
+          <div class="slds-form-element__control">
+            <ui:outputCurrency value="{!v.customer.Loan__r.Requested_Loan_Amount__c}"/>
+            <aura:if isTrue="{!v.licenseType}">
+              &nbsp;(<ui:outputCurrency value="{!v.customer.Loan__r.Total_Funds_Disbursed__c}"/> funded)
+            </aura:if>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">System Size</label>
+          <div class="slds-form-element__control">
+            <ui:outputNumber value="{!v.customerInformation.Generator_Nameplate_Capacity__c}"/>
+          </div>
+        </div>
+        <aura:if isTrue="{!v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c != null}">
+          <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+            <label class="slds-form-element__label">Estimated Date of Completion</label>
+            <div class="slds-form-element__control">
+              <ui:outputDate value="{!v.customerInformation.Loan__r.Estimated_Completion_Date__c}"/>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+            <label class="slds-form-element__label">Change Order Status</label>
+            <div class="slds-form-element__control">
+              <ui:outputText class="input-changed" value="{!v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c + ' '}"/>
+              <aura:if isTrue="{!or(v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c == 'Requested', v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c == 'Customer Rejected')}">
+                <a onclick="{!c.openCustomerModal}" class="slds-text-link">(more info)</a>
+              </aura:if>
+            </div>
+          </div>
+          <aura:set attribute="else">
+            <div class="slds-col slds-size_2-of-3 slds-form-element slds-p-bottom_small">
+              <label class="slds-form-element__label">Estimated Date of Completion</label>
+              <div class="slds-form-element__control">
+                <ui:outputDate value="{!v.customerInformation.Loan__r.Estimated_Completion_Date__c}"/>
+              </div>
+            </div>
+          </aura:set>
+        </aura:if>
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Module Manufacturer</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customerInformation.Module_Manufacturer__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Module Model Number/Type</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customerInformation.Module_Model_Number__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
+          <label class="slds-form-element__label">Number of Modules</label>
+          <div class="slds-form-element__control">
+            <ui:outputNumber value="{!v.customerInformation.Number_of_Modules__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element">
+          <label class="slds-form-element__label">Inverter Manufacturer</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customerInformation.Inverter_Manufacturer__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element">
+          <label class="slds-form-element__label">Inverter Model Number/Type</label>
+          <div class="slds-form-element__control">
+            <ui:outputText value="{!v.customerInformation.Inverter_Model_Number__c}"/>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-form-element">
+          <label class="slds-form-element__label">Number of Inverters</label>
+          <div class="slds-form-element__control">
+            <ui:outputNumber value="{!v.customerInformation.Number_of_Inverters__c}"/>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <!--  _________________________________CHANGE ORDER MODAL ___________________________________ -->
       <div aura:id="generalSystemInformationModal" role="dialog" tabindex="-1" aria-labelledby="header43"
            class="slds-modal  slds-modal--large">
-        <div  class="slds-modal__container ">
+        <div class="slds-modal__container slds-scrollable">
           <div class="slds-modal__header blueBackground">
             <h2 id="header43" class="slds-text-heading--medium--white">{!v.customer.Loan__r.Name}</h2>
           </div>
-          <div aura:id="systemInformationInputs">
-          <div class="slds-modal__content slds-p-around--medium">
-            <fieldset class="slds-form--compound ">
-              <div class="slds-form-element__group">
-                <div class="slds-form-element__row">
-                  <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                    <label class="slds-form-element__label" for="input-03"><b>System Size</b></label>
-                    <ui:inputNumber aura:id="systemSize" 
-                                    class="slds-input"
-                                    value="{!v.equipmentUpdate.Generator_Nameplate_Capacity__c}"
-                                    placeholder="{!v.customerInformation.Generator_Nameplate_Capacity__c}"
-                                    disabled="{!v.contractSent}"/>
-                  </div>
-                  <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
-                    <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
-                    <div class="slds-form-element__control">              
-                      <c:BlueWaveDate value="{!v.customerInformation.Loan__r.Commencement_Datee__c}"
-                        label="Estimated Date of Completion" disabled="{!v.contractSent}"/>
+          <aura:if isTrue="{!or(v.disbursed, v.bwExecuted)}">
+            <div class="slds-modal__content slds-p-around--medium">
+              This loan has been disbursed or executed. Please call BlueWave Partner Support at the number below to make changes
+            </div>
+            <div class="slds-modal__footer">
+              <lightning:button aura:id="closeCustomerModalButton"
+                                class="slds-button"
+                                onclick="{!c.closeCustomerModal}"
+                                label="Close"/>
+            </div>
+          </aura:if>
+          <aura:if isTrue="{!and(not(v.disbursed), not(v.bwExecuted))}">
+            <div aura:id="systemInformationInputs">
+              <div class="slds-modal__content slds-p-around--medium">
+                <div>
+                  <fieldset class="slds-form--compound">
+                    <div class="slds-form-element__group">
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2">
+                          <label class="slds-form-element__label slds-size_1-of-1"><b>Change Status</b></label>
+                          <ui:outputText class="slds-p-right_small" value="{!v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c==null?'New':v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c}"/>
+                          <aura:if isTrue="{!v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c == 'Requested'}">
+                            <lightning:button class="slds-button slds-text-body--small"
+                                              onclick="{!c.withdrawChange}"
+                                              label="Withdraw"/>
+                          </aura:if>
+                          <aura:if isTrue="{!v.customerInformation.Loan__r.Lead__r.Change_Order_Status__c == 'Customer Rejected'}">
+                            <div class="slds-text-body--small">
+                              Reason: <ui:outputText value="{!v.changeOrder.Reject_Reason}"/>
+                            </div>
+                          </aura:if>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-2">
+                          <label class="slds-form-element__label slds-size_1-of-1"><b>Requested By</b></label>
+                          <aura:if isTrue="{!v.changeOrder.RequestedBy__change != null}">
+                            <ui:outputText value="{!v.changeOrder.RequestedBy__change + ' (' + v.changeOrder.RequestedDate__change + ')'}"/>
+                          </aura:if>
+                        </div>
+                      </div>
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Loan__r.Lead__r.System_Cost__c!=v.changeOrder.System_Cost__change?'input-changed':'')}">
+                            <b>System Cost</b>
+                          </label>
+                          <ui:inputCurrency class="{!'slds-input ' + (v.customerInformation.Loan__r.Lead__r.System_Cost__c!=v.changeOrder.System_Cost__change?'input-changed':'')}"
+                                            value="{!v.changeOrder.System_Cost__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + ((v.customerInformation.Loan__r.Lead__r.System_Cost__c - v.customerInformation.Loan__r.Lead__r.Requested_Loan_Amount__c) != v.changeOrder.Down_Payment__change?'input-changed':'')}">
+                            <b>Down Payment</b>
+                          </label>
+                          <ui:inputCurrency class="{!'slds-input ' + (((v.customerInformation.Loan__r.Lead__r.System_Cost__c - v.customerInformation.Loan__r.Lead__r.Requested_Loan_Amount__c) != v.changeOrder.Down_Payment__change)?'input-changed':'')}"
+                                            value="{!v.changeOrder.Down_Payment__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Loan__r.Lead__r.Requested_Loan_Amount__c != (v.changeOrder.System_Cost__change - v.changeOrder.Down_Payment__change)?'input-changed':'')}">
+                            <b>Requested Loan Amount</b>
+                          </label>
+                          <ui:inputCurrency value="{!v.changeOrder.System_Cost__change - v.changeOrder.Down_Payment__change}"
+                                            class="{!'slds-input ' + (v.customerInformation.Loan__r.Lead__r.Requested_Loan_Amount__c != (v.changeOrder.System_Cost__change - v.changeOrder.Down_Payment__change)?'input-changed':'')}"
+                                            disabled="true"/>
+                        </div>
+                      </div>
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Generator_Nameplate_Capacity__c!=v.changeOrder.Generator_Nameplate_Capacity__change?'input-changed':'')}">
+                            <b>System Size</b>
+                          </label>
+                          <ui:inputNumber aura:id="systemSize"
+                                          class="{!'slds-input ' + (v.customerInformation.Generator_Nameplate_Capacity__c!=v.changeOrder.Generator_Nameplate_Capacity__change?'input-changed':'')}"
+                                          value="{!v.changeOrder.Generator_Nameplate_Capacity__change}"/>
+                        </div>
+                        <div aura:id="dateOfCompletion"
+                             class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.completionDateString!=v.changeOrder.Estimated_Completion_Date__change?'input-changed':'')}">
+                            <b>Estimated Date of Completion</b>
+                          </label>
+                          <div class="slds-form-element__control">
+                            <c:BlueWaveDate class="{!(v.completionDateString!=v.changeOrder.Estimated_Completion_Date__change?'input-changed':'')}"
+                                            value="{!v.changeOrder.Estimated_Completion_Date__change}"
+                                            label="Estimated Date of Completion"/>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </fieldset>
+                  <fieldset class="slds-form--compound">
+                    <div class="slds-form-element__group">
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Module_Manufacturer__c!=v.changeOrder.Module_Manufacturer__change?'input-changed':'')}">
+                            <b>Module Manufacturer</b>
+                          </label>
+                          <ui:inputText aura:id="moduleManfuacturer"
+                                        class="{!'slds-input ' + (v.customerInformation.Module_Manufacturer__c!=v.changeOrder.Module_Manufacturer__change?'input-changed':'')}"
+                                        value="{!v.changeOrder.Module_Manufacturer__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Module_Model_Number__c!=v.changeOrder.Module_Model_Number__change?'input-changed':'')}">
+                            <b>Module Model Number/Type</b>
+                          </label>
+                          <ui:inputText aura:id="moduleType"
+                                        class="{!'slds-input ' + (v.customerInformation.Module_Model_Number__c!=v.changeOrder.Module_Model_Number__change?'input-changed':'')}"
+                                        value="{!v.changeOrder.Module_Model_Number__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Number_of_Modules__c!=v.changeOrder.Number_of_Modules__change?'input-changed':'')}">
+                            <b>Number of Modules</b>
+                          </label>
+                          <ui:inputNumber aura:id="moduleNumber"
+                                          class="{!'slds-input ' + (v.customerInformation.Number_of_Modules__c!=v.changeOrder.Number_of_Modules__change?'input-changed':'')}"
+                                          value="{!v.changeOrder.Number_of_Modules__change}"/>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="slds-form--compound">
+                    <div class="slds-form-element__group">
+                      <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Inverter_Manufacturer__c!=v.changeOrder.Inverter_Manufacturer__change?'input-changed':'')}">
+                            <b>Inverter Manufacturer</b>
+                          </label>
+                          <ui:inputText aura:id="inverterManufacturer"
+                                        class="{!'slds-input ' + (v.customerInformation.Inverter_Manufacturer__c!=v.changeOrder.Inverter_Manufacturer__change?'input-changed':'')}"
+                                        value="{!v.changeOrder.Inverter_Manufacturer__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Inverter_Model_Number__c!=v.changeOrder.Inverter_Model_Number__change?'input-changed':'')}">
+                            <b>Inverter Model Number/Type</b>
+                          </label>
+                          <ui:inputText aura:id="inverterType"
+                                        class="{!'slds-input ' + (v.customerInformation.Inverter_Model_Number__c!=v.changeOrder.Inverter_Model_Number__change?'input-changed':'')}"
+                                        value="{!v.changeOrder.Inverter_Model_Number__change}"/>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="{!'slds-form-element__label ' + (v.customerInformation.Number_of_Inverters__c!=v.changeOrder.Number_of_Inverters__change?'input-changed':'')}">
+                            <b>Number of Inverters</b>
+                          </label>
+                          <ui:inputNumber aura:id="inverterNumber"
+                                          class="{!'slds-input ' + (v.customerInformation.Number_of_Inverters__c!=v.changeOrder.Number_of_Inverters__change?'input-changed':'')}"
+                                          value="{!v.changeOrder.Number_of_Inverters__change}"/>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
+                <aura:if isTrue="{!not(v.contractSent)}">
+                  <div class="slds-p-horizontal--small">
+                    Upon submitting completed system information, a loan contract will be generated as soon as the applicant is pre-qualified and completes confirmations.
+                  </div>
+                </aura:if>
               </div>
-            </fieldset>
-            <aura:if isTrue="{!v.customer.Loan__r.DOER_Solar_Loann__c == false}">
-              <fieldset class="slds-form--compound">
-                <div class="slds-form-element__group">
-                  <div class="slds-form-element__row">
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Module Manufacturer</b></label>
-                      <ui:inputText aura:id="moduleManfuacturer" 
-                                    class="slds-input"
-                                    value="{!v.equipmentUpdate.Module_Manufacturer__c}"
-                                    placeholder="{!v.customerInformation.Module_Manufacturer__c}"
-                                    disabled="{!v.contractSent}"/>
-                    </div>
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Module Model Number/Type</b></label>
-                      <ui:inputText aura:id="moduleType" 
-                                    class="slds-input"
-                                    value="{!v.equipmentUpdate.Module_Model_Number__c}"
-                                    placeholder="{!v.customerInformation.Module_Model_Number__c}"
-                                    disabled="{!v.contractSent}"/>
-                    </div>
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Number of Modules</b></label>
-                      <ui:inputNumber aura:id="moduleNumber" 
-                                      class="slds-input"
-                                      value="{!v.equipmentUpdate.Number_of_Modules__c}"
-                                      placeholder="{!v.customerInformation.Number_of_Modules__c}"
-                                      disabled="{!v.contractSent}"/>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-              <fieldset class="slds-form--compound">
-                <div class="slds-form-element__group">
-                  <div class="slds-form-element__row">
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
-                      <ui:inputText aura:id="inverterManufacturer" 
-                                    class="slds-input"
-                                    value="{!v.equipmentUpdate.Inverter_Manufacturer__c}"
-                                    placeholder="{!v.customerInformation.Inverter_Manufacturer__c}"
-                                    disabled="{!v.contractSent}"/>
-                    </div>
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Inverter Model Number/Type</b></label>
-                      <ui:inputText aura:id="inverterType" 
-                                    class="slds-input"
-                                    value="{!v.equipmentUpdate.Inverter_Model_Number__c}"
-                                    placeholder="{!v.customerInformation.Inverter_Model_Number__c}"
-                                    disabled="{!v.contractSent}"/>
-                    </div>
-                    <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                      <label class="slds-form-element__label" for="input-03"><b>Number of Inverters</b></label>
-                      <ui:inputNumber aura:id="inverterNumber" 
-                                      class="slds-input"
-                                      value="{!v.equipmentUpdate.Number_of_Inverters__c}"
-                                      placeholder="{!v.customerInformation.Number_of_Inverters__c}"
-                                      disabled="{!v.contractSent}"/>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-            </aura:if>
-          </div>
+            </div>
+            <div class="slds-modal__footer">
+              <lightning:button aura:id="closeCustomerModalButton"
+                                class="slds-button"
+                                onclick="{!c.closeCustomerModal}"
+                                label="Close"/>
+              <lightning:button aura:id="saveChangeOrder"
+                                class="slds-button"
+                                onclick="{!c.saveAndRequestChangeOrder}"
+                                label="{!v.requestButtonText}"
+                                disabled="{!not(v.requestButtonEnabled)}"/>
+              <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>
+            </div>
+          </aura:if>
         </div>
-        <div aura:id="systemInformationSubmitConfirmation" class="noDisplay">
-          <div  class="slds-modal__content slds-p-around--medium">
-            <div class="slds-align--absolute-center ">
-              <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The system information has been saved, thank you! </b></p>
+      </div>
+      <div aura:id="confirmModal" role="dialog" tabindex="-1" class="slds-modal">
+        <div class="slds-modal__container slds-scrollable">
+          <div class="slds-modal__header blueBackground">
+            <h2 class="slds-text-heading--medium--white">{!v.customer.Loan__r.Name}</h2>
+          </div>
+          <div>
+            <div class="slds-modal__content slds-p-around--medium">
+              <div class="slds-align--absolute-center ">
+                <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"><b>{!v.confirmMessage}</b></p>
+              </div>
             </div>
           </div>
-        </div>
           <div class="slds-modal__footer">
             <lightning:button aura:id="closeCustomerModalButton"
                               class="slds-button"
-                              onclick="{!c.closeCustomerModal}"
+                              onclick="{!c.closeConfirmModal}"
                               label="Close"/>
-            <lightning:button aura:id="saveCustomerModalButton"
-                              class="slds-button"
-                              onclick="{!c.saveSystemInformation}"
-                              label="Save"/>
-            <ui:spinner aura:id="customerInformationSpinner" class="floatRight" isVisible="false"/>
           </div>
         </div>
       </div>
@@ -286,7 +416,7 @@
            role="dialog" tabindex="-1"
            aria-labelledby="header43"
            class="slds-modal slds-modal--large">
-        <div  class="slds-modal__container ">
+        <div class="slds-modal__container ">
           <div class="slds-modal__header blueBackground">
             <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
               <span class="slds-assistive-text">Close</span>
@@ -361,7 +491,8 @@
               <hr></hr>
               <fieldset>
                 <div class="slds-size_1-of-2">
-                  <legend class="slds-form-element__legend slds-form-element__label slds-p-horizontal--small slds-m-around--x-small">
+                  <legend
+                    class="slds-form-element__legend slds-form-element__label slds-p-horizontal--small slds-m-around--x-small">
                     SREC Opt-in Calendar Quarter
                   </legend>
                   <div class="slds-form-element__control slds-p-horizontal--small slds-m-around--x-small">
@@ -630,7 +761,7 @@
                   </div>
                   <div aura:id="vendorUniqueId" class="slds-size_1-of-2 noDisplay">
                     <div class="slds-form-element slds-p-horizontal--small slds-m-around--x-small">
-                      <label class="slds-form-element__label" for="input-03">{!v.vendorIdLabel}</label>
+                      <label class="slds-form-element__label" for="input-03">{!v.vendorIdLabelb}</label>
                       <ui:inputText aura:id="remoteMonitoringSystem" class="slds-input"
                                     value="{!v.equipmentUpdate.Remote_Monitorin_Systegm_Identifier__c}"
                                     placeholder="{!v.customerInformation.Remote_Monitorin_Systegm_Identifier__c}"/>
@@ -804,20 +935,23 @@
         <div aura:id="buildingPermitModal"
              role="dialog" tabindex="-1"
              class="slds-modal slds-modal--large slds-fade-in-open">
-          <div  class="slds-modal__container ">
+          <div class="slds-modal__container ">
             <div class="slds-modal__header blueBackground">
               <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
                 <span class="slds-assistive-text">Close</span>
               </button>
               <h2 class="slds-text-heading--medium proximaNovaWhite">{!v.customer.Loan__r.Name}</h2>
             </div>
-            <ui:scrollerWrapper>
+            <ui:scrollerWrapper >
               <div>
                 <div class="slds-modal__content slds-p-around--medium">
                   <fieldset aura:id="buildingPermitInputs" class="slds-form--compound slds-p-bottom_small">
                     <div class="slds-form-element__group">
                       <div class="slds-p-bottom_small">
-                        In order to disburse funds, we need you to certify that {!v.customer.Loan__r.Partner__r.Name} has incurred at least <ui:outputCurrency value="{!v.firstDisbursalAmount}"/> for the time required to perform the following
+                        In order to disburse funds, we need you to certify that {!v.customer.Loan__r.Partner__r.Name}
+                        has incurred at least
+                        <ui:outputCurrency value="{!v.firstDisbursalAmount}"/>
+                        for the time required to perform the following
                         labor and for materials supplied to {!v.customer.Loan__r.Name} to date.
                       </div>
                       <div>
@@ -830,7 +964,8 @@
                           </div>
                         </div>
                         <aura:if isTrue="{!v.otherLaborPerformed}">
-                          <lightning:input type="text" label="Other Labor Performed:" value="{!v.customerInformation.Other_Labor_Performed__c}"/>
+                          <lightning:input type="text" label="Other Labor Performed:"
+                                           value="{!v.customerInformation.Other_Labor_Performed__c}"/>
                         </aura:if>
                       </div>
                     </div>
@@ -845,7 +980,8 @@
                         </div>
                       </div>
                       <aura:if isTrue="{!v.otherMaterialsSupplied}">
-                        <lightning:input type="text" label="Other Materials Supplied" value="{!v.customerInformation.Other_Materials_Supplied__c}"/>
+                        <lightning:input type="text" label="Other Materials Supplied"
+                                         value="{!v.customerInformation.Other_Materials_Supplied__c}"/>
                       </aura:if>
                     </div>
 
@@ -875,9 +1011,10 @@
                     </aura:if>
                   </fieldset>
                   <div aura:id="buildingPermitSubmitConfirmation" class="noDisplay">
-                    <div  class="slds-p-around--medium">
+                    <div class="slds-p-around--medium">
                       <div class="slds-align--absolute-center ">
-                        <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"> <b>The building permit information has been saved, thank you! </b></p>
+                        <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_xx-large"><b>The building permit
+                            information has been saved, thank you! </b></p>
                       </div>
                     </div>
                   </div>
@@ -903,51 +1040,54 @@
       <!--  _________________________________TASK TABLE ___________________________________ -->
       <table aura:id="taskTable" class="slds-table slds-table--bordered slds-table--striped  box ">
         <thead>
-          <tr class="slds-text-heading--label " >
-            <th scope="col"><span class="slds-truncate"><b>Task</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Owner</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Completed On</b></span></th>
-            <th scope="col"><span class="slds-truncate"><b>Action</b></span></th>
-          </tr>
+        <tr class="slds-text-heading--label ">
+          <th scope="col"><span class="slds-truncate"><b>Task</b></span></th>
+          <th scope="col"><span class="slds-truncate"><b>Owner</b></span></th>
+          <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
+          <th scope="col"><span class="slds-truncate"><b>Completed On</b></span></th>
+          <th scope="col"><span class="slds-truncate"><b>Action</b></span></th>
+        </tr>
         </thead>
         <tbody>
-          <aura:iteration items="{!v.partnerTaskList}" var="task">
-            <tr>
-              <th scope="row">
-                <div class="slds-form-element slds-p-horizontal--small">
-                  <b>{!task.Task_Label__c}</b>
-                  <aura:if isTrue="{!task.Help_Text__c != null}">
-                    <c:BlueWaveInputToolTip popoverBody="{!task.Help_Text__c}"/>
-                  </aura:if>
-                </div>
-              </th>
-              <th scope="row"><b>{!task.Owner__c}</b></th>
-              <th scope="row" class="{!task.Effective_Status__c == 'Pending'?'proximaNovaDataStream':''}">
-                <b>{!task.Effective_Status__c}</b>
-              </th>
-              <th scope="row"><b><ui:outputDate value="{!task.Completion_Date__c}"/></b></th>
-              <th>
-                <aura:if isTrue="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
-
-                  <ui:button aura:id="viewButton"
-                             label="{!task.Action_Label__c}"
-                             class="{!task.Name}"
-                             labelClass="{!task.Help_Text__c}"
-                             press="{!c.handleTaskAction}"/>
+        <aura:iteration items="{!v.partnerTaskList}" var="task">
+          <tr>
+            <th scope="row">
+              <div class="slds-form-element slds-p-horizontal--small">
+                <b>{!task.Task_Label__c}</b>
+                <aura:if isTrue="{!task.Help_Text__c != null}">
+                  <c:BlueWaveInputToolTip popoverBody="{!task.Help_Text__c}"/>
                 </aura:if>
-              </th>
-            </tr>
-          </aura:iteration>
+              </div>
+            </th>
+            <th scope="row"><b>{!task.Owner__c}</b></th>
+            <th scope="row" class="{!task.Effective_Status__c == 'Pending'?'proximaNovaDataStream':''}">
+              <b>{!task.Effective_Status__c}</b>
+            </th>
+            <th scope="row"><b>
+                <ui:outputDate value="{!task.Completion_Date__c}"/>
+              </b></th>
+            <th>
+              <aura:if isTrue="{!and(task.Effective_Status__c == 'Pending', task.Owner__c == 'Installer', task.Action_Label__c != '')}">
+
+                <ui:button aura:id="viewButton"
+                           label="{!task.Action_Label__c}"
+                           class="{!task.Name}"
+                           labelClass="{!task.Help_Text__c}"
+                           press="{!c.handleTaskAction}"/>
+              </aura:if>
+            </th>
+          </tr>
+        </aura:iteration>
         </tbody>
       </table>
-     {!v.body}
+      {!v.body}
     </div>
     <aura:if isTrue="{!v.licenseType}">
       <div>
         <!--  _________________________________DISBURSAL INFORMATION ___________________________________ -->
-        <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal  slds-modal--large animated">
-          <div  class="slds-modal__container ">
+        <div aura:id="disbursalModal" role="dialog" tabindex="-1" aria-labelledby="header43"
+             class="slds-modal  slds-modal--large animated">
+          <div class="slds-modal__container ">
             <div class="slds-modal__header blueBackground">
               <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
                 <span class="slds-assistive-text">Close</span>
@@ -961,61 +1101,67 @@
               <table aura:id="disbursalCompleteTable"
                      class="slds-table slds-table--bordered slds-table--striped box noDisplay">
                 <thead>
-                  <tr class="slds-text-heading--label " >
-                    <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Method</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>
-                  </tr>
+                <tr class="slds-text-heading--label ">
+                  <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Method</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>
+                </tr>
                 </thead>
                 <tbody>
-                  <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
-                    <tr>
-                      <th scope="row"> <b>{!disbursal.Name}</b> </th>
-                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}"/></th>
-                      <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
-                      <th scope="row"> <b>{!disbursal.Disbursal_Method__c}</b> </th>                      
-                      <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>
-                      <td> <div class="slds-form-element">
-                          <label class="slds-checkbox--toggle slds-grid">
-                            <ui:inputCheckBox aura:id="disbursalCheck"
-                                              name="{!disbursal.Id}"
-                                              value="{!disbursal.Partner_Confirmation__c}"
-                                              change="{!c.updateDisbursal}"/>
-                            <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+                <aura:iteration items="{!v.completeDisbursalList}" var="disbursal">
+                  <tr>
+                    <th scope="row"><b>{!disbursal.Name}</b></th>
+                    <th scope="row">
+                      <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}"/>
+                    </th>
+                    <th scope="row"><b>{!disbursal.Status__c}</b></th>
+                    <th scope="row"><b>{!disbursal.Disbursal_Method__c}</b></th>
+                    <th scope="row"><b>{!disbursal.Date_of_Disbursal__c}</b></th>
+                    <td>
+                      <div class="slds-form-element">
+                        <label class="slds-checkbox--toggle slds-grid">
+                          <ui:inputCheckBox aura:id="disbursalCheck"
+                                            name="{!disbursal.Id}"
+                                            value="{!disbursal.Partner_Confirmation__c}"
+                                            change="{!c.updateDisbursal}"/>
+                          <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
                               <span class="slds-checkbox--faux"></span>
                               <span class="slds-checkbox--on">Confirmed</span>
                               <span class="slds-checkbox--off">Unconfirmed</span>
                             </span>
-                          </label>
-                        </div>
-                      </td>
-                    </tr>
-                  </aura:iteration>
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                </aura:iteration>
                 </tbody>
               </table>
               <br></br>
               <div aura:id="pendingDisbursals" class="bwBluePaddingBelow slds-scrollable noDisplay">
                 <h3>Pending Disbursals</h3>
               </div>
-              <table aura:id="disbursalIncompleteTable" class="slds-table slds-table--bordered slds-table--striped box noDisplay">
+              <table aura:id="disbursalIncompleteTable"
+                     class="slds-table slds-table--bordered slds-table--striped box noDisplay">
                 <thead>
-                  <tr class="slds-text-heading--label " >
-                    <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
-                    <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
-                  </tr>
+                <tr class="slds-text-heading--label ">
+                  <th scope="col"><span class="slds-truncate"><b>Disbursal</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
+                  <th scope="col"><span class="slds-truncate"><b>Status</b></span></th>
+                </tr>
                 </thead>
                 <tbody>
-                  <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
-                    <tr>
-                      <th scope="row"> <b>{!disbursal.Name}</b> </th>
-                      <th scope="row"> <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}"/></th>
-                      <th scope="row"> <b>{!disbursal.Status__c}</b> </th>
-                      <th scope="row"> <b>{!disbursal.Date_of_Disbursal__c}</b> </th>
-                    </tr>
-                  </aura:iteration>
+                <aura:iteration items="{!v.incompleteDisbursalList}" var="disbursal">
+                  <tr>
+                    <th scope="row"><b>{!disbursal.Name}</b></th>
+                    <th scope="row">
+                      <ui:outputCurrency class="proximaNovaDataStream" value="{!disbursal.Amount__c}"/>
+                    </th>
+                    <th scope="row"><b>{!disbursal.Status__c}</b></th>
+                    <th scope="row"><b>{!disbursal.Date_of_Disbursal__c}</b></th>
+                  </tr>
+                </aura:iteration>
                 </tbody>
               </table>
             </div>

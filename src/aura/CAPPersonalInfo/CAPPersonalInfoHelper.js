@@ -21,7 +21,7 @@
                                                        'errorMessage': "Enter your email"});
         if (!lead.Express_Consent__c) {
           errorMessage += 'You must express consent in order to continue.';
-          $A.util.addClass(component.find('expressConsent'), 'slds-has-error');
+          $A.util.addClass(component.find('expressConsent'), 'slds-has-error'); 
         }
         return errorMessage;
       },
@@ -43,6 +43,11 @@
                                                        'allowLetters': false,
                                                        'allowSpaces': false,
                                                        'errorMessage': "Enter your 5 digit zip code"});
+        var eligiblePropertyTypes = ['Single Family Home (1-4 Units)', 'Second Home (1-4 Units)'];
+        if (!eligiblePropertyTypes.includes(lead.Property_Type__c)) {
+            errorMessage += lead.Property_Type__c;
+            errorMessage += ' properties are not eligible for financing. \n';
+        }
         if (!lead.Residence_Owner__c && !lead.Not_Residence_Owner__c) {
             errorMessage += 'Please select whether or not you own the property located at the installation address. You must own the property to continue applying for this loan.';
         }
@@ -234,6 +239,7 @@
                     lead.CoApplicant_Contact__r.LASERCA__Home_Zip__c = lead.LASERCA__Home_Zip__c;
                 }
                 var contact = {sobjectType: 'Contact',
+                               RecordTypeId: '012j0000000udkU',
                                FirstName : lead.CoApplicant_Contact__r.FirstName,
                                LastName : lead.CoApplicant_Contact__r.LastName,
                                Phone: lead.CoApplicant_Contact__r.Phone,
@@ -286,15 +292,15 @@
     },
 
     // Need to set the Status in order for the PCRApprovalHandler to pull credit (skips it if it's "Unfinished")
-    // (Removed) Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
+    // Need to set the PreApproval Form checkbox for PCRApprovalHandler to send email
     finishLead : function(lead) {
-        // Could we use lead.Unfinished_Lead__c here instead?
         if (lead.Status === 'Unfinished' && lead.LASERCA__SSN__c) {
             if ((lead.Application_Type__c === 'Individual') ||
                 (lead.Application_Type__c === 'Joint' &&
                  lead.CoApplicant_Contact__r &&
                  lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
                 lead.Status = 'Ready for Credit Check';
+                lead.Pre_Approval_Form__c = true;
             }
         }
     },
@@ -336,4 +342,32 @@
         helper.saveSObject(component, lead.Id, 'Lead', null, null, leadClone);
         component.set('v.lead', lead);
     },
+
+    convertLeadFunction : function(component, helper) {
+        let convertLeadPromise = new Promise(function(resolve) {
+            if (component.get('v.lead.IsConverted')) {
+                resolve();
+            } else {
+                //retrieve the customer's full information to display in the component
+                var convertLeadAction = component.get("c.convertLead");
+                convertLeadAction.setParams({
+                    leadId : component.get('v.lead.Id'),
+                    email: component.get('v.lead.Email')
+                });
+                convertLeadAction.setCallback(this,function(resp) {
+                    if (resp.getState() === 'SUCCESS') {
+                        let convertedLead = resp.getReturnValue();
+                        component.set('v.lead.ConvertedContactId', convertedLead.ConvertedContactId);
+                        component.set('v.lead.ConvertedOpportunityId', convertedLead.ConvertedOpportunityId);
+                        resolve();
+                    } else {
+                        ltg.logError('CAPPersonalInfoHelper', 'convertLeadFunction', 'Couldn\'t convert lead', resp);
+                    }
+                });
+                $A.enqueueAction(convertLeadAction);
+            }
+        });
+        return convertLeadPromise;
+    },
+
 })

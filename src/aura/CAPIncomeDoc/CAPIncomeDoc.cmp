@@ -9,6 +9,7 @@
   <aura:attribute name="taxreturns" type="Object"/>
   <aura:attribute name="lastYearReturns" type="Object"/>
   <aura:attribute name="twoYearReturns" type="Object"/>
+  <aura:attribute name="tcDocs" type="Object"/>
   <aura:attribute name="primaryRetirement" type="Boolean"/>
   <aura:attribute name="jointRetirement" type="Boolean"/>
   <aura:attribute name="retirementIncome" type="Object"/>
@@ -18,6 +19,55 @@
   <aura:attribute name="otherIncome" type="Object"/>
   <aura:attribute name="inFirstQuarter" type="Boolean" default="false"/>
   <aura:attribute name="lastYear" type="Integer"/>
+
+  <aura:if isTrue="{!v.page == 'MSLPTechnicalConfirm'}">
+    <div class="slds-col slds-col--padded">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control slds-text-heading--medium"><b>{!$Label.c.CD_MCEC_Project_ID_Request}</b></div>
+          <div class="slds-form-element__control slds-text-body--regular">{!$Label.c.CD_MCEC_Project_ID_Request_Body2}</div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-top_small slds-p-bottom_small" aura:id="tcProjectID">
+              <label class="slds-form-element__label">MassCEC Project ID Number</label>
+              <ui:inputText value="{!v.lead.Project_Identification_Number__c}"
+                            placeholder="SLP-####"/>
+            </div>
+            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
+              <label class="slds-form-element__label">Technical Confirmation Document</label>
+              <lightning:input type="file" label="Attach TC" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTC}"/>
+            </div>
+          </div>
+        </div>
+        <aura:if isTrue="{!not(empty(v.tcDocs))}">
+          <div class="slds-box_border slds-text-body_small">
+            <div class="slds-form-element__label">
+              Uploaded Technical Confirmation:
+            </div>
+            <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-size--1-of-1">
+                <table class="slds-table">
+                  <tbody>
+                  <aura:iteration items="{!v.tcDocs}" var="attachment">
+                    <tr>
+                      <td>
+                        <div class="slds-text-body_small">
+                          {!attachment}
+                        </div>
+                      </td>
+                    </tr>
+                  </aura:iteration>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </aura:if>
+        <div class="slds-form-element__row slds-p-top--small">
+          <lightning:button label="Next" onclick="{!c.saveTCAskEmployed}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
 
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
     <div class="slds-m-left_small">
@@ -60,6 +110,9 @@
       </div>
     </fieldset>
     <div class="slds-form-element__row slds-p-top--small">
+      <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+        <lightning:button label="Back" onclick="{!c.goBack}" name="EmployedQuestion"/>
+      </aura:if>
       <lightning:button label="Next" onclick="{!c.getPayStubs}"/>
     </div>
   </div>
@@ -238,14 +291,14 @@
             <input type="radio" id="radio-5" name="selfEmployment" checked="{!v.lead.Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="true" disabled="{!v.piLocked}"/>
             <label class="slds-radio__label" for="radio-5">
               <span class="slds-radio_faux"></span>
-              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us is self employed':'I am self employed'}</span>
+              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us is self-employed':'I am self-employed'}</span>
             </label>
           </span>
           <span class="slds-radio">
             <input type="radio" id="radio-6" name="selfEmployment" checked="{!v.lead.Not_Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="false" disabled="{!v.piLocked}"/>
             <label class="slds-radio__label" for="radio-6">
               <span class="slds-radio_faux"></span>
-              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us are self-employed':'I am not self employed'}</span>
+              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us are self-employed':'I am not self-employed'}</span>
             </label>
           </span>
         </div>

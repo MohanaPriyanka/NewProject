@@ -3,6 +3,8 @@
   <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>
   <aura:attribute name="lead" type="Lead"/>
   <aura:attribute name="page" type="String"/>
+  <aura:attribute name="contractSent" type="Boolean"/>
+  <aura:attribute name="systemInfoComplete" type="Boolean"/>
   <aura:attribute name="STAGENAME" type="String"/>
   <aura:attribute name="lenderOfRecord" type="String"/>
 

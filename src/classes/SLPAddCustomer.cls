@@ -141,7 +141,12 @@ public without sharing class SLPAddCustomer {
                 WHERE Id = : profile.partnerId LIMIT 1];
     }  
        
-    @AuraEnabled 
+    public static String getCAPUrl(Id leadId) {
+        String host = Url.getSalesforceBaseUrl().toExternalForm() + '/';
+        return (host + 'apply/s/loan-application?leadId=' + leadId);
+    }
+
+    @AuraEnabled
     public static String sendApplication (Lead newLead, Decimal loanAmount) {
         String startApplicationUrl;
         String customerName;
@@ -163,8 +168,7 @@ public without sharing class SLPAddCustomer {
 
         stateName = BlueWaveParent.convertAbbreviationToState(newLead.LASERCA__Home_State__c);
         if (slpSettings.get(0).Allow_Users_to_Email_CAP_Applications__c) {
-            String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
-            startApplicationUrl = host + 'apply/s/loan-application?leadId=' + newLead.Id;
+            startApplicationUrl = getCAPUrl(newLead.Id);
         } else {
             if (BlueWaveParent.getSLPortalCustomSetting().get(0).Require_IBLS_for_MSL_Loans__c) {
                 mslpUrlParametersMap.put('803', (String)profile.partnerId);

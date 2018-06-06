@@ -221,6 +221,7 @@
    </aura:if>
    <!-- PRIMARY PI -->
 
+   <!-- INSTALLATION ADDRESS-->
    <aura:if isTrue="{!v.page == 'AddressPI'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
@@ -299,21 +300,42 @@
         </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
+            <label class="slds-section__title"><b>Property Type</b></label>
+            <fieldset class="slds-form-element slds-m-left_small slds-m-top_xx-small">
+              <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
+                Financing is not available for commercial properties, multifamily homes (5+ units), condos, or apartments.
+              </div>
+              <!--Property Type Dropdown-->
+              <div class="slds-form-element__control slds-p-top_small">
+                <ui:inputSelect aura:id="propertyType"
+                                class="slds-input"
+                                value="{!v.lead.Property_Type__c}"
+                                disabled="{!v.piLocked}"/>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium">
+          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <label class="slds-section__title"><b>Do you own the property detailed above as your installation address?</b></label>
             <fieldset class="slds-form-element slds-m-left_small slds-m-top_xx-small">
+              <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
+                Only Properties owned by Individuals or Personal Trusts are eligible for financing.
+                Properties owned by entities, such as LLC, partnerships, non-personal trusts, or are commercially zoned are not eligible for financing under this program.
+              </div>
               <div class="slds-form-element__control">
                 <span class="slds-radio">
                   <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="true" disabled="{!v.piLocked}"/>
                   <label class="slds-radio__label" for="radio-1">
                     <span class="slds-radio_faux"></span>
-                    <span class="slds-form-element__label">Yes, I own the property detailed as my installation address.</span>
+                    <span class="slds-form-element__label">Yes, I own the property detailed as my installation address and the property meets the eligibility requirement.</span>
                   </label>
                 </span>
                 <span class="slds-radio">
                   <input type="radio" id="radio-2" name="employment" checked="{!v.lead.Not_Residence_Owner__c}" onchange="{!c.setResidenceOwner}" value="false" disabled="{!v.piLocked}"/>
                   <label class="slds-radio__label" for="radio-2">
                     <span class="slds-radio_faux"></span>
-                    <span class="slds-form-element__label">No, I do not own the property detailed as my installation address.</span>
+                    <span class="slds-form-element__label">No, I do not own the property detailed as my installation address or it does not meet the eligibility requirement.</span>
                   </label>
                 </span>
               </div>
@@ -326,7 +348,7 @@
       </form>
     </div>
   </aura:if>
-  <!-- / PRIMARY PI -->
+  <!-- INSTALLATION ADDRESS-->
 
   <!-- Primary MSLP License Information -->
   <aura:if isTrue="{!v.page == 'PrimaryLicenseInfo'}">
@@ -406,8 +428,8 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="incomeElement">
-            <label class="slds-form-element__label">Gross Annual Income</label>
-            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040"/>
+            <label class="slds-form-element__label">Gross Annual Income (Primary Applicant)</label>
+            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040. If filing a joint application, you'll be asked to provide the Co-Applicant's income later."/>
             <ui:inputCurrency value="{!v.lead.Annual_Income_Currency__c}" disabled="{!v.piLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mortgageElement">
@@ -613,8 +635,8 @@
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row">
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppIncomeElement">
-            <label class="slds-form-element__label">Gross Annual Income</label>
-            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040"/>
+            <label class="slds-form-element__label">Gross Annual Income (Co-Applicant)</label>
+            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040. "/>
             <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
           </div>
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">

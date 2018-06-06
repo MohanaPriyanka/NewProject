@@ -91,5 +91,15 @@ public without sharing class Util {
         return(decimalValues[decimalValues.size()-1]);
     }
 
+    public static void printCPULimit(String prefix) {
+        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
+            + Limits.getLimitCpuTime() + 'ms used');
+    }
+
+    public static void printSOQLLimit(String prefix) {
+        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' of '
+            + Limits.getLimitQueries() + ' used');
+    }
+
     public class BWException extends Exception {}
 }

@@ -242,56 +242,56 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas1',
                                                 Opportunity__c = opp1.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 5000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 1);
         Utility_Account_Subscription__c uas2 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas2',
                                                 Opportunity__c = opp2.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
-                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
+                                                Next_Schedule_Z_Status__c = 'Inactive Subscription',
                                                 Custom_Deduction_Order__c = 2);
         Utility_Account_Subscription__c uas3 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas3',
                                                 Opportunity__c = opp3.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
-                                                Next_Schedule_Z_Status__c = 'Enacted',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 3);
         Utility_Account_Subscription__c uas4 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas4',
                                                 Opportunity__c = opp4.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 4);
         Utility_Account_Subscription__c uas5 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas5',
                                                 Opportunity__c = opp5.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 5);
         Utility_Account_Subscription__c uas6 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas6',
                                                 Opportunity__c = opp6.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 6);
         Utility_Account_Subscription__c uas7 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas7',
                                                 Opportunity__c = opp7.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 1000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Custom_Deduction_Order__c = 7);
         Utility_Account_Subscription__c uas8 = 
             new Utility_Account_Subscription__c(Utility_Account_Log__c = ual.Id,
                                                 Name = 'uas8',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 // Customer_Subscription_KW_DC__c = 3000 / 1 / 1300 =  2.3077
                                                 UAS_Number__c = 2,
                                                 Custom_Deduction_Order__c = 8);
@@ -300,7 +300,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas9',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 9000,
-                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
+                                                Next_Schedule_Z_Status__c = 'Inactive Subscription',
                                                 // Customer_Subscription_KW_DC__c = 9000 / 1 / 1300 =  6.9230
                                                 UAS_Number__c = 3,
                                                 Custom_Deduction_Order__c = 9);
@@ -309,7 +309,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas10',
                                                 Opportunity__c = opp8.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
-                                                Next_Schedule_Z_Status__c = 'Enacted',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 10);
@@ -318,7 +318,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas11',
                                                 Opportunity__c = opp9.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 10000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 11);
@@ -327,7 +327,7 @@ public class RecalculateUALCostControllerTest {
                                                 Name = 'uas12',
                                                 Opportunity__c = opp10.Id,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 2000,
-                                                Next_Schedule_Z_Status__c = 'Not Enacted: Addition',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 // Customer_Subscription_KW_DC__c = 10000 / 1 / 1300 =  7.6923
                                                 UAS_Number__c = 4,
                                                 Custom_Deduction_Order__c = 11);

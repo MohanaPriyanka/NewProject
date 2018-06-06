@@ -36,7 +36,7 @@
     'number_of_inverters__c': '',
     'inverter_manufacturer__c': '',
     'inverter_model_number__c': '',
-    'commencement_datee__c': '',
+    'Estimated_Completion_Date__c': '',
     'generator_nameplate_capacity__c': '',
     }"/>
 
@@ -166,24 +166,27 @@
                       </b>
                     </div>
                   </aura:if>
-                </fieldset>
-                <aura:if isTrue="{!v.newLead.Product__c != 'MSLP'}">
-                  <div class="slds-m-bottom_small slds-m-top_medium">
-                    <label class="slds-text-heading--medium slds-m-left_small"><b>System Information (Optional)</b>&nbsp;
-                      <c:BlueWaveInputToolTip popoverText="This is optional and will only save you time in advance. If you have this information ready, we suggest you provide it now. You can always update it later if it changes. "/>
-                    </label>
+                  <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small" >
+                    <lightning:input type="checkbox" label="Yes, send the loan contract as soon as the applicant is pre-qualified with the system information below"
+                                     checked="{!v.systemInfoObj.provideSystemInfo}"/>
                   </div>
-                  <fieldset class="slds-form--compound">
-                    <div class="slds-form-element__group">
-                      <div class="slds-form-element__row">
-                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                          <label class="slds-form-element__label" for="input-03"><b>System Size (kW)</b></label>
-                          <ui:inputNumber aura:id="systemSize" maxlength="5" class="slds-input" value="{!v.systemInfoObj.generator_nameplate_capacity__c}"/>
+                  <aura:if isTrue="{!v.systemInfoObj.provideSystemInfo}">
+                    <div class="slds-m-bottom_small slds-m-top_small">
+                      <label class="slds-text-heading--medium slds-m-left_small"><b>System Information</b>&nbsp;
+                        <c:BlueWaveInputToolTip popoverText="This will be included in the customer's loan contract. You can provide System Information at a later time if you don't have it now."/>
+                      </label>
+                    </div>
+                    <fieldset class="slds-form--compound">
+                      <div class="slds-form-element__group">
+                        <div class="slds-form-element__row">
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>System Size (kW)</b></label>
+                            <ui:inputNumber aura:id="systemSize" maxlength="5" class="slds-input" value="{!v.systemInfoObj.generator_nameplate_capacity__c}"/>
                           </div>
                           <div aura:id="dateOfCompletion" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small animated slds-size_1-of-3">
                             <label class="slds-form-element__label"><b>Estimated Date of Completion</b></label>
                             <div class="slds-form-element__control">
-                              <c:BlueWaveDate value="{!v.systemInfoObj.commencement_datee__c}" label="Estimated Date of Completion"/>
+                              <c:BlueWaveDate value="{!v.systemInfoObj.Estimated_Completion_Date__c}" label="Estimated Date of Completion"/>
                             </div>
                           </div>
                         </div>
@@ -218,41 +221,40 @@
                       </div>
                     </fieldset>
                   </aura:if>
-                </div>
-              </aura:set>
-            </aura:if>
-          </div>
+                </fieldset>
+              </div>
+            </aura:set>
+          </aura:if>
         </div>
-        <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
-          <div class="slds-p-around--medium">
-            <div class="slds-align--absolute-center ">
-              <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
+      </div>
+      <div aura:id="emailConfirmation" class="noDisplay slds-m-bottom_small box">
+        <div class="slds-p-around--medium">
+          <div class="slds-align--absolute-center ">
+            <p class="proximaNovaBlue slds-m-top_xx-large slds-m-bottom_medium"><b>The application has been sent via email, thank you!</b></p>
+          </div>
+          <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
+            <div>
+              <b>If you plan on opening the application from this computer, please logout first.</b>
             </div>
-            <div class="slds-text-color--error slds-align--absolute-center proximaNovaBlue slds-m-bottom_xx-large">
-              <div>
-                <b>If you plan on opening the application from this computer, please logout first.</b>
-              </div>
-              <div>
-                <form action="/slportal/secur/logout.jsp">
-                  <input type="submit" value="Logout"/>
-                </form>
-              </div>
+            <div>
+              <form action="/slportal/secur/logout.jsp">
+                <input type="submit" value="Logout"/>
+              </form>
             </div>
           </div>
         </div>
       </div>
-      <div aura:id="sendEmailModalButtons" class="slds-float_right">
-        <aura:if isTrue="{!not(v.disableOrigination)}">
-          <lightning:button aura:id="sendEmailButton" 
-                            class="slds-button" 
-                            iconName="utility:email" 
-                            iconPosition="right" 
-                            onclick="{!c.createLeadAndSendApplication}" 
-                            label="Email"/>
-        </aura:if>
-      </div>
-      <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
     </div>
-  </aura:component>
-
-
+    <div aura:id="sendEmailModalButtons" class="slds-float_right">
+      <aura:if isTrue="{!not(v.disableOrigination)}">
+        <lightning:button aura:id="sendEmailButton"
+                          class="slds-button"
+                          iconName="utility:email"
+                          iconPosition="right"
+                          onclick="{!c.createLeadAndSendApplication}"
+                          label="Email loan application"/>
+      </aura:if>
+    </div>
+    <ui:spinner aura:id="emailSpinner" class="floatRight" isVisible="false"/>
+  </div>
+</aura:component>

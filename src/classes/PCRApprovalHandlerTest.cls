@@ -230,6 +230,44 @@ private class PCRApprovalHandlerTest {
         System.assertEquals(4, SLPCreditStatus.getCustomerProducts(leadAG.Id).size());
     }
 
+    static testMethod void testPCRProductUpdate() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
+        insert productVar;
+
+        Lead leadAG = newLead(90000, 20000, null, false, partner.Id);
+        insert leadAG;
+        System.assertEquals(null, leadAG.Product__c);
+        LoanHandlerTestClass.convertleads(new List<Lead>{leadAG});
+        Opportunity opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
+        System.assertEquals(null, opp.Product__c);
+        leadAG.Status = 'Ready for Credit Check';
+        update leadAG;
+        Test.startTest();
+        LASERCA__Personal_Credit_Report__c pcrAG = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAG.Id,
+            LASERCA__Credit_Score_TransUnion__c = '815');
+        insert pcrAG;
+        LASERCA__Trade_Accounts__c tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
+            LASERCA__Monthly_Payment__c = 200);
+        insert tradeacctAG;
+        insert getCRL(pcrAG);
+
+        Test.stopTest();
+
+        pcrAG = [
+            SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
+                LASERCA__Lead__r.Status, LASERCA__Contact__c, LASERCA__Lead__r.Product__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Credit_Score_TransUnion__c = '815'
+        ];
+
+        System.assertEquals(false, pcrAG.LASERCA__Lead__r.Product__c==null);
+        opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
+        System.assertEquals(pcrAG.LASERCA__Lead__r.Product__c, opp.Product__c);
+    }
+
     static testMethod void testExclude() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);

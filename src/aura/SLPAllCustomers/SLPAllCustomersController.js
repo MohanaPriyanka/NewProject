@@ -15,7 +15,6 @@
 
         });
         $A.enqueueAction(actionGetLoans);
-        actionGetLoans.setStorable();
 
         var actionGetLeads = component.get("c.getLeads");
         actionGetLeads.setCallback(this,function(resp){ 
@@ -32,7 +31,6 @@
 
         });
         $A.enqueueAction(actionGetLeads);
-        actionGetLeads.setStorable();
     },
 
     setSearchableCompletedLoans : function(component, event, helper) {

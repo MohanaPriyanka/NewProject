@@ -1,16 +1,56 @@
-/*
-  Tested By: LeadTriggerHandlerTest
-*/
-public with sharing class LeadTriggerHandler {
-    private boolean m_isExecuting = false;
-    private Integer BatchSize = 0;
+/*************************************************************************************
+ * Test: LeadTriggerHandlerTest
+ *************************************************************************************/
+
+public without sharing class LeadTriggerHandler {
     public static Boolean firstRun = true;
-    
-    public LeadTriggerHandler(boolean isExecuting, Integer size){
-        m_isExecuting = isExecuting;
-        BatchSize = size;
-    }
-    public void OnBeforeInsert(List<Lead> leadList){
+    @TestVisible
+    private static DocuSignHelper dsh;
+    private Map<String, String> leadToOppConvertMap = new Map<String, String> {
+        'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
+        'Application__c'=>'Application_Date__c',
+        'Application_Type__c'=>'Application_Type__c',
+        'Co_Applicant_Address__c'=>'Co_Applicant_Address__c',
+        'Co_Applicant_Date_of_Birth__c'=>'Co_Applicant_Date_of_Birth__c',
+        'Co_Applicant_Email__c'=>'Co_Applicant_Email__c',
+        'Co_Applicant_First_Name__c'=>'Co_Applicant_First_Name__c',
+        'Co_Applicant_Income__c'=>'Co_Applicant_Income__c',
+        'Co_Applicant_Last_Name__c'=>'Co_Applicant_Last_Name__c',
+        'Co_Applicant_Phone__c'=>'Co_Applicant_Phone__c',
+        'Date_of_Application_2__c'=>'Date_of_Application__c',
+        'Date_of_Issuance__c'=>'Date_of_Issuance__c',
+        'Direct_Disbursal_to_Installer_Authorized__c'=>'Direct_Disbursal_to_Installer_Authorized__c',
+        'DOER_Solar_Loan__c'=>'DOER_Solar_Loan__c',
+        'Electronic_Disbursal_Authorized__c'=>'Electronic_Disbursal_Authorized__c',
+        'Email_Re_Enter__c'=>'Email__c',
+        'Employed_for_more_than_one_year__c'=>'Employed_for_more_than_one_year__c',
+        'Employed_for_more_than_six_months__c'=>'Employed_for_more_than_six_months__c',
+        'IBLS_Category__c'=>'IBLS_Category_MappedFromLead__c',
+        'Income_Type__c'=>'Income_Type__c',
+        'Income_Type_2__c'=>'Income_Type_2__c',
+        'Joint_Applicant_Type__c'=>'Joint_Applicant_Type__c',
+        'Lead_ID__c'=>'Lead_ID__c',
+        'MobilePhone'=>'Customer_Phone__c',
+        'lived_residence_six_months__c'=>'Lived_at_residence_more_than_six_months__c',
+        'Partner_Lookup__c'=>'Partner_tag_lookup__c',
+        'Partner_Email__c'=>'Partner_Email__c',
+        'Partner_Tag__c'=>'Partner_Tag__c',
+        'Personal_Credit_Report__c'=>'Personal_Credit_Report2__c',
+        'Personal_Credit_Report_Co_Applicant__c'=>'Personal_Credit_Report_Co_Applicant__c',
+        'Product__c'=>'Product__c',
+        'Product_line__c'=>'Product_Line__c',
+        'Product_Program__c'=>'Product_Program__c',
+        'Project_Identification_Number__c'=>'project_identification_number__c',
+        'Referral_Email__c'=>'Referral_Email__c',
+        'Requested_Loan_Amount__c'=>'Requested_Loan_Amount__c',
+        'Residence_Owner__c'=>'Residence_Owner__c',
+        'Sales_Person__c'=>'Sales_Person_Tag__c',
+        'SREC_Product__c'=>'SREC_Product__c',
+        'State_of_Issuance__c'=>'State_of_Issuance__c',
+        'System_Cost__c'=>'Loan_Principle__c'
+    };
+
+    public void onBeforeInsert(List<Lead> leadList){
         List<Lead> communitySolarLeads = new List<Lead>();
         for (Lead lead : leadList) {
             if (lead.Product_Line__c == 'Community Solar') {
@@ -19,7 +59,7 @@ public with sharing class LeadTriggerHandler {
         }
         updateLZUL(communitySolarLeads, null);
     }
-    public void OnBeforeUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
+    public void onBeforeUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
         List<Lead> communitySolarLeads = new List<Lead>();
         Map<Id, Lead> communitySolarOldLeadMap = new Map<Id, Lead>();
         for (Lead lead : updatedLeads) {
@@ -34,22 +74,55 @@ public with sharing class LeadTriggerHandler {
         }
         updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
     }
-    public void OnAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
+    public void onAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         //Check if lead got converted in this trigger instance (Changed from IsConverted = false into true)
         if (updatedLeads.size() == 1 
             && updatedLeads[0].IsConverted && oldLeads[0].IsConverted == false
-            && updatedLeads[0].convertedAccountId != null
-            && updatedLeads[0].Product_Line__c == 'Community Solar'
-            && firstRun){
+            && updatedLeads[0].ConvertedAccountId != null
+            && updatedLeads[0].Product_line__c == 'Community Solar'
+            && firstRun) {
             deleteDuplicateContact(updatedLeads[0]);
             customerSubscriptionProcess(updatedLeads[0]);
             firstRun = false;
         } 
 
-        for (Lead convertedLead : updatedLeads){
-            if ( convertedLead.IsConverted && !oldLeadMap.get(convertedLead.Id).IsConverted){
-                convertCasestoAccount(convertedLead);
+        for (Lead lead : updatedLeads) {
+            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted) {
+                convertCasestoAccount(lead);
             }
+        }
+
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        for (Lead lead: updatedLeads) {
+            if (lead.IsConverted) {
+                Opportunity opp = getUpdatedOpp(lead, oldLeadMap.get(lead.Id));
+                if (opp != null) {
+                    oppsToUpdate.add(opp);
+                }
+            }
+        }
+        if (!oppsToUpdate.isEmpty()) {
+            try {
+                update oppsToUpdate;
+            } catch (Exception e) {
+                Logger.logNow('LeadTriggerHandler', 'onAfterUpdate',
+                    'Could\'t update opps after lead update:' + e.getMessage() + System.JSON.serializePretty(oppsToUpdate));
+            }
+
+        }
+
+        // As part of the Loan Change Order process, if docs are generated (which implies the lead is converted), we
+        // need to void them, regenerate, and send.
+        List<Id> oppsWithAuthorizedChange = new List<Id>();
+        for (Lead lead : updatedLeads) {
+            if (lead.ConvertedOpportunityId != null &&
+                lead.Change_Order_Status__c == 'Customer Authorized' &&
+                oldLeadMap.get(lead.Id).Change_Order_Status__c != 'Customer Authorized') {
+                oppsWithAuthorizedChange.add(lead.ConvertedOpportunityId);
+            }
+        }
+        if (!oppsWithAuthorizedChange.isEmpty()) {
+            DocuSignHelper.handleLoanChangeOrder(System.JSON.serialize(oppsWithAuthorizedChange));
         }
     }
     
@@ -82,7 +155,8 @@ public with sharing class LeadTriggerHandler {
         }
     }
 
-    private Opportunity leadConvertMapping(Lead lead, Opportunity opp){
+    // Used by the CS process since opportunities aren't created on lead conversion
+    private Opportunity setDefaultOppFields(Lead lead, Opportunity opp){
         opp.AccountId = lead.convertedAccountId;
         opp.Assessors_Parcel_Number__c = lead.Accessor_s_Parcel_Number__c;
         opp.Annual_Independent_Income__c = lead.Annual_Income_Currency__c;
@@ -197,7 +271,7 @@ public with sharing class LeadTriggerHandler {
         }else if (lead.System_Assignment__c == 'Automatic - Assignment Order'){
             sssQuery += 'ORDER BY Assignment_order__c ASC';
         }
-        
+
         Decimal remainingAccountCostToAllocate = totalAnnualCostofElectricity;
         List<Opportunity> oppListToCreate = new List<Opportunity>();
         Map<Id, Decimal> sssRemainingSubscriptionCostMap = new Map<Id, Decimal>();
@@ -223,7 +297,7 @@ public with sharing class LeadTriggerHandler {
                                                   Annual_Electricity_Cost__c = annualElectricityCostAssigned,
                                                   Annual_Electricity_Cost2__c = annualElectricityCostAssigned,
                                                   Opportunity_Order__c = oppCounter);
-                opp = leadConvertMapping(lead, opp);
+                opp = setDefaultOppFields(lead, opp);
                 oppListToCreate.add(opp);
                 oppCounter++;
                 
@@ -308,4 +382,15 @@ public with sharing class LeadTriggerHandler {
         update casesList;
     }
 
+    private Opportunity getUpdatedOpp(Lead newLead, Lead oldLead) {
+        Boolean returnNull = true;
+        Opportunity opp = new Opportunity(Id = newLead.ConvertedOpportunityId);
+        for (String field : leadToOppConvertMap.keySet()) {
+            if (newLead.get(field) != oldLead.get(field)) {
+                opp.put(leadToOppConvertMap.get(field), newLead.get(field));
+                returnNull=false;
+            }
+        }
+        return (returnNull?null:opp);
+    }
 }

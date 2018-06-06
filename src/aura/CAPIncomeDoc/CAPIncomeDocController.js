@@ -1,6 +1,16 @@
 ({
     handleNavEvent : function(component, event, helper) {
-        helper.handleNavEvent(component, event, helper, 'EmployedQuestion');
+        const lead = event.getParam('lead');
+        if (lead && lead.Product_Program__c === "MSLP") {
+            helper.handleNavEvent(component, event, helper, 'MSLPTechnicalConfirm');
+            if (event.getParam("eventType") === "INITIATED" &&
+                event.getParam("stageName") === component.get("v.STAGENAME")) {
+                helper.parseAttachments(component, helper, lead);
+            }
+        } else {
+            helper.handleNavEvent(component, event, helper, 'EmployedQuestion');
+        }
+
         var now = new Date();
         // getMonth starts at 0, and we need to collect W-2s through April (per Mickey at Avidia)
         if (now.getMonth() <= 3) {
@@ -13,6 +23,29 @@
             event.getParam("stageName") === component.get("v.STAGENAME")) {
             helper.parseAttachments(component, helper);
         }
+    },
+
+    saveTCAskEmployed : function(component, event, helper) {
+        if (helper.checkProjectIDErrors(component)) {
+            helper.logError("CAPIncomeDocController", "saveTCAskEmployed", helper.checkProjectIDErrors(component));
+            return;
+        }
+        if (!component.get('v.tcDocs') ||
+            component.get('v.tcDocs').length === 0) {
+            alert('Please upload your technical confirmation before continuing');
+            return;
+        }
+
+        const lead = component.get('v.lead');
+        var leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Project_Identification_Number__c: lead.Project_Identification_Number__c
+        };
+        var leadPromise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+        leadPromise.then($A.getCallback(function resolve(retVal) {
+            component.set('v.page', 'EmployedQuestion');
+        }));
     },
 
     getPayStubs : function(component, event, helper) {
@@ -396,7 +429,23 @@
     },
 
     finishStage : function(component, event, helper) {
-        helper.finishStage(component, event, helper);
+        const lead = component.get('v.lead');
+        let leadToSave = {
+            sobjectType: 'Lead',
+            Id: lead.Id,
+            Unfinished_Lead__c: false
+        };
+        helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave)
+        .then($A.getCallback(function resolve() {
+            return helper.insertPartnerTaskFunction(component, event, helper);
+            }))
+        .then($A.getCallback(function resolve() {
+            helper.finishStage(component, event, helper);
+        }));
+    },
+
+    handleTC : function(component, event, helper) {
+        helper.handleAttachment(component, event, helper, helper.TC_DOC);
     },
 
     handlePaystubFiles : function(component, event, helper) {
@@ -443,6 +492,7 @@
 
     goBack : function(component, event, helper) {
         var pageMap = new Map();
+        pageMap.set('EmployedQuestion', 'MSLPTechnicalConfirm');
         pageMap.set('GetPayStubs', 'EmployedQuestion');
         pageMap.set('SelfEmployedQuestion', 'EmployedQuestion');
         pageMap.set('GetTaxReturns', 'SelfEmployedQuestion');

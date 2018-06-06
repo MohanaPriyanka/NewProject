@@ -36,15 +36,15 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
             if (uas.UAS_Number__c == 2) {
                 System.assertEquals(3000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(2.3077, uas.Customer_Subscription_KW_DC__c);
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Not Enacted: Addition');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Active Subscription');
             } else if (uas.UAS_Number__c == 3) {
                 System.assertEquals(9000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(6.9231, uas.Customer_Subscription_KW_DC__c);
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted: Removed');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Inactive Subscription');
             } else {
                 System.assertEquals(10000, uas.Subscribed_Annual_Cost_of_Electricity__c);
                 System.assertEquals(7.6923, uas.Customer_Subscription_KW_DC__c);
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Active Subscription');
             }
             answer += uas.Customer_Subscription_KW_DC__C;
         }
@@ -63,11 +63,11 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
         for (Utility_Account_Subscription__c uas : uasList) {
             System.assertEquals(uas.Customer_Subscription_KW_DC__c, uas.Customer_Subscription_KW_DC_STATIC__c);
             if (uas.UAS_Number__c == 2){
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Active Subscription');
             } else if (uas.UAS_Number__c == 3){
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Cancelled');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Inactive Subscription');
             } else if (uas.UAS_Number__c == 1){
-                System.assert(uas.Next_Schedule_Z_Status__c == 'Enacted');
+                System.assert(uas.Next_Schedule_Z_Status__c == 'Active Subscription');
             }
         }
 

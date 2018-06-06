@@ -3,7 +3,7 @@
  <aura:attribute name="SchZBillList" type="UASB__c[]"/>
  <aura:attribute name="parentId" type="String"/>    
  <aura:attribute name="IsProdUpdate" type="Boolean"/>
- <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+  <table class="slds-table slds-table_bordered slds-table_cell-buffer">
   <thead>
     <tr class="slds-text-title_caps">
       <th scope="col">
@@ -41,11 +41,11 @@
       </th>
     </tr>
   </thead>
-  <tbody>     
-   <aura:iteration items="{!v.SchZBillList}" var="uasbs">
+  <tbody>
+  <aura:iteration items="{!v.SchZBillList}" var="uasbs">
       <tr>
         <td >
-        <div class="slds-truncate">     
+        <div class="slds-truncate">
                <aura:if isTrue="{!uasbs.PreGen_IsPreGen__c}">
                 <lightning:icon iconName="utility:check" size="small" alternativeText="Generated"/>
                    <aura:set attribute="else">
@@ -60,15 +60,15 @@
           <td>
             <div class="slds-truncate"><a href="{!'https://na54.salesforce.com/' + uasbs.Utility_Account_Subscription__c}" target="_blank"><ui:outputText value="{!uasbs.PreGen_Utility_Acct__c}"/></a></div>
           </td>
-          <td> 
+          <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_CreditOnBillPeriod__c}"/></div>
           </td>
-          <td> 
+          <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Name_on_Account__c}"/></div>
-          </td> 
-          <td> 
+          </td>
+          <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Additional_Id__c}"/></div>
-          </td> 
+          </td>
           <td>
             <div class="slds-truncate" ><ui:outputNumber value="{!uasbs.PreGen_Subscription_Production__c}"/></div>
           </td>

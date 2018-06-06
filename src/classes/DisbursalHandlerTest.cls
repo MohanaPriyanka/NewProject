@@ -16,8 +16,6 @@ public class DisbursalHandlerTest {
                                                 Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
-        Date myDate = Date.newInstance(2015, 2, 17);
-
         Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
             Name = 'Avidia 1',
             Tranche_Cap__c = 1000000,
@@ -60,26 +58,17 @@ public class DisbursalHandlerTest {
                                     Product__c = productRecord.Id,
                                     Product_Program__c = 'BlueWave Solar Loan',
                                     Automatic_Product_Assignment__c = false,
-                                    Status = 'Ready for Credit Check');
+                                    Status = 'Qualified');
         insert leadRecord;
-        leadRecord.Status = 'Pending Information';
-        update leadRecord;
-        leadRecord.Status = 'Qualified';
-        update leadRecord;
-
-        Database.leadConvert lc = new Database.leadConvert();
-        lc.setLeadId(leadRecord.id);
-
-        LeadStatus convertStatus = [SELECT Id, MasterLabel 
-                                    FROM LeadStatus 
-                                    WHERE IsConverted=true 
-                                    LIMIT 1];
-
-        lc.setConvertedStatus(convertStatus.MasterLabel);
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(leadRecord.Id);
+        lc.setConvertedStatus('Qualified');
         Database.LeadConvertResult lcr = Database.convertLead(lc);
         System.assert(lcr.isSuccess());
 
-        Opportunity opportunityRecord = [SELECT Id, Name, 
+        CAPController.createLoanAndEquipment(leadRecord.Id, leadRecord.Email);
+
+        Opportunity opportunityRecord = [SELECT Id, Name,
                                             (SELECT Id, Name FROM Loans__r)
                                          FROM Opportunity];
         opportunityRecord.Contract_Status__c = 'Completed';
@@ -110,23 +99,26 @@ public class DisbursalHandlerTest {
     }
 
     @isTest static void testUpdateDisbursalAmountsOnRLAChange() {
-        Date myDate = Date.newInstance(2018, 2, 17);
         Decimal totalAmount = 0;
         Test.startTest();
             Opportunity opportunityRecord = [SELECT Id, Name,
-                                                (SELECT Id, Name FROM Loans__r)
+                                                (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
                                              FROM Opportunity];
             opportunityRecord.StageName = 'New';
             update opportunityRecord;
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
+            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
                                                    FROM Disbursal__c 
                                                    WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
                                                    ORDER BY Disbursal_Sequence__c];
+        // update first disbursal to be disbursed
             disbursalRecords.get(0).Status__c = 'Disbursed';
+            Decimal originalDisbursalAmount = disbursalRecords.get(0).Amount__c;
             update disbursalRecords;
 
+            LoanHandler.resetTriggerContext();
             opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 28000;
+        // update loan
             update opportunityRecord.Loans__r.get(0);
 
 
@@ -137,7 +129,7 @@ public class DisbursalHandlerTest {
             for (Disbursal__c disbursal : updatedDisbursals) {
                 totalAmount = totalAmount + disbursal.Amount__c;
             }
-            System.assertEquals(9000, updatedDisbursals.get(0).Amount__c);
+            System.assertEquals(originalDisbursalAmount, updatedDisbursals.get(0).Amount__c);
             System.assertEquals(16200, updatedDisbursals.get(1).Amount__c);
             System.assertEquals(2800, updatedDisbursals.get(2).Amount__c);
             System.assertEquals(28000, totalAmount);
@@ -291,7 +283,7 @@ public class DisbursalHandlerTest {
             update permitTask;
 
             Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
-            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Labor_Performed__c, Materials_Supplied__c, Interconnected__c, Loan__r.Id 
+            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Labor_Performed__c, Materials_Supplied__c, Interconnected__c, Loan__r.Id
                                                   FROM Residential_Equipment__c 
                                                   LIMIT 1];
 
@@ -312,6 +304,210 @@ public class DisbursalHandlerTest {
                                                    ORDER BY Disbursal_Sequence__c];
             System.assertEquals(disbursalRecords.get(0).Type__c, 'Building Permit Approved');
             System.assertEquals(disbursalRecords.get(0).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testOppStageReversionFromCompleteWithDisbursalStatusDisbursed() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            FROM Opportunity
+        ];
+
+        Id loanId = opportunityRecord.Loans__r.get(0).Id;
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : disbursalRecords) {
+            disbursal.Status__c = 'Disbursed';
+        }
+
+        update disbursalRecords;
+
+        List<Disbursal__c> updatedDisbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : updatedDisbursalRecords) {
+            System.assertEquals('Disbursed', disbursal.Status__c);
+        }
+
+        // Make sure disbursed loans statuses do not change when updating opportunity status from 'Complete'
+        opportunityRecord.StageName = 'New';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : postOppDisbursals) {
+            System.assertEquals('Disbursed', disbursal.Status__c);
+        }
+
+        // Make sure disbursed loan statuses do not change (if disbursed) when updating opportunity status to 'Complete'
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals2 = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+        for (Disbursal__c disbursal : postOppDisbursals2) {
+            System.assertEquals('Disbursed', disbursal.Status__c);
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testOppStageReversionFromCompleteWithDisbursalStatusReimbursed() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            FROM Opportunity
+        ];
+
+        Id loanId = opportunityRecord.Loans__r.get(0).Id;
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : disbursalRecords) {
+            disbursal.Status__c = 'Reimbursed';
+        }
+
+        update disbursalRecords;
+
+        List<Disbursal__c> updatedDisbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : updatedDisbursalRecords) {
+            System.assertEquals('Reimbursed', disbursal.Status__c);
+        }
+
+        // Make sure reimbursed loans statuses do not change when updating opportunity status from 'Complete'
+        opportunityRecord.StageName = 'Contract Pending';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+
+        for (Disbursal__c disbursal : postOppDisbursals) {
+            System.assertEquals('Reimbursed', disbursal.Status__c);
+        }
+
+        // Make sure reimbursed loan statuses do not change (if disbursed) when updating opportunity status to 'Complete'
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals2 = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+        for (Disbursal__c disbursal : postOppDisbursals2) {
+            System.assertEquals('Reimbursed', disbursal.Status__c);
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testOppStageReversionFromCompleteWithDisbursalStatusOnHold() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            FROM Opportunity
+        ];
+
+        Id loanId = opportunityRecord.Loans__r.get(0).Id;
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : disbursalRecords) {
+            disbursal.Status__c = 'Hold';
+        }
+
+        update disbursalRecords;
+
+        List<Disbursal__c> updatedDisbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        for (Disbursal__c disbursal : updatedDisbursalRecords) {
+            System.assertEquals('Hold', disbursal.Status__c);
+        }
+
+        // Make sure on hold loans statuses do not change when updating opportunity status from 'Complete'
+        opportunityRecord.StageName = 'New';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        Set<Decimal> disbursalAmounts = new Set<Decimal>();
+
+        for (Disbursal__c disbursal : postOppDisbursals) {
+            disbursalAmounts.add(disbursal.Amount__c);
+            System.assertEquals('Hold', disbursal.Status__c);
+        }
+
+        opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c += 1000;
+        update opportunityRecord.Loans__r.get(0);
+
+        // Make sure on hold loan statuses do not change (if disbursed) when updating opportunity status to 'Complete'
+        // on hold loan statuses are allowed to update amount if loan amount changes
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<Disbursal__c> postOppDisbursals2 = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : loanId
+            ORDER BY Disbursal_Sequence__c
+        ];
+        for (Disbursal__c disbursal : postOppDisbursals2) {
+            System.assertEquals(false, disbursalAmounts.contains(disbursal.Amount__c));
+            System.assertEquals('Hold', disbursal.Status__c);
+        }
+
         Test.stopTest();
     }
 }

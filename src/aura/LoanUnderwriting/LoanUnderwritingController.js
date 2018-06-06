@@ -11,6 +11,12 @@
                                           'LASERCA__Personal_Credit_Report__c', 
                                           'Avidia_Review_Status__c',
                                           component.find("AvidiaReviewStatus"));
+                if (component.get('v.lead.Change_Order_Status__c') != null) {
+                    helper.getPicklistOptions(component,
+                        'Lead',
+                        'Change_Order_Status__c',
+                        component.find("ChangeOrderStatus"));
+                }
             }));
     },
 
@@ -28,8 +34,33 @@
                                'Avidia_Review_Status__c',
                                event.getSource().get("v.value"));
         }
+        if (event.getSource().get("v.value") === 'Reviewed - Approved') {
+            let action = component.get('c.approveLead');
+            action.setParams({'leadId': lead.Id});
+            action.setCallback(this, function(resp) {
+                if (resp.getState() !== 'SUCCESS') {
+                    helper.logError('LoanUnderwritingController', 'updateReviewStatus', 'Could not approve lead', resp);
+                }
+            });
+            $A.enqueueAction(action);
+        }
     },
-        
+
+    updateChangeOrderStatus : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        if (lead.Change_Order_Status__c === 'Reviewed - Accepted' ||
+            lead.Change_Order_Status__c === 'Reviewed - Rejected') {
+            helper.saveSObject(component,
+                lead.Id,
+                'Lead',
+                'Change_Order_Status__c',
+                event.getSource().get("v.value"));
+        } else {
+            alert('Not saved: only used Reviewed - Accepted or Reviewed - Rejected');
+            component.set('v.lead.Change_Order_Status__c', 'Customer Authorized');
+        }
+    },
+
     handleEvent : function(component, event, helper) {
         var leadPromise = helper.getLead(component);
         leadPromise.then(
@@ -81,7 +112,7 @@
 
     handleFilesChange : function(component, event, helper) {
         var files = event.getSource().get("v.files")
-        var parentId = component.get("v.lead.Id");
+        var parentId = component.get('v.lead.ConvertedContactId')?component.get('v.lead.ConvertedContactId'):component.get("v.lead.Id");
         helper.uploadFiles(component, files, parentId, helper.getLead);
     },
        

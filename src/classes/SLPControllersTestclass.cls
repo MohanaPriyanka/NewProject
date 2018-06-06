@@ -68,6 +68,16 @@ public without sharing class SLPControllersTestclass {
         Util.insertSobjs(new List<User>{userRecord, executiveRecord});
 
         LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
+
+        System_Properties__c sysProp = new System_Properties__c(
+            Name = 'System',
+            DocuSign_API_Account_ID__c = '123',
+            DocuSign_Customer_Care_User__c = '123@123.com',
+            DocuSign_Guest_User__c = '123@345.com',
+            DocuSign_Guest_User_Credential__c = '234234',
+            DocuSign_Integrator_Key__c = '123123-123123'
+        );
+        insert sysProp;
     }
 
     @isTest static void testAddNewLeadRecord() {
@@ -217,7 +227,7 @@ public without sharing class SLPControllersTestclass {
         System.runAs(partnerUser) {
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);
-            System.assertEquals(2, productReturnList.size());
+            System.assertEquals(3, productReturnList.size());
         }
 
         for(LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
@@ -231,7 +241,7 @@ public without sharing class SLPControllersTestclass {
         System.runAs(partnerUser) {
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);
-            System.assertEquals(2, productReturnList.size());
+            System.assertEquals(3, productReturnList.size());
         }
         Test.stopTest();
     }
@@ -321,12 +331,9 @@ public without sharing class SLPControllersTestclass {
 
         Test.startTest();
 
-        leadList = [SELECT Id, Unfinished_Lead__c, Status, Bs_Sales_ID__c FROM Lead];
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }
-        update leadList;
+        leadList = getLeads();
+        LoanHandler.createResidentialEquipment(leadList);
+        LoanHandler.createLoan(leadList);
 
         List<Loan__c> loanList = [SELECT Id, Partner__c, Sales_Agent__c, 
                                   (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1) FROM Loan__c];
@@ -335,7 +342,7 @@ public without sharing class SLPControllersTestclass {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
             System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(4, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
+            System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
             String partnerProfile = SLPCustomerHandler.getLicenseTypeandReferralCode();
             System.assertEquals('Manager/test/true', partnerProfile);
@@ -361,37 +368,17 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
 
         List<Lead> leadList = new List<Lead>();
-        List<Loan__c> loanReturnList = new List<Loan__c>();
-        List<Product2> productList = new List<Product2>();
         List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
-
-        String loanId;
-        String nullString = null;
-
-        Loan__c loanRecord;
         Residential_Equipment__c equipmentRecord;
 
         Test.startTest();
 
-        leadList = [SELECT Id, Unfinished_Lead__c, Status FROM Lead];
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }
-        update leadList;
-
-        leadList.get(0).Status = 'Qualified';
-        update leadList.get(0);
-
+        leadList = getLeads();
+        LoanHandler.createResidentialEquipment(leadList);
+        LoanHandler.createLoan(leadList);
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(leadList.get(0).id);
-
-        LeadStatus convertStatus = [SELECT Id, MasterLabel 
-                                    FROM LeadStatus 
-                                    WHERE IsConverted=true 
-                                    LIMIT 1];
-
-        lc.setConvertedStatus(convertStatus.MasterLabel);
+        lc.setConvertedStatus('Qualified');
         Database.LeadConvertResult lcr = Database.convertLead(lc);
         System.assert(lcr.isSuccess());
 
@@ -405,7 +392,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             System.assertEquals(1, loanRecords.expiredApplicants.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(3, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
+            System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loan.Id);
         }
 
@@ -424,21 +411,12 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         List<Lead> leadList = new List<Lead>();
-        List<Loan__c> loanReturnList = new List<Loan__c>();
-        List<Product2> productList = new List<Product2>();
         List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-
-        String loanId;
-
         Test.startTest();
 
-        leadList = [SELECT Id, Unfinished_Lead__c, Status FROM Lead];
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }
-        update leadList;
+        leadList = getLeads();
+        LoanHandler.createResidentialEquipment(leadList);
+        LoanHandler.createLoan(leadList);
 
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
@@ -484,24 +462,19 @@ public without sharing class SLPControllersTestclass {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         List<Lead> leadList = new List<Lead>();
-        List<Product2> productList = new List<Product2>();
 
         String loanId;
         String equipmentId;
-        Residential_Equipment__c equipment;
 
-        leadList = [SELECT Id, Unfinished_Lead__c, Status FROM Lead];
-        for (Lead leadRecord : leadList) {
-            leadRecord.Unfinished_Lead__c = false;
-            leadRecord.Status = 'Pending Information';
-        }
-        update leadList;
+        leadList = getLeads();
+        LoanHandler.createResidentialEquipment(leadList);
+        LoanHandler.createLoan(leadList);
 
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
         }
         update leadList;
-        List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Requested_Loan_Amount__c  FROM Loan__c];
+        List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Estimated_Completion_Date__c, Requested_Loan_Amount__c  FROM Loan__c];
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
                                                         Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
@@ -748,5 +721,238 @@ public without sharing class SLPControllersTestclass {
         System.runAs(partnerUser) {
             SLPCustomerHandler.getCommunitySolarApplicationURL();
         }
+    }
+
+    @isTest static void testSaveAndWithdrawChange() {
+        User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+        Lead lead = getLeads()[0];
+        LoanHandler.createResidentialEquipment(new List<Lead>{lead});
+        LoanHandler.createLoan(new List<Lead>{lead});
+
+        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        System.runAs(execUser) {
+            Residential_Equipment__c updatedRE = SLPCustomerHandler.saveChangeOrder(loan.Id,
+                '{"number_of_modules__c":"24","module_manufacturer__c":"LG","module_model_number__c":"LG335",' +
+                    '"number_of_inverters__c":"24","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"IQ6Plus",' +
+                    '"commencement_datee__c":"04/30/2018","generator_nameplate_capacity__c":"8.04",' +
+                    '"System_Cost__change":20000,' +
+                    '"Number_of_Modules__change":"2","Module_Manufacturer__change":"LG","Module_Model_Number__change":"LG335",' +
+                    '"Number_of_Inverters__change":"24","inverter_Manufacturer__change":"Enphase","Inverter_Model_Number__change":"IQ6Plus",' +
+                    '"Commencement_Datee__change":"04/30/2018","Generator_Nameplate_Capacity__change":"8.04"}');
+            System.assertEquals('Requested', updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
+            Residential_Equipment__c withdrawnRE = SLPCustomerHandler.withdrawChangeOrder(loan.Id);
+            System.assertEquals('Installer Withdrawn', withdrawnRE.Loan__r.Lead__r.Change_Order_Status__c);
+        }
+    }
+
+    @isTest static void testSaveNoChangeRequired() {
+        User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
+
+        Lead lead;
+        for (Lead l : getLeads()) {
+            if (l.FirstName == 'NY') {
+                lead = l;
+                break;
+            }
+        }
+        lead.CAP_Stage__c = 'NAV_Confirmations';
+        update lead;
+
+        System.assertEquals(lead.LastName, 'Test');
+        CAPController.convertLead(lead.Id, lead.Email);
+        lead = [
+            SELECT Id, FirstName, LastName, DOER_Solar_Loan__c, ConvertedOpportunityId, Product_line__c,
+                Loan_System_Information__c, Product__r.Loan_Interest_Rate__c, bs_Sales_ID__c,
+                Loan_Financing_Fee__c, Requested_Loan_Amount__c, System_Cost__c, Partner_Lookup__c,
+                LASERCA__Home_State__c, Product__c, Loan_Fee_1__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+        LoanHandler.createResidentialEquipment(new List<Lead>{lead});
+        LoanHandler.resetTriggerContext();
+        LoanHandler.createLoan(new List<Lead>{lead});
+        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        System.debug(LoggingLevel.ERROR, loan);
+        System.runAs(execUser) {
+            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
+            System.assertEquals(null, re.Module_Manufacturer__c);
+            Test.startTest();
+            Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+            Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+            Residential_Equipment__c updatedRE = SLPCustomerHandler.saveChangeOrder(loan.Id,
+                '{"number_of_modules__c":"24","module_manufacturer__c":"LG","module_model_number__c":"LG335",' +
+                    '"number_of_inverters__c":"24","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"IQ6Plus",' +
+                    '"Estimated_Completion_Date__c":"04/30/2018","generator_nameplate_capacity__c":"8.04",' +
+                    '"System_Cost__change":' + lead.Requested_Loan_Amount__c + ',' +
+                    '"Number_of_Modules__change":2,"Module_Manufacturer__change":"LG","Module_Model_Number__change":"LG335",' +
+                    '"Number_of_Inverters__change":24,"Inverter_Manufacturer__change":"Enphase","Inverter_Model_Number__change":"IQ6Plus",' +
+                    '"Estimated_Completion_Date__change":"04/30/2018","Generator_Nameplate_Capacity__change":8.04}');
+            Test.stopTest();
+            System.assertEquals(null, updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
+            re = SLPCustomerHandler.getCustomerInformation(loan.Id);
+            System.assertEquals('LG', re.Module_Manufacturer__c);
+            System.assertEquals('LG335', re.Module_Model_Number__c);
+            System.assertEquals(2, re.Number_of_Modules__c);
+            System.assertEquals('Enphase', re.Inverter_Manufacturer__c);
+            System.assertEquals('IQ6Plus', re.Inverter_Model_Number__c);
+            System.assertEquals(24, re.Number_of_Inverters__c);
+            System.assertEquals(8.04, re.Generator_Nameplate_Capacity__c);
+        }
+    }
+
+    @isTest static void testMaxLoanAmount() {
+        LASERCA__Personal_Credit_Report__c pcr = [
+            SELECT Id, LASERCA__Lead__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Lead__r.FirstName = 'NY'
+            AND LASERCA__Lead__r.Requested_Loan_Amount__c = 25000
+            AND LASERCA__Credit_Score_TransUnion__c = '790'
+            AND Adjusted_Monthly_Personal_Debt__c = 100
+            AND LASERCA__Lead__r.Annual_Income_Currency__c = 150000
+        ];
+        Lead lead;
+        for (Lead l : getLeads()) {
+            if (l.Id == pcr.LASERCA__Lead__c) {
+                lead = l;
+                break;
+            }
+        }
+        LoanHandler.createLoan(new List<Lead>{lead});
+        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        Decimal maxLoanAmount = SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2);
+        System.assertEquals(73310.65, maxLoanAmount);
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount - 1;
+        update lead;
+        Test.startTest();
+        PCRApprovalHandler.noDelay = true;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pre-Qualified', lead.Status);
+
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount + 10;
+        update lead;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pending Credit Review', lead.Status);
+    }
+
+    @isTest static void testMaxLoanAmountFlexRate() {
+        LASERCA__Personal_Credit_Report__c pcr = [
+            SELECT Id, LASERCA__Lead__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Lead__r.FirstName = 'NY'
+            AND LASERCA__Lead__r.Requested_Loan_Amount__c = 25000
+            AND LASERCA__Credit_Score_TransUnion__c = '790'
+            AND Adjusted_Monthly_Personal_Debt__c = 100
+            AND LASERCA__Lead__r.Annual_Income_Currency__c = 150000
+        ];
+        Product2 flexRate = LoanTestRecordWarehouse.getDefaultProduct('NY', 5.99, 10, 7, '750', '999', null);
+        flexRate.First_Adjustment__c = 61;
+        flexRate.Floor_Rate__c = 1;
+        flexRate.Ceiling_Rate__c = 10;
+        flexRate.Index_Rate_for_Adjustment__c = 'WSJ Prime Rate';
+        flexRate.Margin_Over_Index_Rate__c = .5;
+        flexRate.Maximum_Adjustment__c = 1;
+        flexRate.Months_Between_Adjustment__c = 12;
+        flexRate.DTI_After_Rate_Gross_Up__c = 2;
+        insert flexRate;
+        Index_Rate__c ir = new Index_Rate__c(
+            Index_Rate_Type__c = 'WSJ Prime Rate',
+            Index_Rate__c = 8
+        );
+        insert ir;
+
+        Lead lead;
+        for (Lead l : getLeads()) {
+            if (l.Id == pcr.LASERCA__Lead__c) {
+                lead = l;
+                lead.Product__c = flexRate.Id;
+                update lead;
+                break;
+            }
+        }
+        LoanHandler.createLoan(new List<Lead>{lead});
+        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        Decimal maxLoanAmount = SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2);
+        System.assertEquals(507112.94, maxLoanAmount);
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount - 1;
+        update lead;
+        Test.startTest();
+        PCRApprovalHandler.noDelay = true;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pre-Qualified', lead.Status);
+
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount + 100;
+        update lead;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pending Credit Review', lead.Status);
+
+        flexRate.Maximum_Loan_Size__c = 60000;
+        update flexRate;
+        System.assertEquals(60000, SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2));
+    }
+
+    @isTest static void testMaxLoanAmountMSLP() {
+        LASERCA__Personal_Credit_Report__c pcr = [
+            SELECT Id, LASERCA__Lead__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Lead__r.FirstName = 'DOER'
+            AND LASERCA__Lead__r.Requested_Loan_Amount__c = 25000
+            AND LASERCA__Credit_Score_TransUnion__c = '790'
+            AND Adjusted_Monthly_Personal_Debt__c = 100
+            AND LASERCA__Lead__r.Annual_Income_Currency__c = 150000
+        ];
+
+        Lead lead;
+        for (Lead l : getLeads()) {
+            if (l.Id == pcr.LASERCA__Lead__c) {
+                lead = l;
+                break;
+            }
+        }
+        LoanHandler.createLoan(new List<Lead>{lead});
+        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        Decimal maxLoanAmount = SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2);
+        System.assertEquals(554202.39, maxLoanAmount);
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount - 1;
+        update lead;
+        Test.startTest();
+        PCRApprovalHandler.noDelay = true;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pre-Qualified', lead.Status);
+
+        lead.Status = 'Ready for Credit Check';
+        lead.Requested_Loan_Amount__c = maxLoanAmount + 100;
+        update lead;
+        update pcr;
+        lead = [SELECT Id, Status FROM Lead WHERE Id = :lead.Id];
+        System.assertEquals('Pending Credit Review', lead.Status);
+
+        pcr.LASERCA__Credit_Score_TransUnion__c = '695';
+        update pcr;
+        System.assertEquals(497881.01, SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2));
+        pcr.LASERCA__Credit_Score_TransUnion__c = '685';
+        update pcr;
+        System.assertEquals(441559.62, SLPCustomerHandler.getMaximumLoanAmount(loan.Id).setScale(2));
+
+    }
+
+    private static List<Lead> getLeads() {
+        return [
+            SELECT Id, Unfinished_Lead__c, Status, bs_Sales_ID__c,
+                Product_line__c, FirstName, LastName, ConvertedOpportunityId, DOER_Solar_Loan__c, Loan_System_Information__c,
+                Product__r.Loan_Interest_Rate__c, Loan_Financing_Fee__c, Requested_Loan_Amount__c, System_Cost__c,
+                Partner_Lookup__c, LASERCA__Home_State__c, Product__c, Loan_Fee_1__c, Product__r.Loan_Interest_Only_Period__c
+            FROM Lead
+        ];
     }
 }

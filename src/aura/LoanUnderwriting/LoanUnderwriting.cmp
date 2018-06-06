@@ -13,6 +13,7 @@
   <aura:attribute name="combinedIncome" type="Decimal"/>
   <aura:attribute name="mainPCRAttachment" type="Attachment"/>
   <aura:attribute name="coAppPCRAttachment" type="Attachment"/>
+  <aura:attribute name="contactAttachments" type="Attachment[]"/>
   <aura:attribute name="waiting" type="Boolean" default="false"/>
 
   <c:LightningErrorHandler />
@@ -36,6 +37,12 @@
           </aura:if>)
         </div>
       </aura:if>
+      <aura:if isTrue="{!v.lead.Property_Type__c != null}">
+        <div class="slds-text-body_small slds-text-color_inverse">
+          Property Type:
+          <ui:outputText value="{!v.lead.Property_Type__c}"/>
+        </div>
+      </aura:if>
     </div>
   </div>
   
@@ -49,6 +56,17 @@
                           change="{!c.updateReviewStatus}"/>
         </strong>
         <lightning:button label="Save PDF" class="slds-button_reset" onclick="{!c.takeSnapshot}"/>
+        <aura:if isTrue="{!v.lead.Change_Order_Status__c != null}">
+          <div>
+            <strong class="slds-p-right_small">Change Order Status:
+              <ui:inputSelect aura:id="ChangeOrderStatus"
+                              value="{!v.lead.Change_Order_Status__c}"
+                              required="true"
+                              change="{!c.updateChangeOrderStatus}"
+                              disabled="{!v.lead.Change_Order_Status__c != 'Customer Authorized'}"/>
+            </strong>
+          </div>
+        </aura:if>
       </div>
     </div>
     <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
@@ -233,7 +251,17 @@
                   </div>
                 </td>
               </tr>
-            </aura:iteration> 
+            </aura:iteration>
+            <aura:iteration items="{!v.contactAttachments}" var="contactAttachment" >
+              <tr>
+                <td>
+                  <div>
+                    <ui:outputURL value="{!'/servlet/servlet.FileDownload?file=' + contactAttachment.Id}"
+                                  label="{!contactAttachment.Name}" target="_blank"/>
+                  </div>
+                </td>
+              </tr>
+            </aura:iteration>
           </tbody>
         </table>
       </div>

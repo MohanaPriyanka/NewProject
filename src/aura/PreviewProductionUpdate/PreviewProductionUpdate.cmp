@@ -1,11 +1,35 @@
-<aura:component access="global">	
+<aura:component controller="PreviewProductionUpdateResults" access="global">
+ <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="prodUpdate" type="String"/>
  <aura:attribute name="prodName" type="String"/>
  <aura:attribute name="totalNMCs" type="String"/>
-    
+ <aura:attribute name="scheduleZs" type="List"/>
+ <aura:attribute name="selectedScheduleZ" type="Id"/>
+ <aura:attribute name="SchZBillList" type="UASB__c[]"/>
+
+
  <h1 class="slds-text-heading--large"><ui:outputText value="{!v.prodName}"/></h1>   
- <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>	
- <br></br>
- <c.PregeneratedBillsTable parentId="{!v.prodUpdate}" IsProdUpdate="TRUE"/>
- 
+ <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>
+  <div class="slds-p-top_small slds-p-bottom_small">
+    <lightning:radioGroup name="Active Schedule Zs"
+                          class="slds-text-heading--small"
+                          label="Active Schedule Zs"
+                          onchange="{!c.getBills}"
+                          value="{! v.selectedScheduleZ }"
+                          options="{! v.scheduleZs }"
+                          type="radio"/>
+    <br/>
+    <lightning:button label="Save Schedule Z to Production Update" onclick="{!c.saveToProdUpdate}"/>
+  </div>
+
+ <aura:if isTrue="{!v.selectedScheduleZ}">
+   <c.PregeneratedBillsTable
+     parentId="{!v.prodUpdate}"
+     IsProdUpdate="TRUE"
+     SchZBillList="{!v.SchZBillList}"/>
+   <aura:set attribute="else">
+     <h2 class="slds-text-heading--small">Select a Schedule Z to Preview Bills</h2>
+   </aura:set>
+ </aura:if>
+
 </aura:component>

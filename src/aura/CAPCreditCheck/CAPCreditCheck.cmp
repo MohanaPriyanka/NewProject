@@ -157,7 +157,7 @@
           <div class="slds-form-element__row slds-p-top--small slds-text-body--regular">
             <ui:outputText value="Thanks for submitting your application. Please allow 1-2 business days for our
             underwriting team to review, but customers with credit freezes may encounter delays. If you have questions,
-            please email Partner Support (partnersupport@bluewavesolar.com) for an update."/>
+            please email Customer Care (customercare@bluewavesolar.com) for an update."/>
           </div>
           <div class="slds-form-element__row slds-p-top--small ">
             <ui:outputText class ="slds-text-body--regular" value="You can close this window or logout now."/>
@@ -194,9 +194,16 @@
 
   <aura:if isTrue="{!v.page == 'SelectProduct'}">
     <aura:if isTrue="{!not(empty(v.allProducts))}">
-      <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
-        <b>{!$Label.c.Low_Fico_Disclosure}</b>
-      </div>
+      <aura:if isTrue="{!v.contractSent}">
+        <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+          <b>{!format($Label.c.CAP_Contract_Sent, 'Your product selection')}</b>
+        </div>
+        <aura:set attribute="else">
+          <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+            <b>{!$Label.c.Low_Fico_Disclosure}</b>
+          </div>
+        </aura:set>
+      </aura:if>
       <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
         <tbody>
           <aura:iteration items="{!v.allProducts}" var="product">
@@ -209,7 +216,8 @@
                                       class="{!product.Id}"
                                       name="{!product.Loan_Term__c}"
                                       value="{!product.Id == v.lead.Product__c}"
-                                      change="{!c.updateProductSelection}"/>
+                                      change="{!c.updateProductSelection}"
+                                      disabled="{!v.contractSent}"/>
                     <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
                       <span class="slds-checkbox--faux"></span>
                     </span>

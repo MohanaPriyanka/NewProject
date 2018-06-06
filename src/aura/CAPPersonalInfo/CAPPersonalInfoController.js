@@ -105,6 +105,7 @@
             return;
         }
         component.set('v.page', 'AddressPI');
+        helper.getPicklistOptions(component, 'Lead', 'Property_Type__c', component.find('propertyType'));
     },
 
     setResidenceOwner: function(component, event, helper) {
@@ -165,13 +166,19 @@
             if (component.get('v.piLocked')) {
                 component.set('v.page', 'CoAppPI');
             } else {
-                helper.saveLead(component, event, helper, {finish: false, nextPage: 'CoAppPI'});
+                helper.convertLeadFunction(component, helper).then(
+                    $A.getCallback(function() {
+                        helper.saveLead(component, event, helper, {finish: false, nextPage: 'CoAppPI'});
+                    }));
             }
         } else {
             if (component.get('v.piLocked')) {
                 helper.finishStage(component, event, helper);
             } else {
-                helper.saveLead(component, event, helper, {finish: true});
+                helper.convertLeadFunction(component, helper).then(
+                    $A.getCallback(function() {
+                        helper.saveLead(component, event, helper, {finish: true});
+                    }));
             }
         }
     },

@@ -62,8 +62,8 @@ public without sharing class SLPAllCustomersHandler {
         List<Loan__c> loanList = new List<Loan__c>();
         String loanQuery = 'SELECT Id, Name, Requested_Loan_Amount__c, createdDate, Total_Funds_Disbursed__c, ' +
             'Sales_Agent__r.Name, Opportunity__r.StageName, Product__r.External_Name__c, Sales_Agent__r.Id, ' +
-            'Lead__r.Date_of_Application_2__c, ' +
-            '(SELECT Id, Name, Task_Label__c, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' LIMIT 1)';
+            'Lead__r.Date_of_Application_2__c, Lead__r.Status,' +
+            '(SELECT Id, Name, Task_Label__c, Owner__c FROM Partner_Tasks__r WHERE Status__c = \'' + 'Pending' + '\' OR Status__c = \'' + 'Incomplete' + '\' ' + ' ORDER BY Task_Sequence__c LIMIT 1)';
         loanQuery += '      FROM Loan__c' ;
         loanQuery += '      WHERE Partner__r.Id  =  \'' + profile.partnerId +  '\' ';
         if (profile.LicenseType != 'Executive') {
@@ -74,7 +74,7 @@ public without sharing class SLPAllCustomersHandler {
         for (Loan__c loan : Database.query(loanQuery)) {
             if (loan.Opportunity__r.StageName == 'Expired' || loan.Opportunity__r.StageName == 'Dead') {
                 LoanRecords.expiredApplicants.add(loan);
-            } else if (loan.Partner_Tasks__r.size() == 0) {
+            } else if (loan.Partner_Tasks__r.size() == 0 || loan.Lead__r.Status == 'Not Interested') {
                 LoanRecords.completedLoans.add(loan);
             } else {
                 LoanRecords.loansInProcess.add(loan);
@@ -85,14 +85,15 @@ public without sharing class SLPAllCustomersHandler {
 
     @AuraEnabled
     public static LeadRecords getLeads () {
-        LeadRecords LeadRecords = new LeadRecords();
+        LeadRecords leadRecords = new LeadRecords();
         List<Lead> leadList = new List<Lead>();
         String leadQuery = 'SELECT Id, Name, Firstname, createdDate, LastName, System_Cost__c, Status, ' +
             'LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, ' +
             'LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c, Co_Applicant_First_Name__c, ' +
             'Co_Applicant_Last_Name__c, Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c, ' +
             'Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, CoApplicant_Contact__c, Joint_Applicant_Type__c,' +
-            ' Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c' ;
+            ' Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c, ' +
+            '(SELECT Id FROM Loans__r) ' ;
         leadQuery += ' FROM Lead' ;
         leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
         leadQuery += ' AND Product_Line__c = \'Residential Loan\' ' ;
@@ -112,18 +113,21 @@ public without sharing class SLPAllCustomersHandler {
         leadQuery += '  OR (Status = \'Under BlueWave Review\' AND Unfinished_Lead__c = TRUE))';
         leadQuery += '  ORDER BY createdDate DESC, Name DESC';
 
-        for(Lead leadRecord : Database.query(leadQuery)){
+        for (Lead leadRecord : Database.query(leadQuery)) {
             leadList.add(leadRecord);
         }
 
         for (Lead lead : leadList) {
-            if (Lead.Status == 'Unqualified') {
-                LeadRecords.declinedApplicants.add(lead);
-            } else {
-                LeadRecords.pendingApplications.add(lead);
-            }
-            LeadRecords.allLeads.add(lead);
+          if (lead.Loans__r.size() > 0) {
+            continue;
+          }
+          if (lead.Status == 'Unqualified') {
+            leadRecords.declinedApplicants.add(lead);
+          } else {
+            leadRecords.pendingApplications.add(lead);
+          }
+          leadRecords.allLeads.add(lead);
         }
-        return LeadRecords;
+        return leadRecords;
     }
 }

@@ -90,27 +90,21 @@
     },
 
     toggleProductSelection : function(component, helper, prodId, term, selected) { 
-        var customerEmailButton = component.find("customerEmailButton");
-        var incomeFormButton = component.find("incomeFormButton");
-
         if (selected) {
             if (prodId !== component.get("v.lead.Product__c")) {
+                // Will cause the current checkbox to become unchecked
+                component.set('v.lead.Product__c', null);
                 helper.saveSObject(component, 
                                    component.get("v.lead.Id"),
                                    'Lead',
                                    'Product__c',
-                                   prodId);
-                component.set("v.lead.Product__c", prodId);
+                                   prodId)
+                .then($A.getCallback(function resolve(value) {
+                    component.set("v.lead.Product__c", prodId);
+                }));
             }
-            $A.util.removeClass(customerEmailButton, 'noDisplay');
-            $A.util.removeClass(incomeFormButton, 'noDisplay');
         } else {
-            component.set("v.productId", null); 
-            component.set("v.loanTerm", 0);
-            component.set("v.allCustomers[0].Product__c", null);
-
-            $A.util.addClass(customerEmailButton, 'noDisplay');
-            $A.util.addClass(incomeFormButton, 'noDisplay');
+            component.set("v.lead.Product__c", null);
         }
     },
 
@@ -122,5 +116,25 @@
             }
         }
         return false;
-    }
+    },
+
+    createLoanAndEquipmentFunction : function(component, helper) {
+        return new Promise(function(resolve) {
+            //retrieve the customer's full information to display in the component
+            let createLoanAction = component.get("c.createLoanAndEquipment");
+            createLoanAction.setParams({
+                'leadId' : component.get('v.lead.Id'),
+                'email' : component.get('v.lead.Email')
+            });
+            createLoanAction.setCallback(this,function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    component.set('v.systemInfoComplete', resp.getReturnValue());
+                    resolve();
+                } else {
+                    helper.logError('CAPCreditCheckHelper', 'createLoanAndEquipment', 'Couldn\'t create loan or equipment', resp.getError());
+                }
+            });
+            $A.enqueueAction(createLoanAction);
+        });
+    },
 })

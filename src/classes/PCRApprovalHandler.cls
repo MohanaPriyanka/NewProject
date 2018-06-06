@@ -18,7 +18,8 @@ public without sharing class PCRApprovalHandler {
     public static final String PENDINGCREDITREVIEW = 'Pending Credit Review';
     public static final String UNQUALIFIED = 'Unqualified'; 
     public static final String REVIEWEDAPPROVED = 'Reviewed - Approved'; 
-    public static final String REVIEWEDPREAPPROVED = 'Reviewed - PreApproved'; 
+    public static final String REVIEWEDPREAPPROVED = 'Reviewed - PreApproved';
+    public static final String NOTYETREVIEWED = 'Not Yet Reviewed';
 
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
@@ -268,32 +269,27 @@ public without sharing class PCRApprovalHandler {
                     String continueApplicationUrl =
                         Util.getCommunitySiteURL('Apply') + '/s/loan-application?leadId=' + pcr.PCR_Lead_ID__c;
 
+                    String htmlBody, subject;
                     if (pcr.DOER_Application__c) {
-                        String htmlbody = doerEmailTemplate.HtmlValue;
-                        htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
-                        htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
-                        string massLoanSubject = 'Congrats! ' +  pcr.First_Name_from_Lead__c + 
-                                                ', you have been prequalified for a BlueWave Mass Solar Loan'; 
-                        sendEmail(pcr.First_Name_from_Lead__c, massLoanSubject, 
-                                  htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
-                        pcr.Credit_PreApproval_Email_Sent__c = TRUE;
+                        htmlBody = doerEmailTemplate.HtmlValue;
+                        subject = 'Congrats! ' +  pcr.First_Name_from_Lead__c +
+                            ', you have been prequalified for a BlueWave Mass Solar Loan';
 
                     } else {
-                        String htmlbody = standardEmailTemplate.HtmlValue;
-                        htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
-                        htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
-                        htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
-                        string doerSubject = 'Congrats! ' +  pcr.First_Name_from_Lead__c + 
-                                            ', you have been prequalified for a BlueWave Solar Loan'; 
-                        sendEmail(pcr.First_Name_from_Lead__c, doerSubject, 
-                                  htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
-                        pcr.Credit_PreApproval_Email_Sent__c = TRUE;
+                        htmlbody = standardEmailTemplate.HtmlValue;
+                        subject = 'Congrats! ' +  pcr.First_Name_from_Lead__c +
+                            ', you have been prequalified for a BlueWave Solar Loan';
                     }
+                    htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
+                    htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
+                    htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
+                    htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
+                    htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
+                    htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
+                    sendEmail(pcr.First_Name_from_Lead__c, subject,
+                        htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
+                    pcr.Credit_PreApproval_Email_Sent__c = TRUE;
+
                 } else if (!pcr.Credit_PreApproval_Email_Sent__c &&
                            !pcr.Credit_Denial_Email_Sent__c &&
                            pcr.LASERCA__Contact__c == NULL &&

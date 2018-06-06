@@ -38,25 +38,25 @@
                 <span class="slds-path__title">{!$Label.c.NAV_Credit_Check}</span>
               </a>
             </li>
-            <li class="{! 'slds-path__item ' + 
+            <li class="{! 'slds-path__item ' +
                        (v.stageIndex==3?'slds-is-current slds-is-incomplete':
                        (v.stageIndex>3?'slds-is-active':
+                       'slds-is-incomplete'))}"
+                role="presentation">
+              <a class="slds-path__link" data-stage="NAV_Confirmations" onclick="{!c.onStageClicked}">
+                <span class="slds-path__title">{!$Label.c.NAV_Confirmations}</span>
+              </a>
+            </li>
+            <li class="{! 'slds-path__item ' +
+                       (v.stageIndex==4?'slds-is-current slds-is-incomplete':
+                       (v.stageIndex>4?'slds-is-active':
                        'slds-is-incomplete'))}"
                 role="presentation">
               <a class="slds-path__link" data-stage="NAV_Income_Doc" onclick="{!c.onStageClicked}">
                 <span class="slds-path__title">{!$Label.c.NAV_Income_Documentation}</span>
               </a>
             </li>
-            <li class="{! 'slds-path__item ' + 
-                       (v.stageIndex==4?'slds-is-current slds-is-incomplete':
-                       (v.stageIndex>4?'slds-is-active':
-                       'slds-is-incomplete'))}"
-                role="presentation">
-              <a class="slds-path__link" data-stage="NAV_SREC_and_Disbursals" onclick="{!c.onStageClicked}">
-                <span class="slds-path__title">{!$Label.c.NAV_SREC_and_Disbursals}</span>
-              </a>
-            </li>
-            <li class="{! 'slds-path__item ' + 
+            <li class="{! 'slds-path__item ' +
                        (v.stageIndex==5?'slds-is-current slds-is-incomplete':
                        (v.stageIndex>5?'slds-is-active':
                        'slds-is-incomplete'))}"

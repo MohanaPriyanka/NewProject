@@ -115,7 +115,7 @@ public class PublicCSTest {
             new Utility_Account_Subscription__c(Name = '00088888',
                                                 Utility_Account_Log__c = ualogPublic.Id,
                                                 Opportunity__c = opportunityPublic.Id,
-                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Calculated_Annual_Cost_of_Electricity__c = 12000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 12000);
 
@@ -123,6 +123,14 @@ public class PublicCSTest {
 
         uasPublic.Customer_Subscription_KW_DC_STATIC__c = 20;
         update new List<Utility_Account_Subscription__c>{uasPublic};
+
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Billing'
+        );
+
+        insert scheduleZ1;
 
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
@@ -132,11 +140,12 @@ public class PublicCSTest {
         Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.Id,
                 Production__c = 400000,
                 Net_Metering_Rate_Applied__c = 0.1125,
                 Billing_Period_End_Date__c = myDateFeb,
                 Size_Off_NMCs__c = true,
-                Total_System_NMCs__c = 45000,
+                Total_System_NMCs__c = 46000,
                 Date__c = myDateJan 
                 );
         // Effective NMC Rate of $0.11 
@@ -145,6 +154,7 @@ public class PublicCSTest {
         Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.Id,
                 Production__c = 60000,
                 Net_Metering_Rate_Applied__c = 0.05, 
                 Billing_Period_End_Date__c = myDateMar,
@@ -190,16 +200,16 @@ public class PublicCSTest {
 
         // First Bill has 20% Discount, does not hit NM Rate Floor
         System.assertEquals(true, uablist[0].Above_NM_Rate_Floor__c);
-        System.assertEquals(622.49, systembillList[0].Net_Metering_Credits_Allocated__c);
-        Decimal firstBillAmount = (622.49*0.80).setScale(2); 
+        System.assertEquals(634.80, systembillList[0].Net_Metering_Credits_Allocated__c);
+        Decimal firstBillAmount = (634.80*0.80).setScale(2);
         System.assertEquals(firstBillAmount,systembillList[0].Due_This_Month__c);
         System.assertEquals(firstBillAmount,systemBillList[0].Total_Due__c);
         
         // Second Bill Should Hit the NM Rate Floor
         System.assertEquals(false, uablist[1].Above_NM_Rate_Floor__c);
-        System.assertEquals(41.50,systembillList[1].Net_Metering_Credits_Allocated__c);
-        System.assertEquals(829.98,systembillList[1].Production_kWH__c);
-        Decimal secondBillAmount = (829.96*0.09).setScale(2); 
+        System.assertEquals(41.40,systembillList[1].Net_Metering_Credits_Allocated__c);
+        System.assertEquals(828.00,systembillList[1].Production_kWH__c);
+        Decimal secondBillAmount = (828.00*0.09).setScale(2);
         System.assertEquals(secondBillAmount,systembillList[1].Due_This_Month__c);
 
         // Late Fees should be 10% Annually, not 12% 

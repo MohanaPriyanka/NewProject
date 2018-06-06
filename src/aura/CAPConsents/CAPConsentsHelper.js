@@ -1,52 +1,14 @@
 ({
-    TC_DOC: 'MSLP Technical Confirmation',
-
     getLead : function(component, helper) {
         var action = component.get('c.getLead');
         action.setParams({'leadId' : component.get('v.lead.Id'),
             'email': component.get('v.lead.Email')});
         action.setCallback(this,function(resp) {
-            if (resp.getState() === 'SUCCESS') {
-                helper.parseAttachments(component, helper, resp.getReturnValue());
-            } else {
+            if (resp.getState() !== 'SUCCESS') {
                 this.logError('CAPConsentsHelper', 'getLead', resp.getError(), component.get('v.lead'));
             }
         });
         $A.enqueueAction(action);
-    },
-
-    parseAttachments : function(component, helper, lead) {
-        if (lead.Attachments) {
-            const tcDocs = [];
-            lead.Attachments.forEach(function(attachment) {
-                const desc = attachment.Description;
-                if (desc === helper.TC_DOC) {
-                    tcDocs.push(attachment.Name);
-                }
-            });
-            component.set('v.tcDocs', tcDocs);
-        }
-    },
-
-    handleAttachment : function(component, event, helper, description) {
-        var files = event.getSource().get("v.files")
-        var parentId = component.get("v.lead.Id");
-        helper.uploadFiles(component, files, parentId, helper.getLead, description, helper);
-    },
-
-    checkProjectIDErrors : function(component) {
-        var errorMessage = "";
-        var lead = component.get("v.lead");
-        errorMessage += this.getFieldError(component, {
-            'fieldValue': lead.Project_Identification_Number__c,
-            'fieldId': "tcProjectId",
-            'allowSpecialChars': true,
-            'errorMessage': "Enter your MassCEC Project ID Number"
-        });
-        if (!component.get('v.tcDocs')) {
-            errorMessage += 'Please upload your Technical Confirmation';
-        }
-        return errorMessage;
     },
 
 	getSRECProducts : function(component, event, helper, lead) {
@@ -76,5 +38,24 @@
             }
         });
         $A.enqueueAction(action);
-	}
+	},
+
+    sendLoanDocs : function(component, event, helper) {
+        return new Promise(function(resolve) {
+            let action = component.get('c.sendLoanDocs');
+            action.setParams({
+                'leadId': component.get('v.lead.Id'),
+                'email': component.get('v.lead.Email')
+            });
+            action.setCallback(this, function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    helper.raiseNavEvent("CONTRACTSENT", {"lead": component.get('v.lead'), "contractSent": true});
+                    resolve();
+                } else {
+                    helper.logError('CAPConsentsHelper', 'sendLoanDocs', 'DocuSign could not be sent', resp);
+                }
+            });
+            $A.enqueueAction(action);
+        });
+    },
 })

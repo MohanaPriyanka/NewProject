@@ -122,7 +122,7 @@ public class MultipleMonthProductionUpdateTest {
             new Utility_Account_Subscription__c(Name = '00088888',
                                                 Utility_Account_Log__c = ualogOne.Id,
                                                 Opportunity__c = opportunityOne.Id,
-                                                Next_Schedule_Z_Status__c = 'Enacted',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Calculated_Annual_Cost_of_Electricity__c = 12000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 12000);
 
@@ -130,7 +130,7 @@ public class MultipleMonthProductionUpdateTest {
             new Utility_Account_Subscription__c(Name = '000999999',
                                                 Utility_Account_Log__c = ualogTwo.Id,
                                                 Opportunity__c = opportunityOne.Id,
-                                                Next_Schedule_Z_Status__c = 'Enacted: Removed',
+                                                Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Calculated_Annual_Cost_of_Electricity__c = 4000,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
@@ -141,6 +141,14 @@ public class MultipleMonthProductionUpdateTest {
 
         update new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Billing'
+        );
+
+        insert scheduleZ1;
+
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
         Date myDateMar = Date.newInstance(2016, 3, 3);
@@ -149,6 +157,7 @@ public class MultipleMonthProductionUpdateTest {
         Energy_Usage_Update__c prodUpdateFourMonths = new Energy_Usage_Update__c (
                 Name = 'sssA - January 2016',
                 Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateFeb,
                 Size_Off_NMCs__c = true,
                 Date__c = myDateJan, 
@@ -169,6 +178,7 @@ public class MultipleMonthProductionUpdateTest {
         Energy_Usage_Update__c prodUpdateTwoMonths = new Energy_Usage_Update__c (
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
                 Size_Off_NMCs__c = true,
                 Date__c = myDateFeb,
@@ -180,15 +190,17 @@ public class MultipleMonthProductionUpdateTest {
                 Production_kWh_2_of_4__c = 364667);
         insert prodUpdateTwoMonths;
 
+        System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true, scheduleZ1.Id)).size());
+        System.assertEquals( 4, (PreviewProductionUpdateResults.getUASes(prodUpdateTwoMonths.Id, true, scheduleZ1.Id)).size());
+
         prodUpdateFourMonths.Generate_Bills__c = true;
         prodUpdateTwoMonths.Generate_Bills__c = true;
         update prodUpdateFourMonths;
-        update prodUpdateTwoMonths; 
+        update prodUpdateTwoMonths;
 
-        System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true)).size());
     }
 
-    @isTest public static void testBillCreation() {    
+    @isTest public static void testBillCreation() {
         List<UASB__c> uasblist = 
             [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c, 
             Due_Date__c, Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,

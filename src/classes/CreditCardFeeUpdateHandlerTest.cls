@@ -125,16 +125,32 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
                                                                                                                  Name_on_Account__c = 'jordan jordan'));
  insert ualog;
 
+ Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+                     Family = 'Community Solar',
+                     Product_Type__c = 'Community Solar',
+                     State__c = 'MA',
+                     ProductCode = 'CS - BlueWave - 10%',
+                     IsActive = True,
+                     Lender_of_Record__c = 'BlueWave', 
+                     NMC_Discount__c = 10,
+                     Annual_kWh_Maximum__c = 100000000,
+                     NM_Rate_Floor__c = 0,
+                     Days_In_Bill_Period__c = 20,
+                     Monthly_Late_Fee__c = 1);
+ insert normalCSProduct;
+
  Opportunity opportunityone = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss1.Id,
                                                                                 StageName = 'Complete',
+                                                                                Product__c = normalCSProduct.Id,
                                                                                 CloseDate = System.today()));
 
  Opportunity opportunitytwo = (Opportunity)TestFactory.createSObject(new Opportunity(Name = 'Jordan Jordan',
                                                                                 AccountId = accountA.Id,
                                                                                 Shared_Solar_System__c = sss2.Id,
                                                                                 StageName = 'Complete',
+                                                                                Product__c = normalCSProduct.Id,
                                                                                 CloseDate = System.today())); 
                                                                                 
  insert opportunityone;
@@ -143,8 +159,9 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
  Utility_Account_Subscription__c uasone = (Utility_Account_Subscription__c)TestFactory.createSObject(new Utility_Account_Subscription__c(
                                                                                                     Name = '0000234',
                                                                                                     Utility_Account_Log__c = ualog.Id,
-                                                                                                    Next_Schedule_Z_Status__c = 'Enacted',
+                                                                                                    Next_Schedule_Z_Status__c = 'Active Subscription',
                                                                                                     Opportunity__c = opportunityone.Id,
+                                                                                                    Annual_kwh_subscription_future__c = 4000,
                                                                                                     Calculated_Annual_Cost_of_Electricity__c = 4000,
                                                                                                     Subscribed_Annual_Cost_of_Electricity__c = 4000));
 
@@ -152,7 +169,8 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
                                                                                                     Name = '000-0234',
                                                                                                     Utility_Account_Log__c = ualog.Id,
                                                                                                     Opportunity__c = opportunitytwo.Id,
-                                                                                                    Next_Schedule_Z_Status__c = 'Enacted',
+                                                                                                    Next_Schedule_Z_Status__c = 'Active Subscription',
+                                                                                                    Annual_kwh_subscription_future__c = 6000,
                                                                                                     Calculated_Annual_Cost_of_Electricity__c = 6000,
                                                                                                     Subscribed_Annual_Cost_of_Electricity__c = 6000));
 
@@ -173,12 +191,23 @@ update uastwo;
         Date myDateMar = Date.newInstance(2016, 3, 3);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+    Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+        Name = '18-0515 Oxford Barrett St. P1',
+        Shared_Solar_System__c = sss1.Id,
+        Status__c = 'Billing'
+    );
+
+    insert scheduleZ1;
+
+    Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
                 Name = 'sssA - February 2016',
                 Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.id,
                 Production__c = 120000,
-                Date__c = myDateFeb
-                );
+                Date__c = myDateFeb,
+                Net_Metering_Rate_Applied__c = 0.1125,
+                Billing_Period_End_Date__c = myDateFeb,
+                Total_System_NMCs__c = 45000);
         
         Test.StartTest();
         insert productionupdateB2;
