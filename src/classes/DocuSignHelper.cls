@@ -34,6 +34,7 @@ public without sharing class DocuSignHelper {
                 dsAPI.endpoint_x = 'https://demo.docusign.net/api/3.0/dsapi.asmx';
                 restAPIServer = 'https://demo.docusign.net/restapi/v2';
             } else {
+                dsAPI.endpoint_x = 'https://www.docusign.net/api/3.0/dsapi.asmx';
                 restAPIServer = 'https://www.docusign.net/restapi/v2';
             }
             dsAPI.inputHttpHeaders_x = new Map<String, String>();

@@ -52,7 +52,12 @@
                     helper.raiseNavEvent("CONTRACTSENT", {"lead": component.get('v.lead'), "contractSent": true});
                     resolve();
                 } else {
-                    helper.logError('CAPConsentsHelper', 'sendLoanDocs', 'DocuSign could not be sent', resp);
+                    helper.raiseError(
+                        'CAPConsentsHelper',
+                        'sendLoanDocs',
+                        'DocuSign could not be sent, please contact Customer Care',
+                        'For leadId ' + component.get('v.lead.Id') + ': ' + resp.getError()[0].message
+                    );
                 }
             });
             $A.enqueueAction(action);

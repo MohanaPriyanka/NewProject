@@ -445,7 +445,11 @@ public without sharing class CAPController {
         if (lead.Residential_Equipment__r.size() == 1 &&
             LoanHandler.equipmentPopulated(lead.Residential_Equipment__r[0])) {
             if (!pendingOrCompleteLoanDoc(lead.Partner_Tasks__r)) {
-                es = DocuSignHelper.sendLoanPackage(lead.ConvertedOpportunityId);
+                try {
+                    es = DocuSignHelper.sendLoanPackage(lead.ConvertedOpportunityId);
+                } catch (Exception e) {
+
+                }
             } else {
                 return 'Already Sent';
             }

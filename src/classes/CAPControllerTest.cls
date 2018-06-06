@@ -471,6 +471,7 @@ public with sharing class CAPControllerTest {
             '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
         update lead;
         CAPController.convertLead(lead.Id, lead.Email);
+        Test.startTest();
         CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId,
@@ -481,7 +482,6 @@ public with sharing class CAPControllerTest {
             WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
         lead.Partner_Tasks__r[0].Status__c = 'Pending';
         update lead.Partner_Tasks__r;
-        Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
         CAPController.sendLoanDocs(lead.Id, lead.Email);
