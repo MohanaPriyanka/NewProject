@@ -88,7 +88,7 @@ private class PCRApprovalHandlerTest {
                 '  {"income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
                 '  {"income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
                 '  {"income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "denialSent":false}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
+                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pre-Qualified", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
@@ -682,7 +682,7 @@ private class PCRApprovalHandlerTest {
         String applicationJSON =
             '{"application":[ ' +
                 '  {"income":200001, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"PreApproved"}, ' +
+                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
                 '  {"income":200003, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"income":200004 , "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"income":200005, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +

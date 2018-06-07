@@ -157,9 +157,9 @@ public without sharing class PCRApprovalHandler {
                 Personal_Credit_Report__r.LASERCA__Contact__c,
                 Personal_Credit_Report__r.Adjusted_Income__c,
                 Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
-                Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c
+                Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c
             FROM Lead
             WHERE Id  IN : leadlist
         ];
@@ -190,8 +190,8 @@ public without sharing class PCRApprovalHandler {
                 }
                 // add coApplicant's income if it is a joint application
                 if (lead.Application_Type__c == 'Joint' &&
+                    lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != NULL) {
                     if (pcr.Adjusted_Income__c == null) {
-                        lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != NULL) {
                         monthlyIncome += LoanServicer.nullToZero(lead.Co_Applicant_Income__c) / 12;
                     } else {
                         monthlyIncome += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12;
