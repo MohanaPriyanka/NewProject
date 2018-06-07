@@ -641,10 +641,10 @@ private class PCRApprovalHandlerTest {
         // fico + income must be unique, otherwise leads are not created correctly. see: app.getKey()
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":701, "coAppFico":701, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":200000, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedSLAStatus":"Pending Review primary fail"} ' +
+                '  {"income":200001, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200003, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200004, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -817,18 +817,23 @@ private class PCRApprovalHandlerTest {
             System.debug(LoggingLevel.ERROR, 'Assertions for FICO ' + fico);
             if (expectedSLAStatus != null) {
                 System.assertEquals(expectedSLAStatus, pcr.Solar_Loan_Approval_Status__c);
+                System.debug(LoggingLevel.ERROR, 'SLAStatus OK');
             }
             if (expectedStatus != null) {
                 System.assertEquals(expectedStatus, pcr.LASERCA__Lead__r.Status);
+                System.debug(LoggingLevel.ERROR, 'Lead Status OK');
             }
             if (denialSent != null) {
                 System.assertEquals(denialSent, pcr.Credit_Denial_Email_Sent__c);
+                System.debug(LoggingLevel.ERROR, 'Email Sent');
             }
             if (expectedDTIBefore != null) {
                 System.assertEquals(expectedDTIBefore, pcr.DTI_Before__c.setScale(2));
+                System.debug(LoggingLevel.ERROR, 'Expected DTI Before Ok');
             }
             if (expectedDTIAfter != null) {
                 System.assertEquals(expectedDTIAfter, pcr.DTI_After__c.setScale(2));
+                System.debug(LoggingLevel.ERROR, 'Expected DTI After Ok');
             }
         }
         public Integer getKey() {
@@ -920,7 +925,6 @@ private class PCRApprovalHandlerTest {
             }
             insert pcrs;
             insert coAppPCRs;
-            System.debug(LoggingLevel.ERROR, coAppPCRs);
             Map<Id, Id> leadIdToPCRId = new Map<Id, Id>();
             Map<Id, Id> leadIdToCoAppPCRId = new Map<Id, Id>();
             List<Id> coAppPCRIds = new List<Id>();
@@ -948,7 +952,6 @@ private class PCRApprovalHandlerTest {
         public void insertTradeAccounts() {
             List<LASERCA__Trade_Accounts__c> tradeAccts = new List<LASERCA__Trade_Accounts__c>();
             for (Application app : application) {
-                System.debug(LoggingLevel.ERROR, app);
                 tradeAccts.add(new LASERCA__Trade_Accounts__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
                     LASERCA__Monthly_Payment__c = app.debt,

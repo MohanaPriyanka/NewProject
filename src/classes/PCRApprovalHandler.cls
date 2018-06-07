@@ -189,6 +189,13 @@ public without sharing class PCRApprovalHandler {
                     creditScore = Math.max(creditScore, primaryAppCreditScore);
                 }
 
+                if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null &&
+                    lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null) {
+                    Integer primaryAppCreditScore = Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                    Integer coAppCreditScore = Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c));
+                    creditScore = Math.max(primaryAppCreditScore, coAppCreditScore);
+                }
+
                 if (monthlyIncome == 0) {
                     pcr.DTI_Before__c = null;
                     pcr.DTI_After__c = null;
@@ -223,6 +230,7 @@ public without sharing class PCRApprovalHandler {
                     }
                 }
 
+                // may be depreciated due to new credit review processes
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
 
                 // set to pending if any codes are present
@@ -408,19 +416,40 @@ public without sharing class PCRApprovalHandler {
             Integer creditMinimum = Integer.valueOf(product.Credit_Minimum__c);
             Decimal dtiMaximum = product.Debt_To_Income_Maximum__c;
             String primaryDecision = checkFICOandDTI(primaryAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
+            String jointDecision;
             resultList.add(result);
-            if (primaryDecision == APPROVED) {
-                approvedProducts.add(product.Id);
-            }
-            if (betterThan(primaryDecision, bestStatus)) {
-                bestStatus = primaryDecision;
-            }
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
             }
             // huh??
-            if (result.dtiAfter <= dtiMaximum &&
-                primaryAppCreditScore >= creditMinimum) {
+            if (lead.Application_Type__c == 'Joint' && coAppCreditScore != null) {
+                String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
+                if (coAppDecision != primaryDecision) {
+                    jointDecision = PENDINGREVIEW;
+                } else if (primaryDecision == APPROVED) {
+                    // turn off approvals for now...
+                    jointDecision = PENDINGREVIEW;
+                } else if (coAppDecision == primaryDecision) {
+                    jointDecision = primaryDecision;
+                }
+                if (betterThan(jointDecision, bestStatus)) {
+                    bestStatus = jointDecision;
+                }
+            } else if (lead.Application_Type__c != 'Joint') {
+                if (betterThan(primaryDecision, bestStatus)) {
+                    bestStatus = primaryDecision;
+                }
+            }
+
+            if (lead.Application_Type__c != 'Joint' && primaryDecision == APPROVED) {
+                approvedProducts.add(product.Id);
+                if (highestMonthlyPayment == null ||
+                    result.monthlyLoanPayment > highestMonthlyPayment) {
+                    highestMonthlyPayment = result.monthlyLoanPayment;
+                    mostExpensiveQualifiedProduct = result.productId;
+                }
+            } else if (lead.Application_Type__c == 'Joint' && jointDecision == APPROVED) {
+                approvedProducts.add(product.Id);
                 if (highestMonthlyPayment == null ||
                     result.monthlyLoanPayment > highestMonthlyPayment) {
                     highestMonthlyPayment = result.monthlyLoanPayment;
@@ -433,17 +462,7 @@ public without sharing class PCRApprovalHandler {
                     leastExpensiveQualifiedProduct = result.productId;
                 }
             }
-            if (lead.Application_Type__c == 'Joint') {
-                String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
-                System.debug(LoggingLevel.ERROR, lead);
-                System.debug(LoggingLevel.ERROR, 'Primary Fico: ' + primaryAppCreditScore);
-                System.debug(LoggingLevel.ERROR, 'Primary Decision: ' + primaryDecision);
-                System.debug(LoggingLevel.ERROR, 'Co App Fico: ' + coAppCreditScore);
-                System.debug(LoggingLevel.ERROR, 'Co App Decision: ' + coAppDecision);
-                if (primaryDecision != DECLINED || coAppDecision != primaryDecision) {
-                    bestStatus = PENDINGREVIEW;
-                }
-            }
+
         }
 
         public override String toString() {
@@ -652,7 +671,7 @@ public without sharing class PCRApprovalHandler {
                                                                        Decimal monthlyIncome, Decimal monthlyDebt) {
             PCRApprovalHandler.CreditResultSummary creditResultSummary =
                 new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt);
-
+// if the credit score returns no products, then it will be declined
             for (Product2 product : getApplicableProducts(lead, creditScore)) {
                 PCRApprovalHandler.CreditStatusResult result = calcDTIAfter(product, lead, monthlyIncome, monthlyDebt);
                 creditResultSummary.checkAndAddResult(result, product);
