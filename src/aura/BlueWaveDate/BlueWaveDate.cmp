@@ -3,9 +3,10 @@
   <aura:attribute name="value" type="String"/>
   <aura:attribute name="label" type="String"/>
   <aura:attribute name="disabled" type="Boolean" default="false"/>
+  <aura:attribute name="class" type="String"/>
   <aura:attribute name="required" type="Boolean" default="false"/>
   <ui:inputText aura:id="BlueWaveDate"
-                class="slds-input"
+                class="{!'slds-input ' + v.class}"
                 placeholder="MM/DD/YYYY"
                 value="{!v.value}"
                 keyup="{!c.format}"

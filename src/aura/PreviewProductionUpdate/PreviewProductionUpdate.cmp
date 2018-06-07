@@ -3,7 +3,7 @@
  <aura:attribute name="prodUpdate" type="String"/>
  <aura:attribute name="prodName" type="String"/>
  <aura:attribute name="totalNMCs" type="String"/>
- <aura:attribute name="scheduleZs" type="Schedule_Z__c[]"/>
+ <aura:attribute name="scheduleZs" type="List"/>
  <aura:attribute name="selectedScheduleZ" type="Id"/>
  <aura:attribute name="SchZBillList" type="UASB__c[]"/>
 
@@ -11,15 +11,13 @@
  <h1 class="slds-text-heading--large"><ui:outputText value="{!v.prodName}"/></h1>   
  <h2 class="slds-text-heading--small">Total NMCs:<ui:outputCurrency value="{!v.totalNMCs}"/></h2>
   <div class="slds-p-top_small slds-p-bottom_small">
-   <ui:inputSelect aura:id="scheduleZ"
-     class="slds-input slds-size_1-of-3"
-     change="{!c.getBills}"
-     value="{!v.selectedScheduleZ}">
-     <ui:inputSelectOption label="Choose a Schedule Z!" text="Choose a Schedule Z!"/>
-     <aura:iteration items="{!v.scheduleZs}" var="scheduleZ">
-        <ui:inputSelectOption label="{!scheduleZ.Name + ' - ' + scheduleZ.Status__c}" text="{!scheduleZ.Id}"/>
-     </aura:iteration>
-   </ui:inputSelect>
+    <lightning:radioGroup name="Active Schedule Zs"
+                          class="slds-text-heading--small"
+                          label="Active Schedule Zs"
+                          onchange="{!c.getBills}"
+                          value="{! v.selectedScheduleZ }"
+                          options="{! v.scheduleZs }"
+                          type="radio"/>
     <br/>
     <lightning:button label="Save Schedule Z to Production Update" onclick="{!c.saveToProdUpdate}"/>
   </div>
@@ -29,6 +27,9 @@
      parentId="{!v.prodUpdate}"
      IsProdUpdate="TRUE"
      SchZBillList="{!v.SchZBillList}"/>
+   <aura:set attribute="else">
+     <h2 class="slds-text-heading--small">Select a Schedule Z to Preview Bills</h2>
+   </aura:set>
  </aura:if>
 
 </aura:component>

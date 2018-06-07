@@ -141,6 +141,10 @@
     font-size:110%;
     color: #7C98AB;
 }
+.THIS .input-changed {
+    font-style: italic;
+    color: red;
+}
 .THIS .slds-text-body--large-dark {
     font-family: proximaNovaFont;
     font-size:110%;
@@ -189,9 +193,9 @@
     font-size:130%;
     color: #00AEAA;
 }
-.THIS .whiteIcon svg{ 
-    fill: white; 
+.THIS .whiteIcon svg{
+    fill: white;
 }
-.THIS .blueIcon svg{ 
-    fill: #266092; 
+.THIS .blueIcon svg{
+    fill: #266092;
 }

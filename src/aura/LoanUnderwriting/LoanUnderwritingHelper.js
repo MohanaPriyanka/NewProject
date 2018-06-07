@@ -10,6 +10,7 @@
                     var leadWithAttachments = resp.getReturnValue();
                     var lead = leadWithAttachments.lead;
                     component.set("v.lead", lead);
+                    component.set('v.contactAttachments', leadWithAttachments.contactAttachments);
                     var monthlyPayment = lead.Monthly_Payment__c;
                     if (lead.Product__r.DTI_After_Rate_Gross_Up__c) {
                         monthlyPayment =

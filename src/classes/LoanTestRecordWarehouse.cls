@@ -321,10 +321,6 @@ public class LoanTestRecordWarehouse {
                                                 Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
-        Date myDate = Date.newInstance(2015, 2, 17);
-        Date codDate = Date.newInstance(2015, 4, 17);
-        Date codDateTwo = Date.newInstance(2015, 7, 17);
-
         Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
             Name = 'Avidia 1',
             Tranche_Cap__c = 1000000,
@@ -341,68 +337,12 @@ public class LoanTestRecordWarehouse {
             Loan_Data__c = capitalPool.id);
         insert loanTranchePending;
 
-        Product2 productRecord = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                Family = 'Solar Loan',
-                                                Product_Type__c = 'Residential Loan',
-                                                State__c = 'MA',
-                                                Loan_Interest_Rate__c = 5.99,
-                                                Loan_Term__c = 120,
-                                                Loan_Interest_Only_Period__c = 12,
-                                                Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                Technology_Platform_Fee__c = 7,
-                                                Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
-                                                ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                Loan_base_rate__c = .0625,
-                                                Loan_Internal_Lender_rate__c = .0499,
-                                                Credit_Maximum__c = '999',
-                                                Credit_Minimum__c = '750',
-                                                Loan_Capital_Pool__c = capitalPool.Id,
-                                                Loan_Tranche_Type__c = 'Standard',
-                                                Program__c = 'BlueWave Solar Loan',
-                                                Lender_of_Record__c = 'BlueWave',
-                                                isActive = TRUE);
-        Product2 productRecordMSLP = new Product2(Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                Family = 'Solar Loan',
-                                                Product_Type__c = 'Residential Loan',
-                                                State__c = 'MA',
-                                                Loan_Interest_Rate__c = 5.99,
-                                                Loan_Term__c = 120,
-                                                Loan_Interest_Only_Period__c = 12,
-                                                Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-                                                Technology_Platform_Fee__c = 7,
-                                                Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection',
-                                                ProductCode = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%',
-                                                Loan_base_rate__c = .0625,
-                                                Loan_Internal_Lender_rate__c = .0499,
-                                                Credit_Maximum__c = '999',
-                                                Credit_Minimum__c = '750',
-                                                Loan_Capital_Pool__c = capitalPool.Id,
-                                                Loan_Tranche_Type__c = 'Standard',
-                                                Program__c = 'MSLP',
-                                                Lender_of_Record__c = 'BlueWave',
-                                                isActive = TRUE);
-        Product2 nyLoan = new Product2(
-            Name = 'BlueWave Solar Loan - NY - 1 Year Term - 1.23%',
-            Family = 'Solar Loan',
-            Product_Type__c = 'Residential Loan',
-            State__c = 'NY',
-            Loan_Interest_Rate__c = 1.23,
-            Loan_Term__c = 12,
-            Loan_Interest_Only_Period__c = 12,
-            Loan_Financing_Fee_Terms__c = 'Maximum (5%, $1,250)',
-            Technology_Platform_Fee__c = 7,
-            Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection',
-            ProductCode = 'BlueWave Solar Loan - NY - 1 Year Term - 1.23%',
-            Loan_base_rate__c = .0123,
-            Loan_Internal_Lender_rate__c = .0499,
-            Credit_Maximum__c = '999',
-            Credit_Minimum__c = '750',
-            Loan_Capital_Pool__c = capitalPool.Id,
-            Loan_Tranche_Type__c = 'Standard',
-            Program__c = 'BlueWave Solar Loan',
-            Lender_of_Record__c = 'BlueWave',
-            isActive = TRUE);
-
+        Product2 productRecord = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
+        Product2 productRecordMSLP = getDefaultProduct('MA', 5.99, 10, 7, '750', '999', capitalPool.Id);
+        productRecordMSLP.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productRecordMSLP.Program__c = 'MSLP';
+        Product2 nyLoan = getDefaultProduct('NY', 1.23, 1, 7, '750', '999', capitalPool.Id);
+        System.debug(LoggingLevel.ERROR, new List<Product2>{productRecord, productRecordMSLP, nyLoan});
         insert new List<Product2>{productRecord, productRecordMSLP, nyLoan};
     }
 
@@ -504,6 +444,7 @@ public class LoanTestRecordWarehouse {
             Product_Line__c = 'Residential Loan',
             DOER_Solar_Loan__c = false,
             LASERCA__Home_State__c = 'NY',
+            System_Cost__c = 25000,
             Requested_Loan_Amount__c = 25000,
             Custom_Id__c = 'test',
             Unfinished_Lead__c = true,

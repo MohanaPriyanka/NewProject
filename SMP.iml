@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="Dev1" />
+        <option name="connectionName" value="Dev2" />
         <option name="defaultSourceRootUrl" value="file://$MODULE_DIR$/src" />
         <option name="moduleContents">
           <ModuleContents>
@@ -1053,11 +1053,15 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="ClientLogosColorBackground" />
+                            <option name="name" value="clientImageFiles" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="ClientLogosWhiteBackground" />
+                            <option name="name" value="Conga_Instructions" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="clientLogos" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1512,10 +1516,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="CSPDynamicLogo" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="CSPPayment" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -1697,7 +1697,7 @@
       <excludeFolder url="file://$MODULE_DIR$/projectFilesBackup" />
       <excludePattern pattern="*~" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev1)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev2)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

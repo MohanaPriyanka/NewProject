@@ -13,23 +13,23 @@ global without sharing class LoanUnderwriting {
     public static Integer DETAIL = 1;
 
     // For LoanUnderwritingSnapshot page
-    public String renderAs {get;set;}
+    public String renderAs { get; set; }
     public Id leadId;
-    public LeadWithPCRAttachments lead {get;set;}
-    public Decimal monthlyPayment {get;set;}
-    public Boolean hasCoApp {get;set;}
-    public Integer bestFICO {get;set;}
-    public Decimal bestDTI {get;set;}
-    public Decimal combinedIncome {get;set;}
-    public String primaryFifthCode {get;set;}
-    public String primaryFifthDetail {get;set;}
-    public String coAppFifthCode {get;set;}
-    public String coAppfifthDetail {get;set;}
-    public LASERCA__Personal_Credit_Report__c primaryPCR {get;set;}
-    public LASERCA__Personal_Credit_Report__c coAppPCR {get;set;}
-    public Boolean employedYear {get;set;}
-    public Boolean employedSixMonths {get;set;}
-    public Boolean residedSixMonths {get;set;}
+    public LeadWithPCRAttachments lead { get; set; }
+    public Decimal monthlyPayment { get; set; }
+    public Boolean hasCoApp { get; set; }
+    public Integer bestFICO { get; set; }
+    public Decimal bestDTI { get; set; }
+    public Decimal combinedIncome { get; set; }
+    public String primaryFifthCode { get; set; }
+    public String primaryFifthDetail { get; set; }
+    public String coAppFifthCode { get; set; }
+    public String coAppfifthDetail { get; set; }
+    public LASERCA__Personal_Credit_Report__c primaryPCR { get; set; }
+    public LASERCA__Personal_Credit_Report__c coAppPCR { get; set; }
+    public Boolean employedYear { get; set; }
+    public Boolean employedSixMonths { get; set; }
+    public Boolean residedSixMonths { get; set; }
 
     public LoanUnderwriting() {
         this.leadId = ApexPages.currentPage().getParameters().get('leadId');
@@ -38,14 +38,14 @@ global without sharing class LoanUnderwriting {
         this.monthlyPayment = lead.lead.Monthly_Payment__c;
         if (lead.lead.Product__r.DTI_After_Rate_Gross_Up__c != null) {
             this.monthlyPayment =
-                (lead.lead.Loan_Principal__c*(lead.lead.Product__r.Loan_Interest_Rate__c+lead.lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12) /
-                    (1-Math.pow((Double) (1+(lead.lead.Product__r.Loan_Interest_Rate__c+lead.lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12),(Double) (-1*lead.lead.Product__r.Loan_Term__c)));
+                (lead.lead.Loan_Principal__c * (lead.lead.Product__r.Loan_Interest_Rate__c + lead.lead.Product__r.DTI_After_Rate_Gross_Up__c) / 100 / 12) /
+                    (1 - Math.pow((Double) (1 + (lead.lead.Product__r.Loan_Interest_Rate__c + lead.lead.Product__r.DTI_After_Rate_Gross_Up__c) / 100 / 12), (Double) (-1 * lead.lead.Product__r.Loan_Term__c)));
         }
         if (lead.lead.Personal_Credit_Report_Co_Applicant__r != null &&
             lead.lead.Personal_Credit_Report__r != null) {
             hasCoApp = true;
             bestFICO = Math.max(Integer.valueOf((Util.nullToZero(lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c))),
-                                Integer.valueOf((Util.nullToZero(lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c))));
+                Integer.valueOf((Util.nullToZero(lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c))));
             primaryFifthCode = getFifthCode(lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             primaryFifthDetail = getFifthDetail(lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             coAppFifthCode = getFifthCode(lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
@@ -63,23 +63,23 @@ global without sharing class LoanUnderwriting {
             return;
         }
 
-        Decimal mainIncome=0, mainDebt=0, coAppIncome=0, coAppDebt=0;
+        Decimal mainIncome = 0, mainDebt = 0, coAppIncome = 0, coAppDebt = 0;
         Decimal loanPayment = this.monthlyPayment;
         if (primaryPCR.Adjusted_DTI__c != null) {
             bestDTI = primaryPCR.Adjusted_DTI__c;
         } else {
             if (hasCoApp) {
                 if (primaryPCR.Adjusted_Income__c != null) {
-                    mainIncome = primaryPCR.Adjusted_Income__c/12;
+                    mainIncome = primaryPCR.Adjusted_Income__c / 12;
                 } else {
-                    mainIncome = lead.lead.Annual_Income_Currency__c/12;
+                    mainIncome = lead.lead.Annual_Income_Currency__c / 12;
                 }
                 mainDebt = primaryPCR.Adjusted_Monthly_Personal_Debt__c;
 
                 if (coAppPCR.Adjusted_Income__c != null) {
-                    coAppIncome = coAppPCR.Adjusted_Income__c/12;
+                    coAppIncome = coAppPCR.Adjusted_Income__c / 12;
                 } else {
-                    coAppIncome = lead.lead.Co_Applicant_Income__c/12;
+                    coAppIncome = lead.lead.Co_Applicant_Income__c / 12;
                 }
                 coAppDebt = coAppPCR.Adjusted_Monthly_Personal_Debt__c;
 
@@ -88,9 +88,9 @@ global without sharing class LoanUnderwriting {
                 }
             } else {
                 if (primaryPCR.Adjusted_Income__c != null) {
-                    mainIncome = primaryPCR.Adjusted_Income__c/12;
+                    mainIncome = primaryPCR.Adjusted_Income__c / 12;
                 } else {
-                    mainIncome = lead.lead.Annual_Income_Currency__c/12;
+                    mainIncome = lead.lead.Annual_Income_Currency__c / 12;
                 }
 
                 mainDebt = primaryPCR.Adjusted_Monthly_Personal_Debt__c;
@@ -119,7 +119,7 @@ global without sharing class LoanUnderwriting {
     }
 
 
-    @AuraEnabled 
+    @AuraEnabled
     public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [
             SELECT FirstName, LastName, Name, Loan_Principal__c,
@@ -190,11 +190,10 @@ global without sharing class LoanUnderwriting {
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Installment_Balance__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Revolving_Balance__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Real_Estate_Payment__c,
-            (SELECT Id, Name FROM Attachments)
+                ConvertedContactId, Change_Order_Status__c, (SELECT Id, Name FROM Attachments)
             FROM Lead
             WHERE ID = :leadId
         ];
-
         if (!leads.isEmpty()) {
             Attachment mainPCRAttachment, coAppPCRAttachment;
             Lead lead = leads[0];
@@ -216,39 +215,52 @@ global without sharing class LoanUnderwriting {
                     lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c = lead.Personal_Credit_Report_Co_Applicant__r.DTI_After__c.setScale(2);
                 }
             }
-            return(new LeadWithPCRAttachments(lead, mainPCRAttachment, coAppPCRAttachment));
+            List<Attachment> contactAttachments = null;
+            if (lead.ConvertedContactId != null) {
+                contactAttachments = getAttachments(lead.ConvertedContactId);
+            }
+            return(new LeadWithPCRAttachments(lead, mainPCRAttachment, coAppPCRAttachment, contactAttachments));
         } else {
             return new LeadWithPCRAttachments();
         }
     }
 
     private static Attachment getAttachment(Id pcrId) {
-        List<Attachment> attachments = [SELECT Id 
-                                        FROM Attachment 
-                                        WHERE ParentID = :pcrId
-                                        AND ContentType = 'application/pdf' LIMIT 1];
-        if (!attachments.isEmpty()) {
-            return(attachments[0]);
-        } else {
-            return null;
+        List<Attachment> attachments = getAttachments(pcrId);
+        for (Attachment attachment : attachments) {
+            if (attachment.ContentType == 'application/pdf') {
+                return attachment;
+            }
         }
+        return null;
     }
-     
+
+    private static List<Attachment> getAttachments(Id parentId) {
+        List<Attachment> attachments = [
+            SELECT Id, ContentType, Name
+            FROM Attachment
+            WHERE ParentID = :parentId
+        ];
+        return attachments;
+    }
+
     // Can be called from custom buttons on the Lead page, or from the LoanUnderwriting screen
-    @AuraEnabled 
+    @AuraEnabled
     webservice static void updateManualCreditDecline(Lead lead, Boolean coApplicant) {
         // Copy Transunion factor 5
-        lead = [SELECT Id, Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c, 
+        lead = [
+            SELECT Id, Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c,
                 Credit_Report_Detail_5__c, Co_App_Credit_Report_Detail_5__c
-                FROM Lead
-                WHERE Id =: lead.Id];
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
         if (coApplicant) {
-            lead.Co_App_Credit_Report_Detail_5__c = 
+            lead.Co_App_Credit_Report_Detail_5__c =
                 getFifthFactor(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Co_App_Manual_Credit_Decline__c = true;
         } else {
-            lead.Credit_Report_Detail_5__c = 
+            lead.Credit_Report_Detail_5__c =
                 getFifthFactor(lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
             lead.Manual_Credit_Decline__c = true;
         }
@@ -256,12 +268,12 @@ global without sharing class LoanUnderwriting {
     }
 
     // Parses out the fifth TransUnion Factor since the current version of LASERCA only has four factors
-    @AuraEnabled        
+    @AuraEnabled
     public static String getFifthCode(String tuScoreFactor) {
         return(getFifthFactor(tuScoreFactor, CODE));
     }
 
-    @AuraEnabled        
+    @AuraEnabled
     public static String getFifthDetail(String tuScoreFactor) {
         return(getFifthFactor(tuScoreFactor, DETAIL));
     }
@@ -291,15 +303,17 @@ global without sharing class LoanUnderwriting {
 
     @AuraEnabled
     public static LASERCA__Personal_Credit_Report__c getPCRDebt(Id pcrId) {
-        List<LASERCA__Personal_Credit_Report__c> pcrList =
-            [SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c, Adjusted_Monthly_Personal_Debt__c,
-             DTI_Before__c, DTI_After__c, Adjusted_DTI_Notes__c, Adjusted_DTI__c, Adjusted_Income__c,
-             (SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
-              LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
-              FROM LASERCA__Trade_Accounts__r
-              WHERE LASERCA__Account_Balance__c > 0 OR LASERCA__Monthly_Payment__c > 0)
-             FROM LASERCA__Personal_Credit_Report__c
-             WHERE Id = :pcrId];
+        List<LASERCA__Personal_Credit_Report__c> pcrList = [
+            SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c, Adjusted_Monthly_Personal_Debt__c,
+                DTI_Before__c, DTI_After__c, Adjusted_DTI_Notes__c, Adjusted_DTI__c, Adjusted_Income__c, (
+                SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
+                    LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
+                FROM LASERCA__Trade_Accounts__r
+                WHERE LASERCA__Account_Balance__c > 0 OR LASERCA__Monthly_Payment__c > 0
+            )
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE Id = :pcrId
+        ];
         if (!pcrList.isEmpty()) {
             return pcrList[0];
         } else {
@@ -319,31 +333,51 @@ global without sharing class LoanUnderwriting {
         } else {
             body = luSnapshot.getContentAsPDF();
         }
+        Lead lead = [SELECT Id, ConvertedContactId FROM Lead WHERE Id = :leadId];
         attach.Body = body;
-        attach.Name = 'Underwriting Snapshot as of ' + 
-            Date.today().year()+'-'+Date.today().month()+'-'+Date.today().day() + '.pdf';
+        attach.Name = 'Underwriting Snapshot as of ' +
+            Date.today().year() + '-' + Date.today().month() + '-' + Date.today().day() + '.pdf';
         attach.ContentType = 'application/pdf';
-        attach.isPrivate = false;
-        attach.ParentId = leadId;
+        attach.IsPrivate = false;
+        attach.ParentId = (lead.ConvertedContactId!=null?lead.ConvertedContactId:leadId);
         insert attach;
     }
 
+    // Set Lead Status to Qualified and Under BlueWaveReview task to Complete
+    // leads just needs ids
+    @AuraEnabled
+    public static void approveLead(Id leadId) {
+        Lead lead = new Lead(Id = leadId);
+        approveLeads(new List<Lead>{lead});
+    }
+    public static void approveLeads(List<Lead> leads) {
+        List<String> leadIds = new List<String>();
+        for (Lead lead : leads) {
+            leadIds.add(lead.Id);
+            lead.Status = 'Qualified';
+        }
+        update leads;
+        LoanHandler.updatePartnerTaskUnderBlueWaveReview(leads, LoanHandler.getPartnerTasks(leadIds));
+    }
 
     public class LeadWithPCRAttachments {
         @AuraEnabled 
-            public Lead lead {get;set;}
+        public Lead lead {get;set;}
         @AuraEnabled 
         public Attachment mainPCRAttachment {get;set;}
         @AuraEnabled 
         public Attachment coAppPCRAttachment {get;set;}
+        @AuraEnabled
+        public List<Attachment> contactAttachments {get;set;}
 
         public LeadWithPCRAttachments() {
         }
 
-        public LeadWithPCRAttachments(Lead l, Attachment mainAttachment, Attachment coAppAttachment) {
+        public LeadWithPCRAttachments(Lead l, Attachment mainAttachment, Attachment coAppAttachment, List<Attachment> attachments) {
             lead = l;
             mainPCRAttachment = mainAttachment;
             coAppPCRAttachment = coAppAttachment;
+            contactAttachments = attachments;
         }
     }
 }

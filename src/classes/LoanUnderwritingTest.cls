@@ -236,6 +236,8 @@ public with sharing class LoanUnderwritingTest {
                      FROM Lead
                      WHERE FirstName = 'coApplicantLead'
                      LIMIT 1];
+        LoanHandlerTestClass.convertLeads(new List<Lead>{lead});
+        lead = [SELECT Id, ConvertedContactId FROM Lead WHERE Id = :lead.Id];
         PageReference pr = Page.LoanUnderwriting;
         Test.setCurrentPage(pr);
         ApexPages.currentPage().getParameters().put('leadId', lead.Id);
@@ -247,13 +249,13 @@ public with sharing class LoanUnderwritingTest {
 
         List<Attachment> attachments = [SELECT Id
                                         FROM Attachment
-                                        WHERE ParentId = :lead.Id];
+                                        WHERE ParentId = :lead.ConvertedContactId];
         System.assertEquals(0, attachments.size());
 
         LoanUnderwriting.renderPDFAndAttach(lead.Id);
         attachments = [SELECT Id
                        FROM Attachment
-                       WHERE ParentId = :lead.Id];
+                       WHERE ParentId = :lead.ConvertedContactId];
         System.assertEquals(1, attachments.size());
     }
 }

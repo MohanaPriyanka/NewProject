@@ -1,7 +1,7 @@
 @isTest
 public with sharing class CAPControllerTest {
     @testSetup static void setupTestData(){
-        LoanTestRecordWarehouse.partnerSetup();
+        List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
     }
 
@@ -38,16 +38,22 @@ public with sharing class CAPControllerTest {
         insert l;
         Test.startTest();
         System.assertEquals(CAPController.getCreditCheckTimeout(), 60000);
-        System.assertEquals(null, CAPController.getLead(l.id, 'foo'));
+        Boolean caughtException = false;
+        try {
+            CAPController.getLead(l.id, 'foo');
+        } catch (AuraHandledException ahe) {
+            caughtException = true;
+        }
+        System.assertEquals(true, caughtException);
         System.assertEquals('Tester', CAPController.getLead(l.id, 'test@tester.com').FirstName);
         System.assertEquals(null, CAPController.getLead(l.id, l.email).Joint_Applicant_Type__c);
         Lead leadClone = l.clone(true,false,false,false);
         leadClone.email = 'foo';
         leadClone.Application_Type__c = 'Joint';
-        Boolean caughtException = false;
+        caughtException = false;
         try {
             CAPController.setAppType(leadClone);
-        } catch (Util.BWException bwe) {
+        } catch (AuraHandledException ahe) {
             caughtException = true;
         }
         System.assertEquals(true, caughtException);
@@ -181,7 +187,6 @@ public with sharing class CAPControllerTest {
 
         Test.startTest();
         productReturnList = CAPController.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
-        System.debug(LoggingLevel.ERROR, productReturnList);
         System.assertEquals(2, productReturnList.size());
 
         productReturnList.clear();
@@ -210,11 +215,278 @@ public with sharing class CAPControllerTest {
         Test.stopTest();
     }
 
-    @isTest static void testGetProducts() {
-        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = false];
+    @IsTest static void testGetProducts() {
+        List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = TRUE AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = FALSE];
         System.assertEquals(9, products.size());
 
         products = CAPController.getProducts('MA', 'Residential Loan');
         System.assertEquals(7, products.size());
     }
+
+    @IsTest static void rejectAndApproveChange() {
+        Lead lead = [
+            SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c,
+                Product_line__c, Product__r.Loan_Interest_Rate__c, bs_Sales_ID__c, Loan_Financing_Fee__c,
+                Partner_Lookup__c, LASERCA__Home_State__c, Product__c, DOER_Solar_Loan__c, Loan_Fee_1__c,
+                Product__r.Loan_Interest_Only_Period__c, Loan_System_Information__c, FirstName, LastName,
+                ConvertedOpportunityId
+            FROM Lead
+            WHERE Requested_Loan_Amount__c = 35000
+            AND System_Cost__c = NULL
+            LIMIT 1
+        ];
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+
+        Residential_Equipment__c re = [
+            SELECT Id, Generator_Nameplate_Capacity__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
+                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c
+            FROM Residential_Equipment__c
+            WHERE Loan__r.Lead__c = :lead.Id
+        ];
+        System.assertEquals(null, re.Generator_Nameplate_Capacity__c);
+        System.assertEquals(null, re.Module_Manufacturer__c);
+        System.assertEquals(null, re.Module_Model_Number__c);
+        System.assertEquals(null, re.Number_of_Modules__c);
+        System.assertEquals(null, re.Inverter_Manufacturer__c);
+        System.assertEquals(null, re.Inverter_Model_Number__c);
+        System.assertEquals(null, re.Number_of_Inverters__c);
+        Loan__c loan = [
+            SELECT Id, Commencement_Datee__c
+            FROM Loan__c
+            WHERE Lead__c = :lead.Id
+        ];
+        System.assertEquals(null, loan.Commencement_Datee__c);
+        lead = [
+            SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+        System.assertEquals(35000, lead.Requested_Loan_Amount__c);
+        System.assertEquals(null, lead.System_Cost__c);
+        lead.Loan_System_Information__c =
+            '{' +
+                '\"generator_nameplate_capacity__c\" : null,' +
+                '\"commencement_datee__c\" : \"\",' +
+                '\"inverter_model_number__c\" : \"\",' +
+                '\"inverter_manufacturer__c\" : \"\",' +
+                '\"number_of_inverters__c\" : \"\",' +
+                '\"module_model_number__c\" : \"\",' +
+                '\"module_manufacturer__c\" : \"\",' +
+                '\"number_of_modules__c\" : \"\",' +
+                '\"System_Cost__change\" : 3000,' +
+                '\"Requested_Loan_Amount__change\" : 2112,' +
+                '\"Estimated_Completion_Date__change\" : \"06/01/2018\",' +
+                '\"Generator_Nameplate_Capacity__change\" : 10.08,' +
+                '\"Module_Manufacturer__change\" : \"SolarModules\",' +
+                '\"Module_Model_Number__change\" : \"MM\",' +
+                '\"Number_of_Modules__change\" : 27,' +
+                '\"Inverter_Manufacturer__change\" : \"SolarInverters\",' +
+                '\"Inverter_Model_Number__change\" : \"EN\",' +
+                '\"Number_of_Inverters__change\" : 2,' +
+                '\"Down_Payment__change\" : 888,' +
+                '\"Reject_Reason\" : \"Need more panels\",' +
+                '\"RequestedBy__change\" : \"Rob Meyers\",' +
+                '\"RequestedDate__change\" : \"04/17/2018 14:19\"' +
+                '}';
+        update lead;
+
+        Test.startTest();
+
+        CAPController.setRejectedChangeOrder(lead.Id, lead.Email, lead.Loan_System_Information__c);
+        lead = [
+            SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c, Change_Order_Status__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+        System.assertEquals('Customer Rejected', lead.Change_Order_Status__c);
+
+        CAPController.setApprovedChangeOrder(lead.Id, lead.Email);
+
+        re = [
+            SELECT Id, Generator_Nameplate_Capacity__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
+                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Loan__r.DOER_Solar_Loann__c
+            FROM Residential_Equipment__c
+            WHERE Loan__r.Lead__c = :lead.Id
+        ];
+        System.assertEquals(10.08, re.Generator_Nameplate_Capacity__c);
+        System.assertEquals('SolarModules', re.Module_Manufacturer__c);
+        System.assertEquals('MM', re.Module_Model_Number__c);
+        System.assertEquals(27, re.Number_of_Modules__c);
+        System.assertEquals('SolarInverters', re.Inverter_Manufacturer__c);
+        System.assertEquals('EN', re.Inverter_Model_Number__c);
+        System.assertEquals(2, re.Number_of_Inverters__c);
+        loan = [
+            SELECT Id, Commencement_Datee__c
+            FROM Loan__c
+            WHERE Lead__c = :lead.Id
+        ];
+        System.assertEquals(Date.newInstance(2018,6,1) + (re.Loan__r.DOER_Solar_Loann__c?45:30), loan.Commencement_Datee__c);
+        lead = [
+            SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c, Change_Order_Status__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+        System.assertEquals(3000, lead.System_Cost__c);
+        System.assertEquals(2112, lead.Requested_Loan_Amount__c);
+        System.assertEquals('Customer Authorized', lead.Change_Order_Status__c);
+
+        Test.stopTest();
+    }
+
+    @IsTest static void testLoanCreation() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals(0, lead.Loans__r.size());
+        System.assertEquals(0, lead.Residential_Equipment__r.size());
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+        // Shouldn't send docs since the equipment isn't populated
+        String loanSendResult = CAPController.sendLoanDocs(lead.Id, lead.Email);
+        Test.stopTest();
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId, Status,
+            (SELECT Id, Opportunity__c FROM Loans__r),
+            (SELECT Id, Opportunity__c FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals(1, lead.Loans__r.size());
+        System.assertEquals(lead.ConvertedOpportunityId, lead.Loans__r[0].Opportunity__c);
+        System.assertEquals(1, lead.Residential_Equipment__r.size());
+        System.assertEquals(lead.ConvertedOpportunityId, lead.Residential_Equipment__r[0].Opportunity__c);
+        System.assertEquals('Interested', lead.Status);
+        System.assertEquals(true, lead.IsConverted);
+        System.assertEquals(null, loanSendResult);
+    }
+
+    @IsTest static void testLoanDocSend() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        System.assertEquals(0, lead.Loans__r.size());
+        System.assertEquals(0, lead.Residential_Equipment__r.size());
+        lead.Loan_System_Information__c = '{' +
+            '"number_of_modules__c":21,"module_manufacturer__c":"foo","module_model_number__c":"bar",' +
+            '"number_of_inverters__c":22,"inverter_manufacturer__c":"baz","inverter_model_number__c":"biz",' +
+            '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
+        update lead;
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        String result = CAPController.sendLoanDocs(lead.Id, lead.Email);
+        System.assertEquals('Created', result);
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        Partner_Task__c pt = [
+            SELECT Id, Status__c
+            FROM Partner_Task__c
+            WHERE Name = 'Provide all System Information'
+            AND Loan__c = :lead.Loans__r[0].Id
+        ];
+        System.assertEquals('Complete', pt.Status__c);
+        Test.stopTest();
+    }
+
+    @IsTest static void testPartnerTaskUpsert() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        CAPController.convertLead(lead.Id, lead.Email);
+        Test.startTest();
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        Partner_Task__c task = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Provide Income Documentation'
+        ];
+        System.assertEquals(0, task.SubTasks__r.size());
+        task = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+        ];
+        task.Status__c = 'Complete';
+        Date today = Date.today();
+        task.Completion_Date__c = today;
+        update task;
+
+        lead.Employed__c = true;
+        update lead;
+        CAPController.insertPartnerTasks(lead.Id, lead.Email);
+        task = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Provide Income Documentation'
+        ];
+        System.debug(LoggingLevel.ERROR, task);
+        System.assertEquals(1, task.SubTasks__r.size());
+        task = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+                (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+        ];
+        System.assertEquals('Complete', task.Status__c);
+        System.assertEquals(today, task.Completion_Date__c);
+        Test.stopTest();
+    }
+
+    @IsTest static void testNoDoubleSend() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        lead.Loan_System_Information__c = '{' +
+            '"number_of_modules__c":21,"module_manufacturer__c":"foo","module_model_number__c":"bar",' +
+            '"number_of_inverters__c":22,"inverter_manufacturer__c":"baz","inverter_model_number__c":"biz",' +
+            '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
+        update lead;
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r),
+            (SELECT Id, Status__c FROM Partner_Tasks__r WHERE Name = 'Obtain Contract Signature')
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        lead.Partner_Tasks__r[0].Status__c = 'Pending';
+        update lead.Partner_Tasks__r;
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.sendLoanDocs(lead.Id, lead.Email);
+        Test.stopTest();
+        System.assertEquals(null, DocuSignHelper.oppLoansSent);
+    }
+
 }

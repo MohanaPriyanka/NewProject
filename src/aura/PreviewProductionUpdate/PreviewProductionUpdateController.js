@@ -9,7 +9,14 @@
 
         actionGetScheduleZs.setCallback(this,function(resp){
             if (resp.getState() === 'SUCCESS') {
-                component.set("v.scheduleZs", resp.getReturnValue());
+                var scheduleZs = [];
+                var scheduleZrecords = resp.getReturnValue();
+                for (var index in scheduleZrecords) {
+                    var scheduleZ = scheduleZrecords[index];
+                    var label = scheduleZ.Name + ' - ' + scheduleZ.Status__c;
+                    scheduleZs.push({'label': label, 'value': scheduleZ.Id});
+                }
+                component.set("v.scheduleZs", scheduleZs);
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
                 appEvent.setParams({"className" : "PreviewProductionUpdateResults",

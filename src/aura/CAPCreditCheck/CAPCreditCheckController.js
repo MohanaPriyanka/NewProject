@@ -110,7 +110,7 @@
         var action = component.get("c.getCustomerProducts");
         action.setParams({"leadid" : component.get("v.lead").Id});
         action.setCallback(this, function(resp) {
-            if(resp.getState() == "SUCCESS") {
+            if(resp.getState() === "SUCCESS") {
                 component.set("v.allProducts", resp.getReturnValue());
                 component.set('v.page', 'SelectProduct');
             } else {
@@ -127,7 +127,10 @@
     },       
 
     finishStage : function(component, event, helper) {
-        helper.finishStage(component, event, helper);
+        helper.createLoanAndEquipmentFunction(component, helper).then(
+            $A.getCallback(function resolve() {
+                helper.finishStage(component, event, helper);
+            }));
     },
     
 })

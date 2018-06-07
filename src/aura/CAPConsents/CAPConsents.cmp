@@ -1,75 +1,32 @@
 <aura:component description="CAPConsents" controller="CAPController" access="global" extends="c:CAPParent">
   <aura:attribute name="availableSRECProducts" type="Product2[]"/>
-  <aura:attribute name="tcDocs" type="Object"/>
-  <aura:set attribute="STAGENAME" value="NAV_SREC_and_Disbursals"/>
+  <aura:set attribute="STAGENAME" value="NAV_Confirmations"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
-
-  <aura:if isTrue="{!v.page == 'MSLPTechnicalConfirm'}">
-    <div class="slds-col slds-col--padded">
-      <form class="slds-form--stacked">
-        <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-text-heading--medium"><b>{!$Label.c.CD_MCEC_Project_ID_Request}</b></div>
-          <div class="slds-form-element__control slds-text-body--regular">{!$Label.c.CD_MCEC_Project_ID_Request_Body2}</div>
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-top_small slds-p-bottom_small" aura:id="tcProjectID">
-              <label class="slds-form-element__label">MassCEC Project ID Number</label>
-              <ui:inputText value="{!v.lead.Project_Identification_Number__c}"
-                            placeholder="SLP-####"/>
-            </div>
-            <div class="slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1 slds-p-bottom_small" aura:id="tcUpload">
-              <label class="slds-form-element__label">Technical Confirmation Document</label>
-              <lightning:input type="file" label="Attach TC" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleTC}"/>
-            </div>
-          </div>
-        </div>
-        <aura:if isTrue="{!not(empty(v.tcDocs))}">
-          <div class="slds-box_border slds-text-body_small">
-            <div class="slds-form-element__label">
-              Uploaded Technical Confirmation:
-            </div>
-            <div class="slds-grid slds-wrap">
-              <div class="slds-col slds-size--1-of-1">
-                <table class="slds-table">
-                  <tbody>
-                  <aura:iteration items="{!v.tcDocs}" var="attachment">
-                    <tr>
-                      <td>
-                        <div class="slds-text-body_small">
-                          {!attachment}
-                        </div>
-                      </td>
-                    </tr>
-                  </aura:iteration>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </aura:if>
-        <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button label="Next" onclick="{!c.saveTCAskSREC}"/>
-        </div>
-      </form>
-    </div>
-  </aura:if>
 
   <aura:if isTrue="{!v.page == 'SREC'}">
     <div class="slds-form-element__row">
       <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-          Please note that the current SREC II solar program will be replaced by a new solar program called the SMART (Solar Massachusetts Renewable Target) program. While Massachusetts will continue to provide incentives based on the production of your solar system, your payments and the way you receive them will change under the SMART program. You can read more details on this transition <a href="https://www.mass.gov/service-details/development-of-the-solar-massachusetts-renewable-target-smart-program" target="_blank">here.</a>
-        </label>
-        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-          The timing of the transition from the SREC program to the SMART program, currently expected to occur in summer 2018, has not yet been finalized by the MA Department of Energy Resources. The incentives you will receive are based on the date your solar system is connected to the electric grid; if your system is connected after the SMART program begins, your payments will be issued under that program. When the start date of the SMART program has been finalized, we will inform all MA loan customers and approved or in-process applicants.
-        </label>
-        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-          <b>Because of this transition, although you are signing an SREC agreement as part of your loan application, this agreement will not come into effect if the SMART program starts before your system is connected to the grid.</b> If your system falls under the SMART program, your incentive payments will be issued according to the terms of that program. If that is the case, we will notify you and provide additional details as soon as they are available.
-        </label>
-        <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-          You have chosen the following SREC option with your installer but you may select a different option below.
-        </label>
+        <aura:if isTrue="{!v.contractSent}">
+          <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+            <b>{!format($Label.c.CAP_Contract_Sent, 'Your SREC selection')}</b>
+          </div>
+          <aura:set attribute="else">
+            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+              Please note that the current SREC II solar program will be replaced by a new solar program called the SMART (Solar Massachusetts Renewable Target) program. While Massachusetts will continue to provide incentives based on the production of your solar system, your payments and the way you receive them will change under the SMART program. You can read more details on this transition <a href="https://www.mass.gov/service-details/development-of-the-solar-massachusetts-renewable-target-smart-program" target="_blank">here.</a>
+            </label>
+            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+              The timing of the transition from the SREC program to the SMART program, currently expected to occur in summer 2018, has not yet been finalized by the MA Department of Energy Resources. The incentives you will receive are based on the date your solar system is connected to the electric grid; if your system is connected after the SMART program begins, your payments will be issued under that program. When the start date of the SMART program has been finalized, we will inform all MA loan customers and approved or in-process applicants.
+            </label>
+            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+              <b>Because of this transition, although you are signing an SREC agreement as part of your loan application, this agreement will not come into effect if the SMART program starts before your system is connected to the grid.</b> If your system falls under the SMART program, your incentive payments will be issued according to the terms of that program. If that is the case, we will notify you and provide additional details as soon as they are available.
+            </label>
+            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
+              You have chosen the following SREC option with your installer but you may select a different option below.
+            </label>
+          </aura:set>
+        </aura:if>
         <div class="slds-form-element__control">
-          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}">
+          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}" disabled="{!v.contractSent}">
             <aura:iteration items="{!v.availableSRECProducts}" var="product">
               <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
             </aura:iteration>
@@ -105,13 +62,21 @@
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control slds-text-heading--medium">
-            <b>{!$Label.c.CD_Disbursal_Request}</b>
+            <aura:if isTrue="{!v.contractSent}">
+              <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+                <b>{!format($Label.c.CAP_Contract_Sent, 'Your electronic disbursal authorization')}</b>
+              </div>
+              <aura:set attribute="else">
+                <b>{!$Label.c.CD_Disbursal_Request}</b>
+              </aura:set>
+            </aura:if>
           </div>
           <div class="slds-p-top_small">
             <ui:inputSelect aura:id="eDisbursalConsent"
                             label="{!$Label.c.CD_Disbursal_Consent}"
                             class="slds-input"
-                            value="{!v.lead.Electronic_Disbursal_Authorized__c}">
+                            value="{!v.lead.Electronic_Disbursal_Authorized__c}"
+                            disabled="{!v.contractSent}">
               <ui:inputSelectOption text="Yes" label="Disburse funds directly to installers electronically"/>
               <ui:inputSelectOption text="No" label="Receive a two-party paper check for signature"/>
             </ui:inputSelect>
@@ -121,6 +86,33 @@
           <lightning:button label="Next" onclick="{!c.saveDisbursal}"/>
         </div>
       </form>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.page == 'ContingentConfirmation'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <aura:if isTrue="{!v.contractSent}">
+        <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
+          <b>You should have received your contract via DocuSign already. Before we can finish processing your application, we need to collect some documents to verify your income.</b>
+        </div>
+        <aura:set attribute="else">
+          <aura:if isTrue="{!v.systemInfoComplete}">
+            <div class="slds-text-heading--medium">
+              <b>It looks like we have the information we need and will send you your loan contract to sign.</b>
+            </div>
+            <aura:set attribute="else">
+              <div class="slds-text-heading--medium">
+                <b>We will send you your loan contract as soon as your installer provides us with your system information.</b>
+              </div>
+            </aura:set>
+          </aura:if>
+          <div class="slds-text-heading--medium slds-p-top--small">
+            <b>Before we can finish processing your application, we need to collect some documents to verify your income.</b>
+          </div>
+        </aura:set>
+      </aura:if>
+      <div class="slds-form-element__row slds-p-top--small">
+        <lightning:button label="Next" onclick="{!c.finishConfirmations}"/>
+      </div>
     </div>
   </aura:if>
 

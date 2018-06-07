@@ -63,7 +63,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Finished Questions</shortDescription>
-        <value>If you have any questions in the meantime, please contact us at customercare@bluewavesolar.com</value>
+        <value>If you have any questions in the meantime, please contact us at customercare@bluewavesolar.com.</value>
     </labels>
     <labels>
         <fullName>CD_MCEC_Project_ID_Request</fullName>
@@ -500,7 +500,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Income Documentation</shortDescription>
-        <value>Income Documentation</value>
+        <value>Supporting Documentation</value>
     </labels>
     <labels>
         <fullName>NAV_Personal_Information</fullName>
@@ -511,12 +511,12 @@
         <value>Personal Information</value>
     </labels>
     <labels>
-        <fullName>NAV_SREC_and_Disbursals</fullName>
+        <fullName>NAV_Confirmations</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>SREC and Disbursals</shortDescription>
-        <value>Finishing Up</value>
+        <shortDescription>Confirmations</shortDescription>
+        <value>Confirmations</value>
     </labels>
     <labels>
         <fullName>NY_Credit_Disclosure</fullName>
@@ -524,7 +524,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>NY Credit Disclosure</shortDescription>
-        <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is granted, subsequent consumer reports may be obtained in connection with any update, renewal, or extension of the credit.”</value>
+        <value>In connection with your application for credit, a consumer report may be obtained which contains information on your credit worthiness, credit standing, credit capacity and general reputation. If you request, you will be informed whether a consumer report was obtained and if so, you will be given the name and address of the consumer reporting agency which furnished the report.  If your application is approved, subsequent consumer reports may be obtained in connection with any update, renewal, or extension of the credit.</value>
     </labels>
     <labels>
         <fullName>NY_Credit_Disclosure_Header</fullName>
@@ -548,7 +548,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Bank Affiliation</shortDescription>
-        <value>(Not common) I am currently employed by or have a service/business affiliation with a bank</value>
+        <value>I am currently employed by or have a service/business affiliation with a bank (not common)</value>
     </labels>
     <labels>
         <fullName>PI_Bank_Executive</fullName>
@@ -572,7 +572,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Credit History</shortDescription>
-        <value>I give BlueWave and it&apos;s affiliates permission to access my credit history</value>
+        <value>I give BlueWave and its affiliates permission to access my credit history</value>
     </labels>
     <labels>
         <fullName>PI_Individual_or_Joint</fullName>
@@ -711,5 +711,13 @@
         <protected>false</protected>
         <shortDescription>Type</shortDescription>
         <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</value>
+    </labels>
+    <labels>
+        <fullName>CAP_Contract_Sent</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Locked page because of contract</shortDescription>
+        <value>{0} can't be updated because we've already sent you a contract, but if you need to change this, please contact Customer Care using the details below.</value>
     </labels>
 </CustomLabels>

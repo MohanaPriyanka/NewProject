@@ -436,6 +436,21 @@
             $A.enqueueAction(action);
         });
     },
+
+    // To compare date strings
+    getFormattedDate : function(dateString) {
+        if (dateString) {
+            const dateToFormat = new Date(dateString+'T00:00:00')
+            const year = dateToFormat.getFullYear();
+            const month = (1 + dateToFormat.getMonth()).toString();
+            const day = dateToFormat.getDate().toString();
+            return (month.length>1?month:'0'+month) + '/' + (day.length>1?day:'0'+day) + '/' + year;
+        } else {
+            return '';
+        }
+
+    },
+
     validatePageFields : function(component) {
         var pageFields = component.find('field');
         if (!pageFields) return;

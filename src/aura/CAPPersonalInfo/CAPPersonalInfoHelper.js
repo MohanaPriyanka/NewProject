@@ -239,6 +239,7 @@
                     lead.CoApplicant_Contact__r.LASERCA__Home_Zip__c = lead.LASERCA__Home_Zip__c;
                 }
                 var contact = {sobjectType: 'Contact',
+                               RecordTypeId: '012j0000000udkU',
                                FirstName : lead.CoApplicant_Contact__r.FirstName,
                                LastName : lead.CoApplicant_Contact__r.LastName,
                                Phone: lead.CoApplicant_Contact__r.Phone,
@@ -341,4 +342,32 @@
         helper.saveSObject(component, lead.Id, 'Lead', null, null, leadClone);
         component.set('v.lead', lead);
     },
+
+    convertLeadFunction : function(component, helper) {
+        let convertLeadPromise = new Promise(function(resolve) {
+            if (component.get('v.lead.IsConverted')) {
+                resolve();
+            } else {
+                //retrieve the customer's full information to display in the component
+                var convertLeadAction = component.get("c.convertLead");
+                convertLeadAction.setParams({
+                    leadId : component.get('v.lead.Id'),
+                    email: component.get('v.lead.Email')
+                });
+                convertLeadAction.setCallback(this,function(resp) {
+                    if (resp.getState() === 'SUCCESS') {
+                        let convertedLead = resp.getReturnValue();
+                        component.set('v.lead.ConvertedContactId', convertedLead.ConvertedContactId);
+                        component.set('v.lead.ConvertedOpportunityId', convertedLead.ConvertedOpportunityId);
+                        resolve();
+                    } else {
+                        ltg.logError('CAPPersonalInfoHelper', 'convertLeadFunction', 'Couldn\'t convert lead', resp);
+                    }
+                });
+                $A.enqueueAction(convertLeadAction);
+            }
+        });
+        return convertLeadPromise;
+    },
+
 })

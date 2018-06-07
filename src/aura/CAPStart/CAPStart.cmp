@@ -1,6 +1,17 @@
 <aura:component controller="CAPController" access="global" extends="c:CAPParent">
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="leadEmail" type="String"/>
+  <aura:attribute name="rejectChangeOrder" type="Boolean" default="false"/>
+  <aura:attribute name="rejectionConfirmed" type="Boolean" default="false"/>
+  <aura:attribute name="changeOrder" type="Object"/>
+  <aura:attribute name="equipment" type="Object"/>
+  <aura:attribute name="completionDateString" type="String"/>
+  <aura:attribute name="partnerPhone" type="String"/>
+  <aura:attribute name="partnerMobilePhone" type="String"/>
+  <aura:attribute name="maxLoanAmount" type="Decimal"/>
+  <aura:attribute name="rlaOverMaxModalOpen" type="Boolean"/>
+  <aura:attribute name="warnOnMaxLoanAmount" type="Boolean"/>
+  <aura:attribute name="approvedChange" type="Boolean"/>
   <aura:set attribute="STAGENAME" value="NAV_Getting_Started"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:registerEvent name="CAPNavigationEvent" type="c:CAPNavigationEvent"/>
@@ -8,7 +19,7 @@
   <!-- LOGIN FORM -->
   <aura:if isTrue="{!v.page == 'Login'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      <form class="slds-form--stacked" aura:id="form" onsubmit="return false">
+      <form class="slds-form--stacked" aura:id="form" action="javascript:return false">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             {!$Label.c.START_Email_Confirmation_Instruction}
@@ -113,4 +124,308 @@
     </div>
   </aura:if>
   <!-- / DISCLAIMER -->
+
+  <!-- / CHANGE CONFIRMATION -->
+  <aura:if isTrue="{!v.page == 'ChangeOrderConfirmation'}">
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked" aura:id="form" onsubmit="return false">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+            Your installer has requested these changes to your loan application. Please approve or reject the change below:
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+              <thead>
+              <tr class="slds-text-title_caps">
+                <th scope="col">
+                  <div class="slds-truncate"></div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate">Current</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate">Proposed</div>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <aura:if isTrue="{!v.equipment.Loan__r.Lead__r.System_Cost__c != v.changeOrder.System_Cost__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="System Cost"/>
+                  </td>
+                  <td>
+                    <ui:outputCurrency value="{!v.equipment.Loan__r.Lead__r.System_Cost__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputCurrency value="{!v.changeOrder.System_Cost__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Loan__r.Lead__r.System_Cost__c - v.equipment.Loan__r.Lead__r.Requested_Loan_Amount__c != v.changeOrder.Down_Payment__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Down Payment"/>
+                  </td>
+                  <td>
+                    <ui:outputCurrency value="{!v.equipment.Loan__r.Lead__r.System_Cost__c - v.equipment.Loan__r.Lead__r.Requested_Loan_Amount__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputCurrency value="{!v.changeOrder.Down_Payment__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Loan__r.Lead__r.Requested_Loan_Amount__c != v.changeOrder.Requested_Loan_Amount__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Requested Loan Amount"/>
+                  </td>
+                  <td>
+                    <ui:outputCurrency value="{!v.equipment.Loan__r.Lead__r.Requested_Loan_Amount__c}"/>
+                  </td>
+                  <td>
+                    <div class="slds-col">
+                      <div class="slds-grid slds-wrap">
+                        <div class="slds-p-right_small">
+                          <ui:outputCurrency value="{!v.changeOrder.Requested_Loan_Amount__change}"/>
+                        </div>
+                        <div>
+                          <aura:if isTrue="{!v.warnOnMaxLoanAmount}">
+                            <aura:if isTrue="{!v.maxLoanAmount > 0}">
+                              (Max Available: <ui:outputCurrency value="{!v.maxLoanAmount}"/>)
+                              <aura:set attribute="else">
+                                (Max Available: N/A)
+                              </aura:set>
+                            </aura:if>
+                          </aura:if>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.completionDateString != v.changeOrder.Estimated_Completion_Date__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Estimated Completion Date"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.completionDateString}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Estimated_Completion_Date__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Generator_Nameplate_Capacity__c != v.changeOrder.Generator_Nameplate_Capacity__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="System Size"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.equipment.Generator_Nameplate_Capacity__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Generator_Nameplate_Capacity__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!or((v.equipment.Module_Manufacturer__c != v.changeOrder.Module_Manufacturer__change), (v.equipment.Module_Model_Number__c != v.changeOrder.Module_Model_Number__change))}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Module Make (Model)"/>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.equipment.Module_Model_Number__c == null, v.equipment.Module_Manufacturer__c == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.equipment.Module_Manufacturer__c + ' (' + v.equipment.Module_Model_Number__c + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.changeOrder.Module_Manufacturer__change == null, v.changeOrder.Module_Model_Number__change == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.changeOrder.Module_Manufacturer__change + ' (' + v.changeOrder.Module_Model_Number__change + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Number_of_Modules__c != v.changeOrder.Number_of_Modules__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Number of Modules"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.equipment.Number_of_Modules__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Number_of_Modules__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!or((v.equipment.Inverter_Manufacturer__c != v.changeOrder.Inverter_Manufacturer__change), (v.equipment.Inverter_Model_Number__c != v.changeOrder.Inverter_Model_Number__change))}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Inverter Make (Model)"/>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.equipment.Inverter_Manufacturer__c == null, v.equipment.Inverter_Model_Number__c == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.equipment.Inverter_Manufacturer__c + ' (' + v.equipment.Inverter_Model_Number__c + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.changeOrder.Inverter_Manufacturer__change == null, v.changeOrder.Inverter_Model_Number__change == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.changeOrder.Inverter_Manufacturer__change + ' (' + v.changeOrder.Inverter_Model_Number__change + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Number_of_Inverters__c != v.changeOrder.Number_of_Inverters__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Number of Inverters"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.equipment.Number_of_Inverters__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Number_of_Inverters__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <aura:if isTrue="{!v.rejectChangeOrder}">
+          <div class="slds-form-element slds-is-required">
+            <div class="slds-p-top_small slds-form-element__control">
+              Sorry this change doesn't look right. Please provide your installer a comment about this change, and we'll send them an email and copy you.
+            </div>
+            <aura:if isTrue="{!or(v.partnerMobilePhone != null, v.partnerPhone != null)}">
+              <div class="slds-p-top_small slds-form-element__control">
+                Alternatively, you can call your installer representative, {!v.lead.bs_Sales_ID__r.Name}, directly at:
+                <aura:if isTrue="{!v.partnerPhone != null}">
+                  <div>
+                    Phone: <a href="{!'tel:'+v.partnerPhone}">{!v.partnerPhone}</a>
+                  </div>
+                </aura:if>
+                <aura:if isTrue="{!v.partnerMobilePhone != null}">
+                  <div>
+                    Mobile: <a href="{!'tel:'+v.partnerMobilePhone}">{!v.partnerMobilePhone}</a>
+                  </div>
+                </aura:if>
+              </div>
+            </aura:if>
+          </div>
+          <form class="slds-p-top_small slds-form--stacked" aura:id="form" onsubmit="return false">
+            <div class="slds-form-element slds-is-required">
+              <div class="slds-form-element__control">
+                <ui:inputTextArea aura:id="rejectReasonInput"
+                                  class="slds-input slds-p-top-small"
+                                  placeholder="Rejection Comments"
+                                  value="{!v.changeOrder.Reject_Reason}"/>
+              </div>
+            </div>
+            <div class="slds-form-element__row slds-p-top--small">
+              <lightning:button label="Cancel" onclick="{!c.cancelRejection}"/>
+              <lightning:button label="Submit Rejection Comment" onclick="{!c.rejectChangeOrder}"/>
+            </div>
+          </form>
+        </aura:if>
+        <aura:if isTrue="{!and(not(v.rejectChangeOrder), not(v.rejectionConfirmed))}">
+          <div class="slds-form-element__row slds-p-top--small">
+            <lightning:button label="Approve" onclick="{!c.approveChangeOrder}"/>
+            <lightning:button label="Reject" onclick="{!c.openRejectReason}"/>
+          </div>
+        </aura:if>
+      </form>
+    </div>
+  </aura:if>
+  <!-- / CHANGE CONFIRMATION -->
+
+  <!-- Confirm RLA > Max Amount -->
+  <div aura:id="rlaOverMaxModal" role="dialog" tabindex="-1" class="slds-modal">
+    <div class="slds-modal__container slds-scrollable">
+      <div class="slds-modal__header blueBackground">
+        <h2 class="slds-text-heading--medium--white">Requested Loan Amount Over Max</h2>
+      </div>
+      <div class="slds-modal__content slds-p-around--medium">
+        The change order amount you are about to approve will increase your requested loan amount to a value HIGHER than the maximum funds you have been approved for.
+      </div>
+      <div class="slds-modal__content slds-p-around--medium">
+        Are you sure you would like to proceed?
+      </div>
+      <div class="slds-modal__footer">
+        <lightning:button class="slds-button"
+                          onclick="{!c.cancelApprovalConfirmation}"
+                          label="Cancel"/>
+        <lightning:button class="slds-button"
+                          onclick="{!c.approveChangeOrder}"
+                          label="Approve"/>
+        <ui:spinner aura:id="approvalSpinner" class="floatRight" isVisible="false"/>
+      </div>
+    </div>
+  </div>
+  <!-- Confirm RLA > Max Amount -->
+
+  <!-- Change Order Confirmation -->
+  <div aura:id="changeOrderConfirmation" role="dialog" tabindex="-1" class="slds-modal">
+    <div class="slds-modal__container slds-scrollable">
+      <div class="slds-modal__header blueBackground">
+        <h2 class="slds-text-heading--medium--white">Change Order Confirmed</h2>
+      </div>
+      <!--
+      Four possible conditions:
+                Contract Out         No Contract
+      Approved  Void and resend      We'll send when system info
+      Cancelled Current one is good  We'll send when system info
+      -->
+      <aura:if isTrue="{!and(v.approvedChange, v.contractSent)}">
+        <div class="slds-modal__content slds-p-around--medium">
+          Thanks for approving. We'll void your current contract and send you an updated version with these changes.
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!and(v.approvedChange, not(v.contractSent))}">
+        <div class="slds-modal__content slds-p-around--medium">
+          Thanks for approving. When your installer provides your system information, we'll send you your contract.
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!and(not(v.approvedChange), v.contractSent)}">
+        <div class="slds-modal__content slds-p-around--medium">
+          Thanks, we've sent your installer an email with your comments. Your current contract is still valid and can be executed.
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!and(not(v.approvedChange), not(v.contractSent))}">
+        <div class="slds-modal__content slds-p-around--medium">
+          Thanks, we've sent your installer an email with your comments. When your installer provides your system information, we'll send you your contract.
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!v.lead.CAP_Stage__c == 'NAV_Income_Doc'}">
+        <div class="slds-modal__content slds-p-around--medium">
+          You've completed your application and can close this window.
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!v.lead.CAP_Stage__c != 'NAV_Income_Doc'}">
+        <div class="slds-modal__content slds-p-around--medium">
+          Let's pick up your application where you left off.
+        </div>
+        <div class="slds-modal__footer">
+          <lightning:button class="slds-button"
+                            onclick="{!c.changeOrderFinished}"
+                            label="Continue"/>
+        </div>
+      </aura:if>
+    </div>
+  </div>
+  <!-- Change Order Confirmation -->
+
+  <div aura:id="modalBackDrop" class="slds-backdrop--open"></div>
 </aura:component>

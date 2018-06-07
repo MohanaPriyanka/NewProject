@@ -1,3 +1,7 @@
+/*************************************************************************************
+ * Test: OpportunityTriggerTest,LeadTriggerHandlerTest
+ *************************************************************************************/
+
 public with sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
@@ -11,6 +15,7 @@ public with sharing class OpportunityTriggerHandler {
         customIdSwapOpp(newOppList, null);
         mapDocuSignRS(newOppList, null);
         mapContactReferralCode(newOppList);
+        setLeadLookup(newOppList);
     }
 
     public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
@@ -123,5 +128,13 @@ public with sharing class OpportunityTriggerHandler {
                 } 
             }
         }
-    }  
+    }
+
+    public void setLeadLookup(List<Opportunity> insertedOpportunities) {
+        for (Opportunity o : insertedOpportunities) {
+            if (o.Lead_ID__c != null && o.Lead_ID__c != '') {
+                o.Lead__c = o.Lead_ID__c;
+            }
+        }
+    }
 }

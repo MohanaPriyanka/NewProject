@@ -89,32 +89,38 @@ public class CustomerCommunicationHandlerTest{
                                            Maximum_Subscription_Assemblage__c = 25);
             insert sss3;
 
-            Account accountParent1 = new Account(Name = 'Par Account 1');
-            Account accountParent2 = new Account(Name = 'Par Account 2');
-            Account accountParent3 = new Account(Name = 'Par Account 3');
+            Account accountParent1 = new Account(Name = 'Par Account 1', Client_Brand_Key__c = 'BluewaveLogo');
+            Account accountParent2 = new Account(Name = 'Par Account 2', Client_Brand_Key__c = 'AmpRed');
+            Account accountParent3 = new Account(Name = 'Par Account 3', Client_Brand_Key__c = 'BluewaveLogo');
             insert new List<Account>{accountParent1, accountParent2, accountParent3};
 
             Contact contactA = new Contact( FirstName = 'Contact A',
                                             LastName = 'Last',
-                                            Account = accountParent1);
+                                            Account = accountParent1,
+                                            Email = 'jpentaleri@bluewavesolar.com');
             Contact contactB = new Contact( FirstName = 'Contact B',
                                             LastName = 'Last',
-                                            Account = accountParent2);
+                                            Account = accountParent2,
+                                            Email = 'jpentaleri@bluewavesolar.com');
             Contact contactC = new Contact( FirstName = 'Contact C',
                                             LastName = 'Last',
-                                            Account = accountParent3);
+                                            Account = accountParent3,
+                                            Email = 'jpentaleri@bluewavesolar.com');
 
             insert new List<Contact>{contactA, contactB, contactC};
 
             Account propAcct1 = new Account( Name = 'Prop Account 1',
                                             Parent_Account__c = accountParent1.Id,
-                                            Send_Bills_Contact__c = contactA.Id);
+                                            Send_Bills_Contact__c = contactA.Id,
+                                            Client_Brand_Key__c = 'BluewaveLogo');
             Account propAcct2 = new Account( Name = 'Prop Account 2',
                                             Parent_Account__c = accountParent2.Id,
-                                            Send_Bills_Contact__c = contactB.Id);
+                                            Send_Bills_Contact__c = contactB.Id,
+                                            Client_Brand_Key__c = 'AmpRed');
             Account propAcct3 = new Account( Name = 'Prop Account 3',
                                             Parent_Account__c = accountParent3.Id,
-                                            Send_Bills_Contact__c = contactC.Id);
+                                            Send_Bills_Contact__c = contactC.Id,
+                                            Client_Brand_Key__c = 'BluewaveLogo');
 
             insert new List<Account>{propAcct1, propAcct2, propAcct3};
 
@@ -148,7 +154,7 @@ public class CustomerCommunicationHandlerTest{
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Days_In_Bill_Period__c = 30,
+                Days_In_Bill_Period__c = 20,
                 Monthly_Late_Fee__c = 1);
 
             Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
@@ -161,7 +167,7 @@ public class CustomerCommunicationHandlerTest{
                 NMC_Discount__c = 20,
                 Annual_kWh_Maximum__c = 63000,
                 NM_Rate_Floor__c = 0.09,
-                Days_In_Bill_Period__c = 30,
+                Days_In_Bill_Period__c = 20,
                 Monthly_Late_Fee__c = 0.8333);
             insert new List<Product2>{normalCSProduct, publicCSProduct};
 
@@ -183,7 +189,7 @@ public class CustomerCommunicationHandlerTest{
 
             Opportunity opportunitythree =
                 new Opportunity(Name = 'Jordan Jordan',
-                                AccountId = propAcct2.Id,
+                                AccountId = propAcct3.Id,
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
@@ -194,7 +200,7 @@ public class CustomerCommunicationHandlerTest{
                 new Utility_Account_Subscription__c(Name = '0000234',
                                                     Utility_Account_Log__c = ualog1.Id,
                                                     Opportunity__c = opportunityone.Id,
-                                                    Next_Schedule_Z_Status__c = 'Inactive Subscription',
+                                                    Next_Schedule_Z_Status__c = 'Active Subscription',
                                                     Annual_kwh_subscription_future__c = 4000,
                                                     Calculated_Annual_Cost_of_Electricity__c = 4000,
                                                     Subscribed_Annual_Cost_of_Electricity__c = 4000);
@@ -273,32 +279,33 @@ public class CustomerCommunicationHandlerTest{
         }
         update listaccountBills;
 
-        List<Schedule_Z_Subscription__c> SZS = [SELECT Id, Percent_Share__c, Number_of_Decimal_Places__c FROM Schedule_Z_Subscription__c];
-        List<UASB__c> uASB = [SELECT Id, Discounted_Bill__c, Solar_Share_Rate_Bill_Value__c, Bill_Value__c, Floor_Price_Bill_Value__c FROM UASB__c];
-        List <System_Bill__c> systemBills = [Select Id, Due_This_Month__c, Late_Fees__c, Adjustments__c, Previous_Overpayments__c FROM System_Bill__c];
-
         Datetime dt = Datetime.now();
+        // Test both the scheduling of the class and the execution of the batch
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
         String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
         String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Last_Bill_Send_Date__c,
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
                                     Total_Outstanding_Balance__c, Total_Billed__c,
                                     Send_Bills_Contact__c, Days_Past_Due__c
-                                    FROM Account
-                                    WHERE Days_Past_Due__c != 0];
-        System.AssertNotEquals(0, accountlist.size());
-        System.debug(accountlist);
+                                    FROM Account];
+        System.assertNotEquals(0, accountlist.size());
 
         CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
                             NextFireTime
                           FROM CronTrigger WHERE id = :jobId];
 
-        System.AssertEquals(dt.minute(), ct.NextFireTime.minute());
-        System.AssertEquals(dt.hour(), ct.NextFireTime.hour());
-        System.AssertEquals(dt.day(), ct.NextFireTime.day());
-        System.AssertEquals(dt.month(), ct.NextFireTime.month());
+        System.assertEquals(dt.minute(), ct.NextFireTime.minute());
+        System.assertEquals(dt.hour(), ct.NextFireTime.hour());
+        System.assertEquals(dt.day(), ct.NextFireTime.day());
+        System.assertEquals(dt.month(), ct.NextFireTime.month());
+
+        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
+                                        FROM Error_Log__c];
+        System.assertEquals(0, errorList.size());
+        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }

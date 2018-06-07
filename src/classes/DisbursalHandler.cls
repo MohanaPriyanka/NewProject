@@ -4,9 +4,12 @@
  * Test: DisbursalHandlerTest
  *************************************************************************************/
 public class DisbursalHandler {
+    private Set<String> protectedDisbursalStatuses = new Set<String>{'Disbursed', 'Reimbursed', 'Hold'};
+
+
     public void createDisbursalsFromOpportunity(Map<Id,Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         List<Loan__c> loanList = new List<Loan__c>();
-        Set<Id> loansWithDisbursedPayments = new Set<Id>();
+        Map<String, String> disbursalStatuses = new Map<String, String>();
         List<String> opportunityIdList = new List<String>();
         List<Disbursal__c> disbursalsToInsert = new List<Disbursal__c>();
 
@@ -29,20 +32,22 @@ public class DisbursalHandler {
                 }
             }
 
-            List<Disbursal__c> disbursedDisbursals = [
-                SELECT Id, Loan__c
+            List<Disbursal__c> disbursals = [
+                SELECT Id, Unique_ID__c, Status__c
                 FROM Disbursal__c
-                WHERE Status__c = 'Disbursed'
-                AND Loan__c IN : loanIds
+                WHERE Loan__c IN : loanIds
             ];
 
-            for (Disbursal__c disbursal : disbursedDisbursals) {
-                loansWithDisbursedPayments.add(disbursal.Loan__c);
+            for (Disbursal__c disbursal : disbursals) {
+                disbursalStatuses.put(disbursal.Unique_ID__c, disbursal.Status__c);
             }
 
             for (Loan__c loanRecord : loanList) {
-                if (!loansWithDisbursedPayments.contains(loanRecord.Id)) {
-                    for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
+                for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
+//                    We want to check for a disbursal with the same unique ID and get its status
+                    String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
+                    // If the disbursal status is protected we don't want to update it
+                    if (!protectedDisbursalStatuses.contains(previousStatus)) {
                         disbursalsToInsert.add(disbursal);
                     }
                 }
@@ -164,8 +169,8 @@ public class DisbursalHandler {
     public Disbursal__c setDisbursalStatus (String disbursalType, String opportunityId, Map<String,Disbursal__c> disbursalMap, String status, String doNotSetStatusValue) {
         Disbursal__c disbursal = disbursalMap.get(opportunityId + disbursalType);
         if (disbursal != null) {
-            if (disbursal.Status__c == 'Disbursed') {
-                status = 'Disbursed';
+            if (protectedDisbursalStatuses.contains(disbursal.Status__c)) {
+                status = disbursal.Status__c;
             }
             if (doNotSetStatusValue != null) {
                 if (disbursal.Status__c == doNotSetStatusValue) {

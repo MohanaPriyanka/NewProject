@@ -94,6 +94,8 @@ public with sharing class LoanServicerTest {
 
         Opportunity opp = new Opportunity(AccountId = account.Id,
                                           Product__c = productLoanMATerm10Rate599.Id,
+                                          Lead__c = testLead.Id,
+                                          Lead_ID__c = ((String) testLead.Id).left(15),
                                           Name = 'Testerson Loan',
                                           Product_Line__c = 'Residential Loan',
                                           StageName = 'New',
@@ -150,6 +152,7 @@ public with sharing class LoanServicerTest {
         loan.Product__c = mslp20Yr.Id;
         loan.Requested_Loan_Amount__c = 45000;
         loan.Financing_Fee__c = 0;
+        LoanHandler.resetTriggerContext();
         update loan;
 
         checkLoan(loan, mslp20YrJSON45k, 252);
@@ -349,14 +352,22 @@ public with sharing class LoanServicerTest {
         System.assertEquals(12,arl.Loan_Interest_Only_Period__c);
 
         Loan_Traunch__c loanTraunch = [SELECT Id FROM Loan_Traunch__c WHERE Name = 'Tranche Assignment Pending' LIMIT 1];
-        Lead testLead = [SELECT Id FROM Lead WHERE LastName = 'Testerson' LIMIT 1];
+        Lead testLead = [
+            SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c,
+                Product_line__c, Product__r.Loan_Interest_Rate__c, bs_Sales_ID__c, Loan_Financing_Fee__c,
+                Partner_Lookup__c, LASERCA__Home_State__c, Product__c, DOER_Solar_Loan__c, Loan_Fee_1__c,
+                Product__r.Loan_Interest_Only_Period__c, Loan_System_Information__c, FirstName, LastName,
+                ConvertedOpportunityId
+            FROM Lead
+            WHERE LastName = 'Testerson' LIMIT 1];
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Partner' LIMIT 1];
 
         testLead.Product__c = arl.Id;
         testLead.Partner_Lookup__c = partner.Id;
         testLead.Requested_Loan_Amount__c = 30000;
-        testLead.Status = 'Pending Information';
         update testLead;
+        LoanHandler.resetTriggerContext();
+        LoanHandler.createLoan(new List<Lead>{testLead});
 
         Test.startTest();
 
@@ -372,6 +383,7 @@ public with sharing class LoanServicerTest {
         System.assertEquals(5.66, loan.APR__c.setScale(2));
 
         testLead.Status = 'Qualified';
+        LoanHandler.resetTriggerContext();
         update testLead;
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(testLead.id);
@@ -405,6 +417,7 @@ public with sharing class LoanServicerTest {
         update ir;
 
         opp.Requested_Loan_Amount__c = 31000;
+        LoanHandler.resetTriggerContext();
         update opp;
 
         opp = [

@@ -18,35 +18,28 @@ public without sharing class MapPCRtoLeadHandler {
 
     private void MapPCRtoLead (List<LASERCA__Personal_Credit_Report__c> newPCR) {
         Integer j;
-        Integer k;
-        Integer i;
-        Integer h;
-        Integer l;
-        List<String> leadids = new List<String>();
+        List<String> leadIds = new List<String>();
         List<String> contactids = new List<String>();
         List<Lead> leadupdatelist = new List<Lead>();
 
-        for (j = 0; j < newPCR.size(); j++) {
-            Decimal monthlydebt = newPCR.get(j).LASERCA__Sum_of_monthly_Personal_Debt__c;
-
-            if (newPCR.get(j).LASERCA__Lead__c != null && (monthlydebt != NULL || monthlydebt != 0)) {
-                leadids.add(newPCR.get(j).LASERCA__Lead__c);
+        for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
+            Decimal monthlydebt = pcr.LASERCA__Sum_of_monthly_Personal_Debt__c;
+            if (pcr.LASERCA__Lead__c != null && (monthlydebt != NULL || monthlydebt != 0)) {
+                leadIds.add(pcr.LASERCA__Lead__c);
             }
-
-            if (newPCR.get(j).LASERCA__Contact__c != null && (monthlydebt != NULL || monthlydebt != 0)) {
-                contactids.add(newPCR.get(j).LASERCA__Contact__c);
+            if (pcr.LASERCA__Contact__c != null && (monthlydebt != NULL || monthlydebt != 0)) {
+                contactids.add(pcr.LASERCA__Contact__c);
             }
         }
 
-        if (leadids.isEmpty()) {
+        if (leadIds.isEmpty()) {
             return;
         }
             
         Map<Id, Lead> leadMap = 
             new Map<Id, Lead>([SELECT id, Product_Line__c, Personal_Credit_Report__c
                                FROM Lead
-                               WHERE id IN : leadids
-                               AND IsConverted = false]);
+                               WHERE id IN :leadIds]);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             String contactid = pcr.LASERCA__Contact__c;

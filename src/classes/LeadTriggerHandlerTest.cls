@@ -221,5 +221,93 @@ private class LeadTriggerHandlerTest {
                                 WHERE Lead_Lookup__r.isConverted = true];
         System.assertEquals(casesList[0].AccountId, leadAccountIdMap.get(casesList[0].Lead_Lookup__c));
         System.assertEquals(casesList[1].ContactId, leadContactIdMap.get(casesList[1].Lead_Lookup__c));
+
+        // OpportunityTriggerHandler should set Lead lookup
+        List<Opportunity> opps = [SELECT Id, Lead_ID__c, Lead__c FROM Opportunity];
+        System.assertEquals(leadList.size(), opps.size());
+        for (Opportunity opp : opps) {
+            System.assertEquals(opp.Lead_ID__c, opp.Lead__c);
+        }
+    }
+
+    @IsTest static void testLeadUpdateAfterConversion() {
+        LoanTestRecordWarehouse.partnerSetup();
+        List<Lead> leads = new List<Lead>();
+        leads.add(new Lead(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            Company = 'Testtest',
+            Loan_Amount__c = 30000,
+            Requested_Loan_Amount__c = 30000,
+            Email = 'test@test.com',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA'
+        ));
+        leads.add(new Lead(
+            FirstName = 'Tester',
+            LastName = 'Testcase',
+            Company = 'Testtest',
+            Loan_Amount__c = 30000,
+            Requested_Loan_Amount__c = 30000,
+            Email = 'tester@test.com',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA'
+        ));
+        insert leads;
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+        for (Lead l :leads){
+            Database.LeadConvert lc = new Database.LeadConvert();
+            lc.setLeadId(l.Id);
+            lc.setConvertedStatus('Interested');
+            leadConverts.add(lc);
+        }
+        List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
+        Set<Id> oppIds = new Set<Id>();
+        for (Database.LeadConvertResult lcr : lcrs)  {
+            System.assert(lcr.isSuccess());
+            oppIds.add(lcr.getOpportunityId());
+        }
+
+        Account coApplicantAccount = new Account( Name = 'CoapplicantAccount');
+        insert coApplicantAccount;
+
+        Contact coApplicantContact = new Contact(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            AccountId = coApplicantAccount.Id,
+            Lead__c = leads[0].Id,
+            Income__c = 2000,
+            LASERCA__Social_Security_Number__c = '000000002');
+        insert coApplicantContact;
+        leads[0].Co_Applicant_First_Name__c = coApplicantContact.FirstName;
+        leads[0].Co_Applicant_Last_Name__c = coApplicantContact.LastName;
+        leads[0].Co_Applicant_Income__c = coApplicantContact.Income__c;
+        leads[0].LASERCA__Co_Applicant_Social_Security_Number__c = coApplicantContact.LASERCA__Social_Security_Number__c;
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '710',
+            LASERCA__Lead__c = leads[1].Id);
+        leads[1].System_Cost__c = 32000;
+
+        update leads;
+        Map<Id, Lead> leadMap = new Map<Id, Lead>(leads);
+
+        List<Opportunity> opps = [
+            SELECT Id, Personal_Credit_Report2__c, Loan_Principle__c,
+                Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Income__c,
+                Co_Applicant_Social_Security__c, Lead__c
+            FROM Opportunity
+            WHERE Id = :oppIds];
+        for (Opportunity opp : opps) {
+            System.assertEquals(leadMap.get(opp.Lead__c).Personal_Credit_Report__c, opp.Personal_Credit_Report2__c);
+            System.assertEquals(leadMap.get(opp.Lead__c).System_Cost__c, opp.Loan_Principle__c);
+            System.assertEquals(leadMap.get(opp.Lead__c).Co_Applicant_First_Name__c, opp.Co_Applicant_First_Name__c);
+            System.assertEquals(leadMap.get(opp.Lead__c).Co_Applicant_Last_Name__c, opp.Co_Applicant_Last_Name__c);
+        }
     }
 }

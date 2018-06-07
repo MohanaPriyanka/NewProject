@@ -33,7 +33,6 @@
         var disbursalCompleteTableToggle = component.find("disbursalCompleteTable");
         var disbursalIncompleteTableToggle = component.find("disbursalIncompleteTable");
         var pendingDisbursalsToggle = component.find("pendingDisbursals");
-        var mslpCustomerInfoTextToggle = component.find("cusomterInformationTextMSLP");
         var completedDisbursalsToggle = component.find("completeDisbursals");
 
         component.set("v.blueWaveReviewAlert", false);
@@ -240,6 +239,14 @@
         var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
     },
 
+    closeConfirmModal : function(component, event, helper) {
+        $A.util.removeClass(component.find('confirmModal'), 'slds-fade-in-open');
+        $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
+        helper.closeSystemInformationSaved(component);
+        helper.refreshPartnerTasks(component);
+        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
+    },
+
     getSrecInterconnectionPage: function(component, event, helper) {
         helper.getGenericPage('SrecInterconnectionPage', component);
     },
@@ -288,9 +295,9 @@
             component.set("v.equipmentUpdate.Interconnection_Date__c", interconnectDate);
         }
 
-        var commencementDate = component.get("v.customerInformation.Loan__r.Commencement_Datee__c");
-        if (commencementDate != null) {
-            component.set("v.loanUpdate.Commencement_Datee__c", commencementDate);
+        var completionDate = component.get("v.customerInformation.Loan__r.Estimated_Completion_Date__c");
+        if (completionDate != null) {
+            component.set("v.loanUpdate.Estimated_Completion_date__c", completionDate);
         }
 
         var contractExecutionDate = component.get("v.customerInformation.Contract_Execution_Date__c");
@@ -481,5 +488,80 @@
         component.set('v.showBuildingPermitModal', false);
         $A.util.removeClass(component.find('modalBackDrop'), 'slds-backdrop');
         helper.refreshPartnerTasks(component);
+    },
+
+    enableRequestButton : function(component, event, helper) {
+        const changeOrder = component.get('v.changeOrder');
+        const equipment = component.get('v.customerInformation');
+        if (component.get('v.docuSignPresent')) { // docusign already sent
+            component.set('v.requestButtonText', 'Request Customer Authorization');
+        } else {
+            component.set('v.requestButtonText', 'Save');
+        }
+        if (equipment.Loan__r.Lead__r.System_Cost__c !== changeOrder.System_Cost__change ||
+            equipment.Loan__r.Lead__r.System_Cost__c - equipment.Loan__r.Lead__r.Requested_Loan_Amount__c !== changeOrder.Down_Payment__change) {
+            component.set('v.requestButtonText', 'Request Customer Authorization');
+            component.set('v.requestButtonEnabled', true);
+        } else if (equipment.Generator_Nameplate_Capacity__c != changeOrder.Generator_Nameplate_Capacity__change ||
+                   equipment.Module_Manufacturer__c != changeOrder.Module_Manufacturer__change ||
+                   equipment.Module_Model_Number__c != changeOrder.Module_Model_Number__change ||
+                   equipment.Number_of_Modules__c != changeOrder.Number_of_Modules__change ||
+                   equipment.Inverter_Manufacturer__c != changeOrder.Inverter_Manufacturer__change ||
+                   equipment.Inverter_Model_Number__c != changeOrder.Inverter_Model_Number__change ||
+                   equipment.Number_of_Inverters__c != changeOrder.Number_of_Inverters__change ||
+                   (!equipment.Loan__r.Estimated_Completion_Date__c?'':helper.getFormattedDate(equipment.Loan__r.Estimated_Completion_Date__c)) != changeOrder.Estimated_Completion_date__change) {
+            // Ignore types above so that undefined == null
+            component.set('v.requestButtonEnabled', true);
+        } else {
+            component.set('v.requestButtonEnabled', false);
+        }
+    },
+
+    saveAndRequestChangeOrder : function(component, event, helper) {
+        const saveAction = component.get("c.saveChangeOrder");
+        const changeOrder = component.get('v.changeOrder');
+        changeOrder['Requested_Loan_Amount__change'] = changeOrder.System_Cost__change - changeOrder.Down_Payment__change;
+        helper.startSpinner(component, "customerInformationSpinner");
+        saveAction.setParams({
+            "loanId" : component.get('v.customer.Loan__c'),
+            "loanSystemInformation" : JSON.stringify(changeOrder)
+        });
+
+        saveAction.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                component.set('v.customerInformation', resp.getReturnValue());
+                component.set('v.changeOrder', JSON.parse(resp.getReturnValue().Loan__r.Lead__r.Loan_System_Information__c));
+                component.set("v.completionDateString", helper.getFormattedDate(resp.getReturnValue().Loan__r.Estimated_Completion_Date__c));
+                helper.stopSpinner(component, "customerInformationSpinner");
+                if (component.get('v.requestButtonText') === 'Request Customer Authorization') {
+                    helper.confirmSystemInformationSaved(component, 'We have sent your request to ' + resp.getReturnValue().Loan__r.Lead__r.FirstName + ', thank you!');
+                } else {
+                    helper.confirmSystemInformationSaved(component, 'We have saved your System Information updates, thank you!');
+                }
+            } else {
+                helper.logError('SLPCustomerController', 'saveChangeOrder', resp.getError(), component.get('v.customer'));
+            }
+        });
+        $A.enqueueAction(saveAction);
+    },
+    
+    withdrawChange : function(component, event, helper) {
+        helper.startSpinner(component, "customerInformationSpinner");
+        const withdrawAction = component.get("c.withdrawChangeOrder");
+        withdrawAction.setParams({
+            "loanId" : component.get('v.customer.Loan__c')
+        });
+
+        withdrawAction.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                component.set('v.customerInformation', resp.getReturnValue());
+                helper.setChangeOrder(component, component.get('v.customerInformation'), helper);
+                helper.stopSpinner(component, "customerInformationSpinner");
+                helper.confirmSystemInformationSaved(component, "The Change Order has been withdrawn, and we've sent " + resp.getReturnValue().Loan__r.Lead__r.FirstName + " a notification.");b
+            } else {
+                helper.logError('SLPCustomerController', 'withdrawChangeOrder', resp.getError(), component.get('v.customer'));
+            }
+        });
+        $A.enqueueAction(withdrawAction);
     },
 })

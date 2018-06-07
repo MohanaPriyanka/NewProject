@@ -75,10 +75,19 @@
               <table>
                 <tr>
                   <td colspan="6">
+                    <div>
                     Avidia Review Status:&nbsp;
-                    <strong>
-                      <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}"/>
-                    </strong>
+                      <strong>
+                        <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.Avidia_Review_Status__c}" rendered="{!lead.lead.Personal_Credit_Report__r.Avidia_Review_Status__c != null}"/>
+                        <apex:outputText value="Not Yet Reviewed" rendered="{!lead.lead.Personal_Credit_Report__r.Avidia_Review_Status__c == null}"/>
+                      </strong>
+                    </div>
+                    <div>
+                      <apex:outputText value="Change Order Status:" rendered="{!lead.lead.Change_Order_Status__c != null}"/>
+                      <strong>
+                        <apex:outputText value="{!lead.lead.Change_Order_Status__c}"/>
+                      </strong>
+                    </div>
                   </td>
                 </tr>
                 <tr valign="top">

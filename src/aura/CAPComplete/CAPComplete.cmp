@@ -6,22 +6,21 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-            {!$Label.c.CD_Finished}
-          </div>
-          <div class="slds-form-element__control slds-p-top--small">
-            {!$Label.c.CD_Finished_Next}
-          </div>
-          <div class="slds-form-element__control slds-p-top--small">
-            {!$Label.c.CD_Finished_Questions}
-          </div>
-          <div class="slds-form-element__control slds-p-top--small">
-            {!$Label.c.CD_Finished_Logout}
-          </div>
-          <form action="/apply/s/loan-application">
-            <input type="hidden" name="leadId" value="{!v.lead.Id}"/>
-            <input type="submit" value="Logout"/>
-          </form>
+          <aura:if isTrue="{!not(v.contractSent)}">
+            <div class="slds-form-element__control slds-text-heading--medium slds-p-bottom--small">
+              All done! Nice work.<br/>
+              You’ll receive your electronic loan contract for signature once your installer provides system information.
+            </div>
+            <aura:set attribute="else">
+              <div class="slds-form-element__control slds-text-heading--medium slds-p-bottom--small">
+                All done! Nice work.<br/>
+                We’ll be in touch soon with more of your Solar Loan details.
+              </div>
+            </aura:set>
+          </aura:if>
+          <a href="https://www.bluewavesolar.com">
+            <lightning:button label="Logout"/>
+          </a>
         </div>
       </form>
     </div>

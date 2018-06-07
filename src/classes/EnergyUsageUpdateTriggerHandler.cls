@@ -8,12 +8,28 @@
  * Tested by: RecurringPaymentsHandlerTestClass
  */
 
-public with sharing class EnergyUsageUpdateTriggerHandler {
-    public EnergyUsageUpdateTriggerHandler() {
+public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> { 
+    public Map<Id, Energy_Usage_Update__c> sssIdToEUUMap = new Map<Id,Energy_Usage_Update__c>();        
+    public Set<Id> scheduleZs = new Set<Id>();
+
+    // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
+    public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
+        for (Energy_Usage_Update__c euu : euuList) {
+            sssIdToEUUMap.put(euu.Shared_Solar_System__c, euu);
+            scheduleZs.add(euu.Schedule_Z__c);
+        }
+        if (!Test.isRunningTest()) {
+            Database.executeBatch(this, 10);
+        } else {
+            List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+                SELECT Id, Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscription__c
+                WHERE Schedule_Z__c IN : scheduleZs
+            ];
+            createBills(scheduleZSubscriptions);
+        }
     }
 
-    // March 2017: We run into CPU limits when creating new Production Updates - print CPU Limits
-    // in case this creeps up again.
     private static void printCPULimit(String prefix) {
         System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of ' 
                      + Limits.getLimitCpuTime() + 'ms used');
@@ -24,27 +40,21 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         return DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
     }
 
-    // Called by EnergyUsageUpdateTrigger after insert
-    public void createCSBillingLog(List<Energy_Usage_Update__c> euuList) {
-        printCPULimit('Before createCSBillingLog');
-        Map<Id, Energy_Usage_Update__c> sssIdToEUUMap = new Map<Id, Energy_Usage_Update__c>();
+    // Batch into groups of Schedule Z Subscriptions:
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+        String query =  'SELECT Id, Utility_Account_Subscription__c ' +
+                        ' FROM Schedule_Z_Subscription__c ' +
+                        ' WHERE Schedule_Z__c IN : scheduleZs';
+        return Database.getQueryLocator(query);
+    }
+
+    // Execute this code block in batches to avoid CPU Limit:
+    public void execute(Database.BatchableContext bc, List<Schedule_Z_Subscription__c> scheduleZSubscriptions) {
+        createBills(scheduleZSubscriptions);
+    }
+
+    public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
         Integer abCounter = 1;
-        Set<Id> scheduleZs = new Set<Id>();
-
-        //load the triggered production updates into the instantiated map and set the SSS as the key value.
-        //Collect set of scheduleZIds
-        for (Energy_Usage_Update__c euu : euuList) {
-            sssIdToEUUMap.put(euu.Shared_Solar_System__c, euu);
-            scheduleZs.add(euu.Schedule_Z__c);
-        }
-
-        // Collect ScheduleZSubscriptions for the scheduleZs on the Production Updates
-        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
-            SELECT Id, Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c IN : scheduleZs
-        ];
-
         Set<Id> scheduleZUASIds = new Set<Id>();
 
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
@@ -127,7 +137,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
 
         //Create the Account Bills
         if (!abKeyToAccountBillMap.isEmpty()) {
-            insert abKeyToAccountBillMap.values();
+            upsert abKeyToAccountBillMap.values() Unique_Id__c;
         }
 
         printCPULimit('After Account Bills upserted');
@@ -198,7 +208,7 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
 
         printCPULimit('Before Utility Account Bills upserted');
 
-        upsert new List<Utility_Account_Bill__c>(uabSet.values());
+        upsert new List<Utility_Account_Bill__c>(uabSet.values()) Unique_Id__c;
 
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         Map<String, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
@@ -215,5 +225,19 @@ public with sharing class EnergyUsageUpdateTriggerHandler {
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasList);
 
         printCPULimit('After Utility Account Bills upserted');    
-    }                  
+    }     
+
+    public void finish(Database.BatchableContext bc){
+        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
+                            JobItemsProcessed,
+                            TotalJobItems, CreatedBy.Email
+                            FROM AsyncApexJob
+                            WHERE Id = :bc.getJobId()];
+
+        String emailBody = 'CS Bill Creation has Completed. Job Id: '+ job.Id;
+            List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
+        if(!Test.isRunningTest()){
+            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Creation Processing Complete', postJobEmailAddresses);
+        } 
+    }  
 }
