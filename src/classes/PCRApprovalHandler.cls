@@ -144,16 +144,25 @@ public without sharing class PCRApprovalHandler {
             }
         }
 
-        List<Lead> relatedLeads  = [SELECT Id, DOER_Solar_Loan__c, Status, Product__c,
-                                    Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
-                                    Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                                    Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
-                                    Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                                    Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
-                                    Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Partner_Lookup__c,
-                                    IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c
-                                    FROM Lead 
-                                    WHERE Id  IN : leadlist];
+
+        List<Lead> relatedLeads  = [
+            SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c,
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
+                Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Partner_Lookup__c,
+                IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
+                Personal_Credit_Report__r.LASERCA__Contact__c,
+                Personal_Credit_Report__r.Adjusted_Income__c,
+                Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
+                Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
+                Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c
+            FROM Lead
+            WHERE Id  IN : leadlist
+        ];
         for (Lead lead : relatedLeads) {
             leadMap.put(lead.Id, lead);
         }
@@ -174,22 +183,23 @@ public without sharing class PCRApprovalHandler {
                 }
 
                 Decimal monthlyIncome;
-                if (pcr.Adjusted_Income__c == null) {
-                    monthlyIncome = LoanServicer.nullToZero(lead.Annual_Income_Currency__c) / 12;
+                if (lead.Personal_Credit_Report__r.Adjusted_Income__c == null) {
+                    monthlyIncome = Util.nullToZero(lead.Annual_Income_Currency__c) / 12;
                 } else {
-                    monthlyIncome = pcr.Adjusted_Income__c / 12;
+                    monthlyIncome = lead.Personal_Credit_Report__r.Adjusted_Income__c / 12;
                 }
-
-                if (pcr.LASERCA__Contact__c != NULL) {
+                // add coApplicant's income if it is a joint application
+                if (lead.Application_Type__c == 'Joint' &&
                     if (pcr.Adjusted_Income__c == null) {
-                        monthlyIncome = LoanServicer.nullToZero(lead.Co_Applicant_Income__c) / 12;
+                        lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != NULL) {
+                        monthlyIncome += LoanServicer.nullToZero(lead.Co_Applicant_Income__c) / 12;
                     } else {
-                        monthlyIncome = pcr.Adjusted_Income__c/12;
+                        monthlyIncome += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12;
                     }
-                    Integer primaryAppCreditScore = Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+                    Integer primaryAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
                     creditScore = Math.max(creditScore, primaryAppCreditScore);
                 }
-
+                // set credit score to max of Primary & CoApplicant if both have credit scores
                 if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null &&
                     lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null) {
                     Integer primaryAppCreditScore = Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
@@ -204,15 +214,29 @@ public without sharing class PCRApprovalHandler {
                     continue;
                 }
 
+                Decimal monthlyDebt;
+                if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c == null) {
+                    monthlyDebt = Util.nullToZero(lead.Monthly_Mortgage_Tax_and_Insurance__c	);
+                } else {
+                    monthlyDebt = lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
+                }
+                // add coApplicant's income if it is a joint application
+                if (lead.Application_Type__c == 'Joint' &&
+                    lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != NULL) {
+                    if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c == null) {
+                        monthlyDebt += LoanServicer.nullToZero(lead.Co_App_Monthly_Mortgage__c);
+                    } else {
+                        monthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
+                    }
+                }
+
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
                 // the loan is selected, so we'll look through all applicable products for the lead
                 // and see the best we can do.
                 PCRApprovalHandler.CreditResultSummary creditSummary = 
-                    productRepo.getCreditSummary(lead,
-                                                 creditScore, monthlyIncome, 
-                                                 pcr.Adjusted_Monthly_Personal_Debt__c);
-
-                pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c / monthlyIncome;
+                    productRepo.getCreditSummary(lead, creditScore, monthlyIncome, monthlyDebt);
+// Need to understand why this is on the individual pcr
+                pcr.DTI_Before__c = 100 * monthlyDebt / monthlyIncome;
                 pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
                 pcr.DTI_After__c = creditSummary.highestDTI;
                 pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
@@ -421,9 +445,6 @@ public without sharing class PCRApprovalHandler {
             if (lead.Application_Type__c == 'Joint' && coAppCreditScore != null) {
                 String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
                 if (coAppDecision != primaryDecision) {
-                    jointDecision = PENDINGREVIEW;
-                } else if (primaryDecision == APPROVED) {
-                    // turn off approvals for now...
                     jointDecision = PENDINGREVIEW;
                 } else if (coAppDecision == primaryDecision) {
                     jointDecision = primaryDecision;

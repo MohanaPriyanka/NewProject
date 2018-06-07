@@ -241,7 +241,7 @@ private class PCRApprovalHandlerTest {
         insert leadAG;
         System.assertEquals(null, leadAG.Product__c);
         LoanHandlerTestClass.convertleads(new List<Lead>{leadAG});
-        Opportunity opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
+        Opportunity opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead_ID__c = :leadAG.Id];
         System.assertEquals(null, opp.Product__c);
         leadAG.Status = 'Ready for Credit Check';
         update leadAG;
@@ -264,7 +264,7 @@ private class PCRApprovalHandlerTest {
         ];
 
         System.assertEquals(false, pcrAG.LASERCA__Lead__r.Product__c==null);
-        opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
+        opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead_ID__c = :leadAG.Id];
         System.assertEquals(pcrAG.LASERCA__Lead__r.Product__c, opp.Product__c);
     }
 
@@ -677,12 +677,15 @@ private class PCRApprovalHandlerTest {
         insert new List<Product2>{bwsl1, mslp1, mslp2};
 
         // fico + income must be unique, otherwise leads are not created correctly. see: app.getKey()
+
+        // should add tests that go off lead debt fields...
         String applicationJSON =
             '{"application":[ ' +
                 '  {"income":200001, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"PreApproved"}, ' +
                 '  {"income":200003, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200004, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+                '  {"income":200004 , "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200005, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -855,23 +858,18 @@ private class PCRApprovalHandlerTest {
             System.debug(LoggingLevel.ERROR, 'Assertions for FICO ' + fico);
             if (expectedSLAStatus != null) {
                 System.assertEquals(expectedSLAStatus, pcr.Solar_Loan_Approval_Status__c);
-                System.debug(LoggingLevel.ERROR, 'SLAStatus OK');
             }
             if (expectedStatus != null) {
                 System.assertEquals(expectedStatus, pcr.LASERCA__Lead__r.Status);
-                System.debug(LoggingLevel.ERROR, 'Lead Status OK');
             }
             if (denialSent != null) {
                 System.assertEquals(denialSent, pcr.Credit_Denial_Email_Sent__c);
-                System.debug(LoggingLevel.ERROR, 'Email Sent');
             }
             if (expectedDTIBefore != null) {
                 System.assertEquals(expectedDTIBefore, pcr.DTI_Before__c.setScale(2));
-                System.debug(LoggingLevel.ERROR, 'Expected DTI Before Ok');
             }
             if (expectedDTIAfter != null) {
                 System.assertEquals(expectedDTIAfter, pcr.DTI_After__c.setScale(2));
-                System.debug(LoggingLevel.ERROR, 'Expected DTI After Ok');
             }
         }
         public Integer getKey() {
@@ -904,6 +902,7 @@ private class PCRApprovalHandlerTest {
                     IBLS_Category__c = app.ibls,
                     Application_Type__c = app.applicationType,
                     Co_Applicant_Income__c = Util.nullToZero(app.coAppIncome),
+
                     // Just need a key to use later
                     AnnualRevenue = app.getKey());
                 leads.add(newLead);
