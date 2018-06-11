@@ -955,7 +955,7 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Code_4__c = app.code4,
                     LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null)
                 ));
-                if (app.applicationType.contains('Joint')) {
+                if (app.applicationType != null && app.applicationType.contains('Joint')) {
                     coAppPCRs.add(new LASERCA__Personal_Credit_Report__c(
                         LASERCA__Contact__c = app.contactId,
                         LASERCA__Code__c = app.coAppCode1,
@@ -1000,7 +1000,7 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Monthly_Payment__c = app.debt,
                     LASERCA__Account_Balance__c = app.balance
                 ));
-                if (app.applicationType.contains('Joint')) {
+                if (app.applicationType != null && app.applicationType.contains('Joint')) {
                     tradeAccts.add(new LASERCA__Trade_Accounts__c(
                         LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
                         LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
