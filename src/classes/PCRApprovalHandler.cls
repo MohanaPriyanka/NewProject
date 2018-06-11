@@ -133,13 +133,13 @@ public without sharing class PCRApprovalHandler {
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         Map<Id, Lead> leadstoUpdate = new Map<Id, Lead>();
         List<Product2> products;
-        Boolean hasCoApp = FALSE;
+        Boolean hasCoApp = false;
 
         for (LASERCA__Personal_Credit_Report__c pcrForLead: newPCR) {
-            if (pcrForLead.LASERCA__Lead__c == NULL && pcrForLead.Lead_from_Contact__c != NULL) {
+            if (pcrForLead.LASERCA__Lead__c == null && pcrForLead.Lead_from_Contact__c != null) {
                 pcrForLead.LASERCA__Lead__c = pcrForLead.Lead_from_Contact__c;
             }
-            if (pcrForLead.LASERCA__Lead__c != NULL) {
+            if (pcrForLead.LASERCA__Lead__c != null) {
                 leadlist.add(pcrForLead.LASERCA__Lead__c);
             }
         }
@@ -148,7 +148,7 @@ public without sharing class PCRApprovalHandler {
         List<Lead> relatedLeads  = [
             SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Joint_Applicant_Type__c,
-                Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
                 Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
                 Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
@@ -171,42 +171,17 @@ public without sharing class PCRApprovalHandler {
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
-                pcr.LASERCA__Lead__c != NULL &&
-                leadMap.get(pcr.LASERCA__Lead__c).Product_Line__c != 'Community Solar' &&
+                pcr.LASERCA__Lead__c != null &&
+                leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar' &&
                 leadReadyForPrequalCheck(leadMap.get(pcr.LASERCA__Lead__c))) {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
 
-                Integer creditScore = 0;
-                if (pcr.LASERCA__Credit_Score_TransUnion__c != null) {
-                    creditScore = Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
-                }
+                Integer creditScore = setAppMaximumCreditScore(lead);
+                Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
+                Decimal householdMonthlyDebt = calculateHouseholdMonthlyDebt(lead);
 
-                Decimal householdMonthlyIncome;
-                if (lead.Personal_Credit_Report__r.Adjusted_Income__c == null) {
-                    householdMonthlyIncome = Util.nullToZero(lead.Annual_Income_Currency__c) / 12;
-                } else {
-                    householdMonthlyIncome = lead.Personal_Credit_Report__r.Adjusted_Income__c / 12;
-                }
-                // add coApplicant's income if it is a joint application
-                if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
-                    lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != NULL) {
-                    if (pcr.Adjusted_Income__c == null) {
-                        householdMonthlyIncome += Util.nullToZero(lead.Co_Applicant_Income__c) / 12;
-                    } else {
-                        householdMonthlyIncome += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12;
-                    }
-                    Integer primaryAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
-                    creditScore = Math.max(creditScore, primaryAppCreditScore);
-                }
-                // set credit score to max of Primary & CoApplicant if both have credit scores
-                if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null &&
-                    lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null) {
-                    Integer primaryAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
-                    Integer coAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c));
-                    creditScore = Math.max(primaryAppCreditScore, coAppCreditScore);
-                }
-
+                // prevent divide by zero errors on DTI calcs
                 if (householdMonthlyIncome == 0) {
                     pcr.DTI_Before__c = null;
                     pcr.DTI_After__c = null;
@@ -214,52 +189,13 @@ public without sharing class PCRApprovalHandler {
                     continue;
                 }
 
-                Decimal householdMonthlyDebt = 0;
-                if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c != null) {
-                    householdMonthlyDebt += lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
-                }
-                // add coApplicant's debt if it is a joint application
-                if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
-                    lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != NULL) {
-                    householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
-                }
-
-                // If a lead doesn't have an associated product, we can't calculate the DTI after
-                // the loan is selected, so we'll look through all applicable products for the lead
-                // and see the best we can do.
-                PCRApprovalHandler.CreditResultSummary creditSummary = 
-                    productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
-// Need to understand why this is on the individual pcr
-                Decimal applicantMonthlyIncome;
-                if (pcr.Adjusted_Income__c == null) {
-                    if (pcr.LASERCA__Contact__c == null) {
-                        applicantMonthlyIncome = Util.nullToZero(lead.Annual_Income_Currency__c) /12;
-                    } else {
-                        applicantMonthlyIncome = Util.nullToZero(lead.Co_Applicant_Income__c) / 12;
-                    }
-                } else {
-                    applicantMonthlyIncome = pcr.Adjusted_Income__c / 12;
-                }
-
-                Decimal monthlyPayment;
-                if (creditSummary.highestMonthlyPayment == null) {
-                    monthlyPayment = creditSummary.lowestMonthlyPayment;
-                } else {
-                    monthlyPayment = creditSummary.highestMonthlyPayment;
-                }
-
-                Decimal dtiAfter;
-                if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
-                    dtiAfter = (100 * (monthlyPayment + pcr.Adjusted_Monthly_Personal_Debt__c) / applicantMonthlyIncome).setScale(2);
-                } else {
-                    dtiAfter = creditSummary.highestDTI;
-                }
-
-                pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c  / applicantMonthlyIncome;
-                pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
-                pcr.DTI_After__c = dtiAfter;
-                pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
-                pcr.DTI_After_Notes__c = creditSummary.toString();
+                /*
+                If a lead doesn't have an associated product, we can't calculate the DTI after
+                the loan is selected, so we'll look through all applicable products for the lead
+                and see the best we can do.
+                */
+                CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
+                setPcrDti(lead, creditSummary, pcr);
 
                 if (lead.Product__c == null) {
                     if (creditSummary.bestStatus == APPROVED) {
@@ -378,6 +314,101 @@ public without sharing class PCRApprovalHandler {
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
+    }
+
+    private Integer setAppMaximumCreditScore (Lead lead) {
+        Integer creditScore = 0;
+        Integer primaryAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
+        if (lead.Application_Type__c == 'Joint'
+            && lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null
+            && lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null) {
+            Integer coAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c));
+// credit score is used to populate the list of products to check qualification against, take maximum to populate more products
+            creditScore = Math.max(coAppCreditScore, primaryAppCreditScore);
+        } else if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null) {
+            creditScore = primaryAppCreditScore;
+        }
+        return creditScore;
+    }
+
+    private Decimal calculateHouseholdMonthlyIncome (Lead lead) {
+        Decimal householdMonthlyIncome = 0;
+        if (lead.Personal_Credit_Report__r.Adjusted_Income__c == null) {
+            householdMonthlyIncome += Util.nullToZero(lead.Annual_Income_Currency__c) / 12;
+        } else {
+            householdMonthlyIncome += lead.Personal_Credit_Report__r.Adjusted_Income__c / 12;
+        }
+        // add coApplicant's income if it is a joint application
+        if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
+            lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != null) {
+            if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c == null) {
+                householdMonthlyIncome += Util.nullToZero(lead.Co_Applicant_Income__c) / 12;
+            } else {
+                householdMonthlyIncome += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12;
+            }
+        }
+        return householdMonthlyIncome;
+    }
+
+    private Decimal calculateHouseholdMonthlyDebt (Lead lead) {
+        Decimal householdMonthlyDebt = 0;
+        if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c != null) {
+            householdMonthlyDebt += lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
+        }
+        // add coApplicant's debt if it is a joint application
+        if (lead.Application_Type__c == 'Joint'
+            && lead.Joint_Applicant_Type__c == 'Co-Applicant'
+            && lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != null) {
+            householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
+        }
+        return householdMonthlyDebt;
+    }
+
+    private Decimal getMonthlyPayment (CreditResultSummary creditSummary) {
+        Decimal monthlyPayment;
+        if (creditSummary.highestMonthlyPayment == null) {
+            monthlyPayment = creditSummary.lowestMonthlyPayment;
+        } else {
+            monthlyPayment = creditSummary.highestMonthlyPayment;
+        }
+        return monthlyPayment;
+    }
+
+    private Decimal getPersonalDTIAfter (Lead lead, CreditResultSummary creditSummary, LASERCA__Personal_Credit_Report__c pcr){
+        Decimal personalDTIAfter;
+        Decimal monthlyPayment = getMonthlyPayment(creditSummary);
+        Decimal applicantMonthlyIncome = getApplicantMonthlyIncome(lead, pcr);
+
+        if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
+            personalDTIAfter = (100 * (monthlyPayment + pcr.Adjusted_Monthly_Personal_Debt__c) / applicantMonthlyIncome).setScale(2);
+        } else {
+            personalDTIAfter = creditSummary.highestDTI;
+        }
+        return personalDTIAfter;
+    }
+
+    private Decimal getApplicantMonthlyIncome (Lead lead, LASERCA__Personal_Credit_Report__c pcr) {
+        Decimal applicantMonthlyIncome;
+        if (pcr.Adjusted_Income__c == null) {
+            if (pcr.LASERCA__Contact__c == null) {
+                applicantMonthlyIncome = Util.nullToZero(lead.Annual_Income_Currency__c) /12;
+            } else {
+                applicantMonthlyIncome = Util.nullToZero(lead.Co_Applicant_Income__c) / 12;
+            }
+        } else {
+            applicantMonthlyIncome = pcr.Adjusted_Income__c / 12;
+        }
+        return applicantMonthlyIncome;
+    }
+
+    private void setPcrDti (Lead lead, CreditResultSummary creditSummary, LASERCA__Personal_Credit_Report__c pcr) {
+        Decimal applicantMonthlyIncome = getApplicantMonthlyIncome(lead, pcr);
+
+        pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c  / applicantMonthlyIncome;
+        pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
+        pcr.DTI_After__c = getPersonalDTIAfter(lead, creditSummary, pcr);
+        pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
+        pcr.DTI_After_Notes__c = creditSummary.toString();
     }
 
     private Boolean leadReadyForPrequalCheck (Lead lead) {
