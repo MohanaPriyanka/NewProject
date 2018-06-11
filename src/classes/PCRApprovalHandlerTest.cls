@@ -28,8 +28,12 @@ private class PCRApprovalHandlerTest {
                 '  {"income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "denialSent":true}, ' +
-                '  {"income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Pending Credit Review", "denialSent":false} ' +
+                '  {"income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "denialSent":false} ' +
                 ']}';
+        /*
+        Changed the last assertion, because the PCR id doesn't get added to the parent Lead since fico is null.
+        Since the PCR doesn't get added, the lead isn't ready to go through the automated credit review.
+        */
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();

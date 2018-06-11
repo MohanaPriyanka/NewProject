@@ -381,9 +381,12 @@ public without sharing class PCRApprovalHandler {
     }
 
     private Boolean leadReadyForPrequalCheck (Lead lead) {
-        if (lead.Application_Type__c != 'Joint' && lead.Personal_Credit_Report__c != null) {
+        if (lead.Application_Type__c != 'Joint'
+            && lead.Personal_Credit_Report__c != null) {
             return true;
-        } else if (lead.Application_Type__c == 'Joint' && lead.Personal_Credit_Report__c != null && lead.Personal_Credit_Report_Co_Applicant__c != null) {
+        } else if (lead.Application_Type__c == 'Joint'
+            && lead.Personal_Credit_Report__c != null
+            && lead.Personal_Credit_Report_Co_Applicant__c != null) {
             return true;
         } else {
             return false;
