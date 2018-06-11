@@ -176,10 +176,8 @@ public without sharing class PCRApprovalHandler {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
 
-                Integer creditScore;
-                if (pcr.LASERCA__Credit_Score_TransUnion__c == null) {
-                    creditScore = 0;
-                } else {
+                Integer creditScore = 0;
+                if (pcr.LASERCA__Credit_Score_TransUnion__c != null) {
                     creditScore = Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
                 }
 
@@ -215,20 +213,14 @@ public without sharing class PCRApprovalHandler {
                     continue;
                 }
 
-                Decimal householdMonthlyDebt;
-                if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c == null) {
-                    householdMonthlyDebt = Util.nullToZero(lead.Monthly_Mortgage_Tax_and_Insurance__c	);
-                } else {
-                    householdMonthlyDebt = lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
+                Decimal householdMonthlyDebt = 0;
+                if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c != null) {
+                    householdMonthlyDebt += lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
                 }
                 // add coApplicant's debt if it is a joint application
                 if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
                     lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != NULL) {
-                    if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c == null) {
-                        householdMonthlyDebt += Util.nullToZero(lead.Co_App_Monthly_Mortgage__c);
-                    } else {
-                        householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
-                    }
+                    householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
                 }
 
                 // If a lead doesn't have an associated product, we can't calculate the DTI after
@@ -269,7 +261,6 @@ public without sharing class PCRApprovalHandler {
                 pcr.DTI_After_Notes__c = creditSummary.toString();
 
                 if (lead.Product__c == null) {
-                    // whats the point of this?
                     if (creditSummary.bestStatus == APPROVED) {
                         lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
                     } else {
@@ -281,7 +272,10 @@ public without sharing class PCRApprovalHandler {
                     }
                 }
 
-                // may be depreciated due to new credit review processes
+                /*
+                680 credit score hard coded in. We now have multiple product offerings with different minimum credit thresholds.
+                This won't work in every real life case.
+                */
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
 
                 // set to pending if any codes are present

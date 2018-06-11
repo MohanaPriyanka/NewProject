@@ -88,7 +88,7 @@ private class PCRApprovalHandlerTest {
                 '  {"income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
                 '  {"income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
                 '  {"income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "denialSent":false}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pre-Qualified", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
+                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pre-Qualified", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
@@ -681,11 +681,12 @@ private class PCRApprovalHandlerTest {
         // should add tests that go off lead debt fields...
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":200001, "loan":65000, "applicationType":"Joint", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":200002, "loan":65000, "applicationType":"Joint", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
-                '  {"income":200003, "loan":65000, "applicationType":"Joint", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200004 , "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200005, "loan":65000, "applicationType":"Joint", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+                '  {"income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":200005, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -900,11 +901,16 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Home_State__c = 'MA',
                     Unfinished_Lead__c = true,
                     IBLS_Category__c = app.ibls,
-                    Application_Type__c = app.applicationType,
                     Co_Applicant_Income__c = Util.nullToZero(app.coAppIncome),
-
                     // Just need a key to use later
                     AnnualRevenue = app.getKey());
+                if (app.applicationType == 'Joint Co-App') {
+                    newLead.Application_Type__c = 'Joint';
+                    newLead.Joint_Applicant_Type__c = 'Co-Applicant';
+                } else if (app.applicationType == 'Joint Co-Sign') {
+                    newLead.Application_Type__c = 'Joint';
+                    newLead.Joint_Applicant_Type__c = 'Co-Signer';
+                }
                 leads.add(newLead);
             }
             insert leads;
@@ -949,7 +955,7 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Code_4__c = app.code4,
                     LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null)
                 ));
-                if (app.applicationType == 'Joint') {
+                if (app.applicationType.contains('Joint')) {
                     coAppPCRs.add(new LASERCA__Personal_Credit_Report__c(
                         LASERCA__Contact__c = app.contactId,
                         LASERCA__Code__c = app.coAppCode1,
@@ -994,7 +1000,7 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Monthly_Payment__c = app.debt,
                     LASERCA__Account_Balance__c = app.balance
                 ));
-                if (app.applicationType == 'Joint') {
+                if (app.applicationType.contains('Joint')) {
                     tradeAccts.add(new LASERCA__Trade_Accounts__c(
                         LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
                         LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
