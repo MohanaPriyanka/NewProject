@@ -241,7 +241,7 @@ private class PCRApprovalHandlerTest {
         insert leadAG;
         System.assertEquals(null, leadAG.Product__c);
         LoanHandlerTestClass.convertleads(new List<Lead>{leadAG});
-        Opportunity opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead_ID__c = :leadAG.Id];
+        Opportunity opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
         System.assertEquals(null, opp.Product__c);
         leadAG.Status = 'Ready for Credit Check';
         update leadAG;
