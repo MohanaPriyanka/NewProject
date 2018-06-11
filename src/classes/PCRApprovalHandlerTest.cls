@@ -264,7 +264,7 @@ private class PCRApprovalHandlerTest {
         ];
 
         System.assertEquals(false, pcrAG.LASERCA__Lead__r.Product__c==null);
-        opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead_ID__c = :leadAG.Id];
+        opp = [SELECT Id, Product__c FROM Opportunity WHERE Lead__c = :leadAG.Id];
         System.assertEquals(pcrAG.LASERCA__Lead__r.Product__c, opp.Product__c);
     }
 

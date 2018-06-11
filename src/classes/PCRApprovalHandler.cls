@@ -172,7 +172,8 @@ public without sharing class PCRApprovalHandler {
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
                 pcr.LASERCA__Lead__c != NULL &&
-                leadMap.get(pcr.LASERCA__Lead__c).Product_Line__c != 'Community Solar') {
+                leadMap.get(pcr.LASERCA__Lead__c).Product_Line__c != 'Community Solar' &&
+                leadReadyForPrequalCheck(leadMap.get(pcr.LASERCA__Lead__c))) {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 String bwApproval, doerApproval;
 
@@ -379,6 +380,16 @@ public without sharing class PCRApprovalHandler {
         }
     }
 
+    private Boolean leadReadyForPrequalCheck (Lead lead) {
+        if (lead.Application_Type__c != 'Joint' && lead.Personal_Credit_Report__c != null) {
+            return true;
+        } else if (lead.Application_Type__c == 'Joint' && lead.Personal_Credit_Report__c != null && lead.Personal_Credit_Report_Co_Applicant__c != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private Boolean deniedBecauseFICO (Integer creditScore, Integer creditMinimum) {
         if (creditScore < 300 || creditScore == NULL) {
             return (FALSE);
@@ -461,7 +472,6 @@ public without sharing class PCRApprovalHandler {
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
             }
-            // huh??
             if (lead.Application_Type__c == 'Joint' && coAppCreditScore != null) {
                 String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
                 if (coAppDecision != primaryDecision) {
@@ -517,7 +527,6 @@ public without sharing class PCRApprovalHandler {
         }
 
         private String checkFICOandDTI(Integer creditScore, Decimal DTIafter, Integer creditMinimum, Decimal dtiMaximum) {
-            // 650 - 680 => 45%, 681+ => 50% and handle low product as a non-DOER product for purposes of pre-approval
             if (creditScore >= creditMinimum && DTIafter <= dtiMaximum) {
                 return APPROVED;
             } else if (creditScore >= 700 && DTIafter > dtiMaximum) {
