@@ -686,11 +686,14 @@ private class PCRApprovalHandlerTest {
         String applicationJSON =
             '{"application":[ ' +
                 '  {"income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"income":2, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
                 '  {"income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
                 '  {"income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"income":10, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "coAppDebt":10000, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200005, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+                '  {"income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);

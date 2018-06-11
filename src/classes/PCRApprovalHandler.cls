@@ -508,10 +508,10 @@ public without sharing class PCRApprovalHandler {
             }
             if (lead.Application_Type__c == 'Joint' && coAppCreditScore != null) {
                 String coAppDecision = checkFICOandDTI(coAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
-                if (coAppDecision != primaryDecision) {
-                    jointDecision = PENDINGREVIEW;
-                } else if (coAppDecision == primaryDecision) {
+                if (coAppDecision == primaryDecision && result.dtiAfter <= dtiMaximum) {
                     jointDecision = primaryDecision;
+                } else {
+                    jointDecision = PENDINGREVIEW;
                 }
                 if (betterThan(jointDecision, bestStatus)) {
                     bestStatus = jointDecision;
