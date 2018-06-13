@@ -502,6 +502,8 @@ public without sharing class PCRApprovalHandler {
             Decimal dtiMaximum = product.Debt_To_Income_Maximum__c;
             String primaryDecision = checkFICOandDTI(primaryAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
             String jointDecision;
+            String appDecision;
+
             resultList.add(result);
             if (result.dtiAfter > highestDTI) {
                 highestDTI = result.dtiAfter;
@@ -513,23 +515,16 @@ public without sharing class PCRApprovalHandler {
                 } else {
                     jointDecision = PENDINGREVIEW;
                 }
-                if (betterThan(jointDecision, bestStatus)) {
-                    bestStatus = jointDecision;
-                }
+                appDecision = jointDecision;
             } else if (lead.Application_Type__c != 'Joint') {
-                if (betterThan(primaryDecision, bestStatus)) {
-                    bestStatus = primaryDecision;
-                }
+                appDecision = primaryDecision;
             }
 
-            if (lead.Application_Type__c != 'Joint' && primaryDecision == APPROVED) {
-                approvedProducts.add(product.Id);
-                if (highestMonthlyPayment == null ||
-                    result.monthlyLoanPayment > highestMonthlyPayment) {
-                    highestMonthlyPayment = result.monthlyLoanPayment;
-                    mostExpensiveQualifiedProduct = result.productId;
-                }
-            } else if (lead.Application_Type__c == 'Joint' && jointDecision == APPROVED) {
+            if (betterThan(appDecision, bestStatus)) {
+                bestStatus = appDecision;
+            }
+
+            if (appDecision == APPROVED) {
                 approvedProducts.add(product.Id);
                 if (highestMonthlyPayment == null ||
                     result.monthlyLoanPayment > highestMonthlyPayment) {
@@ -545,6 +540,8 @@ public without sharing class PCRApprovalHandler {
             }
 
         }
+
+
 
         public override String toString() {
             String summary = 'PCRApprovalHandler Summary: ' +
