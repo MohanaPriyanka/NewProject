@@ -506,41 +506,41 @@ public with sharing class LoanServicerTest {
             System.assertEquals(answerMap.get(period).Bill_Status,
                                 loanPayment.Bill_Status__c,
                                 'Bill_Status__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Funds_Distributed),
-                                LoanServicer.nullToZero(loanPayment.Funds_Distributed__c),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Funds_Distributed),
+                                Util.nullToZero(loanPayment.Funds_Distributed__c),
                                 'Funds_Distributed__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Amort_Principal_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Amort_Principal_Due__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Amort_Principal_Due),
+                                Util.nullToZero(setScale(loanPayment.Amort_Principal_Due__c, 3)),
                                 'Amort_Principal_Due__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Amort_Interest_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Amort_Interest_Due__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Amort_Interest_Due),
+                                Util.nullToZero(setScale(loanPayment.Amort_Interest_Due__c, 3)),
                                 'Amort_Interest_Due__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Amort_Cumulative_Principal),
-                                LoanServicer.nullToZero(setScale(loanPayment.Amort_Cumulative_Principal__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Amort_Cumulative_Principal),
+                                Util.nullToZero(setScale(loanPayment.Amort_Cumulative_Principal__c, 3)),
                                 'Amort_Cumulative_Principal__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Amort_Starting_Principal),
-                                LoanServicer.nullToZero(setScale(loanPayment.Amort_Starting_Principal__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Amort_Starting_Principal),
+                                Util.nullToZero(setScale(loanPayment.Amort_Starting_Principal__c, 3)),
                                 'Amort_Starting_Principal__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Amort_Total_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Amort_Total_Due__c, 2)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Amort_Total_Due),
+                                Util.nullToZero(setScale(loanPayment.Amort_Total_Due__c, 2)),
                                 'Amort_Total_Due__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Principal_Applied),
-                                LoanServicer.nullToZero(setScale(loanPayment.Principal_Applied__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Principal_Applied),
+                                Util.nullToZero(setScale(loanPayment.Principal_Applied__c, 3)),
                                 'Principal_Applied__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Forecasted_Cumulative_Principal),
-                                LoanServicer.nullToZero(setScale(loanPayment.Forecasted_Cumulative_Principal__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Forecasted_Cumulative_Principal),
+                                Util.nullToZero(setScale(loanPayment.Forecasted_Cumulative_Principal__c, 3)),
                                 'Forecasted_Cumulative_Principal__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Forecasted_Loan_Balance),
-                                LoanServicer.nullToZero(setScale(loanPayment.Forecasted_Loan_Balance__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Forecasted_Loan_Balance),
+                                Util.nullToZero(setScale(loanPayment.Forecasted_Loan_Balance__c, 3)),
                                 'Forecasted_Loan_Balance__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Forecasted_Interest_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Forecasted_Interest_Due__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Forecasted_Interest_Due),
+                                Util.nullToZero(setScale(loanPayment.Forecasted_Interest_Due__c, 3)),
                                 'Forecasted_Interest_Due__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Forecasted_Principal_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Forecasted_Principal_Due__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Forecasted_Principal_Due),
+                                Util.nullToZero(setScale(loanPayment.Forecasted_Principal_Due__c, 3)),
                                 'Forecasted_Principal_Due__c in period ' + period);
-            System.assertEquals(LoanServicer.nullToZero(answerMap.get(period).Forecasted_Principal_Interest_Due),
-                                LoanServicer.nullToZero(setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3)),
+            System.assertEquals(Util.nullToZero(answerMap.get(period).Forecasted_Principal_Interest_Due),
+                                Util.nullToZero(setScale(loanPayment.Forecasted_Principal_Interest_Due__c, 3)),
                                 'Forecasted_Principal_Interest_Due__c in period ' + period);
         }
     }

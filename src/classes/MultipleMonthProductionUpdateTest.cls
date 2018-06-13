@@ -1,6 +1,18 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
     @testSetup public static void MultipleMonthTest(){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c national_grid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, national_grid};
+
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
                                                                        Class__c = 'Class 2',
@@ -43,6 +55,7 @@ public class MultipleMonthProductionUpdateTest {
                                        Assemblage_Count__c = 1,
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
+                                       Utility__c = eversource.Id,
                                        Maximum_Subscription_Assemblage__c = 25);
         insert new List<Shared_Solar_System__c>{sss1};
 

@@ -348,7 +348,7 @@ public with sharing class CAPControllerTest {
         CAPController.convertLead(lead.Id, lead.Email);
         CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         // Shouldn't send docs since the equipment isn't populated
-        String loanSendResult = CAPController.sendLoanDocs(lead.Id, lead.Email);
+        CAPController.sendLoanDocs(lead.Id, lead.Email);
         Test.stopTest();
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId, Status,
@@ -362,7 +362,6 @@ public with sharing class CAPControllerTest {
         System.assertEquals(lead.ConvertedOpportunityId, lead.Residential_Equipment__r[0].Opportunity__c);
         System.assertEquals('Interested', lead.Status);
         System.assertEquals(true, lead.IsConverted);
-        System.assertEquals(null, loanSendResult);
     }
 
     @IsTest static void testLoanDocSend() {
@@ -384,8 +383,7 @@ public with sharing class CAPControllerTest {
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-        String result = CAPController.sendLoanDocs(lead.Id, lead.Email);
-        System.assertEquals('Created', result);
+        CAPController.sendLoanDocs(lead.Id, lead.Email);
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
             (SELECT Id FROM Loans__r),

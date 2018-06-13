@@ -12,7 +12,8 @@
                     component.set("v.lead", lead);
                     component.set('v.contactAttachments', leadWithAttachments.contactAttachments);
                     var monthlyPayment = lead.Monthly_Payment__c;
-                    if (lead.Product__r.DTI_After_Rate_Gross_Up__c) {
+                    if (lead.Product__r &&
+                        lead.Product__r.DTI_After_Rate_Gross_Up__c) {
                         monthlyPayment =
                             (lead.Loan_Principal__c*(lead.Product__r.Loan_Interest_Rate__c+lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12) /
                             (1-Math.pow((1+(lead.Product__r.Loan_Interest_Rate__c+lead.Product__r.DTI_After_Rate_Gross_Up__c)/100/12),(-1*lead.Product__r.Loan_Term__c)));

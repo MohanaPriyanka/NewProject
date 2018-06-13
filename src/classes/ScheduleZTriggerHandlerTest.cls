@@ -51,18 +51,41 @@ public class ScheduleZTriggerHandlerTest {
         insert sss2ScheduleZ;
 
         List<Schedule_Z_Subscription__c> sss2ScheduleZs = [
-            SELECT Id, Customer_Subscription_kW_DC__c
+            SELECT Id, Customer_Subscription_kW_DC__c, Number_of_Decimal_Places__c,
+                System_Size_kW_DC__c, Percent_Share__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : sss2ScheduleZ.Id
         ];
 
         System.assertEquals(1, sss2ScheduleZs.size());
         System.assertEquals(4.6154 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
+        System.assertEquals(4, sss2ScheduleZs[0].Number_of_Decimal_Places__c);
+        System.assertEquals(1445.86, sss2ScheduleZs[0].System_Size_kW_DC__c);
+
+        Decimal customerSubscription = sss2ScheduleZs[0].Customer_Subscription_kW_DC__c;
+        Decimal systemSize = sss2ScheduleZs[0].System_Size_kW_DC__c;
+        Integer decimalPlaces = (Integer) sss2ScheduleZs[0].Number_of_Decimal_Places__c;
+
+        Decimal calculatedPercentShare = (100.00 * customerSubscription / systemSize).setScale(decimalPlaces);
+
+        System.assertEquals(calculatedPercentShare, sss2ScheduleZs[0].Percent_Share__c);
 
         test.stopTest();
     }
 
     @testSetup public static void setupTestData(){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 4
+        );
+
+        Utility__c national_grid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 4
+        );
+
+        insert new List<Utility__c>{eversource, national_grid};
+
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
@@ -127,7 +150,8 @@ public class ScheduleZTriggerHandlerTest {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
-                Maximum_Subscription_Assemblage__c = 25);
+                Maximum_Subscription_Assemblage__c = 25,
+                Utility__c = eversource.Id);
 
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
@@ -146,7 +170,9 @@ public class ScheduleZTriggerHandlerTest {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity2.Id,
-                Maximum_Subscription_Assemblage__c = 25);
+                Maximum_Subscription_Assemblage__c = 25,
+                Utility__c = eversource.Id
+            );
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         Id parentAccountRT =
