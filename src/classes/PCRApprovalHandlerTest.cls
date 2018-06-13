@@ -21,14 +21,14 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":20000, "loan":65000, "doer":false, "fico":680, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":1000,  "loan":65000, "doer":false, "fico":402, "debt":500, "balance":10000, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":801, "debt":1000, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":805, "debt":200}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "denialSent":true}, ' +
-                '  {"income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "denialSent":false} ' +
+                '  {"key":1, "income":20000, "loan":65000, "doer":false, "fico":680, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
+                '  {"key":2, "income":1000,  "loan":65000, "doer":false, "fico":402, "debt":500, "balance":10000, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":3, "income":90000, "loan":20000, "doer":false, "fico":801, "debt":1000, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":4, "income":90000, "loan":20000, "doer":false, "fico":805, "debt":200}, ' +
+                '  {"key":5, "income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":6, "income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":7, "income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "denialSent":true}, ' +
+                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "denialSent":false} ' +
                 ']}';
         /*
         Changed the last assertion, because the PCR id doesn't get added to the parent Lead since fico is null.
@@ -87,21 +87,21 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":681, "ibls":"Category 1", "debt":500, "balance":10000, "code1":"039", "code2":"034", "code3":"040", "code4":"022", "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "denialSent":false}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pre-Qualified", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
-                '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
-                '  {"income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
-                '  {"income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
-                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
+                '  {"key":1, "income":50000, "loan":45000, "doer":true,  "fico":681, "ibls":"Category 1", "debt":500, "balance":10000, "code1":"039", "code2":"034", "code3":"040", "code4":"022", "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"key":2, "income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"}, ' +
+                '  {"key":3, "income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"key":4, "income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":5, "income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "denialSent":false}, ' +
+                '  {"key":6, "income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pre-Qualified", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
+                '  {"key":7, "income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":8, "income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":9, "income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
+                '  {"key":10, "income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
+                '  {"key":11, "income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
+                '  {"key":12, "income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
+                '  {"key":13, "income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
+                '  {"key":14, "income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
+                '  {"key":15, "income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -680,20 +680,18 @@ private class PCRApprovalHandlerTest {
         mslp2.IBLS_Category__c = 'Category 2';
         insert new List<Product2>{bwsl1, mslp1, mslp2};
 
-        // fico + income must be unique, otherwise leads are not created correctly. see: app.getKey()
-
         // should add tests that go off lead debt fields...
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":2, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
-                '  {"income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
-                '  {"income":10, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "coAppDebt":10000, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+                '  {"key":1, "income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":2, "income":2, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":420, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":3, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":4, "income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":5, "income":10, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "coAppDebt":10000, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":6, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -862,8 +860,9 @@ private class PCRApprovalHandlerTest {
         public String expectedSLAStatus, expectedStatus;
         public Boolean denialSent;
         public Decimal expectedDTIBefore, expectedDTIAfter;
+        public Integer key;
         public void assert(LASERCA__Personal_Credit_Report__c pcr) {
-            System.debug(LoggingLevel.ERROR, 'Assertions for FICO ' + fico);
+            System.debug(LoggingLevel.ERROR, 'Assertions for Key ' + key);
             if (expectedSLAStatus != null) {
                 System.assertEquals(expectedSLAStatus, pcr.Solar_Loan_Approval_Status__c);
             }
@@ -879,9 +878,6 @@ private class PCRApprovalHandlerTest {
             if (expectedDTIAfter != null) {
                 System.assertEquals(expectedDTIAfter, pcr.DTI_After__c.setScale(2));
             }
-        }
-        public Integer getKey() {
-            return ((Integer) (Util.nullToZero(fico) + Util.nullToZero(income)));
         }
     }
     public class ApplicationSet {
@@ -910,7 +906,7 @@ private class PCRApprovalHandlerTest {
                     IBLS_Category__c = app.ibls,
                     Co_Applicant_Income__c = Util.nullToZero(app.coAppIncome),
                     // Just need a key to use later
-                    AnnualRevenue = app.getKey());
+                    AnnualRevenue = app.key);
                 if (app.applicationType == 'Joint Co-App') {
                     newLead.Application_Type__c = 'Joint';
                     newLead.Joint_Applicant_Type__c = 'Co-Applicant';
@@ -941,7 +937,7 @@ private class PCRApprovalHandlerTest {
                 contactsByLead.put(contact.Lead__c, contact);
             }
             for (Application app : application) {
-                Id leadId = incomeToLeadID.get(app.getKey());
+                Id leadId = incomeToLeadID.get(app.key);
                 app.leadId = leadId;
                 if (contactsByLead.containsKey(leadId)) {
                     app.contactId = contactsByLead.get(leadId).Id;
