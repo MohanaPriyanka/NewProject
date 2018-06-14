@@ -123,8 +123,8 @@ public class TestBillCreationandPayment {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
         User userRecord = new User(
-            FirstName = 'Jordan',
-            Lastname ='Testcase',
+            FirstName = 'Man',
+            Lastname ='BearPig',
             Alias = 'xxx234',
             Email = 'jpentaleri@bluewavesolar.com',
             Emailencodingkey ='UTF-8',
@@ -135,8 +135,9 @@ public class TestBillCreationandPayment {
             IsActive = true,
             ContactId = contactA.Id,
             Timezonesidkey='America/Los_Angeles',
-            Username='testBillCreationandPay@bluewavesolar.com');
-        Util.insertSobjs(new list<User>{userRecord});
+            Username='ManBearPig@bluewavesolar.com');
+//        Util.insertSobj(userRecord);
+        insert userRecord;
 
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
@@ -260,7 +261,7 @@ public class TestBillCreationandPayment {
 
         insert productionupdateA1;
 
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+        Energy_Usage_Update__c productionupdateA2 = new Energy_Usage_Update__c (
             Name = 'sssA - February 2016',
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
@@ -272,9 +273,9 @@ public class TestBillCreationandPayment {
             Date__c = myDateFeb
         );
 
-        insert productionupdateB2;
+        insert productionupdateA2;
 
-        Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+        Energy_Usage_Update__c productionupdateA3 = new Energy_Usage_Update__c (
             Name = 'sssA - March 2016',
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
@@ -286,12 +287,43 @@ public class TestBillCreationandPayment {
             Date__c = myDateMar
         );
 
-        insert productionupdateB3;
+        insert productionupdateA3;
+
+        Energy_Usage_Update__c productionupdateB1 = new Energy_Usage_Update__c (
+            Name = 'sssB - January 2016',
+            Shared_Solar_System__c = sss2.id,
+            Schedule_Z__c = scheduleZ2.id,
+            Production__c = 90000,
+            Size_off_NMCs__c = true,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateFeb,
+            Total_System_NMCs__c = 16632,
+            Date__c = myDateJan
+        );
+
+        insert productionupdateB1;
+
+        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+            Name = 'sssB - February 2016',
+            Shared_Solar_System__c = sss2.id,
+            Schedule_Z__c = scheduleZ2.id,
+            Production__c = 120000,
+            Size_off_NMCs__c = true,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateMar,
+            Total_System_NMCs__c = 22176,
+            Date__c = myDateFeb
+        );
+
+        insert productionupdateB2;
+
+
 
         productionupdateA1.Generate_Bills__c = TRUE;
-        productionupdateB2.Generate_Bills__c = TRUE;
+        productionupdateA2.Generate_Bills__c = TRUE;
         update productionupdateA1;
-        update productionupdateB2;
+        update productionupdateA2;
+
 
         APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert newConga;
@@ -315,9 +347,15 @@ public class TestBillCreationandPayment {
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
-        System.AssertEquals( 3, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        System.AssertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
 
-        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id);
+        Energy_Usage_Update__c productionUpdate = [
+          SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - February 2016'
+        ];
+
+        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdate.Id, true, productionUpdate.Schedule_Z__r.Id);
         System.AssertEquals(345.28, uasbList[0].PreGen_Discounted_Bill__c);
         System.AssertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
         Test.stopTest();
@@ -383,7 +421,7 @@ public class TestBillCreationandPayment {
         }
 
         String acctId = systemBillList[1].Property_Account_Id__c;
-        system.AssertEquals( 3, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
+        system.AssertEquals(5, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
 
         systemBillList[1].Waive_Late_Fees__c = TRUE;
         systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
@@ -452,6 +490,52 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
+    @isTest public static void testAccountBills() {
+        Test.startTest();
+
+        Energy_Usage_Update__c productionupdateB1 = [
+          SELECT Id, Generate_Bills__c, MonthDate__c
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - January 2016'
+            LIMIT 1
+        ];
+
+        Energy_Usage_Update__c productionupdateB2 = [
+          SELECT Id, Generate_Bills__c
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - February 2016'
+            LIMIT 1
+        ];
+
+        // Sets up case were customer has multiple subscriptions and bills
+        productionupdateB1.Generate_Bills__c = TRUE;
+        productionupdateB2.Generate_Bills__c = TRUE;
+        update productionupdateB1;
+        update productionupdateB2;
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
+            FROM Account_Bill__c
+            ORDER BY Bill_Number__c
+        ];
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Bill_Number__c
+            FROM System_Bill__c
+        ];
+
+        System.debug(LoggingLevel.ERROR, productionupdateB1);
+        System.debug(LoggingLevel.ERROR, accountBills);
+        System.debug(LoggingLevel.ERROR, systemBills);
+
+        System.AssertEquals(4, systemBills.size());
+        System.AssertEquals(2, accountBills.size());
+        System.AssertEquals(1, accountBills[0].Bill_Number__c);
+        System.AssertEquals(2, accountBills[1].Bill_Number__c);
+        System.AssertEquals(accountBills[0].Total_Due__c, accountBills[1].Past_Bill__c);
+        Test.stopTest();
+    }
+
     @isTest public static void testSystemBills() {
         Test.startTest();
         List<System_Bill__c> systemBillList =
@@ -468,6 +552,8 @@ public class TestBillCreationandPayment {
             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
+
+        System.debug(LoggingLevel.ERROR, systemBillList);
 
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
         System.AssertEquals(606.83,systembillList[1].Total_Due__c);
@@ -723,7 +809,7 @@ public class TestBillCreationandPayment {
         System.assertEquals('Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
 
-        Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Generate_Bills__c = false];
+        Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Name = 'sssA - March 2016'];
         prodUpdate.Generate_Bills__c = True;
         update prodUpdate;
 
