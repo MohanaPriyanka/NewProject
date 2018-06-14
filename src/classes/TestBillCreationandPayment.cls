@@ -136,7 +136,7 @@ public class TestBillCreationandPayment {
             ContactId = contactA.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='ManBearPig@bluewavesolar.com');
-//        Util.insertSobj(userRecord);
+
         insert userRecord;
 
         ChargentBase__Gateway__c chGateway  =
