@@ -553,8 +553,6 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
-        System.debug(LoggingLevel.ERROR, systemBillList);
-
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
         System.AssertEquals(606.83,systembillList[1].Total_Due__c);
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
