@@ -494,20 +494,19 @@ public class TestBillCreationandPayment {
         Test.startTest();
 
         Energy_Usage_Update__c productionupdateB1 = [
-          SELECT Id, Generate_Bills__c, MonthDate__c
+          SELECT Id, Generate_Bills__c, Month_Number__c
           FROM Energy_Usage_Update__c
             WHERE Name = 'sssB - January 2016'
             LIMIT 1
         ];
 
         Energy_Usage_Update__c productionupdateB2 = [
-          SELECT Id, Generate_Bills__c
+          SELECT Id, Generate_Bills__c, Month_Number__c
           FROM Energy_Usage_Update__c
             WHERE Name = 'sssB - February 2016'
             LIMIT 1
         ];
 
-        // Sets up case were customer has multiple subscriptions and bills
         productionupdateB1.Generate_Bills__c = TRUE;
         productionupdateB2.Generate_Bills__c = TRUE;
         update productionupdateB1;
@@ -524,15 +523,16 @@ public class TestBillCreationandPayment {
             FROM System_Bill__c
         ];
 
-        System.debug(LoggingLevel.ERROR, productionupdateB1);
-        System.debug(LoggingLevel.ERROR, accountBills);
-        System.debug(LoggingLevel.ERROR, systemBills);
+        Account_Bill__c januaryAccountBill = accountBills[0];
+        Account_Bill__c februaryAccountBill = accountBills[1];
 
         System.AssertEquals(4, systemBills.size());
         System.AssertEquals(2, accountBills.size());
-        System.AssertEquals(1, accountBills[0].Bill_Number__c);
-        System.AssertEquals(2, accountBills[1].Bill_Number__c);
-        System.AssertEquals(accountBills[0].Total_Due__c, accountBills[1].Past_Bill__c);
+        System.AssertEquals(1, januaryAccountBill.Bill_Number__c);
+        System.AssertEquals(1, januaryAccountBill.Month__c);
+        System.AssertEquals(2, februaryAccountBill.Bill_Number__c);
+        System.AssertEquals(2, februaryAccountBill.Month__c);
+        System.AssertEquals(januaryAccountBill.Total_Due__c, februaryAccountBill.Past_Bill__c);
         Test.stopTest();
     }
 
