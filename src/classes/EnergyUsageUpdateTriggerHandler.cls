@@ -12,6 +12,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Map<Id, Energy_Usage_Update__c> sssIdToEUUMap = new Map<Id,Energy_Usage_Update__c>();        
     public Set<Id> scheduleZs = new Set<Id>();
     public Set<Integer> euuMonths = new Set<Integer>();
+    public Set<String> euuYears = new Set<String>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
     public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
@@ -19,6 +20,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             sssIdToEUUMap.put(euu.Shared_Solar_System__c, euu);
             scheduleZs.add(euu.Schedule_Z__c);
             euuMonths.add((Integer) euu.Month_Number__c);
+            euuYears.add(euu.YearDate__c);
         }
         if (!Test.isRunningTest()) {
             Database.executeBatch(this, 10);
@@ -106,6 +108,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             SELECT Id, Unique_ID__c
             FROM Account_Bill__c
             WHERE Month__c IN : euuMonths
+            AND Year__c IN : euuYears
         ]) {
             abKeyToAccountBillMap.put(accountBill.Unique_ID__c, accountBill);
         }
