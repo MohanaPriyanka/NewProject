@@ -7,45 +7,60 @@
     <div class="slds-global-header slds-grid slds-grid_align-spread">
       <div class="slds-global-header__item">
         <div class="slds-global-header__logo global-header__icon">
-            <img src="{!'/resource/ClientLogosColorBackground/' + v.logoFile + '.png'}" style="max-height:40px;" class="fadeIn"/>
+          <img src="{!'/resource/ClientLogosColorBackground/' + v.logoFile + '.png'}" style="max-height:40px;" class="fadeIn"/>
         </div>
       </div>
-    <div class="slds-global-header__item slds-text-color_inverse">
-        <div class="logout">
-          <a href="/secur/logout.jsp">
-            <span class="slds-truncate">Logout</span>
-          </a>
+      <aura:if isTrue="{!!$Browser.isPhone}">
+        <div class="slds-global-header__item slds-text-color_inverse">
+          <div class="logout">
+            <a href="/secur/logout.jsp">
+              <span class="slds-truncate">Logout</span>
+            </a>
+          </div>
         </div>
+      </aura:if>
+    </div>
+    <aura:if isTrue="{!$Browser.isPhone}">
+      <lightning:buttonMenu iconName="utility:rows" alternativeText="Menu" onselect="{!c.handleNavigationMenuSelect}">
+        <lightning:menuItem label="Dashboard" value="/" />
+        <lightning:menuItem label="My Account" value="/myaccount" />
+        <lightning:menuItem label="My Solar" value="/mysolar" />
+        <lightning:menuItem label="Refer a Friend" value="/referafriend" />
+        <lightning:menuItem label="Settings" value="/accountinfo" />
+        <lightning:menuItem label="Logout" value="../secur/logout.jsp" />
+      </lightning:buttonMenu>
+    </aura:if>
+
+    <aura:if isTrue="{!!$Browser.isPhone}">
+      <div class="slds-tabs--default">
+        <ul class="slds-tabs--default__nav" role="tablist">
+          <li class="slds-tabs_default__item" title="Dashboard" role="presentation">
+              <a class="slds-tabs--default__link slds-text-body_small" href="/s/">
+                  <b>Dashboard</b>
+              </a>
+          </li>
+          <li class="slds-tabs_default__item" title="My Account" role="presentation">
+              <a class="slds-tabs--default__link slds-text-body_small" href="myaccount">
+                  <b>My Account</b>
+              </a>
+          </li>
+          <li class="slds-tabs_default__item" title="My Solar" role="presentation">
+              <a class="slds-tabs--default__link slds-text-body_small" href="mysolar">
+                  <b>My Solar</b>
+              </a>
+          </li>
+          <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
+              <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
+                  <b>Refer a Friend</b>
+              </a>
+          </li>    
+          <li class="slds-tabs_default__item" title="Account Settings" role="presentation">
+              <a class="slds-tabs--default__link slds-text-body_small" href="accountinfo" >
+                  <b>Settings</b>
+              </a>
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="slds-tabs--default">
-      <ul class="slds-tabs--default__nav" role="tablist">
-        <li class="slds-tabs_default__item" title="Dashboard" role="presentation">
-            <a class="slds-tabs--default__link slds-text-body_small" href="/s/">
-                <b>Dashboard</b>
-            </a>
-        </li>
-        <li class="slds-tabs_default__item" title="My Account" role="presentation">
-            <a class="slds-tabs--default__link slds-text-body_small" href="myaccount">
-                <b>My Account</b>
-            </a>
-        </li>
-        <li class="slds-tabs_default__item" title="My Solar" role="presentation">
-            <a class="slds-tabs--default__link slds-text-body_small" href="mysolar">
-                <b>My Solar</b>
-            </a>
-        </li>
-        <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
-            <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
-                <b>Refer a Friend</b>
-            </a>
-        </li>    
-        <li class="slds-tabs_default__item" title="Account Settings" role="presentation">
-            <a class="slds-tabs--default__link slds-text-body_small" href="accountinfo" >
-                <b>Settings</b>
-            </a>
-        </li>      
-      </ul>
-    </div>
+    </aura:if>
   </header>
 </aura:component>
