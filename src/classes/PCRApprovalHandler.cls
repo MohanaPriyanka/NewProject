@@ -171,12 +171,12 @@ public without sharing class PCRApprovalHandler {
                     Integer.valueOf(pcr.LASERCA__Credit_Score_TransUnion__c);
 
                 Decimal monthlyIncome = 
-                    (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
+                    (pcr.Adjusted_Income__c==null?Util.nullToZero(lead.Annual_Income_Currency__c):pcr.Adjusted_Income__c)/12;
                 if (pcr.LASERCA__Contact__c != NULL) {
                     monthlyIncome = 
-                        (pcr.Adjusted_Income__c==null?LoanServicer.nullToZero(lead.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
+                        (pcr.Adjusted_Income__c==null?Util.nullToZero(lead.Co_Applicant_Income__c):pcr.Adjusted_Income__c)/12;
                     creditScore = Math.max(creditScore,
-                                           Integer.valueOf(LoanServicer.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
+                                           Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)));
                 }
 
                 if (monthlyIncome == 0) {
@@ -489,8 +489,8 @@ public without sharing class PCRApprovalHandler {
 
         if (leadIsCoapplicant(creditReportList)) {
             for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
-                if (creditMetric.creditScore < Integer.valueOf(LoanServicer.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c))) {
-                    creditMetric.creditScore = Integer.valueOf(LoanServicer.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c));   
+                if (creditMetric.creditScore < Integer.valueOf(Util.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c))) {
+                    creditMetric.creditScore = Integer.valueOf(Util.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c));   
                 }
                 if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
                     creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.Adjusted_Monthly_Personal_Debt__c;     

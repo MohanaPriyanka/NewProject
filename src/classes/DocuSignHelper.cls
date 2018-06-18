@@ -29,11 +29,14 @@ public without sharing class DocuSignHelper {
             apiAccountId = sysProp.DocuSign_API_Account_ID__c;
 
             dsAPI = new DocuSignAPI.APIServiceSoap();
+            // Set timeout to 90 seconds, up from default of 10 seconds
+            dsAPI.timeout_x = 90000;
             Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
             if (o.IsSandbox || Test.isRunningTest()) {
                 dsAPI.endpoint_x = 'https://demo.docusign.net/api/3.0/dsapi.asmx';
                 restAPIServer = 'https://demo.docusign.net/restapi/v2';
             } else {
+                dsAPI.endpoint_x = 'https://www.docusign.net/api/3.0/dsapi.asmx';
                 restAPIServer = 'https://www.docusign.net/restapi/v2';
             }
             dsAPI.inputHttpHeaders_x = new Map<String, String>();

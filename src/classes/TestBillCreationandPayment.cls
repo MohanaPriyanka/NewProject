@@ -1,6 +1,18 @@
 @isTest
 public class TestBillCreationandPayment {
     @testSetup public static void CSTestRecordWarehouse(){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c national_grid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, national_grid};
+
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
@@ -65,7 +77,9 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
-                Maximum_Subscription_Assemblage__c = 25);
+                Maximum_Subscription_Assemblage__c = 25,
+                Utility__c = eversource.Id
+            );
 
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
@@ -84,7 +98,10 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity2.Id,
-                Maximum_Subscription_Assemblage__c = 25);
+                Maximum_Subscription_Assemblage__c = 25,
+                Utility__c = eversource.Id
+            );
+
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         Id parentAccountRT =

@@ -188,7 +188,7 @@ public class DisbursalHandler {
     }
 
     public void setStatusToDisbursed (List<Disbursal__c> disbursalList, Map<Id,Disbursal__c> newMap, Map<Id, Disbursal__c> oldMap) {
-        for (DisbursaL__c disbursal : disbursalList) {
+        for (Disbursal__c disbursal : disbursalList) {
             if (newMap.get(disbursal.Id).Date_of_Disbursal__c != oldMap.get(disbursal.Id).Date_of_Disbursal__c) {
                 if (newMap.get(disbursal.Id).Date_of_Disbursal__c != null) {
                     disbursal.Status__c = 'Disbursed';
@@ -204,7 +204,7 @@ public class DisbursalHandler {
     }
 
     public void setStatusAndFBODateonFBOFunding (List<Disbursal__c> disbursalList, Map<Id,Disbursal__c> newMap, Map<Id, Disbursal__c> oldMap) {
-        for (DisbursaL__c disbursal : disbursalList) {
+        for (Disbursal__c disbursal : disbursalList) {
             if (fieldHasChanged(disbursal, newMap, oldMap, 'Funds_in_FBO_Account__c', 'true', null)) {
                 disbursal.Date_of_FBO_Funding__c = Date.today();
                 if (disbursal.Status__c != 'Disbursed') {
@@ -217,7 +217,7 @@ public class DisbursalHandler {
     }
 
     public void setStatusToHold (List<Disbursal__c> disbursalList, Map<Id,Disbursal__c> newMap, Map<Id, Disbursal__c> oldMap) {
-        for (DisbursaL__c disbursal : disbursalList) {
+        for (Disbursal__c disbursal : disbursalList) {
             if (fieldHasChanged(disbursal, newMap, oldMap, 'Hold_on_Disbursal__c', 'true', null)) {
                 disbursal.Status_Before_Hold__c = disbursal.Status__c;
                 disbursal.Status__c = 'Hold';
@@ -294,5 +294,49 @@ public class DisbursalHandler {
         nextDisbursal.Amount__c = nextAmount;
         disbursalsToUpdate.add(nextDisbursal);
         return disbursalsToUpdate;
+    }
+
+    public void setFirstPaymentDueDate(List<Disbursal__c> newDisbursals, Map<Id, Disbursal__c> oldDisbursals) {
+        Set<Id> loanIds = new Set<Id>();
+        for (Disbursal__c disbursal : newDisbursals) {
+            if (disbursal.Date_of_Disbursal__c != oldDisbursals.get(disbursal.Id).Date_of_Disbursal__c) {
+                loanIds.add(disbursal.Loan__c);
+            }
+        }
+        Map<Id, Loan__c> loanMap = new Map<Id, Loan__c>([
+            SELECT Id, DOER_Solar_Loann__c, First_Payment_Due_Date_Override__c
+            FROM Loan__c
+            WHERE Id = :loanIds
+        ]);
+        List<Loan__c> loansToUpdate = new List<Loan__c>();
+        for (Disbursal__c disbursal : newDisbursals) {
+            if (disbursal.Date_of_Disbursal__c != oldDisbursals.get(disbursal.Id).Date_of_Disbursal__c) {
+                Loan__c relatedLoan = loanMap.get(disbursal.Loan__c);
+                if ((disbursal.Disbursal_Sequence__c == 1 && relatedLoan.DOER_Solar_Loann__c) ||
+                    (disbursal.Disbursal_Sequence__c == 3 && !relatedLoan.DOER_Solar_Loann__c)) {
+                    Loan__c loan = new Loan__c(
+                        Id = disbursal.Loan__c,
+                        First_Payment_Due_Date_Override__c = getFirstPaymentDueDate(disbursal.Date_of_Disbursal__c)
+                    );
+                    loansToUpdate.add(loan);
+
+                }
+            }
+        }
+        if (!loansToUpdate.isEmpty()) {
+            update loansToUpdate;
+        }
+    }
+
+    // Per Lease Dimensions, payment due dates are on the 28th at the latest.
+    private Date getFirstPaymentDueDate(Date disbursalDate) {
+        if (disbursalDate == null) {
+            return null;
+        }
+        Date fpdd = disbursalDate.addMonths(1);
+        if (fpdd.day() > 28) {
+            fpdd = date.newInstance(fpdd.year(), fpdd.month(), 28);
+        }
+        return fpdd;
     }
 }
