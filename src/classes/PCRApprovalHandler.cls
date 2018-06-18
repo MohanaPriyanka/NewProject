@@ -157,9 +157,11 @@ public without sharing class PCRApprovalHandler {
                 Personal_Credit_Report__r.LASERCA__Contact__c,
                 Personal_Credit_Report__r.Adjusted_Income__c,
                 Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.LASERCA__Bankruptcy__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c
             FROM Lead
             WHERE Id  IN : leadlist
         ];
@@ -214,6 +216,10 @@ public without sharing class PCRApprovalHandler {
                 This won't work in every real life case.
                 */
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
+
+                if (currentBankruptcy(lead)) {
+                    creditSummary.bestStatus = DECLINED;
+                }
 
                 // set to pending if any codes are present
                 if (creditSummary.bestStatus == APPROVED &&
@@ -313,6 +319,19 @@ public without sharing class PCRApprovalHandler {
         }
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
+        }
+    }
+
+    private Boolean currentBankruptcy (Lead lead) {
+        if (lead.Application_Type__c == 'Joint') {
+            if (lead.Personal_Credit_Report__r.LASERCA__Bankruptcy__c
+                || lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return lead.Personal_Credit_Report__r.LASERCA__Bankruptcy__c;
         }
     }
 

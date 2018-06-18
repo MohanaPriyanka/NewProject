@@ -28,7 +28,8 @@ private class PCRApprovalHandlerTest {
                 '  {"key":5, "income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
                 '  {"key":6, "income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":7, "income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "denialSent":true}, ' +
-                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "denialSent":false} ' +
+                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "denialSent":false}, ' +
+                '  {"key":9, "bankruptcy":true, "income":90000, "loan":20000, "doer":false, "fico":801, "debt":1000, "expectedSLAStatus":"Declined", "expectedStatus":"Unqualified"} ' +
                 ']}';
         /*
         Changed the last assertion, because the PCR id doesn't get added to the parent Lead since fico is null.
@@ -691,9 +692,12 @@ private class PCRApprovalHandlerTest {
                 '  {"key":6, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":10, "bankruptcy":true, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":11, "coAppBankruptcy":true, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Unqualified"} ' +
                 ']}';
-        ApplicationSet applicationSet = parse(applicationJSON);
+
+            ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
         Test.startTest();
@@ -859,6 +863,7 @@ private class PCRApprovalHandlerTest {
         public Id leadId, pcrId, coAppPCRId, contactId;
         public String expectedSLAStatus, expectedStatus;
         public Boolean denialSent;
+        public Boolean bankruptcy, coAppBankruptcy;
         public Decimal expectedDTIBefore, expectedDTIAfter;
         public Integer key;
         public void assert(LASERCA__Personal_Credit_Report__c pcr) {
@@ -956,6 +961,7 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Code_2__c = app.code2,
                     LASERCA__Code_3__c = app.code3,
                     LASERCA__Code_4__c = app.code4,
+                    LASERCA__Bankruptcy__c = (app.bankruptcy != null)?app.bankruptcy:false,
                     LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null)
                 ));
                 if (app.applicationType != null && app.applicationType.contains('Joint')) {
@@ -965,7 +971,8 @@ private class PCRApprovalHandlerTest {
                         LASERCA__Code_2__c = app.coAppCode2,
                         LASERCA__Code_3__c = app.coAppCode3,
                         LASERCA__Code_4__c = app.coAppCode4,
-                        LASERCA__Credit_Score_TransUnion__c = (app.coAppFICO!=null?String.valueOf(app.coAppFICO):null)
+                        LASERCA__Bankruptcy__c = (app.coAppBankruptcy != null)?app.coAppBankruptcy:false,
+                    LASERCA__Credit_Score_TransUnion__c = (app.coAppFICO!=null?String.valueOf(app.coAppFICO):null)
                     ));
                 }
             }
