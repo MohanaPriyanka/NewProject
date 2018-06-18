@@ -137,7 +137,7 @@ public class TestBillCreationandPayment {
             Timezonesidkey='America/Los_Angeles',
             Username='ManBearPig@bluewavesolar.com');
 
-        insert userRecord;
+        Util.insertSobj(userRecord);
 
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
