@@ -86,16 +86,15 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
             Utility_Account_Subscription__c uas = uasMap.get(scheduleZSub.Utility_Account_Subscription__c);
-            if (sssIdToEUUMap.containsKey(uas.Opportunity__r.Shared_Solar_System__c)) {
+            if (uas != null && sssIdToEUUMap.containsKey(uas.Opportunity__r.Shared_Solar_System__c)) {
                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
                 String abUniqueID = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
-                if (!abKeyToAccountBillMap.containsKey(abUniqueID)
-                    && uas.Opportunity__r.StageName == 'Complete') {
+                if (!abKeyToAccountBillMap.containsKey(abUniqueID)) {
                     try {
                         Account_Bill__c ab = generateAccountBill(uas, abUniqueID, euu);
                         abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
                     } catch (DmlException e){
-                        String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID;
+                        String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID + 'Error: ' + String.valueOf(e);
                         Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateAccountBill', message);
                     }
                 }
@@ -122,7 +121,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                     System_Bill__c sb = generateSystemBill(opp, euu, ab, maxSysBill);
                     systemBillSet.add(sb);
                 } catch (DmlException e) {
-                    String message = 'System Bill Creation Failed for Parent Id ' + parentKey ;
+                    String message = 'System Bill Creation Failed for Parent Id ' + parentKey  + 'Error: ' + String.valueOf(e);
                     Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
                 }
             }
@@ -140,14 +139,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
             Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
             String parentKey = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
-            if (abKeyToAccountBillMap.containsKey(parentKey)
-                && uas.Opportunity__r.StageName == 'Complete') {
+            if (abKeyToAccountBillMap.containsKey(parentKey)) {
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
                 try {
                     Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, euu, ab);
                     uabMap.put(uab.Name, uab);
                 } catch (DmlException e) {
-                    String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c ;
+                    String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c  + 'Error: ' + String.valueOf(e);
                     Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
                 }
             }
@@ -244,6 +242,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
+                AND Opportunity__r.StageName = 'Complete'
             ORDER BY Name
         ];
 
