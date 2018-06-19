@@ -361,12 +361,29 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testErrorHandling(){
+    @isTest public static void testCancelledOppsDoNotError(){
         Energy_Usage_Update__c productionupdateA3 = [
             SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Generate_Bills__c
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
+            LIMIT 1
         ];
+
+        Opportunity opportunity = [
+            SELECT Id, StageName, Shared_Solar_System__c
+            FROM Opportunity
+            WHERE Shared_Solar_System__c = : productionupdateA3.Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        opportunity.StageName = 'Cancelled';
+
+        update opportunity;
+
+        productionupdateA3.Generate_Bills__c = true;
+        update  productionupdateA3;
+
+
     }
 
     @isTest public static void testGetScheduleZs() {

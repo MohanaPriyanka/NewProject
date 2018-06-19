@@ -90,13 +90,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
                 String abUniqueID = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
                 if (!abKeyToAccountBillMap.containsKey(abUniqueID)) {
-//                    try {
+                    try {
                         Account_Bill__c ab = generateAccountBill(uas, abUniqueID, euu);
                         abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
-//                    } catch (DmlException e){
-//                        String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID;
-//                        Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateAccountBill', message);
-//                    }
+                    } catch (DmlException e){
+                        String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID;
+                        Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateAccountBill', message);
+                    }
                 }
             }
         }
@@ -117,13 +117,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             if (abKeyToAccountBillMap.containsKey(parentKey)) {
                 Integer maxSysBill = maxSysBillByOppId.get(opp.Id);
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
-//                try {
+                try {
                     System_Bill__c sb = generateSystemBill(opp, euu, ab, maxSysBill);
                     systemBillSet.add(sb);
-//                } catch (DmlException e) {
-//                    String message = 'System Bill Creation Failed for Parent Id ' + parentKey ;
-//                    Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
-//                }
+                } catch (DmlException e) {
+                    String message = 'System Bill Creation Failed for Parent Id ' + parentKey ;
+                    Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
+                }
             }
         }
 
@@ -141,13 +141,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             String parentKey = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
             if (abKeyToAccountBillMap.containsKey(parentKey)) {
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
-//                try {
+                try {
                     Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, euu, ab);
                     uabMap.put(uab.Name, uab);
-//                } catch (DmlException e) {
-//                    String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c ;
-//                    Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
-//                }
+                } catch (DmlException e) {
+                    String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c ;
+                    Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
+                }
             }
         }
 
