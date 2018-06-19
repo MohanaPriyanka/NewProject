@@ -369,10 +369,17 @@ public class TestBillCreationandPayment {
             LIMIT 1
         ];
 
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = : productionupdateA3.Schedule_Z__c
+            AND Utility_Account_Subscription__r.Opportunity__r.Name = 'AOpp One'
+        ];
+
         Opportunity opportunity = [
             SELECT Id, StageName, Shared_Solar_System__c
             FROM Opportunity
-            WHERE Shared_Solar_System__c = : productionupdateA3.Shared_Solar_System__c
+            WHERE Name = 'AOpp One'
             LIMIT 1
         ];
 
@@ -382,6 +389,8 @@ public class TestBillCreationandPayment {
 
         productionupdateA3.Generate_Bills__c = true;
         update  productionupdateA3;
+
+        System.assertEquals(1, scheduleZSubscriptions.size());
     }
 
     @isTest public static void testGetScheduleZs() {
