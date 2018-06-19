@@ -78,13 +78,13 @@ public with sharing class UtilityAccountBillTriggerHandler {
         Set<UASB__c> uasbSet = new Set<UASB__c>();
         Map<String, Bill_Adjustment__c> adjustmentsToUpdateMap = new Map<String, Bill_Adjustment__c>();
         for(Utility_Account_Subscription__c uas : uasList){
-            if (utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
+            if (utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)
+                && uas.Opportunity__r.StageName == 'Complete'){
                 Utility_Account_Bill__c uab = utilityAccountLogIdToUABMap.get(uas.Utility_Account_Log__c);
                 Energy_Usage_Update__c prodUpdate = prodUpdateMap.get(uas.Opportunity__r.Shared_Solar_System__r.Id);
                 String systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
-                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c
-                    && systemBill != null){
+                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c){
                     UASB__c uasb = setUASBFields(   prodUpdate,
                                                     scheduleZSubscriptionToUABIdMap.get(uas.id),
                                                     prodUpdate.Net_Metering_Rate_Applied__c,
