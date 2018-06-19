@@ -61,13 +61,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZSubscriptions);
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c, 
+        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
                                      AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                                     Product__r.Days_in_Bill_Period__c
-                                     FROM Opportunity 
-                                     WHERE StageName = 'Complete' 
-                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
-                                     ORDER BY Name];                                                                                  
+                                     Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c
+                                     FROM Opportunity
+                                     WHERE StageName = 'Complete'
+                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+                                     ORDER BY Name];
 
         //Generate a list of all System Bill Numbers for each opportunity
         Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet());
@@ -84,14 +84,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         printCPULimit('Before first uas loop');
 
-        for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
-            Utility_Account_Subscription__c uas = uasMap.get(scheduleZSub.Utility_Account_Subscription__c);
-            if (uas != null && sssIdToEUUMap.containsKey(uas.Opportunity__r.Shared_Solar_System__c)) {
-                Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
-                String abUniqueID = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
+        for (Opportunity opp : oppList) {
+            if (sssIdToEUUMap.containsKey(opp.Shared_Solar_System__c)) {
+                Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
+                String abUniqueID = opp.Account.Id + ' ' + getDate(euu);
                 if (!abKeyToAccountBillMap.containsKey(abUniqueID)) {
                     try {
-                        Account_Bill__c ab = generateAccountBill(uas, abUniqueID, euu);
+                        Account_Bill__c ab = generateAccountBill(opp, abUniqueID, euu);
                         abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
                     } catch (DmlException e){
                         String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID + 'Error: ' + String.valueOf(e);
@@ -188,19 +187,19 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         } 
     }
 
-    private Account_Bill__c generateAccountBill(Utility_Account_Subscription__c uas, String abUniqueID, Energy_Usage_Update__c euu) {
+    private Account_Bill__c generateAccountBill(Opportunity opp, String abUniqueID, Energy_Usage_Update__c euu) {
         Integer abCounter;
-        if(uas.Max_Account_Bill_Number__c == 0) {
+        if(opp.Account.Max_Account_Bill_Number__c == null) {
             abCounter = 1;
         } else {
-            abCounter = (uas.Max_Account_Bill_Number__c).intValue() + 1;
+            abCounter = (opp.Account.Max_Account_Bill_Number__c).intValue() + 1;
         }
         Account_Bill__c ab = new Account_Bill__c(
-            Name = uas.Opportunity__r.Account.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+            Name = opp.Account.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
             Date__c =  euu.Date__c,
-            Parent_Account__c = uas.Opportunity__r.Account.Id,
+            Parent_Account__c = opp.Account.Id,
             Bill_Number__c = abCounter,
-            Last_Shared_Solar_System_ID__c = uas.Opportunity__r.Shared_Solar_System__r.Id
+            Last_Shared_Solar_System_ID__c = opp.Shared_Solar_System__r.Id
         );
         ab.Unique_Id__c = abUniqueID;
         return ab;
