@@ -123,33 +123,30 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         printCPULimit('After System Bills upserted');
 
-        Map<String, Utility_Account_Bill__c> uabSet = new Map<String, Utility_Account_Bill__c>();  
+        Map<String, Utility_Account_Bill__c> uabMap = new Map<String, Utility_Account_Bill__c>();
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
             Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
             String parentKey = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
             if (abKeyToAccountBillMap.containsKey(parentKey)) {
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
-                Utility_Account_Bill__c uab = 
-                    new Utility_Account_Bill__c(Name = uas.Opportunity__r.Name + ' ' + 
-                                                euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
-                                                Production_Update__c = euu.Id,
-                                                Shared_Solar_System__c = euu.Shared_Solar_System__c,
-                                                Date__c =  euu.Date__c,
-                                                Utility_Account_Log__c = uas.Utility_Account_Log__c,
-                                                Account_Bill__c = ab.Id);
-                uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(euu);
-                uabSet.put(uab.Name, uab);
+                try {
+                    Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, euu, ab);
+                    uabMap.put(uab.Name, uab);
+                } catch (DmlException e) {
+                    String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c ;
+                    Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
+                }
             }
         }
 
         printCPULimit('Before Utility Account Bills upserted');
 
-        upsert new List<Utility_Account_Bill__c>(uabSet.values()) Unique_Id__c;
+        upsert uabMap.values() Unique_Id__c;
 
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         Map<String, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
 
-        for(Utility_Account_Bill__c uab : uabSet.values()){
+        for(Utility_Account_Bill__c uab : uabMap.values()){
             utilityAccountLogIdToUABMap.put(uab.Utility_Account_Log__c, uab);
         }
 
@@ -201,7 +198,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                                                 FROM System_Bill__c
                                                 WHERE Shared_Solar_System__c IN : sssIds
                                                 GROUP BY Opportunity__r.Id]) {
-            oppKeyMap.put((String)lineItem.get('oppID'), (Integer)lineItem.get('maxBillNumber'));
+            String oppId = (String)lineItem.get('oppID');
+            Decimal maxBillNumber = (Decimal)lineItem.get('maxBillNumber');
+            oppKeyMap.put(oppId, maxBillNumber.intValue());
         }
         return oppKeyMap;
     }
@@ -259,21 +258,17 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             Unique_Id__c = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu));
         return sb;
     }
-//    List<Utility_Account_Subscription__c> uasList = [SELECT   Id, Name,
-//        Utility_Account_Log__c,
-//        Opportunity__r.Name,
-//        Opportunity__r.Account.Name,
-//        Opportunity__r.Shared_Solar_System__r.Name,
-//        Opportunity__r.Shared_Solar_System__c,
-//        Opportunity__r.Shared_Solar_System__r.Id,
-//        Opportunity__r.AccountId,
-//        Max_Account_Bill_Number__c
-//    FROM Utility_Account_Subscription__c
-//    WHERE Id IN : scheduleZUASIds
-//    ORDER BY Name];
-//
-//    Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
-//    for (Utility_Account_Subscription__c uas : uasList) {
-//    uasMap.put(uas.Id, uas);
-//}
+
+    private Utility_Account_Bill__c generateUtilityAccountBill(Utility_Account_Subscription__c uas, Energy_Usage_Update__c euu, Account_Bill__c ab) {
+
+        Utility_Account_Bill__c uab = new Utility_Account_Bill__c(Name = uas.Opportunity__r.Name + ' ' +
+            euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
+            Production_Update__c = euu.Id,
+            Shared_Solar_System__c = euu.Shared_Solar_System__c,
+            Date__c =  euu.Date__c,
+            Utility_Account_Log__c = uas.Utility_Account_Log__c,
+            Account_Bill__c = ab.Id);
+        uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(euu);
+        return uab;
+    }
 }
