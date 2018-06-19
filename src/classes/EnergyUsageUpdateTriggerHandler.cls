@@ -284,8 +284,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     private Utility_Account_Bill__c generateUtilityAccountBill(Utility_Account_Subscription__c uas, Energy_Usage_Update__c euu, Account_Bill__c ab) {
 
         Utility_Account_Bill__c uab = new Utility_Account_Bill__c(
-            Name = uas.Opportunity__r.Name + ' ' +
-            euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
+            Name = uas.Opportunity__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
             Production_Update__c = euu.Id,
             Shared_Solar_System__c = euu.Shared_Solar_System__c,
             Date__c =  euu.Date__c,
