@@ -31,9 +31,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     private static void printCPULimit(String prefix) {
-        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of ' 
-                     + Limits.getLimitCpuTime() + 'ms used');
-        System.debug(LoggingLevel.ERROR, 'SOQL Limites: ' + prefix + ': ' +  Limits.getQueries());
+        Util.printCPULimit(prefix);
+        Util.printSOQLLimit(prefix);
     }
 
     private static String getDate(Energy_Usage_Update__c euu) {
@@ -80,14 +79,24 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             uasMap.put(uas.Id, uas);
         }
 
-        //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c, 
-                                     AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                                     Product__r.Days_in_Bill_Period__c
-                                     FROM Opportunity 
-                                     WHERE StageName = 'Complete' 
-                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
-                                     ORDER BY Name];                                                                                  
+        // Select the Opportunities that are related to the shared solar systems that have production updates being logged.
+        // We want to get all opportunities, since there might be cancelled opportunities that should still be charged for
+        // prior unpaid bills
+        List<Opportunity> allOpps = [
+            SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
+                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+                Product__r.Days_in_Bill_Period__c, StageName,
+            (SELECT Id, Carry_Over_Balance__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            FROM Opportunity
+            WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            ORDER BY Name
+        ];
+        List<Opportunity> oppList = new List<Opportunity>();
+        for (Opportunity anyOpp : allOpps) {
+            if (anyOpp.StageName == 'Complete' || hasCarryOverBalance(anyOpp)) {
+                oppList.add(anyOpp);
+            }
+        }
 
         //Generate a list of all System Bill Numbers for each opportunity
         Map<String, Decimal> oppKeyMap = new Map<String, Decimal>();   
@@ -225,7 +234,18 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasList);
 
         printCPULimit('After Utility Account Bills upserted');    
-    }     
+    }
+
+    private Boolean hasCarryOverBalance(Opportunity opp) {
+        if (opp.System_Bills__r.size() == 0 ||
+            opp.System_Bills__r[0].Carry_Over_Balance__c == null ||
+            opp.System_Bills__r[0].Carry_Over_Balance__c.setScale(2, RoundingMode.HALF_UP) <= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     public void finish(Database.BatchableContext bc){
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
