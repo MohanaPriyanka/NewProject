@@ -468,6 +468,63 @@ private class RecurringPaymentsHandlerTestClass{
         }
     }
 
+    static testMethod void cloneOrderCorrectly() {
+        ChargentOrders__ChargentOrder__c orderToDelete = [  SELECT Id
+                                                            FROM ChargentOrders__ChargentOrder__c
+                                                            WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
+                                                            LIMIT 1];
+
+        delete orderToDelete;
+
+        List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id              
+                                                                FROM ChargentOrders__ChargentOrder__c];
+        System.assertEquals(2, chOrderList.size());
+
+        Test.startTest();
+
+        // Test scheduling of batch:
+        Datetime dt = Datetime.now().addMinutes(0);
+        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
+        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        System.schedule('RecurringPaymentsHandler', CRON_EXP, batchToRun);
+
+        // Run batch directly to be able to test results:
+        Database.executeBatch(batchToRun,50);
+
+        Test.stopTest();
+
+        List<ChargentOrders__ChargentOrder__c> orderlist = [
+              SELECT Id,
+                     ChargentOrders__Payment_Status__c,
+                     ChargentOrders__Charge_Date__c,
+                     Reason_for_Recurring_Stop__c,
+                     Account_Bill__r.Bill_Number__c,
+                     Account_Bill__r.Name,
+                     ChargentOrders__Charge_Amount__c,
+                     Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+              FROM ChargentOrders__ChargentOrder__c];
+
+        System.assertEquals(orderlist.size(),3);
+        for (ChargentOrders__ChargentOrder__c cho : orderlist) {
+            if (cho.ChargentOrders__Charge_Date__c == '25') {
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+                System.assertEquals(87.75, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(true, cho.Account_Bill__r.Parent_Account__r.Recurring_Billing__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '30') {
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+                System.assertEquals(437.70, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(true, cho.Account_Bill__r.Parent_Account__r.Recurring_Billing__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '15') {
+                System.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(false, cho.Account_Bill__r.Parent_Account__r.Recurring_Billing__c);
+                System.assertNotEquals(NULL, cho.Reason_for_Recurring_Stop__c);
+            }
+        }
+    }
+
     static testMethod void updateParentAccountOnStop() {
         Account oldAccountC = [
             SELECT Id,
