@@ -323,6 +323,14 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
+    @isTest public static void testErrorHandling(){
+        Energy_Usage_Update__c productionupdateA3 = [
+            SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Generate_Bills__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+        ];
+    }
+
     @isTest public static void testGetScheduleZs() {
         Test.startTest();
         Energy_Usage_Update__c productionUpdate = [
