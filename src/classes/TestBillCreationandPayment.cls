@@ -382,8 +382,6 @@ public class TestBillCreationandPayment {
 
         productionupdateA3.Generate_Bills__c = true;
         update  productionupdateA3;
-
-
     }
 
     @isTest public static void testGetScheduleZs() {

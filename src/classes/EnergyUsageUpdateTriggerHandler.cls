@@ -166,6 +166,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             systemBillMap.put(sysBill.Unique_Id__c, sysBill);
         }
 
+        Logger.flushLogs();
+
         UtilityAccountBillTriggerHandler handler = new UtilityAccountBillTriggerHandler();
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
 

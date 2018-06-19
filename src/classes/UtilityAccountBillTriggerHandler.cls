@@ -83,11 +83,12 @@ public with sharing class UtilityAccountBillTriggerHandler {
                 Energy_Usage_Update__c prodUpdate = prodUpdateMap.get(uas.Opportunity__r.Shared_Solar_System__r.Id);
                 String systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
-                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c){
+                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c
+                    && systemBill != null){
                     UASB__c uasb = setUASBFields(   prodUpdate,
                                                     scheduleZSubscriptionToUABIdMap.get(uas.id),
-                                                    prodUpdate.Net_Metering_Rate_Applied__c, 
-                                                    prodUpdate.Production__c, 
+                                                    prodUpdate.Net_Metering_Rate_Applied__c,
+                                                    prodUpdate.Production__c,
                                                     prodUpdate.Total_System_NMCs__c);
                     uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                     uasb.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name;
@@ -96,8 +97,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                     if (prodUpdate.Total_System_NMCs_2_of_4__c > 0) {
                         UASB__c uasbTwo = setUASBFields(prodUpdate,
                                                         scheduleZSubscriptionToUABIdMap.get(uas.id),
-                                                        prodUpdate.Net_Metering_Rate_Applied_2_of_4__c, 
-                                                        prodUpdate.Production_kWh_2_of_4__c, 
+                                                        prodUpdate.Net_Metering_Rate_Applied_2_of_4__c,
+                                                        prodUpdate.Production_kWh_2_of_4__c,
                                                         prodUpdate.Total_System_NMCs_2_of_4__c);
                         uasbTwo.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM') + 'A';
                         uasbTwo.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'A';
@@ -107,8 +108,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                         if (prodUpdate.Total_System_NMCs_3_of_4__c > 0) {
                             UASB__c uasbThree = setUASBFields(  prodUpdate,
                                                                 scheduleZSubscriptionToUABIdMap.get(uas.id),
-                                                                prodUpdate.Net_Metering_Rate_Applied_3_of_4__c,  
-                                                                prodUpdate.Production_kWh_3_of_4__c, 
+                                                                prodUpdate.Net_Metering_Rate_Applied_3_of_4__c,
+                                                                prodUpdate.Production_kWh_3_of_4__c,
                                                                 prodUpdate.Total_System_NMCs_3_of_4__c);
                             uasbThree.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM') + 'B';
                             uasbThree.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'B';
@@ -118,8 +119,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                             if (prodUpdate.Total_System_NMCs_4_of_4__c > 0) {
                                 UASB__c uasbFour = setUASBFields(   prodUpdate,
                                                                     scheduleZSubscriptionToUABIdMap.get(uas.id),
-                                                                    prodUpdate.Net_Metering_Rate_Applied_4_of_4__c,  
-                                                                    prodUpdate.Production_kWh_4_of_4__c, 
+                                                                    prodUpdate.Net_Metering_Rate_Applied_4_of_4__c,
+                                                                    prodUpdate.Production_kWh_4_of_4__c,
                                                                     prodUpdate.Total_System_NMCs_4_of_4__c);
                                 uasbFour.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM') + 'C';
                                 uasbFour.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'C';
@@ -138,10 +139,16 @@ public with sharing class UtilityAccountBillTriggerHandler {
                             adjustmentsToUpdateMap.put(uasb.Unique_Id__c, adjust);
                         }
                     }
-                    uasbSet.add(uasb); 
+                    uasbSet.add(uasb);
+                } else {
+                    String message = 'Utility Account System Bill not generated for UAS ' + uas.Id;
+                    Logger.logLater('UtilityAccountBillTriggerHandler', 'createUASB', message);
                 }
             }
         }
+
+        Logger.flushLogs();
+
         printSOQLLimits('After Building UASBs');
 
         // if there are utility account subscription bills insert them
