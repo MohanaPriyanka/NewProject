@@ -5,8 +5,8 @@
 
 trigger CreditReportLogTrigger on LASERCA__Credit_Report_Log__c (after insert, after update) {
     if (Trigger.isAfter && Trigger.isUpdate) {
-        PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap, Trigger.oldMap);
+        PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap.keySet(), Trigger.oldMap.keySet());
     } else if (Trigger.isAfter && Trigger.isInsert) {
-        PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap, null);
+        PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap.keySet(), null);
     }
 }

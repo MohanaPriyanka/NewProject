@@ -73,10 +73,28 @@ public without sharing class PCRApprovalHandler {
         return true;
     }
 
-    public static void calcDTIAndEmailIfComplete(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, 
-                                                 Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+    @future
+    public static void calcDTIAndEmailIfComplete(Set<Id> triggerNewSet, Set<Id> triggerOldSet) {
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
+        for (LASERCA__Credit_Report_Log__c creditReportLog : [
+            SELECT Id, LASERCA__Personal_Credit_Report__c, LASERCA__Status__c
+            FROM LASERCA__Credit_Report_Log__c
+            WHERE Id IN : triggerNewSet
+        ]) {
+            triggerNewMap.put(creditReportLog.Id, creditReportLog);
+        }
+
+        for (LASERCA__Credit_Report_Log__c creditReportLog : [
+            SELECT Id, LASERCA__Personal_Credit_Report__c, LASERCA__Status__c
+            FROM LASERCA__Credit_Report_Log__c
+            WHERE Id IN : triggerOldSet
+        ]) {
+            triggerOldMap.put(creditReportLog.Id, creditReportLog);
+        }
+
         Set<Id> pcrIds = new Set<Id>();
-        if (triggerOldMap == null) {
+        if (triggerOldSet == null) {
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
             }
@@ -90,12 +108,12 @@ public without sharing class PCRApprovalHandler {
         }
 
         PCRApprovalHandler pcrAH = new PCRApprovalHandler();
-        List<LASERCA__Personal_Credit_Report__c> pcrs = 
-            [SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c, 
+        List<LASERCA__Personal_Credit_Report__c> pcrs =
+            [SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c,
              LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
              LASERCA__Credit_Score_TransUnion__c, Adjusted_Income__c, Annual_Income_From_Lead__c,
              DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
-             Adjusted_Monthly_Personal_Debt__c, DOER_Application__c, 
+             Adjusted_Monthly_Personal_Debt__c, DOER_Application__c,
              Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
              Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c,
              LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
