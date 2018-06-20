@@ -26,7 +26,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             Database.executeBatch(this, 10);
         } else {
             List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
-                SELECT Id, Utility_Account_Subscription__c
+                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
                 FROM Schedule_Z_Subscription__c
                 WHERE Schedule_Z__c IN : scheduleZs
             ];
@@ -46,7 +46,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
     // Batch into groups of Schedule Z Subscriptions:
     public Database.QueryLocator start(Database.BatchableContext bc) {
-        String query =  'SELECT Id, Utility_Account_Subscription__c ' +
+        String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
                         ' FROM Schedule_Z_Subscription__c ' +
                         ' WHERE Schedule_Z__c IN : scheduleZs';
         return Database.getQueryLocator(query);
@@ -60,24 +60,23 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
         Integer abCounter = 1;
         Set<Id> scheduleZUASIds = new Set<Id>();
+        Set<Id> opportunityIds = new Set<Id>();
 
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
             scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
+            opportunityIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
         }
 
         //select the UAS related to the ScheduleZSubscriptions.
-        List<Utility_Account_Subscription__c> uasList = [SELECT   Id, Name,
-                                                         Utility_Account_Log__c,
-                                                         Opportunity__r.Name,
-                                                         Opportunity__r.Account.Name,
-                                                         Opportunity__r.Shared_Solar_System__r.Name,
-                                                         Opportunity__r.Shared_Solar_System__c,
-                                                         Opportunity__r.Shared_Solar_System__r.Id,
-                                                         Opportunity__r.AccountId,
-                                                         Max_Account_Bill_Number__c
-                                                         FROM Utility_Account_Subscription__c
-                                                         WHERE Id IN : scheduleZUASIds
-                                                         ORDER BY Name];
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT   Id, Name, Utility_Account_Log__c, Opportunity__r.Name, Opportunity__r.Account.Name,
+                Opportunity__r.Shared_Solar_System__r.Name, Opportunity__r.Shared_Solar_System__c,
+                Opportunity__r.Shared_Solar_System__r.Id, Opportunity__r.AccountId, Max_Account_Bill_Number__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id IN : scheduleZUASIds
+                AND Opportunity__c IN : opportunityIds
+            ORDER BY Name
+        ];
 
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
         for (Utility_Account_Subscription__c uas : uasList) {
@@ -85,23 +84,33 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c, 
-                                     AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                                     Product__r.Days_in_Bill_Period__c
-                                     FROM Opportunity 
-                                     WHERE StageName = 'Complete' 
-                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet() 
-                                     ORDER BY Name];                                                                                  
+        List<Opportunity> oppList = [
+            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
+                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+                Product__r.Days_in_Bill_Period__c
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+                AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+                AND Id IN : opportunityIds
+             ORDER BY Name
+        ];
 
         //Generate a list of all System Bill Numbers for each opportunity
-        Map<String, Decimal> oppKeyMap = new Map<String, Decimal>();   
-        for ( AggregateResult lineItem : [  SELECT Opportunity__r.Id oppID, 
-                                                MAX(Bill_Number__c) maxBillNumber
-                                                FROM System_Bill__c 
-                                                WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-                                                GROUP BY Opportunity__r.Id]) {
-            oppKeyMap.put((String)lineItem.get('oppID'), (Decimal)lineItem.get('maxBillNumber'));
+        Map<Id, Decimal> oppKeyMap = new Map<Id, Decimal>();
+        List<AggregateResult> maxSystemBills = [
+            SELECT Opportunity__c oppId,
+                MAX(Bill_Number__c) maxBillNumber
+            FROM System_Bill__c
+            WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+                AND Opportunity__c IN : opportunityIds
+            GROUP BY Opportunity__c
+        ];
+
+        for ( AggregateResult lineItem : maxSystemBills) {
+            oppKeyMap.put((Id)lineItem.get('oppID'), (Decimal)lineItem.get('maxBillNumber'));
         }
+
+        System.debug(oppKeyMap.values());
 
         Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
         for (Account_Bill__c accountBill : [
