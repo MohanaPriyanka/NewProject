@@ -5,7 +5,8 @@
   <aura:attribute name="windowHeader" type="String" default="Upload a Document:"/> 
   <aura:attribute name="fileParentId" type="String" default=""/>
   <aura:attribute name="oppId" type="String" default=""/>
-  <aura:attribute name="fileName" type="String" default=""/>   
+  <aura:attribute name="leadId" type="String" default=""/>
+  <aura:attribute name="fileName" type="String" default=""/>
   <aura:attribute name="fileReader" type="Object[]" />
   <aura:attribute name="buttonText" type="String" default="Select File"/>
   <aura:attribute name="errorText" type="String" default=""/>

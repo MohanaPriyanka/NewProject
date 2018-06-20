@@ -347,13 +347,10 @@
     },
 
     openAdditionalFileUpload : function(component, event, helper) {
-        var oppId = component.get("v.customerInformation.Opportunity__r.Id");
-        if (oppId === null || oppId === undefined) {
-           var parentId = component.get("v.customerInformation.Loan__r.Lead__r.Id");
-        } else {
-           var parentId = oppId;
-        }
-        helper.openUploadWindow(component,"hideAndFileOption","Upload Documents", parentId, component.get("v.equipmentUpdate"), "Additional Doc", "");
+        let oppId = component.get("v.customerInformation.Opportunity__r.Id");
+        let parentId = component.get("v.customerInformation.Loan__r.Lead__r.ConvertedContactId");
+        let leadId = component.get("v.customerInformation.Lead__c");
+        helper.openUploadWindow(component,"hideAndFileOption","Upload Documents", parentId, oppId, leadId, component.get("v.equipmentUpdate"), "Additional Doc", "");
     },
 
     handleTaskAction : function(component, event, helper) {
@@ -376,7 +373,7 @@
                 return;
 
             case 'Mechanical Installation':
-                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, oppId, "Mechanical Installation Documentation", taskHelpText);
+                helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, oppId, null, "Mechanical Installation Documentation", taskHelpText);
                 return;
 
             case 'Interconnection':
@@ -390,11 +387,11 @@
                                + '&tfa_107=' + oppId});
                     break;
                 } else {
-                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, "Interconnection Documentation", taskHelpText);
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, null, "Interconnection Documentation", taskHelpText);
                     return;
                 }
             case 'Provide Sales Agreement':
-              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId ,"Sales Agreement", taskHelpText);
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId, null, "Sales Agreement", taskHelpText);
               return;
             default:
               break;

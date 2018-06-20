@@ -644,7 +644,7 @@ public class DisbursalHandlerTest {
             FROM Loan__c
             WHERE DOER_Solar_Loann__c = TRUE
         ];
-        System.assertEquals(Date.newInstance(2018, 8, 28), loan.First_Payment_Due_Date_Override__c);
+        System.assertEquals(Date.newInstance(2018, 9, 1), loan.First_Payment_Due_Date_Override__c);
         for (Disbursal__c disbursal : loan.Disbursals__r) {
             if (disbursal.Type__c == 'Contract Signature') {
                 disbursal.Date_of_Disbursal__c = Date.newInstance(2018, 9, 1);
