@@ -362,6 +362,7 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testDontGenerateBills(){
+        Test.startTest();
         Energy_Usage_Update__c productionupdateA3 = [
             SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Generate_Bills__c, Month_Number__c,
                 MonthDate__c, YearDate__c
@@ -402,7 +403,7 @@ public class TestBillCreationandPayment {
             SELECT Id
             FROM Account_Bill__c
             WHERE Month__c = : productionupdateA3.Month_Number__c
-            AND Id = : opportunity.AccountId
+            AND Parent_Account__c = : opportunity.AccountId
         ];
 
         String utilityAccountBillName = (
@@ -430,6 +431,7 @@ public class TestBillCreationandPayment {
         System.assertEquals(0, accountBills.size());
         System.assertEquals(0, utilityAccountBills.size());
         System.assertEquals(0, utilityAccountSubscriptionBills.size());
+        Test.stopTest();
     }
 
     @isTest public static void testGetScheduleZs() {

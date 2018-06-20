@@ -60,13 +60,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZSubscriptions);
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = [SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
-                                     AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                                     Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c
-                                     FROM Opportunity
-                                     WHERE StageName = 'Complete'
-                                     AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-                                     ORDER BY Name];
+        List<Opportunity> oppList = collectCompleteOrCarryOverOpps(sssIdToEUUMap.keySet());
 
         //Generate a list of all System Bill Numbers for each opportunity
         Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet());
@@ -170,6 +164,26 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
 
         printCPULimit('After Utility Account Bills upserted');    
+    }
+
+    private List<Opportunity> collectCompleteOrCarryOverOpps(Set<Id> sssIds) {
+        List<Opportunity> allOpps = [
+            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
+                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+                Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName,
+            (SELECT Id, Carry_Over_Balance__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            FROM Opportunity
+            WHERE Shared_Solar_System__c IN : sssIds
+            ORDER BY Name
+        ];
+
+        List<Opportunity> oppList = new List<Opportunity>();
+        for (Opportunity anyOpp : allOpps) {
+            if (anyOpp.StageName == 'Complete' || hasCarryOverBalance(anyOpp)) {
+                oppList.add(anyOpp);
+            }
+        }
+        return oppList;
     }
 
     private Boolean hasCarryOverBalance(Opportunity opp) {
