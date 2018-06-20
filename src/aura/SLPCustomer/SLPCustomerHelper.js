@@ -280,7 +280,7 @@
         }));
     },
 
-    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, oppId, nameFile, helpText){
+    openUploadWindow: function(component, dateLabelString, windowHeaderString, parentId, oppId, leadId, nameFile, helpText){
       var body = component.get("v.body");  
       component.set("v.body", []);  
       $A.createComponent(
@@ -289,9 +289,10 @@
       	"windowHeader": windowHeaderString,
         "fileParentId": parentId,
         "oppId" : oppId,
+        "leadId" : leadId,
         "helpText" : helpText,
-        "fileName": nameFile }, 
-                       
+        "fileName": nameFile },
+
        	function(newButton, status, errorMessage){
           if (status === "SUCCESS") {
             var body = component.get("v.body");
