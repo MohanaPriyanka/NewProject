@@ -73,28 +73,11 @@ public without sharing class PCRApprovalHandler {
         return true;
     }
 
-    @future
-    public static void calcDTIAndEmailIfComplete(Set<Id> triggerNewSet, Set<Id> triggerOldSet) {
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
-        for (LASERCA__Credit_Report_Log__c creditReportLog : [
-            SELECT Id, LASERCA__Personal_Credit_Report__c, LASERCA__Status__c
-            FROM LASERCA__Credit_Report_Log__c
-            WHERE Id IN : triggerNewSet
-        ]) {
-            triggerNewMap.put(creditReportLog.Id, creditReportLog);
-        }
-
-        for (LASERCA__Credit_Report_Log__c creditReportLog : [
-            SELECT Id, LASERCA__Personal_Credit_Report__c, LASERCA__Status__c
-            FROM LASERCA__Credit_Report_Log__c
-            WHERE Id IN : triggerOldSet
-        ]) {
-            triggerOldMap.put(creditReportLog.Id, creditReportLog);
-        }
-
+    public static void calcDTIAndEmailIfComplete(
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap ,
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
-        if (triggerOldSet == null) {
+        if (triggerOldMap == null) {
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
             }
