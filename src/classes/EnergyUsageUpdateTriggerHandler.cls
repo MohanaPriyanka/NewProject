@@ -92,7 +92,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                     try {
                         Account_Bill__c ab = generateAccountBill(opp, abUniqueID, euu);
                         abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
-                    } catch (DmlException e){
+                    } catch (Exception e){
                         String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID + 'Error: ' + String.valueOf(e);
                         Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateAccountBill', message);
                     }
@@ -119,7 +119,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 try {
                     System_Bill__c sb = generateSystemBill(opp, euu, ab, maxSysBill);
                     systemBillSet.add(sb);
-                } catch (DmlException e) {
+                } catch (Exception e) {
                     String message = 'System Bill Creation Failed for Parent Id ' + parentKey  + 'Error: ' + String.valueOf(e);
                     Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
                 }
@@ -143,7 +143,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 try {
                     Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, euu, ab);
                     uabMap.put(uab.Name, uab);
-                } catch (DmlException e) {
+                } catch (Exception e) {
                     String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c  + 'Error: ' + String.valueOf(e);
                     Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
                 }
