@@ -35,9 +35,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     private static void printCPULimit(String prefix) {
-        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of ' 
-                     + Limits.getLimitCpuTime() + 'ms used');
-        System.debug(LoggingLevel.ERROR, 'SOQL Limites: ' + prefix + ': ' +  Limits.getQueries());
+        Util.printCPULimit(prefix);
+        Util.printSOQLLimit(prefix);
     }
 
     private static String getDate(Energy_Usage_Update__c euu) {
@@ -171,7 +170,18 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
 
         printCPULimit('After Utility Account Bills upserted');    
-    }     
+    }
+
+    private Boolean hasCarryOverBalance(Opportunity opp) {
+        if (opp.System_Bills__r.size() == 0 ||
+            opp.System_Bills__r[0].Carry_Over_Balance__c == null ||
+            opp.System_Bills__r[0].Carry_Over_Balance__c.setScale(2, RoundingMode.HALF_UP) <= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     public void finish(Database.BatchableContext bc){
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
