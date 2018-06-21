@@ -60,13 +60,21 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
-        Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZSubscriptions);
+        Set<Id> scheduleZUASIds = new Set<Id>();
+        Set<Id> opportunityIds = new Set<Id>();
+
+        for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
+            scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
+            opportunityIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
+        }
+
+        Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, opportunityIds);
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = collectCompleteOrCarryOverOpps(sssIdToEUUMap.keySet());
+        List<Opportunity> oppList = collectCompleteOrCarryOverOpps(sssIdToEUUMap.keySet(), opportunityIds);
 
         //Generate a list of all System Bill Numbers for each opportunity
-        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet());
+        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), opportunityIds);
 
         Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
         for (Account_Bill__c accountBill : [
@@ -169,7 +177,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         printCPULimit('After Utility Account Bills upserted');    
     }
 
-    private List<Opportunity> collectCompleteOrCarryOverOpps(Set<Id> sssIds) {
+    private List<Opportunity> collectCompleteOrCarryOverOpps(Set<Id> sssIds, Set<Id> oppIds) {
         List<Opportunity> allOpps = [
             SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
                 AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
@@ -177,6 +185,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             (SELECT Id, Carry_Over_Balance__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIds
+                AND Id IN : oppIds
             ORDER BY Name
         ];
 
@@ -232,12 +241,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return ab;
     }
 
-    private Map<String, Integer> maxSysBillByOppId(Set<Id> sssIds) {
+    private Map<String, Integer> maxSysBillByOppId(Set<Id> sssIds, Set<Id> oppIds) {
         Map<String, Integer> oppKeyMap = new Map<String, Integer>();
         for ( AggregateResult lineItem : [
             SELECT Opportunity__r.Id oppID, MAX(Bill_Number__c) maxBillNumber
             FROM System_Bill__c
             WHERE Shared_Solar_System__c IN : sssIds
+                AND Id IN : oppIds
             GROUP BY Opportunity__r.Id
         ]) {
             String oppId = (String)lineItem.get('oppID');
@@ -247,13 +257,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return oppKeyMap;
     }
 
-    private Map<Id, Utility_Account_Subscription__c> getUASFromSZS(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ) {
-        Set<Id> scheduleZUASIds = new Set<Id>();
-
-        for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
-            scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
-        }
-
+    private Map<Id, Utility_Account_Subscription__c> getUASFromSZS(Set<Id> scheduleZIds, Set<Id> oppIds) {
         //select the UAS related to the ScheduleZSubscriptions.
         List<Utility_Account_Subscription__c> uasList = [
                 SELECT   Id, Name,
@@ -267,7 +271,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Opportunity__r.StageName,
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
-            WHERE Id IN : scheduleZUASIds
+            WHERE Id IN : scheduleZIds
+                AND Opportunity__c IN : oppIds
                 AND Opportunity__r.StageName = 'Complete'
             ORDER BY Name
         ];
