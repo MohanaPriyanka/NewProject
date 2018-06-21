@@ -74,7 +74,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         List<Opportunity> oppList = collectCompleteOrCarryOverOpps(sssIdToEUUMap.keySet(), opportunityIds);
 
         //Generate a list of all System Bill Numbers for each opportunity
-        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), opportunityIds);
+        Map<Id, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), opportunityIds);
 
         Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
         for (Account_Bill__c accountBill : [
@@ -186,6 +186,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIds
                 AND Id IN : oppIds
+                AND StageName = 'Complete'
             ORDER BY Name
         ];
 
@@ -241,8 +242,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return ab;
     }
 
-    private Map<String, Integer> maxSysBillByOppId(Set<Id> sssIds, Set<Id> oppIds) {
-        Map<String, Integer> oppKeyMap = new Map<String, Integer>();
+    private Map<Id, Integer> maxSysBillByOppId(Set<Id> sssIds, Set<Id> oppIds) {
+        Map<Id, Integer> oppKeyMap = new Map<Id, Integer>();
         for ( AggregateResult lineItem : [
             SELECT Opportunity__r.Id oppID, MAX(Bill_Number__c) maxBillNumber
             FROM System_Bill__c
@@ -250,7 +251,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 AND Id IN : oppIds
             GROUP BY Opportunity__r.Id
         ]) {
-            String oppId = (String)lineItem.get('oppID');
+            Id oppId = (Id)lineItem.get('oppID');
             Decimal maxBillNumber = (Decimal)lineItem.get('maxBillNumber');
             oppKeyMap.put(oppId, maxBillNumber.intValue());
         }
@@ -273,7 +274,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZIds
                 AND Opportunity__c IN : oppIds
-                AND Opportunity__r.StageName = 'Complete'
             ORDER BY Name
         ];
 
