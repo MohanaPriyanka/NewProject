@@ -614,18 +614,7 @@ public class TestBillCreationandPayment {
         productionupdateB1.Generate_Bills__c = TRUE;
         update productionupdateB1;
 
-        List<Schedule_Z_Subscription__c> scheduleZSubs = [
-            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
-            FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c = : productionupdateB2.Schedule_Z__c
-        ];
-
-        System.AssertEquals(2, scheduleZSubs.size());
-
-        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(new List <Energy_Usage_Update__c>{productionupdateB2});
-        //simulate batching in production
-        handler.createBills(new List<Schedule_Z_Subscription__c>{scheduleZSubs[0]});
-        handler.createBills(new List<Schedule_Z_Subscription__c>{scheduleZSubs[1]});
+        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
 
         Test.stopTest();
 
@@ -1360,4 +1349,34 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
+    public static void simulateBatchBillCreation(List<Energy_Usage_Update__c> productionUpdates) {
+        Set<Id> scheduleZs = new Set<Id>();
+        for (Energy_Usage_Update__c productionUpdate : productionUpdates) {
+            scheduleZs.add(productionUpdate.Schedule_Z__c);
+        }
+
+        List<Schedule_Z_Subscription__c> scheduleZSubs = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c IN : scheduleZs
+        ];
+
+        List<Schedule_Z_Subscription__c> batch1 = new List<Schedule_Z_Subscription__c>();
+        List<Schedule_Z_Subscription__c> batch2 = new List<Schedule_Z_Subscription__c>();
+
+        Integer counter = 1;
+        for (Schedule_Z_Subscription__c scheduleZSubscription : scheduleZSubs) {
+            if (Math.mod(counter, 2) == 0) {
+                batch1.add(scheduleZSubscription);
+            } else {
+                batch2.add(scheduleZSubscription);
+            }
+            counter += 1;
+        }
+
+        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(productionUpdates);
+        //simulate batching in production
+        handler.createBills(batch1);
+        handler.createBills(batch2);
+    }
 }
