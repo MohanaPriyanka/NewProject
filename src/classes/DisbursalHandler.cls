@@ -328,15 +328,15 @@ public class DisbursalHandler {
         }
     }
 
-    // Per Lease Dimensions, payment due dates are on the 28th at the latest.
+    // Per Lease Dimensions, if a due date falls on the 29 or later, move the date to the first of the next month
     private Date getFirstPaymentDueDate(Date disbursalDate) {
         if (disbursalDate == null) {
             return null;
         }
-        Date fpdd = disbursalDate.addMonths(1);
-        if (fpdd.day() > 28) {
-            fpdd = date.newInstance(fpdd.year(), fpdd.month(), 28);
+        Date firstPaymentDueDate = disbursalDate.addMonths(1);
+        if (firstPaymentDueDate.day() > 28) {
+            firstPaymentDueDate = Date.newInstance(firstPaymentDueDate.year(), firstPaymentDueDate.month()+1, 1);
         }
-        return fpdd;
+        return firstPaymentDueDate;
     }
 }

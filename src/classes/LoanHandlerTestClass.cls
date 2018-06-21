@@ -539,10 +539,13 @@ public class LoanHandlerTestClass {
         List<Loan__c> loanListToUpdate = new List<Loan__c>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
 
-        Test.startTest();       
-        List<Lead> leadList = [SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c 
+        Test.startTest();
+        List<Lead> leadList = [SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c
                                FROM Lead
                                WHERE DOER_Solar_Loan__c = true];
+
+        List<Attachment> attachments = new List<Attachment>();
+
         for (Lead leadRecord : leadList) {
             //test income documentation 
 
@@ -552,7 +555,7 @@ public class LoanHandlerTestClass {
             attachmentPaystub.body = bodyBlob;
             attachmentPaystub.ParentId = leadRecord.Id;
             attachmentPaystub.Description = 'PayStub' + ' ' + leadRecord.Id;
-            insert attachmentPaystub;
+            attachments.add(attachmentPaystub);
 
             if(leadRecord.Retired__c && !leadRecord.Self_Employed__c) {
                 //Insert the SSN/Pension Award Letter or Bank Statement subTask                     
@@ -561,7 +564,7 @@ public class LoanHandlerTestClass {
                 attachmentSSNAwardLetter.body = bodyBlob;
                 attachmentSSNAwardLetter.ParentId = leadRecord.Id;
                 attachmentSSNAwardLetter.Description = 'SSN Award Letter' + ' ' + leadRecord.Id;
-                insert attachmentSSNAwardLetter;
+                attachments.add(attachmentSSNAwardLetter);
             }
             if(!leadRecord.Retired__c&& leadRecord.Self_Employed__c) {
                 //Insert the Tax Return                     
@@ -570,7 +573,7 @@ public class LoanHandlerTestClass {
                 attachmentTaxReturnTwoYears.body = bodyBlob;
                 attachmentTaxReturnTwoYears.ParentId = leadRecord.Id;
                 attachmentTaxReturnTwoYears.Description = 'Tax Return (Two Years Previous)' + ' ' + leadRecord.Id;
-                insert attachmentTaxReturnTwoYears;
+                attachments.add(attachmentTaxReturnTwoYears);
 
                 //Insert the Tax Return             
                 Attachment attachmentOneYear = new Attachment();
@@ -578,7 +581,7 @@ public class LoanHandlerTestClass {
                 attachmentOneYear.body = bodyBlob;
                 attachmentOneYear.ParentId = leadRecord.Id;
                 attachmentOneYear.Description = 'Provide Tax Return (Previous Year)' + ' ' + leadRecord.Id;
-                insert attachmentOneYear;
+                attachments.add(attachmentOneYear);
             }     
 
             //Insert the Sales agreement                    
@@ -587,7 +590,7 @@ public class LoanHandlerTestClass {
             attachmentSalesAgreement.body = bodyBlob;
             attachmentSalesAgreement.ParentId = leadRecord.Id;
             attachmentSalesAgreement.Description = 'Sales Agreement' + ' ' + leadRecord.Id;
-            insert attachmentSalesAgreement;
+            attachments.add(attachmentSalesAgreement);
 
             if(leadRecord.DOER_Solar_Loan__c) {
                 //Insert the Sales agreement                    
@@ -596,15 +599,20 @@ public class LoanHandlerTestClass {
                 attachmentTechnicalApplication.body = bodyBlob;
                 attachmentTechnicalApplication.ParentId = leadRecord.Id;
                 attachmentTechnicalApplication.Description = 'MSLP Technical Confirmation' + ' ' + leadRecord.Id;
-                insert attachmentTechnicalApplication;
+                attachments.add(attachmentTechnicalApplication);
             }
         }
+
+        insert attachments;
+
+
         for (Loan__c loanRecord : [SELECT Id, Commencement_Datee__c, Product__r.Name FROM Loan__c WHERE DOER_Solar_Loann__c = true]) {
             loanRecord.Commencement_Datee__c = myDate;
             loanListToUpdate.add(loanRecord);
         }
         update loanListToUpdate;
-        for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c, 
+
+        for (Residential_Equipment__c equipmentRecord : [SELECT Id, Lead__c, Generator_Nameplate_Capacity__c, Type_of_Module__c, Type_of_Inverter__c,
                                                         Number_of_Inverters__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,  
                                                         Inverter_Manufacturer__c, Inverter_Model_Number__c
                                                         FROM Residential_Equipment__c]) {
@@ -618,14 +626,14 @@ public class LoanHandlerTestClass {
             equipmentListToUpdate.add(equipmentRecord);
         }
         update equipmentListToUpdate;
+
         changeLeadUpdateDummyMSLP(leadList);
         // DOER Solar Loans have an extra task (Technical Approval Documentation) which isn't yet handled, so
         // we'll only check non-DOER loans
-        List<Partner_Task__c> partnerTaskList = [SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id, Loan__r.DOER_Solar_Loann__c 
+        List<Partner_Task__c> partnerTaskList = [SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id, Loan__r.DOER_Solar_Loann__c
                                                  FROM Partner_Task__c
                                                  WHERE Loan__r.DOER_Solar_Loann__c = true];
 
-        Test.stopTest();
 
         for (Partner_Task__c partnerTaskAssertion : partnerTaskList) {
             if(partnerTaskAssertion.Name == 'Provide PayStub Documentation') {
@@ -973,6 +981,10 @@ public class LoanHandlerTestClass {
         }
         update equipmentListToUpdate;
         Test.stopTest();
+        leadList = [
+            SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
+            FROM Lead
+            WHERE DOER_Solar_Loan__c = FALSE];
         changeLeadUpdateDummy(leadList);
         List<Partner_Task__c> partnerTaskList = [
             SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id,
