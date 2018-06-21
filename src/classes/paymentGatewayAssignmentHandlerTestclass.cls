@@ -144,23 +144,41 @@ public class paymentGatewayAssignmentHandlerTestclass {
         List<ChargentOrders__Transaction__c> chargentTransOneTimeList= new List<ChargentOrders__Transaction__c>();  
   
 
-        ChargentBase__Gateway__c chGatewayOxfordBarretSt  = (ChargentBase__Gateway__c)TestFactory.createSObject(new ChargentBase__Gateway__c(
+        ChargentBase__Gateway__c chGatewayOxfordBarretSt  = new ChargentBase__Gateway__c(
                                                                                                     Name = 'Chargent Gateway Oxford Barret St',
                                                                                                     Shared_Solar_System__c = sharedSolarSystemOxfordBarretSt.Id, 
                                                                                                     ChargentBase__Merchant_ID__c = '235986',
                                                                                                     Entity__c = entity1.Id,
                                                                                                     ChargentBase__Active__c = TRUE));
-        insert chGatewayOxfordBarretSt;  
+        insert chGatewayOxfordBarretSt;
 
-        ChargentBase__Gateway__c chGatewayMedfieldCountryWay  = (ChargentBase__Gateway__c)TestFactory.createSObject(new ChargentBase__Gateway__c(
+        ChargentBase__Gateway__c chGatewayOxfordBarretSt2  = new ChargentBase__Gateway__c(
+                                                                                                    Name = 'Chargent Gateway Oxford Barret St',
+                                                                                                    Shared_Solar_System__c = sharedSolarSystemOxfordBarretSt.Id,
+                                                                                                    ChargentBase__Merchant_ID__c = '235986',
+                                                                                                    Entity__c = entity1.Id,
+                                                                                                    ChargentBase__Active__c = FALSE));
+        insert chGatewayOxfordBarretSt2;
+
+
+
+        ChargentBase__Gateway__c chGatewayMedfieldCountryWay  = new ChargentBase__Gateway__c(
                                                                                                     Name = 'Chargent Gateway Medfield Country Way',
-                                                                                                    Shared_Solar_System__c = sharedSolarSystemMedfieldCountryWay.Id, 
+                                                                                                    Shared_Solar_System__c = sharedSolarSystemMedfieldCountryWay.Id,
                                                                                                     ChargentBase__Merchant_ID__c = '123123',
                                                                                                     Entity__c = entity2.Id,
                                                                                                     ChargentBase__Active__c = TRUE));
-        insert chGatewayMedfieldCountryWay; 
+        insert chGatewayMedfieldCountryWay;
 
-        ChargentBase__Gateway__c chGatewayFairhavenMillRd  = (ChargentBase__Gateway__c)TestFactory.createSObject(new ChargentBase__Gateway__c(
+        ChargentBase__Gateway__c chGatewayMedfieldCountryWay2  = new ChargentBase__Gateway__c(
+                                                                                                    Name = 'Chargent Gateway Medfield Country Way',
+                                                                                                    Shared_Solar_System__c = sharedSolarSystemMedfieldCountryWay.Id,
+                                                                                                    ChargentBase__Merchant_ID__c = '123123',
+                                                                                                    Entity__c = entity2.Id,
+                                                                                                    ChargentBase__Active__c = TRUE));
+        insert chGatewayMedfieldCountryWay2;
+
+        ChargentBase__Gateway__c chGatewayFairhavenMillRd  = new ChargentBase__Gateway__c(
                                                                                                     Name = 'Chargent Gateway Fairhaven Mill Rd',
                                                                                                     Shared_Solar_System__c = sharedSolarSystemFairhavenMillRd.Id, 
                                                                                                     ChargentBase__Merchant_ID__c = '43543',
@@ -261,8 +279,10 @@ public class paymentGatewayAssignmentHandlerTestclass {
                                                                 FROM ChargentOrders__ChargentOrder__c]) {
             if (chOrderAssert.System_Bill__r.Bill_Number__c == 1) {
                 System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c, entity1.Id);
+                System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Id, chGatewayOxfordBarretSt.Id );
             } else {
                 System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Entity_Id__c, entity2.Id);
+                System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Id, chGatewayMedfieldCountryWay2.Id );
             }
         }
 
