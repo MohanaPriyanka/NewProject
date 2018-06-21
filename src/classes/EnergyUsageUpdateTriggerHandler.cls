@@ -209,6 +209,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
     }
 
+
     public void finish(Database.BatchableContext bc){
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
             JobItemsProcessed,

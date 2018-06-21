@@ -377,7 +377,6 @@ public class TestBillCreationandPayment {
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
         System.AssertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
-
         Energy_Usage_Update__c productionUpdate = [
           SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
           FROM Energy_Usage_Update__c
