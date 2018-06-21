@@ -1,9 +1,17 @@
+/*************************************************************************************
+ + * Created By:  Jordan Pentaleri 
+ + * - Used for Chargent API Actions in SREC Direct Deposit form, CS Portal Payments,
+ + *   and recurring SREC payments
+ + *
+ + * Tested By: TestBillCreationandPayment, CreateOrderandPaymentRequestTest, RecurringSRECHandlerTest
+ + *************************************************************************************/
+
 public without sharing class CreateOrderandPaymentRequest {
     @AuraEnabled
-    public static Boolean insertRequest(String oppId, String emailInput, ChargentOrders__ChargentOrder__c chOrder) {
-        Boolean emailCheck = checkEmailOnOpp(oppId, emailInput);
+    public static Boolean submitDDInfoWithoutCharge(String oppId, String emailInput, ChargentOrders__ChargentOrder__c chOrder) {
+        Loan__c loanRecord = getLoanAndCheckEmail(oppId, emailInput);
 
-        if (!emailCheck) {
+        if (loanRecord == null) {
             return false;
         } else {
             ChargentBase__Gateway__c srecGateway = [SELECT Id, Name 
@@ -22,22 +30,35 @@ public without sharing class CreateOrderandPaymentRequest {
                                                                 ChargentOrders__Bank_Account_Name__c = chOrder.ChargentOrders__Bank_Account_Name__c,
                                                                 ChargentOrders__Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c,             
                                                                 ChargentOrders__Bank_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c,
+                                                                Loan__c = loanRecord.Id,
                                                                 Opportunity__c = oppId); 
             insert chargentOrder;
+            loanRecord.SREC_Direct_Deposit_Order__c = chargentOrder.Id;
+            try {
+                update loanRecord;
+            } catch (Exception excep) {
+                Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not Update Loan: ' + chargentOrder.Id + String.valueOf(excep));
+            }
             return true;
         }
     }
 
     @AuraEnabled
-    public static Boolean checkEmailOnOpp(String oppId, String emailInput) {
-        Opportunity loanRecord = [  SELECT Id, Email__c
-                                    FROM Opportunity
-                                    WHERE Id = : oppID];
-
-        if (loanRecord.Email__c == emailInput) {
-            return true;
-        } else {
-            return false;
+    public static Loan__c getLoanAndCheckEmail(String oppId, String emailInput) {
+        try {
+            Loan__c loanRecord = [ SELECT Id, Name, SREC_Direct_Deposit_Order__c, 
+                                    Opportunity__r.Id, Opportunity__r.Email__c
+                                    FROM Loan__c
+                                    WHERE Opportunity__r.Id = : oppID
+                                    LIMIT 1];
+            if (loanRecord.Opportunity__r.Email__c == emailInput) {
+                return loanRecord;
+            } else {
+                throw new AuraHandledException('Invalid Email');
+            }
+        } catch (QueryException excep) {
+            Logger.logNow('CreateOrderandPaymentRequest', 'getLoanAndCheckEmail', 'No Loan Found - Hit Exception: ' + String.valueOf(excep));
+            throw new AuraHandledException('No Loan Found');
         }
     }
 
@@ -74,8 +95,12 @@ public without sharing class CreateOrderandPaymentRequest {
 
         try {
             // Need to mock the Chargent API call for testing:
+            // Chargent says: 
+            // When testing the callouts that Chargent makes, you can't use the HttpCalloutMock class in Salesforce 
+            // because it has to be done from within the Chargent managed package/namespace. 
+            // https://www.appfrontier.com/developers.html
             if (Test.isRunningTest()) {
-                transactionId = testAPICall(chOrder);
+                transactionId = testAPICall(chOrder, false);
             } else {
                 ChargentOrders.TChargentOperations.TChargentResult result = ChargentOrders.TChargentOperations.ChargeOrder_Click(chOrder.Id);               
                 if (result.TransactID != null) {
@@ -165,7 +190,7 @@ public without sharing class CreateOrderandPaymentRequest {
         }
     }
 
-    public static Id testAPICall(ChargentOrders__ChargentOrder__c orderTest) {
+    public static Id testAPICall(ChargentOrders__ChargentOrder__c orderTest, Boolean isCredit) {
         ChargentOrders__Transaction__c transA = 
             new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderTest.Id,
                                                 ChargentOrders__Amount__c = orderTest.ChargentOrders__Subtotal__c,
@@ -173,7 +198,73 @@ public without sharing class CreateOrderandPaymentRequest {
                                                 ChargentOrders__Response_Message__c = 'OK',
                                                 ChargentOrders__Type__c = 'Charge',                            
                                                 Activity_Type__c = 'Payment');
+        if (isCredit){
+            transA.ChargentOrders__Amount__c = -1 * orderTest.ChargentOrders__Credit_Amount__c;
+        }
         insert transA;
         return transA.Id;
+    } 
+
+    @AuraEnabled
+    public static Boolean attemptSRECsend(ChargentOrders__ChargentOrder__c orderToCredit) { 
+        Boolean response = false;
+        try {
+            if (Test.isRunningTest()) {
+                ChargentOrder chargentOrder = new ChargentOrder(orderToCredit);
+                testAPICall(orderToCredit, true);
+                response = true;
+            } else {
+                ChargentOrder chargentOrder = new ChargentOrder(orderToCredit);
+                ChargentOrders.TChargentOperations.TChargentResult result = ChargentOrders.TChargentOperations.ChargeOrder_ClickJSON(chargentOrder.toJSON());  
+
+                if (result.TransactID != null) {
+                    ChargentOrders__Transaction__c insertedTransaction = [ SELECT Id, Name, ChargentOrders__Response_Status__c, 
+                                                                            ChargentOrders__Response_Message__c,
+                                                                            ChargentOrders__Order__r.Related_SREC__c
+                                                                            FROM ChargentOrders__Transaction__c 
+                                                                            WHERE Id = : result.TransactID];
+                    if (insertedTransaction.ChargentOrders__Response_Status__c == 'Approved'){
+                        response = true;
+                    }
+                } else {
+                    // Error: No Transaction created. This is caused by some kind of internal error
+                    Logger.logLater('CreateOrderandPaymentRequest', 'attemptSRECsend', 'No Transaction Made - Chargent Error: ' + String.valueOf(result.Message));
+                }
+            }            
+        } catch (Exception excep) {
+            // Error: No Transaction created. This is caused by some kind of internal error
+            Logger.logLater('CreateOrderandPaymentRequest', 'attemptSRECsend', 'No Transaction Made - Hit Exception: ' + String.valueOf(excep));
+        }
+        Logger.flushLogs(); 
+        return response;
+    }
+
+    public class ChargentOrder{      
+        String ObjectId;
+        String ChargeAmount;
+        String BankRoutingNumber;
+        String BankAccountNumber;
+        String BankAccountType;
+        String BankName ;
+        String BankAccountName;
+        String CustomTransactionType;
+
+        public ChargentOrder(ChargentOrders__ChargentOrder__c orderToCredit){
+            Decimal creditAmount = orderToCredit.ChargentOrders__Credit_Amount__c.setScale(2, roundingMode.HALF_UP);
+
+            ObjectId = orderToCredit.Id;
+            ChargeAmount = String.valueOf(creditAmount);
+            BankRoutingNumber = orderToCredit.ChargentOrders__Bank_Routing_Number__c;
+            BankAccountNumber = orderToCredit.ChargentOrders__Bank_Account_Number__c;
+            BankAccountType = orderToCredit.ChargentOrders__Bank_Account_Type__c;
+            BankName = orderToCredit.ChargentOrders__Bank_Name__c;
+            BankAccountName = orderToCredit.ChargentOrders__Bank_Account_Name__c;
+            CustomTransactionType = 'ACH_Credit';
+        }
+
+        public String toJSON(){
+            String json = System.JSON.serializePretty(this);
+            return json;
+        }
     }
 }
