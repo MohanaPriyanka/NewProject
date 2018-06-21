@@ -109,16 +109,23 @@ public class TestBillCreationandPayment {
 
         Account accountParent = new Account(name = 'Account Parent',
             RecordTypeId = parentAccountRT);
-        insert accountParent;
+        Account accountParent2 = new Account(name = 'Account Parent2',
+            RecordTypeId = parentAccountRT);
+        insert new List<Account>{accountParent, accountParent2};
 
         Contact contactA = new Contact( FirstName = 'Contact',
             LastName = 'A',
             AccountId = accountParent.Id);
-        insert contactA;
+        Contact contactB = new Contact( FirstName = 'Contact',
+            LastName = 'B',
+            AccountId = accountParent2.Id);
+        insert new List<Contact>{contactA, contactB};
 
         Account accountA = new Account(name = 'Account A',
             Parent_Account__c = accountParent.Id);
-        insert accountA;
+        Account accountB = new Account(name = 'Account B',
+            Parent_Account__c = accountParent2.Id);
+        insert new List<Account>{accountA, accountB};
 
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
@@ -154,7 +161,13 @@ public class TestBillCreationandPayment {
                 Account__c = accountA.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'jordan jordan');
-        insert ualog;
+
+        Utility_Account_Log__c ualog2 =
+            new Utility_Account_Log__c(Name = '0000345',
+                Account__c = accountB.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'jordan jordan');
+        insert new List<Utility_Account_Log__c>{ualog, ualog2};
 
         Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -179,13 +192,21 @@ public class TestBillCreationandPayment {
                 CloseDate = System.today());
 
         Opportunity opportunitytwo =
-            new Opportunity(Name = 'BOpp Two',
+            new Opportunity(Name = 'BOpp One',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo};
+
+        Opportunity opportunitythree =
+            new Opportunity(Name = 'BOpp Two',
+                AccountId = accountB.Id,
+                Shared_Solar_System__c = sss2.Id,
+                StageName = 'Complete',
+                Product__c = normalCSProduct.Id,
+                CloseDate = System.today());
+        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
 
         Utility_Account_Subscription__c uasone =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -205,7 +226,6 @@ public class TestBillCreationandPayment {
                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
-
         Utility_Account_Subscription__c uasthree =
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
@@ -213,9 +233,18 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 Annual_kwh_subscription_future__c = 8000,
                 Calculated_Annual_Cost_of_Electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+            Subscribed_Annual_Cost_of_Electricity__c = 8000);
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree};
+        Utility_Account_Subscription__c uasfour =
+            new Utility_Account_Subscription__c(Name = '0000345',
+                Utility_Account_Log__c = ualog2.Id,
+                Opportunity__c = opportunitythree.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 6000,
+                Calculated_Annual_Cost_of_Electricity__c = 6000,
+                Subscribed_Annual_Cost_of_Electricity__c = 6000);
+
+        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
@@ -490,7 +519,7 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testAccountBills() {
+    @isTest public static void testBillNumbering() {
         Test.startTest();
 
         Energy_Usage_Update__c productionupdateB1 = [
@@ -501,39 +530,110 @@ public class TestBillCreationandPayment {
         ];
 
         Energy_Usage_Update__c productionupdateB2 = [
-          SELECT Id, Generate_Bills__c, Month_Number__c
+          SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
+              MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
+              Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
           FROM Energy_Usage_Update__c
             WHERE Name = 'sssB - February 2016'
             LIMIT 1
         ];
 
         productionupdateB1.Generate_Bills__c = TRUE;
-        productionupdateB2.Generate_Bills__c = TRUE;
         update productionupdateB1;
-        update productionupdateB2;
 
-        List<Account_Bill__c> accountBills = [
+        List<Schedule_Z_Subscription__c> scheduleZSubs = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = : productionupdateB2.Schedule_Z__c
+        ];
+
+        System.AssertEquals(2, scheduleZSubs.size());
+
+        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(new List <Energy_Usage_Update__c>{productionupdateB2});
+        //simulate batching in production
+        handler.createBills(new List<Schedule_Z_Subscription__c>{scheduleZSubs[0]});
+        handler.createBills(new List<Schedule_Z_Subscription__c>{scheduleZSubs[1]});
+
+        Test.stopTest();
+
+        Opportunity oppOne = [
+            SELECT Id, AccountId, Name
+            FROM Opportunity
+            WHERE Name = 'BOpp One'
+            LIMIT 1
+        ];
+
+        Opportunity oppTwo = [
+            SELECT Id, AccountId, Name
+            FROM Opportunity
+            WHERE Name = 'BOpp Two'
+            LIMIT 1
+        ];
+
+        List<Account_Bill__c> oppOneAccountBills = [
             SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
             FROM Account_Bill__c
+            WHERE Parent_Account__c = : oppOne.AccountId
             ORDER BY Bill_Number__c
         ];
 
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Bill_Number__c
-            FROM System_Bill__c
+        List<Account_Bill__c> oppTwoAccountBills = [
+            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : oppTwo.AccountId
+            ORDER BY Bill_Number__c
         ];
 
-        Account_Bill__c januaryAccountBill = accountBills[0];
-        Account_Bill__c februaryAccountBill = accountBills[1];
+        List<System_Bill__c> oppOneSystemBills = [
+            SELECT Id, Bill_Number__c, Month__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = : oppOne.AccountId
+                AND Shared_Solar_System__c = : productionupdateB2.Shared_Solar_System__c
+            ORDER BY Bill_Number__c
+        ];
 
-        System.AssertEquals(4, systemBills.size());
-        System.AssertEquals(2, accountBills.size());
-        System.AssertEquals(1, januaryAccountBill.Bill_Number__c);
-        System.AssertEquals(1, januaryAccountBill.Month__c);
-        System.AssertEquals(2, februaryAccountBill.Bill_Number__c);
-        System.AssertEquals(2, februaryAccountBill.Month__c);
-        System.AssertEquals(januaryAccountBill.Total_Due__c, februaryAccountBill.Past_Bill__c);
-        Test.stopTest();
+        List<System_Bill__c> oppTwoSystemBills = [
+            SELECT Id, Bill_Number__c, Month__c
+            FROM System_Bill__c
+            WHERE Opportunity__c = : oppTwo.Id
+            ORDER BY Bill_Number__c
+        ];
+
+        Account_Bill__c oppOneJanuaryAccountBill = oppOneAccountBills[0];
+        Account_Bill__c oppOneFebruaryAccountBill = oppOneAccountBills[1];
+        System_Bill__c oppOneJanuarySystemBill = oppOneSystemBills[0];
+        System_Bill__c oppOneFebruarySystemBill = oppOneSystemBills[1];
+
+        System.AssertEquals(2, oppOneAccountBills.size());
+        System.AssertEquals(1, oppOneJanuaryAccountBill.Bill_Number__c);
+        System.AssertEquals(1, oppOneJanuaryAccountBill.Month__c);
+        System.AssertEquals(2, oppOneFebruaryAccountBill.Bill_Number__c);
+        System.AssertEquals(2, oppOneFebruaryAccountBill.Month__c);
+        System.AssertEquals(oppOneJanuaryAccountBill.Total_Due__c, oppOneFebruaryAccountBill.Past_Bill__c);
+
+        System.AssertEquals(2, oppOneSystemBills.size());
+        System.AssertEquals(1, oppOneJanuarySystemBill.Bill_Number__c);
+        System.AssertEquals(1, oppOneJanuarySystemBill.Month__c);
+        System.AssertEquals(2, oppOneFebruarySystemBill.Bill_Number__c);
+        System.AssertEquals(2, oppOneFebruarySystemBill.Month__c);
+
+        Account_Bill__c oppTwoJanuaryAccountBill = oppTwoAccountBills[0];
+        Account_Bill__c oppTwoFebruaryAccountBill = oppTwoAccountBills[1];
+        System_Bill__c oppTwoJanuarySystemBill = oppTwoSystemBills[0];
+        System_Bill__c oppTwoFebruarySystemBill = oppTwoSystemBills[1];
+
+        System.AssertEquals(2, oppTwoAccountBills.size());
+        System.AssertEquals(1, oppTwoJanuaryAccountBill.Bill_Number__c);
+        System.AssertEquals(1, oppTwoJanuaryAccountBill.Month__c);
+        System.AssertEquals(2, oppTwoFebruaryAccountBill.Bill_Number__c);
+        System.AssertEquals(2, oppTwoFebruaryAccountBill.Month__c);
+        System.AssertEquals(oppTwoJanuaryAccountBill.Total_Due__c, oppTwoFebruaryAccountBill.Past_Bill__c);
+
+        System.AssertEquals(2, oppTwoSystemBills.size());
+        System.AssertEquals(1, oppTwoJanuarySystemBill.Bill_Number__c);
+        System.AssertEquals(1, oppTwoJanuarySystemBill.Month__c);
+        System.AssertEquals(2, oppTwoFebruarySystemBill.Bill_Number__c);
+        System.AssertEquals(2, oppTwoFebruarySystemBill.Month__c);
     }
 
     @isTest public static void testSystemBills() {
