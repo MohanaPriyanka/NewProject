@@ -22,6 +22,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             euuMonths.add((Integer) euu.Month_Number__c);
             euuYears.add(euu.YearDate__c);
         }
+    }
+
+    public void runBills() {
         if (!Test.isRunningTest()) {
             Database.executeBatch(this, 10);
         } else {
