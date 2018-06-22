@@ -131,6 +131,7 @@ public with sharing class CAPControllerTest {
                 Unfinished_Lead__c = true,
                 Utility_Bill_Access_Acknowledged__c = true,
                 Status = 'Ready for Credit Check',
+                Product_Line__c = 'Residential Loan',
                 RecordTypeId = loanRT.Id);
         insert newLead;
 
@@ -152,6 +153,11 @@ public with sharing class CAPControllerTest {
                                                          FROM LASERCA__Personal_Credit_Report__c
                                                          WHERE LASERCA__Lead__c = :leadList[0].Id];
         System.assertEquals(pcrs.size(), 1);
+
+        List<LASERCA__Credit_Report_Log__c> pcls = [SELECT Id
+                                                         FROM LASERCA__Credit_Report_Log__c
+                                                         WHERE LASERCA__Lead__c = :leadList[0].Id];
+        System.assertEquals(pcls.size(), 1);
 
         System.assertEquals('Pending Credit Review', CAPController.checkCreditStatus(leadList[0]));
 
@@ -470,6 +476,7 @@ public with sharing class CAPControllerTest {
             '"number_of_inverters__c":22,"inverter_manufacturer__c":"baz","inverter_model_number__c":"biz",' +
             '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
         update lead;
+        Test.startTest();
         CAPController.convertLead(lead.Id, lead.Email);
         CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         lead = [
@@ -481,7 +488,6 @@ public with sharing class CAPControllerTest {
             WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
         lead.Partner_Tasks__r[0].Status__c = 'Pending';
         update lead.Partner_Tasks__r;
-        Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
         CAPController.sendLoanDocs(lead.Id, lead.Email);

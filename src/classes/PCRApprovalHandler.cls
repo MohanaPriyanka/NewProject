@@ -155,6 +155,8 @@ public without sharing class PCRApprovalHandler {
                 Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Partner_Lookup__c,
                 IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
+                Personal_Credit_Report__c,
+                Personal_Credit_Report_Co_Applicant__c,
                 Personal_Credit_Report__r.LASERCA__Contact__c,
                 Personal_Credit_Report__r.Adjusted_Income__c,
                 Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
@@ -501,7 +503,7 @@ public without sharing class PCRApprovalHandler {
             this.monthlyIncome = monthlyIncome.setScale(2);
             this.monthlyDebt = monthlyDebt.setScale(2);
             if (lead.Personal_Credit_Report__c != null) {
-                this.primaryAppCreditScore = Integer.valueOf(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c);
+                this.primaryAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
             }
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
                 this.coAppCreditScore = Integer.valueOf(Util.nullToZero(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c));
