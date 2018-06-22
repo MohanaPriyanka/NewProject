@@ -218,10 +218,6 @@ public without sharing class PCRApprovalHandler {
                 */
                 boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
 
-                if (currentBankruptcy(lead)) {
-                    creditSummary.bestStatus = DECLINED;
-                }
-
                 // set to pending if any codes are present
                 if (creditSummary.bestStatus == APPROVED &&
                     flaggedCreditCodes != null &&
