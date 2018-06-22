@@ -72,7 +72,15 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
-        List<Opportunity> oppList = collectCompleteOrCarryOverOpps(sssIdToEUUMap.keySet());
+        List<Opportunity> oppList = [
+            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
+                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+                Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
+            FROM Opportunity
+            WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+                AND StageName = 'Complete'
+            ORDER BY Name
+        ];
 
         //Generate a list of all System Bill Numbers for each opportunity
         Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet());
