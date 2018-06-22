@@ -73,17 +73,18 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
         List<Opportunity> oppList = [
-            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
+            SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
                 AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
                 AND StageName = 'Complete'
+                AND Id IN : oppIds
             ORDER BY Name
         ];
 
         //Generate a list of all System Bill Numbers for each opportunity
-        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet());
+        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), oppIds);
 
         Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
         for (Account_Bill__c accountBill : [
@@ -250,12 +251,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return ab;
     }
 
-    private Map<String, Integer> maxSysBillByOppId(Set<Id> sssIds) {
+    private Map<String, Integer> maxSysBillByOppId(Set<Id> sssIds, Set<Id> oppIds) {
         Map<String, Integer> oppKeyMap = new Map<String, Integer>();
         for ( AggregateResult lineItem : [
             SELECT Opportunity__r.Id oppID, MAX(Bill_Number__c) maxBillNumber
             FROM System_Bill__c
             WHERE Shared_Solar_System__c IN : sssIds
+                AND Opportunity__c IN : oppIds
             GROUP BY Opportunity__r.Id
         ]) {
             String oppId = (String)lineItem.get('oppID');
