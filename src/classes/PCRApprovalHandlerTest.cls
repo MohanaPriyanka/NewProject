@@ -692,10 +692,8 @@ private class PCRApprovalHandlerTest {
                 '  {"key":6, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":10, "bankruptcy":true, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"key":11, "coAppBankruptcy":true, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Unqualified"} ' +
-                ']}';
+                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+            ']}';
 
             ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
