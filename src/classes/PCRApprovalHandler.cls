@@ -91,20 +91,8 @@ public without sharing class PCRApprovalHandler {
         }
 
         PCRApprovalHandler pcrAH = new PCRApprovalHandler();
-        List<LASERCA__Personal_Credit_Report__c> pcrs =
-            [SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c,
-             LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
-             LASERCA__Credit_Score_TransUnion__c, Adjusted_Income__c, Annual_Income_From_Lead__c,
-             DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
-             Adjusted_Monthly_Personal_Debt__c, DOER_Application__c,
-             Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
-             Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c,
-             LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
-             PCR_Lead_ID__c, Partner_Email__c,
-             Credit_Denial_Email_Sent__c
-             FROM LASERCA__Personal_Credit_Report__c
-             WHERE Id = :pcrIds];
-        pcrAH.onBeforeUpdate(pcrs);
+        List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
+        pcrs = pcrAH.onBeforeUpdate(pcrs);
         update pcrs;
     }
 
@@ -121,16 +109,16 @@ public without sharing class PCRApprovalHandler {
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             if ((d1.getTime() - pcr.CreatedDate.getTime())/1000 > 10 || noDelay) {
                 oldPCRs.add(pcr);
-            }   
+            }
         }
         if (!oldPCRs.isEmpty()) {
             PCRApprovalHandler pcrAH = new PCRApprovalHandler();
-            pcrAH.onBeforeUpdate(oldPCRs);
+            oldPCRs = pcrAH.onBeforeUpdate(oldPCRs);
         }
     }
 
-    private void onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
-        List<String> leadlist = new List<String>();
+    private List<LASERCA__Personal_Credit_Report__c> onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
+        Set<Id> leadIds = new Set<Id>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         Map<Id, Lead> leadstoUpdate = new Map<Id, Lead>();
         List<Product2> products;
@@ -141,33 +129,12 @@ public without sharing class PCRApprovalHandler {
                 pcrForLead.LASERCA__Lead__c = pcrForLead.Lead_from_Contact__c;
             }
             if (pcrForLead.LASERCA__Lead__c != null) {
-                leadlist.add(pcrForLead.LASERCA__Lead__c);
+                leadIds.add(pcrForLead.LASERCA__Lead__c);
             }
         }
 
 
-        List<Lead> relatedLeads  = [
-            SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c,
-                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Joint_Applicant_Type__c,
-                Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Partner_Lookup__c,
-                IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
-                Personal_Credit_Report__c,
-                Personal_Credit_Report_Co_Applicant__c,
-                Personal_Credit_Report__r.LASERCA__Contact__c,
-                Personal_Credit_Report__r.Adjusted_Income__c,
-                Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
-                Personal_Credit_Report__r.LASERCA__Bankruptcy__c,
-                Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
-                Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c
-            FROM Lead
-            WHERE Id  IN : leadlist
-        ];
+        List<Lead> relatedLeads  = getLeadsForCreditAnalysis(leadIds);
         for (Lead lead : relatedLeads) {
             leadMap.put(lead.Id, lead);
         }
@@ -175,16 +142,12 @@ public without sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            if (!pcr.Do_not_trigger_PCRApprovalHandler__c && 
+            if (!pcr.Do_not_trigger_PCRApprovalHandler__c &&
                 pcr.LASERCA__Lead__c != null &&
                 leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar' &&
                 leadReadyForPrequalCheck(leadMap.get(pcr.LASERCA__Lead__c))) {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
-                String bwApproval, doerApproval;
-
-                Integer creditScore = setAppMaximumCreditScore(lead);
                 Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
-                Decimal householdMonthlyDebt = calculateHouseholdMonthlyDebt(lead);
 
                 // prevent divide by zero errors on DTI calcs
                 if (householdMonthlyIncome == 0) {
@@ -193,78 +156,12 @@ public without sharing class PCRApprovalHandler {
                     pcr.DTI_After_Notes__c = null;
                     continue;
                 }
-
-                /*
-                If a lead doesn't have an associated product, we can't calculate the DTI after
-                the loan is selected, so we'll look through all applicable products for the lead
-                and see the best we can do.
-                */
-                CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
-                setPcrDti(lead, creditSummary, pcr);
-
-                if (lead.Product__c == null) {
-                    if (creditSummary.bestStatus == APPROVED) {
-                        lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
-                    } else {
-                        lead.Product__c = creditSummary.leastExpensiveQualifiedProduct;
-                    }
-                } else {
-                    if (creditSummary.bestStatus == APPROVED && !creditSummary.approvedProducts.contains(lead.Product__c)) {
-                        lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
-                    }
-                }
-
-                /*
-                680 credit score hard coded in. We now have multiple product offerings with different minimum credit thresholds.
-                This won't work in every real life case.
-                */
-                boolean declinedFromFICO = deniedBecauseFICO(creditScore, 680);
-
-                // set to pending if any codes are present
-                if (creditSummary.bestStatus == APPROVED &&
-                    flaggedCreditCodes != null &&
-                    (flaggedCreditCodes.contains(pcr.LASERCA__Code__c) ||
-                     flaggedCreditCodes.contains(pcr.LASERCA__Code_2__c) ||
-                     flaggedCreditCodes.contains(pcr.LASERCA__Code_3__c) ||
-                     flaggedCreditCodes.contains(pcr.LASERCA__Code_4__c))) {
-                    creditSummary.bestStatus = PENDINGREVIEW;
-                }
-                // If credit has been approved & their associated with a bank
-                if (creditSummary.bestStatus == APPROVED &&
-                    (lead.Avidia_Executive__c || lead.Avidia_Service_Provider__c || lead.Other_Bank_Executive__c)) {
-                    creditSummary.bestStatus = PENDINGREVIEW;
-                }
-
-                if (creditScore == 0 || creditScore == NULL) {
-                    creditSummary.bestStatus = PENDINGREVIEW;
-                }
-                // overwrite statuses if Avidia has reviewed
-                if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
-                    pcr.Solar_Loan_Manual_Approval__c) {
-                    pcr.Solar_Loan_Approval_Status__c = APPROVED;
-                } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
-                           pcr.Solar_Loan_Manual_Decline__c) {
-                    pcr.Solar_Loan_Approval_Status__c = DECLINED;
-                } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
-                    pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
-                } else {
-                    pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
-                }
-                // If lead is in any stage of the process update the status
-                if (lead.Status == READYFORCREDITCHECK ||
-                    lead.Status == PENDINGCREDITREVIEW ||
-                    lead.Status == UNQUALIFIED ||
-                    lead.Status == PREQUALIFIED ||
-                    pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
-                    setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
-                    leadsToUpdate.put(lead.Id, lead);
-                }
-
-                if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) { 
+                lead = reviewLeadCreditReport(lead, pcr);
+                leadsToUpdate.put(lead.Id, lead);
+                if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) {
                     hasCoApp = TRUE;
                 }
-
-                // SEND PREAPPROVAL EMAIL 
+                // SEND PREAPPROVAL EMAIL
                 if (!pcr.Credit_PreApproval_Email_Sent__c &&
                     pcr.LASERCA__Contact__c == NULL &&
                     pcr.First_Name_from_Lead__c != NULL &&
@@ -303,14 +200,13 @@ public without sharing class PCRApprovalHandler {
                            pcr.Last_Name_from_Lead__c != NULL &&
                            pcr.Email_from_Lead__c != NULL &&
                            pcr.Solar_Loan_Approval_Status__c == DECLINED &&
-                           declinedFromFICO &&
                            !hasCoApp) {
                     String htmlbody = denialEmailTemplate.HtmlValue;
                     htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
                     htmlBody = htmlBody.replace('{!Lead.Id}',pcr.PCR_Lead_ID__c );
-                    string denialSubject = pcr.First_Name_from_Lead__c + 
-                        ', your BlueWave Solar Loan Pre-Approval Application was not able to be Pre-Approved'; 
-                    sendEmail(pcr.First_Name_from_Lead__c, denialSubject, 
+                    string denialSubject = pcr.First_Name_from_Lead__c +
+                        ', your BlueWave Solar Loan Pre-Approval Application was not able to be Pre-Approved';
+                    sendEmail(pcr.First_Name_from_Lead__c, denialSubject,
                               htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
                     pcr.Credit_Denial_Email_Sent__c = TRUE;
                 }
@@ -319,6 +215,152 @@ public without sharing class PCRApprovalHandler {
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
+        return newPCR;
+    }
+
+    public Lead reviewLeadCreditReport (Lead lead, LASERCA__Personal_Credit_Report__c pcr) {
+        if (pcr == null) {
+            Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
+            List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
+            pcr = pcrs[0];
+        }
+
+        try {
+            Boolean hasFields = lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null;
+        } catch (Exception e) {
+            Set<Id> leadIds = new Set<Id>{lead.id};
+            lead = getLeadsForCreditAnalysis(leadIds)[0];
+        }
+
+        Integer creditScore = setAppMaximumCreditScore(lead);
+        Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
+        Decimal householdMonthlyDebt = calculateHouseholdMonthlyDebt(lead);
+
+        /*
+        If a lead doesn't have an associated product, we can't calculate the DTI after
+        the loan is selected, so we'll look through all applicable products for the lead
+        and see the best we can do.
+        */
+        CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
+        setPcrDti(lead, creditSummary, pcr);
+
+        if (lead.Product__c == null) {
+            if (creditSummary.bestStatus == APPROVED) {
+                lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
+            } else {
+                lead.Product__c = creditSummary.leastExpensiveQualifiedProduct;
+            }
+        } else {
+            if (creditSummary.bestStatus == APPROVED && !creditSummary.approvedProducts.contains(lead.Product__c)) {
+                lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
+            }
+        }
+
+        // set to pending if any codes are present
+        if (creditSummary.bestStatus == APPROVED &&
+            flaggedCreditCodes != null &&
+            checkFlaggedCreditCodes(lead)) {
+            creditSummary.bestStatus = PENDINGREVIEW;
+        }
+
+        // If credit has been approved & their associated with a bank
+        if (creditSummary.bestStatus == APPROVED &&
+            (lead.Avidia_Executive__c || lead.Avidia_Service_Provider__c || lead.Other_Bank_Executive__c)) {
+            creditSummary.bestStatus = PENDINGREVIEW;
+        }
+
+        if (creditScore == 0 || creditScore == NULL) {
+            creditSummary.bestStatus = PENDINGREVIEW;
+        }
+        // overwrite statuses if Avidia has reviewed
+        if (lead.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
+            pcr.Solar_Loan_Manual_Approval__c) {
+            pcr.Solar_Loan_Approval_Status__c = APPROVED;
+        } else if (lead.Avidia_Review_Status__c == 'Reviewed - Declined' ||
+            pcr.Solar_Loan_Manual_Decline__c) {
+            pcr.Solar_Loan_Approval_Status__c = DECLINED;
+        } else if (lead.Avidia_Review_Status__c == PENDINGREVIEW) {
+            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+        } else {
+            pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
+        }
+        
+        // If lead is in any stage of the process update the status
+        if (lead.Status == READYFORCREDITCHECK ||
+            lead.Status == PENDINGCREDITREVIEW ||
+            lead.Status == UNQUALIFIED ||
+            lead.Status == PREQUALIFIED ||
+            pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
+            setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
+        }
+        
+        return lead;
+    }
+
+    public Boolean checkFlaggedCreditCodes (Lead lead) {
+        if (lead.Application_Type__c != 'Joint') {
+            return(
+                flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code__c)
+                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_2__c)
+                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_3__c)
+                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_4__c)
+            );
+        } else {
+            return(
+                flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_2__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_3__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_4__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c)
+                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_4__c)
+            );
+        }
+    }
+
+    public List<LASERCA__Personal_Credit_Report__c> getPCRsForCreditAnalysis (Set<Id> pcrIds) {
+        List<LASERCA__Personal_Credit_Report__c> pcrs = [
+            SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c,
+                LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
+                LASERCA__Credit_Score_TransUnion__c, Adjusted_Income__c, Annual_Income_From_Lead__c,
+                DTI_Before__c, DTI_After__c, DTI_After_Notes__c, Co_Applicant_Income__c,
+                Adjusted_Monthly_Personal_Debt__c, DOER_Application__c,
+                Avidia_Review_Status__c, Solar_Loan_Manual_Approval__c, Solar_Loan_Approval_Status__c,
+                Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c,
+                LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
+                PCR_Lead_ID__c, Partner_Email__c,
+                Credit_Denial_Email_Sent__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE Id IN : pcrIds
+        ];
+        return pcrs;
+    }
+
+    public List<Lead> getLeadsForCreditAnalysis (Set<Id> leadIds) {
+        List<Lead> leads = [
+            SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c, Joint_Applicant_Type__c,
+                Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
+                Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c, Partner_Lookup__c,
+                IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
+                Personal_Credit_Report__c,
+                Personal_Credit_Report_Co_Applicant__c,
+                Personal_Credit_Report__r.LASERCA__Contact__c,
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c,
+                Personal_Credit_Report__r.Adjusted_Income__c,
+                Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.LASERCA__Bankruptcy__c,
+                Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
+                Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c
+            FROM Lead
+            WHERE Id  IN : leadIds
+        ];
+        return leads;
     }
 
     private Boolean currentBankruptcy (Lead lead) {
