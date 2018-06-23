@@ -156,7 +156,7 @@ public without sharing class PCRApprovalHandler {
                     pcr.DTI_After_Notes__c = null;
                     continue;
                 }
-                lead = reviewLeadCreditReport(lead, pcr);
+                lead = reviewLeadCreditReport(lead, pcr, productRepo);
                 leadsToUpdate.put(lead.Id, lead);
                 if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) {
                     hasCoApp = TRUE;
@@ -218,11 +218,15 @@ public without sharing class PCRApprovalHandler {
         return newPCR;
     }
 
-    public Lead reviewLeadCreditReport (Lead lead, LASERCA__Personal_Credit_Report__c pcr) {
+    public Lead reviewLeadCreditReport (Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
         if (pcr == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
-            List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
+            List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
             pcr = pcrs[0];
+        }
+
+        if (productRepo == null) {
+            productRepo = new ProductRepo(new List<Lead>{lead});
         }
 
         try {
@@ -319,7 +323,7 @@ public without sharing class PCRApprovalHandler {
         }
     }
 
-    public List<LASERCA__Personal_Credit_Report__c> getPCRsForCreditAnalysis (Set<Id> pcrIds) {
+    public static List<LASERCA__Personal_Credit_Report__c> getPCRsForCreditAnalysis (Set<Id> pcrIds) {
         List<LASERCA__Personal_Credit_Report__c> pcrs = [
             SELECT Id, Name, LASERCA__Lead__c, Lead_from_Contact__c, Do_not_trigger_PCRApprovalHandler__c,
                 LASERCA__Code__c, LASERCA__Code_2__c, LASERCA__Code_3__c, LASERCA__Code_4__c,
@@ -340,7 +344,7 @@ public without sharing class PCRApprovalHandler {
     public List<Lead> getLeadsForCreditAnalysis (Set<Id> leadIds) {
         List<Lead> leads = [
             SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c, Joint_Applicant_Type__c,
-                Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+                Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c, Avidia_Review_Status__c,
                 Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                 Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c, Partner_Lookup__c,
                 IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
@@ -352,11 +356,19 @@ public without sharing class PCRApprovalHandler {
                 Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.LASERCA__Bankruptcy__c,
                 Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
+                Personal_Credit_Report__r.LASERCA__Code__c,
+                Personal_Credit_Report__r.LASERCA__Code_2__c,
+                Personal_Credit_Report__r.LASERCA__Code_3__c,
+                Personal_Credit_Report__r.LASERCA__Code_4__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c,
-                Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Bankruptcy__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_4__c
             FROM Lead
             WHERE Id  IN : leadIds
         ];

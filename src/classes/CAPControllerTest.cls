@@ -34,6 +34,7 @@ public with sharing class CAPControllerTest {
                 Product_Program__c = 'BlueWave Solar Loan',
                 Bs_Sales_ID__c = salesRep.Id,
                 Status = 'Ready for Credit Check',
+                Product_Line__c = 'Residential Loan',
                 RecordTypeId = loanRT.Id);
         insert l;
         Test.startTest();
