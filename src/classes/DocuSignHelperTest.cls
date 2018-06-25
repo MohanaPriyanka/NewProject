@@ -95,4 +95,32 @@ public with sharing class DocuSignHelperTest {
         System.assertEquals('Pending', opp.Partner_Tasks__r[1].Status__c);
         System.assertEquals(null, opp.Partner_Tasks__r[1].Completion_Date__c);
     }
+
+    static testMethod void testVoidFromProcessBuilder() {
+        Opportunity opp = [
+            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+            WHERE Lead__r.FirstName = 'Retired'
+        ];
+        System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
+        System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
+        System.assertEquals('Sent', opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__Envelope_Status__c);
+        System.assertEquals(null, DocuSignHelper.oppsToResend);
+        System.assertEquals(null, DocuSignHelper.envelopesToVoid);
+
+        opp.Contract_Status__c = 'Completed';
+        opp.Partner_Sales_Agreement_Status__c = 'Completed';
+        update opp;
+        opp.Partner_Tasks__r[0].Status__c = 'Complete';
+        opp.Partner_Tasks__r[0].Completion_Date__c = Date.today();
+        opp.Partner_Tasks__r[1].Status__c = 'Complete';
+        opp.Partner_Tasks__r[1].Completion_Date__c = Date.today();
+        update opp.Partner_Tasks__r;
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        // TODO: call void
+        Test.stopTest();
+    }
 }
