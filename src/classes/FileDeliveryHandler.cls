@@ -19,13 +19,23 @@ public without sharing class FileDeliveryHandler {
     Date todaysDate = System.Today();
     Date expyDate = todaysDate.addDays(15);
     String communityID;
-    if(!Test.isRunningTest()){
+    try {
         ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
         for (ConnectApi.Community community : comm.communities) {
             if (community.Name == 'BlueWave Member Portal'){
                 communityID = community.Id;
             }
         }
+    } catch (ConnectApi.ConnectApiException cae) {
+        Logger.logLater('FileDeliveryHandler', 'createDistribution', cae.getMessage() + ' caught when inserting: ');
+        for (ContentVersion cont : newContent) {
+            Logger.logLater(
+                'FileDeliveryHandler',
+                'createDistribution',
+                'Title: ' + cont.Title + ' FileType: ' + cont.FileType + ' Description: ' + cont.Description);
+        }
+        Logger.flushLogs();
+        communityId = null;
     }
     for (ContentVersion cont : newContent){
         if (cont.Title == 'Loan Summary Sheet.pdf') {
@@ -39,14 +49,12 @@ public without sharing class FileDeliveryHandler {
             cd.PreferencesExpires = true; 
             distList.add(cd); 
         } else if (cont.Title.contains('Community Solar Bill')) {
-            if (!Test.isRunningTest()){
-                ContentDocumentLink cdl = new ContentDocumentLink();
-                cdl.LinkedEntityId = communityID;
-                cdl.Visibility = 'AllUsers';
-                cdl.ShareType = 'V';
-                cdl.ContentDocumentId = cont.ContentDocumentId;
-                linkToCommList.add(cdl);
-            } 
+            ContentDocumentLink cdl = new ContentDocumentLink();
+            cdl.LinkedEntityId = communityID;
+            cdl.Visibility = 'AllUsers';
+            cdl.ShareType = 'V';
+            cdl.ContentDocumentId = cont.ContentDocumentId;
+            linkToCommList.add(cdl);
         }
     }       
     if (distList.size() > 0) {

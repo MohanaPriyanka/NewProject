@@ -26,6 +26,8 @@ public without sharing class Util {
         } catch (System.DmlException de) {
             if (de.getMessage().contains('UNABLE_TO_LOCK_ROW')) {
                 insertSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            } else {
+                throw new BWException(de.getMessage());
             }
         }
     }
