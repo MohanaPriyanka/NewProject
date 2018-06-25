@@ -24,7 +24,7 @@
     <br></br>
     <div aura:id="creditStatusBackButton" class="slds-align_absolute-center">
       <lightning:button label="Back"
-                        onclick="{!c.exitProductSelection}"/>
+                        onclick="window.history.previous()"/>
      </div>
      <aura:set attribute="else">
        <div aura:id = "allCustomers" class="">
