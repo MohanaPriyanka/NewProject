@@ -197,13 +197,17 @@ private class LeadTriggerHandlerTest {
         }        
 
         Boolean accountInserted = false;
-        for (Account relatedAccount : [SELECT Id, Name, Send_Bills_Contact__c
+        for (Account relatedAccount : [SELECT Id, Name, Send_Bills_Contact__c, Owner.Name
                                         FROM Account]){
             if (relatedAccount.Name == 'CompanyCo'){
+                // Property Account:
                 System.assertEquals(contactA.Id, relatedAccount.Send_Bills_Contact__c);
                 accountInserted = true;
             } else {
+                // Parent Account:
                 System.assertEquals(null, relatedAccount.Send_Bills_Contact__c);
+                System.assertNotEquals('Apply Guest Site User', relatedAccount.Owner.Name);
+                System.assertEquals('API', relatedAccount.Owner.Name);
             }
         }
         System.assertEquals(accountInserted, true);
