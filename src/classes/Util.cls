@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: AccountInfoControllerTest,LoanUnderwritingTest,SLPQuickSalesSheetTestclass,PCRApprovalHandlerTest
+ * Tested by: LoanUnderwritingTest,PCRApprovalHandlerTest,SLPControllersTestclass,SLPQuickSalesSheetTestclass
  *************************************************************************************/
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
