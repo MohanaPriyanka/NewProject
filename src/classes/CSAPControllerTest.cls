@@ -4,6 +4,20 @@ public with sharing class CSAPControllerTest {
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
 
+        User apiUser = new User(
+            FirstName = 'API',
+            Alias = '123api',
+            Email = 'api@bluewavesolar.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Country ='United States',
+            IsActive = true,
+            Timezonesidkey='America/Los_Angeles',
+            Username='api123@bluewavesolar.com');
+        Util.insertSObj(apiUser);
+
         RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
 
         Account accountRecord = new Account(
@@ -119,20 +133,6 @@ public with sharing class CSAPControllerTest {
         Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
-        User apiUser = new User(
-            FirstName = 'API',
-            Alias = '123api',
-            Email = 'api@bluewavesolar.com',
-            Emailencodingkey ='UTF-8',
-            PortalRole = 'Manager',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Country ='United States',
-            IsActive = true,
-            Timezonesidkey='America/Los_Angeles',
-            Username='api123@bluewavesolar.com');
-        Util.insertSObj(apiUser);
-
         User userRecord = new User(
             FirstName = 'User',
             Lastname ='Testing',
@@ -213,25 +213,11 @@ public with sharing class CSAPControllerTest {
         Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
-        User apiUser = new User(
-            FirstName = 'API',
-            Alias = '123api',
-            Email = 'api@bluewavesolar.com',
-            Emailencodingkey ='UTF-8',
-            PortalRole = 'Manager',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Country ='United States',
-            IsActive = true,
-            Timezonesidkey='America/Los_Angeles',
-            Username='api123@bluewavesolar.com');
-        Util.insertSObj(apiUser);
-
-        User userRecord = new User(
+        User otherUser = new User(
             FirstName = 'User',
-            Lastname ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
+            Lastname ='Jordan',
+            Alias = 'jUser132',
+            Email = 'jpentaleri@aol.com',
             Emailencodingkey ='UTF-8',
             PortalRole = 'Manager',
             Languagelocalekey ='en_US',
@@ -241,7 +227,7 @@ public with sharing class CSAPControllerTest {
             IsActive = true,
             ContactId = contactPartner.Id,
             Timezonesidkey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
+            Username='jUser132@aol.com');
 
         Lead leadToInsert = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -257,7 +243,7 @@ public with sharing class CSAPControllerTest {
         Product2 smartProduct = [SELECT Id FROM Product2 WHERE name = 'SMART Community Solar'];
 
         Test.startTest();
-        System.runAs(userRecord) {
+        System.runAs(otherUser) {
             CSAPController.upsertCSAPRecords(leadToInsert, '', '');
         }
 
