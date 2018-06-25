@@ -130,8 +130,8 @@ public class TestBillCreationandPayment {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
         User userRecord = new User(
-            FirstName = 'Man',
-            Lastname ='BearPig',
+            FirstName = 'Jordan',
+            Lastname ='Testcase',
             Alias = 'xxx234',
             Email = 'jpentaleri@bluewavesolar.com',
             Emailencodingkey ='UTF-8',
@@ -142,7 +142,7 @@ public class TestBillCreationandPayment {
             IsActive = true,
             ContactId = contactA.Id,
             Timezonesidkey='America/Los_Angeles',
-            Username='ManBearPig@bluewavesolar.com');
+            Username='testBillCreationandPay@bluewavesolar.com');
 
         Util.insertSobj(userRecord);
 
