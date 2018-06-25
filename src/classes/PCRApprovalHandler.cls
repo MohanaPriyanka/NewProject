@@ -162,53 +162,9 @@ public without sharing class PCRApprovalHandler {
                     hasCoApp = TRUE;
                 }
                 // SEND PREAPPROVAL EMAIL
-                if (!pcr.Credit_PreApproval_Email_Sent__c &&
-                    pcr.LASERCA__Contact__c == NULL &&
-                    pcr.First_Name_from_Lead__c != NULL &&
-                    pcr.Last_Name_from_Lead__c != NULL &&
-                    pcr.Email_from_Lead__c != NULL &&
-                    pcr.Solar_Loan_Approval_Status__c == APPROVED) {
-
-                    String continueApplicationUrl =
-                        Util.getCommunitySiteURL('Apply') + '/s/loan-application?leadId=' + pcr.PCR_Lead_ID__c;
-
-                    String htmlBody, subject;
-                    if (pcr.DOER_Application__c) {
-                        htmlBody = doerEmailTemplate.HtmlValue;
-                        subject = 'Congrats! ' +  pcr.First_Name_from_Lead__c +
-                            ', you have been prequalified for a BlueWave Mass Solar Loan';
-
-                    } else {
-                        htmlbody = standardEmailTemplate.HtmlValue;
-                        subject = 'Congrats! ' +  pcr.First_Name_from_Lead__c +
-                            ', you have been prequalified for a BlueWave Solar Loan';
-                    }
-                    htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
-                    htmlBody = htmlBody.replace('{!Lead.Name}', pcr.First_Name_from_Lead__c);
-                    htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
-                    htmlBody = htmlBody.replace('{!Lead.LastName}', pcr.Last_Name_from_Lead__c);
-                    htmlBody = htmlBody.replace('{!Lead.Email}', pcr.Email_from_Lead__c);
-                    htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}',pcr.PCR_Lead_ID__c );
-                    sendEmail(pcr.First_Name_from_Lead__c, subject,
-                        htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
-                    pcr.Credit_PreApproval_Email_Sent__c = TRUE;
-
-                } else if (!pcr.Credit_PreApproval_Email_Sent__c &&
-                           !pcr.Credit_Denial_Email_Sent__c &&
-                           pcr.LASERCA__Contact__c == NULL &&
-                           pcr.First_Name_from_Lead__c != NULL &&
-                           pcr.Last_Name_from_Lead__c != NULL &&
-                           pcr.Email_from_Lead__c != NULL &&
-                           pcr.Solar_Loan_Approval_Status__c == DECLINED) {
-                    String htmlbody = denialEmailTemplate.HtmlValue;
-                    htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
-                    htmlBody = htmlBody.replace('{!Lead.Id}',pcr.PCR_Lead_ID__c );
-                    string denialSubject = pcr.First_Name_from_Lead__c +
-                        ', your BlueWave Solar Loan Pre-Approval Application was not able to be Pre-Approved';
-                    sendEmail(pcr.First_Name_from_Lead__c, denialSubject,
-                              htmlBody, pcr.Partner_Email__c, pcr.PCR_Lead_ID__c);
-                    pcr.Credit_Denial_Email_Sent__c = TRUE;
-                }
+                lead = sendCreditDecisionEmails(lead);
+                pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
+                pcr.Credit_Denial_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c;
             }
         }
         if (!leadsToUpdate.isEmpty()) {
@@ -306,6 +262,57 @@ public without sharing class PCRApprovalHandler {
         return lead;
     }
 
+    public Lead sendCreditDecisionEmails(Lead lead) {
+        String firstName = lead.FirstName;
+        String lastName = lead.LastName;
+        String email = lead.Email;
+        if (!lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c &&
+            firstName != NULL &&
+            lastName!= NULL &&
+            email != NULL &&
+            lead.Status == PREQUALIFIED) {
+
+            String continueApplicationUrl =
+                Util.getCommunitySiteURL('Apply') + '/s/loan-application?leadId=' + lead.Id;
+
+            String htmlBody, subject;
+            if (lead.DOER_Solar_Loan__c) {
+                htmlBody = doerEmailTemplate.HtmlValue;
+                subject = 'Congrats! ' +  firstName +
+                    ', you have been prequalified for a BlueWave Mass Solar Loan';
+
+            } else {
+                htmlbody = standardEmailTemplate.HtmlValue;
+                subject = 'Congrats! ' +  firstName +
+                    ', you have been prequalified for a BlueWave Solar Loan';
+            }
+            htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
+            htmlBody = htmlBody.replace('{!Lead.Name}', firstName);
+            htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
+            htmlBody = htmlBody.replace('{!Lead.LastName}', lastName);
+            htmlBody = htmlBody.replace('{!Lead.Email}', email);
+            htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}', lead.Id);
+            sendEmail(firstName, subject,
+                htmlBody, lead.Partner_Email__c, lead.Id);
+            lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c = TRUE;
+        } else if (!lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c &&
+            !lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c &&
+            firstName != NULL &&
+            lastName != NULL &&
+            email != NULL &&
+            lead.Status  == UNQUALIFIED) {
+            String htmlbody = denialEmailTemplate.HtmlValue;
+            htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName );
+            htmlBody = htmlBody.replace('{!Lead.Id}',lead.Id );
+            string denialSubject = firstName +
+                ', your BlueWave Solar Loan Pre-Approval Application was not able to be Pre-Approved';
+            sendEmail(firstName, denialSubject,
+                htmlBody, lead.Partner_Email__c, lead.Id);
+            lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c = TRUE;
+        }
+        return lead;
+    }
+
     public Boolean checkFlaggedCreditCodes (Lead lead) {
         if (lead.Application_Type__c != 'Joint') {
             return(
@@ -348,7 +355,8 @@ public without sharing class PCRApprovalHandler {
 
     public List<Lead> getLeadsForCreditAnalysis (Set<Id> leadIds) {
         List<Lead> leads = [
-            SELECT Id, DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c, Joint_Applicant_Type__c,
+            SELECT Id, FirstName, LastName, Email,
+                DOER_Solar_Loan__c, Status, Product__c, Monthly_Mortgage_Tax_and_Insurance__c, Joint_Applicant_Type__c,
                 Product_line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c, Avidia_Review_Status__c,
                 Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                 Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c, Partner_Lookup__c,
@@ -365,6 +373,8 @@ public without sharing class PCRApprovalHandler {
                 Personal_Credit_Report__r.LASERCA__Code_2__c,
                 Personal_Credit_Report__r.LASERCA__Code_3__c,
                 Personal_Credit_Report__r.LASERCA__Code_4__c,
+                Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c,
+                Personal_Credit_Report__r.Credit_Denial_Email_Sent__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
