@@ -218,6 +218,14 @@ public without sharing class PCRApprovalHandler {
     }
 
     public Lead reviewLeadCreditReport (Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
+        try {
+            Boolean hasFields = lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null;
+            hasFields = lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null;
+        } catch (Exception e) {
+            Set<Id> leadIds = new Set<Id>{lead.id};
+            lead = getLeadsForCreditAnalysis(leadIds)[0];
+        }
+
         if (pcr == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
             List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
@@ -226,13 +234,6 @@ public without sharing class PCRApprovalHandler {
 
         if (productRepo == null) {
             productRepo = new ProductRepo(new List<Lead>{lead});
-        }
-
-        try {
-            Boolean hasFields = lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null;
-        } catch (Exception e) {
-            Set<Id> leadIds = new Set<Id>{lead.id};
-            lead = getLeadsForCreditAnalysis(leadIds)[0];
         }
 
         Integer creditScore = setAppMaximumCreditScore(lead);

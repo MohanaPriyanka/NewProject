@@ -150,9 +150,12 @@ public without sharing class CAPController {
                       ORDER BY CREATEDDATE)
                      FROM Lead
                      WHERE Id = :leadToQuery.Id];
+        PCRApprovalHandler pcrApprovalHandler = new PCRApprovalHandler();
         if (lead.Application_Type__c == 'Individual') {
             if (!lead.LASERCA__Personal_Credit_Reports__r.isEmpty()) {
                 // If a PCR was successfully created, the Status will be updated on the Lead
+                lead = pcrApprovalHandler.reviewLeadCreditReport(lead, null, null);
+                update lead;
                 return(lead.Status);
             } else {
                 // There's no PCR; if there are credit report logs, send the credit report log error
@@ -163,6 +166,8 @@ public without sharing class CAPController {
         } else if (lead.Application_Type__c == 'Joint' && lead.CoApplicant_Contact__c != null) {
             if (lead.LASERCA__Personal_Credit_Reports__r.size() >= 2) {
                 // If a PCR was successfully created, the Status will be updated on the Lead
+                lead = pcrApprovalHandler.reviewLeadCreditReport(lead, null, null);
+                update lead;
                 return(lead.Status);
             } else {
                 // There's one or zero PCRs, and there could be zero, one, or two CRLs with an error.
