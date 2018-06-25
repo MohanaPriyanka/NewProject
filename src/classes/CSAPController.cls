@@ -135,6 +135,10 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId){
+        User apiUser = [SELECT Id, Name, Username 
+                        FROM User 
+                        WHERE Username = 'api@bluewavesolar.com'];
+
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
         account.Name = lead.FirstName + ' ' + lead.LastName;
@@ -147,6 +151,7 @@ public without sharing class CSAPController {
         account.BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c);
         account.BillingPostalCode = lead.LASERCA__Home_Zip__c;
         account.Social_Security_Number__c = lead.LASERCA__SSN__c;
+        account.OwnerId = apiUser.Id;
         upsert account;
 
         if (lead.Date_of_Application__c == null) {
