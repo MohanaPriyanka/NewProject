@@ -158,7 +158,7 @@ public without sharing class PCRApprovalHandler {
                 }
                 lead = reviewLeadCreditReport(lead, pcr, productRepo);
                 leadsToUpdate.put(lead.Id, lead);
-                if (leadMap.get(pcr.LASERCA__Lead__c).CoApplicant_Contact__c != NULL || leadMap.get(pcr.LASERCA__Lead__c).Co_Applicant_First_Name__c != NULL) {
+                if (lead.CoApplicant_Contact__c != NULL || lead.Co_Applicant_First_Name__c != NULL) {
                     hasCoApp = TRUE;
                 }
                 // SEND PREAPPROVAL EMAIL
@@ -199,8 +199,7 @@ public without sharing class PCRApprovalHandler {
                            pcr.First_Name_from_Lead__c != NULL &&
                            pcr.Last_Name_from_Lead__c != NULL &&
                            pcr.Email_from_Lead__c != NULL &&
-                           pcr.Solar_Loan_Approval_Status__c == DECLINED &&
-                           !hasCoApp) {
+                           pcr.Solar_Loan_Approval_Status__c == DECLINED) {
                     String htmlbody = denialEmailTemplate.HtmlValue;
                     htmlBody = htmlBody.replace('{!Lead.FirstName}', pcr.First_Name_from_Lead__c);
                     htmlBody = htmlBody.replace('{!Lead.Id}',pcr.PCR_Lead_ID__c );
@@ -277,16 +276,21 @@ public without sharing class PCRApprovalHandler {
             creditSummary.bestStatus = PENDINGREVIEW;
         }
         // overwrite statuses if Avidia has reviewed
-        if (lead.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
+        if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
             pcr.Solar_Loan_Manual_Approval__c) {
             pcr.Solar_Loan_Approval_Status__c = APPROVED;
-        } else if (lead.Avidia_Review_Status__c == 'Reviewed - Declined' ||
+        } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
             pcr.Solar_Loan_Manual_Decline__c) {
             pcr.Solar_Loan_Approval_Status__c = DECLINED;
-        } else if (lead.Avidia_Review_Status__c == PENDINGREVIEW) {
+        } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
             pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         } else {
             pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
+        }
+
+        // co-signer applications need to be reviewed
+        if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
+            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         }
         
         // If lead is in any stage of the process update the status
@@ -295,7 +299,7 @@ public without sharing class PCRApprovalHandler {
             lead.Status == UNQUALIFIED ||
             lead.Status == PREQUALIFIED ||
             pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
-            setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
+            lead = setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
         }
         
         return lead;
@@ -504,7 +508,7 @@ public without sharing class PCRApprovalHandler {
         }
     } 
 
-    private void setLeadStatus(String approval, Lead lead) {
+    private Lead setLeadStatus(String approval, Lead lead) {
         if (approval == APPROVED) {
             lead.Status = PREQUALIFIED;
         } else if (approval == PENDINGREVIEW) {
@@ -512,6 +516,7 @@ public without sharing class PCRApprovalHandler {
         } else if (approval == DECLINED) {
             lead.Status = UNQUALIFIED;
         }
+        return lead;
     }
 
     private void sendEmail(String firstname, String subjectLine, String body, String partnerEmail, Id targetObjectId) {
