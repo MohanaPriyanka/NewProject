@@ -456,22 +456,22 @@ public without sharing class CAPController {
     }
 
     @AuraEnabled
-    public static String sendLoanDocs(Id leadId, String email) {
+    public static void sendLoanDocs(Id leadId, String email) {
         Lead lead = getLead(leadId, email);
-        DocuSignAPI.EnvelopeStatus es;
         if (lead.Residential_Equipment__r.size() == 1 &&
             LoanHandler.equipmentPopulated(lead.Residential_Equipment__r[0])) {
             if (!pendingOrCompleteLoanDoc(lead.Partner_Tasks__r)) {
-                es = DocuSignHelper.sendLoanPackage(lead.ConvertedOpportunityId);
-            } else {
-                return 'Already Sent';
+                try {
+                    DocuSignHelper.sendLoanPackageFuture(lead.ConvertedOpportunityId);
+                } catch (Exception e) {
+                    throw new AuraHandledException(e.getMessage());
+                }
             }
         } else {
             MessagingService.EmailEnvelope ee =
                 getPartnerEmailEnvelope(lead, 'RS_SLP_Confirmed_Contingent_Note', 'BlueWave Solar Loan - Contingent Note Confirmed');
             MessagingService.sendEmailTemplate(ee);
         }
-        return (es==null?null:es.Status);
     }
 
     private static Boolean pendingOrCompleteLoanDoc(List<Partner_Task__c> tasks) {

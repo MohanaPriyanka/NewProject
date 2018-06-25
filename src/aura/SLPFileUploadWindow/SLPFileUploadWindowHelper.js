@@ -173,6 +173,7 @@
     fileUploadSuccess : function (component, parentId, fileName, helper) {
         var newDate = component.get("v.dateValue");
         var oppId = component.get("v.oppId");
+        let leadId = component.get('v.leadId');
         var self = this;
         var actionOne;
         var actionTwo;
@@ -208,6 +209,9 @@
             if (parentId.substring(0,3) === '00Q') {
                 actionOne = helper.saveSObjectErrorOption(component, parentId, 'Lead', 'Update_Dummy__c', true,  null, {suppressAlert: true});
                 actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Lead', 'Update_Dummy__c', false,  null, {suppressAlert: true});
+            } else if (parentId.substring(0,3) === '003') {
+                actionOne = helper.saveSObjectErrorOption(component, leadId, 'Lead', 'Update_Dummy__c', true,  null, {suppressAlert: true});
+                actionTwo = helper.saveSObjectErrorOption(component, leadId, 'Lead', 'Update_Dummy__c', false,  null, {suppressAlert: true});
             } else if (oppId != undefined || oppId != NULL) {
                 actionOne = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', true,  null, {suppressAlert: true});
                 actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Update_Dummy__c', false,  null, {suppressAlert: true});

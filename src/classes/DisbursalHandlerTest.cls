@@ -40,53 +40,102 @@ public class DisbursalHandlerTest {
         productRecordNY.Lender_of_Record__c = 'Avidia';
         insert productRecordNY;
 
-        Lead leadRecord = new lead(FirstName = 'Cole',
-                                    LastName = 'Swain',
-                                    Loan_Amount__c = 30000,
-                                    Company = 'Cole Swain',
-                                    Retired__c = false,
-                                    Self_Employed__c = false,
-                                    LASERCA__Social_Security_Number__c = '000000001',
-                                    Product_Line__c = 'Residential Loan',
-                                    LASERCA__Home_State__c = 'MA',
-                                    Requested_Loan_Amount__c = 30000,
-                                    DOER_Solar_Loan__c = false,
-                                    Unfinished_Lead__c = true,
-                                    Partner_Lookup__c = partner.Id,
-                                    Bs_Sales_ID__c = salesRep.Id,
-                                    Annual_Income_Currency__c = 150000,
-                                    Product__c = productRecord.Id,
-                                    Product_Program__c = 'BlueWave Solar Loan',
-                                    Automatic_Product_Assignment__c = false,
-                                    Status = 'Qualified');
-        insert leadRecord;
+        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp.Lender_of_Record__c = 'Avidia';
+        mslp.Program__c = 'MSLP';
+        insert mslp;
+
+        List<Lead> leads = new List<Lead>();
+        Lead leadRecord = new Lead(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            Loan_Amount__c = 30000,
+            Company = 'Cole Swain',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Product_line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 30000,
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productRecord.Id,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Status = 'Qualified');
+        leads.add(leadRecord);
+        Lead doerLead = new Lead(
+            FirstName = 'DOER',
+            LastName = 'Test',
+            Loan_Amount__c = 30000,
+            Company = 'DOER Test',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Product_line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 30000,
+            DOER_Solar_Loan__c = true,
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = mslp.Id,
+            Product_Program__c = 'MSLP',
+            Status = 'Qualified');
+        leads.add(doerLead);
+        insert leads;
+
         Database.LeadConvert lc = new Database.LeadConvert();
         lc.setLeadId(leadRecord.Id);
         lc.setConvertedStatus('Qualified');
         Database.LeadConvertResult lcr = Database.convertLead(lc);
         System.assert(lcr.isSuccess());
 
-        CAPController.createLoanAndEquipment(leadRecord.Id, leadRecord.Email);
+        Database.LeadConvert doerConvert = new Database.LeadConvert();
+        doerConvert.setLeadId(doerLead.Id);
+        doerConvert.setConvertedStatus('Qualified');
+        Database.convertLead(doerConvert);
 
-        Opportunity opportunityRecord = [SELECT Id, Name,
-                                            (SELECT Id, Name FROM Loans__r)
-                                         FROM Opportunity];
-        opportunityRecord.Contract_Status__c = 'Completed';
-        opportunityRecord.StageName = 'Complete';
-        update opportunityRecord;
+        // Need to re-query leads to get ConvertedOpportunityId in the subsequent calls
+        leads = [
+            SELECT Id, FirstName, LastName, Loan_Amount__c, Company, LASERCA__Social_Security_Number__c, Product_line__c,
+                LASERCA__Home_State__c, Requested_Loan_Amount__c, Unfinished_Lead__c, Partner_Lookup__c, bs_Sales_ID__c,
+                Annual_Income_Currency__c, Product__c, Product_Program__c, Status, DOER_Solar_Loan__c, Loan_System_Information__c,
+                Product__r.Loan_Interest_Rate__c, Loan_Financing_Fee__c, System_Cost__c, Loan_Fee_1__c,
+                Product__r.Loan_Interest_Only_Period__c, ConvertedOpportunityId, ConvertedContactId
+            FROM Lead
+        ];
+
+        LoanHandler.createResidentialEquipment(leads);
+        LoanHandler.createLoan(leads);
+
+        List<Opportunity> opps = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM Loans__r)
+            FROM Opportunity
+        ];
+        for (Opportunity opp : opps) {
+            opp.Contract_Status__c = 'Completed';
+            opp.StageName = 'Complete';
+        }
+        update opps;
     }
 
     @isTest static void testCreateDisbursalsFromOpportunity() {
         Test.startTest();
             Decimal totalAmount = 0;
             Decimal totalPercentage = 0;
-            Opportunity opportunityRecord = [SELECT Id, Name,
-                                                (SELECT Id, Name FROM Loans__r)
-                                             FROM Opportunity];
+            Opportunity opportunityRecord = [
+                SELECT Id, Name,
+                (SELECT Id, Name FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c 
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ];
 
             System.assertEquals(3, disbursalRecords.size());
             for (Disbursal__c disbursal : disbursalRecords) {
@@ -101,16 +150,21 @@ public class DisbursalHandlerTest {
     @isTest static void testUpdateDisbursalAmountsOnRLAChange() {
         Decimal totalAmount = 0;
         Test.startTest();
-            Opportunity opportunityRecord = [SELECT Id, Name,
-                                                (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
-                                             FROM Opportunity];
+            Opportunity opportunityRecord = [
+                SELECT Id, Name,
+                (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
             opportunityRecord.StageName = 'New';
             update opportunityRecord;
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                ORDER BY Disbursal_Sequence__c
+            ];
         // update first disbursal to be disbursed
             disbursalRecords.get(0).Status__c = 'Disbursed';
             Decimal originalDisbursalAmount = disbursalRecords.get(0).Amount__c;
@@ -122,10 +176,12 @@ public class DisbursalHandlerTest {
             update opportunityRecord.Loans__r.get(0);
 
 
-            List<Disbursal__c> updatedDisbursals = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> updatedDisbursals = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                ORDER BY Disbursal_Sequence__c
+            ];
             for (Disbursal__c disbursal : updatedDisbursals) {
                 totalAmount = totalAmount + disbursal.Amount__c;
             }
@@ -138,107 +194,145 @@ public class DisbursalHandlerTest {
 
     @isTest static void testOppStageCompleteContractDisbursalReady() {
         Test.startTest();
-            Opportunity opportunityRecord = [SELECT Id, Name,
-                                                (SELECT Id, Name FROM Loans__r)
-                                             FROM Opportunity];
+            Opportunity opportunityRecord = [
+                SELECT Id, Name,
+                (SELECT Id, Name FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecords.get(0).Status__c, 'Due');
         Test.stopTest();
     }
 
     @isTest static void testOppStageReversionFromCompleteContractDisbursalPending() {
         Test.startTest();
-            Opportunity opportunityRecord = [SELECT Id, Name,
-                                                (SELECT Id, Name FROM Loans__r)
-                                             FROM Opportunity];
+            Opportunity opportunityRecord = [
+                SELECT Id, Name,
+                (SELECT Id, Name FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
             opportunityRecord.StageName = 'New';
             update opportunityRecord;
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c 
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecords.get(0).Status__c, 'Pending');
         Test.stopTest();
     }
 
     @isTest static void testEquipmentMechInstallDisbursalReady() {
         Test.startTest();
-            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id 
-                                                  FROM Residential_Equipment__c 
-                                                  LIMIT 1];
+            Residential_Equipment__c equipment = [
+                SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id
+                FROM Residential_Equipment__c
+                WHERE Opportunity__r.DOER_Solar_Loan__c = FALSE
+                LIMIT 1]
+            ;
             equipment.Mechanically_Installed__c = true;
             update equipment;
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : equipment.Loan__r.Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Status__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : equipment.Loan__r.Id
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecords.get(1).Status__c, 'Due');
         Test.stopTest();
     }
 
     @isTest static void testEquipmentInterconnectDisbursalReady() {
         Test.startTest();
-            Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id 
-                                                  FROM Residential_Equipment__c 
-                                                  LIMIT 1];
+            Residential_Equipment__c equipment = [
+                SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id
+                FROM Residential_Equipment__c
+                WHERE Opportunity__r.DOER_Solar_Loan__c = FALSE
+                LIMIT 1
+            ];
             equipment.Interconnected__c = true;
             update equipment;
 
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c
-                                                   FROM Disbursal__c 
-                                                   WHERE Loan__r.Id = : equipment.Loan__r.Id
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Status__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : equipment.Loan__r.Id
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecords.get(2).Status__c, 'Due');
         Test.stopTest();
     }
 
     @isTest static void testFBOFundedActions() {
         Test.startTest();
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Funds_in_FBO_Account__c
-                                                   FROM Disbursal__c 
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Status__c, Funds_in_FBO_Account__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c
+            ];
             disbursalRecords.get(0).Funds_in_FBO_Account__c = true;
             update disbursalRecords.get(0);
 
-            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
-                                                              FROM Disbursal__c 
-                                                              ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [
+                SELECT Id, Status__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c]
+            ;
             System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Ready for Disbursement');
         Test.stopTest();
     }
 
     @isTest static void testDisbursalToHold() {
         Test.startTest();
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Hold_on_Disbursal__c
-                                                   FROM Disbursal__c 
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Status__c, Hold_on_Disbursal__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c
+            ];
             disbursalRecords.get(0).Hold_on_Disbursal__c = true;
             update disbursalRecords.get(0);
 
-            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
-                                                              FROM Disbursal__c 
-                                                              ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [
+                SELECT Id, Status__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Hold');
         Test.stopTest();
     }
 
     @isTest static void testDisbursalNoHold() {
         Test.startTest();
-            List<Disbursal__c> disbursalRecords = [SELECT Id, Status__c, Hold_on_Disbursal__c
-                                                   FROM Disbursal__c 
-                                                   ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Status__c, Hold_on_Disbursal__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c
+            ];
             disbursalRecords.get(0).Hold_on_Disbursal__c = false;
             update disbursalRecords.get(0);
 
-            List<Disbursal__c> disbursalRecordsAfterUpdate = [SELECT Id, Status__c
-                                                              FROM Disbursal__c 
-                                                              ORDER BY Disbursal_Sequence__c];
+            List<Disbursal__c> disbursalRecordsAfterUpdate = [
+                SELECT Id, Status__c
+                FROM Disbursal__c
+                WHERE Loan__r.Opportunity__r.DOER_Solar_Loan__c = FALSE
+                ORDER BY Disbursal_Sequence__c
+            ];
             System.assertEquals(disbursalRecordsAfterUpdate.get(0).Status__c, 'Due');
         Test.stopTest();
     }
@@ -249,9 +343,12 @@ public class DisbursalHandlerTest {
             Partner_Task__c permitTask = new Partner_Task__c();
             Id nyProductId = [SELECT Id FROM Product2 WHERE State__c = 'NY' LIMIT 1].Id;
             delete [SELECT Id, Status__c FROM Disbursal__c ORDER BY Disbursal_Sequence__c];
-            Opportunity opportunityRecord = [SELECT Id, Name, Lead_Id__c,
-                                                (SELECT Id, Name, Product__c FROM Loans__r)
-                                             FROM Opportunity];
+            Opportunity opportunityRecord = [
+                SELECT Id, Name, Lead_Id__c,
+                (SELECT Id, Name, Product__c FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
             opportunityRecord.StageName = 'New';
             opportunityRecord.Product__c = nyProductId;
             System.debug('ny opp test');
@@ -310,8 +407,10 @@ public class DisbursalHandlerTest {
     @isTest static void testOppStageReversionFromCompleteWithDisbursalStatusDisbursed() {
         Test.startTest();
         Opportunity opportunityRecord = [
-            SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            SELECT Id, Name,
+            (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
             FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
         ];
 
         Id loanId = opportunityRecord.Loans__r.get(0).Id;
@@ -377,6 +476,7 @@ public class DisbursalHandlerTest {
         Opportunity opportunityRecord = [
             SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
             FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
         ];
 
         Id loanId = opportunityRecord.Loans__r.get(0).Id;
@@ -443,6 +543,7 @@ public class DisbursalHandlerTest {
         Opportunity opportunityRecord = [
             SELECT Id, Name, (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
             FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
         ];
 
         Id loanId = opportunityRecord.Loans__r.get(0).Id;
@@ -509,5 +610,100 @@ public class DisbursalHandlerTest {
         }
 
         Test.stopTest();
+    }
+
+    @IsTest
+    static void testDOERFirstPaymentDueDate() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name, (SELECT Id, Name FROM Loans__r)
+            FROM Opportunity
+            WHERE DOER_Solar_Loan__c = TRUE
+        ];
+        opportunityRecord.Contract_Status__c = 'Completed';
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        Date disbursalDate = Date.newInstance(2018, 7, 30);
+        Loan__c loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Type__c, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = TRUE
+        ];
+        System.assertEquals(null, loan.First_Payment_Due_Date_Override__c);
+        System.assertEquals(2, loan.Disbursals__r.size());
+
+        for (Disbursal__c disbursal : loan.Disbursals__r) {
+            if (disbursal.Type__c == 'Contract Signature') {
+                disbursal.Date_of_Disbursal__c = disbursalDate;
+            }
+        }
+        update loan.Disbursals__r;
+        loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Type__c, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = TRUE
+        ];
+        System.assertEquals(Date.newInstance(2018, 9, 1), loan.First_Payment_Due_Date_Override__c);
+        for (Disbursal__c disbursal : loan.Disbursals__r) {
+            if (disbursal.Type__c == 'Contract Signature') {
+                disbursal.Date_of_Disbursal__c = Date.newInstance(2018, 9, 1);
+            } else if (disbursal.Type__c == 'Interconnection') {
+                disbursal.Date_of_Disbursal__c = Date.newInstance(2018, 10, 1);
+            }
+        }
+        update loan.Disbursals__r;
+        loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = TRUE
+        ];
+        System.assertEquals(Date.newInstance(2018, 10, 1), loan.First_Payment_Due_Date_Override__c);
+    }
+
+    @IsTest
+    static void testNonDOERFPDD() {
+        Test.startTest();
+        Loan__c loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = FALSE
+        ];
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Type__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id =: loan.Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        Date disbursalDate = Date.newInstance(2018,1,1);
+        System.assertEquals(null, loan.First_Payment_Due_Date_Override__c);
+        System.assertEquals(3, disbursalRecords.size());
+        for (Disbursal__c disbursal : disbursalRecords) {
+            if (disbursal.Type__c == 'Contract Signature') {
+                disbursal.Date_of_Disbursal__c = disbursalDate;
+            }
+        }
+        update disbursalRecords;
+        loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = FALSE
+        ];
+        System.assertEquals(null, loan.First_Payment_Due_Date_Override__c);
+
+        for (Disbursal__c disbursal : disbursalRecords) {
+            if (disbursal.Type__c == 'Interconnection') {
+                disbursal.Date_of_Disbursal__c = disbursalDate;
+            }
+        }
+        update disbursalRecords;
+        loan = [
+            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
+            FROM Loan__c
+            WHERE DOER_Solar_Loann__c = FALSE
+        ];
+        System.assertEquals(Date.newInstance(2018,2,1), loan.First_Payment_Due_Date_Override__c);
     }
 }

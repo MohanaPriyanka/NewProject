@@ -1,3 +1,9 @@
+/*************************************************************************************
+ * Created By:
+ * Description:
+ * Test: MultipleMonthProductionUpdateTest
+ *************************************************************************************/
+
 public with sharing class UtilityAccountBillTriggerHandler {
     private void printSOQLLimits(String location) {
         System.debug(LoggingLevel.ERROR, 'SOQL Limites: ' + location + ': ' +  Limits.getQueries());
@@ -164,23 +170,18 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                         Decimal systemProduction, 
                                         Decimal systemNMCs){
 
-        // Round Customer Percent Share to the number of decimal places the utility uses (default 4):
-        Integer decimalPlaces = 4;
-        if (szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c > 0) {
-            decimalPlaces = (szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c).intValue();
-        } 
-        Decimal shareOfSystem = szs.Percent_Share__c.setScale(decimalPlaces);
+        Decimal shareOfSystem = szs.Percent_Share__c;
+
+        // Calculate % Share of Production (kWh)
+        Decimal subscriptionProduction = (shareOfSystem/100) * systemProduction;
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
         if (prodUpdate.Size_off_NMCs__c){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
         } else {
-            subscriptionNMCs = ((nmcRate - 0.02)*systemProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*systemProduction).setScale(2, roundingMode.HALF_UP);
+            subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }
-
-        // Calculate % Share of Production (kWh)
-        Decimal subscriptionProduction = (shareOfSystem/100) * systemProduction;
 
         UASB__c generatedUASB = new UASB__c( Customer_Subscription_KW_DC__c = szs.Customer_Subscription_kW_DC__c,
                                     Date__c = prodUpdate.Date__c,

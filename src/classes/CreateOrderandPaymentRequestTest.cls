@@ -1,17 +1,18 @@
 @isTest
 public with sharing class CreateOrderandPaymentRequestTest {
+    @testSetup public static void setupTestData(){
+        List<String> partnerSetUpIds = new List<String>();  
+        partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
+
+        List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
+        LoanHandler.createResidentialEquipment(leadList);
+        LoanHandler.createLoan(leadList);
+        LoanHandlerTestClass.convertLeads(leadList);
+    }
+
     @isTest static void getLink() {
-
-        Account accountA = new Account(name = 'Account Parent');
-        insert accountA;  
-
-        Opportunity opportunityone = new Opportunity(Name = 'Jordan Jordan',
-                            AccountId = accountA.Id,
-                            Email__c = 'test@test.com',
-                            StageName = 'Complete',
-                            CloseDate = System.today());
-
-        insert opportunityone;
+        List<Opportunity> oppList = [SELECT Id, Name, Email__c FROM Opportunity ORDER BY Name];
+        system.assertEquals(4, oppList.size());
 
         ChargentOrders__ChargentOrder__c orderEntry = new ChargentOrders__ChargentOrder__c(
                                                 ChargentOrders__Bank_Account_Number__c = '123456789102',
@@ -26,13 +27,31 @@ public with sharing class CreateOrderandPaymentRequestTest {
                                         ChargentBase__Active__c = True);
         insert chGateway;
 
-        Boolean failedRequest = CreateOrderandPaymentRequest.checkEmailOnOpp(opportunityone.Id, 'bademail@test.com');
-        Boolean payRequest = CreateOrderandPaymentRequest.insertRequest(opportunityone.Id, 'test@test.com', orderEntry);
+        oppList[0].Email__c = 'ddEmailTest@blue.com';
+        update oppList[0];
+        Test.startTest();
+
+        Boolean shouldFail = false;
+        try {
+            Loan__c failedRequest = CreateOrderandPaymentRequest.getLoanAndCheckEmail(oppList[0].Id, 'bademail@test.com');
+        } catch (Exception excep){
+            shouldFail = true;
+        }
+        System.assertEquals(true, shouldFail);
+
+        Boolean payRequest = CreateOrderandPaymentRequest.submitDDInfoWithoutCharge(oppList[0].Id, 'ddEmailTest@blue.com', orderEntry);
+
+        Test.stopTest();
+
+        List<Loan__c> updatedLoanList = [   SELECT Id, Name, SREC_Direct_Deposit_Order__c 
+                                            FROM Loan__c 
+                                            WHERE Opportunity__r.Email__c = 'ddEmailTest@blue.com'];
 
         List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
-        System.assertEquals(false, failedRequest);
-        System.assertNotEquals(false, payRequest);
+        System.assertEquals(true, payRequest);
         System.assertEquals(1, chOrderList.size());
+        System.assertEquals(1, updatedLoanList.size());
+        System.assertEquals(chOrderList[0].Id, updatedLoanList[0].SREC_Direct_Deposit_Order__c);
     }
 }

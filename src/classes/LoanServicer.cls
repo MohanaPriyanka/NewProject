@@ -7,12 +7,11 @@
  * Test: LoanServicerTest
  *************************************************************************************/
 
-public without sharing class LoanServicer implements Database.Batchable<sObject> {
+public without sharing class LoanServicer implements Database.Batchable<SObject> {
     public static final Integer STARTINGPERIOD = 1;
     public static final String FUTURE = 'Future';
     public static final String CURRENT = 'Current';
     public static final String CLOSED = 'Closed';
-    public static final String LATE = 'Late';
     public static Boolean qssAlreadyRun = false;
 
     public Boolean anyLoansToService;
@@ -78,7 +77,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             // Don't validate
         } else {
             for (Loan__c loan : (List<Loan__c>) loansToService) {
-                if (loanLocked(loan)) {
+                if (loanLocked(loan) && lockedParamsUpdated(loan)) {
                     loan.addError('Cannot update Product, Financing Fee ' +
                                   ' or System Cost for a Loan that is Complete or Contract Pending');
                 }
@@ -196,6 +195,17 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
              loan.Principal__c != triggerOldMap.get(loan.Id).Principal__c ||
              loan.Interest_Only_Period_DOER__c != triggerOldMap.get(loan.Id).Interest_Only_Period_DOER__c ||
              loan.First_Payment_Due_Date_Override__c != triggerOldMap.get(loan.Id).First_Payment_Due_Date_Override__c)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Boolean lockedParamsUpdated(Loan__c loan) {
+        if (triggerOldMap != null &&
+            (loan.Product__c != triggerOldMap.get(loan.Id).Product__c ||
+                loan.Financing_Fee__c != triggerOldMap.get(loan.Id).Financing_Fee__c ||
+                loan.Principal__c != triggerOldMap.get(loan.Id).Principal__c)) {
             return true;
         } else {
             return false;
@@ -441,7 +451,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
             loanPayment.Unique_ID__c = loan.Loan_Number__c + '|' + period;
             loanPayment.Period__c = period;
             loanPayment.Payment_Due_Date2__c = 
-                loan.First_Payment_Due_Date__c == null?null:loan.First_Payment_Due_Date__c.addMonths(period - LoanServicer.STARTINGPERIOD);
+                loan.First_Payment_Due_Date_Override__c == null?null:loan.First_Payment_Due_Date_Override__c.addMonths(period - LoanServicer.STARTINGPERIOD);
 
             loanPayment.Funds_Distributed__c = 
                 (params.loanAmount*params.firstDistribution+params.fees)*payFirstDistribution+
@@ -508,6 +518,14 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
         }
 
         private void upsertLoanPayments() {
+            // We get this error if we try creating loans in @TestSetup AND in a @IsTest
+            //   System.DmlException: Upsert failed. First exception on row 0; first error: INVALID_FIELD_FOR_INSERT_UPDATE,
+            //   Attempting to update (as part of an upsert) parent field Loan__c with new value a0y1F0000002ergQAA,
+            //   current value is a0y1F0000002erfQAA: [Loan__c]
+            // "Independent Auto-Number" is turned on:
+            // https://releasenotes.docs.salesforce.com/en-us/spring14/release-notes/rn_apex_autonumber_sequence.htm
+            // @TestSetup and @IsTest run in different transactions and get the same autonumber, resulting in Unique_ID__c
+            // collision. We should create all test data in @TestSetup.
             upsert loanPaymentsToCreate Unique_ID__c;
         }
 
@@ -572,17 +590,17 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 if (lp.Actual_Principal_Paydown__c != null && lp.Actual_Principal_Paydown__c > 0) {
                     reamortPeriodAdjustment = monthIndex;
                     principalPaidForReamort = 
-                        nullToZero(lp.Cumulative_Principal_Payments__c) + 
-                        nullToZero(lp.Actual_Principal_Paydown__c);
+                        Util.nullToZero(lp.Cumulative_Principal_Payments__c) + 
+                        Util.nullToZero(lp.Actual_Principal_Paydown__c);
                 }
 
                 nextCumulativePrincipal =
-                    nullToZero(lp.Cumulative_Principal_Payments__c) +
-                    nullToZero(lp.Principal_Applied__c);
+                    Util.nullToZero(lp.Cumulative_Principal_Payments__c) +
+                    Util.nullToZero(lp.Principal_Applied__c);
 
                 nextCumulativePrincipalDuringIO =
-                    nullToZero(lp.Cumulative_Principal_During_IO__c) +
-                    (lp.Interest_Only_Period__c?nullToZero(lp.Principal_Applied__c):0);
+                    Util.nullToZero(lp.Cumulative_Principal_During_IO__c) +
+                    (lp.Interest_Only_Period__c?Util.nullToZero(lp.Principal_Applied__c):0);
 
                 Decimal monthlyRate = getAdjustedMonthlyRate(params, (Integer) lp.Period__c);
 
@@ -591,9 +609,9 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 Decimal forecastedPrincipalDue = 0, forecastedLoanBalance = 0,
                     forecastedPrincipalInterestDue = 0, forecastedInterestDue = 0;
                 forecastedLoanBalance = Math.max(lp.Funds_Distributed__c -
-                    nullToZero(lp.Cumulative_Principal_Payments__c) -
-                    nullToZero(lp.Actual_Principal_Paydown__c) -
-                    nullToZero(lp.Forecasted_Cumulative_Principal__c),
+                    Util.nullToZero(lp.Cumulative_Principal_Payments__c) -
+                    Util.nullToZero(lp.Actual_Principal_Paydown__c) -
+                    Util.nullToZero(lp.Forecasted_Cumulative_Principal__c),
                     0).setScale(16);
                 addLP |= setIfDifferent(lp, 'Forecasted_Loan_Balance__c', forecastedLoanBalance, true);
 
@@ -624,7 +642,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                         actualPIDue = 0;
                     } else {
                         actualPIDue = 
-                            Math.min(lp.Loan_Balance__c + nullToZero(lp.Actual_Interest_Due__c), adjustedAmortTotal);
+                            Math.min(lp.Loan_Balance__c + Util.nullToZero(lp.Actual_Interest_Due__c), adjustedAmortTotal);
                     }
                 }
                 addLP |= setIfDifferent(lp, 'Actual_PI_Due__c', actualPIDue, false);
@@ -632,7 +650,7 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 if (lp.Loan_Balance__c <= 0) {
                     forecastedInterestDue = 0;
                 } else {
-                    forecastedInterestDue = (nullToZero(lp.Forecasted_Loan_Balance__c) * monthlyRate).setScale(16);
+                    forecastedInterestDue = (Util.nullToZero(lp.Forecasted_Loan_Balance__c) * monthlyRate).setScale(16);
                 }
                 addLP |= setIfDifferent(lp, 'Forecasted_Interest_Due__c', forecastedInterestDue, true);
 
@@ -652,14 +670,14 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 if (lp.Loan_Balance__c <= 0 || lp.Interest_Only_Period__c) {
                     forecastedPrincipalDue = 0;
                 } else {
-                    forecastedPrincipalDue = (nullToZero(lp.Forecasted_Principal_Interest_Due__c) -
-                        nullToZero(lp.Forecasted_Interest_Due__c)).setScale(16);
+                    forecastedPrincipalDue = (Util.nullToZero(lp.Forecasted_Principal_Interest_Due__c) -
+                        Util.nullToZero(lp.Forecasted_Interest_Due__c)).setScale(16);
                 }
                 addLP |= setIfDifferent(lp, 'Forecasted_Principal_Due__c', forecastedPrincipalDue, true);
 
                 nextForecastedCumulativePrincipal =
-                    nullToZero(lp.Forecasted_Cumulative_Principal__c) +
-                    nullToZero(lp.Forecasted_Principal_Due__c);
+                    Util.nullToZero(lp.Forecasted_Cumulative_Principal__c) +
+                    Util.nullToZero(lp.Forecasted_Principal_Due__c);
 
                 if (addLP) {
                     loanPaymentsToUpdate.add(lp);
@@ -809,13 +827,13 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 secondDistribution = 0;
             }
 
-            fees = nullToZero(loan.Financing_Fee__c);
-            loanAmount = nullToZero(loan.Principal__c) - fees;
+            fees = Util.nullToZero(loan.Financing_Fee__c);
+            loanAmount = Util.nullToZero(loan.Principal__c) - fees;
             loanAmountPlusFees = loanAmount + fees;
-            annualRate = nullToZero(product.Loan_Interest_Rate__c)/100;
+            annualRate = Util.nullToZero(product.Loan_Interest_Rate__c)/100;
             monthlyRate = annualRate / 12;
-            monthsOfPI = nullToZero(product.Loan_Term__c).intValue();
-            monthsOfIO = nullToZero(ioPeriod).intValue();
+            monthsOfPI = Util.nullToZero(product.Loan_Term__c).intValue();
+            monthsOfIO = Util.nullToZero(ioPeriod).intValue();
             loanTerm = monthsOfPI + monthsOfIO;
             if (product.Index_Rate_for_Adjustment__c != null) {
                 isAdjustable = true;
@@ -828,14 +846,6 @@ public without sharing class LoanServicer implements Database.Batchable<sObject>
                 ceilingRate = product.Ceiling_Rate__c/100;
             }
         }
-    }
-
-    public static Decimal nullToZero(Decimal value) {
-        return (value == null?0:value);
-    }
-
-    public static String nullToZero(String value) {
-        return (String.isBlank(value)?'0':value);
     }
 
     public static Decimal getAdjustedMonthlyRate(LoanParams params, Integer period) {

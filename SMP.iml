@@ -782,10 +782,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="testTaskInsertUpdate" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="testTraunchCapitalMetrics" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -899,6 +895,18 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="ScheduleZTriggerHandlerTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="TaskHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="TaskHandlerTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AttachmentTriggerHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1640,6 +1648,10 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="ScheduleZTriggerHandlerTest.cls" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AttachmentTrigger" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

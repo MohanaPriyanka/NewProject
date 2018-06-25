@@ -1,6 +1,18 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
     @testSetup public static void MultipleMonthTest(){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c national_grid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, national_grid};
+
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
                                                                        Class__c = 'Class 2',
@@ -43,6 +55,7 @@ public class MultipleMonthProductionUpdateTest {
                                        Assemblage_Count__c = 1,
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
+                                       Utility__c = eversource.Id,
                                        Maximum_Subscription_Assemblage__c = 25);
         insert new List<Shared_Solar_System__c>{sss1};
 
@@ -190,6 +203,18 @@ public class MultipleMonthProductionUpdateTest {
                 Production_kWh_2_of_4__c = 364667);
         insert prodUpdateTwoMonths;
 
+        Energy_Usage_Update__c prodUpdateSizeoffKwh = new Energy_Usage_Update__c (
+                Name = 'sssA - March 2016',
+                Shared_Solar_System__c = sss1.id,
+                Schedule_Z__c = scheduleZ1.id,
+                Billing_Period_End_Date__c = myDateMar,
+                Size_Off_NMCs__c = false,
+                Date__c = myDateFeb,
+                Total_System_NMCs__c = 13000,
+                Net_Metering_Rate_Applied__c = 0.1619,
+                Production__c = 80296);
+        insert prodUpdateSizeoffKwh;
+
         System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true, scheduleZ1.Id)).size());
         System.assertEquals( 4, (PreviewProductionUpdateResults.getUASes(prodUpdateTwoMonths.Id, true, scheduleZ1.Id)).size());
 
@@ -229,5 +254,34 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(uasblist[8].System_Bill__c, uasblist[11].System_Bill__c);
         System.assertEquals(0.1234, uasblist[9].NMC_Rate__c);
         System.assertEquals(0.1619, uasblist[10].NMC_Rate__c);
+    }
+
+    @isTest public static void testSizeOffkWH() {
+        Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c
+                                                      FROM Energy_Usage_Update__c
+                                                      WHERE Name = 'sssA - March 2016'];
+
+        List<UASB__c> previewedUASBs = PreviewProductionUpdateResults.getUASes(prodUpdateSizeoffKwh.Id, true, prodUpdateSizeoffKwh.Schedule_Z__c);
+
+        System.assertEquals( 2, previewedUASBs.size());
+
+        prodUpdateSizeoffKwh.Generate_Bills__c = true;
+        update prodUpdateSizeoffKwh;
+
+        UASB__c generatedBill = 
+            [SELECT Id, Name, Utility_Account_Subscription__r.Name,
+            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
+            FROM UASB__c
+            WHERE Utility_Account_Subscription__r.Name = : previewedUASBs[1].PreGen_Utility_Acct__c 
+            AND Production_Update__c = : prodUpdateSizeoffKwh.Id];
+
+        System.assertEquals(126.10, generatedBill.Credits_Allocated__c);
+        System.assertEquals(126.10, previewedUASBs[1].PreGen_NMCs_Allocated__c);
+
+        System.assertEquals(0.97, generatedBill.Share_of_System__c);
+        System.assertEquals(0.97, previewedUASBs[1].PreGen_System_Share__c);
+
+        System.assertEquals(778.87, generatedBill.Subscription_Production_kWh_Static__c);
+        System.assertEquals(778.87, previewedUASBs[1].PreGen_Subscription_Production__c);
     }
 }

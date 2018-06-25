@@ -1,6 +1,18 @@
 @isTest
 public class PublicCSTest {
     @testSetup public static void CSPublicTest(){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 4
+        );
+
+        Utility__c national_grid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 4
+        );
+
+        insert new List<Utility__c>{eversource, national_grid};
+
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
                                                                        Class__c = 'Class 2',
@@ -43,7 +55,9 @@ public class PublicCSTest {
                                        Assemblage_Count__c = 1,
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
-                                       Maximum_Subscription_Assemblage__c = 25);
+                                       Maximum_Subscription_Assemblage__c = 25,
+                                       Utility__c = eversource.Id
+            );
         insert new List<Shared_Solar_System__c>{sss1};
 
         ChargentBase__Gateway__c chGateway  = 
@@ -145,7 +159,7 @@ public class PublicCSTest {
                 Net_Metering_Rate_Applied__c = 0.1125,
                 Billing_Period_End_Date__c = myDateFeb,
                 Size_Off_NMCs__c = true,
-                Total_System_NMCs__c = 46000,
+                Total_System_NMCs__c = 45000,
                 Date__c = myDateJan 
                 );
         // Effective NMC Rate of $0.11 
@@ -200,16 +214,16 @@ public class PublicCSTest {
 
         // First Bill has 20% Discount, does not hit NM Rate Floor
         System.assertEquals(true, uablist[0].Above_NM_Rate_Floor__c);
-        System.assertEquals(634.80, systembillList[0].Net_Metering_Credits_Allocated__c);
-        Decimal firstBillAmount = (634.80*0.80).setScale(2);
+        System.assertEquals(622.49, systembillList[0].Net_Metering_Credits_Allocated__c);
+        Decimal firstBillAmount = (622.49*0.80).setScale(2);
         System.assertEquals(firstBillAmount,systembillList[0].Due_This_Month__c);
         System.assertEquals(firstBillAmount,systemBillList[0].Total_Due__c);
         
         // Second Bill Should Hit the NM Rate Floor
         System.assertEquals(false, uablist[1].Above_NM_Rate_Floor__c);
-        System.assertEquals(41.40,systembillList[1].Net_Metering_Credits_Allocated__c);
-        System.assertEquals(828.00,systembillList[1].Production_kWH__c);
-        Decimal secondBillAmount = (828.00*0.09).setScale(2);
+        System.assertEquals(41.50,systembillList[1].Net_Metering_Credits_Allocated__c);
+        System.assertEquals(829.98,systembillList[1].Production_kWH__c);
+        Decimal secondBillAmount = (829.98*0.09).setScale(2);
         System.assertEquals(secondBillAmount,systembillList[1].Due_This_Month__c);
 
         // Late Fees should be 10% Annually, not 12% 
