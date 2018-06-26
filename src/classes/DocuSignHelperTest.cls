@@ -98,7 +98,9 @@ public with sharing class DocuSignHelperTest {
 
     static testMethod void testVoidFromProcessBuilder() {
         Opportunity opp = [
-            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
+            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
+            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
             FROM Opportunity
             WHERE Lead__r.FirstName = 'Retired'
         ];

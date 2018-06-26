@@ -27,9 +27,9 @@ public with sharing class DocuSignVoid_Invocable {
     }
 
     public class VoidRequest {
-        @InvocableVariable(Required=true)
+        @InvocableVariable(Label='Envelope ID' Description='dsfs__DocuSign_Status__c.dsfs__DocuSign_Envelope_ID__c' Required=true)
         public String envelopeId;
-        @InvocableVariable(Required=false)
+        @InvocableVariable(Label='Void Reason' Description='Text to include in DocuSign void email' Required=false)
         public String reason;
     }
 }
