@@ -60,8 +60,13 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
 
         Insert everLZU;
         Insert ngridLZU;
+
+    ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+        ChargentBase__Merchant_ID__c = '235986',
+        ChargentBase__Active__c = TRUE);
+    insert chGateway;
         
-        Entity__c entity1 = new Entity__c (Name = 'Entityone');
+        Entity__c entity1 = new Entity__c (Name = 'Entityone', Gateway__c = chGateway.Id);
         Entity__c entity2 = new Entity__c (Name = 'Entitytwo');
 
         Insert new list <Entity__c>{entity1, entity2};
@@ -234,11 +239,7 @@ update uastwo;
 
         insert billthree;    
 
-        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                                                                           ChargentBase__Merchant_ID__c = '235986',
-                                                                           ChargentBase__Active__c = TRUE,
-                                                                           Entity__c = entity1.Id);
-        insert chGateway;
+
 
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name, Total_Due__c, Due_This_Month__c, Bill_Number__c, Property_Account_ID__c 
                                                 FROM Account_Bill__c
@@ -271,7 +272,6 @@ update uastwo;
 
             if(accountbill.Bill_Number__c == 1){
                 ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
-                                                                                          ChargentOrders__Gateway__c = chGateway.Id,
                                                                                           ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                                           ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                                           ChargentOrders__Billing_Last_Name__c = 'Swain',
@@ -295,7 +295,6 @@ update uastwo;
 
                 // SECONDARY CREDIT CARD ORDER (CREATED BY FORM ASSEMBLY)
                 ChargentOrders__ChargentOrder__c orderB  = new ChargentOrders__ChargentOrder__c(
-                                                                            ChargentOrders__Gateway__c = chGateway.Id,
                                                                             ChargentOrders__Shipping_Name__c = entity1.Id,
                                                                             ChargentOrders__Billing_First_Name__c = 'Cole',
                                                                             ChargentOrders__Billing_Last_Name__c = 'Swain',
