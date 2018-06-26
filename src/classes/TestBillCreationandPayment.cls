@@ -143,10 +143,12 @@ public class TestBillCreationandPayment {
                 ChargentBase__Merchant_ID__c = '235986',
                 Shared_Solar_System__c = sss1.id,
                 ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
                 OwnerId = userRecord.Id,
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
+
+        entity1.Gateway__c = chGateway.Id;
+        update entity1;
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',

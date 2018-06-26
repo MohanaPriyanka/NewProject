@@ -21,10 +21,11 @@ public with sharing class ChargentOrderCreationhandler {
     }
 
     if (oppToUpdateList.size() > 0) {
-    ChargentBase__Gateway__c gateway  = [SELECT Name, Id, Shared_Solar_System__c, Entity_ID__c
-                                          FROM ChargentBase__Gateway__c
-                                          WHERE Name = 'BW Community Solar Payments Account Gateway'
-                                          LIMIT 1];   
+      Entity__c defaultEntity = [
+          SELECT Id, Gateway__c
+          FROM Entity__c
+          WHERE Name = 'BWC Holdings, LLC'
+      ];
 
       for(Opportunity opp : oppToUpdateList) {
         String paymentMethod;
@@ -35,8 +36,8 @@ public with sharing class ChargentOrderCreationhandler {
         }
         ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
                                                           ChargentOrders__Account__c = opp.AccountId,
-                                                          ChargentOrders__Gateway__c = gateway.Id,
-                                                          ChargentOrders__Shipping_Name__c = gateway.Entity_ID__c,                              
+                                                          ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
+                                                          ChargentOrders__Shipping_Name__c = defaultEntity.Id,
                                                           ChargentOrders__Payment_Method__c = paymentMethod,
                                                           ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
                                                           ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,

@@ -17,10 +17,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                 Bill_Number__c, Property_Account_ID__c
                                                 FROM Account_Bill__c];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c 
-                                                FROM ChargentBase__Gateway__c
-                                                LIMIT 1];
-
         Contact con = new Contact(FirstName = 'First',
                                   Email = 'communitiesUserContact@bluewave-capital.com',
                                   LastName = 'Last',
@@ -48,9 +44,14 @@ public without sharing class CommunitySolarCustomerPortalTest {
         }
         update accountBillList;
 
+        Entity__c entity1 = [
+            SELECT Id, Name, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+
         ChargentOrders__ChargentOrder__c orderA = 
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
-                                                         ChargentOrders__Shipping_Name__c = chGateway.Entity__c,
+                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Shipping_Name__c = entity1.Id,
                                                          ChargentOrders__Billing_First_Name__c = 'Cole',
                                                          ChargentOrders__Billing_Last_Name__c = 'Swain',
                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -70,8 +71,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                                                        ChargentOrders__Amount__c = 50,
                                                        ChargentOrders__Response_Status__c ='Approved',
-                                                       ChargentOrders__Gateway_ID__c = chGateway.id,
-                                                       ChargentOrders__Gateway__c = chGateway.id,
+                                                       ChargentOrders__Gateway_ID__c = entity1.Gateway__c,
+                                                       ChargentOrders__Gateway__c = entity1.Gateway__c,
                                                        Distributed_Among_System_Bills__c = FALSE,
                                                        ChargentOrders__Response_Message__c = 'OK',
                                                        ChargentOrders__Type__c = 'Charge',
@@ -85,9 +86,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             customerAccountMap.put(customerAccount.Name, customerAccount);
         }      
 
-        Entity__c entity1 = [   SELECT Id, Name 
-                                FROM Entity__c 
-                                WHERE Name = 'Oxford Barrett St. P1'];
+
                                                                          
           System.runAs(communityUser){
 
