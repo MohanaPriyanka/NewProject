@@ -137,7 +137,9 @@ public without sharing class CSAPController {
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId){
         User apiUser = [SELECT Id, Name, Username 
                         FROM User 
-                        WHERE Name = 'API'];
+                        WHERE Name = 'API'
+                        AND IsActive = True
+                        LIMIT 1];
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
