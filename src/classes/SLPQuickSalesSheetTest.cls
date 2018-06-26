@@ -139,12 +139,13 @@ public without sharing class SLPQuickSalesSheetTest{
           );
           testDoc.VersionData = Blob.valueOf('This is the body of the pdf');
           Util.insertSObj(testDoc);
-          ContentVersion testContent = [
+          List<ContentVersion> contentList = [
               SELECT ContentDocumentId
               FROM ContentVersion
               WHERE Id = :testDoc.Id
           ];
-
+          // Make sure ContentVersionTrigger doesn't complain about a guest user inserting ContentVersion
+          System.assertEquals(1, contentList.size());
       }
   }
 
