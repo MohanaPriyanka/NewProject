@@ -20,7 +20,7 @@ public with sharing class PaymentGatewayAssignmentHandler {
         assignNewGateway(newChargentOrders);
     }
     private void assignNewGateway(List<ChargentOrders__ChargentOrder__c> chOrderList) {
-        Map <Id,Entity__c> entitiesByIds = new Map <Id, Entity__c>();
+
         List <ChargentOrders__ChargentOrder__c> chOrderUpdateList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List <ChargentOrders__ChargentOrder__c>();
@@ -39,14 +39,12 @@ public with sharing class PaymentGatewayAssignmentHandler {
             chargentOrderAssignmentList.add(chargentOrder);
             entityIds.add(chargentOrder.ChargentOrders__Shipping_Name__c);
         }
-        
-        for (Entity__c entity : [
+
+        Map <Id,Entity__c> entitiesByIds = new Map <Id, Entity__c>([
             SELECT Id, Name, Gateway__c
             FROM Entity__c
             WHERE Id IN : entityIds
-        ]) {
-            entitiesByIds.put(entity.Id, entity);
-        }
+        ]);
 
         if (entitiesByIds.size()>0) {
             for (ChargentOrders__ChargentOrder__c chOrder : chargentOrderAssignmentList) {
