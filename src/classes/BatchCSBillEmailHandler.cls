@@ -7,8 +7,9 @@
  + * Tested By: BatchCSBillEmailHandlerTest
  + *************************************************************************************/
 
- public without sharing class BatchCSBillEmailHandler implements Database.Batchable<sObject> { 
-    public List<Messaging.SendEmailError> finalErrorList;
+ public without sharing class BatchCSBillEmailHandler implements Database.Batchable<sObject> {
+     @TestVisible
+     private static Id batchJobId;
 
     public BatchCSBillEmailHandler(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
         for (APXT_BPM__Conductor__c conductor : newList) {  
@@ -19,6 +20,7 @@
     } 
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
+        batchJobId = bc.getJobId();
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+
         'Bill_Attach_Version__c, Credits_on_Bill_Period__c, '+
         'Parent_Account__r.Client_Brand_Key__c, ' +

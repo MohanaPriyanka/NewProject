@@ -54,10 +54,13 @@ private class BatchCSBillEmailHandlerTest {
         update congaConduct;
         Test.StopTest();
 
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
-            JobItemsProcessed,
-            TotalJobItems, CreatedBy.Email
-            FROM AsyncApexJob LIMIT 1];
+        AsyncApexJob job = [
+            SELECT Id, Status, NumberOfErrors,
+                JobItemsProcessed,
+                TotalJobItems, CreatedBy.Email
+            FROM AsyncApexJob
+            WHERE Id = :BatchCSBillEmailHandler.batchJobId
+        ];
 
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
