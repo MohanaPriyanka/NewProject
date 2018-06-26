@@ -20,11 +20,12 @@ public with sharing class PaymentGatewayAssignmentHandler {
         assignNewGateway(newChargentOrders);
     }
     private void assignNewGateway(List<ChargentOrders__ChargentOrder__c> chOrderList) {
-        Map <Id,ChargentBase__Gateway__c> gatewayMap = new Map <Id,ChargentBase__Gateway__c>();
+        Map <Id,Entity__c> entitiesByIds = new Map <Id, Entity__c>();
         List <ChargentOrders__ChargentOrder__c> chOrderUpdateList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List <ChargentOrders__ChargentOrder__c>();
         system.debug(chOrderList);
+        Set<Id> entityIds = new Set<Id>();
        
         for (ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList) {
            if (chargentOrderVar.ChargentOrders__Shipping_Name__c != null 
@@ -36,20 +37,22 @@ public with sharing class PaymentGatewayAssignmentHandler {
                                                               FROM ChargentOrders__ChargentOrder__c 
                                                               WHERE Id IN : chargentOrderIdList]) {
             chargentOrderAssignmentList.add(chargentOrder);
+            entityIds.add(chargentOrder.ChargentOrders__Shipping_Name__c);
         }
         
-        for (ChargentBase__Gateway__c gatewayVar : [SELECT Id, Name, Entity_Id__c
-                                                   FROM ChargentBase__Gateway__c 
-                                                   WHERE Entity__c != null
-                                                   AND ChargentBase__Active__c = TRUE
-                                                   ORDER BY CreatedDate DESC ]) {
-            gatewayMap.put(gatewayVar.Entity_Id__c, gatewayVar);
+        for (Entity__c entity : [
+            SELECT Id, Name, Gateway__c
+            FROM Entity__c
+            WHERE Id IN : entityIds
+        ]) {
+            entitiesByIds.put(entity.Id, entity);
         }
 
-        if (gatewayMap.size()>0) {
+        if (entitiesByIds.size()>0) {
             for (ChargentOrders__ChargentOrder__c chOrder : chargentOrderAssignmentList) {
                 //Shipping Last name is used because the FormAssembly connectors will only allow fields like these to map SSS ID and System Bill gets updated out of sequence.
-                chOrder.ChargentOrders__Gateway__c = gatewayMap.get(chOrder.ChargentOrders__Shipping_Name__c).Id;
+                // should be Entity.ChargentBase__Gateway__c
+                chOrder.ChargentOrders__Gateway__c = entitiesByIds.get(chOrder.ChargentOrders__Shipping_Name__c).Gateway__c;
                 chOrderUpdateList.add(chOrder);
                 chOrder.ChargentOrders__Shipping_Name__c = null;
             }
