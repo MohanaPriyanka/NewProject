@@ -24,6 +24,7 @@ public with sharing class DocuSignVoid_Invocable {
             Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage',
                 'Callout Exception caught voiding envelope ' + envelopeId + ' error message: ' + e.getMessage());
         }
+        Logger.flushLogs();
     }
 
     public class VoidRequest {

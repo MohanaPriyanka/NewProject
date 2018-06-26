@@ -100,7 +100,7 @@ public with sharing class DocuSignHelperTest {
         Opportunity opp = [
             SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
             (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
-            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
             FROM Opportunity
             WHERE Lead__r.FirstName = 'Retired'
         ];
@@ -123,6 +123,15 @@ public with sharing class DocuSignHelperTest {
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
         // TODO: call void
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errors.size());
+        DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
+        voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
+        voidRequest.reason = 'Test void reason';
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        errors = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errors.size());
+
         Test.stopTest();
     }
 }
