@@ -251,4 +251,22 @@ public without sharing class CSAPController {
     public static Product2 getProduct (String productId) {
         return [SELECT Id, Name, Program__c FROM Product2 WHERE Id =: productId];
     }
+
+    @AuraEnabled
+    public static Lead convertCSLead(Id leadId, String email) {
+        Lead lead = getLead(leadId, email);
+        Database.LeadConvert leadConvert = new Database.LeadConvert();
+        leadConvert.setLeadId(leadId);
+        leadConvert.setConvertedStatus('Qualified');
+        leadConvert.setDoNotCreateOpportunity(true);
+        Database.LeadConvertResult lcr = Database.convertLead(leadConvert, false);
+        if (!lcr.isSuccess()) {
+            Logger.logNow(
+                'CSAPController',
+                'convertCSLead',
+                'CS Lead conversion failed for Id: ' + leadId +
+                    ' error:' + lcr.getErrors()[0].getMessage());
+        }
+        return getLead(leadId, email);
+    }
 }

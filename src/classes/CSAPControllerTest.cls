@@ -230,4 +230,19 @@ public with sharing class CSAPControllerTest {
         update systemProperties;
         System.assertEquals(30000, CSAPController.getCreditCheckTimeout());
     }
+
+    @IsTest
+    static void testConversion() {
+        Lead lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
+        lead.Status = 'Qualified';
+        update lead;
+        List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
+        System.debug(LoggingLevel.ERROR, opps);
+        System.assertEquals(0, opps.size());
+        CSAPController.convertCSLead(lead.Id, lead.Email);
+        lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
+        System.assertEquals(true, lead.IsConverted);
+        opps = [SELECT Id, Name FROM Opportunity];
+        System.assertEquals(0, opps.size());
+    }
 }
