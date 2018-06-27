@@ -49,7 +49,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
         for (ChargentOrders__Transaction__c insertedTransaction : [ SELECT Id, Name, ChargentOrders__Response_Status__c,
                                                                     Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
                                                                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
-                                                                    ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Id,
+            ChargentOrders__Order__r.ChargentOrders__Shipping_Name__c,
                                                                     Distributed_Among_System_Bills__c,
                                                                     ChargentOrders__Recurring__c
                                                                     FROM ChargentOrders__Transaction__c 
@@ -92,7 +92,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
         for (ChargentOrders__Transaction__c chTransaction : queriedTransactions) {
             List<System_Bill__c> groupedSystemBillsList = new List<System_Bill__c>();
             String parentID = chTransaction.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id;  
-            String entityId = chTransaction.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Id;
+            String entityId = chTransaction.ChargentOrders__Order__r.ChargentOrders__Shipping_Name__c;
             Decimal payment = chTransaction.ChargentOrders__Amount__c;
             Decimal maxbillnumber = 0;
 

@@ -52,7 +52,6 @@ public with sharing class PaymentGatewayAssignmentHandler {
                 // should be Entity.ChargentBase__Gateway__c
                 chOrder.ChargentOrders__Gateway__c = entitiesByIds.get(chOrder.ChargentOrders__Shipping_Name__c).Gateway__c;
                 chOrderUpdateList.add(chOrder);
-                chOrder.ChargentOrders__Shipping_Name__c = null;
             }
             update chOrderUpdateList;           
         }
