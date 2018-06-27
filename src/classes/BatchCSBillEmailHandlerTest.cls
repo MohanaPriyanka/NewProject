@@ -1,9 +1,11 @@
 @isTest
 private class BatchCSBillEmailHandlerTest {
-    @testSetup public static void setupTestData(){
+    // Can't use @testSetup since we need to use SeeAllData=true to exercise CommunityAPI. Otherwise, we get:
+    // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests. Please use @IsTest(SeeAllData=true).
+    private static void setupTestData(){
         Integer i;
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
-        
+
         Account parentAccount = new Account ( Name = 'Parent Account');
         insert parentAccount;
 
@@ -28,10 +30,10 @@ private class BatchCSBillEmailHandlerTest {
         propertyAccount.Additional_Contact__c = contactTwo.Id;
         update propertyAccount;
 
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
-        
+        // insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
         for (i=0;i<9;i++) {
-            Account_Bill__c abOne = new Account_Bill__c (   
+            Account_Bill__c abOne = new Account_Bill__c (
                                         Name = 'Bill' + i,
                                         Bill_Number__c = i,
                                         Parent_Account__c = propertyAccount.Id,
@@ -39,10 +41,12 @@ private class BatchCSBillEmailHandlerTest {
                                         Published__c = false);
             abList.add(abOne);
         }
-        insert abList;  
+        insert abList;
     }
 
-    static testMethod void testSendEmails () {
+    @IsTest(SeeAllData=true)
+    static void testSendEmails () {
+        setupTestData();
         Test.StartTest();
         APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
         insert congaConduct;
@@ -50,10 +54,13 @@ private class BatchCSBillEmailHandlerTest {
         update congaConduct;
         Test.StopTest();
 
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
-            JobItemsProcessed,
-            TotalJobItems, CreatedBy.Email
-            FROM AsyncApexJob LIMIT 1];
+        AsyncApexJob job = [
+            SELECT Id, Status, NumberOfErrors,
+                JobItemsProcessed,
+                TotalJobItems, CreatedBy.Email
+            FROM AsyncApexJob
+            WHERE Id = :BatchCSBillEmailHandler.batchJobId
+        ];
 
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
@@ -62,7 +69,9 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals(9, MessagingService.emailsSent.size());
     }
 
-    static testMethod void testCreateLink () {
+    @IsTest(SeeAllData=true)
+    static void testCreateLink() {
+        setupTestData();
         Test.StartTest();
         ContentVersion csBillCV = new ContentVersion (Title ='Community Solar Bill.pdf',
                                                       PathOnClient='/Community Solar Bill.pdf' );
