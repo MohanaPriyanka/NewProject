@@ -55,14 +55,28 @@ private class RecurringPaymentsHandlerTestClass{
         insert everLZU;
         insert ngridLZU;
 
+        ChargentBase__Gateway__c chGatewayone  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway One',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = true);
+        insert chGatewayone;
+
+        ChargentBase__Gateway__c chGatewaytwo  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway Two',
+            ChargentBase__Merchant_ID__c = '235116',
+            ChargentBase__Active__c = true);
+        insert chGatewaytwo;
+
         Entity__c entityone = new Entity__c (
-            Name = 'BarrettProjCo');
+            Name = 'BarrettProjCo',
+            Gateway__c = chGatewayone.Id
+        );
 
         insert entityone;
 
 
         Entity__c entitytwo = new Entity__c (
-            Name = 'NotBarrettProjCo');
+            Name = 'NotBarrettProjCo',
+            Gateway__c = chGatewaytwo.Id
+        );
 
         insert entitytwo;
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
@@ -247,20 +261,6 @@ private class RecurringPaymentsHandlerTestClass{
         Shared_Solar_System__c, Shared_Solar_System_ID__c, Bill_Number__c, Property_Account_ID__c
         FROM System_Bill__c
         ORDER BY Bill_NUmber__c DESC];
-
-        ChargentBase__Gateway__c chGatewayone  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway One',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Active__c = true,
-            Entity__c = entityone.Id,
-            Shared_Solar_System__c = sss1.id);
-        insert chGatewayone;
-
-        ChargentBase__Gateway__c chGatewaytwo  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway Two',
-            ChargentBase__Merchant_ID__c = '235116',
-            ChargentBase__Active__c = true,
-            Entity__c = entitytwo.Id,
-            Shared_Solar_System__c = sss2.id);
-        insert chGatewaytwo;
 
         // Query for system bills that were created from the production update
         for (System_Bill__c systemBill : systemBillList) {
