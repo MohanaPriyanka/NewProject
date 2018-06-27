@@ -134,20 +134,19 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             String acctBillid = sbWithoutOrder.substring(0,18);
             Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, roundingMode.HALF_UP);
             if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring'){
-                    ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
-                    ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
-                    orderA.ChargentOrders__Subtotal__c = amountToCharge;
-                    orderA.ChargentOrders__Charge_Amount__c = amountToCharge;
-                    orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
-                    orderA.ChargentOrders__Payment_Status__c = 'Recurring';
-                    orderA.ChargentOrders__Payment_Stop__c = 'Unending';
-                    orderA.ChargentOrders__Charge_Date__c = '01';
-                    orderA.Reason_for_Recurring_Stop__c = '';
-                    orderA.Comments__c = 'Cloned Order';
-                    orderA.ChargentOrders__Shipping_Name__c = sbWithoutOrder.substring(19,34);
-                    orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
-                    ordersToInsert.add(orderA);  
-                }
+                ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
+                ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
+                orderA.ChargentOrders__Subtotal__c = amountToCharge;
+                orderA.ChargentOrders__Charge_Amount__c = amountToCharge;
+                orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                orderA.ChargentOrders__Payment_Status__c = 'Recurring';
+                orderA.ChargentOrders__Payment_Stop__c = 'Unending';
+                orderA.ChargentOrders__Charge_Date__c = '01';
+                orderA.Reason_for_Recurring_Stop__c = '';
+                orderA.Comments__c = 'Cloned Order';
+                orderA.ChargentOrders__Shipping_Name__c = sbWithoutOrder.substring(19,34);
+                orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+                ordersToInsert.add(orderA);  
             }
         } 
         insert ordersToInsert;
