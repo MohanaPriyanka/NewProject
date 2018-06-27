@@ -19,7 +19,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
                         ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
-                        ' Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c,' +
+                        ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
                         ' Comments__c,' +
                         ' ChargentOrders__Payment_Method__c,' +
@@ -94,13 +94,17 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
-            if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
+            Id entityId = recurOrder.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c;
+
+            if (recurOrder.Account_Bill__c != null
+                && recurOrder.Account_Bill__r.Bill_Number__c != null
+                && entityId != null ) {
                 newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
                 chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
-                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
-                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
+                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
+                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
                         recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2, roundingMode.HALF_UP);
                     } else {
                         recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
