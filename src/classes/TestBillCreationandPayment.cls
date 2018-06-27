@@ -56,6 +56,9 @@ public class TestBillCreationandPayment {
         Account accountParent = new Account(name = 'Account Parent',
             RecordTypeId = parentAccountRT);
         insert accountParent;
+        Account accountParent2 = new Account(name = 'Account Parent',
+            RecordTypeId = parentAccountRT);
+        insert accountParent2;
 
         Contact contactA = new Contact( FirstName = 'Contact',
             LastName = 'A',
