@@ -181,7 +181,7 @@ private class RecurringPaymentsHandlerTestClass{
             Calculated_Annual_Cost_of_Electricity__c = 4000,
             Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
-        Utility_Account_Subscription__c uastwo = (Utility_Account_Subscription__c)TestFactory.createSObject(new Utility_Account_Subscription__c(
+        Utility_Account_Subscription__c uastwo = new Utility_Account_Subscription__c(
             Name = '000-0235',
             Utility_Account_Log__c = ualog.Id,
             Opportunity__c = opportunitytwo.Id,
