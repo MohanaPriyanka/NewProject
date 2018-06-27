@@ -149,7 +149,9 @@ public class TestBillCreationandPayment {
 
         Account accountA = new Account(name = 'Account A',
             Parent_Account__c = accountParent.Id);
-        insert accountA;
+        Account accountB = new Account(name = 'Account B',
+            Parent_Account__c = accountParent2.Id);
+        insert new List<Account>{accountA, accountB};
 
 
 
@@ -158,7 +160,13 @@ public class TestBillCreationandPayment {
                 Account__c = accountA.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'jordan jordan');
-        insert ualog;
+
+        Utility_Account_Log__c ualog2 =
+            new Utility_Account_Log__c(Name = '0000345',
+                Account__c = accountB.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'jordan jordan');
+        insert new List<Utility_Account_Log__c>{ualog, ualog2};
 
         Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -183,13 +191,21 @@ public class TestBillCreationandPayment {
                 CloseDate = System.today());
 
         Opportunity opportunitytwo =
-            new Opportunity(Name = 'BOpp Two',
+            new Opportunity(Name = 'BOpp One',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo};
+
+        Opportunity opportunitythree =
+            new Opportunity(Name = 'BOpp Two',
+                AccountId = accountB.Id,
+                Shared_Solar_System__c = sss2.Id,
+                StageName = 'Complete',
+                Product__c = normalCSProduct.Id,
+                CloseDate = System.today());
+        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
 
         Utility_Account_Subscription__c uasone =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -209,7 +225,6 @@ public class TestBillCreationandPayment {
                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
-
         Utility_Account_Subscription__c uasthree =
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
@@ -217,9 +232,18 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 Annual_kwh_subscription_future__c = 8000,
                 Calculated_Annual_Cost_of_Electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+            Subscribed_Annual_Cost_of_Electricity__c = 8000);
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree};
+        Utility_Account_Subscription__c uasfour =
+            new Utility_Account_Subscription__c(Name = '0000345',
+                Utility_Account_Log__c = ualog2.Id,
+                Opportunity__c = opportunitythree.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 6000,
+                Calculated_Annual_Cost_of_Electricity__c = 6000,
+                Subscribed_Annual_Cost_of_Electricity__c = 6000);
+
+        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
@@ -265,7 +289,7 @@ public class TestBillCreationandPayment {
 
         insert productionupdateA1;
 
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+        Energy_Usage_Update__c productionupdateA2 = new Energy_Usage_Update__c (
             Name = 'sssA - February 2016',
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
@@ -277,9 +301,9 @@ public class TestBillCreationandPayment {
             Date__c = myDateFeb
         );
 
-        insert productionupdateB2;
+        insert productionupdateA2;
 
-        Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+        Energy_Usage_Update__c productionupdateA3 = new Energy_Usage_Update__c (
             Name = 'sssA - March 2016',
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
@@ -291,12 +315,43 @@ public class TestBillCreationandPayment {
             Date__c = myDateMar
         );
 
-        insert productionupdateB3;
+        insert productionupdateA3;
+
+        Energy_Usage_Update__c productionupdateB1 = new Energy_Usage_Update__c (
+            Name = 'sssB - January 2016',
+            Shared_Solar_System__c = sss2.id,
+            Schedule_Z__c = scheduleZ2.id,
+            Production__c = 90000,
+            Size_off_NMCs__c = true,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateFeb,
+            Total_System_NMCs__c = 16632,
+            Date__c = myDateJan
+        );
+
+        insert productionupdateB1;
+
+        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+            Name = 'sssB - February 2016',
+            Shared_Solar_System__c = sss2.id,
+            Schedule_Z__c = scheduleZ2.id,
+            Production__c = 120000,
+            Size_off_NMCs__c = true,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateMar,
+            Total_System_NMCs__c = 22176,
+            Date__c = myDateFeb
+        );
+
+        insert productionupdateB2;
+
+
 
         productionupdateA1.Generate_Bills__c = TRUE;
-        productionupdateB2.Generate_Bills__c = TRUE;
+        productionupdateA2.Generate_Bills__c = TRUE;
         update productionupdateA1;
-        update productionupdateB2;
+        update productionupdateA2;
+
 
         APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert newConga;
@@ -320,11 +375,89 @@ public class TestBillCreationandPayment {
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
-        System.AssertEquals( 3, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        System.AssertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        Energy_Usage_Update__c productionUpdate = [
+          SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - February 2016'
+        ];
 
-        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id);
+        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdate.Id, true, productionUpdate.Schedule_Z__r.Id);
         System.AssertEquals(345.28, uasbList[0].PreGen_Discounted_Bill__c);
         System.AssertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
+        Test.stopTest();
+    }
+
+    @isTest public static void testDontGenerateBills(){
+        Test.startTest();
+        Energy_Usage_Update__c productionupdateA3 = [
+            SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Generate_Bills__c, Month_Number__c,
+                MonthDate__c, YearDate__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__c, Utility_Account_Subscription__r.Name
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = : productionupdateA3.Schedule_Z__c
+            AND Utility_Account_Subscription__r.Opportunity__r.Name = 'AOpp One'
+        ];
+
+        Opportunity opportunity = [
+            SELECT Id, Name, StageName, Shared_Solar_System__c, AccountId
+            FROM Opportunity
+            WHERE Name = 'AOpp One'
+            LIMIT 1
+        ];
+
+        opportunity.StageName = 'Cancelled';
+
+        update opportunity;
+
+        productionupdateA3.Generate_Bills__c = true;
+        update  productionupdateA3;
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Opportunity__c
+            FROM System_Bill__c
+            WHERE Month__c = : productionupdateA3.Month_Number__c
+            AND Opportunity__c = : opportunity.Id
+        ];
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Month__c = : productionupdateA3.Month_Number__c
+            AND Parent_Account__c = : opportunity.AccountId
+        ];
+
+        String utilityAccountBillName = (
+            opportunity.Name + ' '
+            + productionupdateA3.MonthDate__c + ' '
+            + productionupdateA3.YearDate__c + ' '
+            + scheduleZSubscriptions[0].Utility_Account_Subscription__r.Name
+        );
+
+        List<Utility_Account_Bill__c> utilityAccountBills = [
+            SELECT Id
+            FROM Utility_Account_Bill__c
+            WHERE Name = : utilityAccountBillName
+        ];
+
+        List<UASB__c> utilityAccountSubscriptionBills = [
+            SELECT Id
+            FROM UASB__c
+            WHERE Opportunity__c = : opportunity.Id
+            AND Date__c = : productionupdateA3.Date__c
+        ];
+
+        System.assertEquals(1, scheduleZSubscriptions.size());
+        System.assertEquals(0, systemBills.size());
+        System.assertEquals(0, accountBills.size());
+        System.assertEquals(0, utilityAccountBills.size());
+        System.assertEquals(0, utilityAccountSubscriptionBills.size());
         Test.stopTest();
     }
 
@@ -388,7 +521,7 @@ public class TestBillCreationandPayment {
         }
 
         String acctId = systemBillList[1].Property_Account_Id__c;
-        system.AssertEquals( 3, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
+        system.AssertEquals(5, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
 
         systemBillList[1].Waive_Late_Fees__c = TRUE;
         systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
@@ -455,6 +588,112 @@ public class TestBillCreationandPayment {
             }
         }
         Test.stopTest();
+    }
+
+    @isTest public static void testBillNumbering() {
+        Test.startTest();
+
+        Energy_Usage_Update__c productionupdateB1 = [
+          SELECT Id, Generate_Bills__c, Month_Number__c
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - January 2016'
+            LIMIT 1
+        ];
+
+        Energy_Usage_Update__c productionupdateB2 = [
+          SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
+              MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
+              Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
+          FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - February 2016'
+            LIMIT 1
+        ];
+
+        productionupdateB1.Generate_Bills__c = TRUE;
+        update productionupdateB1;
+
+        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
+
+        Test.stopTest();
+
+        Opportunity oppOne = [
+            SELECT Id, AccountId, Name
+            FROM Opportunity
+            WHERE Name = 'BOpp One'
+            LIMIT 1
+        ];
+
+        Opportunity oppTwo = [
+            SELECT Id, AccountId, Name
+            FROM Opportunity
+            WHERE Name = 'BOpp Two'
+            LIMIT 1
+        ];
+
+        List<Account_Bill__c> oppOneAccountBills = [
+            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : oppOne.AccountId
+            ORDER BY Bill_Number__c
+        ];
+
+        List<Account_Bill__c> oppTwoAccountBills = [
+            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : oppTwo.AccountId
+            ORDER BY Bill_Number__c
+        ];
+
+        List<System_Bill__c> oppOneSystemBills = [
+            SELECT Id, Bill_Number__c, Month__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = : oppOne.AccountId
+                AND Shared_Solar_System__c = : productionupdateB2.Shared_Solar_System__c
+            ORDER BY Bill_Number__c
+        ];
+
+        List<System_Bill__c> oppTwoSystemBills = [
+            SELECT Id, Bill_Number__c, Month__c
+            FROM System_Bill__c
+            WHERE Opportunity__c = : oppTwo.Id
+            ORDER BY Bill_Number__c
+        ];
+
+        Account_Bill__c oppOneJanuaryAccountBill = oppOneAccountBills[0];
+        Account_Bill__c oppOneFebruaryAccountBill = oppOneAccountBills[1];
+        System_Bill__c oppOneJanuarySystemBill = oppOneSystemBills[0];
+        System_Bill__c oppOneFebruarySystemBill = oppOneSystemBills[1];
+
+        System.AssertEquals(2, oppOneAccountBills.size());
+        System.AssertEquals(1, oppOneJanuaryAccountBill.Bill_Number__c);
+        System.AssertEquals(1, oppOneJanuaryAccountBill.Month__c);
+        System.AssertEquals(2, oppOneFebruaryAccountBill.Bill_Number__c);
+        System.AssertEquals(2, oppOneFebruaryAccountBill.Month__c);
+        System.AssertEquals(oppOneJanuaryAccountBill.Total_Due__c, oppOneFebruaryAccountBill.Past_Bill__c);
+
+        System.AssertEquals(2, oppOneSystemBills.size());
+        System.AssertEquals(1, oppOneJanuarySystemBill.Bill_Number__c);
+        System.AssertEquals(1, oppOneJanuarySystemBill.Month__c);
+        System.AssertEquals(2, oppOneFebruarySystemBill.Bill_Number__c);
+        System.AssertEquals(2, oppOneFebruarySystemBill.Month__c);
+
+        Account_Bill__c oppTwoJanuaryAccountBill = oppTwoAccountBills[0];
+        Account_Bill__c oppTwoFebruaryAccountBill = oppTwoAccountBills[1];
+        System_Bill__c oppTwoJanuarySystemBill = oppTwoSystemBills[0];
+        System_Bill__c oppTwoFebruarySystemBill = oppTwoSystemBills[1];
+
+        System.AssertEquals(2, oppTwoAccountBills.size());
+        System.AssertEquals(1, oppTwoJanuaryAccountBill.Bill_Number__c);
+        System.AssertEquals(1, oppTwoJanuaryAccountBill.Month__c);
+        System.AssertEquals(2, oppTwoFebruaryAccountBill.Bill_Number__c);
+        System.AssertEquals(2, oppTwoFebruaryAccountBill.Month__c);
+        System.AssertEquals(oppTwoJanuaryAccountBill.Total_Due__c, oppTwoFebruaryAccountBill.Past_Bill__c);
+
+        System.AssertEquals(2, oppTwoSystemBills.size());
+        System.AssertEquals(1, oppTwoJanuarySystemBill.Bill_Number__c);
+        System.AssertEquals(1, oppTwoJanuarySystemBill.Month__c);
+        System.AssertEquals(2, oppTwoFebruarySystemBill.Bill_Number__c);
+        System.AssertEquals(2, oppTwoFebruarySystemBill.Month__c);
     }
 
     @isTest public static void testSystemBills() {
@@ -735,7 +974,7 @@ public class TestBillCreationandPayment {
         System.assertEquals('Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
 
-        Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Generate_Bills__c = false];
+        Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Name = 'sssA - March 2016'];
         prodUpdate.Generate_Bills__c = True;
         update prodUpdate;
 
@@ -1002,5 +1241,36 @@ public class TestBillCreationandPayment {
         System.assertEquals(previousScheduleZ2.Status__c, scheduleZS3[0].Status__c);
 
         Test.stopTest();
+    }
+
+    public static void simulateBatchBillCreation(List<Energy_Usage_Update__c> productionUpdates) {
+        Set<Id> scheduleZs = new Set<Id>();
+        for (Energy_Usage_Update__c productionUpdate : productionUpdates) {
+            scheduleZs.add(productionUpdate.Schedule_Z__c);
+        }
+
+        List<Schedule_Z_Subscription__c> scheduleZSubs = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c IN : scheduleZs
+        ];
+
+        List<Schedule_Z_Subscription__c> batch1 = new List<Schedule_Z_Subscription__c>();
+        List<Schedule_Z_Subscription__c> batch2 = new List<Schedule_Z_Subscription__c>();
+
+        Integer counter = 1;
+        for (Schedule_Z_Subscription__c scheduleZSubscription : scheduleZSubs) {
+            if (Math.mod(counter, 2) == 0) {
+                batch1.add(scheduleZSubscription);
+            } else {
+                batch2.add(scheduleZSubscription);
+            }
+            counter += 1;
+        }
+
+        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(productionUpdates);
+        //simulate batching in production
+        handler.createBills(batch1);
+        handler.createBills(batch2);
     }
 }
