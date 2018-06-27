@@ -91,12 +91,14 @@
     
     finishStage : function(component, event, helper) {
         var ual = component.get("v.ual");
-        if(ual.Id){
+        if (ual.Id) {
             var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
             ualPromise.then($A.getCallback(function resolve(retVal) {
+                helper.convertLeadFunction(component, event, helper);
                 helper.finishStage(component, event, helper);
             }));
-        }else{
+        } else {
+            helper.convertLeadFunction(component, event, helper);
             helper.finishStage(component, event, helper);
         }
     },
