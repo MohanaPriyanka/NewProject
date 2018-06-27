@@ -22,9 +22,9 @@
         component.set("v.page", "AboutYourself");
     },
     goToApplyingFor : function(component, event, helper) {
-        if(event.getSource().get("v.label") == "Next" && helper.validatePageFields(component)){
+        if(event.getSource().get("v.label") == "Previous"){
             component.set("v.page", "ApplyingFor");
-        }else{
+        } else if(helper.validatePageFields(component)){
             component.set("v.page", "ApplyingFor");
         }
     },
