@@ -248,6 +248,7 @@ public class TestBillCreationandPayment {
 
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
+        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
             Adjustment_Amount__c = 24);

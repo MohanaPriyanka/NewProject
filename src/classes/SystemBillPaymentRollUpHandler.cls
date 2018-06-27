@@ -48,7 +48,7 @@ public with sharing class SystemBillPaymentRollUpHandler {
 
         for (ChargentOrders__Transaction__c insertedTransaction : [ SELECT Id, Name, ChargentOrders__Response_Status__c,
                                                                     Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
-                                                                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
+            ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id, ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
             ChargentOrders__Order__r.ChargentOrders__Shipping_Name__c,
                                                                     Distributed_Among_System_Bills__c,
                                                                     ChargentOrders__Recurring__c
@@ -94,13 +94,15 @@ public with sharing class SystemBillPaymentRollUpHandler {
             String parentID = chTransaction.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id;  
             String entityId = chTransaction.ChargentOrders__Order__r.ChargentOrders__Shipping_Name__c;
             Decimal payment = chTransaction.ChargentOrders__Amount__c;
+            Integer accountBillNumber = (Integer) chTransaction.ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c;
             Decimal maxbillnumber = 0;
 
             systemBillCreatedDate = chTransaction.createdDate;
             Date dateOfLastPayment = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
             for (System_Bill__c sbill : systemBills) {
-                if (sbill.Account_Bill__r.Parent_Account__r.Id == parentID 
+                if (sbill.Account_Bill__r.Parent_Account__r.Id == parentID
+                    && sbill.Account_Bill_Number__c == accountBillNumber
                     && sbill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id == entityId) {
                         groupedSystemBillsList.add(sbill);
                         maxbillnumber = sbill.Account_Bill_Number__c;
