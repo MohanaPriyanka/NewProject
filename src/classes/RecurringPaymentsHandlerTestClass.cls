@@ -295,7 +295,6 @@ private class RecurringPaymentsHandlerTestClass{
             if (systembill.Shared_Solar_System__c == sss1.id) {
                 ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
                     ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
-                    ChargentOrders__Gateway__c = chGatewayone.Id,
                     ChargentOrders__Shipping_Name__c = entityone.Id,
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
                     ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
@@ -316,23 +315,9 @@ private class RecurringPaymentsHandlerTestClass{
                     ChargentOrders__Charge_Date__c = '30');
             insert orderA1;
             }
-        ChargentBase__Gateway__c chGatewayone  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway One',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Active__c = true,
-            Entity__c = entityone.Id,
-            Shared_Solar_System__c = sss1.id);
-        insert chGatewayone;
-
-        ChargentBase__Gateway__c chGatewaytwo  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway Two',
-            ChargentBase__Merchant_ID__c = '235116',
-            ChargentBase__Active__c = true,
-            Entity__c = entitytwo.Id,
-            Shared_Solar_System__c = sss2.id);
-        insert chGatewaytwo;
 
         // 2 Recurring Orders for the 2 Opportunities (SSS1 and SS2 for Account A)
         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Gateway__c = chGatewayone.Id,
             ChargentOrders__Shipping_Name__c = entityone.Id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
@@ -353,7 +338,6 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Charge_Date__c = '30');
 
         ChargentOrders__ChargentOrder__c orderA2  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Gateway__c = chGatewaytwo.Id,
             ChargentOrders__Shipping_Name__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Cole',
             ChargentOrders__Billing_Last_Name__c = 'Swain',
@@ -375,7 +359,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         // 1 Recurring Order for the 1 Opportunity (SS2 for Account B)
         ChargentOrders__ChargentOrder__c orderA3  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Gateway__c = chGatewaytwo.Id,
             ChargentOrders__Shipping_Name__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Cole',
             ChargentOrders__Billing_Last_Name__c = 'Swain',
@@ -397,7 +380,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         // Test failures for Account C and Account D, which do not have any system bills and should change to stopped
         ChargentOrders__ChargentOrder__c orderNotLinkedToAccountBill  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Gateway__c = chGatewaytwo.Id,
             ChargentOrders__Shipping_Name__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
@@ -418,7 +400,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         ChargentOrders__ChargentOrder__c orderNoSystemBills  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountBillCancelled.Id,
-            ChargentOrders__Gateway__c = chGatewaytwo.Id,
             ChargentOrders__Shipping_Name__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
@@ -439,7 +420,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         ChargentOrders__ChargentOrder__c orderCancelledCustomer  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = noSystemBills.Id,
-            ChargentOrders__Gateway__c = chGatewaytwo.Id,
             ChargentOrders__Shipping_Name__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
