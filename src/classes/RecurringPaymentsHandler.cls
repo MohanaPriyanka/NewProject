@@ -133,7 +133,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         for (String sbWithoutOrder : aggregateSbMap.keySet()) {
             String acctBillid = sbWithoutOrder.substring(0,18);
             Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, roundingMode.HALF_UP);
-            if (orderMap.containsKey(acctBillid)){
+            if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring'){
                 ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
                 orderA.ChargentOrders__Subtotal__c = amountToCharge;
