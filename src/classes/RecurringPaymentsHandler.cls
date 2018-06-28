@@ -82,6 +82,12 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             abMap.put(abMapKey, newAcctBill);
         }
 
+        //IF Statement here to check if this is the first (and only) account bill? Send to method to grab chargent order from property account?
+        //Are we sure that we will even get here if there is no Chargent Order on this Account Bill yet?
+        //Need some way to find first Account Bills - could be several of them (list)
+               // retrieveFirstChargentOrder(firstAccountBill);
+
+
         for (AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
                                             FROM System_Bill__c
                                             WHERE Account_Bill__c IN : newAcctBillList
@@ -150,6 +156,35 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             }
         } 
         insert ordersToInsert;
+    }
+
+    //METHOD here for grabbing Chargent Order for first account bill - grab from parent account
+    //Potentially going to be passed a list of Account Bills
+    public void retrieveFirstChargentOrder(Account_Bill__c firstAccountBill){
+        //Find Chargent Order linked to the Property Account of the Account Bill
+        ChargentOrders__ChargentOrder__c firstChargentOrder = [SELECT Id, Property_Account__c
+                                                                FROM ChargentOrders__ChargentOrder__c
+                                                                WHERE Property_Account__c = firstAccountBill.Parent_Account__c];
+
+        //Update the fields on the Chargent Order to be Recurring
+        firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
+        firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
+        firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
+        firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
+        firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
+        firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
+        firstChargentOrder.Reason_for_Recurring_Stop__c = '';
+        firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+
+        //Do I need this insert?
+        // ordersToInsert.add(firstChargentOrder);
+
+        //Move the Chargent Order to the Account
+        firstChargentOrder.Account_Bill__c = firstAccountBill.Id;
+
+        //Remove the Chargent Order from the Property Account
+        firstChargentOrder.Property_Account__c = null;
+
     }
 
     public void finish(Database.BatchableContext bc){
