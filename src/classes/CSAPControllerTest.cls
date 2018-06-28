@@ -152,6 +152,7 @@ public with sharing class CSAPControllerTest {
             ContactId = contactPartner.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='tropicole34@aol.com');
+        Util.insertSObj(userRecord);
 
         Lead leadToInsert = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -232,6 +233,7 @@ public with sharing class CSAPControllerTest {
             ContactId = contactPartner.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='jUser132@aol.com');
+        Util.insertSObj(otherUser);
 
         Lead leadToInsert = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
