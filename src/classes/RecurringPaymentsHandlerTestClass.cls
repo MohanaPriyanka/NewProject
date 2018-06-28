@@ -293,7 +293,7 @@ private class RecurringPaymentsHandlerTestClass{
         for (System_Bill__c systemBill : systemBillList) {
 
             if (systembill.Shared_Solar_System__c == sss1.id) {
-                ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
+                ChargentOrders__ChargentOrder__c orderA1 = new ChargentOrders__ChargentOrder__c(
                     ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
                     ChargentOrders__Shipping_Name__c = entityone.Id,
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
@@ -313,8 +313,9 @@ private class RecurringPaymentsHandlerTestClass{
                     ChargentOrders__Payment_Frequency__c = 'Monthly',
                     ChargentOrders__Payment_Start_Date__c = system.today(),
                     ChargentOrders__Charge_Date__c = '30');
-            insert orderA1;
+                insert orderA1;
             }
+        }
 
         // 2 Recurring Orders for the 2 Opportunities (SSS1 and SS2 for Account A)
         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
@@ -467,7 +468,7 @@ private class RecurringPaymentsHandlerTestClass{
         insert productionupdateD1;
     }
 
-    static testMethod void scheduleJob(){
+        static testMethod void scheduleJob(){
         Test.startTest();
 
         // Test scheduling of batch:
