@@ -257,7 +257,7 @@ private class RecurringPaymentsHandlerTestClass{
             Schedule_Z__c = scheduleZ2.Id,
             Production__c = 14000,
             Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateApr,
+            Billing_Period_End_Date__c = myDateMar,
             Total_System_NMCs__c = 25872,
             Date__c = myDateFeb
             );
@@ -299,6 +299,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Subtotal__c = 603.92,
             ChargentOrders__Payment_Method__c = 'Credit Card',
             Account_Bill__c = systemBillMap.get('OppOne').Account_Bill__r.Id,
+            Opportunity__c = systemBillMap.get('OppOne').Opportunity__c,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
             ChargentOrders__Card_Security_Code__c = '999',
@@ -319,6 +320,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Subtotal__c = 100.22,
             ChargentOrders__Payment_Method__c = 'Credit Card',
             Account_Bill__c = systemBillMap.get('OppTwo').Account_Bill__r.Id,
+            Opportunity__c = systemBillMap.get('OppTwo').Opportunity__c,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
             ChargentOrders__Card_Security_Code__c = '999',
@@ -340,6 +342,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Subtotal__c = 100.22,
             ChargentOrders__Payment_Method__c = 'Credit Card',
             Account_Bill__c = systemBillMap.get('OppThree').Account_Bill__r.Id,
+            Opportunity__c = systemBillMap.get('OppThree').Opportunity__c,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
             ChargentOrders__Card_Security_Code__c = '999',
@@ -419,7 +422,7 @@ private class RecurringPaymentsHandlerTestClass{
             Schedule_Z__c = scheduleZ1.Id,
             Production__c = 120000,
             Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMar,
+            Billing_Period_End_Date__c = myDateApr,
             Total_System_NMCs__c = 22176,
             Date__c = myDateMar
             );

@@ -94,12 +94,12 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
-            Id entityId = recurOrder.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c;
+            Id entityId = recurOrder.ChargentOrders__Shipping_Name__c;
 
             if (recurOrder.Account_Bill__c != null
                 && recurOrder.Account_Bill__r.Bill_Number__c != null
                 && entityId != null ) {
-                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
+                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c);
                 chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
