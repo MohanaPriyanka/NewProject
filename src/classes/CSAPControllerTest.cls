@@ -4,8 +4,12 @@ public with sharing class CSAPControllerTest {
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
 
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='BFG Standard User'];
+
         User apiUser = new User(
             FirstName = 'API',
+            LastName = 'testcase',
+            ProfileId = profileRecord.Id,
             Alias = '123api',
             Email = 'api@bluewavesolar.com',
             Emailencodingkey ='UTF-8',

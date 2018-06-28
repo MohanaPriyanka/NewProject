@@ -5,9 +5,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
     }
     @isTest static void testMethodOne() {
         Test.startTest();
-        Account parentAccount = [SELECT Id, Name
-                                FROM Account
-                                WHERE Name = 'Account Parent'];
+        Account parentAccount = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Name = 'Account Parent'
+            LIMIT 1
+        ];
 
         Profile communityProfile = [SELECT Id 
                                     FROM Profile 
