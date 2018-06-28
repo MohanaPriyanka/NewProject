@@ -101,7 +101,8 @@ public class TestBillCreationandPayment {
         Entity__c entity2 = new Entity__c (
             Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id
+            Client_Account__c = clientAccount2.Id,
+            Gateway__c = chGateway.Id
         );
         insert entity2;
 
