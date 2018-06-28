@@ -17,6 +17,7 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
 
         String query = 'SELECT Id, Name, ' +
         'Related_SREC__r.Id, SREC_Status__c, ' +
+        'SREC_Invoice__r.Id, ' +
         'ChargentOrders__Credit_Amount__c, ' +
         'ChargentOrders__Bank_Routing_Number__c, ' +
         'ChargentOrders__Bank_Account_Number__c, ' +
@@ -36,8 +37,11 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
             isSuccess = CreateOrderandPaymentRequest.attemptSRECsend(chOrder);
             if (isSuccess) {
                 chOrder.SREC_Status__c = 'Success';
-                successfulSRECs.add(cOrder.Related_SREC__r.Id);
-                successInvoiceList.add(SREC_Invoice__r.Id);
+                if (chOrder.Related_SREC__r.Id != null){
+                    successSRECList.add(chOrder.Related_SREC__r.Id);
+                } else if (chOrder.Related_SREC__r.Id != null){
+                    successInvoiceList.add(chOrder.SREC_Invoice__r.Id);
+                }
             } else {
                 chOrder.SREC_Status__c = 'Failed';
             }
@@ -51,20 +55,20 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
         
         Date todaysDate = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
-        if (successSRECList.size() > 0) {
+        if (successSRECList != null){
             SREC__c srecsToUpdate = [SELECT Id, Name, Date_Distributed_to_Customer__c
                                     FROM SREC__c
-                                    WHERE Id = IN : successSRECList];
+                                    WHERE Id IN : successSRECList];
             srecsToUpdate.Date_Distributed_to_Customer__c = todaysDate;
             update srecsToUpdate;
         }
 
-        if (successInvoiceList.size() > 0) {
+        if (successInvoiceList != null){
             SREC_Invoice__c invoiceToUpdate = [SELECT Id, Name, Date_Paid__c
                                             FROM SREC_Invoice__c
-                                            WHERE Id = IN : successSRECList];
+                                            WHERE Id IN : successSRECList];
             invoiceToUpdate.Date_Paid__c = todaysDate;
-            update srecsToUpdate;
+            update invoiceToUpdate;
         }
 
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
