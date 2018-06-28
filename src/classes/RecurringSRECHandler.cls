@@ -11,7 +11,9 @@ public without sharing class RecurringSRECHandler {
         Map<Id, SREC__c> chOrderMap = new Map<Id, SREC__c>();
 
         for (SREC__c triggeredSREC : srecList){
-            srecIdList.add(triggeredSREC.Id);
+            if (Date_Distributed_to_Customer__c == null){
+                srecIdList.add(triggeredSREC.Id);
+            }
         }
 
         for (SREC__c queriedSREC : [SELECT Id, Name,
