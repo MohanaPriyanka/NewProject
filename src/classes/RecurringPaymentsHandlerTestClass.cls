@@ -289,34 +289,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         insert new List<Account_Bill__c>{noSystemBills, noSystemBillsSecondMonth, accountBillCancelled};
 
-        // Query for system bills that were created from the production update
-        for (System_Bill__c systemBill : systemBillList) {
-
-            if (systembill.Shared_Solar_System__c == sss1.id) {
-                ChargentOrders__ChargentOrder__c orderA1 = new ChargentOrders__ChargentOrder__c(
-                    ChargentOrders__Account__c = systemBill.Property_Account_Id__c,
-                    ChargentOrders__Shipping_Name__c = entityone.Id,
-                    ChargentOrders__Billing_First_Name__c = 'Jordan',
-                    ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                    ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                    ChargentOrders__Billing_Zip_Postal__c = '02467',
-                    ChargentOrders__Subtotal__c = 603.92,
-                    ChargentOrders__Payment_Method__c = 'Credit Card',
-                    Account_Bill__c = systembill.Account_Bill__c,
-                    ChargentOrders__Card_Type__c = 'Visa',
-                    ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
-                    ChargentOrders__Card_Expiration_Month__c = '02',
-                    ChargentOrders__Card_Expiration_Year__c = '2018',
-                    ChargentOrders__Card_Last_4__c = '1111',
-                    ChargentOrders__Payment_Status__c = 'Recurring',
-                    ChargentOrders__Payment_Frequency__c = 'Monthly',
-                    ChargentOrders__Payment_Start_Date__c = system.today(),
-                    ChargentOrders__Charge_Date__c = '30');
-                insert orderA1;
-            }
-        }
-
         // 2 Recurring Orders for the 2 Opportunities (SSS1 and SS2 for Account A)
         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Shipping_Name__c = entityone.Id,
@@ -468,7 +440,7 @@ private class RecurringPaymentsHandlerTestClass{
         insert productionupdateD1;
     }
 
-        static testMethod void scheduleJob(){
+    static testMethod void scheduleJob(){
         Test.startTest();
 
         // Test scheduling of batch:
