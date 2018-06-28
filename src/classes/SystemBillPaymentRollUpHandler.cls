@@ -7,7 +7,7 @@
  + * Tested By: TestBillCreationandPayment3
  + *************************************************************************************/
 
-public with sharing class SystemBillPaymentRollUpHandler {
+public with sharing class   SystemBillPaymentRollUpHandler {
     public static void handleRecurringPayment (List<ChargentOrders__Transaction__c> newlycreatedTrans) {
         List<Id> recurringList = new List<Id >();
         for (ChargentOrders__Transaction__c trans: newlycreatedTrans) {
@@ -102,7 +102,6 @@ public with sharing class SystemBillPaymentRollUpHandler {
 
             for (System_Bill__c sbill : systemBills) {
                 if (sbill.Account_Bill__r.Parent_Account__r.Id == parentID
-                    && sbill.Account_Bill_Number__c == accountBillNumber
                     && sbill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id == entityId) {
                         groupedSystemBillsList.add(sbill);
                         maxbillnumber = sbill.Account_Bill_Number__c;
