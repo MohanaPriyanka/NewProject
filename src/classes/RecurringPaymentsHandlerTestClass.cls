@@ -83,7 +83,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         insert entityone;
 
-
         Entity__c entitytwo = new Entity__c (
             Name = 'NotBarrettProjCo',
             Gateway__c = chGatewaytwo.Id

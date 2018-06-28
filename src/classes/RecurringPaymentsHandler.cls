@@ -89,8 +89,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
             accBillId = String.valueOf(sysBills.get('Account_Bill__c'));
             entityIdString = String.valueOf(sysBills.get('entity'));
-            uniqueID = accBillId + '_' + entityIdString.substring(0,15);
-            aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue') );
+            uniqueID = accBillId + '_' + entityIdString;
+            aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue'));
         }
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
@@ -99,7 +99,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             if (recurOrder.Account_Bill__c != null
                 && recurOrder.Account_Bill__r.Bill_Number__c != null
                 && entityId != null ) {
-                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c);
+                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
                 chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
