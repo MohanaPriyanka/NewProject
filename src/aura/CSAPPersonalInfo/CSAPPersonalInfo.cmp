@@ -73,13 +73,9 @@
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                 <div aura:id="birthdateElement">
-                  <lightning:input aura:id="field" name="leadBirthDate"
-                                 type="date"
-                                 label="Date of Birth"
-                                 value="{!v.lead.LASERCA__Birthdate__c}"
-                                 placeholder="Dec 31, 1980"
-                                 max="2013-01-01"
-                                 required="true"/>
+                  <label class="slds-form-element__label">Date of Birth</label>
+                  <c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" required="true"/>
+
                 </div>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
