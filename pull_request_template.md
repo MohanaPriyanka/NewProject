@@ -13,6 +13,10 @@
 -->
 ### Work Items Covered
 <!-- Please provide links to the work items covered in PR -->
+#### Features
+[Item Title](url)
+
+#### Bugs
 [Item Title](url)
 
 ### Deployment Steps
