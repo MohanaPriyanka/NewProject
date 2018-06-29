@@ -13,6 +13,7 @@
 -->
 ### Work Items Covered
 <!-- Please provide links to the work items covered in PR -->
+[Item Title](url)
 
 ### Deployment Steps
 <!-- If there are configuration changes necessary -->
