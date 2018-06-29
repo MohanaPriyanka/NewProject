@@ -48,7 +48,7 @@
           </lightning:layoutItem>
           <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>You've been added to our waitlist and will be notified if and when we have a project in your area!</b>
+              <b>You've been added to our wait list and will be notified if and when we have a project in your area!</b>
             </div>
           </lightning:layoutItem>
           <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
