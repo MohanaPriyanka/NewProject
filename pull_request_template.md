@@ -7,7 +7,7 @@
 - I have commented my code, particularly in hard-to-understand areas,
 - I have made corresponding changes to the documentation,
 - I have added tests that prove my fix is effective or that my feature works,
-- New and existing unit tests pass in  with my changes ("bundle exec rake"),
+- New and existing unit tests pass in  with my changes,
 - Title include "WIP" if work is in progress.
 
 -->
@@ -16,7 +16,7 @@
 #### Features
 [Item Title](url)
 
-#### Bugs
+#### Bug Fixes
 [Item Title](url)
 
 ### Deployment Steps
