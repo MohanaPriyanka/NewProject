@@ -13,8 +13,6 @@
 -->
 ### Work Items Covered
 <!-- Please provide links to the work items covered in PR -->
-[Back Button bug in SLP](https://na54.salesforce.com/a3U0a000000E35A)
-
 
 ### Deployment Steps
 <!-- If there are configuration changes necessary -->
