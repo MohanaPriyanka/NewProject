@@ -26,7 +26,8 @@ public with sharing class DocuSignHelperTest {
 
         dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
             dsfs__Opportunity__c = convertedLead.ConvertedOpportunityId,
-            dsfs__Envelope_Status__c = 'Sent'
+            dsfs__Envelope_Status__c = 'Sent',
+            dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
         );
         insert newDocStat;
 
@@ -122,16 +123,20 @@ public with sharing class DocuSignHelperTest {
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
-        // TODO: call void
         List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        // There shouldn't be any errors when starting
         System.assertEquals(0, errors.size());
         DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
         voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
         voidRequest.reason = 'Test void reason';
         DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        Test.stopTest();
+
+        // Make sure voidPackages() didn't run into any errors. Because DocuSign logs back into the instance to update
+        // the void status, and that doesn't happen since it's mocked, and simulating it in the mock would be misleading
+        // since the update happens in a separate transaction at a later point in time, we don't check anything else
+        // except that the call was made successfully.
         errors = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errors.size());
-
-        Test.stopTest();
     }
 }

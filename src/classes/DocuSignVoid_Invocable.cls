@@ -18,10 +18,10 @@ public with sharing class DocuSignVoid_Invocable {
             DocuSignHelper.connect();
             DocuSignAPI.VoidEnvelopeStatus result = DocuSignHelper.dsAPI.VoidEnvelope(envelopeId, reason);
             if (result == null || !result.VoidSuccess) {
-                Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage', 'Unsuccessful void for envelope ' + envelopeId);
+                Logger.logLater('DocuSignVoid_Invocable', 'voidPackageFuture', 'Unsuccessful void for envelope ' + envelopeId);
             }
         } catch (CalloutException e) {
-            Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage',
+            Logger.logLater('DocuSignVoid_Invocable', 'voidPackageFuture',
                 'Callout Exception caught voiding envelope ' + envelopeId + ' error message: ' + e.getMessage());
         }
         Logger.flushLogs();
