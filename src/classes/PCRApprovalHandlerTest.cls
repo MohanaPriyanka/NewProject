@@ -715,9 +715,15 @@ private class PCRApprovalHandlerTest {
         }
     }
 
-    private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId,
-        Boolean doerLoan, Id partnerId) {
+    private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId, Boolean doerLoan, Id partnerId) {
+        RecordType solarLoanType = [
+            SELECT Id
+            FROM RecordType
+            WHERE Name = 'BlueWave Solar Loan'
+            AND SobjectType = 'Lead'
+        ];
         return(new Lead(LastName = 'testcase',
+            RecordTypeId = solarLoanType.Id,
             FirstName = 'test',
             Automatic_Product_Assignment__c = false,
             Email = 'test@email.com',
@@ -887,9 +893,17 @@ private class PCRApprovalHandlerTest {
         public Map<Integer, Application> applicationMap;
 
         public void insertLeads(Id partnerId) {
+            RecordType solarLoanType = [
+                SELECT Id
+                FROM RecordType
+                WHERE Name = 'BlueWave Solar Loan'
+                AND SobjectType = 'Lead'
+            ];
+
             List<Lead> leads = new List<Lead>();
             for (Application app : application) {
                 Lead newLead = new Lead(LastName = 'Testcase',
+                    RecordTypeId = solarLoanType.Id,
                     FirstName = 'test',
                     Automatic_Product_Assignment__c = false,
                     Email = 'test@email.com',
