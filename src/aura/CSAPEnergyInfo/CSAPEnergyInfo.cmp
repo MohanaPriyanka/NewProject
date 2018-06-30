@@ -261,12 +261,79 @@
               <lightning:button label="Previous" onclick="{!c.goToGridUsageHistory}"/>
             </div>
             <div class="slds-float_right">
-              <lightning:button label="Add another Utility Account" onclick="{!c.addUAL}"/>
-              <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+              <lightning:button label="Next" onclick="{!c.goToAddMore}"/>
+              <!-- <lightning:button label="Add another Utility Account" onclick="{!c.addUAL}"/>
+              <lightning:button label="Complete Application" onclick="{!c.finishStage}"/> -->
             </div>
           </div>
         </form>
       </fieldset>
     </div>
   </aura:if>
+
+  <aura:if isTrue="{!v.page == 'AddMore'}">
+    <div aria-labelledby="addToApplicationForm">
+      <fieldset class="slds-form-element slds-align_absolute-center">
+        <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
+          <b class="slds-section__title_large_stream">Would you like to add anything to your application?</b>
+        </legend>
+        <div class="slds-form-element__control slds-align_absolute-center">
+          <div class="slds-visual-picker slds-visual-picker_medium">
+            <a onclick="{!c.addUAL}">
+              <label for="visual-picker-add-utility">
+                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                  <span class="slds-icon_container" title="description of icon when needed">
+                    <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
+                  </span>
+                </span>
+                <span class="slds-visual-picker__body">
+                  <div class="slds-text-body_large_blue"><b>Add another utility to </b></div>
+                  <div class="slds-text-body_large_stream"><b>{!v.lead.FirstName + ' ' + v.lead.LastName}</b></div>
+                </span>
+              </label>
+            </a>
+          </div>
+          
+
+          <div class="slds-visual-picker slds-visual-picker_medium">
+            <a onclick="{!c.addResidence}">
+              <label for="visual-picker-residential">
+                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                  <span class="slds-icon_container" title="description of icon when needed">
+                    <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
+                  </span>
+                </span>
+                <span class="slds-visual-picker__body">
+                  <div class="slds-text-body_large_blue"><b>Add an entirely different</b></div>
+                  <div class="slds-text-body_large_stream"><b>Home</b></div>
+                </span>
+              </label>
+            </a>
+          </div>
+          <div class="slds-visual-picker slds-visual-picker_medium">
+            <a onclick="{!c.addBusiness}">
+              <label for="visual-picker-business">
+                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                  <span class="slds-icon_container" title="description of icon when needed">
+                    <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
+                  </span>
+                </span>
+                <span class="slds-visual-picker__body">
+                  <div class="slds-text-body_large_blue"><b>Add an entirely different</b></div>
+                  <div class="slds-text-body_large_stream"><b>Business</b></div>
+                </span>
+              </label>
+            </a>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
+      <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+    </div>
+  </aura:if>
+
+
+
 </aura:component>

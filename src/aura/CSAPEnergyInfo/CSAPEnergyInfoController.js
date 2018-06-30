@@ -60,6 +60,37 @@
             }));
         }
     },
+    goToAddMore : function(component, event, helper) {
+        if(helper.validatePageFields(component)){
+            var ual = component.get("v.ual");
+            if(ual.Id){
+                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+                ualPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set("v.page", "AddMore");
+                }));
+            }
+        }
+    },
+    goToAddMore : function(component, event, helper) {
+        if(helper.validatePageFields(component)){
+            var ual = component.get("v.ual");
+            if(ual.Id){
+                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+                ualPromise.then($A.getCallback(function resolve(retVal) {
+                    component.set("v.page", "AddMore");
+                }));
+            }
+        }
+    },
+    addResidence : function(component, event, helper) {
+        console.log("Adding Residence");
+        //Todo create a new lead and Utility Account Log.
+        // Prevent another credit pull
+        //
+    },
+    addBusiness : function(component, event, helper) {
+        console.log("Adding Business");
+    },
     cancelAddUAL : function(component, event, helper) {
         if(confirm("Are you sure you want to cancel adding another Utility Account Log?")){
             helper.finishStage(component, event, helper);
@@ -90,14 +121,15 @@
     },
     
     finishStage : function(component, event, helper) {
-        var ual = component.get("v.ual");
-        if(ual.Id){
-            var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-            ualPromise.then($A.getCallback(function resolve(retVal) {
-                helper.finishStage(component, event, helper);
-            }));
-        }else{
-            helper.finishStage(component, event, helper);
-        }
+        helper.finishStage(component, event, helper);
+        // var ual = component.get("v.ual");
+        // if(ual.Id){
+        //     var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
+        //     ualPromise.then($A.getCallback(function resolve(retVal) {
+        //         helper.finishStage(component, event, helper);
+        //     }));
+        // }else{
+        //     helper.finishStage(component, event, helper);
+        // }
     },
 })
