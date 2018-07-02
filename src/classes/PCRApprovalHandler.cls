@@ -140,7 +140,6 @@ public without sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
-            Boolean hasCoApp = false;
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c &&
                 pcr.LASERCA__Lead__c != null &&
                 leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar' &&
@@ -157,9 +156,7 @@ public without sharing class PCRApprovalHandler {
                 }
                 lead = getCreditReviewedLead(lead, pcr, productRepo);
                 leadsToUpdate.put(lead.Id, lead);
-                if (lead.CoApplicant_Contact__c != null || lead.Co_Applicant_First_Name__c != null) {
-                    hasCoApp = true;
-                }
+
                 // SEND PREAPPROVAL EMAIL
                 lead = sendCreditDecisionEmails(lead);
                 pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
@@ -172,17 +169,27 @@ public without sharing class PCRApprovalHandler {
         return newPCR;
     }
 
-    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
+    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c leadPCR, ProductRepo productRepo ) {
+        LASERCA__Personal_Credit_Report__c coAppPCR;
         if (lead.Personal_Credit_Report__r == null
             && lead.Personal_Credit_Report_Co_Applicant__r == null) {
             Set<Id> leadIds = new Set<Id>{lead.id};
             lead = getLeadsForCreditAnalysis(leadIds)[0];
         }
 
-        if (pcr == null) {
+        if (leadPCR == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
+            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
+                pcrIds.add(lead.Personal_Credit_Report_Co_Applicant__c);
+            }
             List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
-            pcr = pcrs[0];
+            for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+                if (pcr.Id == lead.Personal_Credit_Report__c) {
+                    leadPCR = pcr;
+                } else if (pcr.Id == lead.Personal_Credit_Report_Co_Applicant__c) {
+                    coAppPCR = pcr;
+                }
+            }
         }
 
         if (productRepo == null) {
@@ -199,7 +206,8 @@ public without sharing class PCRApprovalHandler {
         and see the best we can do.
         */
         CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
-        setPcrDti(lead, creditSummary, pcr);
+        setPcrDti(lead, creditSummary, leadPCR);
+        setPcrDti(lead, creditSummary, coAppPCR);
 
         if (lead.Product__c == null) {
             if (creditSummary.bestStatus == APPROVED) {
@@ -230,21 +238,25 @@ public without sharing class PCRApprovalHandler {
             creditSummary.bestStatus = PENDINGREVIEW;
         }
         // overwrite statuses if Avidia has reviewed
-        if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
-            pcr.Solar_Loan_Manual_Approval__c) {
-            pcr.Solar_Loan_Approval_Status__c = APPROVED;
-        } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
-            pcr.Solar_Loan_Manual_Decline__c) {
-            pcr.Solar_Loan_Approval_Status__c = DECLINED;
-        } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
-            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+        if (leadPCR.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
+            leadPCR.Solar_Loan_Manual_Approval__c) {
+            leadPCR.Solar_Loan_Approval_Status__c = APPROVED;
+        } else if (leadPCR.Avidia_Review_Status__c == 'Reviewed - Declined' ||
+            leadPCR.Solar_Loan_Manual_Decline__c) {
+            leadPCR.Solar_Loan_Approval_Status__c = DECLINED;
+        } else if (leadPCR.Avidia_Review_Status__c == PENDINGREVIEW) {
+            leadPCR.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         } else {
-            pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
+            leadPCR.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
         }
 
         // Per Nader: We don't have clear criteria from Avidia on how to automate co-signer applications
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
-            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+            leadPCR.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+        }
+
+        if (coAppPCR != null) {
+            coAppPCR.Solar_Loan_Approval_Status__c = leadPCR.Solar_Loan_Approval_Status__c;
         }
         
         // If lead is in any stage of the process update the status
@@ -252,17 +264,24 @@ public without sharing class PCRApprovalHandler {
             lead.Status == PENDINGCREDITREVIEW ||
             lead.Status == UNQUALIFIED ||
             lead.Status == PREQUALIFIED ||
-            pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
-            lead = setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
+            leadPCR.Avidia_Review_Status__c == 'Reviewed - Declined') {
+            lead = setLeadStatus(leadPCR.Solar_Loan_Approval_Status__c, lead);
         }
+
+        lead.Personal_Credit_Report__r = leadPCR;
+        lead.Personal_Credit_Report_Co_Applicant__r = coAppPCR;
         
         return lead;
     }
 
     public Lead sendCreditDecisionEmails(Lead lead) {
+        Boolean hasCoApp = false;
         String firstName = lead.FirstName;
         String lastName = lead.LastName;
         String email = lead.Email;
+        if (lead.CoApplicant_Contact__c != null || lead.Personal_Credit_Report_Co_Applicant__c != null) {
+            hasCoApp = true;
+        }
         if (!lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c &&
             firstName != NULL &&
             lastName!= NULL &&
@@ -299,6 +318,7 @@ public without sharing class PCRApprovalHandler {
             email != NULL &&
             lead.Status  == UNQUALIFIED) {
             String htmlbody = denialEmailTemplate.HtmlValue;
+            htmlBody = htmlBody.replace('{!Lead.Name}', firstName);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName );
             htmlBody = htmlBody.replace('{!Lead.Id}',lead.Id );
             string denialSubject = firstName +
@@ -486,12 +506,19 @@ public without sharing class PCRApprovalHandler {
 
     private void setPcrDti (Lead lead, CreditResultSummary creditSummary, LASERCA__Personal_Credit_Report__c pcr) {
         Decimal applicantMonthlyIncome = getApplicantMonthlyIncome(lead, pcr);
+        if (applicantMonthlyIncome == 0) {
+            // prevent divide by zero errors on DTI calcs
+            pcr.DTI_Before__c = null;
+            pcr.DTI_After__c = null;
+            pcr.DTI_After_Notes__c = null;
+        } else {
+            pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c  / applicantMonthlyIncome;
+            pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
+            pcr.DTI_After__c = getPersonalDTIAfter(lead, creditSummary, pcr);
+            pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
+            pcr.DTI_After_Notes__c = creditSummary.toString();
+        }
 
-        pcr.DTI_Before__c = 100 * pcr.Adjusted_Monthly_Personal_Debt__c  / applicantMonthlyIncome;
-        pcr.DTI_Before__c = pcr.DTI_Before__c>99999.99?99999.99:pcr.DTI_Before__c;
-        pcr.DTI_After__c = getPersonalDTIAfter(lead, creditSummary, pcr);
-        pcr.DTI_After__c = pcr.DTI_After__c>99999.99?99999.99:pcr.DTI_After__c;
-        pcr.DTI_After_Notes__c = creditSummary.toString();
     }
 
     private Boolean leadReadyForPrequalCheck (Lead lead) {
