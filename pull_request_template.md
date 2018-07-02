@@ -10,7 +10,10 @@
 <!-- If there are configuration changes necessary -->
 
 ### How has this been tested?
-<!-- Provide any steps needed to test this PR manually -->
+- [ ] Deployment has been Tested
+- [ ] Automated Tests <!-- Describe Testing Approach -->
+- [ ] Manual Tests <!-- Provide any steps needed to test this PR manually -->
+
 
 ### Other Information
 <!--
