@@ -69,6 +69,24 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
         Map<Id, ChargentOrders__ChargentOrder__c> orderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
 
+        //Going to have to grab First Account Bill with separate SOQL - list of account bills below are all grabbed using a Chargent Order
+        //How to find first Account Bill:
+            // SELECT Id, Name, PropertyAcccount, Bill_Number FROM Account Bill WHERE
+            // Account Bills are generated monthly? Grab by month tag? Where bill num = 0 or 1?
+            // Credits on Bill Period? Due Date?
+
+        List<Account_Bill__c> firstAcctBillList = new List<Account_Bill__c>();
+        Integer mnth = System.Today().Month();
+        Integer yr = System.Today().Year();
+
+        for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
+                                                FROM Account_Bill__c
+                                                WHERE Bill_Number__c = 1 AND CALENDAR_MONTH(Date__c) = :mnth AND CALENDAR_YEAR(Date__c) = :yr ]) {
+            firstAcctBillList.add(firstAcctBill);
+        }
+        //Call to a method that finds chargent orders attached to accounts and moves them to first account bills
+        retrieveFirstChargentOrder(firstAcctBillList);
+
         for (ChargentOrders__ChargentOrder__c recOrders : chOrders) {
             accountIDList.add(recOrders.Property_Account_ID__c);
         }
@@ -81,12 +99,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             abMapKey = newAcctBill.Bill_Number__c + '_' + newAcctBill.Property_Account_ID__c;
             abMap.put(abMapKey, newAcctBill);
         }
-
-        //IF Statement here to check if this is the first (and only) account bill? Send to method to grab chargent order from property account?
-        //Are we sure that we will even get here if there is no Chargent Order on this Account Bill yet?
-        //Need some way to find first Account Bills - could be several of them (list)
-               // retrieveFirstChargentOrder(firstAccountBill);
-
 
         for (AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
                                             FROM System_Bill__c
@@ -159,31 +171,39 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     }
 
     //METHOD here for grabbing Chargent Order for first account bill - grab from parent account
-    //Potentially going to be passed a list of Account Bills
-    public void retrieveFirstChargentOrder(Account_Bill__c firstAccountBill){
+    public void retrieveFirstChargentOrder(List<Account_Bill__c> firstAccountBillList){
         //Find Chargent Order linked to the Property Account of the Account Bill
-        ChargentOrders__ChargentOrder__c firstChargentOrder = [SELECT Id, Property_Account__c
-                                                                FROM ChargentOrders__ChargentOrder__c
-                                                                WHERE Property_Account__c = firstAccountBill.Parent_Account__c];
 
-        //Update the fields on the Chargent Order to be Recurring
-        firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
-        firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
-        firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
-        firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
-        firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
-        firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
-        firstChargentOrder.Reason_for_Recurring_Stop__c = '';
-        firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+        Map<String, Account_Bill__c> firstABMap = new Map<String,Account_Bill__c>();
+        for(Account_Bill__c acctBill : firstAccountBillList){
+            firstABMap.put(acctBill.Property_Account_ID__c, acctBill);
+        }
 
-        //Do I need this insert?
-        // ordersToInsert.add(firstChargentOrder);
+        for(ChargentOrders__ChargentOrder__c firstChargentOrder : [ SELECT Id, Property_Account__c
+                                                                       FROM ChargentOrders__ChargentOrder__c
+                                                                       WHERE Property_Account__c IN : firstAccountBillList]){
 
-        //Move the Chargent Order to the Account
-        firstChargentOrder.Account_Bill__c = firstAccountBill.Id;
+            Account_Bill__c firstAB = firstABMap.get(firstChargentOrder.Property_Account_ID__c);
 
-        //Remove the Chargent Order from the Property Account
-        firstChargentOrder.Property_Account__c = null;
+            //Update the fields on the Chargent Order to be Recurring
+            firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
+            firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
+            firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
+            firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
+            firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
+            firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
+            firstChargentOrder.Reason_for_Recurring_Stop__c = '';
+            firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+
+            //Do I need this insert?
+            // ordersToInsert.add(firstChargentOrder);
+
+            //Move the Chargent Order to the Account
+            firstChargentOrder.Account_Bill__c = firstAB.Id;
+
+            //Remove the Chargent Order from the Property Account
+            firstChargentOrder.Property_Account__c = null;
+        }
 
     }
 
