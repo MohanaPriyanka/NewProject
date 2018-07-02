@@ -262,13 +262,11 @@ public class CustomerCommunicationHandlerTest{
         update productionUpdate;
     }
 
-    public static testmethod void scheduleJob(){
+    public static testmethod void testThreeDayWarning(){
         Test.startTest();
 
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
-        createBills(System.Today() - 110, sss[0].Id); // 90 days late
-        createBills(System.Today() - 50, sss[1].Id); // 30 days late
         createBills(System.Today() - 17, sss[2].Id); // 3 day warning
 
         List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
@@ -304,6 +302,98 @@ public class CustomerCommunicationHandlerTest{
 
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
                                         FROM Error_Log__c];
+        System.assertEquals(0, errorList.size());
+        System.debug(errorList);
+
+        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+    }
+
+    public static testmethod void testThirtyDaysLate(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 50, sss[1].Id); // 30 days late
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        Datetime dt = Datetime.now();
+        // Test both the scheduling of the class and the execution of the batch
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
+        Test.stopTest();
+
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
+            Total_Outstanding_Balance__c, Total_Billed__c,
+            Send_Bills_Contact__c, Days_Past_Due__c
+        FROM Account];
+        System.assertNotEquals(0, accountlist.size());
+
+        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
+            NextFireTime
+        FROM CronTrigger WHERE id = :jobId];
+
+        System.assertEquals(dt.minute(), ct.NextFireTime.minute());
+        System.assertEquals(dt.hour(), ct.NextFireTime.hour());
+        System.assertEquals(dt.day(), ct.NextFireTime.day());
+        System.assertEquals(dt.month(), ct.NextFireTime.month());
+
+        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
+        FROM Error_Log__c];
+        System.assertEquals(0, errorList.size());
+        System.debug(errorList);
+
+        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+    }
+
+    public static testmethod void testNintyDaysLate(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 110, sss[0].Id); // 90 days late
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        Datetime dt = Datetime.now();
+        // Test both the scheduling of the class and the execution of the batch
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
+        Test.stopTest();
+
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
+            Total_Outstanding_Balance__c, Total_Billed__c,
+            Send_Bills_Contact__c, Days_Past_Due__c
+        FROM Account];
+        System.assertNotEquals(0, accountlist.size());
+
+        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
+            NextFireTime
+        FROM CronTrigger WHERE id = :jobId];
+
+        System.assertEquals(dt.minute(), ct.NextFireTime.minute());
+        System.assertEquals(dt.hour(), ct.NextFireTime.hour());
+        System.assertEquals(dt.day(), ct.NextFireTime.day());
+        System.assertEquals(dt.month(), ct.NextFireTime.month());
+
+        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
+        FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
         System.debug(errorList);
 

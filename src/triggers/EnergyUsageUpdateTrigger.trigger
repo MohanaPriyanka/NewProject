@@ -13,6 +13,7 @@ trigger EnergyUsageUpdateTrigger on Energy_Usage_Update__c (after update) {
         } 
         if (trigProdUpdateList.size() > 0) {
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUpdateList);
+            ee.runBills();
         }
     }
 }

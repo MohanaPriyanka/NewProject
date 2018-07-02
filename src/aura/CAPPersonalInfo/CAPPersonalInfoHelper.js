@@ -300,7 +300,6 @@
                  lead.CoApplicant_Contact__r &&
                  lead.CoApplicant_Contact__r.LASERCA__Social_Security_Number__c)) {
                 lead.Status = 'Ready for Credit Check';
-                lead.Pre_Approval_Form__c = true;
             }
         }
     },
