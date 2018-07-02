@@ -29,7 +29,6 @@ public with sharing class PaymentGatewayAssignmentHandler {
        
         for (ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList) {
            if (chargentOrderVar.Entity__c != null
-               && chargentOrderVar.ChargentOrders__Shipping_Name__c != null
                && chargentOrderVar.ChargentOrders__Shipping_Name__c != 'CCfee') {
             chargentOrderIdList.add(chargentOrderVar);
            }
