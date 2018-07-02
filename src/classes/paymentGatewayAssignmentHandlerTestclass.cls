@@ -20,12 +20,49 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
 
 
-        insert new List<Utility_NMC_Tariff__c>{nmcRateNgridWcmaSizing, nmcRateNgridWcmaBilling};  
+        insert new List<Utility_NMC_Tariff__c>{nmcRateNgridWcmaSizing, nmcRateNgridWcmaBilling};
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barret St');
-        Entity__c entity1b = new Entity__c (Name = 'Oxford Barret St 2');
-        Entity__c entity2 = new Entity__c (Name = 'Medfield Country Way');
-        Entity__c entity3 = new Entity__c (Name = 'Fairhaven Mill Rd');
+        ChargentBase__Gateway__c chGatewayOxfordBarretSt  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway Oxford Barret St',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = TRUE
+        );
+        insert chGatewayOxfordBarretSt;
+
+        ChargentBase__Gateway__c chGatewayOxfordBarretSt2  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway Oxford Barret St',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = FALSE
+        );
+        insert chGatewayOxfordBarretSt2;
+
+        ChargentBase__Gateway__c chGatewayMedfieldCountryWay  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway Medfield Country Way',
+            ChargentBase__Merchant_ID__c = '123123',
+            ChargentBase__Active__c = TRUE
+        );
+        insert chGatewayMedfieldCountryWay;
+
+        ChargentBase__Gateway__c chGatewayMedfieldCountryWay2  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway Medfield Country Way',
+            ChargentBase__Merchant_ID__c = '123123',
+            ChargentBase__Active__c = TRUE
+        );
+        insert chGatewayMedfieldCountryWay2;
+
+        ChargentBase__Gateway__c chGatewayFairhavenMillRd  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway Fairhaven Mill Rd',
+            ChargentBase__Merchant_ID__c = '43543',
+            ChargentBase__Active__c = TRUE
+        );
+
+        insert chGatewayFairhavenMillRd;
+
+        Entity__c entity1 = new Entity__c (Name = 'Oxford Barret St', Gateway__c = chGatewayOxfordBarretSt.Id);
+        Entity__c entity1b = new Entity__c (Name = 'Oxford Barret St 2', Gateway__c = chGatewayOxfordBarretSt.Id);
+        Entity__c entity2 = new Entity__c (Name = 'Medfield Country Way', Gateway__c = chGatewayMedfieldCountryWay2.Id);
+        Entity__c entity3 = new Entity__c (Name = 'Fairhaven Mill Rd', Gateway__c = chGatewayFairhavenMillRd.Id);
+
         insert new List <Entity__c>{entity1, entity1b, entity2, entity3};
 
         Shared_Solar_System__c sharedSolarSystemOxfordBarretSt = new Shared_Solar_System__c(
@@ -193,56 +230,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         List<ChargentOrders__ChargentOrder__c> chargentOrderRecurringList = new List<ChargentOrders__ChargentOrder__c>();        
         List<ChargentOrders__Transaction__c> chargentTransRecurringList= new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__ChargentOrder__c> chargentOrderOneTimeList = new List<ChargentOrders__ChargentOrder__c>();        
-        List<ChargentOrders__Transaction__c> chargentTransOneTimeList= new List<ChargentOrders__Transaction__c>();  
-  
-
-        ChargentBase__Gateway__c chGatewayOxfordBarretSt  = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway Oxford Barret St',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Active__c = TRUE
-        );
-        insert chGatewayOxfordBarretSt;
-
-        entity1.Gateway__c = chGatewayOxfordBarretSt.Id;
-        entity1b.Gateway__c = chGatewayOxfordBarretSt.Id;
-
-        ChargentBase__Gateway__c chGatewayOxfordBarretSt2  = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway Oxford Barret St',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Active__c = FALSE
-        );
-        insert chGatewayOxfordBarretSt2;
-
-
-
-        ChargentBase__Gateway__c chGatewayMedfieldCountryWay  = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway Medfield Country Way',
-            ChargentBase__Merchant_ID__c = '123123',
-            ChargentBase__Active__c = TRUE
-        );
-        insert chGatewayMedfieldCountryWay;
-
-        ChargentBase__Gateway__c chGatewayMedfieldCountryWay2  = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway Medfield Country Way',
-            ChargentBase__Merchant_ID__c = '123123',
-            ChargentBase__Active__c = TRUE
-        );
-        insert chGatewayMedfieldCountryWay2;
-
-        entity2.Gateway__c = chGatewayMedfieldCountryWay2.Id;
-
-
-        ChargentBase__Gateway__c chGatewayFairhavenMillRd  = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway Fairhaven Mill Rd',
-            ChargentBase__Merchant_ID__c = '43543',
-            ChargentBase__Active__c = TRUE
-        );
-
-        insert chGatewayFairhavenMillRd;
-
-        entity3.Gateway__c = chGatewayFairhavenMillRd.Id;
-
-        update new List<Entity__c>{entity1, entity1b, entity2, entity3};
+        List<ChargentOrders__Transaction__c> chargentTransOneTimeList= new List<ChargentOrders__Transaction__c>();
 
         ChargentOrders__ChargentOrder__c orderColesCakes = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Account__c = oppColesCakes.AccountId,
