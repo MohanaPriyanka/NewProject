@@ -139,4 +139,22 @@ public with sharing class DocuSignHelperTest {
         errors = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errors.size());
     }
+
+    static testMethod void testVoidCalloutException() {
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
+        voidRequest.envelopeId = 'CalloutException';
+        voidRequest.reason = 'Test void reason';
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        Test.stopTest();
+
+        List<Error_Log__c> errors = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
+        // There should be one error since the future method catches CalloutException
+        System.assertEquals(1, errors.size());
+        // And it should be the CalloutExcpetion message
+        System.assertEquals('Callout Exception caught voiding envelope', errors[0].Message__c.left(41));
+    }
 }
