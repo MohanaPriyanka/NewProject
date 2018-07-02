@@ -202,7 +202,7 @@ public without sharing class CAPController {
         if (lead.Status == 'Ready for Credit Check') {
             PCRApprovalHandler pcrApprovalHandler = new PCRApprovalHandler();
             List<LASERCA__Personal_Credit_Report__c> pcrsToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
-            lead = pcrApprovalHandler.reviewLeadCreditReport(lead, null, null);
+            lead = pcrApprovalHandler.getCreditReviewedLead(lead, null, null);
             update lead;
             pcrsToUpdate.add(lead.Personal_Credit_Report__r);
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {

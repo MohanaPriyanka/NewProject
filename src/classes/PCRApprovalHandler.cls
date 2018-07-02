@@ -120,9 +120,7 @@ public without sharing class PCRApprovalHandler {
     private List<LASERCA__Personal_Credit_Report__c> onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
         Set<Id> leadIds = new Set<Id>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
-        Map<Id, Lead> leadstoUpdate = new Map<Id, Lead>();
-        List<Product2> products;
-        Boolean hasCoApp = false;
+        Map<Id, Lead> leadsToUpdate = new Map<Id, Lead>();
 
         for (LASERCA__Personal_Credit_Report__c pcrForLead: newPCR) {
             if (pcrForLead.LASERCA__Lead__c == null && pcrForLead.Lead_from_Contact__c != null) {
@@ -142,6 +140,7 @@ public without sharing class PCRApprovalHandler {
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
+            Boolean hasCoApp = false;
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c &&
                 pcr.LASERCA__Lead__c != null &&
                 leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar' &&
@@ -156,10 +155,10 @@ public without sharing class PCRApprovalHandler {
                     pcr.DTI_After_Notes__c = null;
                     continue;
                 }
-                lead = reviewLeadCreditReport(lead, pcr, productRepo);
+                lead = getCreditReviewedLead(lead, pcr, productRepo);
                 leadsToUpdate.put(lead.Id, lead);
-                if (lead.CoApplicant_Contact__c != NULL || lead.Co_Applicant_First_Name__c != NULL) {
-                    hasCoApp = TRUE;
+                if (lead.CoApplicant_Contact__c != null || lead.Co_Applicant_First_Name__c != null) {
+                    hasCoApp = true;
                 }
                 // SEND PREAPPROVAL EMAIL
                 lead = sendCreditDecisionEmails(lead);
@@ -173,11 +172,9 @@ public without sharing class PCRApprovalHandler {
         return newPCR;
     }
 
-    public Lead reviewLeadCreditReport (Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
-        try {
-            Boolean hasFields = lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c != null;
-            hasFields = lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c != null;
-        } catch (Exception e) {
+    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
+        if (lead.Personal_Credit_Report__r == null
+            && lead.Personal_Credit_Report_Co_Applicant__r == null) {
             Set<Id> leadIds = new Set<Id>{lead.id};
             lead = getLeadsForCreditAnalysis(leadIds)[0];
         }
@@ -219,7 +216,7 @@ public without sharing class PCRApprovalHandler {
         // set to pending if any codes are present
         if (creditSummary.bestStatus == APPROVED &&
             flaggedCreditCodes != null &&
-            checkFlaggedCreditCodes(lead)) {
+            checkLeadFlaggedCreditCodes(lead)) {
             creditSummary.bestStatus = PENDINGREVIEW;
         }
 
@@ -245,7 +242,7 @@ public without sharing class PCRApprovalHandler {
             pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
         }
 
-        // co-signer applications need to be reviewed
+        // Per Nader: We don't have clear criteria from Avidia on how to automate co-signer applications
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
             pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         }
@@ -313,26 +310,24 @@ public without sharing class PCRApprovalHandler {
         return lead;
     }
 
-    public Boolean checkFlaggedCreditCodes (Lead lead) {
+    public Boolean checkLeadFlaggedCreditCodes(Lead lead) {
         if (lead.Application_Type__c != 'Joint') {
-            return(
-                flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code__c)
-                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_2__c)
-                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_3__c)
-                || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_4__c)
-            );
+            return checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report__r);
         } else {
             return(
-                flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_2__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_3__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report__r.LASERCA__Code_4__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c)
-                    || flaggedCreditCodes.contains(lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_4__c)
+                checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report__r)
+                || checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report_Co_Applicant__r)
             );
         }
+    }
+
+    public Boolean checkPCRforFlaggedCreditCodes (LASERCA__Personal_Credit_Report__c pcr) {
+        return(
+            flaggedCreditCodes.contains(pcr.LASERCA__Code__c)
+                || flaggedCreditCodes.contains(pcr.LASERCA__Code_2__c)
+                || flaggedCreditCodes.contains(pcr.LASERCA__Code_3__c)
+                || flaggedCreditCodes.contains(pcr.LASERCA__Code_4__c)
+        );
     }
 
     public static List<LASERCA__Personal_Credit_Report__c> getPCRsForCreditAnalysis (Set<Id> pcrIds) {
@@ -426,6 +421,7 @@ public without sharing class PCRApprovalHandler {
             householdMonthlyIncome += lead.Personal_Credit_Report__r.Adjusted_Income__c / 12;
         }
         // add coApplicant's income if it is a joint application
+        // co-signer's are excluded because automation criteria isn't clear
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
             lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != null) {
             if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c == null) {
@@ -585,7 +581,7 @@ public without sharing class PCRApprovalHandler {
             this.approvedProducts = new Set<Id>();
         }
 
-        public void checkAndaddResult(PCRApprovalHandler.CreditStatusResult result, Product2 product) {
+        public void checkAndAddResult(PCRApprovalHandler.CreditStatusResult result, Product2 product) {
             Integer creditMinimum = Integer.valueOf(product.Credit_Minimum__c);
             Decimal dtiMaximum = product.Debt_To_Income_Maximum__c;
             String primaryDecision = checkFICOandDTI(primaryAppCreditScore, result.dtiAfter, creditMinimum, dtiMaximum);
@@ -836,7 +832,7 @@ public without sharing class PCRApprovalHandler {
                                                                        Decimal monthlyIncome, Decimal monthlyDebt) {
             PCRApprovalHandler.CreditResultSummary creditResultSummary =
                 new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt);
-// if the credit score returns no products, then it will be declined
+            // if the credit score returns no products, then it will be declined
             for (Product2 product : getApplicableProducts(lead, creditScore)) {
                 PCRApprovalHandler.CreditStatusResult result = calcDTIAfter(product, lead, monthlyIncome, monthlyDebt);
                 creditResultSummary.checkAndAddResult(result, product);
