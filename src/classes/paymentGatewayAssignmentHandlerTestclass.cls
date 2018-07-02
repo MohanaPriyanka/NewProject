@@ -247,7 +247,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentOrders__ChargentOrder__c orderColesCakes = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Account__c = oppColesCakes.AccountId,
             Opportunity__c = oppColesCakes.Id,
-            ChargentOrders__Shipping_Name__c = sharedSolarSystemOxfordBarretSt.BWC_Project_Entity_Manual__c,
+            Entity__c = sharedSolarSystemOxfordBarretSt.BWC_Project_Entity_Manual__c,
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Bank_Name__c = null,
             ChargentOrders__Bank_Routing_Number__c = null,
@@ -265,7 +265,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentOrders__ChargentOrder__c orderColesCupCakes = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Account__c = oppColesCupCakes.AccountId,
             Opportunity__c = oppColesCupCakes.Id,
-            ChargentOrders__Shipping_Name__c = sharedSolarSystemOxfordBarretSt2.BWC_Project_Entity_Manual__c,
+            Entity__c = sharedSolarSystemOxfordBarretSt2.BWC_Project_Entity_Manual__c,
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Bank_Name__c = null,
             ChargentOrders__Bank_Routing_Number__c = null,
@@ -284,7 +284,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             if(systemBillJan.Bill_Number__c == 1) {
                 ChargentOrders__ChargentOrder__c chOrderRecurring  = new ChargentOrders__ChargentOrder__c(
                     ChargentOrders__Account__c = systemBillJan.Property_Account_Id__c,
-                    ChargentOrders__Shipping_Name__c = entity1.Id,
+                    Entity__c = entity1.Id,
                     ChargentOrders__Billing_First_Name__c = 'Cole',
                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -301,7 +301,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                     ChargentOrders__Card_Last_4__c = '1111'
                 );
                 insert chOrderRecurring;
-                System.debug('The shipping name is ' + chOrderRecurring.ChargentOrders__Shipping_Name__c);
+                System.debug('The shipping name is ' + chOrderRecurring.Entity__c);
 
                 ChargentOrders__Transaction__c chTransactionRecurring = new ChargentOrders__Transaction__c(
                     ChargentOrders__Order__c = chOrderRecurring.id,
@@ -327,7 +327,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             else{
                 ChargentOrders__ChargentOrder__c chOrderOneTime  = new ChargentOrders__ChargentOrder__c(
                     ChargentOrders__Account__c = systemBillJan.Property_Account_Id__c,
-                    ChargentOrders__Shipping_Name__c = entity2.Id,
+                    Entity__c = entity2.Id,
                     ChargentOrders__Billing_First_Name__c = 'Cole',
                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -343,7 +343,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
                     ChargentOrders__Card_Last_4__c = '1111'
                 );
                 insert chOrderOneTime;
-                System.debug('The shipping name is ' + chOrderOneTime.ChargentOrders__Shipping_Name__c);       
+                System.debug('The shipping name is ' + chOrderOneTime.Entity__c);
 
                 ChargentOrders__Transaction__c chTransactionOneTime = new ChargentOrders__Transaction__c(
                     ChargentOrders__Order__c = chOrderOneTime.id,
@@ -370,9 +370,11 @@ public class paymentGatewayAssignmentHandlerTestclass {
 
         Test.startTest();
 
-        for (ChargentOrders__ChargentOrder__c chOrderAssert : [ SELECT Id, Name, ChargentOrders__Gateway__r.Id, System_Bill__r.Bill_Number__c,
-                                                                ChargentOrders__Shipping_Name__c, ChargentOrders__Card_Number__c
-                                                                FROM ChargentOrders__ChargentOrder__c]) {
+        for (ChargentOrders__ChargentOrder__c chOrderAssert : [
+            SELECT Id, Name, ChargentOrders__Gateway__r.Id, System_Bill__r.Bill_Number__c,
+                Entity__c, ChargentOrders__Shipping_Name__c, ChargentOrders__Card_Number__c
+            FROM ChargentOrders__ChargentOrder__c
+        ]) {
             if (chOrderAssert.System_Bill__r.Bill_Number__c == 1) {
                 System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Id, entity1.Gateway__c);
                 System.assertEquals(chOrderAssert.ChargentOrders__Gateway__r.Id, chGatewayOxfordBarretSt.Id );
@@ -383,7 +385,8 @@ public class paymentGatewayAssignmentHandlerTestclass {
         }
 
         List<ChargentOrders__ChargentOrder__c> chargentOrdersWithSharedGateways = [
-            SELECT Id, ChargentOrders__Gateway__c, Opportunity__r.Shared_Solar_System__c, ChargentOrders__Shipping_Name__c
+            SELECT Id, ChargentOrders__Gateway__c, Opportunity__r.Shared_Solar_System__c, ChargentOrders__Shipping_Name__c,
+                Entity__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Gateway__c = : chGatewayOxfordBarretSt.Id
         ];
@@ -394,8 +397,8 @@ public class paymentGatewayAssignmentHandlerTestclass {
         Id sssId1 = chargentOrdersWithSharedGateways[0].Opportunity__r.Shared_Solar_System__c;
         Id sssId2 = chargentOrdersWithSharedGateways[1].Opportunity__r.Shared_Solar_System__c;
         System.assertNotEquals(sssId1, sssId2);
-        Id entityId1 = chargentOrdersWithSharedGateways[0].ChargentOrders__Shipping_Name__c;
-        Id entityId2 = chargentOrdersWithSharedGateways[1].ChargentOrders__Shipping_Name__c;
+        Id entityId1 = chargentOrdersWithSharedGateways[0].Entity__c;
+        Id entityId2 = chargentOrdersWithSharedGateways[1].Entity__c;
         System.assertNotEquals(entityId1, entityId2);
         System.assertEquals(chGatewayOxfordBarretSt.Id, chargentOrdersWithSharedGateways[0].ChargentOrders__Gateway__c);
         System.assertEquals(chGatewayOxfordBarretSt.Id, chargentOrdersWithSharedGateways[1].ChargentOrders__Gateway__c);

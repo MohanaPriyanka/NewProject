@@ -290,7 +290,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         // 2 Recurring Orders for the 2 Opportunities (SSS1 and SS2 for Account A)
         ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Shipping_Name__c = entityone.Id,
+            Entity__c = entityone.Id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -311,7 +311,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Charge_Date__c = '30');
 
         ChargentOrders__ChargentOrder__c orderA2  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Shipping_Name__c = entitytwo.id,
+            Entity__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Cole',
             ChargentOrders__Billing_Last_Name__c = 'Swain',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -333,7 +333,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         // 1 Recurring Order for the 1 Opportunity (SS2 for Account B)
         ChargentOrders__ChargentOrder__c orderA3  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Shipping_Name__c = entitytwo.id,
+            Entity__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Cole',
             ChargentOrders__Billing_Last_Name__c = 'Swain',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -355,7 +355,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         // Test failures for Account C and Account D, which do not have any system bills and should change to stopped
         ChargentOrders__ChargentOrder__c orderNotLinkedToAccountBill  = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Shipping_Name__c = entitytwo.id,
+            Entity__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -375,7 +375,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         ChargentOrders__ChargentOrder__c orderNoSystemBills  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountBillCancelled.Id,
-            ChargentOrders__Shipping_Name__c = entitytwo.id,
+            Entity__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -395,7 +395,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         ChargentOrders__ChargentOrder__c orderCancelledCustomer  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = noSystemBills.Id,
-            ChargentOrders__Shipping_Name__c = entitytwo.id,
+            Entity__c = entitytwo.id,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -712,11 +712,8 @@ private class RecurringPaymentsHandlerTestClass{
             WHERE Name = 'Account C'];
 
         List<ChargentOrders__ChargentOrder__c> accountOrders = new List<ChargentOrders__ChargentOrder__c>([
-            SELECT Id,
-                   ChargentOrders__Payment_Status__c,
-                   Account_Bill__c,
-                   ChargentOrders__Gateway__c,
-                   ChargentOrders__Shipping_Name__c
+            SELECT Id, ChargentOrders__Payment_Status__c, Account_Bill__c, ChargentOrders__Gateway__c,
+                Entity__c, ChargentOrders__Shipping_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Account_Bill__r.Parent_Account__r.id = : oldAccountC.Id
         ]);
@@ -728,7 +725,7 @@ private class RecurringPaymentsHandlerTestClass{
         ChargentOrders__ChargentOrder__c recurringPayment1  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountOrders[0].Account_Bill__c,
             ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
-            ChargentOrders__Shipping_Name__c = accountOrders[0].ChargentOrders__Shipping_Name__c,
+            Entity__c = accountOrders[0].Entity__c,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -749,7 +746,7 @@ private class RecurringPaymentsHandlerTestClass{
         ChargentOrders__ChargentOrder__c recurringPayment2  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountOrders[0].Account_Bill__c,
             ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
-            ChargentOrders__Shipping_Name__c = accountOrders[0].ChargentOrders__Shipping_Name__c,
+            Entity__c = accountOrders[0].Entity__c,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -800,11 +797,8 @@ private class RecurringPaymentsHandlerTestClass{
             WHERE Name = 'Account C'];
 
         List<ChargentOrders__ChargentOrder__c> accountOrders = new List<ChargentOrders__ChargentOrder__c>([
-            SELECT Id,
-                   ChargentOrders__Payment_Status__c,
-                   Account_Bill__c,
-                   ChargentOrders__Gateway__c,
-                   ChargentOrders__Shipping_Name__c
+            SELECT Id, ChargentOrders__Payment_Status__c, Account_Bill__c, ChargentOrders__Gateway__c,
+                Entity__c, ChargentOrders__Shipping_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Account_Bill__r.Parent_Account__r.id = : oldAccountC.Id
         ]);
@@ -816,7 +810,7 @@ private class RecurringPaymentsHandlerTestClass{
         ChargentOrders__ChargentOrder__c recurringPayment  = new ChargentOrders__ChargentOrder__c(
             Account_Bill__c = accountOrders[0].Account_Bill__c,
             ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
-            ChargentOrders__Shipping_Name__c = accountOrders[0].ChargentOrders__Shipping_Name__c,
+            Entity__c = accountOrders[0].Entity__c,
             ChargentOrders__Billing_First_Name__c = 'Jordan',
             ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',

@@ -761,7 +761,7 @@ public class TestBillCreationandPayment {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
                     new ChargentOrders__ChargentOrder__c(
-                        ChargentOrders__Shipping_Name__c = entity.Id,
+                        Entity__c = entity.Id,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -887,7 +887,7 @@ public class TestBillCreationandPayment {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
                     new ChargentOrders__ChargentOrder__c(
-                        ChargentOrders__Shipping_Name__c = entity.Id,
+                        Entity__c = entity.Id,
                         ChargentOrders__Gateway__c = entity.Gateway__c,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
@@ -1087,7 +1087,7 @@ public class TestBillCreationandPayment {
                 ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
                     Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
                     ChargentOrders__Subtotal__c = (Decimal)lineItem.get('ChargentOrders__Subtotal__c'),
-                    ChargentOrders__Shipping_Name__c = (String)lineItem.get('ChargentOrders__Shipping_Name__c'));
+                    Entity__c = (String)lineItem.get('Entity__c'));
                 chOrderList.add(billsToCharge);
             }
             System.assertEquals(1, chOrderList.size());
@@ -1133,10 +1133,12 @@ public class TestBillCreationandPayment {
             List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH);
             List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC);
 
-            List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c,
-                Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
-            FROM ChargentOrders__ChargentOrder__c
-            ORDER BY ChargentOrders__Payment_Method__c];
+            List<ChargentOrders__ChargentOrder__c> newOrders = [
+                SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, Entity__c,
+                    Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
+                FROM ChargentOrders__ChargentOrder__c
+                ORDER BY ChargentOrders__Payment_Method__c
+            ];
             System.assertEquals(50, getStatesList.size());
 
             // Checking that the orders were inserted and that the merged data mapped correctly:

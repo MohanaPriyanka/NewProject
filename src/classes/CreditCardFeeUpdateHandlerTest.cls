@@ -247,21 +247,22 @@ update uastwo;
         for(Account_Bill__c accountbill : accountbillList){
             if(accountbill.Bill_Number__c == 2){
                 ChargentOrders__ChargentOrder__c orderA1  = new ChargentOrders__ChargentOrder__c(
-                                                                                          ChargentOrders__Gateway__c = chGateway.Id,
-                                                                                          ChargentOrders__Shipping_Name__c = entity1.Id,
-                                                                                          ChargentOrders__Billing_First_Name__c = 'Cole',
-                                                                                          ChargentOrders__Billing_Last_Name__c = 'Swain',
-                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
-                                                                                          ChargentOrders__Subtotal__c = 603.92,
-                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                                                          Account_Bill__c = accountbill.Id,
-                                                                                          ChargentOrders__Card_Type__c = 'Visa',
-                                                                                          ChargentOrders__Card_Number__c = '411111111111',
-                                                                                          ChargentOrders__Card_Security_Code__c = '999',
-                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
-                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
-                                                                                          ChargentOrders__Card_Last_4__c = '1111'); 
+                    ChargentOrders__Gateway__c = chGateway.Id,
+                    Entity__c = entity1.Id,
+                    ChargentOrders__Billing_First_Name__c = 'Cole',
+                    ChargentOrders__Billing_Last_Name__c = 'Swain',
+                    ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                    ChargentOrders__Billing_Zip_Postal__c = '02467',
+                    ChargentOrders__Subtotal__c = 603.92,
+                    ChargentOrders__Payment_Method__c = 'Credit Card',
+                    Account_Bill__c = accountbill.Id,
+                    ChargentOrders__Card_Type__c = 'Visa',
+                    ChargentOrders__Card_Number__c = '411111111111',
+                    ChargentOrders__Card_Security_Code__c = '999',
+                    ChargentOrders__Card_Expiration_Month__c = '02',
+                    ChargentOrders__Card_Expiration_Year__c = '2018',
+                    ChargentOrders__Card_Last_4__c = '1111'
+                );
                 insert orderA1;
                 orderA1.ChargentOrders__Payment_Status__c = 'Recurring';
                 orderA1.ChargentOrders__Payment_Frequency__c = 'Monthly';
@@ -272,20 +273,21 @@ update uastwo;
 
             if(accountbill.Bill_Number__c == 1){
                 ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
-                                                                                          ChargentOrders__Shipping_Name__c = entity1.Id,
-                                                                                          ChargentOrders__Billing_First_Name__c = 'Cole',
-                                                                                          ChargentOrders__Billing_Last_Name__c = 'Swain',
-                                                                                          ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                                                                          ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
-                                                                                          ChargentOrders__Subtotal__c = 603.92,
-                                                                                          ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                                                          Account_Bill__c = accountbill.Id,
-                                                                                          ChargentOrders__Card_Type__c = 'Visa',
-                                                                                          ChargentOrders__Card_Number__c = '411111111111',
-                                                                                          ChargentOrders__Card_Security_Code__c = '999',
-                                                                                          ChargentOrders__Card_Expiration_Month__c = '02',
-                                                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
-                                                                                          ChargentOrders__Card_Last_4__c = '1111'); 
+                    Entity__c = entity1.Id,
+                    ChargentOrders__Billing_First_Name__c = 'Cole',
+                    ChargentOrders__Billing_Last_Name__c = 'Swain',
+                    ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                    ChargentOrders__Billing_Zip_Postal__c = '02467',
+                    ChargentOrders__Subtotal__c = 603.92,
+                    ChargentOrders__Payment_Method__c = 'Credit Card',
+                    Account_Bill__c = accountbill.Id,
+                    ChargentOrders__Card_Type__c = 'Visa',
+                    ChargentOrders__Card_Number__c = '411111111111',
+                    ChargentOrders__Card_Security_Code__c = '999',
+                    ChargentOrders__Card_Expiration_Month__c = '02',
+                    ChargentOrders__Card_Expiration_Year__c = '2018',
+                    ChargentOrders__Card_Last_4__c = '1111'
+                );
                 insert orderA;
                 orderA.ChargentOrders__Payment_Status__c = 'Recurring';
                 orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
@@ -295,19 +297,20 @@ update uastwo;
 
                 // SECONDARY CREDIT CARD ORDER (CREATED BY FORM ASSEMBLY)
                 ChargentOrders__ChargentOrder__c orderB  = new ChargentOrders__ChargentOrder__c(
-                                                                            ChargentOrders__Shipping_Name__c = entity1.Id,
-                                                                            ChargentOrders__Billing_First_Name__c = 'Cole',
-                                                                            ChargentOrders__Billing_Last_Name__c = 'Swain',
-                                                                            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                                                            ChargentOrders__Billing_Zip_Postal__c = '02467',                                                                                                    
-                                                                            ChargentOrders__Subtotal__c = 18.09,
-                                                                            ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                                            ChargentOrders__Card_Type__c = 'Visa',
-                                                                            ChargentOrders__Card_Number__c = '411111111111',
-                                                                            ChargentOrders__Card_Security_Code__c = '999',
-                                                                            ChargentOrders__Card_Expiration_Month__c = '02',
-                                                                            ChargentOrders__Card_Expiration_Year__c = '2018',
-                                                                            ChargentOrders__Card_Last_4__c = '1111'); 
+                    Entity__c = entity1.Id,
+                    ChargentOrders__Billing_First_Name__c = 'Cole',
+                    ChargentOrders__Billing_Last_Name__c = 'Swain',
+                    ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                    ChargentOrders__Billing_Zip_Postal__c = '02467',
+                    ChargentOrders__Subtotal__c = 18.09,
+                    ChargentOrders__Payment_Method__c = 'Credit Card',
+                    ChargentOrders__Card_Type__c = 'Visa',
+                    ChargentOrders__Card_Number__c = '411111111111',
+                    ChargentOrders__Card_Security_Code__c = '999',
+                    ChargentOrders__Card_Expiration_Month__c = '02',
+                    ChargentOrders__Card_Expiration_Year__c = '2018',
+                    ChargentOrders__Card_Last_4__c = '1111'
+                );
                 insert orderB;
 
                 orderB.Order_Type__c = 'Credit Card Fee (3%)';

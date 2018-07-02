@@ -94,7 +94,7 @@
                         sobjectType : 'ChargentOrders__ChargentOrder__c',
                         Account_Bill__c : orderList[orderStep].Account_Bill__c,
                         ChargentOrders__Subtotal__c : paymentAmount,
-                        ChargentOrders__Shipping_Name__c : orderList[orderStep].ChargentOrders__Shipping_Name__c
+                        Entity__c : orderList[orderStep].Entity__c
                     };
                     ordersToInsertList.push(chargentOrder);
                 }

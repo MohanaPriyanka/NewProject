@@ -44,7 +44,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                         ' ChargentOrders__Payment_Stop__c,' +
                         ' ChargentOrders__Charge_Date__c,' + 
                         ' ChargentOrders__Payment_Start_Date__c,' +
-                        ' ChargentOrders__Shipping_Name__c' +
+                        ' ChargentOrders__Shipping_Name__c,' +
+                        ' Entity__c ' +
                         ' FROM ChargentOrders__ChargentOrder__c' +
                         ' WHERE ChargentOrders__Payment_Status__c = \'' + 'Recurring' + '\'' +
                         ' ORDER BY CreatedDate';
@@ -94,7 +95,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
-            Id entityId = recurOrder.ChargentOrders__Shipping_Name__c;
+            Id entityId = recurOrder.Entity__c;
 
             if (recurOrder.Account_Bill__c != null
                 && recurOrder.Account_Bill__r.Bill_Number__c != null
@@ -148,7 +149,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 orderA.ChargentOrders__Charge_Date__c = '01';
                 orderA.Reason_for_Recurring_Stop__c = '';
                 orderA.Comments__c = 'Cloned Order';
-                orderA.ChargentOrders__Shipping_Name__c = sbWithoutOrder.substring(19,34);
+                orderA.Entity__c = sbWithoutOrder.substring(19,34);
                 orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
                 ordersToInsert.add(orderA);  
             }

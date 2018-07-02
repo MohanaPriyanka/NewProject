@@ -37,7 +37,7 @@ public with sharing class ChargentOrderCreationhandler {
         ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
                                                           ChargentOrders__Account__c = opp.AccountId,
                                                           ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-                                                          ChargentOrders__Shipping_Name__c = defaultEntity.Id,
+                                                          Entity__c = defaultEntity.Id,
                                                           ChargentOrders__Payment_Method__c = paymentMethod,
                                                           ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
                                                           ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,

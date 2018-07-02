@@ -73,7 +73,7 @@ public without sharing class CreateOrderandPaymentRequest {
         try {
             for (SObject chargeAmount : chargeAmounts) {
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
-                orderA.ChargentOrders__Shipping_Name__c = (String) chargeAmount.get('ChargentOrders__Shipping_Name__c');
+                orderA.Entity__c = (String) chargeAmount.get('Entity__c');
                 orderA.ChargentOrders__Subtotal__c = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');              
                 orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
                 orderA.Comments__c = 'Created from Lightning';
