@@ -176,27 +176,17 @@ public without sharing class PCRApprovalHandler {
         return newPCR;
     }
 
-    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c leadPCR, ProductRepo productRepo ) {
-        LASERCA__Personal_Credit_Report__c coAppPCR;
+    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
         if (lead.Personal_Credit_Report__r == null
             && lead.Personal_Credit_Report_Co_Applicant__r == null) {
             Set<Id> leadIds = new Set<Id>{lead.id};
             lead = getLeadsForCreditAnalysis(leadIds)[0];
         }
 
-        if (leadPCR == null) {
+        if (pcr == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
-            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
-                pcrIds.add(lead.Personal_Credit_Report_Co_Applicant__c);
-            }
             List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
-            for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
-                if (pcr.Id == lead.Personal_Credit_Report__c) {
-                    leadPCR = pcr;
-                } else if (pcr.Id == lead.Personal_Credit_Report_Co_Applicant__c) {
-                    coAppPCR = pcr;
-                }
-            }
+            pcr = pcrs[0];
         }
 
         if (productRepo == null) {
@@ -213,8 +203,7 @@ public without sharing class PCRApprovalHandler {
         and see the best we can do.
         */
         CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
-        setPcrDti(lead, creditSummary, leadPCR);
-        setPcrDti(lead, creditSummary, coAppPCR);
+        setPcrDti(lead, creditSummary, pcr);
 
         if (lead.Product__c == null) {
             if (creditSummary.bestStatus == APPROVED) {
@@ -245,38 +234,31 @@ public without sharing class PCRApprovalHandler {
             creditSummary.bestStatus = PENDINGREVIEW;
         }
         // overwrite statuses if Avidia has reviewed
-        if (leadPCR.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
-            leadPCR.Solar_Loan_Manual_Approval__c) {
-            leadPCR.Solar_Loan_Approval_Status__c = APPROVED;
-        } else if (leadPCR.Avidia_Review_Status__c == 'Reviewed - Declined' ||
-            leadPCR.Solar_Loan_Manual_Decline__c) {
-            leadPCR.Solar_Loan_Approval_Status__c = DECLINED;
-        } else if (leadPCR.Avidia_Review_Status__c == PENDINGREVIEW) {
-            leadPCR.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+        if (pcr.Avidia_Review_Status__c == 'Reviewed - PreApproved' ||
+            pcr.Solar_Loan_Manual_Approval__c) {
+            pcr.Solar_Loan_Approval_Status__c = APPROVED;
+        } else if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined' ||
+            pcr.Solar_Loan_Manual_Decline__c) {
+            pcr.Solar_Loan_Approval_Status__c = DECLINED;
+        } else if (pcr.Avidia_Review_Status__c == PENDINGREVIEW) {
+            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         } else {
-            leadPCR.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
+            pcr.Solar_Loan_Approval_Status__c = creditSummary.bestStatus;
         }
 
         // Per Nader: We don't have clear criteria from Avidia on how to automate co-signer applications
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
-            leadPCR.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+            pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
         }
 
-        if (coAppPCR != null) {
-            coAppPCR.Solar_Loan_Approval_Status__c = leadPCR.Solar_Loan_Approval_Status__c;
-        }
-        
         // If lead is in any stage of the process update the status
         if (lead.Status == READYFORCREDITCHECK ||
             lead.Status == PENDINGCREDITREVIEW ||
             lead.Status == UNQUALIFIED ||
             lead.Status == PREQUALIFIED ||
-            leadPCR.Avidia_Review_Status__c == 'Reviewed - Declined') {
-            lead = setLeadStatus(leadPCR.Solar_Loan_Approval_Status__c, lead);
+            pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
+            lead = setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
         }
-
-        lead.Personal_Credit_Report__r = leadPCR;
-        lead.Personal_Credit_Report_Co_Applicant__r = coAppPCR;
         
         return lead;
     }
