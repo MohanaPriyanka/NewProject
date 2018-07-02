@@ -324,7 +324,12 @@ public without sharing class PCRApprovalHandler {
             lastName != NULL &&
             email != NULL &&
             lead.Status  == UNQUALIFIED) {
-            String htmlbody = denialEmailTemplate.HtmlValue;
+            String htmlbody;
+            if (hasCoApp) {
+                 htmlbody = coAppDenialEmailTemplate.HtmlValue;
+            } else {
+                htmlbody = denialEmailTemplate.HtmlValue;
+            }
             htmlBody = htmlBody.replace('{!Lead.Name}', firstName);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName );
             htmlBody = htmlBody.replace('{!Lead.Id}',lead.Id );
