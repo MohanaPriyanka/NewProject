@@ -24,6 +24,7 @@ public without sharing class PCRApprovalHandler {
     private static EmailTemplate doerEmailTemplate;
     private static EmailTemplate standardEmailTemplate;
     private static EmailTemplate denialEmailTemplate;
+    private static EmailTemplate coAppDenialEmailTemplate;
     private static OrgWideEmailAddress customerCareAddress;
     private static Set<String> flaggedCreditCodes;
     @TestVisible
@@ -37,7 +38,7 @@ public without sharing class PCRApprovalHandler {
                                  LIMIT 1];
         }
         if (standardEmailTemplate == null) {
-            standardEmailTemplate = [SELECT id, HtmlValue, Body 
+            standardEmailTemplate = [SELECT id, HtmlValue, Body, TemplateType
                                      FROM EmailTemplate 
                                      WHERE DeveloperName = 'RS_PreQualification_Approval'
                                      LIMIT 1];
@@ -46,6 +47,12 @@ public without sharing class PCRApprovalHandler {
             denialEmailTemplate = [SELECT id, HtmlValue, Body 
                                      FROM EmailTemplate 
                                      WHERE DeveloperName = 'RS_Customer_PreApplication_Denial'
+                                     LIMIT 1];
+        }
+        if (coAppDenialEmailTemplate == null) {
+            coAppDenialEmailTemplate = [SELECT id, HtmlValue, Body
+                                     FROM EmailTemplate
+                                     WHERE DeveloperName = 'RS_Customer_PreApplication_Denial_Joint'
                                      LIMIT 1];
         }
         if (customerCareAddress == null) {
