@@ -104,10 +104,12 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Integer mnth = System.Today().Month();
         Integer yr = System.Today().Year();
 
-        for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
+            //Dont think i need property_Account id and parent account
+        for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c,AcctNum__c, Property_Account_ID__c, Parent_Account__c
                                                 FROM Account_Bill__c
                                                 WHERE Bill_Number__c = 1 AND CALENDAR_MONTH(Date__c) = :mnth AND CALENDAR_YEAR(Date__c) = :yr ]) {
-            firstAcctBillMap.put(firstAcctBill.Property_Account_ID__c, firstAcctBill);
+            Account__c parentAccount = firstAcctBill.Parent_Account__c.ParentId;
+            firstAcctBillMap.put(firstAcctBill.AcctNum__c., firstAcctBill);
         }
         //Call to a method that finds chargent orders attached to accounts and moves them to first account bills
         retrieveFirstChargentOrder(firstAcctBillMap, aggregateSbMap );
@@ -175,11 +177,15 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     public void retrieveFirstChargentOrder(Map<String, Account_Bill__c> firstABMap, Map<String, Decimal> aggregateSbMap){
         List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
 
+        Map<String, ChargentOrders__ChargentOrder__c> accountByCOMap = new Map<String, ChargentOrders__ChargentOrder__c>();
+
+        for()
+
         //Find Chargent Order for the Account Bill using Property_Account
         for (ChargentOrders__ChargentOrder__c firstChargentOrder : [
-            SELECT Id, Property_Account__c
+            SELECT Id, Property_Account__c, ChargentOrders__Account__c
             FROM ChargentOrders__ChargentOrder__c
-            WHERE Property_Account_ID__c IN :firstABMap.keyset()]) {
+            WHERE ChargentOrders__Account__c IN :firstABMap.keyset()]) {
                                         //Is this a proper SOQL with a map?
 
                 //Grabbing account bill by Chargent Order's Property Account_ID__c
