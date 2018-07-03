@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: AccountInfoControllerTest,LoanUnderwritingTest,SLPQuickSalesSheetTestclass,PCRApprovalHandlerTest
+ * Tested by: LoanUnderwritingTest,PCRApprovalHandlerTest,SLPControllersTestclass,SLPQuickSalesSheetTestclass
  *************************************************************************************/
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
@@ -26,6 +26,8 @@ public without sharing class Util {
         } catch (System.DmlException de) {
             if (de.getMessage().contains('UNABLE_TO_LOCK_ROW')) {
                 insertSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            } else {
+                throw new BWException(de.getMessage());
             }
         }
     }
