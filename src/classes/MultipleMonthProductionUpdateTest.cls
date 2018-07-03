@@ -56,7 +56,8 @@ public class MultipleMonthProductionUpdateTest {
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Utility__c = eversource.Id,
-                                       Maximum_Subscription_Assemblage__c = 25);
+                                       Maximum_Subscription_Assemblage__c = 25,
+                                       Billing_Method__c = 'NMC');
         insert new List<Shared_Solar_System__c>{sss1};
 
         ChargentBase__Gateway__c chGateway  = 
@@ -172,7 +173,6 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateFeb,
-                Size_Off_NMCs__c = true,
                 Date__c = myDateJan, 
                 Total_System_NMCs__c = 45000,
                 Net_Metering_Rate_Applied__c = 0.1234,
