@@ -477,7 +477,6 @@ public with sharing class CAPControllerTest {
         update lead;
         Test.startTest();
         CAPController.convertLead(lead.Id, lead.Email);
-        Test.startTest();
         CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId,

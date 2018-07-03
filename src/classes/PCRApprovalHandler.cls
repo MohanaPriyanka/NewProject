@@ -124,12 +124,12 @@ public without sharing class PCRApprovalHandler {
         }
     }
 
-    private List<LASERCA__Personal_Credit_Report__c> onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCR) {
+    private List<LASERCA__Personal_Credit_Report__c> onBeforeUpdate(LASERCA__Personal_Credit_Report__c[] newPCRs) {
         Set<Id> leadIds = new Set<Id>();
         Map<Id, Lead> leadMap = new Map<Id, Lead>();
         Map<Id, Lead> leadsToUpdate = new Map<Id, Lead>();
 
-        for (LASERCA__Personal_Credit_Report__c pcrForLead: newPCR) {
+        for (LASERCA__Personal_Credit_Report__c pcrForLead: newPCRs) {
             if (pcrForLead.LASERCA__Lead__c == null && pcrForLead.Lead_from_Contact__c != null) {
                 pcrForLead.LASERCA__Lead__c = pcrForLead.Lead_from_Contact__c;
             }
@@ -146,11 +146,10 @@ public without sharing class PCRApprovalHandler {
 
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
-        for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
+        for (LASERCA__Personal_Credit_Report__c pcr : newPCRs) {
             if (!pcr.Do_not_trigger_PCRApprovalHandler__c &&
                 pcr.LASERCA__Lead__c != null &&
-                leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar' &&
-                leadReadyForPrequalCheck(leadMap.get(pcr.LASERCA__Lead__c))) {
+                leadMap.get(pcr.LASERCA__Lead__c).Product_line__c != 'Community Solar') {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
                 Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
 
@@ -161,19 +160,27 @@ public without sharing class PCRApprovalHandler {
                     pcr.DTI_After_Notes__c = null;
                     continue;
                 }
-                lead = getCreditReviewedLead(lead, pcr, productRepo);
-                leadsToUpdate.put(lead.Id, lead);
 
-                // SEND PREAPPROVAL EMAIL
-                lead = sendCreditDecisionEmails(lead);
-                pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
-                pcr.Credit_Denial_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c;
+                if (leadReadyForPrequalCheck(lead)) {
+                    lead = runCreditReviewProcess(lead, pcr, productRepo);
+                    leadsToUpdate.put(lead.Id, lead);
+                    pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
+                    pcr.Credit_Denial_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c;
+                } else {
+                    System.enqueueJob(new QueueableApplicationReview(lead));
+                }
             }
         }
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
-        return newPCR;
+        return newPCRs;
+    }
+
+    public Lead runCreditReviewProcess(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo) {
+        lead = getCreditReviewedLead(lead, pcr, productRepo);
+        lead = sendCreditDecisionEmails(lead);
+        return lead;
     }
 
     public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
@@ -437,7 +444,7 @@ public without sharing class PCRApprovalHandler {
         // add coApplicant's income if it is a joint application
         // co-signer's are excluded because automation criteria isn't clear
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Applicant' &&
-            lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c != null) {
+            lead.Personal_Credit_Report_Co_Applicant__r != null) {
             if (lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c == null) {
                 householdMonthlyIncome += Util.nullToZero(lead.Co_Applicant_Income__c) / 12;
             } else {
@@ -515,7 +522,7 @@ public without sharing class PCRApprovalHandler {
 
     }
 
-    private Boolean leadReadyForPrequalCheck (Lead lead) {
+    public Boolean leadReadyForPrequalCheck (Lead lead) {
         if (lead.Application_Type__c != 'Joint'
             && lead.Personal_Credit_Report__c != null) {
             return true;
