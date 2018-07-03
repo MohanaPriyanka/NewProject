@@ -153,7 +153,6 @@ public without sharing class CAPController {
         if (lead.Application_Type__c == 'Individual') {
             if (!lead.LASERCA__Personal_Credit_Reports__r.isEmpty()) {
                 // If a PCR was successfully created, the Status will be updated on the Lead
-                lead = reviewLeadIfReady(lead);
                 return(lead.Status);
             } else {
                 // There's no PCR; if there are credit report logs, send the credit report log error
@@ -164,7 +163,6 @@ public without sharing class CAPController {
         } else if (lead.Application_Type__c == 'Joint' && lead.CoApplicant_Contact__c != null) {
             if (lead.LASERCA__Personal_Credit_Reports__r.size() >= 2) {
                 // If a PCR was successfully created, the Status will be updated on the Lead
-                lead = reviewLeadIfReady(lead);
                 return(lead.Status);
             } else {
                 // There's one or zero PCRs, and there could be zero, one, or two CRLs with an error.
@@ -196,21 +194,6 @@ public without sharing class CAPController {
             }
         }
         return(lead.Status);
-    }
-
-    public static Lead reviewLeadIfReady(Lead lead) {
-        if (lead.Status == 'Ready for Credit Check') {
-            PCRApprovalHandler pcrApprovalHandler = new PCRApprovalHandler();
-            List<LASERCA__Personal_Credit_Report__c> pcrsToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
-            lead = pcrApprovalHandler.getCreditReviewedLead(lead, null, null);
-            update lead;
-            pcrsToUpdate.add(lead.Personal_Credit_Report__r);
-            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
-                pcrsToUpdate.add(lead.Personal_Credit_Report_Co_Applicant__r);
-            }
-            update pcrsToUpdate;
-        }
-        return lead;
     }
 
     // Since an installer can run credit multiple times on an applicant (if there was an error),
