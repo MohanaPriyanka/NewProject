@@ -185,9 +185,9 @@ public with sharing class UtilityAccountBillTriggerHandler {
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
-        if (prodUpdate.Size_off_NMCs__c){
+        if (prodUpdate.Billing_Method__c == 'NMC'){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
-        } else {
+        } else if (prodUpdate.Billing_Method__c == 'kWh') {
             subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }
 
