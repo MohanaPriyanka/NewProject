@@ -910,6 +910,10 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
+                            <option name="name" value="DocuSignVoid_Invocable" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
                             <option name="name" value="BatchCreditSRECHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>

@@ -119,8 +119,8 @@
         }        
     },
 
-    exitProductSelection : function(component, event, helper) { 
-        $A.get('e.force:refreshView').fire();
+    exitProductSelection : function(component, event, helper) {
+        window.history.back();
     },    
     
     openAddCoApplicant : function(component, event, helper) {            
