@@ -169,7 +169,8 @@ private class RecurringSRECHandlerTest{
         insert new List<SREC__c>{srecOne, srecTwo, srecThree};
 
         SREC_Invoice__c invoice = new SREC_Invoice__c(  Name = 'SREC Invoice #1',
-                                                        SREC__c = srecThree.Id);
+                                                        SREC__c = srecThree.Id,
+                                                        Residential_Equipment__c = resiEquipThree.Id);
         insert invoice;
 
        // alreadyReady.SREC_Invoice__c = invoice.Id;
