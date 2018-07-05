@@ -9,8 +9,8 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
     //Database.executeBatch(this, 1);
 
     public List<ChargentOrders__ChargentOrder__c> updatedChOrders;
-    public List<Id> successSRECList;
-    public List<Id> successInvoiceList;
+    public List<Id> successSRECList = new List<Id>();
+    public List<Id> successInvoiceList = new List<Id>();
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         updatedChOrders = new List<ChargentOrders__ChargentOrder__c>();
@@ -39,7 +39,7 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
                 chOrder.SREC_Status__c = 'Success';
                 if (chOrder.Related_SREC__r.Id != null){
                     successSRECList.add(chOrder.Related_SREC__r.Id);
-                } else if (chOrder.Related_SREC__r.Id != null){
+                } else if (chOrder.SREC_Invoice__r.Id != null){
                     successInvoiceList.add(chOrder.SREC_Invoice__r.Id);
                 }
             } else {
@@ -55,7 +55,7 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
         
         Date todaysDate = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
-        if (successSRECList != null){
+        if (successSRECList.size() > 0){
             SREC__c srecsToUpdate = [SELECT Id, Name, Date_Distributed_to_Customer__c
                                     FROM SREC__c
                                     WHERE Id IN : successSRECList];
@@ -63,10 +63,10 @@ public without sharing class BatchCreditSRECHandler implements Database.Batchabl
             update srecsToUpdate;
         }
 
-        if (successInvoiceList != null){
+        if (successInvoiceList.size() > 0){
             SREC_Invoice__c invoiceToUpdate = [SELECT Id, Name, Date_Paid__c
                                             FROM SREC_Invoice__c
-                                            WHERE Id IN : successSRECList];
+                                            WHERE Id IN : successInvoiceList];
             invoiceToUpdate.Date_Paid__c = todaysDate;
             update invoiceToUpdate;
         }
