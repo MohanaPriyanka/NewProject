@@ -97,16 +97,19 @@ private class RecurringSRECHandlerTest{
 
         Opportunity oppOne = new Opportunity (  Name = 'OppOne',
                                                 AccountId = accountOne.Id,
+                                                Email__c = 'jpentaleri@bluewavesolar.com',
                                                 SREC_Product__c = srecProduct.Id, 
                                                 StageName = 'Complete',
                                                 CloseDate = Date.today().addYears(-1));
         Opportunity oppTwo = new Opportunity (  Name = 'OppTwo',
                                                 AccountId = accountTwo.Id,
+                                                Email__c = 'jpentaleri@bluewavesolar.com',
                                                 SREC_Product__c = srecProduct.Id, 
                                                 StageName = 'Complete',
                                                 CloseDate = Date.today().addYears(-1));        
         Opportunity oppThree = new Opportunity (  Name = 'OppThree',
                                                 AccountId = accountThree.Id,
+                                                Email__c = 'jpentaleri@bluewavesolar.com',
                                                 SREC_Product__c = srecProduct.Id, 
                                                 StageName = 'Complete',
                                                 CloseDate = Date.today().addYears(-1));
