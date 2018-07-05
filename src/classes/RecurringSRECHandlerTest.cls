@@ -172,9 +172,6 @@ private class RecurringSRECHandlerTest{
                                                         SREC__c = srecThree.Id,
                                                         Residential_Equipment__c = resiEquipThree.Id);
         insert invoice;
-
-       // alreadyReady.SREC_Invoice__c = invoice.Id;
-       // update alreadyReady;
     }
 
     static testMethod void updateSRECandOrder() {
