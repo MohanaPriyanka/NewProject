@@ -1,7 +1,11 @@
 /**
  * Created by mstackhouse on 7/3/2018.
- * Description: 
- * Test: 
+ * Description: Called from PCRApprovalHandler to queue a lead for a credit check. This is used because of a race condition
+ * that occurs when joint applications have their credit pulled. In some cases, if the timing of the PCRs coming back from 
+ * Transunion overlaps, then the lead won't be analyzed. This ensures that the credit application gets reviewed
+ * 
+ *
+ * Test: CAPControllerTest & PCRApprovalHandlerTest
  */
 
 
