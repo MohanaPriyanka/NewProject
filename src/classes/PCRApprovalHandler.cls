@@ -166,7 +166,8 @@ public without sharing class PCRApprovalHandler {
                     leadsToUpdate.put(lead.Id, lead);
                     pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
                     pcr.Credit_Denial_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c;
-                } else {
+                } else if (pcr.Id == lead.Personal_Credit_Report__c) {
+                    // This prevents starting a queue for each PCR, we only need to queue once. Emails were getting sent twice.
                     System.enqueueJob(new QueueableApplicationReview(lead));
                 }
             }
