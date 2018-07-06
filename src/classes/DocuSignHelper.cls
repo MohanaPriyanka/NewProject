@@ -6,7 +6,7 @@
  *************************************************************************************/
 
 public without sharing class DocuSignHelper {
-    private static DocuSignAPI.APIServiceSoap dsAPI;
+    public static DocuSignAPI.APIServiceSoap dsAPI;
     @TestVisible
     private static List<dsfs__DocuSign_Status__c> envelopesToVoid;
     @TestVisible

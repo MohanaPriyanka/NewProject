@@ -20,7 +20,7 @@ public without sharing class MapPCRtoLeadHandler {
         Integer j;
         List<String> leadIds = new List<String>();
         List<String> contactids = new List<String>();
-        List<Lead> leadupdatelist = new List<Lead>();
+        Map<Id, Lead> leadUpdateMap = new Map<Id, Lead>();
 
         for (LASERCA__Personal_Credit_Report__c pcr : newPCR) {
             Decimal monthlydebt = pcr.LASERCA__Sum_of_monthly_Personal_Debt__c;
@@ -57,7 +57,7 @@ public without sharing class MapPCRtoLeadHandler {
                 lead.Personal_Credit_Report__c = pcr.Id;
                 lead.Maximum_monthly_Disbursement__c = pcr.Maximum_Disbursement_Monthly__c;
                 lead.Debt_income_status__c = pcr.Approval_Status__c;
-                leadupdatelist.add(lead);
+                leadUpdateMap.put(lead.Id, lead);
             }
 
             if (lead != null && contactid == null && 
@@ -66,18 +66,17 @@ public without sharing class MapPCRtoLeadHandler {
 
                 lead.Personal_Credit_Report__c = pcr.Id;
                 lead.FICO_score_approval__c = pcr.Approval_Status__c;
-                leadupdatelist.add(lead);
-
+                leadUpdateMap.put(lead.Id, lead);
             }
 
             if (leadFromContact != null && contactid != null) {
                 leadFromContact.Personal_Credit_Report_Co_Applicant__c = pcr.id;
-                leadupdatelist.add(leadFromContact);
+                leadUpdateMap.put(leadFromContact.Id, leadFromContact);
             }
         }
 
-        if (leadupdatelist.size()>0) {
-            update leadupdatelist;
+        if (leadUpdateMap.size()>0) {
+            update leadUpdateMap.values();
         }
     }
 }

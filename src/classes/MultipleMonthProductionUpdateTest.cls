@@ -270,6 +270,7 @@ public class MultipleMonthProductionUpdateTest {
 
         prodUpdateSizeoffKwh.Generate_Bills__c = true;
         update prodUpdateSizeoffKwh;
+        test.StopTest();
 
         Test.stopTest();
         UASB__c generatedBill = 
