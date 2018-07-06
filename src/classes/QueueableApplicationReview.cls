@@ -24,6 +24,8 @@ public class QueueableApplicationReview implements Queueable {
                 pcrsToUpdate.add(lead.Personal_Credit_Report_Co_Applicant__r);
             }
             update pcrsToUpdate;
+        } else if (!Test.isRunningTest()) {
+            System.enqueueJob(new QueueableApplicationReview(lead));
         }
     }
 }
