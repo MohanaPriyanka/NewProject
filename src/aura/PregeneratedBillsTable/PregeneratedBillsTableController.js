@@ -46,7 +46,7 @@
 
     downloadTransferSheet : function(component,event,helper){  
         var stockData = component.get("v.SchZBillList");
-        var keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_NMCs_Allocated__c'];
+        var keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_Additional_Id__c', 'PreGen_NMCs_Allocated__c'];
         
         var csv = helper.convertArrayOfObjectsToCSV(component,stockData,keys);   
          if (csv == null){return;} 

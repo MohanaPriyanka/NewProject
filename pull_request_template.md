@@ -1,25 +1,19 @@
-<!--Read comments, before commiting pull request read checklist again
-
-# Checklist:
-
-- I have performed a self-review of my own code,
-- commit messages follow our [guidelines](https://github.com/BlueWaveFinanceGroup/SMP/wiki/Commit-Message-Guidelines)
-- I have commented my code, particularly in hard-to-understand areas,
-- I have made corresponding changes to the documentation,
-- I have added tests that prove my fix is effective or that my feature works,
-- New and existing unit tests pass in  with my changes ("bundle exec rake"),
-- Title include "WIP" if work is in progress.
-
--->
 ### Work Items Covered
 <!-- Please provide links to the work items covered in PR -->
+#### Features
+[Item Title](url)
+
+#### Bug Fixes
 [Item Title](url)
 
 ### Deployment Steps
 <!-- If there are configuration changes necessary -->
 
 ### How has this been tested?
-<!-- Provide any steps needed to test this PR manually -->
+- [ ] Deployment has been Tested
+- [ ] Automated Tests <!-- Describe Testing Approach -->
+- [ ] Manual Tests <!-- Provide any steps needed to test this PR manually -->
+
 
 ### Other Information
 <!--
