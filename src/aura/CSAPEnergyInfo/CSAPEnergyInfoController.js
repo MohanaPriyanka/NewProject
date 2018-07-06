@@ -23,7 +23,7 @@
         component.set("v.page", "UtilityAccountInformation");
     },
     goToGridUsageHistory : function(component, event, helper) {
-        //Upsert ual record
+        //Upsert UAL record
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
             var lead = component.get("v.lead");
@@ -84,9 +84,36 @@
     },
     addResidence : function(component, event, helper) {
         console.log("Adding Residence");
-        //Todo create a new lead and Utility Account Log.
-        // Prevent another credit pull
-        //
+
+        var oldLead = component.get("v.lead");
+        console.log("Creating a New Lead" + oldLead);
+        
+        var newLead = {
+            sobjectType: "Lead",
+            Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
+            Parent_Account__c: oldLead.Parent_Account__c,
+            Partner_lookup__c : oldLead.Partner_lookup__c,
+            Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
+            Email : oldLead.Email,
+            FirstName: oldLead.FirstName,
+            LastName: oldLead.LastName,
+            MobilePhone: oldLead.MobilePhone,
+            Phone: oldLead.Phone,
+            LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
+            LASERCA__SSN__c : oldLead.LASERCA__SSN__c
+        };
+
+        newLead.Application_Type__c = "Residential";
+
+
+        var stage = "NAV_Personal_Information";
+        var stageIndex = helper.getStage(stage);
+        var maxIndex = helper.getStage(oldLead.CSAP_Stage__c);
+
+        component.set("v.lead", newLead);
+        if (stageIndex <= maxIndex+1) {
+            helper.raiseNavEvent("INITIATED", {"stageName": stage, "lead": newLead, "page": "AddressForm"});
+        }
     },
     addBusiness : function(component, event, helper) {
         console.log("Adding Business");

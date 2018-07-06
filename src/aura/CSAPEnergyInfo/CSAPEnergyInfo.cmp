@@ -275,10 +275,10 @@
     <div aria-labelledby="addToApplicationForm">
       <fieldset class="slds-form-element slds-align_absolute-center">
         <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-          <b class="slds-section__title_large_stream">Would you like to add anything to your application?</b>
+          <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
         </legend>
         <div class="slds-form-element__control slds-align_absolute-center">
-          <div class="slds-visual-picker slds-visual-picker_medium">
+          <div class="slds-visual-picker slds-visual-picker_large">
             <a onclick="{!c.addUAL}">
               <label for="visual-picker-add-utility">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -287,15 +287,15 @@
                   </span>
                 </span>
                 <span class="slds-visual-picker__body">
-                  <div class="slds-text-body_large_blue"><b>Add another utility to </b></div>
-                  <div class="slds-text-body_large_stream"><b>{!v.lead.FirstName + ' ' + v.lead.LastName}</b></div>
+                  <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
+                  <div class="slds-text-body--large--stream"><b>{!v.lead.FirstName + ' ' + v.lead.LastName}</b></div>
                 </span>
               </label>
             </a>
           </div>
           
 
-          <div class="slds-visual-picker slds-visual-picker_medium">
+          <div class="slds-visual-picker slds-visual-picker_large">
             <a onclick="{!c.addResidence}">
               <label for="visual-picker-residential">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -304,13 +304,13 @@
                   </span>
                 </span>
                 <span class="slds-visual-picker__body">
-                  <div class="slds-text-body_large_blue"><b>Add an entirely different</b></div>
-                  <div class="slds-text-body_large_stream"><b>Home</b></div>
+                  <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
+                  <div class="slds-text-body--large--stream"><b>Home</b></div>
                 </span>
               </label>
             </a>
           </div>
-          <div class="slds-visual-picker slds-visual-picker_medium">
+          <div class="slds-visual-picker slds-visual-picker_large">
             <a onclick="{!c.addBusiness}">
               <label for="visual-picker-business">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -319,8 +319,8 @@
                   </span>
                 </span>
                 <span class="slds-visual-picker__body">
-                  <div class="slds-text-body_large_blue"><b>Add an entirely different</b></div>
-                  <div class="slds-text-body_large_stream"><b>Business</b></div>
+                  <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
+                  <div class="slds-text-body--large--stream"><b>Business</b></div>
                 </span>
               </label>
             </a>

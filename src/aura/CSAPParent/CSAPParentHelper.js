@@ -23,16 +23,24 @@
     raiseNavEvent : function(eventType, options) {
         var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
         stageChangeEvent.setParams({"eventType": eventType});
-        if (options && options.hasOwnProperty("stageName")) {
-            stageChangeEvent.setParams({"stageName": options.stageName});
-        }
-        if (options && options.hasOwnProperty("lead")) {
-            stageChangeEvent.setParams({"lead": options.lead});
+        if(options){
+            if (options.hasOwnProperty("stageName")) {
+                stageChangeEvent.setParams({"stageName": options.stageName});
+            }
+            if (options.hasOwnProperty("lead")) {
+                stageChangeEvent.setParams({"lead": options.lead});
+            }
+            if (options.hasOwnProperty("page")) {
+                stageChangeEvent.setParams({"page": options.page});
+                console.log("options.page " + options.page);
+            }
+
         }
         stageChangeEvent.fire();
     },
 
     handleNavEvent : function(component, event, helper, defaultPage) {
+        console.log("handling handleNavEvent - Options: " + event.getParam("options"));
         if (event.getParam("eventType") === "INITIATED" &&
             event.getParam("stageName") === component.get("v.STAGENAME")) {
             component.set("v.lead", event.getParam("lead"));
@@ -41,6 +49,10 @@
         } else if ((event.getParam("eventType") === "INITIATED" && event.getParam("stageName") !== component.get("v.STAGENAME"))) {
             component.set("v.page", "");
             component.set("v.supressWaiting", true);
+        }
+        if (event.getParam("options") && event.getParam("options").hasOwnProperty("page")) {
+            component.set("v.page", event.getParam("options").page);
+            debugger;
         }
     },
 
@@ -61,11 +73,11 @@
             var promise = helper.saveSObject(component, lead.Id, "Lead", "CSAP_Stage__c", stageName);
             promise.then($A.getCallback(function resolve(value) {
                 helper.closePageFireComplete(component, helper, stageName, lead);
-                component.set('v.loading', false);
+                component.set("v.loading", false);
             }));
         } else {
             helper.closePageFireComplete(component, helper, stageName, lead);
-            component.set('v.loading', false);
+            component.set("v.loading", false);
         }
     },
     closePageFireComplete : function(component, helper, stageName, lead) {

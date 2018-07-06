@@ -131,8 +131,26 @@ public without sharing class CSAPController {
         }
         return sssResult;
     }
-
-
+    @AuraEnabled
+    public static Lead addAdditionalLead(Lead lead){
+        lead = processLead(lead);
+        upsert lead;
+        return lead;
+    }
+    public static Lead processLead(Lead lead){
+        if (lead.Date_of_Application__c == null) {
+            lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
+        }
+        lead.State = BlueWaveParent.convertAbbreviationToState(lead.State);
+        lead.Parcel_Zip__c = lead.LASERCA__Home_Zip__c;
+        if (lead.Application_Type__c == 'Residential') {
+            lead.Customer_Type__c = 'Residential';
+        }
+        if (lead.Application_Type__c == 'Non-Residential') {
+            lead.Customer_Type__c = 'Business';
+        }
+        return lead;
+    }
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId){
         Account account = getAccount(lead.Id, lead.Email);
@@ -149,18 +167,8 @@ public without sharing class CSAPController {
         account.Social_Security_Number__c = lead.LASERCA__SSN__c;
         upsert account;
 
-        if (lead.Date_of_Application__c == null) {
-            lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
-        }
-        lead.State = BlueWaveParent.convertAbbreviationToState(lead.State);
-        lead.Parent_Account__c = account.Id;
-        lead.Parcel_Zip__c = lead.LASERCA__Home_Zip__c;
-        if (lead.Application_Type__c == 'Residential') {
-            lead.Customer_Type__c = 'Residential';
-        }
-        if (lead.Application_Type__c == 'Non-Residential') {
-            lead.Customer_Type__c = 'Business';
-        }
+        lead = processLead(lead);
+        
         if (String.isNotBlank(partnerId)) {
             lead.Partner_lookup__c = partnerId;
         } else if (String.isNotBlank(profile.partnerId)) {
