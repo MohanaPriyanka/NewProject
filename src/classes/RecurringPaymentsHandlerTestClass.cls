@@ -142,6 +142,7 @@ private class RecurringPaymentsHandlerTestClass{
 
         insert new List<Account>{accountA, accountB, accountC, accountD};
 
+
         Utility_Account_Log__c ualog = new Utility_Account_Log__c(Name = '0000234',
             Account__c = accountA.Id,
             Annual_Cost_of_Electricity__c = 10000,
@@ -417,6 +418,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Payment_Start_Date__c = system.today(),
             ChargentOrders__Charge_Date__c = '15');
 
+
         insert new List<ChargentOrders__ChargentOrder__c>{orderA1, orderA2, orderA3, orderNotLinkedToAccountBill, orderNoSystemBills, orderCancelledCustomer};
 
         Energy_Usage_Update__c productionupdateC1 = new Energy_Usage_Update__c (
@@ -513,7 +515,7 @@ private class RecurringPaymentsHandlerTestClass{
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c
               FROM ChargentOrders__ChargentOrder__c];
 
-        // Six Original Chargent Orders: 
+        // Seven Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 3 that should have been moved to the newer bill
         System.assertEquals(6,orderlist.size());
@@ -790,6 +792,63 @@ private class RecurringPaymentsHandlerTestClass{
             WHERE Name = 'Account C'];
 
         System.assertEquals(true, newAccountC.Recurring_Billing__c);
+    }
+
+    static testMethod void moveChargentOrderFromPropertyAcctToFirstAcctBill (){
+        //Run set up data?
+
+        // create Property Account
+        Account propAccountA = new Account(name = 'Property Account A',
+            RecordTypeId = '012j00000010HeQ');
+
+        Entity__c entityone = new Entity__c (
+            Name = 'BarrettProjCo');
+
+        insert entityone;
+
+        Shared_Solar_System__c sss1 = [ SELECT Id
+                                            FROM Shared_Solar_System__c
+                                            WHERE name = 'sss1'];
+
+        ChargentBase__Gateway__c chGatewayone = [ SELECT Id, Name
+                                                    FROM ChargentBase__Gateway__c
+                                                    WHERE Name = 'Chargent Gateway One'];
+
+        insert new List<Account>{propAccountA};
+
+        //Create first Account Bill?
+
+
+        //Test first Account Bill - Chargent Order linked to Property Account
+        ChargentOrders__ChargentOrder__c orderFirstAcctBill  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Account__c = propAccountA.Id,
+            ChargentOrders__Gateway__c = chGatewayone.Id,
+            ChargentOrders__Shipping_Name__c = entityone.id,
+            ChargentOrders__Billing_First_Name__c = 'Sarah',
+            ChargentOrders__Billing_Last_Name__c = 'Renfro',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 555.44,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Frequency__c = 'Once');
+            //ChargentOrders__Payment_Start_Date__c = system.today(),
+            //ChargentOrders__Payment_Status__c = 'Recurring',
+            //ChargentOrders__Charge_Date__c = '15');
+
+        insert new List<ChargentOrders__ChargentOrder__c>{orderFirstAcctBill};
+
+        //need to run method "updateRecurringOrders"
+        //Should move all chargent orders that have been on property account to the first account bill
+
+        //check to see if Chargent Order's Account Name is null and Account Bill is = to AB
+        System.assertEquals(orderFirstAcctBill.ChargentOrders__Account__c, null);
+        System.assertEquals(orderFirstAcctBill.Account_Bill__c, firstAB);
     }
 
     static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
