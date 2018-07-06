@@ -6,15 +6,15 @@
 
 
 public class QueueableApplicationReview implements Queueable {
-    public static Id leadId;
+    public Id leadId;
 
     public QueueableApplicationReview(Lead queuedLead) {
-        leadId = queuedLead.Id;
+        this.leadId = queuedLead.Id;
     }
 
     public void execute(QueueableContext context) {
         PCRApprovalHandler pcrApprovalHandler = new PCRApprovalHandler();
-        Lead lead = pcrApprovalHandler.getLeadsForCreditAnalysis(new Set<Id>{leadId})[0];
+        Lead lead = pcrApprovalHandler.getLeadsForCreditAnalysis(new Set<Id>{this.leadId})[0];
         if (pcrApprovalHandler.leadReadyForPrequalCheck(lead)) {
             List<LASERCA__Personal_Credit_Report__c> pcrsToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
             lead = pcrApprovalHandler.runCreditReviewProcess(lead, null, null);
