@@ -925,6 +925,10 @@
                             <option name="name" value="RecurringSRECHandlerTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="QueueableApplicationReview" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -1078,6 +1082,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="clientImageFiles" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="Conga_Instructions" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="clientLogos" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
