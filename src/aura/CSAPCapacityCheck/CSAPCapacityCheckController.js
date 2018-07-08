@@ -36,6 +36,19 @@
         }, 6000);
     },
     finishStage : function(component, event, helper) {
-        helper.finishStage(component, event, helper);
+        var lead = component.get("v.lead");
+        if(lead.Personal_Credit_Report__c == null){
+            helper.finishStage(component, event, helper);
+        }else{
+            //Skip to the Energy Use page
+            var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
+            stageChangeEvent.setParams({"stageName": "NAV_Energy_Information"});
+            stageChangeEvent.setParams({"options": {"pageName": "UtilityAccountInformation"}});
+            stageChangeEvent.setParams({"eventType": "INITIATED"});
+            stageChangeEvent.setParams({"lead": lead});
+            stageChangeEvent.fire();
+
+        }
+        
     },
 })

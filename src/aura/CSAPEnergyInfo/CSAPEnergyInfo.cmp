@@ -262,8 +262,6 @@
             </div>
             <div class="slds-float_right">
               <lightning:button label="Next" onclick="{!c.goToAddMore}"/>
-              <!-- <lightning:button label="Add another Utility Account" onclick="{!c.addUAL}"/>
-              <lightning:button label="Complete Application" onclick="{!c.finishStage}"/> -->
             </div>
           </div>
         </form>

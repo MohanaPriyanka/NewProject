@@ -32,15 +32,12 @@
             }
             if (options.hasOwnProperty("page")) {
                 stageChangeEvent.setParams({"page": options.page});
-                console.log("options.page " + options.page);
             }
-
         }
         stageChangeEvent.fire();
     },
 
     handleNavEvent : function(component, event, helper, defaultPage) {
-        console.log("handling handleNavEvent - Options: " + event.getParam("options"));
         if (event.getParam("eventType") === "INITIATED" &&
             event.getParam("stageName") === component.get("v.STAGENAME")) {
             component.set("v.lead", event.getParam("lead"));
@@ -49,10 +46,6 @@
         } else if ((event.getParam("eventType") === "INITIATED" && event.getParam("stageName") !== component.get("v.STAGENAME"))) {
             component.set("v.page", "");
             component.set("v.supressWaiting", true);
-        }
-        if (event.getParam("options") && event.getParam("options").hasOwnProperty("page")) {
-            component.set("v.page", event.getParam("options").page);
-            debugger;
         }
     },
 

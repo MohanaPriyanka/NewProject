@@ -47,4 +47,31 @@
         var parentId = component.get("v.ual.Id");
         helper.uploadFiles(component, files, parentId, helper.showUploadSuccess, description, helper);
     },
+    addNewLead : function(component, event, helper, applicationType) {
+        var oldLead = component.get("v.lead");
+        var newLead = {
+            sobjectType: "Lead",
+            Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
+            Parent_Account__c: oldLead.Parent_Account__c,
+            Partner_lookup__c : oldLead.Partner_lookup__c,
+            Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
+            Email : oldLead.Email,
+            FirstName: oldLead.FirstName,
+            LastName: oldLead.LastName,
+            MobilePhone: oldLead.MobilePhone,
+            Phone: oldLead.Phone,
+            LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
+            LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
+            Application_Type__c : applicationType
+        };
+
+        component.set("v.lead", newLead);
+
+        var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
+        stageChangeEvent.setParams({"stageName": "NAV_Personal_Information"});
+        stageChangeEvent.setParams({"options": {"pageName": "AddressForm"}});
+        stageChangeEvent.setParams({"eventType": "INITIATED"});
+        stageChangeEvent.setParams({"lead": newLead});
+        stageChangeEvent.fire();
+    },
 })

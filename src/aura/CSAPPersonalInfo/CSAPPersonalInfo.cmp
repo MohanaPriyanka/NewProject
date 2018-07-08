@@ -392,7 +392,9 @@
       <div class="slds-clearfix">
         <div class="slds-clearfix slds-p-top_medium">
           <div class="slds-float_left">
-            <lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>
+            <aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">
+              <lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>
+            </aura:if>
           </div>
           <div class="slds-float_right">
             <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>

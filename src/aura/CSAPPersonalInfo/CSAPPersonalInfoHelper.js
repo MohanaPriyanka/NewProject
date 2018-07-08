@@ -22,26 +22,46 @@
 
     upsertRecords : function(component, event, helper) {
         var lead = component.get("v.lead");
-        var upsertCSAPRecordsAction = component.get("c.upsertCSAPRecords");
-        upsertCSAPRecordsAction.setParams({
-            "lead": lead,
-            "partnerId" : component.get("v.partnerId"),
-            "salesRepId" : component.get("v.salesRepId")
-        });
-        upsertCSAPRecordsAction.setCallback(this, function(actionResult) {
-            if (actionResult.getReturnValue() != null) {
-                var lead = actionResult.getReturnValue();
-                component.set("v.lead", lead);
-                helper.finishStage(component, event, helper);
-            } else {
-                helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
-                    'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
-                    JSON.stringify(actionResult.getError()));
-                component.set("v.loading", false);
-                component.set("v.page", "AboutYourself");
-            }
-        });
-
-        $A.enqueueAction(upsertCSAPRecordsAction);
+        if(lead.Personal_Credit_Report__c == null){
+            var upsertCSAPRecordsAction = component.get("c.upsertCSAPRecords");
+            upsertCSAPRecordsAction.setParams({
+                "lead": lead,
+                "partnerId" : component.get("v.partnerId"),
+                "salesRepId" : component.get("v.salesRepId")
+            });
+            upsertCSAPRecordsAction.setCallback(this, function(actionResult) {
+                if (actionResult.getReturnValue() != null) {
+                    var lead = actionResult.getReturnValue();
+                    component.set("v.lead", lead);
+                    helper.finishStage(component, event, helper);
+                } else {
+                    helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
+                        'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
+                        JSON.stringify(actionResult.getError()));
+                    component.set("v.loading", false);
+                    component.set("v.page", "AboutYourself");
+                }
+            });
+            $A.enqueueAction(upsertCSAPRecordsAction);
+        }else{
+            var addAdditionalLeadAction = component.get("c.addAdditionalLead");
+            addAdditionalLeadAction.setParams({
+                "lead": lead
+            });
+            addAdditionalLeadAction.setCallback(this, function(actionResult) {
+                if (actionResult.getReturnValue() != null) {
+                    var lead = actionResult.getReturnValue();
+                    component.set("v.lead", lead);
+                    helper.finishStage(component, event, helper);
+                } else {
+                    helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
+                        'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
+                        JSON.stringify(actionResult.getError()));
+                    component.set("v.loading", false);
+                    component.set("v.page", "AboutYourself");
+                }
+            });
+            $A.enqueueAction(addAdditionalLeadAction);
+        }
     },
 })

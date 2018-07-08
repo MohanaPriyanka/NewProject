@@ -78,45 +78,18 @@
                 var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
                 ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.page", "AddMore");
+                    component.set("v.ual", {
+                        sobjectType: "Utility_Account_Log__c"
+                    });
                 }));
             }
         }
     },
     addResidence : function(component, event, helper) {
-        console.log("Adding Residence");
-
-        var oldLead = component.get("v.lead");
-        console.log("Creating a New Lead" + oldLead);
-        
-        var newLead = {
-            sobjectType: "Lead",
-            Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
-            Parent_Account__c: oldLead.Parent_Account__c,
-            Partner_lookup__c : oldLead.Partner_lookup__c,
-            Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
-            Email : oldLead.Email,
-            FirstName: oldLead.FirstName,
-            LastName: oldLead.LastName,
-            MobilePhone: oldLead.MobilePhone,
-            Phone: oldLead.Phone,
-            LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
-            LASERCA__SSN__c : oldLead.LASERCA__SSN__c
-        };
-
-        newLead.Application_Type__c = "Residential";
-
-
-        var stage = "NAV_Personal_Information";
-        var stageIndex = helper.getStage(stage);
-        var maxIndex = helper.getStage(oldLead.CSAP_Stage__c);
-
-        component.set("v.lead", newLead);
-        if (stageIndex <= maxIndex+1) {
-            helper.raiseNavEvent("INITIATED", {"stageName": stage, "lead": newLead, "page": "AddressForm"});
-        }
+        helper.addNewLead(component, event, helper,"Residential");
     },
     addBusiness : function(component, event, helper) {
-        console.log("Adding Business");
+        helper.addNewLead(component, event, helper,"Non-Residential");
     },
     cancelAddUAL : function(component, event, helper) {
         if(confirm("Are you sure you want to cancel adding another Utility Account Log?")){
@@ -149,14 +122,5 @@
     
     finishStage : function(component, event, helper) {
         helper.finishStage(component, event, helper);
-        // var ual = component.get("v.ual");
-        // if(ual.Id){
-        //     var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-        //     ualPromise.then($A.getCallback(function resolve(retVal) {
-        //         helper.finishStage(component, event, helper);
-        //     }));
-        // }else{
-        //     helper.finishStage(component, event, helper);
-        // }
     },
 })

@@ -10,13 +10,17 @@
             component.set("v.STAGENAME", "NAV_Personal_Information");
             component.set("v.page", "AboutYourself");
         }
-
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
     },
     handleNavEvent : function(component, event, helper) {
-        helper.handleNavEvent(component, event, helper, "AboutYourself");
+        const options = event.getParam("options");
+        if (options && options.pageName) {
+            helper.handleNavEvent(component, event, helper, options.pageName);
+        }else{
+            helper.handleNavEvent(component, event, helper, "AboutYourself");
+        }
     },
     goToAboutYourself : function(component, event, helper) {
         component.set("v.page", "AboutYourself");
