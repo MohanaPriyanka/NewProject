@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 7/9/2018.
- * Description: 
- * Test: 
+ * Description: Used to hold methods that look at the Public Records of a PCR
+ * Test: PCRApprovalHandlerTest
  */
 
 
