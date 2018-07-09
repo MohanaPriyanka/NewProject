@@ -105,6 +105,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Integer yr = System.Today().Year();
 
             //Dont think i need property_Account id and parent account
+
+
         for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c,AcctNum__c, Property_Account_ID__c, Parent_Account__c
                                                 FROM Account_Bill__c
                                                 WHERE Bill_Number__c = 1 AND CALENDAR_MONTH(Date__c) = :mnth AND CALENDAR_YEAR(Date__c) = :yr ]) {
@@ -206,7 +208,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 //Do I need this insert? All I need is an update?
                 // ordersToInsert.add(firstChargentOrder);
 
-                //Move the Chargent Order to the Account
+                //Move the Chargent Order to the Account Bill
                 firstChargentOrder.Account_Bill__c = firstAB.Id;
 
                 //Remove the Chargent Order from the Property Account
@@ -214,6 +216,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
                 //How to update: ChargentOrder, AccountBill, and Parent Account (or can it just be an update to the chargent order?
                 ordersToUpdate.add(firstChargentOrder);
+
+                System.debug('We are about to push updates for the Chargent Order');
             }
         update ordersToUpdate;
         }

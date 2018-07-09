@@ -122,7 +122,7 @@ private class RecurringPaymentsHandlerTestClass{
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
 
-        // create Parent Accounts
+        // create Property Accounts
 
         Account accountA = new Account(name = 'Account A',
             RecordTypeId = '012j00000010Ha3',
@@ -515,7 +515,7 @@ private class RecurringPaymentsHandlerTestClass{
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c
               FROM ChargentOrders__ChargentOrder__c];
 
-        // Seven Original Chargent Orders:
+        // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 3 that should have been moved to the newer bill
         System.assertEquals(6,orderlist.size());
@@ -796,35 +796,68 @@ private class RecurringPaymentsHandlerTestClass{
 
     static testMethod void moveChargentOrderFromPropertyAcctToFirstAcctBill (){
         //Run set up data?
+        //Need an opportunity? Property Account? UAS? UAL? SSS? Entity? Gateway?
 
-        // create Property Account
         Account propAccountA = new Account(name = 'Property Account A',
             RecordTypeId = '012j00000010HeQ');
 
-        Entity__c entityone = new Entity__c (
-            Name = 'BarrettProjCo');
+        insert propAccountA;
 
-        insert entityone;
+        Utility_Account_Log__c ualog3 = new Utility_Account_Log__c(Name = '0000333',
+            Account__c = propAccountA.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'sarah renfro');
 
-        Shared_Solar_System__c sss1 = [ SELECT Id
+        insert ualog3;
+
+        Entity__c entityA = [ SELECT Id
+                                FROM Entity__c
+                                WHERE name = 'BarrettProjCo'];
+
+
+        Shared_Solar_System__c sssA = [ SELECT Id
                                             FROM Shared_Solar_System__c
-                                            WHERE name = 'sss1'];
+                                            WHERE name = 'Oxford Barrett St. P1'];
 
         ChargentBase__Gateway__c chGatewayone = [ SELECT Id, Name
                                                     FROM ChargentBase__Gateway__c
                                                     WHERE Name = 'Chargent Gateway One'];
 
-        insert new List<Account>{propAccountA};
+        Opportunity opportunityA = new Opportunity(Name = 'OppA',
+            AccountId = propAccountA.Id,
+            Shared_Solar_System__c = sssA.Id,
+            StageName = 'Complete',
+            CloseDate = System.today());
 
-        //Create first Account Bill?
+        insert opportunityA;
+
+        Utility_Account_Subscription__c uasA = new Utility_Account_Subscription__c(
+            Name = '0000333',
+            Utility_Account_Log__c = ualog3.Id,
+            Opportunity__c = opportunityA.Id,
+            Calculated_Annual_Cost_of_Electricity__c = 10000,
+            Subscribed_Annual_Cost_of_Electricity__c = 10000);
+
+        insert uasA;
+
+        uasA.Customer_Subscription_KW_DC_STATIC__c = 25;
+
+        update uasA;
+
+        Schedule_Z__c scheduleZA = new Schedule_Z__c(
+            Name = '18-0333 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssA.Id,
+            Status__c = 'Billing');
+
+        insert scheduleZA;
 
 
         //Test first Account Bill - Chargent Order linked to Property Account
         ChargentOrders__ChargentOrder__c orderFirstAcctBill  = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Account__c = propAccountA.Id,
             ChargentOrders__Gateway__c = chGatewayone.Id,
-            ChargentOrders__Shipping_Name__c = entityone.id,
-            ChargentOrders__Billing_First_Name__c = 'Sarah',
+            ChargentOrders__Shipping_Name__c = entityA.Id,
+            ChargentOrders__Billing_First_Name__c = 'SarahRenfro',
             ChargentOrders__Billing_Last_Name__c = 'Renfro',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
             ChargentOrders__Billing_Zip_Postal__c = '02467',
@@ -841,14 +874,76 @@ private class RecurringPaymentsHandlerTestClass{
             //ChargentOrders__Payment_Status__c = 'Recurring',
             //ChargentOrders__Charge_Date__c = '15');
 
-        insert new List<ChargentOrders__ChargentOrder__c>{orderFirstAcctBill};
+        insert orderFirstAcctBill;
 
         //need to run method "updateRecurringOrders"
         //Should move all chargent orders that have been on property account to the first account bill
 
+        //Create first Account Bill? Created through Production Updates --> Should have AB and SB
+        Energy_Usage_Update__c productionupdateA = [SELECT Id
+                                                    FROM Energy_Usage_Update__c
+                                                    WHERE Name = 'sssA - March 2016'];
+
+        productionupdateA.Schedule_Z__c = scheduleZA.id;
+
+        update productionUpdateA;
+        update sssA;
+
+        Test.startTest();
+        List<Account_Bill__c> acctBills = [SELECT Id, Name FROM Account_Bill__c ];
+
+        System.assertEquals(5, acctBills.size() );
+        System.debug(acctBills);
+
+        List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
+                                                                YearDate__c, Credits_on_Bill_Period__c,
+                                                                MonthDate__c, Total_System_NMCs__c, Production__c,
+                                                                Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+                                                                Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+                                                                Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+                                                                Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+                                                                Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+                                                                Billing_Period_End_Date__c, Month_Number__c,
+                                                                Net_Metering_Rate_Applied_2_of_4__c,
+                                                                Net_Metering_Rate_Applied_3_of_4__c,
+                                                                Net_Metering_Rate_Applied_4_of_4__c
+                                                            FROM Energy_Usage_Update__c
+                                                            WHERE Name = 'sssA - March 2016'];
+
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        ee.runBills();
+
+        List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c ];
+
+        System.assertEquals(7, acctBillsList.size() );
+        System.debug(acctBillsList);
+
+        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
+        database.executeBatch(batchToRun,50);
+        Test.stopTest();
+
+
         //check to see if Chargent Order's Account Name is null and Account Bill is = to AB
-        System.assertEquals(orderFirstAcctBill.ChargentOrders__Account__c, null);
-        System.assertEquals(orderFirstAcctBill.Account_Bill__c, firstAB);
+        System.assertEquals(null, orderFirstAcctBill.Property_Account__c);
+
+
+        //How do I check account bill is correct if i do not manually create account bill (is generated by the production update)
+
+        //System.assertNotEquals(null, orderFirstAcctBill.Account_Bill__c);
+        ChargentOrders__ChargentOrder__c checkCO = [SELECT Id, Account_Bill__c, ChargentOrders__Card_Security_Code__c, Entity_Name__c FROM ChargentOrders__ChargentOrder__c WHERE ChargentOrders__Billing_First_Name__c = 'SarahRenfro'  ];
+
+        //Check if CO was created
+        System.assertEquals('999', checkCO.ChargentOrders__Card_Security_Code__c);
+
+        //FAILING
+        //Check if Account_Bill was created
+        String checkABCO = checkCO.Account_Bill__c;
+        System.assertNotEquals(null, checkABCO);
+
+        //Other way to check if Account Bill is linked to Chargent Order
+        Account_Bill__c checkAB = [SELECT Id FROM Account_Bill__c WHERE Parent_Account__c = :propAccountA.Id];
+        System.assertEquals(checkAB.Id, orderFirstAcctBill.Account_Bill__c);
+
     }
 
     static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
