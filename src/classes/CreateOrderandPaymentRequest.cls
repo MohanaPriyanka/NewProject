@@ -72,6 +72,7 @@ public without sharing class CreateOrderandPaymentRequest {
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         try {
             Set<Id> accountBillIdSet = new Set<Id>();
+            Set<Id> entityIdSet = new Set<Id>();
             for (SObject chargeAmount : chargeAmounts) {
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
                 orderA.ChargentOrders__Shipping_Name__c = (String) chargeAmount.get('ChargentOrders__Shipping_Name__c');
@@ -92,6 +93,7 @@ public without sharing class CreateOrderandPaymentRequest {
                     orderA.ChargentOrders__Subtotal__c = 0;
                 }
                 accountBillIdSet.add(orderA.Account_Bill__c);
+                entityIdSet.add(orderA.ChargentOrders__Shipping_Name__c);
                 ordersToInsert.add(orderA);
             }
             insert ordersToInsert;
@@ -103,6 +105,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 WHERE ( Id NOT IN :ordersToInsert)
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
                 AND Account_Bill__r.Parent_Account__c IN :accountBillIdSet
+                AND ChargentOrders__Gateway__r.Entity_ID__c IN : entityIdSet
             ];
             if(chargentOrderList.size() > 0){
                 for(ChargentOrders__ChargentOrder__c co : chargentOrderList){
