@@ -91,7 +91,8 @@ public without sharing class SLPQuickSalesSheetTest{
 
       Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Amount__c, Finance_Charge__c 
                                           FROM Quick_Sales_Sheet__c 
-                                          WHERE Down_Payment__c = 2000];
+                                          WHERE Down_Payment__c = 2000
+                                          AND Product__c = : productRecord.Id];
 
       ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                               LinkedEntityId = qssInserted.Id,
@@ -102,7 +103,7 @@ public without sharing class SLPQuickSalesSheetTest{
 
       Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Partner_Logo_File_Name__c, Loan_Amount__c, Finance_Charge__c 
                                           FROM Quick_Sales_Sheet__c 
-                                          WHERE Down_Payment__c = 2000];
+                                          WHERE Id = : qssInserted.Id];
 
       system.AssertNotEquals('notgenerated', qssUpdated.Link_to_File__c);
       system.AssertNotEquals(0, distList.size());
