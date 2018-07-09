@@ -29,9 +29,14 @@
             var insertOrderPromise = helper.insertOrders(component, chOrFields, helper);
             insertOrderPromise.then(
                 $A.getCallback(function(result) {
-                    component.set("v.transactionsCreated", []);
-                    var ordersToInsert = component.get("v.readyToChargeOrders");
-                    helper.submitPayments(component, ordersToInsert, helper);
+                    if(component.get("v.chOrder.Autopay_Only__c") === 'false'){
+                        component.set("v.transactionsCreated", []);
+                        var ordersToInsert = component.get("v.readyToChargeOrders");
+                        helper.submitPayments(component, ordersToInsert, helper);
+                    } else{
+                        component.set("v.Spinner", false);
+                        helper.showOrderCreated(component);
+                    }
                 })
             );
         }

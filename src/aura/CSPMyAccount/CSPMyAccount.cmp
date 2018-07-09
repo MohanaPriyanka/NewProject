@@ -6,7 +6,8 @@
   <aura:attribute name="selectedAccount" type="String" default="All" />
   <aura:attribute name="SystemBills" type="Object" />
   <aura:attribute name="AccountBills" type="Object" /> 
-  <aura:attribute name="PaymentLogs" type="Object" />  
+  <aura:attribute name="PaymentLogs" type="Object" />
+  <aura:attribute name="chargentOrder" type="Object"/>
   <aura:attribute name="recurringCheck" type="Boolean"/>   
   <aura:attribute name="fileNames" type="String[]"/>
   <aura:attribute name="ShowPaymentForm" type="Boolean" default="false"/>
@@ -35,7 +36,21 @@
                 <aura:set attribute="else">
                   <aura:if isTrue="{!v.recurringCheck}">
                     <h3 class="slds-text-heading_small slds-text-color_default">
-                      Your Account is currently set to Auto-Pay. If you have any questions, please reach out to BlueWave at 1-844-786-4100
+                      <p>Your Account is currently set to Auto-Pay.</p>
+                      <br />
+                      <aura:if isTrue="{!v.chargentOrder.ChargentOrders__Bank_Account_Number__c != null}">
+                        <p>Your next transaction will execute on <ui:outputDate value="{!v.chargentOrder.ChargentOrders__Next_Transaction_Date__c}" format="MM/dd/yyyy" /> from account ending in {!v.chargentOrder.ChargentOrders__Bank_Account_Number__c}.</p>
+                      </aura:if>
+                      <aura:if isTrue="{!v.chargentOrder.ChargentOrders__Card_Number__c != null}">
+                        <p>Your next transaction will execute on <ui:outputDate value="{!v.chargentOrder.ChargentOrders__Next_Transaction_Date__c}" format="MM/dd/yyyy" /> from card ending in {!v.chargentOrder.ChargentOrders__Card_Number__c}.</p>
+                      </aura:if>
+
+                      <lightning:button aura:id="modifyPaymentInfo"
+                                        name="modifyPaymentInfo"
+                                        label="Modify My Payment Info"
+                                        class="slds-text-body_small slds-button--brand
+                            slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"
+                                        onclick="{!c.openPaymentWindow}"/>
                     </h3>
                     <aura:set attribute="else">
                       <aura:if isTrue="{!greaterthan(v.myBill,0)}">
@@ -47,7 +62,15 @@
                                     onclick="{!c.openPaymentWindow}"/>
                         <aura:set attribute="else">
                           <h3 class="slds-text-heading_small slds-text-color_default">
-                          Your current balance is zero. No payments are needed. 
+                            Your current balance is zero. No payments are needed.
+                            <br />
+                            <br />
+                            <lightning:button aura:id="signupForAutopay"
+                                              name="signupForAutopay"
+                                              label="Sign up For Autopay"
+                                              class="slds-text-body_small slds-button--brand
+                            slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"
+                                              onclick="{!c.openPaymentWindow}"/>
                           </h3>
                         </aura:set>
                       </aura:if>

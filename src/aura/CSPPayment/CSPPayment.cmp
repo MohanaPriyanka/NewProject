@@ -24,7 +24,8 @@
                             'ChargentOrders__Billing_State__c' : '',
                             'ChargentOrders__Billing_Zip_Postal__c' : '',
                             'ChargentOrders__Billing_First_Name__c' : '',
-                            'ChargentOrders__Billing_Last_Name__c' : ''}"/> 
+                            'ChargentOrders__Billing_Last_Name__c' : '',
+                            'Autopay_Only__c': true}"/>
 
   <aura:attribute name="ACH" type="Boolean" default=""/>
   <aura:attribute name="Autopay" type="Boolean" default="true"/>
@@ -54,7 +55,26 @@
                 </label>
                 <ui:inputCurrency class="slds-input" value="{!v.DynamicTotalDue}"/>
               </div>
-            <label><b>Select Payment Method:</b></label>
+              <h3 class="slds-text-body_regular slds-text-color_default slds-p-top_medium">
+                If you would you like to enroll in our Automatic Payment service please select yes below. We will automatically withdraw funds from the account listed below on a monthly basis.
+              </h3>
+              <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
+                <label><b>Would you like to enroll in autopay?</b></label>
+                <ui:inputSelect aura:id="autopayOption"
+                                class="slds-input"
+                                value="{!v.Autopay}" >
+                  <ui:inputSelectOption label="Yes" text="true"/>
+                  <ui:inputSelectOption label="No" text="false"/>
+                </ui:inputSelect>
+              </div>
+              <aura:if isTrue="{!v.Autopay}">
+                <div aura:id="autopayOnly" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_small slds-p-bottom_medium">
+                  <lightning:input type="checkbox" checked="{!v.chOrder.Autopay_Only__c}" label="I do not want to make a payment right now, I just want to sign up for autopay. I understand that this will schedule my payment for the first day of next month." disabled="{!v.DynamicTotalDue == 0}" />
+
+                </div>
+              </aura:if>
+
+              <label><b>Select Payment Method:</b></label>
               <ui:inputSelect aura:id="paymentMethod" 
                               required="true"
                               class="slds-input" 
@@ -184,18 +204,6 @@
                 </div>
               </aura:set>
             </aura:if>
-            <h3 class="slds-text-body_regular slds-text-color_default slds-p-top_medium">
-              If you would you like to enroll in our Automatic Payment service please select yes below. We will automatically withdraw funds from the account listed below on a monthly basis.
-            </h3>
-            <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium slds-p-bottom_medium">
-            <label><b>Would you like to enroll in autopay?</b></label>
-              <ui:inputSelect aura:id="autopayOption" 
-                              class="slds-input" 
-                              value="{!v.Autopay}" >
-                <ui:inputSelectOption label="Yes" text="true"/>
-                <ui:inputSelectOption label="No" text="false"/>
-              </ui:inputSelect> 
-            </div>
             <aura:if isTrue="{!v.Autopay}">
               <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
                 <div class="slds-p-left_small slds-p-right_small">
@@ -213,7 +221,7 @@
             <div class="slds-p-top_medium">
               <lightning:button aura:id="submitPayment"
                                   name="submitPayment"
-                                  label="Make Payment"
+                                  label="{!v.DynamicTotalDue == 0 ? 'Sign Up for Autopay' : 'Make Payment'}"
                                   onclick="{!c.makePaymentOrder}"
                                   class="slds-text-body_small slds-button--brand
                                   slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
@@ -224,7 +232,7 @@
                                 class="slds-text-body_small 
                                   slds-p-top_x-small slds-p-bottom_x-small slds-p-left_small slds-p-right_small"/>
               <div class="slds-text-body_small slds-text-color_default slds-p-top_medium">
-                By clicking Make Payment, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
+                By clicking the button, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
               </div>
             </div>
           </aura:set>
