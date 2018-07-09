@@ -97,19 +97,26 @@ public without sharing class CreateOrderandPaymentRequest {
                 ordersToInsert.add(orderA);
             }
             insert ordersToInsert;
+            Set<Id> accountSet = new Set<Id>();
+            for (Account_Bill__c accountBill : [SELECT Id, Name, Parent_Account__r.Id
+                                                FROM Account_Bill__c
+                                                WHERE Id IN : accountBillIdSet]){
+                accountSet.add(accountBill.Parent_Account__r.Id);
+            }
 
             //Find all of the old chargent orders that are marked Recurring and set it to Stopped
             List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
-                SELECT Id, ChargentOrders__Payment_Status__c
+                SELECT Id, ChargentOrders__Payment_Status__c, Reason_for_Recurring_Stop__c
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE ( Id NOT IN :ordersToInsert)
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
-                AND Account_Bill__r.Parent_Account__c IN :accountBillIdSet
+                AND Account_Bill__r.Parent_Account__r.Id IN : accountSet
                 AND ChargentOrders__Gateway__r.Entity_ID__c IN : entityIdSet
             ];
             if(chargentOrderList.size() > 0){
                 for(ChargentOrders__ChargentOrder__c co : chargentOrderList){
                     co.ChargentOrders__Payment_Status__c = 'Stopped';
+                    co.Reason_for_Recurring_Stop__c = 'Replaced with New Payment Info From Portal';
                 }
                 update chargentOrderList;
             }

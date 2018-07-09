@@ -1119,8 +1119,8 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
                     ChargentOrders__Billing_Last_Name__c = 'Testcase');
             List<String> getStatesList = CreateOrderandPaymentRequest.getStates();
-            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, true);
-            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, false);
+            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, false);
+            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, true);
 
             List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c,
                 Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
@@ -1159,7 +1159,7 @@ public class TestBillCreationandPayment {
             FROM ChargentOrders__Transaction__c
             ORDER BY ChargentOrders__Order__r.ChargentOrders__Payment_Method__c];
 
-        //    System.assertEquals('Recurring', updatedTransactions[0].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c);
+            System.assertEquals('Recurring', updatedTransactions[0].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c);
             System.assertNotEquals('Recurring', updatedTransactions[1].ChargentOrders__Order__r.ChargentOrders__Payment_Status__c);
         }
         Test.StopTest();
