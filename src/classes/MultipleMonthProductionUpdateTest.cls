@@ -193,7 +193,6 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = true,
                 Date__c = myDateFeb,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,
@@ -203,12 +202,12 @@ public class MultipleMonthProductionUpdateTest {
                 Production_kWh_2_of_4__c = 364667);
         insert prodUpdateTwoMonths;
 
+//        This billing method was set to 'kwh' before size off nmc change
         Energy_Usage_Update__c prodUpdateSizeoffKwh = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = false,
                 Date__c = myDateFeb,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,

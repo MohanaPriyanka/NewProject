@@ -250,7 +250,6 @@ public class CustomerCommunicationHandlerTest{
         Energy_Usage_Update__c productionupdate = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sssID,
-                Size_off_NMCs__c = true,
                 Schedule_Z__c = scheduleZ1.Id,
                 Production__c = 160000,
                 Total_System_NMCs__c = 36000,

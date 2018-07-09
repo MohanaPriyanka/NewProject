@@ -204,7 +204,6 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                                     Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-                                    Size_off_NMCs__c = prodUpdate.Size_off_NMCs__c,
                                     NMC_Rate__c = nmcRate,
                                     Total_System_NMCs__c = systemNMCs,
                                     Total_System_Production_kWh__c = systemProduction,
