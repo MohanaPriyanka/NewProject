@@ -102,7 +102,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE ( Id NOT IN :ordersToInsert)
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
-                AND Account_Bill__c IN :accountBillIdSet
+                AND Account_Bill__r.Parent_Account__c IN :accountBillIdSet
             ];
             if(chargentOrderList.size() > 0){
                 for(ChargentOrders__ChargentOrder__c co : chargentOrderList){

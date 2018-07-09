@@ -1150,8 +1150,8 @@ public class TestBillCreationandPayment {
 
             System.assertEquals(2,newTransactions.size());
 
-            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id}, true);
-            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id}, false);
+            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id});
+            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id});
 
             List<ChargentOrders__Transaction__c> updatedTransactions = [SELECT Id, Distributed_Among_System_Bills__c,
                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,

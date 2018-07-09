@@ -25,7 +25,7 @@
                             'ChargentOrders__Billing_Zip_Postal__c' : '',
                             'ChargentOrders__Billing_First_Name__c' : '',
                             'ChargentOrders__Billing_Last_Name__c' : '',
-                            'Autopay_Only__c': true}"/>
+                            'Autopay_Only__c': false}"/>
 
   <aura:attribute name="ACH" type="Boolean" default=""/>
   <aura:attribute name="Autopay" type="Boolean" default="true"/>
