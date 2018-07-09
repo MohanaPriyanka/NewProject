@@ -137,4 +137,59 @@ public without sharing class CommunitySolarCustomerPortalTest {
           } 
         Test.stopTest();    
     }
+
+    @isTest static void testChargentLicenseAssignment(){
+        Account parentAccount = [   SELECT Id, Name
+        FROM Account
+        WHERE Name = 'Account Parent'];
+
+        Contact con = new Contact(
+            FirstName = 'First',
+            Email = 'communitiesUserContact@bluewave-capital.com',
+            LastName = 'Last',
+            AccountId = parentAccount.Id,
+            Active_Communities_User__c = true
+        );
+        insert con;
+        // To avoid DML operation on setup object error:
+        // http://burnignorance.com/salesforce-tips/create-a-customer-portal-user-in-test-class-2/
+        User thisUser = [ SELECT Id FROM User WHERE Id = :UserInfo.getUserId() ];
+
+        System.runAs ( thisUser ) {
+            Test.startTest();
+
+            UserRole ur = [SELECT PortalType, PortalAccountId FROM UserRole WHERE PortalType =:'CustomerPortal' LIMIT 1];
+            Profile communityProfile = [SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'];
+            User communityUser = new User(
+                ProfileId = communityProfile.Id,
+                UserRoleId = ur.Id,
+                FirstName = 'Test',
+                LastName = 'BFG_User',
+                Username = 'communityuser@test.com',
+                Email = 'communityuser@test.com',
+                Alias = 'bfg_usr',
+                ContactId = con.Id,
+                CommunityNickname = 'bfg_usr',
+                TimeZoneSidKey = 'America/New_York',
+                LocaleSidKey = 'en_US',
+                EmailEncodingKey = 'ISO-8859-1',
+                LanguageLocaleKey = 'en_US'
+            );
+            insert communityUser;
+            Test.stopTest();
+
+            PackageLicense pl = [   SELECT Id
+            FROM PackageLicense
+            WHERE NamespacePrefix = 'ChargentBase'];
+
+            List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
+            FROM UserPackageLicense
+            WHERE UserId = : communityUser.Id
+            AND PackageLicenseId = : pl.Id];
+
+            System.assertEquals(1,packageAssign.size());
+        }
+    }
 }
