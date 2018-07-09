@@ -9,7 +9,7 @@ public with sharing class ManagedPackageLicenseHandler {
 
     public static void assignChargentLicense(List<User> triggeredUsers) {
         List<User> usersToAssignList = new List<User>();
-        String packageNamespacePrefix = 'ChargentBase';
+        String packageNamespacePrefix = 'ChargentOrders';
 
         Profile communityProfile = [SELECT Id
         FROM Profile
