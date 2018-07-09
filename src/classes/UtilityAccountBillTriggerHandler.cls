@@ -140,9 +140,9 @@ public with sharing class UtilityAccountBillTriggerHandler {
                             }
                         }
                         uasbSet.add(uasb);
-                    } catch (Exception e) {	
-                        String message = 'Utility Account System Bill not generated for UAS ' + uas.Id + 'Error: ' + String.valueOf(e);	
-                        Logger.logLater('UtilityAccountBillTriggerHandler', 'createUASB', message);	
+                    } catch (Exception e) {
+                        String message = 'Utility Account System Bill not generated for UAS ' + uas.Id + 'Error: ' + String.valueOf(e);
+                        Logger.logLater('UtilityAccountBillTriggerHandler', 'createUASB', message);
                     }
                 }
             }
