@@ -1,6 +1,7 @@
 @isTest
 public without sharing class SLPQuickSalesSheetTest{
-  @isTest static void createQssAndLink() {
+    @IsTest(SeeAllData=true)
+    static void createQssAndLink() {
     Partner__c partnerOne = new Partner__c(Name = 'Account One',
                                           Logo__c = 'PartnerFile');
     insert partnerOne;  
@@ -90,7 +91,8 @@ public without sharing class SLPQuickSalesSheetTest{
 
       Quick_Sales_Sheet__c qssInserted = [SELECT Id, Loan_Amount__c, Finance_Charge__c 
                                           FROM Quick_Sales_Sheet__c 
-                                          WHERE Down_Payment__c = 2000];
+                                          WHERE Down_Payment__c = 2000
+                                          AND Product__c = : productRecord.Id];
 
       ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                               LinkedEntityId = qssInserted.Id,
@@ -101,7 +103,7 @@ public without sharing class SLPQuickSalesSheetTest{
 
       Quick_Sales_Sheet__c qssUpdated = [SELECT Id, Link_to_File__c, Partner_Logo_File_Name__c, Loan_Amount__c, Finance_Charge__c 
                                           FROM Quick_Sales_Sheet__c 
-                                          WHERE Down_Payment__c = 2000];
+                                          WHERE Id = : qssInserted.Id];
 
       system.AssertNotEquals('notgenerated', qssUpdated.Link_to_File__c);
       system.AssertNotEquals(0, distList.size());
@@ -113,4 +115,39 @@ public without sharing class SLPQuickSalesSheetTest{
       }
       Test.stopTest();  
   }
+
+  @IsTest(SeeAllData=true)
+  static void testGuest() {
+      Profile guestProfile = [SELECT Id FROM Profile WHERE Name = 'Apply Profile'];
+
+      User guestUser = new User(
+          ProfileId = guestProfile.Id,
+          FirstName = 'Test',
+          LastName = 'BFG_User',
+          Username = 'bw421356@test.com',
+          Email = 'bw421356@test.com',
+          Alias = 'bfg_usr',
+          CommunityNickname = 'bfg_usr',
+          TimeZoneSidKey = 'America/New_York',
+          LocaleSidKey = 'en_US',
+          EmailEncodingKey = 'ISO-8859-1',
+          LanguageLocaleKey = 'en_US');
+
+      System.runAs(guestUser) {
+          ContentVersion testDoc = new ContentVersion(
+              Title ='Test Doc',
+              PathOnClient='/test.pdf'
+          );
+          testDoc.VersionData = Blob.valueOf('This is the body of the pdf');
+          Util.insertSObj(testDoc);
+          List<ContentVersion> contentList = [
+              SELECT ContentDocumentId
+              FROM ContentVersion
+              WHERE Id = :testDoc.Id
+          ];
+          // Make sure ContentVersionTrigger doesn't complain about a guest user inserting ContentVersion
+          System.assertEquals(1, contentList.size());
+      }
+  }
+
 }

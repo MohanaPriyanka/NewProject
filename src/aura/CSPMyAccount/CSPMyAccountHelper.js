@@ -3,7 +3,9 @@
         var actionGetSystemBills = component.get("c.getSystemBills");  
         var actionGetAccountBills = component.get("c.getAccountBills");
         var actionGetTransactions = component.get("c.getTransactions");
-        
+        var actionGetChargentOrder = component.get("c.getChargentOrder");
+
+
         actionGetSystemBills.setParams({
             "propertyAccountId" : accountId
         });
@@ -13,6 +15,10 @@
         });
 
         actionGetTransactions.setParams({
+            "propertyAccountId" : accountId
+        });
+
+        actionGetChargentOrder.setParams({
             "propertyAccountId" : accountId
         });
 
@@ -37,7 +43,6 @@
         }); 
        
         actionGetTransactions.setCallback(this,function(resp){
-            component.set("v.recurringCheck", false);
             if(resp.getState() === 'SUCCESS') {
                 component.set("v.PaymentLogs", resp.getReturnValue());
                 var transactionList = resp.getReturnValue();
@@ -50,8 +55,26 @@
             } else {
                 $A.log("Errors", resp.getError());
             }
-        }); 
-        
+        });
+
+        actionGetChargentOrder.setCallback(this,function(resp){
+            component.set("v.recurringCheck", false);
+            if(resp.getState() === "SUCCESS") {
+                var chargentOrder = resp.getReturnValue();
+                if(chargentOrder){
+                    if(chargentOrder.ChargentOrders__Bank_Account_Number__c){
+                        chargentOrder.ChargentOrders__Bank_Account_Number__c = chargentOrder.ChargentOrders__Bank_Account_Number__c.substr(chargentOrder.ChargentOrders__Bank_Account_Number__c.length - 4)
+                    } else if(chargentOrder.ChargentOrders__Card_Number__c){
+                        chargentOrder.ChargentOrders__Card_Number__c = chargentOrder.ChargentOrders__Card_Number__c.substr(chargentOrder.ChargentOrders__Card_Number__c.length - 4)
+                    }
+                    component.set("v.chargentOrder", chargentOrder);
+                    component.set("v.recurringCheck", true);
+                }
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+
         actionGetAccountBills.setCallback(this,function(resp){
             if(resp.getState() === 'SUCCESS') {
                 component.set("v.AccountBills", resp.getReturnValue());
@@ -72,5 +95,6 @@
         $A.enqueueAction(actionGetAccountBills);
         $A.enqueueAction(actionGetTransactions); 
         $A.enqueueAction(actionGetSystemBills);
+        $A.enqueueAction(actionGetChargentOrder);
     }
 })

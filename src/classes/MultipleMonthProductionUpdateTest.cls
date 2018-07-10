@@ -209,7 +209,7 @@ public class MultipleMonthProductionUpdateTest {
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
                 Size_Off_NMCs__c = false,
-                Date__c = myDateFeb,
+                Date__c = myDateMar,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,
                 Production__c = 80296);
@@ -257,6 +257,7 @@ public class MultipleMonthProductionUpdateTest {
     }
 
     @isTest public static void testSizeOffkWH() {
+        Test.startTest();
         Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c
                                                       FROM Energy_Usage_Update__c
                                                       WHERE Name = 'sssA - March 2016'];
@@ -267,6 +268,7 @@ public class MultipleMonthProductionUpdateTest {
 
         prodUpdateSizeoffKwh.Generate_Bills__c = true;
         update prodUpdateSizeoffKwh;
+        test.StopTest();
 
         UASB__c generatedBill = 
             [SELECT Id, Name, Utility_Account_Subscription__r.Name,
