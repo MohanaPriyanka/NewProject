@@ -185,11 +185,9 @@ public without sharing class PCRApprovalHandler {
     }
 
     public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
-        if (lead.Personal_Credit_Report__r == null
-            && lead.Personal_Credit_Report_Co_Applicant__r == null) {
-            Set<Id> leadIds = new Set<Id>{lead.id};
-            lead = getLeadsForCreditAnalysis(leadIds)[0];
-        }
+        PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
+
+        lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
 
         if (pcr == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
