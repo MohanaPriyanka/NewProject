@@ -175,13 +175,11 @@ public without sharing class CommunitySolarCustomerPortalTest {
         System.runAs ( thisUser ) {
             Test.startTest();
 
-            UserRole ur = [SELECT PortalType, PortalAccountId FROM UserRole WHERE PortalType =:'CustomerPortal' LIMIT 1];
             Profile communityProfile = [SELECT Id
                                         FROM Profile
                                         WHERE Name = 'Community Solar Community User'];
             User communityUser = new User(
                 ProfileId = communityProfile.Id,
-                UserRoleId = ur.Id,
                 FirstName = 'Test',
                 LastName = 'BFG_User',
                 Username = 'communityuser@test.com',
