@@ -48,30 +48,52 @@
         helper.uploadFiles(component, files, parentId, helper.showUploadSuccess, description, helper);
     },
     addNewLead : function(component, event, helper, applicationType) {
-        var oldLead = component.get("v.lead");
-        var newLead = {
-            sobjectType: "Lead",
-            Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
-            Parent_Account__c: oldLead.Parent_Account__c,
-            Partner_lookup__c : oldLead.Partner_lookup__c,
-            Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
-            Email : oldLead.Email,
-            FirstName: oldLead.FirstName,
-            LastName: oldLead.LastName,
-            MobilePhone: oldLead.MobilePhone,
-            Phone: oldLead.Phone,
-            LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
-            LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
-            Application_Type__c : applicationType
-        };
+        var action = component.get("c.getLead");
+        action.setParams({
+            "leadId": component.get("v.leadId"),
+            "email" : component.get("v.leadEmail")
+        });
+        action.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                //Clone the fields from the old lead
+                var oldLead = resp.getReturnValue();
+                var newLead = {
+                    sobjectType: "Lead",
+                    Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
+                    Parent_Account__c: oldLead.Parent_Account__c,
+                    Partner_lookup__c : oldLead.Partner_lookup__c,
+                    Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
+                    Email : oldLead.Email,
+                    FirstName: oldLead.FirstName,
+                    LastName: oldLead.LastName,
+                    MobilePhone: oldLead.MobilePhone,
+                    Phone: oldLead.Phone,
+                    LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
+                    LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
+                    Application_Type__c : applicationType
+                };
+                component.set("v.lead", newLead);
 
-        component.set("v.lead", newLead);
+                //Redirect to the Personal Information
+                var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
+                stageChangeEvent.setParams({"stageName": "NAV_Personal_Information"});
+                stageChangeEvent.setParams({"options": {"pageName": "AddressForm"}});
+                stageChangeEvent.setParams({"eventType": "INITIATED"});
+                stageChangeEvent.setParams({"lead": newLead});
+                stageChangeEvent.fire();
+            } else if (resp.getState() === "ERROR") {
+                var appEvent = $A.get("e.c:ApexCallbackError");
+                appEvent.setParams({"className" : "CSAPEnergyInfoHelper",
+                                    "methodName" : "getLeadRecord",
+                                    "errors" : resp.getError(),
+                                    "developerInfo" : component.get("v.leadId")});
+                appEvent.fire();
+                reject(resp.getError());
+            } else {
+                reject(Error("Unknown error"));
+            }
+        });
+        $A.enqueueAction(action);
 
-        var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
-        stageChangeEvent.setParams({"stageName": "NAV_Personal_Information"});
-        stageChangeEvent.setParams({"options": {"pageName": "AddressForm"}});
-        stageChangeEvent.setParams({"eventType": "INITIATED"});
-        stageChangeEvent.setParams({"lead": newLead});
-        stageChangeEvent.fire();
     },
 })

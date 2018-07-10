@@ -11,6 +11,6 @@
   <c:CSAPPersonalInfo supressWaiting="true" leadId="{!v.leadId}" partnerId="{!v.partnerId}" salesRepId="{!v.salesRepId}"/>
   <c:CSAPCapacityCheck supressWaiting="true"/>
   <c:CSAPCreditCheck supressWaiting="true"/>
-  <c:CSAPEnergyInfo supressWaiting="true"/>
+  <c:CSAPEnergyInfo supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}"/>
   <c:CSAPComplete supressWaiting="true"/>
 </aura:component>
