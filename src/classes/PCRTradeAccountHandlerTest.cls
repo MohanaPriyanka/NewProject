@@ -75,6 +75,8 @@ public with sharing class PCRTradeAccountHandlerTest {
 
         List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>();
         List<String> tradeAccountStrings = new List<String>();
+
+        // add duplicate trade lines
         for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
             LASERCA__Trade_Accounts__c newTradeAccount = new LASERCA__Trade_Accounts__c(
                 LASERCA__Name_of_the_Institution__c = 'JC Pennys',
@@ -87,6 +89,16 @@ public with sharing class PCRTradeAccountHandlerTest {
             tradeAccounts.add(newTradeAccount);
             tradeAccountStrings.add(PCRTradeAccountHandler.matchAccountCriteria(newTradeAccount));
         }
+
+        // add non-duplicate trade line for Co applicant
+        tradeAccounts.add(new LASERCA__Trade_Accounts__c(
+            LASERCA__Name_of_the_Institution__c = 'US Bank',
+            LASERCA__Account_Ownership_Type__c = 'Individual',
+            LASERCA__Account_Balance__c = 1200.00,
+            LASERCA__Monthly_Payment__c = 100,
+            LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report_Co_Applicant__c
+        ));
         insert tradeAccounts;
 
         PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
@@ -95,16 +107,22 @@ public with sharing class PCRTradeAccountHandlerTest {
 
         lead = getLeadForTest();
         System.assertEquals(tradeAccountStrings[0], tradeAccountStrings[1]);
+        // only one trade account on the primary PCR it is a duplcate, but we keep the primary's trade account
         System.assertEquals(123.45, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
-        System.assertEquals(0, lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c);
+        // the JC Penny trade account gets excluded, so only the US Bank account counts
+        System.assertEquals(100, lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c);
         for (LASERCA__Trade_Accounts__c tradeAccount : [
-            SELECT Id, Exclude_From_Rollup__c, LASERCA__Personal_Credit_Report__c
+            SELECT Id, Exclude_From_Rollup__c, LASERCA__Personal_Credit_Report__c, LASERCA__Name_of_the_Institution__c
             FROM LASERCA__Trade_Accounts__c
         ]) {
             if (tradeAccount.LASERCA__Personal_Credit_Report__c == lead.Personal_Credit_Report__c) {
                 System.assertEquals(false, tradeAccount.Exclude_From_Rollup__c);
             } else {
-                System.assertEquals(true, tradeAccount.Exclude_From_Rollup__c);
+                if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'US Bank') {
+                    System.assertEquals(false, tradeAccount.Exclude_From_Rollup__c);
+                } else {
+                    System.assertEquals(true, tradeAccount.Exclude_From_Rollup__c);
+                }
             }
         }
     }
