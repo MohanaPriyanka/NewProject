@@ -1119,8 +1119,8 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
                     ChargentOrders__Billing_Last_Name__c = 'Testcase');
             List<String> getStatesList = CreateOrderandPaymentRequest.getStates();
-            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH);
-            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC);
+            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, false);
+            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, true);
 
             List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c,
                 Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
@@ -1150,8 +1150,8 @@ public class TestBillCreationandPayment {
 
             System.assertEquals(2,newTransactions.size());
 
-            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id}, true);
-            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id}, false);
+            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id});
+            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id});
 
             List<ChargentOrders__Transaction__c> updatedTransactions = [SELECT Id, Distributed_Among_System_Bills__c,
                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
