@@ -100,21 +100,21 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         // Account Bills are generated monthly? Grab by month tag? Where bill num = 0 or 1?
         // Credits on Bill Period? Due Date?
 
-        Map<String, Account_Bill__c> firstAcctBillMap = new Map<String, Account_Bill__c>();
-        Integer mnth = System.Today().Month();
-        Integer yr = System.Today().Year();
+//        Map<String, Account_Bill__c> firstAcctBillMap = new Map<String, Account_Bill__c>();
+//        Integer mnth = System.Today().Month();
+//        Integer yr = System.Today().Year();
 
             //Dont think i need property_Account id and parent account
 
 
-        for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c,AcctNum__c, Property_Account_ID__c, Parent_Account__c
-                                                FROM Account_Bill__c
-                                                WHERE Bill_Number__c = 1 AND CALENDAR_MONTH(Date__c) = :mnth AND CALENDAR_YEAR(Date__c) = :yr ]) {
-            //NEED TO SET MAP < Property Account Id, Acct Bill >
-            firstAcctBillMap.put(firstAcctBill.Parent_Account__c, firstAcctBill);
-        }
-        //Call to a method that finds chargent orders attached to accounts and moves them to first account bills
-        retrieveFirstChargentOrder(firstAcctBillMap, aggregateSbMap );
+//        for(Account_Bill__c firstAcctBill : [SELECT Id, Name, Bill_Number__c,AcctNum__c, Property_Account_ID__c, Parent_Account__c
+//                                                FROM Account_Bill__c
+//                                                WHERE Bill_Number__c = 1 AND CALENDAR_MONTH(Date__c) = :mnth AND CALENDAR_YEAR(Date__c) = :yr ]) {
+//            //NEED TO SET MAP < Property Account Id, Acct Bill >
+//            firstAcctBillMap.put(firstAcctBill.Parent_Account__c, firstAcctBill);
+//        }
+//        //Call to a method that finds chargent orders attached to accounts and moves them to first account bills
+//        retrieveFirstChargentOrder(firstAcctBillMap, aggregateSbMap );
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
             if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
@@ -175,52 +175,52 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         insert ordersToInsert;
     }
 
-    //Method for grabbing Chargent Order for first account bill - grab from parent account
-    public void retrieveFirstChargentOrder(Map<String, Account_Bill__c> firstABMap, Map<String, Decimal> aggregateSbMap){
-        List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
-
-        Map<String, ChargentOrders__ChargentOrder__c> accountByCOMap = new Map<String, ChargentOrders__ChargentOrder__c>();
-
-
-        //Find Chargent Order for the Account Bill using Parent Account ID
-        for (ChargentOrders__ChargentOrder__c firstChargentOrder : [
-            SELECT Id, Property_Account__c, ChargentOrders__Account__c
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Account__c IN :firstABMap.keyset()]) {
-                                        //Is this a proper SOQL with a map?
-
-                //Grabbing account bill by Chargent Order's Account Name field --> Id for the Property Account
-                Account_Bill__c firstAB = firstABMap.get(firstChargentOrder.ChargentOrders__Account__c);
-
-                //Grab amountToCharge value from System Bill
-                Decimal amountToCharge = aggregateSbMap.get(firstAB.Id + '_' + firstChargentOrder.ChargentOrders__Gateway__r.Entity_ID__c).setScale(2, roundingMode.HALF_UP);
-
-                //Update the fields on the Chargent Order to be Recurring
-                firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
-                firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
-                firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
-                firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
-                firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
-                firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
-                firstChargentOrder.Reason_for_Recurring_Stop__c = '';
-                firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
-
-                //Do I need this insert? All I need is an update?
-                // ordersToInsert.add(firstChargentOrder);
-
-                //Move the Chargent Order to the Account Bill
-                firstChargentOrder.Account_Bill__c = firstAB.Id;
-
-                //Remove the Chargent Order from the Property Account
-                firstChargentOrder.Property_Account__c = null;
-
-                //How to update: ChargentOrder, AccountBill, and Parent Account (or can it just be an update to the chargent order?
-                ordersToUpdate.add(firstChargentOrder);
-
-                System.debug('We are about to push updates for the Chargent Order');
-            }
-        update ordersToUpdate;
-        }
+//    //Method for grabbing Chargent Order for first account bill - grab from parent account
+//    public void retrieveFirstChargentOrder(Map<String, Account_Bill__c> firstABMap, Map<String, Decimal> aggregateSbMap){
+//        List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
+//
+//        Map<String, ChargentOrders__ChargentOrder__c> accountByCOMap = new Map<String, ChargentOrders__ChargentOrder__c>();
+//
+//
+//        //Find Chargent Order for the Account Bill using Parent Account ID
+//        for (ChargentOrders__ChargentOrder__c firstChargentOrder : [
+//            SELECT Id, Property_Account__c, ChargentOrders__Account__c
+//            FROM ChargentOrders__ChargentOrder__c
+//            WHERE ChargentOrders__Account__c IN :firstABMap.keyset()]) {
+//                                        //Is this a proper SOQL with a map?
+//
+//                //Grabbing account bill by Chargent Order's Account Name field --> Id for the Property Account
+//                Account_Bill__c firstAB = firstABMap.get(firstChargentOrder.ChargentOrders__Account__c);
+//
+//                //Grab amountToCharge value from System Bill
+//                Decimal amountToCharge = aggregateSbMap.get(firstAB.Id + '_' + firstChargentOrder.ChargentOrders__Gateway__r.Entity_ID__c).setScale(2, roundingMode.HALF_UP);
+//
+//                //Update the fields on the Chargent Order to be Recurring
+//                firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
+//                firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
+//                firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
+//                firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
+//                firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
+//                firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
+//                firstChargentOrder.Reason_for_Recurring_Stop__c = '';
+//                firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+//
+//                //Do I need this insert? All I need is an update?
+//                // ordersToInsert.add(firstChargentOrder);
+//
+//                //Move the Chargent Order to the Account Bill
+//                firstChargentOrder.Account_Bill__c = firstAB.Id;
+//
+//                //Remove the Chargent Order from the Property Account
+//                firstChargentOrder.Property_Account__c = null;
+//
+//                //How to update: ChargentOrder, AccountBill, and Parent Account (or can it just be an update to the chargent order?
+//                ordersToUpdate.add(firstChargentOrder);
+//
+//                System.debug('We are about to push updates for the Chargent Order');
+//            }
+//        update ordersToUpdate;
+//        }
 
 
     public void finish(Database.BatchableContext bc){

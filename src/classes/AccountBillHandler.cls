@@ -1,11 +1,24 @@
 public with sharing class AccountBillHandler{
     public static void handleAccountBill(List<Account_Bill__c> accountBillList) {
         List<String> propertyaccountIds = new List<String>();
+        List<Account_Bill__c> firstAccountBillList = new List<Account_Bill__c>();
         Map<String, Account_Bill__c> abMap = new Map<String, Account_Bill__c>();
+
 
         for (Account_Bill__c abill : accountBillList) {
             propertyaccountIds.add(abill.Property_Account_ID__c);
-        }      
+            List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id
+                                                                    FROM ChargentOrders__ChargentOrder__c
+                                                                    WHERE ChargentOrders__Account__c = :abill.Parent_Account__c ];
+
+            if(abill.Bill_Number__c == 1 && !ordersList.isEmpty() ){
+                firstAccountBillList.add(abill);
+                System.debug(abill.Property_Account_Name__c + ' ' + abill.Chargent_Order__c);
+            }
+        }
+
+
+        retrieveFirstChargentOrder(firstAccountBillList);
 
         for(Account_Bill__c relatedBill : [ SELECT Id, Property_Account_ID__c, Bill_Number__c,
                                             Total_Due__c, Total_Payments_This_Month__c
@@ -27,6 +40,47 @@ public with sharing class AccountBillHandler{
                 trigAB.Past_Bill__c = 0;
                 trigAB.Past_Payment__c = 0;
             }
+        }
+    }
+
+    public static void retrieveFirstChargentOrder(List<Account_Bill__c> firstAccountBillList){
+        List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
+
+        if(!firstAccountBillList.isEmpty()){
+            System.debug(firstAccountBillList[0].Property_Account_Name__c);
+
+            for(Account_Bill__c firstBill : firstAccountBillList){
+
+                ChargentOrders__ChargentOrder__c firstChargentOrder = [ SELECT Id, Property_Account__c, ChargentOrders__Account__c
+                                                                    FROM ChargentOrders__ChargentOrder__c
+                                                                    WHERE ChargentOrders__Account__c = :firstBill.Parent_Account__c];
+
+                //Do i need to populate the Chargent Order with amountToCharge from the System Bills or is that done when the Recurring Payment Handler class is run?
+                //Grab amountToCharge value from System Bill
+                //Decimal amountToCharge = aggregateSbMap.get(firstAB.Id + '_' + firstChargentOrder.ChargentOrders__Gateway__r.Entity_ID__c).setScale(2, roundingMode.HALF_UP);
+
+                //Update the fields on the Chargent Order to be Recurring
+                //firstChargentOrder.ChargentOrders__Subtotal__c = amountToCharge;
+                //firstChargentOrder.ChargentOrders__Charge_Amount__c = amountToCharge;
+                firstChargentOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                firstChargentOrder.ChargentOrders__Payment_Status__c = 'Recurring';
+                firstChargentOrder.ChargentOrders__Payment_Stop__c = 'Unending';
+                firstChargentOrder.ChargentOrders__Charge_Date__c = '01';
+                firstChargentOrder.Reason_for_Recurring_Stop__c = '';
+                firstChargentOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+
+                //Move Chargent Order to the Account Bill
+                firstChargentOrder.Account_Bill__c = firstBill.Id;
+
+                //Remove the Chargent ORder from the Property Account
+                firstChargentOrder.Property_Account__c = null;
+
+                //Add Chargent Order to list for update
+                ordersToUpdate.add(firstChargentOrder);
+
+            }
+
+        update ordersToUpdate;
         }
     }
 
