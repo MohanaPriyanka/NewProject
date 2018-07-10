@@ -11,7 +11,7 @@
         $A.enqueueAction(actionStates);
 
         component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));
-        if(component.get("v.StaticTotalDue") == 0){
+        if(component.get("v.StaticTotalDue") === 0){
             component.set("v.chOrder.Autopay_Only__c", true);
         }
     },
