@@ -42,35 +42,38 @@
       <fieldset class="slds-theme--default">
         <aura:if isTrue="{!v.hideFields}">
           <aura:set attribute="else">
-            <aura:if isTrue="{!v.showErrorText}">
-              <div class="brandColor">
-                <lightning:icon iconName="utility:info" size="medium" alternativeText="!" variant="bare" 
-                  class="slds-p-left_small slds-p-top_small slds-p-bottom_small"/>
-                <b><ui:outputText class="slds-p-left_medium slds-p-right_medium slds-output slds-text-body_regular slds-text-color_inverse" value="{!v.ErrorText}"/></b>
-              </div>
-            </aura:if>
             <div class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2">
-              <div aura:id="paymentAmount" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_small slds-p-bottom_medium">
-                <label><b>Payment Amount:</b>
-                </label>
-                <ui:inputCurrency class="slds-input" value="{!v.DynamicTotalDue}"/>
-              </div>
-              <h3 class="slds-text-body_regular slds-text-color_default slds-p-top_medium">
-                If you would you like to enroll in our Automatic Payment service please select yes below. We will automatically withdraw funds from the account listed below on a monthly basis.
-              </h3>
-              <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
-                <label><b>Would you like to enroll in autopay?</b></label>
-                <ui:inputSelect aura:id="autopayOption"
-                                class="slds-input"
-                                value="{!v.Autopay}" >
-                  <ui:inputSelectOption label="Yes" text="true"/>
-                  <ui:inputSelectOption label="No" text="false"/>
-                </ui:inputSelect>
-              </div>
+              <aura:if isTrue="{!v.StaticTotalDue == 0}">
+                <aura:set attribute="else">
+                  <div aura:id="paymentAmount" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_small slds-p-bottom_medium">
+                    <label><b>Payment Amount:</b>
+                    </label>
+                    <ui:inputCurrency class="slds-input" value="{!v.DynamicTotalDue}"/>
+                  </div>
+                  <h3 class="slds-text-body_regular slds-text-color_default slds-p-top_medium">
+                    If you would you like to enroll in our Automatic Payment service please select yes below. We will automatically withdraw funds from the account listed below on a monthly basis.
+                  </h3>
+                  <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
+                    <label><b>Would you like to enroll in autopay?</b></label>
+                    <ui:inputSelect aura:id="autopayOption"
+                                    class="slds-input"
+                                    value="{!v.Autopay}">
+                      <ui:inputSelectOption label="Yes" text="true"/>
+                      <aura:if isTrue="{!v.DynamicTotalDue != 0}">
+                        <ui:inputSelectOption label="No" text="false"/>
+                      </aura:if>
+                    </ui:inputSelect>
+                  </div>
+                </aura:set>
+              </aura:if>
               <aura:if isTrue="{!v.Autopay}">
                 <div aura:id="autopayOnly" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_small slds-p-bottom_medium">
-                  <lightning:input type="checkbox" checked="{!v.chOrder.Autopay_Only__c}" label="I do not want to make a payment right now, I just want to sign up for autopay. I understand that this will schedule my payment for the first day of next month." disabled="{!v.DynamicTotalDue == 0}" />
-
+                  <lightning:input type="checkbox"
+                                   checked="{!v.chOrder.Autopay_Only__c}"
+                                   class="slds-text-body_regular slds-text-color_default "
+                                   label="I do not want to make a payment right now, I just want to sign up for autopay. I understand that this will schedule my payment for the first day of next month."
+                                   disabled="{!v.StaticTotalDue == 0}"
+                                   onchange="{!c.boxIsChecked}" />
                 </div>
               </aura:if>
 
@@ -217,6 +220,13 @@
                   </div>
                 </div>
               </fieldset>
+            </aura:if>
+            <aura:if isTrue="{!v.showErrorText}">
+              <div class="brandColor slds-p-top_medium slds-p-bottom_medium">
+                <lightning:icon iconName="utility:info" size="medium" alternativeText="!" variant="bare"
+                                class="slds-p-left_small slds-p-top_small slds-p-bottom_small"/>
+                <b><ui:outputText class="slds-p-left_medium slds-p-right_medium slds-output slds-text-body_regular slds-text-color_inverse" value="{!v.ErrorText}"/></b>
+              </div>
             </aura:if>
             <div class="slds-p-top_medium">
               <lightning:button aura:id="submitPayment"

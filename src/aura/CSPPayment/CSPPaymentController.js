@@ -11,14 +11,23 @@
         $A.enqueueAction(actionStates);
 
         component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));
-        if(component.get("v.StaticTotalDue") === 0){
+        if(component.get("v.StaticTotalDue") == 0){
             component.set("v.chOrder.Autopay_Only__c", true);
         }
     },
 
     returnToMyAccount : function(component, event, helper) {
         $A.get('e.force:refreshView').fire();
-    },    
+    },
+
+    boxIsChecked : function(component, event, helper) {
+        var isChecked = component.get("v.chOrder.Autopay_Only__c");
+        if (isChecked){
+            component.set("v.DynamicTotalDue", 0);
+        } else {
+            component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));
+        }
+    },
 
     makePaymentOrder : function(component, event, helper) {
         if (component.get("v.ACH") === 'true'){
