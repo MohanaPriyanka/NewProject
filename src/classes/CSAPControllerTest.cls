@@ -3,8 +3,24 @@ public with sharing class CSAPControllerTest {
     @testSetup static void setupTestData(){
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
 
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        User apiUser = new User(
+            FirstName = 'API',
+            LastName = 'API',
+            ProfileId = profileRecord.Id,
+            Alias = '123api',
+            Email = 'api@bluewavesolar.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Country ='United States',
+            IsActive = true,
+            Timezonesidkey='America/Los_Angeles',
+            Username='api123@bluewavesolar.com');
+        Util.insertSObj(apiUser);
+
         RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
 
         Account accountRecord = new Account(
@@ -22,23 +38,6 @@ public with sharing class CSAPControllerTest {
             Partner_Lookup__c = partnerSetUpIds.get(0),
             Sales_Representative__c = partnerSetUpIds.get(1));
         insert contactRecord;
-
-        User userRecord = new User(
-            FirstName = 'User',
-            Lastname ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
-            Emailencodingkey ='UTF-8',
-            PortalRole = 'Manager',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Profileid = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactRecord.Id,
-            Timezonesidkey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
-        Util.insertSObj(userRecord);
 
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
@@ -134,24 +133,56 @@ public with sharing class CSAPControllerTest {
     @isTest static void testEmailCSAPApplication() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
+        Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+
+        User userRecord = new User(
+            FirstName = 'User',
+            Lastname ='Testing',
+            Alias = 'cswain',
+            Email = 'tropicole34@aol.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactPartner.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='tropicole34@aol.com');
+
+        Lead leadToInsert = [
+            SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
+                Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
+                Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
+                Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
+                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, 
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+            FROM Lead
+            WHERE email = 'testymctesterson@tester.com'];
+        LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.id];
+        Product2 smartProduct = [SELECT Id FROM Product2 WHERE name = 'SMART Community Solar'];
+
+        Test.startTest();
+        System.runAs(userRecord) {
+            CSAPController.addAdditionalLead(leadToInsert);
+            CSAPController.upsertCSAPRecords(leadToInsert, partner.id, salesRep.id);
+        }
+
         Lead lead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
                 Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                 Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
-                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, 
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE email = 'testymctesterson@tester.com'];
-        LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :lead.id];
-        Product2 smartProduct = [SELECT Id FROM Product2 WHERE name = 'SMART Community Solar'];
-
-        Test.startTest();
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        System.runAs(partnerUser) {
-            CSAPController.upsertCSAPRecords(lead, partner.id, salesRep.id);
-        }
 
         //Check upserted Lead, Contact and Account records
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
@@ -174,12 +205,52 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(lead.Id).srecProduct);
         System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(lead.Id).smartProduct.Id);
 
+        System.assertEquals('API', lead.Parent_Account__r.Owner.Name);
+        System.assertNotEquals('User Testing', lead.Parent_Account__r.Owner.Name);
+
         Test.stopTest();
     }
 
     @isTest static void testSLPortalCSAPApplication() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
+        Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+
+        User otherUser = new User(
+            FirstName = 'User',
+            Lastname ='Jordan',
+            Alias = 'jUser132',
+            Email = 'jpentaleri@aol.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactPartner.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='jUser132@aol.com');
+
+        Lead leadToInsert = [
+            SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
+                Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
+                Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
+                Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
+                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+            FROM Lead
+            WHERE email = 'testymctesterson@tester.com'];
+        LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.id];
+        Product2 smartProduct = [SELECT Id FROM Product2 WHERE name = 'SMART Community Solar'];
+
+        Test.startTest();
+        System.runAs(otherUser) {
+            CSAPController.upsertCSAPRecords(leadToInsert, '', '');
+        }
+
         Lead lead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -190,19 +261,9 @@ public with sharing class CSAPControllerTest {
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE email = 'testymctesterson@tester.com'];
-        LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :lead.id];
-        Product2 smartProduct = [SELECT Id FROM Product2 WHERE name = 'SMART Community Solar'];
-
-        Test.startTest();
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        System.runAs(partnerUser) {
-            CSAPController.upsertCSAPRecords(lead, '', '');
-        }
-
         //Check upserted Lead, Contact and Account records
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
         System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
-        System.assertEquals(salesRep.Id, CSAPController.getLead(lead.Id, lead.Email).bs_Sales_ID__c);
         System.assert(CSAPController.getContact(lead.Id, lead.Email).Id != null);
         System.assert(CSAPController.getAccount(lead.Id, lead.Email).Id != null);
 
