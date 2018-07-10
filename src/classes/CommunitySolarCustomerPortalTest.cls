@@ -160,8 +160,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             UserRole ur = [SELECT PortalType, PortalAccountId FROM UserRole WHERE PortalType =:'CustomerPortal' LIMIT 1];
             Profile communityProfile = [SELECT Id
-            FROM Profile
-            WHERE Name = 'Community Solar Community User'];
+                                        FROM Profile
+                                        WHERE Name = 'Community Solar Community User'];
             User communityUser = new User(
                 ProfileId = communityProfile.Id,
                 UserRoleId = ur.Id,
@@ -181,13 +181,13 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Test.stopTest();
 
             PackageLicense pl = [   SELECT Id
-            FROM PackageLicense
-            WHERE NamespacePrefix = 'ChargentBase'];
+                                    FROM PackageLicense
+                                    WHERE NamespacePrefix = 'ChargentBase'];
 
             List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
-            FROM UserPackageLicense
-            WHERE UserId = : communityUser.Id
-            AND PackageLicenseId = : pl.Id];
+                                                        FROM UserPackageLicense
+                                                        WHERE UserId = : communityUser.Id
+                                                        AND PackageLicenseId = : pl.Id];
 
             System.assertEquals(1,packageAssign.size());
         }
