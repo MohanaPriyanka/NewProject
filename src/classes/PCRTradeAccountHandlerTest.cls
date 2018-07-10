@@ -89,13 +89,24 @@ public with sharing class PCRTradeAccountHandlerTest {
         }
         insert tradeAccounts;
 
+        PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
 
         Test.stopTest();
-//        lead = getLeadForTest();
 
+        lead = getLeadForTest();
         System.assertEquals(tradeAccountStrings[0], tradeAccountStrings[1]);
         System.assertEquals(123.45, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
         System.assertEquals(0, lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c);
+        for (LASERCA__Trade_Accounts__c tradeAccount : [
+            SELECT Id, Exclude_From_Rollup__c, LASERCA__Personal_Credit_Report__c
+            FROM LASERCA__Trade_Accounts__c
+        ]) {
+            if (tradeAccount.LASERCA__Personal_Credit_Report__c == lead.Personal_Credit_Report__c) {
+                System.assertEquals(false, tradeAccount.Exclude_From_Rollup__c);
+            } else {
+                System.assertEquals(true, tradeAccount.Exclude_From_Rollup__c);
+            }
+        }
     }
 
     static Lead getLeadForTest() {
