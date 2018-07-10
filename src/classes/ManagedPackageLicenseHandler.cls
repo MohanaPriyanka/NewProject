@@ -25,10 +25,10 @@ public with sharing class ManagedPackageLicenseHandler {
 
     public static void assignLicense(List<User> usersToAssign, String PACKAGE_NAMESPACE_PREFIX) {
         //find the PackageLicense Id
-        PackageLicense pl = [SELECT Id, NamespacePrefix, AllowedLicenses,
-            UsedLicenses, ExpirationDate,Status
-        FROM PackageLicense
-        WHERE NamespacePrefix = :PACKAGE_NAMESPACE_PREFIX];
+        PackageLicense pl = [   SELECT Id, NamespacePrefix, AllowedLicenses,
+                                    UsedLicenses, ExpirationDate,Status
+                                FROM PackageLicense
+                                WHERE NamespacePrefix = :PACKAGE_NAMESPACE_PREFIX];
         System.assert(pl != null, 'Error Assigning Managed Package to User');
         List<UserPackageLicense> firstUPLs = new List<UserPackageLicense>();
 

@@ -38,7 +38,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Email = 'bob34873@test.com',
             Alias = 'bob348',
             ContactId = con.Id,
-            CommunityNickname = 'bfg_usr',
+            CommunityNickname = 'bob348',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'ISO-8859-1',
@@ -184,9 +184,9 @@ public without sharing class CommunitySolarCustomerPortalTest {
                 LastName = 'BFG_User',
                 Username = 'moreUniqueemail3184@test.com',
                 Email = 'moreUniqueemail3184@test.com',
-                Alias = 'email3184',
+                Alias = 'ema3184',
                 ContactId = con.Id,
-                CommunityNickname = 'bfg_usr',
+                CommunityNickname = 'ema3184',
                 TimeZoneSidKey = 'America/New_York',
                 LocaleSidKey = 'en_US',
                 EmailEncodingKey = 'ISO-8859-1',
@@ -197,7 +197,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             PackageLicense pl = [   SELECT Id
                                     FROM PackageLicense
-                                    WHERE NamespacePrefix = 'ChargentBase'];
+                                    WHERE NamespacePrefix = 'ChargentOrders'];
 
             List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
                                                         FROM UserPackageLicense
