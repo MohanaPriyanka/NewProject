@@ -3,7 +3,9 @@
         var actionGetSystemBills = component.get("c.getSystemBills");  
         var actionGetAccountBills = component.get("c.getAccountBills");
         var actionGetTransactions = component.get("c.getTransactions");
-        
+        var actionGetChargentOrder = component.get("c.getChargentOrder");
+
+
         actionGetSystemBills.setParams({
             "propertyAccountId" : accountId
         });
