@@ -34,11 +34,11 @@ public without sharing class CommunitySolarCustomerPortalTest {
             ProfileId = communityProfile.Id,
             FirstName = 'Test',
             LastName = 'BFG_User',
-            Username = 'communityuser@test.com',
-            Email = 'communityuser@test.com',
-            Alias = 'bfg_usr',
+            Username = 'bob34873@test.com',
+            Email = 'bob34873@test.com',
+            Alias = 'bob348',
             ContactId = con.Id,
-            CommunityNickname = 'bfg_usr',
+            CommunityNickname = 'bob348',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'ISO-8859-1',
@@ -153,5 +153,58 @@ public without sharing class CommunitySolarCustomerPortalTest {
             MyAccountController.sendEmail('test@test.test');
           }
         Test.stopTest();
+    }
+
+    @isTest static void testChargentLicenseAssignment(){
+        Account parentAccount = [   SELECT Id, Name
+        FROM Account
+        WHERE Name = 'Account Parent'];
+
+        Contact con = new Contact(
+            FirstName = 'First',
+            Email = 'communitiesUserContact@bluewave-capital.com',
+            LastName = 'Last',
+            AccountId = parentAccount.Id,
+            Active_Communities_User__c = true
+        );
+        insert con;
+        // To avoid DML operation on setup object error:
+        // http://burnignorance.com/salesforce-tips/create-a-customer-portal-user-in-test-class-2/
+        User thisUser = [ SELECT Id FROM User WHERE Id = :UserInfo.getUserId() ];
+
+        System.runAs ( thisUser ) {
+            Test.startTest();
+
+            Profile communityProfile = [SELECT Id
+                                        FROM Profile
+                                        WHERE Name = 'Community Solar Community User'];
+            User communityUser = new User(
+                ProfileId = communityProfile.Id,
+                FirstName = 'Test',
+                LastName = 'BFG_User',
+                Username = 'moreUniqueemail3184@test.com',
+                Email = 'moreUniqueemail3184@test.com',
+                Alias = 'ema3184',
+                ContactId = con.Id,
+                CommunityNickname = 'ema3184',
+                TimeZoneSidKey = 'America/New_York',
+                LocaleSidKey = 'en_US',
+                EmailEncodingKey = 'ISO-8859-1',
+                LanguageLocaleKey = 'en_US'
+            );
+            insert communityUser;
+            Test.stopTest();
+
+            PackageLicense pl = [   SELECT Id
+                                    FROM PackageLicense
+                                    WHERE NamespacePrefix = 'ChargentOrders'];
+
+            List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
+                                                        FROM UserPackageLicense
+                                                        WHERE UserId = : communityUser.Id
+                                                        AND PackageLicenseId = : pl.Id];
+
+            System.assertEquals(1,packageAssign.size());
+        }
     }
 }
