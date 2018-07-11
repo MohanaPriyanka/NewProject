@@ -5,7 +5,6 @@ public with sharing class CreateOrderandPaymentRequestTest {
         partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
 
         List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
-        LoanHandler.createResidentialEquipment(leadList);
         LoanHandler.createLoan(leadList);
         LoanHandlerTestClass.convertLeads(leadList);
     }
