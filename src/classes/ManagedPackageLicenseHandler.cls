@@ -5,8 +5,6 @@
 public with sharing class ManagedPackageLicenseHandler {
     // Source: https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_packagelicense.htm
 
-    public static String exceptionText {get; set;}
-
     public static void assignChargentLicense(List<User> triggeredUsers) {
         List<User> usersToAssignList = new List<User>();
         String packageNamespacePrefix = 'ChargentOrders';
@@ -43,7 +41,7 @@ public with sharing class ManagedPackageLicenseHandler {
         try {
             insert(firstUPLs);
         } catch (Exception e) {
-            exceptionText = 'Allowed Licenses: ' +
+            String exceptionText = 'Allowed Licenses: ' +
                 pl.AllowedLicenses + ' Used Licenses: ' +
                 pl.UsedLicenses + ' Message:' +
                 String.valueOf(e);
