@@ -17,6 +17,7 @@ public without sharing class LeadTriggerHandler {
         'Co_Applicant_Income__c'=>'Co_Applicant_Income__c',
         'Co_Applicant_Last_Name__c'=>'Co_Applicant_Last_Name__c',
         'Co_Applicant_Phone__c'=>'Co_Applicant_Phone__c',
+        'Company'=>'Name',
         'Date_of_Application_2__c'=>'Date_of_Application__c',
         'Date_of_Issuance__c'=>'Date_of_Issuance__c',
         'Direct_Disbursal_to_Installer_Authorized__c'=>'Direct_Disbursal_to_Installer_Authorized__c',
@@ -204,6 +205,7 @@ public without sharing class LeadTriggerHandler {
         opp.Monthly_Income_Details__c = lead.Monthly_Income_Details__c;
         opp.Monthly_Income_Details_2__c = lead.Monthly_Income_Details_2__c;
         opp.More_than_five_years_industry_experience__c = lead.More_than_five_years_industry_experience__c;
+        opp.Name = lead.Company;
         opp.Number_of_Years_at_Location__c = lead.Number_of_Years_at_Location__c;
         opp.Number_of_Years_in_Business__c = lead.Number_of_Years_in_Business__c;
         opp.Parcel_ZIp__c = lead.Parcel_Zip__c;

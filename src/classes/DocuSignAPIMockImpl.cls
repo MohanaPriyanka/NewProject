@@ -317,7 +317,16 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 			response.put( 'response_x', new DocuSignAPI.UploadTemplateResponse_element());
 		}
 		else if(request instanceOf DocuSignAPI.VoidEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.VoidEnvelopeResponse_element());
+            if (((DocuSignAPI.VoidEnvelope_element) request).EnvelopeID == 'CalloutException') {
+                throw new CalloutException('Callout Exception');
+			} else {
+                DocuSignAPI.VoidEnvelopeResponse_element responseX =
+                    new DocuSignAPI.VoidEnvelopeResponse_element();
+                responseX.VoidEnvelopeResult = new DocuSignAPI.VoidEnvelopeStatus();
+                responseX.VoidEnvelopeResult.VoidSuccess = true;
+                response.put( 'response_x', responseX);
+
+            }
 		}
 	}
 }

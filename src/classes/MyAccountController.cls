@@ -77,7 +77,6 @@ public without sharing class MyAccountController {
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__c IN : acctBillsParent
                                                             AND Account_Bill__r.Bill_Number__c = : maxBillNumber
-                                                            AND Carry_Over_Balance__c > 0.01
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListParent);
             }
@@ -98,7 +97,6 @@ public without sharing class MyAccountController {
                                                                 SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__r.Id IN : acctBillsPropertyIds
-                                                            AND Carry_Over_Balance__c > 0.01
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListProperty);
             }                                      
@@ -142,6 +140,47 @@ public without sharing class MyAccountController {
     }
 
     @AuraEnabled
+    public static ChargentOrders__ChargentOrder__c getChargentOrder (String propertyAccountId) {
+        User u = customerUser;
+        ChargentOrders__ChargentOrder__c chargentOrder;
+        if(propertyAccountId == 'All' || propertyAccountId == null) {
+            List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
+                SELECT  Account_Bill__r.Parent_Account__r.Name,
+                    ChargentOrders__Payment_Status__c,
+                    ChargentOrders__Bank_Account_Number__c,
+                    ChargentOrders__Card_Number__c,
+                    ChargentOrders__Next_Transaction_Date__c,
+                    ChargentOrders__Gateway__r.Entity__r.Name
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
+                AND ChargentOrders__Payment_Status__c = 'Recurring'
+                ORDER BY CreatedDate DESC
+                LIMIT 1];
+            if(chargentOrderList.size() > 0){
+                chargentOrder = chargentOrderList[0];
+            }
+        }
+        else{
+            List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
+                SELECT  Account_Bill__r.Parent_Account__r.Name,
+                    ChargentOrders__Payment_Status__c,
+                    ChargentOrders__Bank_Account_Number__c,
+                    ChargentOrders__Card_Number__c,
+                    ChargentOrders__Next_Transaction_Date__c,
+                    ChargentOrders__Gateway__r.Entity__r.Name
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
+                AND ChargentOrders__Payment_Status__c = 'Recurring'
+                ORDER BY CreatedDate DESC
+                LIMIT 1];
+            if(chargentOrderList.size() > 0){
+                chargentOrder = chargentOrderList[0];
+            }
+        }
+        return chargentOrder;
+    }
+
+    @AuraEnabled
     public static List<ChargentOrders__Transaction__c > getTransactions (String propertyAccountId) {
         User u = customerUser;
         List<ChargentOrders__Transaction__c> chargentTransactionsList = new List<ChargentOrders__Transaction__c>();
@@ -152,6 +191,9 @@ public without sharing class MyAccountController {
                                                                                 ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                                 ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, 
                                                                                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                                                                                ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
+                                                                                ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
+                                                                                ChargentOrders__Order__r.ChargentOrders__Next_Transaction_Date__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name , 
                                                                                 ChargentOrders__Response_Status__c 
                                                                             FROM ChargentOrders__Transaction__c
@@ -168,6 +210,9 @@ public without sharing class MyAccountController {
                                                                                     ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                                     ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
                                                                                     ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                                                                                    ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
+                                                                                    ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
+                                                                                    ChargentOrders__Order__r.ChargentOrders__Next_Transaction_Date__c,
                                                                                     ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name, 
                                                                                     ChargentOrders__Response_Status__c 
                                                                                 FROM ChargentOrders__Transaction__c
