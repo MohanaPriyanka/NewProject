@@ -358,7 +358,7 @@ public class TestBillCreationandPayment {
             FROM Account_Bill__c
         ];
         for (Account_Bill__c accountBill : accountBills) {
-            accountBill.published = true;
+            accountBill.Published__c = true;
         }
         update accountBills;
 
