@@ -123,7 +123,7 @@ public class CSCPChartHandlerTest {
 			System_Utility__c = 'National Grid',
 			Credit_Score_Requirement__c = 200,
 			Assignment_order__c = '2',
-            Billing_Method__c = 'NMC');
+                        Billing_Method__c = 'NMC');
 
 		insert new List<Shared_Solar_System__c>{sss1, sss2};
 
