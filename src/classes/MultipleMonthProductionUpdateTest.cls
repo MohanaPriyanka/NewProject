@@ -266,6 +266,7 @@ public class MultipleMonthProductionUpdateTest {
 
         prodUpdateSizeoffKwh.Generate_Bills__c = true;
         update prodUpdateSizeoffKwh;
+        Test.stopTest();
 
         UASB__c generatedBill = 
             [SELECT Id, Name, Utility_Account_Subscription__r.Name,
@@ -282,6 +283,5 @@ public class MultipleMonthProductionUpdateTest {
 
         System.assertEquals(778.87, generatedBill.Subscription_Production_kWh_Static__c);
         System.assertEquals(778.87, previewedUASBs[1].PreGen_Subscription_Production__c);
-        Test.stopTest();
     }
 }
