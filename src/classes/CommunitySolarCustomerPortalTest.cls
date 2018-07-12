@@ -207,4 +207,131 @@ public without sharing class CommunitySolarCustomerPortalTest {
             System.assertEquals(1,packageAssign.size());
         }
     }
+
+    @isTest static void testGetAllSystemBills() {
+        User user = [
+            SELECT Id, Contact.Account.Id, Contact.AccountId
+            FROM User
+            WHERE Username = 'testBillCreationandPay@bluewavesolar.com'
+        ];
+
+        Account accountC = new Account(name = 'Account C', Parent_Account__c = user.Contact.AccountId);
+
+        insert accountC;
+
+        Utility_Account_Log__c ualog =
+            new Utility_Account_Log__c(Name = '0000234',
+                Account__c = accountC.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'jordan jordan');
+
+        insert ualog;
+
+        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 20,
+            Monthly_Late_Fee__c = 1);
+        insert normalCSProduct;
+
+        Shared_Solar_System__c sss = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P2'
+        ];
+
+        Opportunity opportunity = new Opportunity(
+            Name = 'COpp One',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'Complete',
+            Product__c = normalCSProduct.Id,
+            CloseDate = System.today()
+        );
+        insert opportunity;
+
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = '9203012',
+            Utility_Account_Log__c = ualog.Id,
+            Opportunity__c = opportunity.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 4000,
+            Calculated_Annual_Cost_of_Electricity__c = 4000,
+            Subscribed_Annual_Cost_of_Electricity__c = 4000
+        );
+
+        insert uas;
+        uas = [
+            SELECT Id, Customer_Subscription_KW_DC__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = : uas.Id
+        ];
+
+        Schedule_Z__c scheduleZ = [
+            SELECT Id, Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+                Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P2'
+        ];
+
+        Schedule_Z_Subscription__c newSub = new Schedule_Z_Subscription__c(
+            Schedule_Z__c = scheduleZ.Id,
+            Utility_Account_Subscription__c = uas.Id,
+            Customer_Subscription_kW_DC__c = uas.Customer_Subscription_KW_DC__c,
+            Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+            System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+        );
+
+        insert newSub;
+
+        Test.startTest();
+
+
+        Energy_Usage_Update__c productionupdateB2 = [
+            SELECT Id, Generate_Bills__c, Month_Number__c, Shared_Solar_System__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - February 2016'
+            LIMIT 1
+        ];
+
+        productionupdateB2.Generate_Bills__c = TRUE;
+        update productionupdateB2;
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Published__c, Parent_Account__c
+            FROM Account_Bill__c
+        ];
+
+        for (Account_Bill__c accountBill : accountBills) {
+            accountBill.Published__c = true;
+        }
+        update accountBills;
+
+        Test.stopTest();
+
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Bill_Number__c, Account_Bill_Number__c, Shared_Solar_System__c, Month__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Parent_Account__c = : user.Contact.Account.Id
+        ];
+
+        System.runAs(user) {
+            String propertyAccount = 'All';
+            List<AggregateResult> aggregateSystemBills = MyAccountController.getSystemBills(propertyAccount);
+            String checkpoint;
+            // This user has 2 property accounts (Account A & Account C).
+            // AccountA has 2 subscriptions, AccountC has 1 subscription
+            // AccountA has 2 AccountBills (Jan & Feb), AccountC has 1 AccountBill (Feb)
+            // Goal of this method is to return an aggregate of the most recent system bills
+            System.assertEquals(3, aggregateSystemBills.size());
+        }
+    }
 }
