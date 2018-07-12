@@ -210,6 +210,9 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
                                     Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP));
+        if (prodUpdate.Billing_Method__c == 'NMC'){
+            generatedUASB.Size_off_NMCs__c = true;
+        }
         return generatedUASB;     
     }
 

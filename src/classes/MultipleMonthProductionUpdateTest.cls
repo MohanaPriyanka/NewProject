@@ -57,7 +57,7 @@ public class MultipleMonthProductionUpdateTest {
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Utility__c = eversource.Id,
                                        Maximum_Subscription_Assemblage__c = 25,
-                                       Billing_Method__c = 'NMC');
+                                       Billing_Method__c = 'kWh');
         insert new List<Shared_Solar_System__c>{sss1};
 
         ChargentBase__Gateway__c chGateway  = 
@@ -202,7 +202,6 @@ public class MultipleMonthProductionUpdateTest {
                 Production_kWh_2_of_4__c = 364667);
         insert prodUpdateTwoMonths;
 
-//        This billing method was set to 'kwh' before size off nmc change
         Energy_Usage_Update__c prodUpdateSizeoffKwh = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sss1.id,
@@ -256,6 +255,7 @@ public class MultipleMonthProductionUpdateTest {
     }
 
     @isTest public static void testSizeOffkWH() {
+        Test.startTest();
         Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c
                                                       FROM Energy_Usage_Update__c
                                                       WHERE Name = 'sssA - March 2016'];
@@ -282,5 +282,6 @@ public class MultipleMonthProductionUpdateTest {
 
         System.assertEquals(778.87, generatedBill.Subscription_Production_kWh_Static__c);
         System.assertEquals(778.87, previewedUASBs[1].PreGen_Subscription_Production__c);
+        Test.stopTest();
     }
 }
