@@ -351,6 +351,17 @@ public class TestBillCreationandPayment {
         productionupdateA1.Generate_Bills__c = TRUE;
         productionupdateA2.Generate_Bills__c = TRUE;
         update productionupdateA1;
+
+        // need to set account bills to published for Accout.Max_Account_Bill_number to work
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+        ];
+        for (Account_Bill__c accountBill : accountBills) {
+            accountBill.published = true;
+        }
+        update accountBills;
+
         update productionupdateA2;
 
 
