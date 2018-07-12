@@ -326,7 +326,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         System.runAs(user) {
             String propertyAccount = 'All';
             List<AggregateResult> aggregateSystemBills = MyAccountController.getSystemBills(propertyAccount);
-            String checkpoint;
+
             // This user has 2 property accounts (Account A & Account C).
             // AccountA has 2 subscriptions, AccountC has 1 subscription
             // AccountA has 2 AccountBills (Jan & Feb), AccountC has 1 AccountBill (Feb)
