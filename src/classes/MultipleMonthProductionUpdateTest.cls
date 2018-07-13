@@ -272,7 +272,6 @@ public class MultipleMonthProductionUpdateTest {
         update prodUpdateSizeoffKwh;
         test.StopTest();
 
-        Test.stopTest();
         UASB__c generatedBill = 
             [SELECT Id, Name, Utility_Account_Subscription__r.Name,
             Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
