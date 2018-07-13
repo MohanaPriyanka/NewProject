@@ -659,6 +659,6 @@ private class DocuSignAPIWebSvcTest {
 	@isTest static void coverCodeForVoidEnvelope(){
 		Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
 		DocuSignAPI.APIServiceSoap testObject = new DocuSignAPI.APIServiceSoap();
-		System.assertEquals(null, testObject.VoidEnvelope(null, null));
+		System.assertNotEquals(null, testObject.VoidEnvelope(null, null));
 	}
 }

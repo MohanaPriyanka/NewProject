@@ -26,7 +26,8 @@ public with sharing class DocuSignHelperTest {
 
         dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
             dsfs__Opportunity__c = convertedLead.ConvertedOpportunityId,
-            dsfs__Envelope_Status__c = 'Sent'
+            dsfs__Envelope_Status__c = 'Sent',
+            dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
         );
         insert newDocStat;
 
@@ -94,5 +95,66 @@ public with sharing class DocuSignHelperTest {
         System.assertEquals(null, opp.Partner_Tasks__r[0].Completion_Date__c);
         System.assertEquals('Pending', opp.Partner_Tasks__r[1].Status__c);
         System.assertEquals(null, opp.Partner_Tasks__r[1].Completion_Date__c);
+    }
+
+    static testMethod void testVoidFromProcessBuilder() {
+        Opportunity opp = [
+            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
+            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
+            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+            WHERE Lead__r.FirstName = 'Retired'
+        ];
+        System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
+        System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
+        System.assertEquals('Sent', opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__Envelope_Status__c);
+        System.assertEquals(null, DocuSignHelper.oppsToResend);
+        System.assertEquals(null, DocuSignHelper.envelopesToVoid);
+
+        opp.Contract_Status__c = 'Completed';
+        opp.Partner_Sales_Agreement_Status__c = 'Completed';
+        update opp;
+        opp.Partner_Tasks__r[0].Status__c = 'Complete';
+        opp.Partner_Tasks__r[0].Completion_Date__c = Date.today();
+        opp.Partner_Tasks__r[1].Status__c = 'Complete';
+        opp.Partner_Tasks__r[1].Completion_Date__c = Date.today();
+        update opp.Partner_Tasks__r;
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        // There shouldn't be any errors when starting
+        System.assertEquals(0, errors.size());
+        DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
+        voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
+        voidRequest.reason = 'Test void reason';
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        Test.stopTest();
+
+        // Make sure voidPackages() didn't run into any errors. Because DocuSign logs back into the instance to update
+        // the void status, and that doesn't happen since it's mocked, and simulating it in the mock would be misleading
+        // since the update happens in a separate transaction at a later point in time, we don't check anything else
+        // except that the call was made successfully.
+        errors = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errors.size());
+    }
+
+    static testMethod void testVoidCalloutException() {
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
+        voidRequest.envelopeId = 'CalloutException';
+        voidRequest.reason = 'Test void reason';
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        Test.stopTest();
+
+        List<Error_Log__c> errors = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
+        // There should be one error since the future method catches CalloutException
+        System.assertEquals(1, errors.size());
+        // And it should be the CalloutExcpetion message
+        System.assertEquals('Callout Exception caught voiding envelope', errors[0].Message__c.left(41));
     }
 }
