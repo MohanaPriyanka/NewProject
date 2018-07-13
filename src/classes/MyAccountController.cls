@@ -60,43 +60,38 @@ public without sharing class MyAccountController {
         List<AggregateResult> aggresultlist = new List<AggregateResult>();
         Decimal maxBillNumber = 0;
         if (propertyAccountId == 'All' || propertyAccountId == null) {
-            List<Account_Bill__c> acctBillsParent = [SELECT Id, Name, Bill_Number__c
-                                                      FROM Account_Bill__c
-                                                      WHERE Account_ID__c = : u.Parent_Account_ID__c
-                                                      AND Published__c = true
-                                                      ORDER BY Bill_Number__c];
-            Integer j;
-            List<Id> acctBillsParentIDs = new List<Id>(); 
-            for (j = 0; j < acctBillsParent.size(); j++) {
-                Integer maxbill = acctBillsParent.size() - 1;
-                maxBillNumber = acctBillsParent.get(maxbill).Bill_Number__c;
-            }
+            List<Account_Bill__c> acctBillsParent = [
+                SELECT Id, Name, Bill_Number__c, Parent_Account__r.Max_Account_Bill_Number__c
+                FROM Account_Bill__c
+                WHERE Account_ID__c = : u.Parent_Account_ID__c
+                AND Published__c = true
+                AND Is_Most_Recent__c = true
+                ORDER BY Bill_Number__c DESC
+            ];
+
             for (AggregateResult systemBillsListParent : [  SELECT Account_Bill__c, 
                                                                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
                                                                 SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__c IN : acctBillsParent
-                                                            AND Account_Bill__r.Bill_Number__c = : maxBillNumber
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListParent);
             }
         } else {
-            List<Account_Bill__c> acctBillsProperty = [ SELECT Id, Name
-                                                        FROM Account_Bill__c
-                                                        WHERE Parent_Account__r.Id = : propertyAccountId 
-                                                        AND Published__c = true
-                                                        ORDER BY Bill_Number__c];
-            Integer j;
-            List<Id> acctBillsPropertyIds = new List<Id>(); 
-            for (j = 0; j < acctBillsProperty.size(); j++) {
-              Integer maxbill = acctBillsProperty.size() - 1;
-              acctBillsPropertyIds.add(acctBillsProperty.get(maxbill).Id);
-            }
+            Account_Bill__c mostRecentAccountBill = [
+                SELECT Id, Name
+                FROM Account_Bill__c
+                WHERE Parent_Account__r.Id = : propertyAccountId
+                AND Published__c = true
+                AND Is_Most_Recent__c = true
+                ORDER BY Bill_Number__c
+            ];
+
             for( AggregateResult systemBillsListProperty : [SELECT Account_Bill__c, 
                                                                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
                                                                 SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
-                                                            WHERE Account_Bill__r.Id IN : acctBillsPropertyIds
+                                                            WHERE Account_Bill__r.Id = : mostRecentAccountBill.Id
                                                             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListProperty);
             }                                      
