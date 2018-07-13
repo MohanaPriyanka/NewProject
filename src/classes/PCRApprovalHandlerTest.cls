@@ -21,15 +21,19 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":20000, "loan":65000, "doer":false, "fico":680, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":1000,  "loan":65000, "doer":false, "fico":402, "debt":500, "balance":10000, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":801, "debt":1000, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":805, "debt":200}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "denialSent":true}, ' +
-                '  {"income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Pending Credit Review", "denialSent":false} ' +
+                '  {"key":1, "income":20000, "loan":65000, "doer":false, "fico":680, "debt":500, "balance":10000, "expectedSLAStatus":"Declined"}, ' +
+                '  {"key":2, "income":1000,  "loan":65000, "doer":false, "fico":402, "debt":500, "balance":10000, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":3, "income":90000, "loan":20000, "doer":false, "fico":801, "debt":1000, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":4, "income":90000, "loan":20000, "doer":false, "fico":805, "debt":200}, ' +
+                '  {"key":5, "income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":6, "income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":7, "income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "sendEmails":true, "denialSent":true}, ' +
+                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "sendEmails":true, "denialSent":false} ' +
                 ']}';
+        /*
+        Changed the last assertion, because the PCR id doesn't get added to the parent Lead since fico is null.
+        Since the PCR doesn't get added, the lead isn't ready to go through the automated credit review.
+        */
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
@@ -37,11 +41,11 @@ private class PCRApprovalHandlerTest {
         applicationSet.insertTradeAccounts();
         applicationSet.insertCreditReportLogs();
 
-        LASERCA__Personal_Credit_Report__c pcrAA = applicationSet.getPCR(402);
+        LASERCA__Personal_Credit_Report__c pcrAA = applicationSet.getPCR(2);
         pcrAA.Solar_Loan_Manual_Approval__c = true;
-        LASERCA__Personal_Credit_Report__c pcrAF = applicationSet.getPCR(810);
+        LASERCA__Personal_Credit_Report__c pcrAF = applicationSet.getPCR(5);
         pcrAF.Avidia_Review_Status__c = 'Reviewed - Declined';
-        LASERCA__Personal_Credit_Report__c pcrAG = applicationSet.getPCR(815);
+        LASERCA__Personal_Credit_Report__c pcrAG = applicationSet.getPCR(6);
         pcrAG.Avidia_Review_Status__c = 'Pending Review';
         PCRApprovalHandler.noDelay = true;
         update new List<LASERCA__Personal_Credit_Report__c>{pcrAA, pcrAF, pcrAG};
@@ -83,21 +87,21 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":681, "ibls":"Category 1", "debt":500, "balance":10000, "code1":"039", "code2":"034", "code3":"040", "code4":"022", "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"}, ' +
-                '  {"income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
-                '  {"income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "denialSent":false}, ' +
-                '  {"income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
-                '  {"income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
-                '  {"income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
-                '  {"income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
-                '  {"income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
-                '  {"income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
-                '  {"income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
+                '  {"key":1, "income":50000, "loan":45000, "doer":true,  "fico":681, "ibls":"Category 1", "debt":500, "balance":10000, "code1":"039", "code2":"034", "code3":"040", "code4":"022", "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"key":2, "income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"}, ' +
+                '  {"key":3, "income":14000, "loan":46000, "doer":true,  "fico":701, "ibls":"Category 1", "debt":1000, "expectedSLAStatus":"Pending Review"}, ' +
+                '  {"key":4, "income":50000, "loan":45000, "doer":true,  "fico":682, "ibls":"Category 1", "debt":200, "expectedSLAStatus":"Approved"}, ' +
+                '  {"key":5, "income":null,  "loan":45000, "doer":true,  "fico":700, "ibls":"Category 1", "debt":200, "sendEmails":true, "denialSent":false}, ' +
+                '  {"key":6, "income":50000, "loan":45000, "doer":true,  "fico":820, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58}, ' +
+                '  {"key":7, "income":75560, "loan":28068, "doer":true,  "fico":645, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":8, "income":75560, "loan":28068, "doer":true,  "fico":680, "ibls":"Category 2", "debt":2410, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":9, "income":72202, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
+                '  {"key":10, "income":85502, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":38.00}, ' +
+                '  {"key":11, "income":72202, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":45.00}, ' +
+                '  {"key":12, "income":67689, "loan":28068, "doer":true,  "fico":696, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":48.00}, ' +
+                '  {"key":13, "income":65112, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.90}, ' +
+                '  {"key":14, "income":63708, "loan":28068, "doer":true,  "fico":700, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pending Credit Review", "expectedDTIAfter":51.00}, ' +
+                '  {"key":15, "income":65000, "loan":28068, "doer":true,  "fico":686, "ibls":"Category 2", "debt":2410, "expectedStatus":"Pre-Qualified", "expectedDTIAfter":49.99} ' +
                 ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
@@ -105,13 +109,13 @@ private class PCRApprovalHandlerTest {
         Contact coApplicantContact = new Contact(FirstName = 'Cole',
             LastName = 'Swain',
             AccountId = coApplicantAccount.Id,
-            Lead__c = applicationSet.getLead(820).Id,
+            Lead__c = applicationSet.getLead(6).Id,
             Income__c = 2000,
             LASERCA__Social_Security_Number__c = '000000002');
         insert coApplicantContact;
         LASERCA__Personal_Credit_Report__c coAppPCR =
             new LASERCA__Personal_Credit_Report__c(Name = 'PCR Co App',
-                LASERCA__Lead__c = applicationSet.getLead(820).Id,
+                LASERCA__Lead__c = applicationSet.getLead(6).Id,
                 LASERCA__Credit_Score_TransUnion__c = '821',
                 LASERCA__Contact__c = coApplicantContact.Id);
         insert coAppPCR;
@@ -126,7 +130,7 @@ private class PCRApprovalHandlerTest {
         applicationSet.insertTradeAccounts();
         applicationSet.insertCreditReportLogs();
 
-        LASERCA__Personal_Credit_Report__c pcrAB = applicationSet.getPCR(800);
+        LASERCA__Personal_Credit_Report__c pcrAB = applicationSet.getPCR(2);
         pcrAB.Solar_Loan_Manual_Decline__c = true;
         PCRApprovalHandler.noDelay = true;
         update new List<LASERCA__Personal_Credit_Report__c>{pcrAB};
@@ -663,9 +667,63 @@ private class PCRApprovalHandlerTest {
             lead.Personal_Credit_Report__r.DTI_After__c);
     }
 
-    private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId,
-        Boolean doerLoan, Id partnerId) {
+    static testMethod void testJointApplication() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+
+        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Program__c = 'MSLP';
+        mslp1.IBLS_Category__c = 'Category 1';
+
+        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Program__c = 'MSLP';
+        mslp2.IBLS_Category__c = 'Category 2';
+        insert new List<Product2>{bwsl1, mslp1, mslp2};
+
+        // should add tests that go off lead debt fields...
+        String applicationJSON =
+            '{"application":[ ' +
+                '  {"key":1, "income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":2, "income":2, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":420, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":3, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":4, "income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":5, "income":10, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "coAppDebt":10000, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":6, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
+            ']}';
+
+            ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+        Test.startTest();
+        applicationSet.connectJointPCRs();
+        applicationSet.insertTradeAccounts();
+        applicationSet.insertCreditReportLogs();
+
+        Test.stopTest();
+
+        Map<Id, LASERCA__Personal_Credit_Report__c> pcrMap = new Map<Id, LASERCA__Personal_Credit_Report__c>([
+            SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c, DTI_After__c,
+                LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
+            FROM LASERCA__Personal_Credit_Report__c
+        ]);
+
+        for (Application app : ApplicationSet.application) {
+            app.assert(pcrMap.get(app.pcrId));
+        }
+    }
+
+    private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId, Boolean doerLoan, Id partnerId) {
+        RecordType solarLoanType = [
+            SELECT Id
+            FROM RecordType
+            WHERE Name = 'BlueWave Solar Loan'
+            AND SobjectType = 'Lead'
+        ];
         return(new Lead(LastName = 'testcase',
+            RecordTypeId = solarLoanType.Id,
             FirstName = 'test',
             Automatic_Product_Assignment__c = false,
             Email = 'test@email.com',
@@ -794,21 +852,26 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Pending Credit Review', pcrAG.LASERCA__Lead__r.Status);
     }
 
-    // fico+income is used as a unique key!
+    // set an integer to use as a key, fico + income was confusing
     public class Application {
         public Integer income, loan;
         public Id prodId;
         public Boolean doer;
         public String ibls, applicationType;
-        public Integer coAppIncome;
+        public Integer coAppIncome, coAppFICO;
         public Integer fico, debt, balance;
+        public Decimal coAppDebt, coAppBalance;
         public String code1, code2, code3, code4;
-        public Id leadId, pcrId;
+        public String coAppCode1, coAppCode2, coAppCode3, coAppCode4;
+        public Id leadId, pcrId, coAppPCRId, contactId;
         public String expectedSLAStatus, expectedStatus;
         public Boolean denialSent;
+        public Boolean sendEmails;
+        public Boolean bankruptcy, coAppBankruptcy;
         public Decimal expectedDTIBefore, expectedDTIAfter;
+        public Integer key;
         public void assert(LASERCA__Personal_Credit_Report__c pcr) {
-            System.debug(LoggingLevel.ERROR, 'Assertions for FICO ' + fico);
+            System.debug(LoggingLevel.ERROR, 'Assertions for Key ' + key);
             if (expectedSLAStatus != null) {
                 System.assertEquals(expectedSLAStatus, pcr.Solar_Loan_Approval_Status__c);
             }
@@ -825,18 +888,23 @@ private class PCRApprovalHandlerTest {
                 System.assertEquals(expectedDTIAfter, pcr.DTI_After__c.setScale(2));
             }
         }
-        public Integer getKey() {
-            return ((Integer) (Util.nullToZero(fico) + Util.nullToZero(income)));
-        }
     }
     public class ApplicationSet {
         public List<Application> application;
         public Map<Integer, Application> applicationMap;
 
         public void insertLeads(Id partnerId) {
+            RecordType solarLoanType = [
+                SELECT Id
+                FROM RecordType
+                WHERE Name = 'BlueWave Solar Loan'
+                AND SobjectType = 'Lead'
+            ];
+
             List<Lead> leads = new List<Lead>();
             for (Application app : application) {
-                leads.add(new Lead(LastName = 'Testcase',
+                Lead newLead = new Lead(LastName = 'Testcase',
+                    RecordTypeId = solarLoanType.Id,
                     FirstName = 'test',
                     Automatic_Product_Assignment__c = false,
                     Email = 'test@email.com',
@@ -853,23 +921,51 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Home_State__c = 'MA',
                     Unfinished_Lead__c = true,
                     IBLS_Category__c = app.ibls,
-                    Application_Type__c = app.applicationType,
-                    Co_Applicant_Income__c = app.coAppIncome,
+                    Co_Applicant_Income__c = Util.nullToZero(app.coAppIncome),
                     // Just need a key to use later
-                    AnnualRevenue = app.getKey()));
+                    AnnualRevenue = app.key);
+                if (app.applicationType == 'Joint Co-App') {
+                    newLead.Application_Type__c = 'Joint';
+                    newLead.Joint_Applicant_Type__c = 'Co-Applicant';
+                } else if (app.applicationType == 'Joint Co-Sign') {
+                    newLead.Application_Type__c = 'Joint';
+                    newLead.Joint_Applicant_Type__c = 'Co-Signer';
+                }
+                leads.add(newLead);
             }
             insert leads;
             Map<Integer, Id> incomeToLeadID = new Map<Integer, Id>();
+            List<Contact> newContacts = new List<Contact>();
             for (Lead l : leads) {
                 incomeToLeadID.put((Integer) l.AnnualRevenue, l.Id);
+                if (l.Application_Type__c == 'Joint') {
+                    Contact newContact = new Contact(
+                        FirstName = 'CoApplicant',
+                        LastName = 'Contact',
+                        Lead__c = l.Id,
+                        Income__c = l.Co_Applicant_Income__c
+                    );
+                    newContacts.add(newContact);
+                }
+            }
+            insert newContacts;
+            Map<Id, Contact> contactsByLead = new Map<Id, Contact>();
+            for (Contact contact : newContacts) {
+                contactsByLead.put(contact.Lead__c, contact);
             }
             for (Application app : application) {
-                app.leadId = incomeToLeadID.get(app.getKey());
+                Id leadId = incomeToLeadID.get(app.key);
+                app.leadId = leadId;
+                if (contactsByLead.containsKey(leadId)) {
+                    app.contactId = contactsByLead.get(leadId).Id;
+                }
             }
+
         }
 
         public void insertPCRs() {
             List<LASERCA__Personal_Credit_Report__c> pcrs = new List<LASERCA__Personal_Credit_Report__c>();
+            List<LASERCA__Personal_Credit_Report__c> coAppPCRs = new List<LASERCA__Personal_Credit_Report__c>();
             for (Application app : application) {
                 pcrs.add(new LASERCA__Personal_Credit_Report__c(
                     LASERCA__Lead__c = app.leadId,
@@ -877,16 +973,48 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Code_2__c = app.code2,
                     LASERCA__Code_3__c = app.code3,
                     LASERCA__Code_4__c = app.code4,
-                    LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null)));
+                    LASERCA__Bankruptcy__c = (app.bankruptcy != null)?app.bankruptcy:false,
+                    LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null),
+                    Credit_Denial_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true),
+                    Credit_PreApproval_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true)
+                ));
+                if (app.applicationType != null && app.applicationType.contains('Joint')) {
+                    coAppPCRs.add(new LASERCA__Personal_Credit_Report__c(
+                        LASERCA__Contact__c = app.contactId,
+                        LASERCA__Code__c = app.coAppCode1,
+                        LASERCA__Code_2__c = app.coAppCode2,
+                        LASERCA__Code_3__c = app.coAppCode3,
+                        LASERCA__Code_4__c = app.coAppCode4,
+                        LASERCA__Bankruptcy__c = (app.coAppBankruptcy != null)?app.coAppBankruptcy:false,
+                        LASERCA__Credit_Score_TransUnion__c = (app.coAppFICO!=null?String.valueOf(app.coAppFICO):null),
+                        Credit_Denial_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true),
+                        Credit_PreApproval_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true)
+                    ));
+                }
             }
             insert pcrs;
+            insert coAppPCRs;
             Map<Id, Id> leadIdToPCRId = new Map<Id, Id>();
+            Map<Id, Id> leadIdToCoAppPCRId = new Map<Id, Id>();
+            List<Id> coAppPCRIds = new List<Id>();
             for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
                 leadIdToPCRId.put(pcr.LASERCA__Lead__c, pcr.Id);
             }
+            for (LASERCA__Personal_Credit_Report__c pcr : coAppPCRs) {
+                coAppPCRIds.add(pcr.Id);
+            }
+            coAppPCRs = [
+                SELECT Id, Lead_from_Contact__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE Id IN : coAppPCRIds
+            ];
+            for (LASERCA__Personal_Credit_Report__c pcr : coAppPCRs) {
+                leadIdToCoAppPCRId.put(pcr.Lead_from_Contact__c, pcr.Id);
+            }
             for (Application app : application) {
                 app.pcrId = leadIdToPCRId.get(app.leadId);
-                applicationMap.put(app.fico, app);
+                app.coAppPCRId = leadIdToCoAppPCRId.get(app.leadId);
+                applicationMap.put(app.key, app);
             }
         }
 
@@ -898,6 +1026,13 @@ private class PCRApprovalHandlerTest {
                     LASERCA__Monthly_Payment__c = app.debt,
                     LASERCA__Account_Balance__c = app.balance
                 ));
+                if (app.applicationType != null && app.applicationType.contains('Joint')) {
+                    tradeAccts.add(new LASERCA__Trade_Accounts__c(
+                        LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
+                        LASERCA__Account_Balance__c = Util.nullToZero(app.coAppBalance)
+                    ));
+                }
             }
             insert tradeAccts;
         }
@@ -908,16 +1043,46 @@ private class PCRApprovalHandlerTest {
                 crls.add(new LASERCA__Credit_Report_Log__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
                     LASERCA__Status__c = 'Completed'));
+                if (app.coAppPCRId != null) {
+                    crls.add(new LASERCA__Credit_Report_Log__c(
+                        LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Status__c = 'Completed'));
+                }
             }
             insert crls;
         }
 
-        public LASERCA__Personal_Credit_Report__c getPCR(Integer fico) {
-            return(new LASERCA__Personal_Credit_Report__c(Id = applicationMap.get(fico).pcrId));
+        public void connectJointPCRs() {
+            List<LASERCA__Personal_Credit_Report__c> contactPCRs = [
+                SELECT Id, LASERCA__Contact__c, Lead_from_Contact__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE LASERCA__Contact__c != null
+            ];
+            Map<Id, Id> relatedLeads = new Map<Id, Id>();
+
+            for (LASERCA__Personal_Credit_Report__c pcr : contactPCRs) {
+                relatedLeads.put(pcr.Lead_from_Contact__c, pcr.Id);
+            }
+
+            List<Lead> contactLeads = [
+                SELECT Id, Personal_Credit_Report_Co_Applicant__c
+                FROM Lead
+                WHERE Id IN : relatedLeads.keySet()
+            ];
+
+            for (Lead lead : contactLeads) {
+                lead.Personal_Credit_Report_Co_Applicant__c = relatedLeads.get(lead.Id);
+            }
+
+            update contactLeads;
         }
 
-        public Lead getLead(Integer fico) {
-            return(new Lead(Id = applicationMap.get(fico).leadId));
+        public LASERCA__Personal_Credit_Report__c getPCR(Integer key) {
+            return(new LASERCA__Personal_Credit_Report__c(Id = applicationMap.get(key).pcrId));
+        }
+
+        public Lead getLead(Integer key) {
+            return(new Lead(Id = applicationMap.get(key).leadId));
         }
     }
     public static ApplicationSet parse(String json) {
