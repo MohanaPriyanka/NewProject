@@ -134,6 +134,8 @@ public without sharing class DocuSignHelper {
         connect();
 
 
+
+
         Integer chrisGoslineGroupId = getSigningGroup('Chris Gosline');
         Integer qcGroupId = getSigningGroup('BW QC Signature');
         Opportunity opp = [
