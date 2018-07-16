@@ -11,11 +11,23 @@
         $A.enqueueAction(actionStates);
 
         component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));
-    },  
+        if(component.get("v.StaticTotalDue") === 0){
+            component.set("v.chOrder.Autopay_Only__c", true);
+        }
+    },
 
     returnToMyAccount : function(component, event, helper) {
         $A.get('e.force:refreshView').fire();
-    },    
+    },
+
+    boxIsChecked : function(component, event, helper) {
+        var isChecked = component.get("v.chOrder.Autopay_Only__c");
+        if (isChecked){
+            component.set("v.DynamicTotalDue", 0);
+        } else {
+            component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));
+        }
+    },
 
     makePaymentOrder : function(component, event, helper) {
         if (component.get("v.ACH") === 'true'){
@@ -29,9 +41,14 @@
             var insertOrderPromise = helper.insertOrders(component, chOrFields, helper);
             insertOrderPromise.then(
                 $A.getCallback(function(result) {
-                    component.set("v.transactionsCreated", []);
-                    var ordersToInsert = component.get("v.readyToChargeOrders");
-                    helper.submitPayments(component, ordersToInsert, helper);
+                    if(component.get("v.chOrder.Autopay_Only__c") === false){
+                        component.set("v.transactionsCreated", []);
+                        var ordersToInsert = component.get("v.readyToChargeOrders");
+                        helper.submitPayments(component, ordersToInsert, helper);
+                    } else{
+                        component.set("v.Spinner", false);
+                        helper.showOrderCreated(component);
+                    }
                 })
             );
         }
