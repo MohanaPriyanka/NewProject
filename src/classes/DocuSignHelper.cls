@@ -132,10 +132,6 @@ public without sharing class DocuSignHelper {
     // Makes callouts to DocuSign to send loan docs, and sets Contract Signature partner task to Pending
     public static DocuSignAPI.EnvelopeStatus sendLoanPackage(Id oppId) {
         connect();
-
-
-
-
         Integer chrisGoslineGroupId = getSigningGroup('Chris Gosline');
         Integer qcGroupId = getSigningGroup('BW QC Signature');
         Opportunity opp = [
