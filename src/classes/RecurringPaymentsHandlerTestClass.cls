@@ -888,11 +888,10 @@ private class RecurringPaymentsHandlerTestClass{
         update sssA;
 
 
-        List<Account_Bill__c> acctBills = [ SELECT Id, Name
+        List<Account_Bill__c> acctBills = [ SELECT Id, Name, Is_First_Bill__c
                                             FROM Account_Bill__c ];
 
         System.assertEquals(5, acctBills.size() );
-        System.debug(acctBills);
 
         List<Energy_Usage_Update__c> productionUpdateList = [ SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
                                                                 YearDate__c, Credits_on_Bill_Period__c,
@@ -928,7 +927,7 @@ private class RecurringPaymentsHandlerTestClass{
                                                     FROM ChargentOrders__ChargentOrder__c
                                                     WHERE ChargentOrders__Billing_First_Name__c = 'SarahRenfro'  ];
 
-        Account_Bill__c checkAB = [ SELECT Id, Property_Account_Name__c, Parent_Account__c
+        Account_Bill__c checkAB = [ SELECT Id, Property_Account_Name__c, Is_First_Bill__c, Parent_Account__c
                                     FROM Account_Bill__c
                                     WHERE Parent_Account__c = :propAccountA.Id];
 
@@ -936,6 +935,8 @@ private class RecurringPaymentsHandlerTestClass{
         System.assertNotEquals(null, checkCO.Account_Bill__c);
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
+        System.assertEquals(false, checkAB.Is_First_Bill__c);
+
     }
 
     static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
