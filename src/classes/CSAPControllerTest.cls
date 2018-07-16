@@ -159,7 +159,7 @@ public with sharing class CSAPControllerTest {
                 Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                 Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
-                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, 
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
@@ -292,5 +292,20 @@ public with sharing class CSAPControllerTest {
         systemProperties.Credit_Check_Timeout__c = 30000;
         update systemProperties;
         System.assertEquals(30000, CSAPController.getCreditCheckTimeout());
+    }
+
+    @IsTest
+    static void testConversion() {
+        Lead lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
+        lead.Status = 'Qualified';
+        update lead;
+        List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
+        System.debug(LoggingLevel.ERROR, opps);
+        System.assertEquals(0, opps.size());
+        CSAPController.convertCSLead(lead.Id, lead.Email);
+        lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
+        System.assertEquals(true, lead.IsConverted);
+        opps = [SELECT Id, Name FROM Opportunity];
+        System.assertEquals(0, opps.size());
     }
 }

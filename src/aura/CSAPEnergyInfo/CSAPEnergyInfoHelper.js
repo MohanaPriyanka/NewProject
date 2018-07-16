@@ -96,4 +96,18 @@
         $A.enqueueAction(action);
 
     },
+
+    convertLeadFunction : function(component, event, helper) {
+        let action = component.get('c.convertCSLead');
+        action.setParams({
+            "leadId": component.get('v.lead.Id'),
+            "email": component.get('v.lead.Email')
+        });
+        action.setCallback(this, function(resp) {
+            if (resp.getState() !== "SUCCESS") {
+                reject(Error("Unknown error"));
+            }
+        });
+        $A.enqueueAction(action);
+    }
 })

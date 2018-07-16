@@ -121,6 +121,7 @@
     },
     
     finishStage : function(component, event, helper) {
+        helper.convertLeadFunction(component, event, helper);
         helper.finishStage(component, event, helper);
     },
 })

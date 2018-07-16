@@ -175,7 +175,7 @@ public without sharing class CSAPController {
         upsert account;
 
         lead = processLead(lead);
-        
+
         if (String.isNotBlank(partnerId)) {
             lead.Partner_lookup__c = partnerId;
         } else if (String.isNotBlank(profile.partnerId)) {
@@ -265,5 +265,23 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Product2 getProduct (String productId) {
         return [SELECT Id, Name, Program__c FROM Product2 WHERE Id =: productId];
+    }
+
+    @AuraEnabled
+    public static Lead convertCSLead(Id leadId, String email) {
+        Lead lead = getLead(leadId, email);
+        Database.LeadConvert leadConvert = new Database.LeadConvert();
+        leadConvert.setLeadId(leadId);
+        leadConvert.setConvertedStatus('Qualified');
+        leadConvert.setDoNotCreateOpportunity(true);
+        Database.LeadConvertResult lcr = Database.convertLead(leadConvert, false);
+        if (!lcr.isSuccess()) {
+            Logger.logNow(
+                'CSAPController',
+                'convertCSLead',
+                'CS Lead conversion failed for Id: ' + leadId +
+                    ' error:' + lcr.getErrors()[0].getMessage());
+        }
+        return getLead(leadId, email);
     }
 }
