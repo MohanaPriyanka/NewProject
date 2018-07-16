@@ -124,6 +124,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c coAppTradeAccount =
             new LASERCA__Trade_Accounts__c(
                 LASERCA__Personal_Credit_Report__c = coAppPCR.id,
+                LASERCA__Name_of_the_Institution__c = 'coapp trade account',
+                LASERCA__Account_Ownership_Type__c = 'Individual',
+                LASERCA__Open_Date__c = Date.today(),
                 LASERCA__Monthly_Payment__c = 400,
                 LASERCA__Account_Balance__c = 2000);
         insert coAppTradeAccount;
@@ -1023,12 +1026,18 @@ private class PCRApprovalHandlerTest {
             for (Application app : application) {
                 tradeAccts.add(new LASERCA__Trade_Accounts__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
+                    LASERCA__Name_of_the_Institution__c = 'primary trade account',
+                    LASERCA__Account_Ownership_Type__c = 'Individual',
+                    LASERCA__Open_Date__c = Date.today(),
                     LASERCA__Monthly_Payment__c = app.debt,
                     LASERCA__Account_Balance__c = app.balance
                 ));
                 if (app.applicationType != null && app.applicationType.contains('Joint')) {
                     tradeAccts.add(new LASERCA__Trade_Accounts__c(
                         LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Name_of_the_Institution__c = 'co app trade account',
+                        LASERCA__Account_Ownership_Type__c = 'Individual',
+                        LASERCA__Open_Date__c = Date.today(),
                         LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
                         LASERCA__Account_Balance__c = Util.nullToZero(app.coAppBalance)
                     ));
