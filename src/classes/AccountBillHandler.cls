@@ -8,11 +8,11 @@ public with sharing class AccountBillHandler{
     public static void handleAccountBill(List<Account_Bill__c> accountBillList) {
         List<String> propertyaccountIds = new List<String>();
         List<Account_Bill__c> firstAccountBillList = new List<Account_Bill__c>();
-        Map<String, String> firstABMap = new Map<String, String>();
+        Map<Id, Id> firstABMap = new Map<Id, Id>();
         Map<String, Account_Bill__c> abMap = new Map<String, Account_Bill__c>();
         //Map Account Bills and Chargent Orders in 1:1 Map: ordersByABMap
         //KEY: String of Account Bill; OBJECT: Chargent Order
-        Map<String, ChargentOrders__ChargentOrder__c> ordersByABMap = new Map<String, ChargentOrders__ChargentOrder__c>();
+        Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
 
 
         for (Account_Bill__c abill : accountBillList) {
@@ -20,8 +20,6 @@ public with sharing class AccountBillHandler{
             if( abill.Bill_Number__c == 1) {
                 firstABMap.put(abill.Parent_Account__c, abill.Id);
                 firstAccountBillList.add(abill);
-                System.debug(abill.Id);
-                System.debug(firstABMap.get(abill.Parent_Account__c));
             }
         }
 
@@ -59,11 +57,10 @@ public with sharing class AccountBillHandler{
         }
     }
 
-    public static void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<String, ChargentOrders__ChargentOrder__c> ordersByABMap ){
+    public static void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap ){
         List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
 
         if(!firstAccountBillList.isEmpty()){
-            System.debug(firstAccountBillList[0].Property_Account_Name__c);
 
             for(Account_Bill__c firstBill : firstAccountBillList) {
                 if (ordersByABMap.containsKey(firstBill.Id)) {

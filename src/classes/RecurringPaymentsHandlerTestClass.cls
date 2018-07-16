@@ -936,9 +936,6 @@ private class RecurringPaymentsHandlerTestClass{
         System.assertNotEquals(null, checkCO.Account_Bill__c);
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
-
-        System.debug(checkAB.Id + ' ' + checkAB.Property_Account_Name__c + ' '+ checkAB.Parent_Account__c);
-        System.debug(checkCO.Account_Bill__c + ' ' + checkCO.ChargentOrders__Account__c);
     }
 
     static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
