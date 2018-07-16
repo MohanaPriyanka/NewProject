@@ -30,8 +30,8 @@ public with sharing class PCRTradeAccountHandler {
         List<LASERCA__Trade_Accounts__c> tradeAccountsToUpdate = new List<LASERCA__Trade_Accounts__c>();
         for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
             if (tradeAccount.LASERCA__Credit_Loan_Type__c != 'Automotive') {continue;}
-            Integer remainingPayments = Integer.valueOf(Util.nullToZero(tradeAccount.LASERCA__Remaining_Term__c));
-            if (remainingPayments <= 6) {
+            if (tradeAccount.LASERCA__Remaining_Term__c != null
+                && Integer.valueOf(tradeAccount.LASERCA__Remaining_Term__c) <= 6) {
                 tradeAccount.Exclude_From_Rollup__c = true;
                 tradeAccountsToUpdate.add(tradeAccount);
             }

@@ -181,8 +181,8 @@ public with sharing class PCRTradeAccountHandlerTest {
             SELECT Id, Exclude_From_Rollup__c, LASERCA__Personal_Credit_Report__c, LASERCA__Name_of_the_Institution__c
             FROM LASERCA__Trade_Accounts__c
         ];
-        // only one trade account on the primary PCR should be counted
-        System.assertEquals(112, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
+        // trade account on the primary PCR should be counted
+        System.assertEquals(212, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
 
         for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
             if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'More than 6 remaining term') {
@@ -190,7 +190,7 @@ public with sharing class PCRTradeAccountHandlerTest {
             } else if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'Less than 6 remaining term') {
                 System.assertEquals(true, tradeAccount.Exclude_From_Rollup__c);
             } else if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'null remaining term') {
-                System.assertEquals(true, tradeAccount.Exclude_From_Rollup__c);
+                System.assertEquals(false, tradeAccount.Exclude_From_Rollup__c);
             }
         }
     }
