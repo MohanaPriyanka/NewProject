@@ -124,6 +124,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c coAppTradeAccount =
             new LASERCA__Trade_Accounts__c(
                 LASERCA__Personal_Credit_Report__c = coAppPCR.id,
+                LASERCA__Name_of_the_Institution__c = 'coapp trade account',
+                LASERCA__Account_Ownership_Type__c = 'Individual',
+                LASERCA__Open_Date__c = Date.today(),
                 LASERCA__Monthly_Payment__c = 400,
                 LASERCA__Account_Balance__c = 2000);
         insert coAppTradeAccount;
