@@ -1,6 +1,9 @@
 /**
  * Created by mstackhouse on 7/9/2018.
  * Description: Used to perform manipulations on trade accounts while analyzing the PCRs
+ *  In General, it is best to not exclude something that should be excluded later, than exclude something that shouldn't
+ *  be excluded. We'd rather have a customer not be pre-approved and later approved, than pre-approved and go back on
+ *  our decision.
  * Test: PCRTradeAccountHandlerTest
  */
 
