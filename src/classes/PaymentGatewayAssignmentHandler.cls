@@ -40,7 +40,9 @@ public with sharing class PaymentGatewayAssignmentHandler {
         
         for (ChargentBase__Gateway__c gatewayVar : [SELECT Id, Name, Entity_Id__c
                                                    FROM ChargentBase__Gateway__c 
-                                                   WHERE Entity__c != null]) {
+                                                   WHERE Entity__c != null
+                                                   AND ChargentBase__Active__c = TRUE
+                                                   ORDER BY CreatedDate DESC ]) {
             gatewayMap.put(gatewayVar.Entity_Id__c, gatewayVar);
         }
 
