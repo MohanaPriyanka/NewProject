@@ -5,9 +5,11 @@
  + * Tested By: RecurringSRECHandlerTest
  + *************************************************************************************/
 
-public without sharing class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.Stateful { 
-    //Database.executeBatch(this, 1);
-
+global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.Stateful {
+    webservice static void executeBatch (){
+        BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
+        Database.executeBatch(batchJob, 1);
+    }
     public List<ChargentOrders__ChargentOrder__c> updatedChOrders;
     public List<Id> successSRECList = new List<Id>();
     public List<Id> successInvoiceList = new List<Id>();

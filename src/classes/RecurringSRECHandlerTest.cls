@@ -231,8 +231,7 @@ private class RecurringSRECHandlerTest{
 
     static testMethod void runBatch() {
         Test.startTest();
-        BatchCreditSRECHandler m = new BatchCreditSRECHandler();
-        Database.executeBatch(m, 1);
+        BatchCreditSRECHandler.executeBatch();
         Test.stopTest();
 
         ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name, 
