@@ -145,7 +145,7 @@ public with sharing class PCRTradeAccountHandlerTest {
             LASERCA__Monthly_Payment__c = 112,
             LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
             LASERCA__Remaining_Term__c = '12',
-            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report_Co_Applicant__c
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
         ));
 
         // automotive trade account with 6 payments left should be excluded from rollup
@@ -157,7 +157,7 @@ public with sharing class PCRTradeAccountHandlerTest {
             LASERCA__Monthly_Payment__c = 106,
             LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
             LASERCA__Remaining_Term__c = '6',
-            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report_Co_Applicant__c
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
         ));
 
         // automotive trade account with Remaining_Term = null left should be excluded from rollup
