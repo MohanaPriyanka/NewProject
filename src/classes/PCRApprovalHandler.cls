@@ -190,9 +190,11 @@ public without sharing class PCRApprovalHandler {
         lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
 
         if (pcr == null) {
-            Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
-            List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
-            pcr = pcrs[0];
+            for (LASERCA__Personal_Credit_Report__c leadPCR : leadPCRs) {
+                if (leadPCR.Id == lead.Personal_Credit_Report__c) {
+                    pcr = leadPCR;
+                }
+            }
         }
 
         if (productRepo == null) {
@@ -208,6 +210,7 @@ public without sharing class PCRApprovalHandler {
         the loan is selected, so we'll look through all applicable products for the lead
         and see the best we can do.
         */
+
         CreditResultSummary creditSummary = productRepo.getCreditSummary(lead, creditScore, householdMonthlyIncome, householdMonthlyDebt);
         setPcrDti(lead, creditSummary, pcr);
 
@@ -255,6 +258,10 @@ public without sharing class PCRApprovalHandler {
         // Per Nader: We don't have clear criteria from Avidia on how to automate co-signer applications
         if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
             pcr.Solar_Loan_Approval_Status__c = PENDINGREVIEW;
+        }
+
+        if (PCRPublicRecordHandler.appHasCurrentBankruptcy(leadPCRs)) {
+            pcr.Solar_Loan_Approval_Status__c = DECLINED;
         }
 
         // If lead is in any stage of the process update the status
@@ -361,7 +368,10 @@ public without sharing class PCRApprovalHandler {
                 Solar_Loan_Manual_Decline__c, Credit_PreApproval_Email_Sent__c,
                 LASERCA__Contact__c, First_Name_from_Lead__c, Last_Name_from_Lead__c, Email_from_Lead__c,
                 PCR_Lead_ID__c, Partner_Email__c,
-                Credit_Denial_Email_Sent__c
+                Credit_Denial_Email_Sent__c,
+            (SELECT Id, LASERCA__Type__c, LASERCA__Date_Filed__c, LASERCA__Disposition__c,
+                LASERCA__Disposition_Date__c
+            FROM LASERCA__Public_Records__r)
             FROM LASERCA__Personal_Credit_Report__c
             WHERE Id IN : pcrIds
         ];
