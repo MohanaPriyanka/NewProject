@@ -168,7 +168,7 @@ public with sharing class PCRTradeAccountHandlerTest {
             LASERCA__Account_Balance__c = 1200.00,
             LASERCA__Monthly_Payment__c = 100,
             LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
-            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report_Co_Applicant__c
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
         ));
         insert tradeAccounts;
 
@@ -177,12 +177,14 @@ public with sharing class PCRTradeAccountHandlerTest {
         Test.stopTest();
 
         lead = getLeadForTest();
-        // only one trade account on the primary PCR should be counted
-        System.assertEquals(112, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
-        for (LASERCA__Trade_Accounts__c tradeAccount : [
+        tradeAccounts = [
             SELECT Id, Exclude_From_Rollup__c, LASERCA__Personal_Credit_Report__c, LASERCA__Name_of_the_Institution__c
             FROM LASERCA__Trade_Accounts__c
-        ]) {
+        ];
+        // only one trade account on the primary PCR should be counted
+        System.assertEquals(112, lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c);
+
+        for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
             if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'More than 6 remaining term') {
                 System.assertEquals(false, tradeAccount.Exclude_From_Rollup__c);
             } else if (tradeAccount.LASERCA__Name_of_the_Institution__c == 'Less than 6 remaining term') {

@@ -12,7 +12,8 @@ public with sharing class PCRTradeAccountHandler {
             SELECT Id, LASERCA__Account_Ownership_Type__c, LASERCA__Account_Status_Type__c, LASERCA__Account_Type__c,
                 LASERCA__Open_Date__c, LASERCA__Name_of_the_Institution__c, LASERCA__Last_Activity_Date__c,
                 LASERCA__Payment_Pattern_Data__c, LASERCA__Remaining_Term__c, LASERCA__Credit_Text__c,
-                LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c
+                LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c,
+                LASERCA__Credit_Loan_Type__c
             FROM LASERCA__Trade_Accounts__c
             WHERE LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report__c
             OR LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report_Co_Applicant__c
