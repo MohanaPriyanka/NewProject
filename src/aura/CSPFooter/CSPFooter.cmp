@@ -5,12 +5,20 @@
       <li class="slds-accordion__list-item"/>
     </ul>
   </div>
-  <div>
-    <ui:outputText  class="slds-text-body_small slds-align--absolute-center slds-text-color_weak slds-p-top_medium" 
-                    value="Have a question? Contact the BlueWave Customer Care Team:"/>
-  </div>
-  <div class="slds-p-bottom_medium slds-align--absolute-center">
-    <ui:outputText class="slds-text-body_small slds-text-color_weak" value="customercare@bluewavesolar.com"/>
-    <ui:outputText class="slds-text-body_small slds-text-color_weak slds-p-left_medium" value="844-786-4100"/>
-  </div>
- </aura:component>
+  <footer class="slds-p-around--large slds-text-body_small slds-text-color_weak">
+    <div class="slds-grid slds-grid--align-center">
+      <p class="slds-col">
+        <a href="mailto:customercare@bluewavesolar.com">
+          <ui:outputText class="slds-text-color_weak" value="customercare@bluewavesolar.com"/>
+        </a>
+      </p>
+    </div>
+    <div class="slds-grid slds-grid--align-center">
+      <p class="slds-col">
+        <a href="tel:8447864100">
+          <ui:outputText class="slds-text-color_weak" value="844-786-4100"/>
+        </a>
+      </p>
+    </div>
+  </footer>
+</aura:component>

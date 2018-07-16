@@ -16,24 +16,46 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
        Database.executeBatch(this, 20);
     }
 
-    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
-        orderToStop.ChargentOrders__Charge_Amount__c = 0;
-        orderToStop.ChargentOrders__Payment_Status__c = 'Stopped';
-        orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
-        return orderToStop;
-    }
-
     public Database.QueryLocator start(Database.BatchableContext bc) {
-        String query =  'SELECT Id, ChargentOrders__Payment_Status__c,' +
+        String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
                         ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
                         ' Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c,' +
-                        ' Property_Account_ID__c, Reason_for_Recurring_Stop__c' +
+                        ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
+                        ' Comments__c,' +
+                        ' ChargentOrders__Payment_Method__c,' +
+                        ' ChargentOrders__Bank_Name__c,' +
+                        ' ChargentOrders__Bank_Routing_Number__c,' +
+                        ' ChargentOrders__Bank_Account_Type__c,' +
+                        ' ChargentOrders__Bank_Account_Number__c,' +
+                        ' ChargentOrders__Bank_Account_Name__c,' +
+                        ' ChargentOrders__Billing_Email__c,' +
+                        ' ChargentOrders__Card_Type__c,' +
+                        ' ChargentOrders__Card_Number__c,' +
+                        ' ChargentOrders__Card_Security_Code__c,' +
+                        ' ChargentOrders__Card_Expiration_Month__c,' +
+                        ' ChargentOrders__Card_Expiration_Year__c,' +
+                        ' ChargentOrders__Billing_Address__c,' +
+                        ' ChargentOrders__Billing_City__c,' +
+                        ' ChargentOrders__Billing_State__c,' +
+                        ' ChargentOrders__Billing_Zip_Postal__c,' +
+                        ' ChargentOrders__Billing_First_Name__c,' +
+                        ' ChargentOrders__Billing_Last_Name__c,' +
+                        ' ChargentOrders__Payment_Frequency__c,' +
+                        ' ChargentOrders__Payment_Stop__c,' +
+                        ' ChargentOrders__Charge_Date__c,' + 
+                        ' ChargentOrders__Payment_Start_Date__c,' +
+                        ' ChargentOrders__Shipping_Name__c' +
                         ' FROM ChargentOrders__ChargentOrder__c' +
-                        ' WHERE ChargentOrders__Payment_Status__c = \'' + 'Recurring' + '\'';
+                        ' WHERE ChargentOrders__Payment_Status__c = \'' + 'Recurring' + '\'' +
+                        ' ORDER BY CreatedDate';
         return Database.getQueryLocator(query);
     }
 
     public void execute(Database.BatchableContext bc, List<ChargentOrders__ChargentOrder__c> scope){
+        updateRecurringOrders(scope);
+    }
+
+    public void updateRecurringOrders(List<ChargentOrders__ChargentOrder__c> chOrders){
         String uniqueId;
         Integer newBillNumber;
         Decimal newchargeamount;
@@ -45,8 +67,9 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         List<Account_Bill__c> newAcctBillList = new List<Account_Bill__c>();
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
+        Map<Id, ChargentOrders__ChargentOrder__c> orderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
 
-        for (ChargentOrders__ChargentOrder__c recOrders : scope) {
+        for (ChargentOrders__ChargentOrder__c recOrders : chOrders) {
             accountIDList.add(recOrders.Property_Account_ID__c);
         }
 
@@ -70,15 +93,15 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue') );
         }
 
-        for (ChargentOrders__ChargentOrder__c recurOrder : scope) {
+        for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
             if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
                 newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
                 chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
                     if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
-                        newchargeamount = aggregateSbMap.get(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
-                        recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2);
+                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
+                        recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2, roundingMode.HALF_UP);
                     } else {
                         recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
                     }
@@ -88,8 +111,45 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             } else {
                 recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series');
             }
+            orderMap.put(recurOrder.Account_Bill__c, recurOrder);
         }
-        update scope;
+        update chOrders;
+
+        /* If there are any bills that are left over that don't have a Ch Order, clone one:*/
+        if (aggregateSbMap.size() > 0){
+            cloneOrderForNewGateway(aggregateSbMap, orderMap);
+        }
+    }
+
+    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
+        orderToStop.ChargentOrders__Charge_Amount__c = 0;
+        orderToStop.ChargentOrders__Payment_Status__c = 'Stopped';
+        orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
+        return orderToStop;
+    }
+
+    public void cloneOrderForNewGateway(Map<String, Decimal> aggregateSbMap, Map<Id, ChargentOrders__ChargentOrder__c> orderMap){
+        List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
+        for (String sbWithoutOrder : aggregateSbMap.keySet()) {
+            String acctBillid = sbWithoutOrder.substring(0,18);
+            Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, roundingMode.HALF_UP);
+            if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring'){
+                ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
+                ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
+                orderA.ChargentOrders__Subtotal__c = amountToCharge;
+                orderA.ChargentOrders__Charge_Amount__c = amountToCharge;
+                orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                orderA.ChargentOrders__Payment_Status__c = 'Recurring';
+                orderA.ChargentOrders__Payment_Stop__c = 'Unending';
+                orderA.ChargentOrders__Charge_Date__c = '01';
+                orderA.Reason_for_Recurring_Stop__c = '';
+                orderA.Comments__c = 'Cloned Order';
+                orderA.ChargentOrders__Shipping_Name__c = sbWithoutOrder.substring(19,34);
+                orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
+                ordersToInsert.add(orderA);  
+            }
+        } 
+        insert ordersToInsert;
     }
 
     public void finish(Database.BatchableContext bc){

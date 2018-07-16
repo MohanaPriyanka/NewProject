@@ -3,7 +3,7 @@
         $A.util.removeClass(component.find('Confirm'), 'shake slds-has-error');
         component.set("v.showError", false); 
        
-        const actionEmail = component.get("c.checkEmailOnOpp");
+        const actionEmail = component.get("c.getLoanAndCheckEmail");
 
         actionEmail.setParams({
             "oppId": oppId,
@@ -11,14 +11,17 @@
         }); 
 
         actionEmail.setCallback(this,function(response) {
-            if(response.getState() === "SUCCESS" && response.getReturnValue() === false) { 
-                $A.util.addClass(component.find('Confirm'), 'shake slds-has-error');
-                component.set("v.showError", true); 
-                component.set("v.errorText", 'Invalid Email'); 
-            } else if (response.getState() === "SUCCESS") {
+            if(response.getState() === "SUCCESS") { 
                 component.set("v.showEmail", false);
             } else {
-                helper.logError('CreateOrderandPaymentRequest','insertRequest', response.getReturnValue(), '');
+                let errors = response.getError();
+                if (errors[0].message === "Invalid Email") {
+                    component.set("v.errorMessage", 'Invalid Email'); 
+                } else {
+                    component.set("v.errorMessage", 'Error: This Link Is Not Valid'); 
+                }
+                $A.util.addClass(component.find('Confirm'), 'shake slds-has-error');
+                component.set("v.showError", true); 
             }
         });                                 
         $A.enqueueAction(actionEmail);
@@ -38,7 +41,7 @@
         } else if (component.get("v.chOrder.ChargentOrders__Bank_Account_Type__c") === null) {
             this.logErrorMessage(component, helper, 'Please provide a valid Bank Account Type', 'banktype');
         } else {
-            const actionInsert = component.get("c.insertRequest");
+            const actionInsert = component.get("c.submitDDInfoWithoutCharge");
 
             actionInsert.setParams({
                 "oppId": oppId,
@@ -50,7 +53,7 @@
                 if(response.getState() === "SUCCESS" && response.getReturnValue() === true) { 
                     component.set("v.ShowSuccess", true);
                 } else {
-                    helper.logError('CreateOrderandPaymentRequest','insertRequest', response.getReturnValue(), '');
+                    helper.logError('CreateOrderandPaymentRequest','submitDDInfoWithoutCharge', response.getReturnValue(), '');
                 }
             });                                 
             $A.enqueueAction(actionInsert);
