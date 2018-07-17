@@ -187,6 +187,7 @@ public without sharing class CSAPController {
             lead.Bs_Sales_ID__c = profile.salesRepId;
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
+        lead.Parent_Account__c = account.Id;
         upsert lead;
 
         //Update the Account with the lookup back to the lead
