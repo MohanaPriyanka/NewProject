@@ -50,8 +50,8 @@
     addNewLead : function(component, event, helper, applicationType) {
         var action = component.get("c.getLead");
         action.setParams({
-            "leadId": component.get("v.leadId"),
-            "email" : component.get("v.leadEmail")
+            "leadId": component.get("v.lead.Id"),
+            "email" : component.get("v.lead.Email")
         });
         action.setCallback(this, function(resp) {
             if (resp.getState() === "SUCCESS") {

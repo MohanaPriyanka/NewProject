@@ -1,7 +1,5 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
-  <aura:attribute name="leadId" type="String"/>
-  <aura:attribute name="leadEmail" type="String"/>
-  <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c', 
+  <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c',
                                                                       'Name': ''}"/>
   <aura:attribute name="ualList" type="Utility_Account_Log__c[]"/>
   <aura:attribute name="haveSolarPanelsOnProperty" type="String"/>
