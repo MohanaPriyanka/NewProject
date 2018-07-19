@@ -26,7 +26,8 @@
         upsertCSAPRecordsAction.setParams({
             "lead": lead,
             "partnerId" : component.get("v.partnerId"),
-            "salesRepId" : component.get("v.salesRepId")
+            "salesRepId" : component.get("v.salesRepId"),
+            "referralCode" : component.get("v.referralCode")
         });
         upsertCSAPRecordsAction.setCallback(this, function(actionResult) {
             if (actionResult.getReturnValue() != null) {

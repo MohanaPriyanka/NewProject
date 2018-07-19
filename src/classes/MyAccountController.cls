@@ -10,7 +10,8 @@ public without sharing class MyAccountController {
 
     public static User customerUser = new User();
     static {
-        customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId  
+        customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId, Contact.Product_Line__c,
+                                 Contact.Account.Partner__c, Contact.Account.Sales_Representative__c, Contact.Customer_Referral_Code__c
                         FROM User 
                         WHERE Id = :UserInfo.getUserId()];
     }
@@ -253,5 +254,33 @@ public without sharing class MyAccountController {
         } catch (Exception ex) {
            return ex.getMessage();
         }
-    } 
+    }
+
+    @AuraEnabled
+    public static String generateReferralURL () {
+        String referralUrl;
+        if (customerUser.Contact.Product_Line__c == 'Community Solar') {
+            String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+            referralUrl = host + 'apply/s/csap';
+            //grabbing partner info when in the partner portal
+            //want to generate link when in the customers portal
+
+            if (customerUser.Contact.Account.Partner__c != null && customerUser.Contact.Customer_Referral_Code__c != null) {
+                referralUrl += '?partnerId=' + customerUser.Contact.Account.Partner__c + '&salesRepId=' + customerUser.Contact.Account.Sales_Representative__c +
+                    '&referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
+                //add referral code to url
+                //referralUrl += '?referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
+
+            } else if (customerUser.Contact.Customer_Referral_Code__c != null) {
+                //Dont know whats gonna happen here with an else--> dont want to send them to form assembly
+                referralUrl = 'http://www.ebay.com';
+                //referralUrl = 'https://forms.bluewaverenewables.com/381687?tfa_531=' + customerUser.Contact.Customer_Referral_Code__c;
+            } else if (customerUser.Contact.Customer_Referral_Code__c != null) {
+                referralUrl = 'http://amazon.com';
+            }
+        }
+            return referralUrl;
+        }
+
+
 }

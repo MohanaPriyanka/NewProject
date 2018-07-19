@@ -4,8 +4,9 @@
         if(!leadId){
             var lead = {"sobjectType": "Lead"};
             helper.raiseNavEvent("COMPLETED", {"stageName": "NAV_Getting_Started", "lead": lead});
-            lead.Partner_Lookup__c = component.get("v.partnerId");
+
             lead.bs_Sales_ID__c = component.get("v.salesRepId");
+            lead.Partner_Lookup__c = component.get("v.partnerId");
             component.set("v.lead", lead);
             component.set("v.STAGENAME", "NAV_Personal_Information");
             component.set("v.page", "AboutYourself");

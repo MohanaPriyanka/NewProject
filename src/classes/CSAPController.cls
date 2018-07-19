@@ -31,7 +31,7 @@ public without sharing class CSAPController {
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c
+                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral_NEW__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -134,12 +134,13 @@ public without sharing class CSAPController {
 
 
     @AuraEnabled
-    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId){
+    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         User apiUser = [SELECT Id, Name, Username 
                         FROM User 
                         WHERE Name = 'API'
                         AND IsActive = True
                         LIMIT 1];
+
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -177,6 +178,9 @@ public without sharing class CSAPController {
             lead.Bs_Sales_ID__c = salesRepId;
         } else if (String.isNotBlank(profile.salesRepId)) {
             lead.Bs_Sales_ID__c = profile.salesRepId;
+        }
+        if (String.isNotBlank(referralCode)) {
+            lead.Customer_Referral_NEW__c = referralCode;
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
         upsert lead;

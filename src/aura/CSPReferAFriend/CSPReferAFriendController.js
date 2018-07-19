@@ -1,5 +1,4 @@
-({
-    sendEmailFunc : function(component, event, helper) {
+ sendEmailFunc : function(component, event, helper) {
         component.find("emailstatus").set("v.value", "");
         var email = component.find("email").get("v.value");
         if(email === null || email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {             
@@ -37,5 +36,17 @@
             }
         });
         $A.enqueueAction(action);
+
+        var action2 = component.get("c.generateReferralURL");
+        action2.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS'){
+                component.set("v.referralURL", resp.getReturnValue());
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        })
+        $A.enqueueAction(action2);
+
     }
 })
