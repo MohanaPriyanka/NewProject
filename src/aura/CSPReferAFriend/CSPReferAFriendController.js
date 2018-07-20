@@ -1,4 +1,5 @@
- sendEmailFunc : function(component, event, helper) {
+({
+sendEmailFunc : function(component, event, helper) {
         component.find("emailstatus").set("v.value", "");
         var email = component.find("email").get("v.value");
         if(email === null || email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {             
@@ -25,6 +26,7 @@
             $A.enqueueAction(action);
         }
     },
+
     doInit : function(component, event, helper) {
         var action = component.get("c.getCode");
         action.setCallback(this,function(resp){

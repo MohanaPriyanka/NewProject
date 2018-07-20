@@ -30,6 +30,10 @@ public with sharing class CSAPControllerTest {
             Community_Solar_Application_Type__c = 'CSAP');
         insert accountRecord;
 
+        //Create a customer account
+        Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
+        insert customerAccount;
+
         Contact contactRecord = new Contact(
             FirstName = 'User',
             LastName = 'Swain',
@@ -38,6 +42,14 @@ public with sharing class CSAPControllerTest {
             Partner_Lookup__c = partnerSetUpIds.get(0),
             Sales_Representative__c = partnerSetUpIds.get(1));
         insert contactRecord;
+
+        //Need to create a customer contact with a referral code
+        //Does the referral code automatically generate? It should
+        Contact customerContact = new Contact( FirstName = 'Contact A',
+            LastName = 'Customer',
+            Account = customerAccount,
+            Email = 'srenfro@bluewavesolar.com');
+        insert customerContact;
 
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
@@ -133,8 +145,11 @@ public with sharing class CSAPControllerTest {
     @isTest static void testEmailCSAPApplication() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
-        Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
+        Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Contact customerContact = [SELECT Id, Customer_Referral_Code__c FROM Contact WHERE Lastname='Customer' LIMIT 1];
+        system.debug(customerContact.id);
+        //Grab the customer contact to get customer referral code
 
         User userRecord = new User(
             FirstName = 'User',
@@ -161,7 +176,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, 
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral_NEW__c
             FROM Lead
             WHERE email = 'testymctesterson@tester.com'];
         LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.id];
@@ -169,7 +184,8 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(userRecord) {
-            CSAPController.upsertCSAPRecords(leadToInsert, partner.id, salesRep.id);
+            // Pass the referral code to the upsertCSAPRecords
+            CSAPController.upsertCSAPRecords(leadToInsert, partner.id, salesRep.id, customerContact.Customer_Referral_Code__c );
         }
 
         Lead lead = [
@@ -188,6 +204,7 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
         System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
         System.assertEquals(salesRep.Id, CSAPController.getLead(lead.Id, lead.Email).bs_Sales_ID__c);
+        System.assertEquals(customerContact.Customer_Referral_Code__c, CSAPController.getLead(lead.Id, lead.Email).Customer_Referral_NEW__c);
         System.assert(CSAPController.getContact(lead.Id, lead.Email).Id != null);
         System.assert(CSAPController.getAccount(lead.Id, lead.Email).Id != null);
 
@@ -216,6 +233,7 @@ public with sharing class CSAPControllerTest {
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+
 
         User otherUser = new User(
             FirstName = 'User',
@@ -249,7 +267,7 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(otherUser) {
-            CSAPController.upsertCSAPRecords(leadToInsert, '', '');
+            CSAPController.upsertCSAPRecords(leadToInsert, '', '', '');
         }
 
         Lead lead = [
