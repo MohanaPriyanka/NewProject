@@ -134,7 +134,8 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Lead addAdditionalLead(Lead lead){
         lead = processLead(lead);
-        upsert lead;
+        lead.Id = null;
+        insert lead;
         return lead;
     }
     public static Lead processLead(Lead lead){
