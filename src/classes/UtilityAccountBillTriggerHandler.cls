@@ -185,9 +185,9 @@ public with sharing class UtilityAccountBillTriggerHandler {
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
-        if (prodUpdate.Size_off_NMCs__c){
+        if (prodUpdate.Billing_Method__c == 'NMC'){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
-        } else {
+        } else if (prodUpdate.Billing_Method__c == 'kWh') {
             subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }
 
@@ -204,13 +204,15 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                                     Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-                                    Size_off_NMCs__c = prodUpdate.Size_off_NMCs__c,
                                     NMC_Rate__c = nmcRate,
                                     Total_System_NMCs__c = systemNMCs,
                                     Total_System_Production_kWh__c = systemProduction,
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
                                     Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP));
+        if (prodUpdate.Billing_Method__c == 'NMC'){
+            generatedUASB.Size_off_NMCs__c = true;
+        }
         return generatedUASB;     
     }
 
