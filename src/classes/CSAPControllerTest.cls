@@ -44,7 +44,8 @@ public with sharing class CSAPControllerTest {
         Load_U__c everLZU = new Load_U__c (Name = '02052',
                                            Load_Zone__c = 'SEMA Eversource',
                                            LZ__c = 'SEMA',
-                                           Town__c= 'Medfield');
+                                           Town__c= 'Medfield',
+                                           Utility__c = 'Eversource');
         insert everLZU;
 
         Product2 srecProduct = new Product2( Name = 'SREC Community Solar',
@@ -82,6 +83,7 @@ public with sharing class CSAPControllerTest {
             Company = 'Test',
             Email = 'testymctesterson@tester.com',
             Application_Type__c = 'Residential',
+            Product_line__c = 'Community Solar',
             LASERCA__Home_Address__c = '55 Boston St.',
             LASERCA__Home_City__c = 'Boston',
             LASERCA__Home_State__c = 'MA',
@@ -98,12 +100,23 @@ public with sharing class CSAPControllerTest {
         );
         insert lead;
 
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Lead__c = lead.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Tester Testcase');
+        insert ual;
+
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = lead.Id,
-            LASERCA__Credit_Score__c = '200'
+            LASERCA__Credit_Score__c = '700',
+            LASERCA__Credit_Score_TransUnion__c = '700'
         );
-
         insert pcr;
+        LASERCA__Trade_Accounts__c tradeAccounts = new LASERCA__Trade_Accounts__c(
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Monthly_Payment__c = 339
+        );
+        insert tradeAccounts;
 
         LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
             LASERCA__Lead__c = lead.Id,
@@ -114,7 +127,8 @@ public with sharing class CSAPControllerTest {
 
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
-                                                                    Service_Territory__c = 'NEMA',
+                                                                    Service_Territory__c = 'SEMA',
+                                                                    Service_Territories__c = 'SEMA',
                                                                     Open__c = true,
                                                                     Reserved_Capacity_kW_DC__c = '10',
                                                                     Capacity_Committed_kW_DC__c = 0,
@@ -129,7 +143,6 @@ public with sharing class CSAPControllerTest {
                                                                     Product__c = smartProduct.Id,
                                                                     Maximum_Subscription_Assemblage__c = 25);
         insert sss1;
-
     }
 
     @IsTest static void testEmailCSAPApplication() {
@@ -207,18 +220,18 @@ public with sharing class CSAPControllerTest {
 
         //Try pulling credit report
         CSAPController.pullCreditStatus(residentialLead);
-        //Check not qualified since Credit Score is only 200
-        System.assertEquals('Unqualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
-
-        //Check for qualified
-        pcr.LASERCA__Credit_Score__c = '800';
-        update pcr;
+        //Check for qualified since Credit Score is 700
         System.assertEquals('Qualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
         System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).srecProduct);
         System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).smartProduct.Id);
 
         System.assertEquals('API', residentialLead.Parent_Account__r.Owner.Name);
         System.assertNotEquals('User Testing', residentialLead.Parent_Account__r.Owner.Name);
+
+        //Check for un-qualified
+        pcr.LASERCA__Credit_Score__c = '200';
+        update pcr;
+        System.assertEquals('Unqualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
 
         Test.stopTest();
     }
@@ -283,15 +296,15 @@ public with sharing class CSAPControllerTest {
 
         //Try pulling credit report
         CSAPController.pullCreditStatus(lead);
-        //Check not qualified since Credit Score is only 200
-        System.assertEquals('Unqualified', CSAPController.checkLeadCreditIfQualified(lead.Id).sssCreditQualification);
-
-        //Check for qualified
-        pcr.LASERCA__Credit_Score__c = '800';
-        update pcr;
+        //Check for qualified since credit score is 700
         System.assertEquals('Qualified', CSAPController.checkLeadCreditIfQualified(lead.Id).sssCreditQualification);
         System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(lead.Id).srecProduct);
         System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(lead.Id).smartProduct.Id);
+
+        //Check not qualified
+        pcr.LASERCA__Credit_Score__c = '200';
+        update pcr;
+        System.assertEquals('Unqualified', CSAPController.checkLeadCreditIfQualified(lead.Id).sssCreditQualification);
 
         Test.stopTest();
     }
@@ -306,16 +319,49 @@ public with sharing class CSAPControllerTest {
 
     @IsTest
     static void testConversion() {
-        Lead lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
-        lead.Status = 'Qualified';
-        update lead;
+        Lead residentialLead = [
+            SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
+                Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
+                Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
+                Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
+                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, Utility__c, Utility_1__c,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+            FROM Lead
+            WHERE Email = 'testymctesterson@tester.com'];
+        System.debug(LoggingLevel.ERROR, 'residentialLead: ' + residentialLead);
+        residentialLead.Status = 'Qualified';
+        update residentialLead;
+        Lead nonResidentialLead = residentialLead.clone();
+        nonResidentialLead.Application_Type__c = 'Non-Residential';
+        // Insert 10 other property accounts
+        Test.startTest();
+        for (Integer i = 0; i < 10; i++) {
+            Lead nonResiLead = CSAPController.addAdditionalLead(nonResidentialLead);
+            Utility_Account_Log__c ual = new Utility_Account_Log__c(
+                Lead__c = nonResilead.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'TBD');
+            insert ual;
+        }
+
         List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
-        System.debug(LoggingLevel.ERROR, opps);
+        // There shouldn't be any opportunities yet, because nothing has been converted
         System.assertEquals(0, opps.size());
-        CSAPController.convertCSLead(lead.Id, lead.Email);
-        lead = [SELECT Id, Email, IsConverted FROM Lead WHERE Email = 'testymctesterson@tester.com'];
-        System.assertEquals(true, lead.IsConverted);
+        System.debug(LoggingLevel.ERROR, 'residentialLead: ' + residentialLead);
+        CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
+        residentialLead = [
+            SELECT Id, Email, IsConverted
+            FROM Lead
+            WHERE Email = 'testymctesterson@tester.com'
+            AND Application_Type__c = 'Residential'
+        ];
+        // The lead in the testSetup is residential, and should be converted
+        System.assertEquals(true, residentialLead.IsConverted);
         opps = [SELECT Id, Name FROM Opportunity];
-        System.assertEquals(0, opps.size());
+        // And there should be 10 Non-Residential opps, plus the Residential opp after conversion
+        System.assertEquals(11, opps.size());
+        Test.stopTest();
     }
 }
