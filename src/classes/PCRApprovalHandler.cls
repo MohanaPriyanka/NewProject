@@ -185,10 +185,6 @@ public without sharing class PCRApprovalHandler {
     }
 
     public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
-        PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
-
-        lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
-
         if (pcr == null) {
             Set<Id> pcrIds = new Set<Id>{lead.Personal_Credit_Report__c};
             List<LASERCA__Personal_Credit_Report__c> pcrs = PCRApprovalHandler.getPCRsForCreditAnalysis(pcrIds);
@@ -201,7 +197,7 @@ public without sharing class PCRApprovalHandler {
 
         Integer creditScore = setAppMaximumCreditScore(lead);
         Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
-        Decimal householdMonthlyDebt = calculateHouseholdMonthlyDebt(lead);
+        Decimal householdMonthlyDebt = PCRTradeAccountHandler.calculateHouseholdMonthlyDebt(lead);
 
         /*
         If a lead doesn't have an associated product, we can't calculate the DTI after
@@ -451,20 +447,6 @@ public without sharing class PCRApprovalHandler {
             }
         }
         return householdMonthlyIncome;
-    }
-
-    private Decimal calculateHouseholdMonthlyDebt (Lead lead) {
-        Decimal householdMonthlyDebt = 0;
-        if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c != null) {
-            householdMonthlyDebt += lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
-        }
-        // add coApplicant's debt if it is a joint application
-        if (lead.Application_Type__c == 'Joint'
-            && lead.Joint_Applicant_Type__c == 'Co-Applicant'
-            && lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != null) {
-            householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
-        }
-        return householdMonthlyDebt;
     }
 
     private Decimal getMonthlyPayment (CreditResultSummary creditSummary) {
