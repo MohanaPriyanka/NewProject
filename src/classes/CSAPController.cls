@@ -272,18 +272,30 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Lead convertCSLead(Id leadId, String email) {
         Lead lead = getLead(leadId, email);
-        Database.LeadConvert leadConvert = new Database.LeadConvert();
-        leadConvert.setLeadId(leadId);
-        leadConvert.setConvertedStatus('Qualified');
-        leadConvert.setDoNotCreateOpportunity(true);
-        Database.LeadConvertResult lcr = Database.convertLead(leadConvert, false);
-        if (!lcr.isSuccess()) {
-            Logger.logNow(
-                'CSAPController',
-                'convertCSLead',
-                'CS Lead conversion failed for Id: ' + leadId +
-                    ' error:' + lcr.getErrors()[0].getMessage());
+        List<Lead> leads = [
+            SELECT Id
+            FROM Lead
+            WHERE Parent_Account__c = :lead.Parent_Account__c
+        ];
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+        for (Lead leadToConvert : leads) {
+            Database.LeadConvert leadConvert = new Database.LeadConvert();
+            leadConvert.setLeadId(leadToConvert.Id);
+            leadConvert.setConvertedStatus('Qualified');
+            leadConvert.setDoNotCreateOpportunity(true);
+            leadConverts.add(leadConvert);
         }
+        List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
+        for (Database.LeadConvertResult lcr : lcrs) {
+            if (!lcr.isSuccess()) {
+                Logger.logLater(
+                    'CSAPController',
+                    'convertCSLead',
+                    'CS Lead conversion failed for Id: ' + leadId +
+                        ' error:' + lcr.getErrors()[0].getMessage());
+            }
+        }
+        Logger.flushLogs();
         return getLead(leadId, email);
     }
 }

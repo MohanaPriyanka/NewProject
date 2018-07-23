@@ -70,7 +70,8 @@
                     Phone: oldLead.Phone,
                     LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
                     LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
-                    Application_Type__c : applicationType
+                    Application_Type__c : applicationType,
+                    Product_line__c : 'Community Solar'
                 };
                 component.set("v.lead", newLead);
 

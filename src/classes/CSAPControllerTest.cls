@@ -324,32 +324,39 @@ public with sharing class CSAPControllerTest {
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
                 Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                 Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
-                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
+                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Product_line__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, Utility__c, Utility_1__c,
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, Utility__c, Utility_1__c, Personal_Credit_Report__c,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'];
-        System.debug(LoggingLevel.ERROR, 'residentialLead: ' + residentialLead);
         residentialLead.Status = 'Qualified';
         update residentialLead;
-        Lead nonResidentialLead = residentialLead.clone();
-        nonResidentialLead.Application_Type__c = 'Non-Residential';
         // Insert 10 other property accounts
-        Test.startTest();
+        List<Utility_Account_Log__c> ualList = new List<Utility_Account_Log__c>();
+        List<Lead> leadList = new List<Lead>();
         for (Integer i = 0; i < 10; i++) {
-            Lead nonResiLead = CSAPController.addAdditionalLead(nonResidentialLead);
+            Lead nonResidentialLead = residentialLead.clone();
+            nonResidentialLead.Id = null;
+            nonResidentialLead.Application_Type__c = 'Non-Residential';
+            CSAPController.processLead(nonResidentialLead);
+            leadList.add(nonResidentialLead);
+        }
+        insert leadList;
+        for (Lead lead : leadList) {
             Utility_Account_Log__c ual = new Utility_Account_Log__c(
-                Lead__c = nonResilead.Id,
+                Lead__c = lead.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'TBD');
-            insert ual;
+            ualList.add(ual);
         }
+        insert ualList;
 
+        Test.startTest();
         List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
         // There shouldn't be any opportunities yet, because nothing has been converted
         System.assertEquals(0, opps.size());
-        System.debug(LoggingLevel.ERROR, 'residentialLead: ' + residentialLead);
+
         CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
         residentialLead = [
             SELECT Id, Email, IsConverted
