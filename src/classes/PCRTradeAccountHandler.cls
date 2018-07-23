@@ -48,10 +48,13 @@ public with sharing class PCRTradeAccountHandler {
     }
 
     public static String matchAccountCriteria(LASERCA__Trade_Accounts__c tradeAccount) {
-        String accountCriteria = tradeAccount.LASERCA__Name_of_the_Institution__c;
+        String accountCriteria;
+        accountCriteria += tradeAccount.LASERCA__Name_of_the_Institution__c;
         accountCriteria += ('_' + tradeAccount.LASERCA__Account_Ownership_Type__c);
         accountCriteria += ('_' + tradeAccount.LASERCA__Account_Balance__c);
-        accountCriteria += ('_' + tradeAccount.LASERCA__Open_Date__c.format());
+        if (tradeAccount.LASERCA__Open_Date__c != null) {
+            accountCriteria += ('_' + tradeAccount.LASERCA__Open_Date__c.format());
+        }
         return accountCriteria;
     }
 }
