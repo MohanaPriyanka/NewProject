@@ -22,9 +22,6 @@
         <div class="slds-truncate" title="Name on Account">Name on Account</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="Additional Utility Id">Additional Utility Id</div>
-      </th>
-      <th scope="col">
         <div class="slds-truncate" title="Subscription Production">Subscription Production</div>
       </th>
       <th scope="col">
@@ -58,16 +55,15 @@
         <div class="slds-truncate"><ui:outputText value="{!uasbs.PreGen_Production_Update__c}"/></div>
           </td>
           <td>
-            <div class="slds-truncate"><a href="{!'https://na54.salesforce.com/' + uasbs.Utility_Account_Subscription__c}" target="_blank"><ui:outputText value="{!uasbs.PreGen_Utility_Acct__c}"/></a></div>
+            <div class="slds-truncate"><a href="{!'https://na54.salesforce.com/' + uasbs.Utility_Account_Subscription__c}"
+                                          target="_blank"><ui:outputText
+                                          value="{!uasbs.PreGen_Additional_Id__c != null ? uasbs.PreGen_Additional_Id__c : uasbs.PreGen_Utility_Acct__c}"/></a></div>
           </td>
           <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_CreditOnBillPeriod__c}"/></div>
           </td>
           <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Name_on_Account__c}"/></div>
-          </td>
-          <td>
-            <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Additional_Id__c}"/></div>
           </td>
           <td>
             <div class="slds-truncate" ><ui:outputNumber value="{!uasbs.PreGen_Subscription_Production__c}"/></div>

@@ -30,8 +30,33 @@
         
         var stockData = component.get("v.SchZBillList");
 
-        var keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c', 
-               'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
+        var allHavePremise = true;
+        var allDoNotHavePremise = true;
+        var i;
+        for (i = 0; i < stockData.length; i++) {
+            if (stockData[i].PreGen_Additional_Id__c != null) {
+                allDoNotHavePremise = false;
+            }
+            else {
+                allHavePremise = false;
+            }
+        }
+
+        var keys;
+
+        if (allDoNotHavePremise) {
+            keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
+                'PreGen_Production_Update__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
+        }
+        else if (allHavePremise) {
+            keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
+                'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c'];
+        }
+        else {
+            keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
+                'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
+        }
+
         
         var csv = helper.convertArrayOfObjectsToCSV(component,stockData,keys);   
          if (csv == null){return;} 
@@ -42,12 +67,34 @@
           hiddenElement.download = 'PreviewBills.csv';   
           document.body.appendChild(hiddenElement); 
     	  hiddenElement.click(); 
-    },   
+    },
 
     downloadTransferSheet : function(component,event,helper){  
         var stockData = component.get("v.SchZBillList");
-        var keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_Additional_Id__c', 'PreGen_NMCs_Allocated__c'];
-        
+
+        var allHavePremise = true;
+        var allDoNotHavePremise = true;
+        for (var i = 0; i < stockData.length; i++) {
+            if (stockData[i].PreGen_Additional_Id__c != null) {
+                allDoNotHavePremise = false;
+            }
+            else {
+                allHavePremise = false;
+            }
+        }
+
+        var keys;
+
+        if (allDoNotHavePremise) {
+            keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_NMCs_Allocated__c'];
+        }
+        else if (allHavePremise) {
+            keys = ['PreGen_Additional_Id__c', 'PreGen_System_Share__c', 'PreGen_NMCs_Allocated__c'];
+        }
+        else {
+            keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_Additional_Id__c', 'PreGen_NMCs_Allocated__c'];
+        }
+
         var csv = helper.convertArrayOfObjectsToCSV(component,stockData,keys);   
          if (csv == null){return;} 
          var hiddenElement = document.createElement('a');
