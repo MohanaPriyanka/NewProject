@@ -69,7 +69,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
         Map<Id, ChargentOrders__ChargentOrder__c> orderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
-
+        List<Account_Bill__c> updateABs = new List<Account_Bill__c>();
 
         for (ChargentOrders__ChargentOrder__c recOrders : chOrders) {
             accountIDList.add(recOrders.Property_Account_ID__c);
@@ -100,10 +100,10 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
             if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
                 newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
-                if(recurOrder.Account_Bill__r.Is_First_Bill__c == true){
+                if (recurOrder.Account_Bill__r.Is_First_Bill__c){
                     chargentOrderKey = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
                     recurOrder.Account_Bill__r.Is_First_Bill__c = false;
-                    update recurOrder.Account_Bill__r;
+                    updateABs.add(recurOrder.Account_Bill__r);
                 }else {
                     chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
                 }
@@ -123,6 +123,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             }
             orderMap.put(recurOrder.Account_Bill__c, recurOrder);
         }
+        update updateABs;
         update chOrders;
 
         /* If there are any bills that are left over that don't have a Ch Order, clone one:*/
