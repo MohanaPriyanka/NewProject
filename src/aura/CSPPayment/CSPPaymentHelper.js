@@ -75,6 +75,11 @@
         component.set("v.ResponseText",  'Payment approved. You will recieve an email from BlueWave momentarily.');   
     },
 
+    showOrderCreated : function(component) {
+        component.set("v.Spinner", false);
+        component.set("v.ResponseText",  'Your payment data has been saved. You will receive an email from BlueWave momentarily.');
+    },
+
     insertOrders : function(component, chargentFields, helper){
         return new Promise(function(resolve, reject) {
             component.set("v.readyToChargeOrders", []);
@@ -89,7 +94,10 @@
 
             for (orderStep = 0; orderStep < orderList.length; orderStep++) {
                 var paymentAmount = (orderList[orderStep].ChargentOrders__Subtotal__c * paymentPercent).toFixed(2);
-                if (paymentAmount > 0.01) {
+                if(isNaN(paymentAmount)){
+                    paymentAmount = 0;
+                }
+                if (paymentAmount >= 0) {
                     var chargentOrder = {
                         sobjectType : 'ChargentOrders__ChargentOrder__c',
                         Account_Bill__c : orderList[orderStep].Account_Bill__c,
@@ -104,7 +112,9 @@
 
             actionSubmit.setParams({
                 "chargeAmounts": ordersToInsertList,
-                "orderInput": chargentFields
+                "orderInput": chargentFields,
+                "autopay" : component.get("v.AutopayAcknowledgement")
+
             });
 
             actionSubmit.setCallback(this,function(resp){
@@ -179,9 +189,8 @@
         var updateRecords = component.get("c.processingPostSubmit");  
 
         updateRecords.setParams({
-            "transactionIdList": transactionIDList,
-            "autopay": component.get("v.AutopayAcknowledgement")
-        });        
+            "transactionIdList": transactionIDList
+        });
 
         updateRecords.setCallback(this,function(resp){
             var self = this;

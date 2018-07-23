@@ -68,18 +68,58 @@ public without sharing class CreateOrderandPaymentRequest {
     }
 
     @AuraEnabled
-    public static List<ChargentOrders__ChargentOrder__c> setChargeAmountAndInsert(List<SObject> chargeAmounts, ChargentOrders__ChargentOrder__c orderInput) {        
+    public static List<ChargentOrders__ChargentOrder__c> setChargeAmountAndInsert(List<SObject> chargeAmounts, ChargentOrders__ChargentOrder__c orderInput, Boolean autopay) {
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         try {
+            Set<Id> accountBillIdSet = new Set<Id>();
+            Set<Id> entityIdSet = new Set<Id>();
             for (SObject chargeAmount : chargeAmounts) {
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
                 orderA.Entity__c = (String) chargeAmount.get('Entity__c');
                 orderA.ChargentOrders__Subtotal__c = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');              
                 orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
                 orderA.Comments__c = 'Created from Lightning';
+
+                if(autopay){
+                    orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                    orderA.ChargentOrders__Payment_Status__c = 'Recurring';
+                    orderA.ChargentOrders__Payment_Stop__c = 'Unending';
+                    orderA.ChargentOrders__Charge_Date__c = '01';
+                    orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
+                }
+
+
+                if(orderA.ChargentOrders__Subtotal__c < 0 ){
+                    orderA.ChargentOrders__Subtotal__c = 0;
+                }
+                accountBillIdSet.add(orderA.Account_Bill__c);
+                entityIdSet.add(orderA.ChargentOrders__Shipping_Name__c);
                 ordersToInsert.add(orderA);
-            } 
+            }
             insert ordersToInsert;
+            Set<Id> accountSet = new Set<Id>();
+            for (Account_Bill__c accountBill : [SELECT Id, Name, Parent_Account__r.Id
+                                                FROM Account_Bill__c
+                                                WHERE Id IN : accountBillIdSet]){
+                accountSet.add(accountBill.Parent_Account__r.Id);
+            }
+
+            //Find all of the old chargent orders that are marked Recurring and set it to Stopped
+            List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
+                SELECT Id, ChargentOrders__Payment_Status__c, Reason_for_Recurring_Stop__c
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE ( Id NOT IN :ordersToInsert)
+                AND ChargentOrders__Payment_Status__c = 'Recurring'
+                AND Account_Bill__r.Parent_Account__r.Id IN : accountSet
+                AND ChargentOrders__Gateway__r.Entity__r.Id IN : entityIdSet
+            ];
+            if(chargentOrderList.size() > 0){
+                for(ChargentOrders__ChargentOrder__c co : chargentOrderList){
+                    co.ChargentOrders__Payment_Status__c = 'Stopped';
+                    co.Reason_for_Recurring_Stop__c = 'Replaced with New Payment Info From Portal';
+                }
+                update chargentOrderList;
+            }
         } catch (Exception excep) {
             Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert', 'No Order Made - Hit Exception: ' + String.valueOf(excep));
         }
@@ -133,19 +173,17 @@ public without sharing class CreateOrderandPaymentRequest {
     }
 
     @AuraEnabled
-    public static Boolean processingPostSubmit(List<Id> transactionIdList, Boolean autopay) {
-        List<ChargentOrders__ChargentOrder__c> ordersToUpdateList = new List<ChargentOrders__ChargentOrder__c>();
-
-        List<ChargentOrders__Transaction__c> transactionList = [ SELECT Id, Name, ChargentOrders__Response_Status__c, 
+    public static Boolean processingPostSubmit(List<Id> transactionIdList) {
+        List<ChargentOrders__Transaction__c> transactionList = [ SELECT Id, Name, ChargentOrders__Response_Status__c,
                                                                 Distributed_Among_System_Bills__c,
                                                                 ChargentOrders__Response_Message__c,
                                                                 ChargentOrders__Order__r.Id,
-                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Frequency__c, 
-                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Status__c, 
-                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Stop__c, 
-                                                                ChargentOrders__Order__r.ChargentOrders__Charge_Date__c, 
+                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Frequency__c,
+                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                                                                ChargentOrders__Order__r.ChargentOrders__Payment_Stop__c,
+                                                                ChargentOrders__Order__r.ChargentOrders__Charge_Date__c,
                                                                 ChargentOrders__Order__r.ChargentOrders__Payment_Start_Date__c
-                                                                FROM ChargentOrders__Transaction__c 
+                                                                FROM ChargentOrders__Transaction__c
                                                                 WHERE Id IN : transactionIdList];
         if (transactionList.size() == 0) {
             return false;
@@ -153,22 +191,10 @@ public without sharing class CreateOrderandPaymentRequest {
 
         for ( ChargentOrders__Transaction__c transactionToCheck : transactionList) {
             transactionToCheck.Distributed_Among_System_Bills__c = true;
-            if (autopay) {
-                ChargentOrders__ChargentOrder__c recurringOrder = new ChargentOrders__ChargentOrder__c();
-                recurringOrder.Id = transactionToCheck.ChargentOrders__Order__r.Id;
-                recurringOrder.ChargentOrders__Payment_Frequency__c = 'Monthly';
-                recurringOrder.ChargentOrders__Payment_Status__c = 'Recurring';
-                recurringOrder.ChargentOrders__Payment_Stop__c = 'Unending';
-                recurringOrder.ChargentOrders__Charge_Date__c = '01';
-                recurringOrder.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
-                ordersToUpdateList.add(recurringOrder);
-            }
         }
 
         try {
-            Database.SaveResult[] orderSRs = Database.update(ordersToUpdateList, false);
             Database.SaveResult[] transactionSRs = Database.update(transactionList, false);
-            processDatabaseSaveResult(orderSRs, 'Could not set to Recurring: ');
             processDatabaseSaveResult(transactionSRs,  'Could not Distribute Among Bills: ');
         } catch (Exception excep) {
             Logger.logNow('CreateOrderandPaymentRequest', 'processingPostSubmit', 'Other Error: ' + String.valueOf(excep));

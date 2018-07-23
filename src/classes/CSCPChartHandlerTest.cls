@@ -115,6 +115,7 @@ public class CSCPChartHandlerTest {
 			Utility_NMC_Tariff__c = nmcRate.Id,
 			Expected_Yield_kWh_kW__c = 1300,
 			Assemblage_Count__c = 1,
+			Billing_Method__c = 'NMC',
 			Maximum_Subscription_Assemblage__c = 25);
 		Shared_Solar_System__c sss2 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
@@ -127,7 +128,9 @@ public class CSCPChartHandlerTest {
 			Total_System_Size_kWh_DC__c = 1000,
 			System_Utility__c = 'National Grid',
 			Credit_Score_Requirement__c = 200,
-			Assignment_order__c = '2'); 
+			Assignment_order__c = '2',
+                       Billing_Method__c = 'NMC');
+
 		insert new List<Shared_Solar_System__c>{sss1, sss2};
 
 		Opportunity opp1 = new Opportunity(Name = 'Opp1',
@@ -280,7 +283,6 @@ public class CSCPChartHandlerTest {
 			Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab.Id,
 			Date__c = billingDate1,
-			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
 			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   
@@ -298,7 +300,6 @@ public class CSCPChartHandlerTest {
 			Customer_Subscription_KW_DC__c = uas2.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab2.Id,
 			Date__c = billingDate1,
-			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
 			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   

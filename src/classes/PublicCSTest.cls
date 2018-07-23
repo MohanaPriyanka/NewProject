@@ -66,6 +66,7 @@ public class PublicCSTest {
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Maximum_Subscription_Assemblage__c = 25,
+                                       Billing_Method__c = 'NMC',
                                        Utility__c = eversource.Id
             );
         insert new List<Shared_Solar_System__c>{sss1};
@@ -161,7 +162,6 @@ public class PublicCSTest {
                 Production__c = 400000,
                 Net_Metering_Rate_Applied__c = 0.1125,
                 Billing_Period_End_Date__c = myDateFeb,
-                Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 45000,
                 Date__c = myDateJan 
                 );
@@ -175,7 +175,6 @@ public class PublicCSTest {
                 Production__c = 60000,
                 Net_Metering_Rate_Applied__c = 0.05, 
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 3000,
                 Date__c = myDateFeb
                 );

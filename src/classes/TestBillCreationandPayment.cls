@@ -1130,8 +1130,8 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
                     ChargentOrders__Billing_Last_Name__c = 'Testcase');
             List<String> getStatesList = CreateOrderandPaymentRequest.getStates();
-            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH);
-            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC);
+            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, false);
+            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, true);
 
             List<ChargentOrders__ChargentOrder__c> newOrders = [
                 SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, Entity__c,
@@ -1163,8 +1163,8 @@ public class TestBillCreationandPayment {
 
             System.assertEquals(2,newTransactions.size());
 
-            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id}, true);
-            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id}, false);
+            Boolean resultThree = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[0].Id});
+            Boolean resultFour = CreateOrderandPaymentRequest.processingPostSubmit(new List<Id>{newTransactions[1].Id});
 
             List<ChargentOrders__Transaction__c> updatedTransactions = [SELECT Id, Distributed_Among_System_Bills__c,
                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
@@ -1248,6 +1248,75 @@ public class TestBillCreationandPayment {
         System.assertEquals(previousScheduleZ2.Status__c, scheduleZS3[0].Status__c);
 
         Test.stopTest();
+    }
+
+    @isTest public static void testMultipleUALs() {
+        Test.startTest();
+        Energy_Usage_Update__c productionupdateA3 = [
+            SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
+            MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
+            Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+
+        Opportunity opportunity = [
+            SELECT Id, Name, StageName, Shared_Solar_System__c, AccountId
+            FROM Opportunity
+            WHERE Name = 'AOpp One'
+            LIMIT 1
+        ];
+
+        Utility_Account_Log__c ualog = new Utility_Account_Log__c(
+            Name = '12300234',
+            Account__c = opportunity.AccountId,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'jordan jordan'
+        );
+
+        insert ualog;
+
+        Utility_Account_Subscription__c newUAS = new Utility_Account_Subscription__c(
+            Name = '12300234',
+            Utility_Account_Log__c = ualog.Id,
+            Opportunity__c = opportunity.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 6500,
+            Calculated_Annual_Cost_of_Electricity__c = 6500,
+            Customer_Subscription_KW_DC_STATIC__c = 20,
+            Subscribed_Annual_Cost_of_Electricity__c = 6500
+        );
+
+        insert newUAS;
+
+        Schedule_Z__c scheduleZ = [
+            SELECT Id, Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+                Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P1'
+        ];
+
+        Schedule_Z_Subscription__c newSZS = new Schedule_Z_Subscription__c(
+            Schedule_Z__c = scheduleZ.Id,
+            Utility_Account_Subscription__c = newUAS.Id,
+            Customer_Subscription_kW_DC__c = 20,
+            Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+            System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+        );
+
+        insert newSZS;
+
+        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateA3});
+        Test.stopTest();
+
+        List<UASB__c> UASBs = [
+            SELECT Id, Opportunity__c, Utility_Account_Subscription__c, Production_Update__c
+            FROM UASB__c
+            WHERE Opportunity__c = : opportunity.Id
+        ];
+
+        System.assertEquals(4, UASBs.size());
     }
 
     public static void simulateBatchBillCreation(List<Energy_Usage_Update__c> productionUpdates) {
