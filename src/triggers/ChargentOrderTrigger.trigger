@@ -1,5 +1,9 @@
 trigger ChargentOrderTrigger on ChargentOrders__ChargentOrder__c (before insert, after insert, before update, after update) {
-    if (Trigger_Status__c.getValues('ChargentOrder__c').Is_Enabled__c) {
+    List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+    if (systemProperties.size() > 0 &&
+        systemProperties[0].Disable_ChargentOrder_Trigger) {
+        // Don't run trigger
+    } else {
         PaymentGatewayAssignmentHandler paymentGatewayAssignmentHandler = new PaymentGatewayAssignmentHandler(Trigger.isExecuting, Trigger.size);
         CreditCardFeeUpdateHandler creditCardFeeUpdateHandler = new CreditCardFeeUpdateHandler();
         if(Trigger.isInsert && Trigger.isAfter){
