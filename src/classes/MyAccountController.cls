@@ -265,18 +265,18 @@ public without sharing class MyAccountController {
             //grabbing partner info when in the partner portal
             //want to generate link when in the customers portal
 
+
             if (customerUser.Contact.Account.Partner__c != null && customerUser.Contact.Customer_Referral_Code__c != null) {
                 referralUrl += '?partnerId=' + customerUser.Contact.Account.Partner__c + '&salesRepId=' + customerUser.Contact.Account.Sales_Representative__c +
                     '&referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
                 //add referral code to url
                 //referralUrl += '?referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
 
-            } else if (customerUser.Contact.Customer_Referral_Code__c != null) {
-                //Dont know whats gonna happen here with an else--> dont want to send them to form assembly
-                referralUrl = 'http://www.ebay.com';
-                //referralUrl = 'https://forms.bluewaverenewables.com/381687?tfa_531=' + customerUser.Contact.Customer_Referral_Code__c;
-            } else if (customerUser.Contact.Customer_Referral_Code__c != null) {
-                referralUrl = 'http://amazon.com';
+                //TEST MAKING CUSTOMER REFERRAL CODE IN BACKEND ONLY
+
+            } else {
+                //Logger here?
+                referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=';
             }
         }
             return referralUrl;

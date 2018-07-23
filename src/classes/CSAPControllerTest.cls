@@ -176,7 +176,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, 
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral_NEW__c
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c
             FROM Lead
             WHERE email = 'testymctesterson@tester.com'];
         LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.id];
@@ -204,7 +204,7 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
         System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
         System.assertEquals(salesRep.Id, CSAPController.getLead(lead.Id, lead.Email).bs_Sales_ID__c);
-        System.assertEquals(customerContact.Customer_Referral_Code__c, CSAPController.getLead(lead.Id, lead.Email).Customer_Referral_NEW__c);
+        System.assertEquals(customerContact.Id, CSAPController.getLead(lead.Id, lead.Email).Customer_Referral__c);
         System.assert(CSAPController.getContact(lead.Id, lead.Email).Id != null);
         System.assert(CSAPController.getAccount(lead.Id, lead.Email).Id != null);
 

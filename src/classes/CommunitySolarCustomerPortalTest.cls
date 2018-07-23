@@ -208,6 +208,41 @@ public without sharing class CommunitySolarCustomerPortalTest {
         }
     }
 
+
+    @isTest static void testGenerateReferralURL(){
+        Account parentAccount = [   SELECT Id, Name
+        FROM Account
+        WHERE Name = 'Account Parent'];
+
+        Partner__c partner = new Partner__c (
+            Name = 'CS Partner',
+            Products__c = 'Community Solar'
+            );
+        insert partner;
+
+        Contact customerContact = new Contact(
+            FirstName = 'Customer',
+            Lastname = 'Contact',
+            Product_Line__c = 'Community Solar',
+            Parent_Account__c = parentAccount.Id,
+            Partner_Lookup__c = partner.Id
+            );
+        insert customerContact;
+
+
+        String checkURL = URL.getSalesforceBaseUrl().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + customerContact.Partner_Lookup__c + '&salesRepId='
+            + customerContact.Sales_Representative__c + '&referralCode=' + customerContact.Customer_Referral_Code__c;
+
+        Test.startTest();
+        String referralURL = MyAccountController.generateReferralURL();
+        Test.stopTest();
+
+
+        System.assertEquals(checkURL, referralURL);
+
+
+    }
+
     @isTest static void testGetAllSystemBills() {
         User user = [
             SELECT Id, Contact.Account.Id, Contact.AccountId

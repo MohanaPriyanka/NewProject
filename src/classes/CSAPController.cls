@@ -31,7 +31,7 @@ public without sharing class CSAPController {
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral_NEW__c
+                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -140,7 +140,9 @@ public without sharing class CSAPController {
                         WHERE Name = 'API'
                         AND IsActive = True
                         LIMIT 1];
-
+        System.debug('Referral Code: ' + referralCode);
+        System.debug(String.isBlank(referralCode));
+        System.debug(String.isNotBlank(referralCode));
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -179,8 +181,12 @@ public without sharing class CSAPController {
         } else if (String.isNotBlank(profile.salesRepId)) {
             lead.Bs_Sales_ID__c = profile.salesRepId;
         }
-        if (String.isNotBlank(referralCode)) {
-            lead.Customer_Referral_NEW__c = referralCode;
+        if(String.isBlank(referralCode) || referralCode == 'undefined'){
+            lead.Customer_Referral__c = null;
+        }else{
+            System.debug(referralCode);
+            Contact referralContact = [SELECT Id FROM Contact WHERE Customer_Referral_Code__c = :referralCode];
+            lead.Customer_Referral__c = referralContact.Id;
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
         upsert lead;
