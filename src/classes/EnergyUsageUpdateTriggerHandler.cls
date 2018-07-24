@@ -337,4 +337,5 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(euu);
         return uab;
     }
+
 }
