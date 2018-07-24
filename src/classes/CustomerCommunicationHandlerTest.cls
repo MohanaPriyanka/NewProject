@@ -45,7 +45,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss1;
 
             Shared_Solar_System__c sss2 =
@@ -65,7 +66,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss2;
 
 
@@ -86,7 +88,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss3;
 
             Account accountParent1 = new Account(Name = 'Par Account 1', Client_Brand_Key__c = 'BluewaveLogo');
@@ -250,7 +253,6 @@ public class CustomerCommunicationHandlerTest{
         Energy_Usage_Update__c productionupdate = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sssID,
-                Size_off_NMCs__c = true,
                 Schedule_Z__c = scheduleZ1.Id,
                 Production__c = 160000,
                 Total_System_NMCs__c = 36000,
