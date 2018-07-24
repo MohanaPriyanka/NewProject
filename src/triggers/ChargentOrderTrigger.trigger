@@ -1,7 +1,7 @@
 trigger ChargentOrderTrigger on ChargentOrders__ChargentOrder__c (before insert, after insert, before update, after update) {
     List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
     if (systemProperties.size() > 0 &&
-        systemProperties[0].Disable_ChargentOrder_Trigger__c) {
+        systemProperties[0].Disable_ChargentOrderTrigger__c) {
         // Don't run trigger
     } else {
         PaymentGatewayAssignmentHandler paymentGatewayAssignmentHandler = new PaymentGatewayAssignmentHandler(Trigger.isExecuting, Trigger.size);
