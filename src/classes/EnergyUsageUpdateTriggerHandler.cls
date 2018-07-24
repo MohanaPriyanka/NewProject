@@ -5,7 +5,7 @@
  * This class is only creating the admin details of the bills. Sets up the correct relationships and such.
  * Money Due, kWh, etc aren't calculated.
  *
- * Tested by: RecurringPaymentsHandlerTestClass
+ * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> {
