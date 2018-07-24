@@ -36,8 +36,7 @@
         for (i = 0; i < stockData.length; i++) {
             if (stockData[i].PreGen_Additional_Id__c != null) {
                 allDoNotHavePremise = false;
-            }
-            else {
+            } else {
                 allHavePremise = false;
             }
         }
@@ -47,12 +46,10 @@
         if (allDoNotHavePremise) {
             keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
                 'PreGen_Production_Update__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
-        }
-        else if (allHavePremise) {
+        } else if (allHavePremise) {
             keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
                 'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c'];
-        }
-        else {
+        } else {
             keys = ['Name','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c', 'PreGen_Name_on_Account__c',
                 'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
         }
@@ -77,8 +74,7 @@
         for (var i = 0; i < stockData.length; i++) {
             if (stockData[i].PreGen_Additional_Id__c != null) {
                 allDoNotHavePremise = false;
-            }
-            else {
+            } else {
                 allHavePremise = false;
             }
         }
@@ -87,11 +83,9 @@
 
         if (allDoNotHavePremise) {
             keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_NMCs_Allocated__c'];
-        }
-        else if (allHavePremise) {
+        } else if (allHavePremise) {
             keys = ['PreGen_Additional_Id__c', 'PreGen_System_Share__c', 'PreGen_NMCs_Allocated__c'];
-        }
-        else {
+        } else {
             keys = ['PreGen_Utility_Acct__c', 'PreGen_System_Share__c', 'PreGen_Additional_Id__c', 'PreGen_NMCs_Allocated__c'];
         }
 
