@@ -185,7 +185,7 @@ public with sharing class CSAPControllerTest {
         Test.startTest();
         System.runAs(userRecord) {
             // Pass the referral code to the upsertCSAPRecords
-            CSAPController.upsertCSAPRecords(leadToInsert, partner.id, salesRep.id, customerContact.Customer_Referral_Code__c );
+            CSAPController.upsertCSAPRecords(leadToInsert, partner.id, salesRep.id, customerContact.Id );
         }
 
         Lead lead = [
