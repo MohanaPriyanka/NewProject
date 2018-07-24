@@ -45,7 +45,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                 Utility_Account_Subscription__r.UAS_Number__c,
                 Utility_Account_Subscription__r.Share_of_System__c ,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c, 
-                Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c, 
+                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
+                Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,
                 Utility_Account_Subscription__r.Max_Account_Bill_Number__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN : scheduleZIds
@@ -84,6 +85,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                 String systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
                 if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c && systemBill != null){
+                    try {
                         UASB__c uasb = setUASBFields(prodUpdate,
                             scheduleZSubscriptionToUABIdMap.get(uas.id),
                             prodUpdate.Net_Metering_Rate_Applied__c,
@@ -139,6 +141,10 @@ public with sharing class UtilityAccountBillTriggerHandler {
                             }
                         }
                         uasbSet.add(uasb);
+                    } catch (Exception e) {
+                        String message = 'Utility Account System Bill not generated for UAS ' + uas.Id + 'Error: ' + String.valueOf(e);
+                        Logger.logLater('UtilityAccountBillTriggerHandler', 'createUASB', message);
+                    }
                 }
             }
         }
@@ -180,9 +186,10 @@ public with sharing class UtilityAccountBillTriggerHandler {
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
-        if (prodUpdate.Billing_Method__c == 'NMC'){
+        String billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
+        if (billingMethod == 'NMC'){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
-        } else if (prodUpdate.Billing_Method__c == 'kWh') {
+        } else if (billingMethod == 'kWh') {
             subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }
 
@@ -205,7 +212,7 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
                                     Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP));
-        if (prodUpdate.Billing_Method__c == 'NMC'){
+        if (billingMethod == 'NMC'){
             generatedUASB.Size_off_NMCs__c = true;
         }
         return generatedUASB;     
