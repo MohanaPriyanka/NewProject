@@ -27,6 +27,10 @@
         'Parent_Account__r.Send_Bills_Contact__r.Email, '+
         'Parent_Account__r.Additional_Contact__r.Email ' +
         'FROM Account_Bill__c WHERE Ready_for_Email_Send__c = TRUE';
+        // Prevent System.UnexpectedException: No more than one executeBatch can be called from within a test method.
+        if (Test.isRunningTest()) {
+            query += ' LIMIT 10';
+        }
         return Database.getQueryLocator(query);
     }
     
@@ -114,7 +118,7 @@
         List<Messaging.SendEmailResult> result = MessagingService.sendEmail(emailstosend);
 
         update scope;
-        insert emailLogList; 
+        insert emailLogList;
     }
 
     public void finish(Database.BatchableContext bc){
