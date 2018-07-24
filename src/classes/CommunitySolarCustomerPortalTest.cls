@@ -154,9 +154,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
     }
 
     @isTest static void testChargentLicenseAssignment(){
-        Account parentAccount = [   SELECT Id, Name
-        FROM Account
-        WHERE Name = 'Account Parent'];
+        Account parentAccount = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Name = 'Account Parent'
+            LIMIT 1
+        ];
 
         Contact con = new Contact(
             FirstName = 'First',
