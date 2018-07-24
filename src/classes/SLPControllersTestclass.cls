@@ -165,10 +165,14 @@ public without sharing class SLPControllersTestclass {
 
         List<User> managerList = new List<User>();
         List<User> executiveList = new List<User>();
-        for (User user : [SELECT Id, UserRole.Name, Contact.Sales_Representative__r.Id, Contact.Sales_Representative__r.Name
-                          FROM User
-                          WHERE Profile.Name IN ('Partner Community User (Custom)', 'Partner Community Login User (Custom)')
-                          AND IsActive = true]) {
+        List<User> activeUsers = [
+            SELECT Id, UserRole.Name, Contact.Sales_Representative__r.Id, Contact.Sales_Representative__r.Name
+            FROM User
+            WHERE Profile.Name IN ('Partner Community User (Custom)', 'Partner Community Login User (Custom)')
+            AND IsActive = TRUE
+            AND UserRoleId != NULL
+        ];
+        for (User user : activeUsers) {
             if (user.UserRole.Name.Contains('Manager')) {
                 managerList.add(user);                
             } else if (user.UserRole.Name.Contains('Executive')) {
