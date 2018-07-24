@@ -370,7 +370,7 @@ public class TestBillCreationandPayment {
         update listaccountBills;
     }
 
-    static testMethod void UndoSetBillsToPublished() {
+    static testMethod void undoSetBillsToPublished() {
         List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
                                                     FROM Account_Bill__c
                                                     WHERE Published__c = True];
@@ -614,7 +614,7 @@ public class TestBillCreationandPayment {
     @isTest public static void testBillNumbering() {
         // This method upserts new System Bills under pre-existing Account Bills, so the first month has to be set
         // to unpublished in order to be editable.
-        UndoSetBillsToPublished();
+        undoSetBillsToPublished();
 
         Test.startTest();
 
@@ -637,7 +637,7 @@ public class TestBillCreationandPayment {
         productionupdateB1.Generate_Bills__c = TRUE;
         update productionupdateB1;
 
-        SetBillsToPublished();
+        setBillsToPublished();
 
         simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
 
@@ -890,7 +890,7 @@ public class TestBillCreationandPayment {
         FROM ChargentBase__Gateway__c
         LIMIT 1];
 
-        SetBillsToPublished();
+        setBillsToPublished();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
