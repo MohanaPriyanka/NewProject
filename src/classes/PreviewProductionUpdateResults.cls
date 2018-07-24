@@ -79,6 +79,7 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,
               Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
               Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
+              Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : scheduleZ.Id
@@ -121,6 +122,7 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id,
               Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
+              Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
             FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Id = : parentId

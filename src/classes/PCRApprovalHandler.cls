@@ -188,6 +188,11 @@ public without sharing class PCRApprovalHandler {
         PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
 
         lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
+        
+        List<LASERCA__Personal_Credit_Report__c> leadPCRs = getPCRsForCreditAnalysis(new Set<Id>{
+            lead.Personal_Credit_Report__c,
+            lead.Personal_Credit_Report_Co_Applicant__c
+        });
 
         if (pcr == null) {
             for (LASERCA__Personal_Credit_Report__c leadPCR : leadPCRs) {
