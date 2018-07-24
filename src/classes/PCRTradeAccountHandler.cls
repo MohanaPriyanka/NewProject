@@ -9,25 +9,19 @@
 
 
 public with sharing class PCRTradeAccountHandler {
-    public static Decimal calculateHouseholdMonthlyDebt(Lead lead) {
+    public static Decimal calculateHouseholdMonthlyDebt(Lead lead, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
         // capital pool is null until we figure out the flow for assigning banks
         Loan_Data__c capitalPool;
         Decimal householdMonthlyDebt = 0;
-        Map<Id, LASERCA__Trade_Accounts__c> tradeAccountsToAdjust = new Map<Id, LASERCA__Trade_Accounts__c>([
-            SELECT Id, LASERCA__Account_Ownership_Type__c, LASERCA__Account_Status_Type__c, LASERCA__Account_Type__c,
-            LASERCA__Open_Date__c, LASERCA__Name_of_the_Institution__c, LASERCA__Last_Activity_Date__c,
-            LASERCA__Payment_Pattern_Data__c, LASERCA__Remaining_Term__c, LASERCA__Credit_Text__c,
-            LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c,
-            LASERCA__Credit_Loan_Type__c, LASERCA__Monthly_Payment__c
-            FROM LASERCA__Trade_Accounts__c
-            WHERE LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report__c
-            OR LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report_Co_Applicant__c
-        ]);
-        List<LASERCA__Trade_Accounts__c> tradeAccounts = makeTradeAccountAdjustments(tradeAccountsToAdjust, lead, capitalPool);
-        for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
-            if (!tradeAccount.Exclude_From_Rollup__c) {
-                // capital pool is null until we figure out the flow for assigning banks
-                householdMonthlyDebt += calculateMonthlyPayment(tradeAccount, capitalPool);
+        Map<Id, LASERCA__Trade_Accounts__c> tradeAccountsToAdjust = getTradeAccounts(lead, tradeAccounts);
+
+        tradeAccounts = makeTradeAccountAdjustments(tradeAccountsToAdjust, lead, capitalPool);
+        if (tradeAccounts != null) {
+            for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
+                if (!tradeAccount.Exclude_From_Rollup__c) {
+                    // capital pool is null until we figure out the flow for assigning banks
+                    householdMonthlyDebt += calculateMonthlyPayment(tradeAccount, null);
+                }
             }
         }
         return householdMonthlyDebt;
@@ -38,7 +32,9 @@ public with sharing class PCRTradeAccountHandler {
         // capital pool payment adjustments, could create an object that sets these. Want to wait until full solution
         // before creating a new object
         if (capitalPool == null || capitalPool.Investor__c == 'Avidia Bank') {
-            monthlyPayment = tradeAccount.LASERCA__Monthly_Payment__c;
+            if (tradeAccount.LASERCA__Monthly_Payment__c != null) {
+                monthlyPayment = tradeAccount.LASERCA__Monthly_Payment__c;
+            }
         }
         return monthlyPayment;
     }
@@ -49,7 +45,9 @@ public with sharing class PCRTradeAccountHandler {
         }
         tradeAccounts.putAll(adjustAutomotiveAccounts(tradeAccounts.values(), capitalPool));
 
-        update tradeAccounts.values();
+        if (tradeAccounts.size() > 0) {
+            update tradeAccounts.values();
+        }
         return tradeAccounts.values();
     }
 
@@ -109,5 +107,28 @@ public with sharing class PCRTradeAccountHandler {
             // setting to zero for default case
             return 0;
         }
+    }
+
+    private static Map<Id, LASERCA__Trade_Accounts__c> getTradeAccounts(Lead lead, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
+        Map<Id, LASERCA__Trade_Accounts__c> tradeAccountsToAdjust = new Map<Id, LASERCA__Trade_Accounts__c>();
+        if (tradeAccounts == null) {
+            for (LASERCA__Trade_Accounts__c tradeAccount : [
+                SELECT Id, LASERCA__Account_Ownership_Type__c, LASERCA__Account_Status_Type__c, LASERCA__Account_Type__c,
+                    LASERCA__Open_Date__c, LASERCA__Name_of_the_Institution__c, LASERCA__Last_Activity_Date__c,
+                    LASERCA__Payment_Pattern_Data__c, LASERCA__Remaining_Term__c, LASERCA__Credit_Text__c,
+                    LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c,
+                    LASERCA__Credit_Loan_Type__c, LASERCA__Monthly_Payment__c
+                FROM LASERCA__Trade_Accounts__c
+                WHERE LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report__c
+                OR LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report_Co_Applicant__c
+            ]) {
+                tradeAccountsToAdjust.put(tradeAccount.Id, tradeAccount);
+            }
+        } else {
+            for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
+                tradeAccountsToAdjust.put(tradeAccount.Id, tradeAccount);
+            }
+        }
+        return tradeAccountsToAdjust;
     }
 }

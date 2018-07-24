@@ -196,11 +196,6 @@ public without sharing class PCRApprovalHandler {
     }
 
     public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo, List<LASERCA__Trade_Accounts__c> tradeAccounts ) {
-    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
-        PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
-
-        lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
-
         List<LASERCA__Personal_Credit_Report__c> leadPCRs = getPCRsForCreditAnalysis(new Set<Id>{
             lead.Personal_Credit_Report__c,
             lead.Personal_Credit_Report_Co_Applicant__c
@@ -220,7 +215,7 @@ public without sharing class PCRApprovalHandler {
 
         Integer creditScore = setAppMaximumCreditScore(lead);
         Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
-        Decimal householdMonthlyDebt = PCRTradeAccountHandler.calculateHouseholdMonthlyDebt(lead);
+        Decimal householdMonthlyDebt = PCRTradeAccountHandler.calculateHouseholdMonthlyDebt(lead, tradeAccounts);
 
         /*
         If a lead doesn't have an associated product, we can't calculate the DTI after
@@ -446,7 +441,7 @@ public without sharing class PCRApprovalHandler {
             if (tradeAccountsByPCRIds.containsKey(tradeAccount.LASERCA__Personal_Credit_Report__c)) {
                 List<LASERCA__Trade_Accounts__c> tradeAccounts = tradeAccountsByPCRIds.get(tradeAccount.LASERCA__Personal_Credit_Report__c);
                 tradeAccounts.add(tradeAccount);
-                tradeAccountsByPCRIds.put(tradeAccount.LASERCA__Personal_Credit_Report__c, tradeAccount);
+                tradeAccountsByPCRIds.put(tradeAccount.LASERCA__Personal_Credit_Report__c, tradeAccounts);
             } else {
                 List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>{tradeAccount};
                 tradeAccountsByPCRIds.put(tradeAccount.LASERCA__Personal_Credit_Report__c, tradeAccounts);
