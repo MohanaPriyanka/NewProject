@@ -185,7 +185,7 @@ public without sharing class CSAPController {
             lead.Customer_Referral__c = null;
         }else{
             System.debug(referralCode);
-            Contact referralContact = [SELECT Id FROM Contact WHERE Customer_Referral_Code__c = :referralCode];
+            Contact referralContact = [SELECT Id FROM Contact WHERE Id = :referralCode];
             lead.Customer_Referral__c = referralContact.Id;
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02

@@ -258,25 +258,27 @@ public without sharing class MyAccountController {
 
     @AuraEnabled
     public static String generateReferralURL () {
+        User u = customerUser;
         String referralUrl;
         if (customerUser.Contact.Product_Line__c == 'Community Solar') {
             String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
             referralUrl = host + 'apply/s/csap';
             //grabbing partner info when in the partner portal
             //want to generate link when in the customers portal
+            String referralCode= u.ContactId;
+            if (u.Contact.Account.Partner__c != null) {
+//                referralUrl += '?partnerId=' + customerUser.Contact.Account.Partner__c + '&salesRepId=' + customerUser.Contact.Account.Sales_Representative__c +
+//                    '&referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
 
 
-            if (customerUser.Contact.Account.Partner__c != null && customerUser.Contact.Customer_Referral_Code__c != null) {
-                referralUrl += '?partnerId=' + customerUser.Contact.Account.Partner__c + '&salesRepId=' + customerUser.Contact.Account.Sales_Representative__c +
-                    '&referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
-                //add referral code to url
-                //referralUrl += '?referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
 
                 //TEST MAKING CUSTOMER REFERRAL CODE IN BACKEND ONLY
+                referralUrl += '?partnerId=' + u.Contact.Account.Partner__c + '&salesRepId=' + u.Contact.Account.Sales_Representative__c +
+                    '&referralCode=' + referralCode;
 
             } else {
                 //Logger here?
-                referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=';
+                referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=' + referralCode ;
             }
         }
             return referralUrl;

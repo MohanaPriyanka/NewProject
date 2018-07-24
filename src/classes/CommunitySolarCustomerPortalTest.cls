@@ -5,9 +5,20 @@ public without sharing class CommunitySolarCustomerPortalTest {
     }
     @isTest static void testMethodOne() {
         Test.startTest();
+
+        Partner__c csPartner = new Partner__c (
+            Name = 'CS Partner',
+            Products__c = 'Community Solar'
+            );
+        insert csPartner;
+
         Account parentAccount = [SELECT Id, Name
-                                FROM Account
-                                WHERE Name = 'Account Parent'];
+        FROM Account
+        WHERE Name = 'Account Parent'];
+
+        parentAccount.Partner__c = csPartner.Id;
+        update parentAccount;
+
 
         Profile communityProfile = [SELECT Id
                                     FROM Profile
@@ -26,7 +37,9 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Email = 'communitiesUserContact@bluewave-capital.com',
             LastName = 'Last',
             AccountId = parentAccount.Id,
-            Active_Communities_User__c = true
+            Active_Communities_User__c = true,
+            Product_Line__c = 'Community Solar',
+            Partner_Lookup__c = csPartner.Id
         );
         insert con;
 
@@ -149,6 +162,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String referralCode = MyAccountController.getCode();
             System.assertEquals(referralCode, 'bluewaveFLast');
 
+            //Test generateReferralURL()
+              String checkURL = URL.getSalesforceBaseUrl().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + con.Partner_Lookup__c + '&salesRepId='
+                  + con.Sales_Representative__c + '&referralCode=' + con.Id;
+              String referralURL = MyAccountController.generateReferralURL();
+              System.assertEquals(checkURL, referralURL);
+
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');
           }
@@ -206,41 +225,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             System.assertEquals(1,packageAssign.size());
         }
-    }
-
-
-    @isTest static void testGenerateReferralURL(){
-        Account parentAccount = [   SELECT Id, Name
-        FROM Account
-        WHERE Name = 'Account Parent'];
-
-        Partner__c partner = new Partner__c (
-            Name = 'CS Partner',
-            Products__c = 'Community Solar'
-            );
-        insert partner;
-
-        Contact customerContact = new Contact(
-            FirstName = 'Customer',
-            Lastname = 'Contact',
-            Product_Line__c = 'Community Solar',
-            Parent_Account__c = parentAccount.Id,
-            Partner_Lookup__c = partner.Id
-            );
-        insert customerContact;
-
-
-        String checkURL = URL.getSalesforceBaseUrl().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + customerContact.Partner_Lookup__c + '&salesRepId='
-            + customerContact.Sales_Representative__c + '&referralCode=' + customerContact.Customer_Referral_Code__c;
-
-        Test.startTest();
-        String referralURL = MyAccountController.generateReferralURL();
-        Test.stopTest();
-
-
-        System.assertEquals(checkURL, referralURL);
-
-
     }
 
     @isTest static void testGetAllSystemBills() {
