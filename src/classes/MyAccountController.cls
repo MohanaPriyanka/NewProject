@@ -11,7 +11,7 @@ public without sharing class MyAccountController {
     public static User customerUser = new User();
     static {
         customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId, Contact.Product_Line__c,
-                                 Contact.Account.Partner__c, Contact.Account.Sales_Representative__c, Contact.Customer_Referral_Code__c
+                                 Contact.Account.Partner__c, Contact.Account.Sales_Representative__c
                         FROM User 
                         WHERE Id = :UserInfo.getUserId()];
     }
@@ -263,21 +263,11 @@ public without sharing class MyAccountController {
         if (customerUser.Contact.Product_Line__c == 'Community Solar') {
             String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
             referralUrl = host + 'apply/s/csap';
-            //grabbing partner info when in the partner portal
-            //want to generate link when in the customers portal
             String referralCode= u.ContactId;
             if (u.Contact.Account.Partner__c != null) {
-//                referralUrl += '?partnerId=' + customerUser.Contact.Account.Partner__c + '&salesRepId=' + customerUser.Contact.Account.Sales_Representative__c +
-//                    '&referralCode=' + customerUser.Contact.Customer_Referral_Code__c;
-
-
-
-                //TEST MAKING CUSTOMER REFERRAL CODE IN BACKEND ONLY
                 referralUrl += '?partnerId=' + u.Contact.Account.Partner__c + '&salesRepId=' + u.Contact.Account.Sales_Representative__c +
                     '&referralCode=' + referralCode;
-
             } else {
-                //Logger here?
                 referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=' + referralCode ;
             }
         }

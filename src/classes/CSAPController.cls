@@ -140,10 +140,6 @@ public without sharing class CSAPController {
                         WHERE Name = 'API'
                         AND IsActive = True
                         LIMIT 1];
-        System.debug('Referral Code: ' + referralCode);
-        System.debug(String.isBlank(referralCode));
-        System.debug(String.isNotBlank(referralCode));
-
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
         account.Name = lead.FirstName + ' ' + lead.LastName;
@@ -184,9 +180,12 @@ public without sharing class CSAPController {
         if(String.isBlank(referralCode) || referralCode == 'undefined'){
             lead.Customer_Referral__c = null;
         }else{
-            System.debug(referralCode);
-            Contact referralContact = [SELECT Id FROM Contact WHERE Id = :referralCode];
-            lead.Customer_Referral__c = referralContact.Id;
+            List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
+            if(referralContacts.size()==1){
+                lead.Customer_Referral__c = referralContacts[0].Id;
+            }else{
+                Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
+            }
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
         upsert lead;

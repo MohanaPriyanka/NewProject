@@ -30,7 +30,6 @@ public with sharing class CSAPControllerTest {
             Community_Solar_Application_Type__c = 'CSAP');
         insert accountRecord;
 
-        //Create a customer account
         Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
         insert customerAccount;
 
@@ -43,8 +42,6 @@ public with sharing class CSAPControllerTest {
             Sales_Representative__c = partnerSetUpIds.get(1));
         insert contactRecord;
 
-        //Need to create a customer contact with a referral code
-        //Does the referral code automatically generate? It should
         Contact customerContact = new Contact( FirstName = 'Contact A',
             LastName = 'Customer',
             Account = customerAccount,
@@ -147,9 +144,7 @@ public with sharing class CSAPControllerTest {
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
-        Contact customerContact = [SELECT Id, Customer_Referral_Code__c FROM Contact WHERE Lastname='Customer' LIMIT 1];
-        system.debug(customerContact.id);
-        //Grab the customer contact to get customer referral code
+        Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
 
         User userRecord = new User(
             FirstName = 'User',
