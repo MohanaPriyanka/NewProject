@@ -346,18 +346,38 @@ public class TestBillCreationandPayment {
 
         insert productionupdateB2;
 
-
-
         productionupdateA1.Generate_Bills__c = TRUE;
-        productionupdateA2.Generate_Bills__c = TRUE;
         update productionupdateA1;
-        update productionupdateA2;
-
 
         APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert newConga;
         newConga.Apply_Overpay_Adjust__c = true;
         update newConga;
+
+        setBillsToPublished();
+
+        productionupdateA2.Generate_Bills__c = TRUE;
+        update productionupdateA2;
+    }
+
+    static testMethod void setBillsToPublished() {
+        List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
+        FROM Account_Bill__c
+        WHERE Published__c = False];
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+    }
+
+    static testMethod void UndoSetBillsToPublished() {
+        List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
+                                                    FROM Account_Bill__c
+                                                    WHERE Published__c = True];
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = False;
+        }
+        update listaccountBills;
     }
 
     @isTest public static void testPreviewBills(){
@@ -592,13 +612,14 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testBillNumbering() {
+        UndoSetBillsToPublished();
         Test.startTest();
 
         Energy_Usage_Update__c productionupdateB1 = [
           SELECT Id, Generate_Bills__c, Month_Number__c
           FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - January 2016'
-            LIMIT 1
+          WHERE Name = 'sssB - January 2016'
+          LIMIT 1
         ];
 
         Energy_Usage_Update__c productionupdateB2 = [
@@ -606,8 +627,8 @@ public class TestBillCreationandPayment {
               MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
               Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
           FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - February 2016'
-            LIMIT 1
+          WHERE Name = 'sssB - February 2016'
+          LIMIT 1
         ];
 
         productionupdateB1.Generate_Bills__c = TRUE;
@@ -699,6 +720,8 @@ public class TestBillCreationandPayment {
 
     @isTest public static void testSystemBills() {
         Test.startTest();
+        Test.stopTest();
+
         List<System_Bill__c> systemBillList =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
@@ -715,7 +738,7 @@ public class TestBillCreationandPayment {
         ORDER BY Bill_Number__c];
 
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
-        System.AssertEquals(606.83,systembillList[1].Total_Due__c);
+        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
         System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
         System.AssertEquals(24,systembillList[0].Adjustments_UASB__c);
@@ -723,9 +746,6 @@ public class TestBillCreationandPayment {
         System.AssertEquals(24,systembillList[0].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
-        Test.stopTest();
-
-
     }
 
     @isTest public static void testAdjustments() {
@@ -742,10 +762,7 @@ public class TestBillCreationandPayment {
         LIMIT 1];
         Test.startTest();
 
-        for (Account_Bill__c abill : accountbilllist) {
-            abill.Published__c = True;
-        }
-        update accountbilllist;
+        setBillsToPublished();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
@@ -866,10 +883,7 @@ public class TestBillCreationandPayment {
         FROM ChargentBase__Gateway__c
         LIMIT 1];
 
-        for (Account_Bill__c abill : accountbilllist) {
-            abill.Published__c = True;
-        }
-        update accountbilllist;
+        SetBillsToPublished();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
@@ -1060,14 +1074,8 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        List<Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
+        setBillsToPublished();
 
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-
-        update listaccountBills;
         Test.StartTest();
 
         System.runAs(userA){
@@ -1132,8 +1140,8 @@ public class TestBillCreationandPayment {
             System.assertEquals(2, newOrders.size());
             System.assertNotEquals(null, newOrders[0].Account_Bill__c);
             System.assertNotEquals(null, newOrders[1].Account_Bill__c);
-            System.assertEquals(606.83, newOrders[0].ChargentOrders__Subtotal__c);
-            System.assertEquals(606.83, newOrders[1].ChargentOrders__Subtotal__c);
+            System.assertEquals(631.07, newOrders[0].ChargentOrders__Subtotal__c);
+            System.assertEquals(631.07, newOrders[1].ChargentOrders__Subtotal__c);
             System.assertEquals('2020', newOrders[0].ChargentOrders__Card_Expiration_Year__c);
             System.assertEquals('Bank of America', newOrders[1].ChargentOrders__Bank_Name__c);
 
