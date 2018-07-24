@@ -362,8 +362,8 @@ public class TestBillCreationandPayment {
 
     static testMethod void setBillsToPublished() {
         List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
-        FROM Account_Bill__c
-        WHERE Published__c = False];
+                                                    FROM Account_Bill__c
+                                                    WHERE Published__c = False];
         for (Account_Bill__c acctBill : listaccountBills) {
             acctBill.Published__c = True;
         }
@@ -612,7 +612,10 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testBillNumbering() {
+        // This method upserts new System Bills under pre-existing Account Bills, so the first month has to be set
+        // to unpublished in order to be editable.
         UndoSetBillsToPublished();
+
         Test.startTest();
 
         Energy_Usage_Update__c productionupdateB1 = [
@@ -633,6 +636,8 @@ public class TestBillCreationandPayment {
 
         productionupdateB1.Generate_Bills__c = TRUE;
         update productionupdateB1;
+
+        SetBillsToPublished();
 
         simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
 
@@ -720,8 +725,6 @@ public class TestBillCreationandPayment {
 
     @isTest public static void testSystemBills() {
         Test.startTest();
-        Test.stopTest();
-
         List<System_Bill__c> systemBillList =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
@@ -737,6 +740,9 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
+        // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
+        // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
+
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
         System.AssertEquals(631.07,systembillList[1].Total_Due__c);
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
@@ -746,6 +752,7 @@ public class TestBillCreationandPayment {
         System.AssertEquals(24,systembillList[0].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
+        Test.stopTest();
     }
 
     @isTest public static void testAdjustments() {
