@@ -167,7 +167,8 @@ public without sharing class PCRApprovalHandler {
                     continue;
                 }
 
-                if (leadReadyForPrequalCheck(lead)) {
+                if (leadReadyForPrequalCheck(lead)
+                    && pcr.Id == lead.Personal_Credit_Report__c) {
                     List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>();
                     tradeAccounts.addAll(tradeAccountsByPCRIds.get(lead.Personal_Credit_Report__c));
                     if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
