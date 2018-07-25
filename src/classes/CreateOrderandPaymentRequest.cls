@@ -93,7 +93,7 @@ public without sharing class CreateOrderandPaymentRequest {
                     orderA.ChargentOrders__Subtotal__c = 0;
                 }
                 accountBillIdSet.add(orderA.Account_Bill__c);
-                entityIdSet.add(orderA.Entity__c());
+                entityIdSet.add(orderA.Entity__c);
                 ordersToInsert.add(orderA);
             }
             insert ordersToInsert;
