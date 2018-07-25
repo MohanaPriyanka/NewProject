@@ -707,6 +707,7 @@ private class RecurringPaymentsHandlerTestClass{
         recurring payments. Then, the parent account still has recurring_billing
         marked as true.
         */
+        Test.startTest();
         Account oldAccountC = [
             SELECT Id,
                    Recurring_Billing__c
@@ -771,7 +772,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         System.assertEquals(true, oldAccountC.Recurring_Billing__c);
 
-        Test.startTest();
         for (ChargentOrders__ChargentOrder__c order : accountOrders) {
             order.ChargentOrders__Payment_Status__c = 'Stopped';
         }
@@ -856,6 +856,7 @@ private class RecurringPaymentsHandlerTestClass{
             ChargentOrders__Account__c = propAccountA.Id,
             ChargentOrders__Gateway__c = chGatewayA.Id,
             ChargentOrders__Shipping_Name__c = entityA.Id,
+            Entity__c = entityA.Id,
             ChargentOrders__Billing_First_Name__c = 'SarahRenfro',
             ChargentOrders__Billing_Last_Name__c = 'Renfro',
             ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -939,6 +940,7 @@ private class RecurringPaymentsHandlerTestClass{
         Tests if a chargent order is updated and the account does not have active
         recurring payments. Then, the parent account is not longer autopay
         */
+        Test.startTest();
         Account oldAccountC = [
             SELECT Id,
                    Recurring_Billing__c
@@ -981,7 +983,6 @@ private class RecurringPaymentsHandlerTestClass{
 
         System.assertEquals(true, oldAccountC.Recurring_Billing__c);
 
-        Test.startTest();
         for (ChargentOrders__ChargentOrder__c order : accountOrders) {
             order.ChargentOrders__Payment_Status__c = 'Stopped';
         }
