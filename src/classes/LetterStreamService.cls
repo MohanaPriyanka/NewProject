@@ -49,7 +49,9 @@ public with sharing class LetterStreamService {
 
         for (ContentDocument document : documents) {
             Account_Bill__c accountBill = accountBillsByDocIds.get(document.Id);
-            addAccountBillToCSV(accountBill, document);
+            LetterParameters letterParams = new LetterParameters();
+            letterParams.generateFromAccountBill(accountBill, document);
+            addLetterToCSV(letterParams);
             String fileName = document.LatestPublishedVersion.Title + '.pdf';
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
@@ -70,17 +72,17 @@ public with sharing class LetterStreamService {
         Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
     }
 
-    public void addAccountBillToCSV(Account_Bill__c accountBill, ContentDocument document) {
+    public void addLetterToCSV(LetterParameters params) {
         csv += '\n';
-        csv += (accountBill.Id + ',');
-        csv += (document.LatestPublishedVersion.Title + ',');
-        csv += (accountBill.Parent_Account__r.Name + ',');
-        csv += (accountBill.Parent_Account__r.BillingStreet + ',');
-        csv += (accountBill.Parent_Account__r.BillingCity + ',');
-        csv += (accountBill.Parent_Account__r.BillingState + ',');
-        csv += (accountBill.Parent_Account__r.BillingPostalCode + ',');
+        csv += (params.fileId + ',');
+        csv += (params.fileName + ',');
+        csv += (params.recipientName + ',');
+        csv += (params.recipientStreet + ',');
+        csv += (params.recipientCity + ',');
+        csv += (params.recipientState + ',');
+        csv += (params.recipientPostalCode + ',');
         csv += blueWaveAddress();
-        csv += (accountBill.Number_of_Pages_in_Template__c + ',');
+        csv += (params.pages + ',');
         csv += 'c';
     }
 
@@ -96,5 +98,27 @@ public with sharing class LetterStreamService {
         bwAddress += 'MA,';
         bwAddress += '02116,';
         return bwAddress;
+    }
+
+    public class LetterParameters {
+        public String fileId;
+        public String fileName;
+        public String recipientName;
+        public String recipientStreet;
+        public String recipientCity;
+        public String recipientState;
+        public String recipientPostalCode;
+        public String pages;
+
+        public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
+            fileId = accountBill.Id;
+            fileName = document.LatestPublishedVersion.Title + '.pdf';
+            recipientName = accountBill.Parent_Account__r.Name;
+            recipientStreet = accountBill.Parent_Account__r.BillingStreet ;
+            recipientCity = accountBill.Parent_Account__r.BillingCity;
+            recipientState = accountBill.Parent_Account__r.BillingState;
+            recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
+            pages = accountBill.Number_of_Pages_in_Template__c.toPlainString();
+        }
     }
 }
