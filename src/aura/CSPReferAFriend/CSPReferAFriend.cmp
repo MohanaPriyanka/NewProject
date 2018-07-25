@@ -7,21 +7,6 @@
       <div class="slds-col slds-size_1-of-6"/>
       <div class="slds-col slds-size_4-of-6">
         <div class="slds-text-heading_large slds-p-top_large"><b>Refer a Friend</b></div>
-        <!--<div class="slds-text-heading_small slds-p-top_large">Share A Link</div>-->
-        <!--<div class="slds-text-body_regular slds-p-top_small">-->
-          <!--Help your friends save with BlueWave Community Solar by sharing your custom referral link. For every friend that signs up with your referral link, <b>you will receive $100!</b>-->
-        <!--</div>-->
-        <!--<h3 class="slds-p-top_large slds-p-bottom_small slds-align&#45;&#45;absolute-center">-->
-          <!--<b>-->
-            <!--<div class ="slds-form-element slds-align&#45;&#45;absolute-center slds-text-color_weak">Copy the link below and send it<br> </br> </div>-->
-            <!--<div class ="slds-form-element slds-align&#45;&#45;absolute-center slds-text-color_weak">to your friends via Email, Facebook, Twitter, etc!</div>-->
-            <!--<br></br>-->
-              <!--<div class="slds-text-body_small slds-align&#45;&#45;absolute-center slds-text-color_default slds-col slds-size_4-of-6">-->
-                  <!--<span style="text-align:center; font-weight:normal" >{!v.referralURL}-->
-                  <!--</span>-->
-              <!--</div>-->
-          <!--</b>-->
-        <!--</h3>-->
         <div class="slds-text-heading_small slds-p-top_large">Send an Email</div>
         <div class="slds-text-body_regular slds-p-top_small">
           Type an email address in the box below and hit “send” to share information about BlueWave Community Solar and your custom referral link with friends.

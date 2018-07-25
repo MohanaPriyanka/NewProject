@@ -43,7 +43,7 @@ public with sharing class ReferralCodeHandler {
         for (BSST__c partner : [SELECT Id, Name, Custom_Id__c, Partner__r.Id, Email__c
                                 FROM BSST__c
                                 WHERE Custom_Id__c IN :leadReferralCodeList
-                                OR Id IN :leadReferralCodeList]){
+                                OR Id IN :leadReferralCodeList]) {
 
 
             partnerMap.put(partner.Custom_Id__c, partner);

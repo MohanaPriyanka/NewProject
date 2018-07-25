@@ -13,7 +13,8 @@
             component.set("v.salesRepId", decodeURIComponent(salesRepId));
         }
         var referralCode = component.get("v.referralCode");
-        if(referralCode) {}
+        if(referralCode) {
             component.set("v.referralCode", decodeURIComponent(referralCode));
+        }
     },
 })

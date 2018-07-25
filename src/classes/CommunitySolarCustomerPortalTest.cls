@@ -163,10 +163,9 @@ public without sharing class CommunitySolarCustomerPortalTest {
             System.assertEquals(referralCode, 'bluewaveFLast');
 
             //Test generateReferralURL()
-              String checkURL = URL.getSalesforceBaseUrl().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + con.Partner_Lookup__c + '&salesRepId='
-                  + con.Sales_Representative__c + '&referralCode=' + con.Id;
-              String referralURL = MyAccountController.generateReferralURL();
-              System.assertEquals(checkURL, referralURL);
+            String checkURL = URL.getSalesforceBaseUrl().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + con.Partner_Lookup__c + '&salesRepId=' + con.Sales_Representative__c + '&referralCode=' + con.Id;
+            String referralURL = MyAccountController.generateReferralURL();
+            System.assertEquals(checkURL, referralURL);
 
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');

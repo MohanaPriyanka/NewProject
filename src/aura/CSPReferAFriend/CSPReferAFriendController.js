@@ -1,25 +1,22 @@
 ({
-sendEmailFunc : function(component, event, helper) {
+    sendEmailFunc : function(component, event, helper) {
         component.find("emailstatus").set("v.value", "");
         var email = component.find("email").get("v.value");
-        if(email === null || email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {             
+        if (email === null || email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
             component.find("emailstatus").set("v.value", "You must enter a valid email address.");
             return;
-        }
-        else {
+        } else {
             var action = component.get("c.sendEmail");
             action.setParams({ emailAddress : component.find("email").get("v.value") });
             action.setCallback(this,function(resp){
-                if(resp.getState() == 'SUCCESS') {
-                    if(resp.getReturnValue() == 'success') {
+                if (resp.getState() == 'SUCCESS') {
+                    if (resp.getReturnValue() == 'success') {
                         component.find("emailstatus").set("v.value", "The email was sent successfully.");
-                    }
-                    else {
+                    } else {
                         alert('fail');
                         component.find("emailstatus").set("v.value", resp.getReturnValue());
                     }
-                }
-                else {
+                } else {
                     component.find("emailstatus").set("v.value", resp.getError());
                 }
             });
@@ -28,27 +25,15 @@ sendEmailFunc : function(component, event, helper) {
     },
 
     doInit : function(component, event, helper) {
-        var action = component.get("c.getCode");
+        var action = component.get("c.generateReferralURL");
         action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                component.set("v.referCode", resp.getReturnValue());
-            }
-            else {
-                $A.log("Errors", resp.getError());
-            }
-        });
-        $A.enqueueAction(action);
-
-        var action2 = component.get("c.generateReferralURL");
-        action2.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS'){
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.referralURL", resp.getReturnValue());
-            }
-            else {
+            } else {
                 $A.log("Errors", resp.getError());
             }
         })
-        $A.enqueueAction(action2);
+        $A.enqueueAction(action);
 
     }
 })

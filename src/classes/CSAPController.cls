@@ -177,13 +177,13 @@ public without sharing class CSAPController {
         } else if (String.isNotBlank(profile.salesRepId)) {
             lead.Bs_Sales_ID__c = profile.salesRepId;
         }
-        if(String.isBlank(referralCode) || referralCode == 'undefined'){
+        if (String.isBlank(referralCode) || referralCode == 'undefined') {
             lead.Customer_Referral__c = null;
-        }else{
+        } else {
             List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
-            if(referralContacts.size()==1){
+            if(referralContacts.size() == 1){
                 lead.Customer_Referral__c = referralContacts[0].Id;
-            }else{
+            } else {
                 Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
             }
         }
