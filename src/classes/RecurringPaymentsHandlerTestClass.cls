@@ -802,8 +802,15 @@ private class RecurringPaymentsHandlerTestClass{
 
         insert ualog3;
 
+        ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway A',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = true);
+        insert chGatewayA;
+
         Entity__c entityA = new Entity__c (
-            Name = 'BarrettProjCo');
+            Name = 'BarrettProjCo',
+            Gateway__c = chGatewayA.Id
+        );
 
         insert entityA;
         System.debug('4.Number of Queries used in this apex code so far: ' + Limits.getQueries());
@@ -813,12 +820,7 @@ private class RecurringPaymentsHandlerTestClass{
                                             FROM Shared_Solar_System__c
                                             WHERE name = 'Oxford Barrett St. P1'];
 
-        ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway A',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Active__c = true,
-            Entity__c = entityA.Id,
-            Shared_Solar_System__c = sssA.id);
-        insert chGatewayA;
+
 
         Opportunity opportunityA = new Opportunity(Name = 'OppA',
             AccountId = propAccountA.Id,

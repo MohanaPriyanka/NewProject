@@ -111,7 +111,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 WHERE ( Id NOT IN :ordersToInsert)
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
                 AND Account_Bill__r.Parent_Account__r.Id IN : accountSet
-                AND ChargentOrders__Gateway__r.Entity__r.Id IN : entityIdSet
+                AND Entity__r.Id IN : entityIdSet
             ];
             if(chargentOrderList.size() > 0){
                 for(ChargentOrders__ChargentOrder__c co : chargentOrderList){

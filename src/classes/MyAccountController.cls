@@ -145,7 +145,7 @@ public without sharing class MyAccountController {
                     ChargentOrders__Bank_Account_Number__c,
                     ChargentOrders__Card_Number__c,
                     ChargentOrders__Next_Transaction_Date__c,
-                    ChargentOrders__Gateway__r.Entity__r.Name
+                    Entity__r.Name
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
@@ -162,7 +162,7 @@ public without sharing class MyAccountController {
                     ChargentOrders__Bank_Account_Number__c,
                     ChargentOrders__Card_Number__c,
                     ChargentOrders__Next_Transaction_Date__c,
-                    ChargentOrders__Gateway__r.Entity__r.Name
+                    Entity__r.Name
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
