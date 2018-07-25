@@ -23,6 +23,7 @@ public class QueueableApplicationReview implements Queueable {
             List<LASERCA__Personal_Credit_Report__c> pcrsToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
             lead = pcrApprovalHandler.runCreditReviewProcess(lead, null, null);
             update lead;
+            checkAvidiaStatus(lead, lead.Personal_Credit_Report__r);
             pcrsToUpdate.add(lead.Personal_Credit_Report__r);
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
                 pcrsToUpdate.add(lead.Personal_Credit_Report_Co_Applicant__r);
@@ -32,4 +33,13 @@ public class QueueableApplicationReview implements Queueable {
             System.enqueueJob(new QueueableApplicationReview(lead));
         }
     }
+
+    private void checkAvidiaStatus(Lead lead, LASERCA__Personal_Credit_Report__c pcr) {
+        if(pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
+            Opportunity opp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id];
+            opp.StageName = 'Voided';
+            update opp;
+        }
+    }
+
 }

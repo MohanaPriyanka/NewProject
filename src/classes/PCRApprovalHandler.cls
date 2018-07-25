@@ -172,6 +172,7 @@ public without sharing class PCRApprovalHandler {
                 }
             }
         }
+        checkAllAvidiaStatuses(leadsToUpdate);
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
@@ -267,7 +268,7 @@ public without sharing class PCRApprovalHandler {
             pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
             lead = setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
         }
-        
+
         return lead;
     }
 
@@ -569,6 +570,21 @@ public without sharing class PCRApprovalHandler {
         mail.setTargetObjectId(targetObjectId);
         system.debug(mail);
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    }
+
+    private static void checkAllAvidiaStatuses(Map<Id,Lead> leadsToUpdate){
+        List<String> leadIds = new List<String>();
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        for(Lead lead : leadsToUpdate.values()){
+            if (lead.Personal_Credit_Report__r.Avidia_Review_Status__c == 'Reviewed - Declined') {
+                leadIds.add(lead.id);
+            }
+        }
+        for(Opportunity opp : [SELECT Id, StageName FROM Opportunity WHERE Lead__c in :leadIds]){
+            opp.StageName = 'Voided';
+            oppsToUpdate.add(opp);
+        }
+        update oppsToUpdate;
     }
 
     @TestVisible
