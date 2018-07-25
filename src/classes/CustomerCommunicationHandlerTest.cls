@@ -1,31 +1,33 @@
 @isTest
 public class CustomerCommunicationHandlerTest{
     @testSetup public static void setupData() {
-        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
-                                                                       Utility__c = 'Eversource',
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Current_Billing_Rate__c = TRUE);
+        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 2',
+            Value_of_Net_Metering_Credit__c = 0.1848,
+            Current_Billing_Rate__c = TRUE);
 
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
-                                                                       Utility__c = 'Eversource',
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Sizing_Rate__c = TRUE);
+        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 2',
+            Value_of_Net_Metering_Credit__c = 0.1848,
+            Sizing_Rate__c = TRUE);
 
-        insert new List<Utility_NMC_Tariff__c>{everbillNMC, eversizeNMC};
+        insert new List<Utility_NMC_Tariff__c>{
+            everbillNMC, eversizeNMC
+        };
 
-        Load_U__c everLZU = new Load_U__c (Name = '02633',
-                                           Load_zone__c = 'SEMA Eversource',
-                                           LZ__c = 'SEMA',
-                                           Utility__C = 'Eversource',
-                                           Town__c= 'Medfield');
+        Load_U__c everLZU = new Load_U__c(Name = '02633',
+            Load_zone__c = 'SEMA Eversource',
+            LZ__c = 'SEMA',
+            Utility__C = 'Eversource',
+            Town__c = 'Medfield');
 
         insert everLZU;
 
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;
 
         Shared_Solar_System__c sss1 =

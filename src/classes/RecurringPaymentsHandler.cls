@@ -19,7 +19,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
                         ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
-                        ' Account_Bill__r.Bill_Number__c, ChargentOrders__Gateway__r.Entity_ID__c,' +
+                        ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
                         ' Account_Bill__r.Is_First_Bill__c, ' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
                         ' Comments__c,' +
@@ -45,7 +45,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                         ' ChargentOrders__Payment_Stop__c,' +
                         ' ChargentOrders__Charge_Date__c,' + 
                         ' ChargentOrders__Payment_Start_Date__c,' +
-                        ' ChargentOrders__Shipping_Name__c' +
+                        ' ChargentOrders__Shipping_Name__c,' +
+                        ' Entity__c ' +
                         ' FROM ChargentOrders__ChargentOrder__c' +
                         ' WHERE ChargentOrders__Payment_Status__c = \'' + 'Recurring' + '\'' +
                         ' ORDER BY CreatedDate';
@@ -92,13 +93,17 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
             accBillId = String.valueOf(sysBills.get('Account_Bill__c'));
             entityIdString = String.valueOf(sysBills.get('entity'));
-            uniqueID = accBillId + '_' + entityIdString.substring(0,15);
-            aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue') );
+            uniqueID = accBillId + '_' + entityIdString;
+            aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue'));
         }
 
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
-            if (recurOrder.Account_Bill__c != null && recurOrder.Account_Bill__r.Bill_Number__c != null && recurOrder.ChargentOrders__Gateway__r.Entity_ID__c != null ) {
+            Id entityId = recurOrder.Entity__c;
+
+            if (recurOrder.Account_Bill__c != null
+                && recurOrder.Account_Bill__r.Bill_Number__c != null
+                && entityId != null ) {
                 newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
                 if (recurOrder.Account_Bill__r.Is_First_Bill__c){
                     chargentOrderKey = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
@@ -109,8 +114,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 }
                 if (abMap.containsKey(chargentOrderKey)){
                     recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
-                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c)) {
-                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + recurOrder.ChargentOrders__Gateway__r.Entity_ID__c);
+                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
+                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
                         recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2, roundingMode.HALF_UP);
                     } else {
                         recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
@@ -155,7 +160,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 orderA.ChargentOrders__Charge_Date__c = '01';
                 orderA.Reason_for_Recurring_Stop__c = '';
                 orderA.Comments__c = 'Cloned Order';
-                orderA.ChargentOrders__Shipping_Name__c = sbWithoutOrder.substring(19,34);
+                orderA.Entity__c = sbWithoutOrder.substring(19,34);
                 orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
                 ordersToInsert.add(orderA);  
             }
