@@ -138,11 +138,17 @@ public without sharing class PCRApprovalHandler {
             }
         }
 
-
+        Set<Id> pcrIds = new Set<Id>();
         List<Lead> relatedLeads  = getLeadsForCreditAnalysis(leadIds);
         for (Lead lead : relatedLeads) {
             leadMap.put(lead.Id, lead);
+            pcrIds.add(lead.Personal_Credit_Report__c);
+            if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
+                pcrIds.add(lead.Personal_Credit_Report_Co_Applicant__c);
+            }
         }
+
+        Map<Id, List<LASERCA__Trade_Accounts__c>> tradeAccountsByPCRIds = getTradeAccountsForPCRs(pcrIds);
 
         ProductRepo productRepo = new ProductRepo(relatedLeads);
 
@@ -161,8 +167,14 @@ public without sharing class PCRApprovalHandler {
                     continue;
                 }
 
-                if (leadReadyForPrequalCheck(lead)) {
-                    lead = runCreditReviewProcess(lead, pcr, productRepo);
+                if (leadReadyForPrequalCheck(lead)
+                    && pcr.Id == lead.Personal_Credit_Report__c) {
+                    List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>();
+                    tradeAccounts.addAll(tradeAccountsByPCRIds.get(lead.Personal_Credit_Report__c));
+                    if (lead.Personal_Credit_Report_Co_Applicant__c != null) {
+                        tradeAccounts.addAll(tradeAccountsByPCRIds.get(lead.Personal_Credit_Report_Co_Applicant__c));
+                    }
+                    lead = runCreditReviewProcess(lead, pcr, productRepo, tradeAccounts);
                     leadsToUpdate.put(lead.Id, lead);
                     pcr.Credit_PreApproval_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c;
                     pcr.Credit_Denial_Email_Sent__c = lead.Personal_Credit_Report__r.Credit_Denial_Email_Sent__c;
@@ -178,17 +190,13 @@ public without sharing class PCRApprovalHandler {
         return newPCRs;
     }
 
-    public Lead runCreditReviewProcess(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo) {
-        lead = getCreditReviewedLead(lead, pcr, productRepo);
+    public Lead runCreditReviewProcess(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
+        lead = getCreditReviewedLead(lead, pcr, productRepo, tradeAccounts);
         lead = sendCreditDecisionEmails(lead);
         return lead;
     }
 
-    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo ) {
-        PCRTradeAccountHandler.makeTradeAccountAdjustments(lead);
-
-        lead = getLeadsForCreditAnalysis(new Set<Id>{lead.id})[0];
-        
+    public Lead getCreditReviewedLead(Lead lead, LASERCA__Personal_Credit_Report__c pcr, ProductRepo productRepo, List<LASERCA__Trade_Accounts__c> tradeAccounts ) {
         List<LASERCA__Personal_Credit_Report__c> leadPCRs = getPCRsForCreditAnalysis(new Set<Id>{
             lead.Personal_Credit_Report__c,
             lead.Personal_Credit_Report_Co_Applicant__c
@@ -208,7 +216,7 @@ public without sharing class PCRApprovalHandler {
 
         Integer creditScore = setAppMaximumCreditScore(lead);
         Decimal householdMonthlyIncome = calculateHouseholdMonthlyIncome(lead);
-        Decimal householdMonthlyDebt = calculateHouseholdMonthlyDebt(lead);
+        Decimal householdMonthlyDebt = PCRTradeAccountHandler.calculateHouseholdMonthlyDebt(lead, tradeAccounts);
 
         /*
         If a lead doesn't have an associated product, we can't calculate the DTI after
@@ -420,6 +428,29 @@ public without sharing class PCRApprovalHandler {
         return leads;
     }
 
+    public Map<Id, List<LASERCA__Trade_Accounts__c>> getTradeAccountsForPCRs (Set<Id> pcrIds) {
+        Map<Id, List<LASERCA__Trade_Accounts__c>> tradeAccountsByPCRIds = new Map<Id, List<LASERCA__Trade_Accounts__c>>();
+        for (LASERCA__Trade_Accounts__c tradeAccount : [
+            SELECT Id, LASERCA__Account_Ownership_Type__c, LASERCA__Account_Status_Type__c, LASERCA__Account_Type__c,
+                LASERCA__Open_Date__c, LASERCA__Name_of_the_Institution__c, LASERCA__Last_Activity_Date__c,
+                LASERCA__Payment_Pattern_Data__c, LASERCA__Remaining_Term__c, LASERCA__Credit_Text__c,
+                LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c,
+                LASERCA__Credit_Loan_Type__c, LASERCA__Monthly_Payment__c
+            FROM LASERCA__Trade_Accounts__c
+            WHERE LASERCA__Personal_Credit_Report__c IN : pcrIds
+        ]) {
+            if (tradeAccountsByPCRIds.containsKey(tradeAccount.LASERCA__Personal_Credit_Report__c)) {
+                List<LASERCA__Trade_Accounts__c> tradeAccounts = tradeAccountsByPCRIds.get(tradeAccount.LASERCA__Personal_Credit_Report__c);
+                tradeAccounts.add(tradeAccount);
+                tradeAccountsByPCRIds.put(tradeAccount.LASERCA__Personal_Credit_Report__c, tradeAccounts);
+            } else {
+                List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>{tradeAccount};
+                tradeAccountsByPCRIds.put(tradeAccount.LASERCA__Personal_Credit_Report__c, tradeAccounts);
+            }
+        }
+        return tradeAccountsByPCRIds;
+    }
+
     private Boolean currentBankruptcy (Lead lead) {
         if (lead.Application_Type__c == 'Joint') {
             if (lead.Personal_Credit_Report__r.LASERCA__Bankruptcy__c
@@ -466,20 +497,6 @@ public without sharing class PCRApprovalHandler {
             }
         }
         return householdMonthlyIncome;
-    }
-
-    private Decimal calculateHouseholdMonthlyDebt (Lead lead) {
-        Decimal householdMonthlyDebt = 0;
-        if (lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c != null) {
-            householdMonthlyDebt += lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
-        }
-        // add coApplicant's debt if it is a joint application
-        if (lead.Application_Type__c == 'Joint'
-            && lead.Joint_Applicant_Type__c == 'Co-Applicant'
-            && lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c != null) {
-            householdMonthlyDebt += lead.Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c;
-        }
-        return householdMonthlyDebt;
     }
 
     private Decimal getMonthlyPayment (CreditResultSummary creditSummary) {
