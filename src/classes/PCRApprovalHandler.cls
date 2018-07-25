@@ -577,7 +577,7 @@ public without sharing class PCRApprovalHandler {
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         for(Lead lead : leadsToUpdate.values()){
             if (lead.Personal_Credit_Report__r.Avidia_Review_Status__c == 'Reviewed - Declined') {
-                leadIds.add(lead.id);
+                leadIds.add(lead.Id);
             }
         }
         for(Opportunity opp : [SELECT Id, StageName FROM Opportunity WHERE Lead__c in :leadIds]){
