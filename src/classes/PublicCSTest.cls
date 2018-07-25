@@ -36,7 +36,17 @@ public class PublicCSTest {
         insert new List<Load_U__c>{everLZU};
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = TRUE
+        );
+        insert chGateway;
+
+        Entity__c entity1 = new Entity__c (
+            Name = 'Oxford Barrett St. P1',
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
         
         Shared_Solar_System__c sss1 = 
@@ -61,13 +71,6 @@ public class PublicCSTest {
             );
         insert new List<Shared_Solar_System__c>{sss1};
 
-        ChargentBase__Gateway__c chGateway  =
-        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                                         ChargentBase__Merchant_ID__c = '235986',
-                                         Shared_Solar_System__c = sss1.id,
-                                         Entity__c = entity1.Id,
-                                         ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Id parentAccountRT = 
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();

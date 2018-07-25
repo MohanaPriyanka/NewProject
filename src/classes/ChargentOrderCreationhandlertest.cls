@@ -1,7 +1,7 @@
 @isTest
 private class ChargentOrderCreationhandlertest {
 
-Static testMethod void ChargentOrderCreationhandlertest (){
+    Static testMethod void ChargentOrderCreationhandlertest (){
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c ( Name = 'Eversource SEMA Class 2', 
                                                                         Utility__c = 'Eversource', 
@@ -10,7 +10,16 @@ Static testMethod void ChargentOrderCreationhandlertest (){
                                                                         Sizing_Rate__c = TRUE);
         insert eversizeNMC;
 
-        Entity__c entityOne = new Entity__c ( Name = 'BlueWave ProjectCo');
+        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'BW Community Solar Payments Account Gateway',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
+        Entity__c entityOne = new Entity__c (
+            Name = 'BWC Holdings, LLC',
+            Gateway__c = chGateway.Id
+        );
+
         insert entityOne;
         
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
@@ -34,12 +43,7 @@ Static testMethod void ChargentOrderCreationhandlertest (){
             RecordTypeId = '012j00000010Ha3');       
         insert accountA;  
 
-        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'BW Community Solar Payments Account Gateway',
-                                                                           ChargentBase__Merchant_ID__c = '235986',
-                                                                           ChargentBase__Active__c = TRUE,
-                                                                           Entity__c = entityOne.Id,
-                                                                           Shared_Solar_System__c = sss1.Id);
-        insert chGateway;
+
         
         Opportunity oppone = new Opportunity(Name = 'Jordan Jordan',
                                              AccountId = accountA.Id,

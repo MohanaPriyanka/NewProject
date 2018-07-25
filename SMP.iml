@@ -910,11 +910,11 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="DocuSignVoid_Invocable" />
+                            <option name="name" value="BatchCreditSRECHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="BatchCreditSRECHandler" />
+                            <option name="name" value="BatchCreditSRECHandler-meta.xml" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -922,11 +922,23 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
+                            <option name="name" value="RecurringSRECHandler-meta.xml" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
                             <option name="name" value="RecurringSRECHandlerTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="QueueableApplicationReview" />
+                            <option name="name" value="PCRPublicRecordHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PCRTradeAccountHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PCRTradeAccountHandlerTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1082,14 +1094,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="clientImageFiles" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="Conga_Instructions" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="clientLogos" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
