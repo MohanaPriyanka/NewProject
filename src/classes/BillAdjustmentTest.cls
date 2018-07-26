@@ -6,7 +6,7 @@
 
 @isTest
 public with sharing class BillAdjustmentTest {
-    @testSetup public static void CSTestRecordWarehouse(){
+    @testSetup public static void testSetup(){
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -354,13 +354,12 @@ public with sharing class BillAdjustmentTest {
         update productionupdateA1;
         update productionupdateA2;
 
-
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
-
-        System.debug(LoggingLevel.ERROR, 'test queries: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
+        OverpaymentApplication.applyOverpayments();
+//        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (
+//            APXT_BPM__Title__c = 'Conga Record');
+//        insert congaRecord;
+//        congaRecord.Apply_Overpay_Adjust__c = true;
+//        update congaRecord;
     }
 
     @isTest public static void testAdjustments() {
@@ -497,8 +496,6 @@ public with sharing class BillAdjustmentTest {
     }
 
     @isTest public static void testAdjustments2() {
-        System.debug(LoggingLevel.ERROR, 'test queries 1: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
-
         List<Account_Bill__c> accountbilllist = [
             SELECT Id, Name, Bill_Number__c, Property_Account_ID__c,
                 (SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -521,15 +518,13 @@ public with sharing class BillAdjustmentTest {
             abill.Published__c = True;
         }
         update accountbilllist;
-        Test.startTest();
-
-        System.debug(LoggingLevel.ERROR, 'test queries 2: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
 
         Entity__c entity = [
             SELECT Id, Gateway__c
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
+        Test.startTest();
 
         Account_Bill__c accountbill2;
 
@@ -608,14 +603,13 @@ public with sharing class BillAdjustmentTest {
         prodUpdate.Generate_Bills__c = True;
         update prodUpdate;
 
-        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert congaRecord;
-        System.debug(LoggingLevel.ERROR, 'test queries 7: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
-
+//        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (
+//            APXT_BPM__Title__c = 'Conga Record');
+//        insert congaRecord;
+//        congaRecord.Apply_Overpay_Adjust__c = true;
+//        update congaRecord;
         Test.stopTest();
-        congaRecord.Apply_Overpay_Adjust__c = true;
-        update congaRecord;
-        System.debug(LoggingLevel.ERROR, 'test queries 8: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
+        OverpaymentApplication.applyOverpayments();
 
         List<Adjustment_Application__c> secondAdjustApp =   [
             SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
@@ -649,8 +643,6 @@ public with sharing class BillAdjustmentTest {
     }
 
     @isTest public static void updateCheckAddress() {
-        System.debug(LoggingLevel.ERROR, 'test queries 1: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
-
         List<Account_Bill__c> accountbilllist = [
             SELECT Id, Name, Bill_Number__c, Property_Account_ID__c,
             (SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -673,8 +665,6 @@ public with sharing class BillAdjustmentTest {
             abill.Published__c = True;
         }
         update accountbilllist;
-
-        System.debug(LoggingLevel.ERROR, 'test queries 2: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
 
         Test.startTest();
 
