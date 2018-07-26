@@ -280,63 +280,10 @@ public class CSPaymentTest {
         setBillsToPublished();
     }
 
-    static void setBillsToPublished() {
-        List <Account_Bill__c> listaccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = False
-        ];
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-    }
-
-    static List<System_Bill__c> mockMakeASinglePayment(List<System_Bill__c> systemBills) {
-        for (System_Bill__c systemBill : systemBills) {
-            systemBill.Total_Payments_This_Month__c = systemBill.Total_Due__c;
-            systemBill.Payments_Net_Previous_Balances__c = systemBill.Total_Due__c;
-        }
-        update systemBills;
-
-        return systemBills;
-    }
-
-    static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId) {
-        List<AggregateResult> aggResult = MyAccountController.getSystemBills(propertyAccountId);
-        ChargentOrders__ChargentOrder__c orderB = getPaymentInput();
-        List<ChargentOrders__ChargentOrder__c> choList = CreateOrderandPaymentRequest.setChargeAmountAndInsert(aggResult, orderB, false);
-
-        return choList;
-    }
-
-    static ChargentOrders__ChargentOrder__c getPaymentInput() {
-        ChargentOrders__ChargentOrder__c paymentInfoACH =
-            new ChargentOrders__ChargentOrder__c(
-                ChargentOrders__Payment_Method__c = 'Check',
-                ChargentOrders__Bank_Name__c = 'Bank of America',
-                ChargentOrders__Bank_Routing_Number__c = '123456789',
-                ChargentOrders__Bank_Account_Type__c = 'Checking',
-                ChargentOrders__Bank_Account_Number__c = '123456533',
-                ChargentOrders__Bank_Account_Name__c = 'Jordan Testcase',
-                ChargentOrders__Card_Type__c = '',
-                ChargentOrders__Card_Number__c = '',
-                ChargentOrders__Card_Security_Code__c = '',
-                ChargentOrders__Card_Expiration_Month__c = '',
-                ChargentOrders__Card_Expiration_Year__c = '',
-                ChargentOrders__Billing_Address__c = '',
-                ChargentOrders__Billing_City__c = '',
-                ChargentOrders__Billing_State__c = '',
-                ChargentOrders__Billing_Zip_Postal__c = '',
-                ChargentOrders__Billing_First_Name__c = '',
-                ChargentOrders__Billing_Last_Name__c = '');
-        return paymentInfoACH;
-    }
-
     @isTest public static void testPayOffOne(){
         // assert Bills were inserted for each property account, for 2 billing periods:
         List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
-                                                Account_Bill__r.Is_Most_Recent__c
+                                                    Account_Bill__r.Is_Most_Recent__c
                                                 FROM System_Bill__c
                                                 ORDER BY Account_Bill__r.Name];
         System.assertEquals(10, systemBillList.size());
@@ -386,15 +333,15 @@ public class CSPaymentTest {
     @isTest public static void testPayOffAll(){
         // assert Bills were inserted for each property account, for 2 billing periods:
         List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
-                                                Account_Bill__r.Is_Most_Recent__c
+                                                    Account_Bill__r.Is_Most_Recent__c
                                                 FROM System_Bill__c
                                                 ORDER BY Account_Bill__r.Name];
 
         System.assertEquals(10, systemBillList.size());
 
         User userA = [  SELECT Id
-        FROM User
-        WHERE Username='CSPaymentTest@bluewavesolar.com'];
+                        FROM User
+                        WHERE Username='CSPaymentTest@bluewavesolar.com'];
 
         System.runAs(userA) {
             Test.startTest();
@@ -428,4 +375,54 @@ public class CSPaymentTest {
         }
     }
 
+    static void setBillsToPublished() {
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+                                                    FROM Account_Bill__c
+                                                    WHERE Published__c = False];
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+    }
+
+    static List<System_Bill__c> mockMakeASinglePayment(List<System_Bill__c> systemBills) {
+        for (System_Bill__c systemBill : systemBills) {
+            systemBill.Total_Payments_This_Month__c = systemBill.Total_Due__c;
+            systemBill.Payments_Net_Previous_Balances__c = systemBill.Total_Due__c;
+        }
+        update systemBills;
+
+        return systemBills;
+    }
+
+    static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId) {
+        List<AggregateResult> aggResult = MyAccountController.getSystemBills(propertyAccountId);
+        ChargentOrders__ChargentOrder__c orderB = getPaymentInput();
+        List<ChargentOrders__ChargentOrder__c> choList = CreateOrderandPaymentRequest.setChargeAmountAndInsert(aggResult, orderB, false);
+
+        return choList;
+    }
+
+    static ChargentOrders__ChargentOrder__c getPaymentInput() {
+        ChargentOrders__ChargentOrder__c paymentInfoACH =
+            new ChargentOrders__ChargentOrder__c(
+                ChargentOrders__Payment_Method__c = 'Check',
+                ChargentOrders__Bank_Name__c = 'Bank of America',
+                ChargentOrders__Bank_Routing_Number__c = '123456789',
+                ChargentOrders__Bank_Account_Type__c = 'Checking',
+                ChargentOrders__Bank_Account_Number__c = '123456533',
+                ChargentOrders__Bank_Account_Name__c = 'Jordan Testcase',
+                ChargentOrders__Card_Type__c = '',
+                ChargentOrders__Card_Number__c = '',
+                ChargentOrders__Card_Security_Code__c = '',
+                ChargentOrders__Card_Expiration_Month__c = '',
+                ChargentOrders__Card_Expiration_Year__c = '',
+                ChargentOrders__Billing_Address__c = '',
+                ChargentOrders__Billing_City__c = '',
+                ChargentOrders__Billing_State__c = '',
+                ChargentOrders__Billing_Zip_Postal__c = '',
+                ChargentOrders__Billing_First_Name__c = '',
+                ChargentOrders__Billing_Last_Name__c = '');
+        return paymentInfoACH;
+    }
  }
