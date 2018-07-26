@@ -210,7 +210,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     Total_System_Production_kWh__c = systemProduction,
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
-                                    Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP));
+                                    Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP),
+                                    Schedule_Z_Subscription__c = szs.Id);
         return generatedUASB;     
     }
 
