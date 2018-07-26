@@ -7,7 +7,7 @@
  + * Tested By: TestBillCreationandPayment3
  + *************************************************************************************/
 
-public with sharing class SystemBillPaymentRollUpHandler {
+public with sharing class   SystemBillPaymentRollUpHandler {
     public static void handleRecurringPayment (List<ChargentOrders__Transaction__c> newlycreatedTrans) {
         List<Id> recurringList = new List<Id >();
         for (ChargentOrders__Transaction__c trans: newlycreatedTrans) {
@@ -48,8 +48,8 @@ public with sharing class SystemBillPaymentRollUpHandler {
 
         for (ChargentOrders__Transaction__c insertedTransaction : [ SELECT Id, Name, ChargentOrders__Response_Status__c,
                                                                     Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
-                                                                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
-                                                                    ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Id,
+            ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id, ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
+            ChargentOrders__Order__r.Entity__c,
                                                                     Distributed_Among_System_Bills__c,
                                                                     ChargentOrders__Recurring__c
                                                                     FROM ChargentOrders__Transaction__c 
@@ -92,15 +92,16 @@ public with sharing class SystemBillPaymentRollUpHandler {
         for (ChargentOrders__Transaction__c chTransaction : queriedTransactions) {
             List<System_Bill__c> groupedSystemBillsList = new List<System_Bill__c>();
             String parentID = chTransaction.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id;  
-            String entityId = chTransaction.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Id;
+            String entityId = chTransaction.ChargentOrders__Order__r.Entity__c;
             Decimal payment = chTransaction.ChargentOrders__Amount__c;
+            Integer accountBillNumber = (Integer) chTransaction.ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c;
             Decimal maxbillnumber = 0;
 
             systemBillCreatedDate = chTransaction.createdDate;
             Date dateOfLastPayment = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
             for (System_Bill__c sbill : systemBills) {
-                if (sbill.Account_Bill__r.Parent_Account__r.Id == parentID 
+                if (sbill.Account_Bill__r.Parent_Account__r.Id == parentID
                     && sbill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id == entityId) {
                         groupedSystemBillsList.add(sbill);
                         maxbillnumber = sbill.Account_Bill_Number__c;

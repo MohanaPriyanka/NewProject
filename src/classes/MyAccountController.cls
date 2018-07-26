@@ -71,7 +71,7 @@ public without sharing class MyAccountController {
             ];
 
             for (AggregateResult systemBillsListParent : [  SELECT Account_Bill__c, 
-                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
+                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
                                                                 SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__c IN : acctBillsParent
@@ -89,7 +89,7 @@ public without sharing class MyAccountController {
             ];
 
             for( AggregateResult systemBillsListProperty : [SELECT Account_Bill__c, 
-                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c ChargentOrders__Shipping_Name__c, 
+                                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
                                                                 SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
                                                             FROM System_Bill__c
                                                             WHERE Account_Bill__r.Id = : mostRecentAccountBill.Id
@@ -146,7 +146,7 @@ public without sharing class MyAccountController {
                     ChargentOrders__Bank_Account_Number__c,
                     ChargentOrders__Card_Number__c,
                     ChargentOrders__Next_Transaction_Date__c,
-                    ChargentOrders__Gateway__r.Entity__r.Name
+                    Entity__r.Name
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
@@ -163,7 +163,7 @@ public without sharing class MyAccountController {
                     ChargentOrders__Bank_Account_Number__c,
                     ChargentOrders__Card_Number__c,
                     ChargentOrders__Next_Transaction_Date__c,
-                    ChargentOrders__Gateway__r.Entity__r.Name
+                    Entity__r.Name
                 FROM ChargentOrders__ChargentOrder__c
                 WHERE Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
@@ -181,36 +181,36 @@ public without sharing class MyAccountController {
         User u = customerUser;
         List<ChargentOrders__Transaction__c> chargentTransactionsList = new List<ChargentOrders__Transaction__c>();
         if(propertyAccountId == 'All' || propertyAccountId == null) {
-            for(ChargentOrders__Transaction__c chargentTransactionsAll : [  SELECT ChargentOrders__Type__c, Activity_Type__c, 
-                                                                                Negative_Amount__c, 
-                                                                                ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name, 
+            for(ChargentOrders__Transaction__c chargentTransactionsAll : [  SELECT ChargentOrders__Type__c, Activity_Type__c,
+                                                                                Negative_Amount__c,
+                                                                                ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name,
                                                                                 ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
-                                                                                ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c, 
+                                                                                ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
                                                                                 ChargentOrders__Order__r.ChargentOrders__Next_Transaction_Date__c,
-                                                                                ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name , 
-                                                                                ChargentOrders__Response_Status__c 
+                                                                                ChargentOrders__Order__r.Entity__r.Name ,
+                                                                                ChargentOrders__Response_Status__c
                                                                             FROM ChargentOrders__Transaction__c
                                                                             WHERE ChargentOrders__Order__r.Account_Bill__r.Account_ID__c = : u.Parent_Account_ID__c
                                                                             AND ChargentOrders__Response_Status__c = 'Approved'
                                                                             ORDER BY CreatedDate DESC]) {
-            
+
                 chargentTransactionsList.add(chargentTransactionsAll);
             }
         }
         else{
-            for(ChargentOrders__Transaction__c chargentTransactionsProperty : [ SELECT ChargentOrders__Type__c, Activity_Type__c,Negative_Amount__c, 
-                                                                                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name, 
+            for(ChargentOrders__Transaction__c chargentTransactionsProperty : [ SELECT ChargentOrders__Type__c, Activity_Type__c,Negative_Amount__c,
+                                                                                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name,
                                                                                     ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
                                                                                     ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
                                                                                     ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
-                                                                                    ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
-                                                                                    ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
-                                                                                    ChargentOrders__Order__r.ChargentOrders__Next_Transaction_Date__c,
-                                                                                    ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name, 
-                                                                                    ChargentOrders__Response_Status__c 
+                ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
+                ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
+                ChargentOrders__Order__r.ChargentOrders__Next_Transaction_Date__c,
+                ChargentOrders__Order__r.Entity__r.Name,
+                                                                                    ChargentOrders__Response_Status__c
                                                                                 FROM ChargentOrders__Transaction__c
                                                                                 WHERE ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id = : propertyAccountId
                                                                                 AND ChargentOrders__Response_Status__c = 'Approved'

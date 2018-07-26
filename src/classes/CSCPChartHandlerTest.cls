@@ -71,9 +71,15 @@ public class CSCPChartHandlerTest {
 			Current_Billing_Rate__c = true,
 			Date__c = Date.today());            
 		insert nmcRate;   
-		insert nmcBillingRate;     
+		insert nmcBillingRate;
 
-		Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo');  
+		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+			//Shared_Solar_System__c = sss1.Id
+			ChargentBase__Merchant_ID__c = '235986',
+			ChargentBase__Active__c = TRUE);
+		insert chGateway;
+
+		Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo', Gateway__c = chGateway.Id);
 		Entity__c entitytwo = new Entity__c (Name = 'Two ProjectCo');
 
 		insert new List <Entity__c>{entityone, entitytwo};
@@ -309,17 +315,14 @@ public class CSCPChartHandlerTest {
 			Unique_ID__c = opp2.Shared_Solar_System__c + ' - ' + uas2.Id + ' - ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
 		insert new List<UASB__c>{uasb, uasb2};
 
-		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-			//Shared_Solar_System__c = sss1.Id 
-			ChargentBase__Merchant_ID__c = '235986',
-			ChargentBase__Active__c = TRUE);
-		insert chGateway;  
+
 	    
 	    Date recurringDate = Date.newInstance(2016, 2, 17);	
 
 		ChargentOrders__ChargentOrder__c chOrder  = new ChargentOrders__ChargentOrder__c(
 			ChargentOrders__Account__c = propertyAcc.Id,
 			ChargentOrders__Gateway__c = chGateway.Id,
+			Entity__c = entityone.Id,
 			ChargentOrders__Shipping_Name__c = sss1.Id,
 			ChargentOrders__Billing_First_Name__c = 'Cole',
 			ChargentOrders__Billing_Last_Name__c = 'Swain',

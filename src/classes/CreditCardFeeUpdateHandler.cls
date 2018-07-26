@@ -39,21 +39,23 @@ public with sharing class CreditCardFeeUpdateHandler {
         }
 
         if (triggeredOrders.size()>0){
-            List<ChargentOrders__ChargentOrder__c> allRecurringOrders = [SELECT Id, ChargentOrders__Payment_Status__c, Property_Account_ID__c, 
-                                                                        ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c , 
-                                                                        ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c,
-                                                                        Order_Type__c, ChargentOrders__Gateway__c, ChargentOrders__Billing_Address__c, 
-                                                                        ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c, 
-                                                                        ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Subtotal__c, 
-                                                                        ChargentOrders__Payment_Method__c,                                                                                             
-                                                                        ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Payment_Stop__c , 
-                                                                        ChargentOrders__Card_Last_4__c, 
-                                                                        ChargentOrders__Payment_Frequency__c, Parent_Order__c, 
-                                                                        ChargentOrders__Shipping_Name__c, ChargentOrders__Charge_Date__c, 
-                                                                        ChargentOrders__Payment_Start_Date__c, ChargentOrders__Payment_End_Date__c, 
-                                                                        ChargentOrders__Charge_Amount__c  
-                                                                        FROM ChargentOrders__ChargentOrder__c
-                                                                        WHERE ChargentOrders__Payment_Status__c = 'Recurring']; 
+            List<ChargentOrders__ChargentOrder__c> allRecurringOrders = [
+                SELECT Id, ChargentOrders__Payment_Status__c, Property_Account_ID__c,
+                    ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c ,
+                    ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c,
+                    Order_Type__c, ChargentOrders__Gateway__c, ChargentOrders__Billing_Address__c,
+                    ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c,
+                    ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Subtotal__c,
+                    ChargentOrders__Payment_Method__c,
+                    ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Payment_Stop__c ,
+                    ChargentOrders__Card_Last_4__c,
+                    ChargentOrders__Payment_Frequency__c, Parent_Order__c,
+                    Entity__c, ChargentOrders__Shipping_Name__c, ChargentOrders__Charge_Date__c,
+                    ChargentOrders__Payment_Start_Date__c, ChargentOrders__Payment_End_Date__c,
+                    ChargentOrders__Charge_Amount__c
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            ];
 
             // If there is already a CC fee created, it will be set as Recurring and have a Parent Order. 
             // That Parent Order doesn't need any more ccFees
@@ -72,30 +74,32 @@ public with sharing class CreditCardFeeUpdateHandler {
                         && orderToCheck.Order_Type__c != 'Credit Card Fee (3%)' 
                         && !duplicateSet.contains(orderToCheck.Id) ){
                             ChargentOrders__ChargentOrder__c order1  = new ChargentOrders__ChargentOrder__c(
-                                        Parent_Order__c = orderToCheck.Id,
-                                        Order_Type__c = 'Credit Card Fee (3%)',
-                                        Create_Duplicate_CC_Fees_On_Insert__c = FALSE,
-                                        ChargentOrders__Gateway__c = orderToCheck.ChargentOrders__Gateway__c,
-                                        ChargentOrders__Billing_First_Name__c = orderToCheck.ChargentOrders__Billing_First_Name__c,
-                                        ChargentOrders__Billing_Last_Name__c = orderToCheck.ChargentOrders__Billing_Last_Name__c,
-                                        ChargentOrders__Shipping_Name__c = orderToCheck.ChargentOrders__Shipping_Name__c,
-                                        ChargentOrders__Billing_Address__c = orderToCheck.ChargentOrders__Billing_Address__c,
-                                        ChargentOrders__Billing_Zip_Postal__c = orderToCheck.ChargentOrders__Billing_Zip_Postal__c,                                                                                                    
-                                        ChargentOrders__Subtotal__c = 0,
-                                        ChargentOrders__Payment_Method__c = orderToCheck.ChargentOrders__Payment_Method__c,
-                                        ChargentOrders__Card_Type__c = orderToCheck.ChargentOrders__Card_Type__c,
-                                        ChargentOrders__Card_Number__c = orderToCheck.ChargentOrders__Card_Number__c,
-                                        ChargentOrders__Card_Security_Code__c = orderToCheck.ChargentOrders__Card_Security_Code__c,
-                                        ChargentOrders__Card_Expiration_Month__c = orderToCheck.ChargentOrders__Card_Expiration_Month__c,
-                                        ChargentOrders__Card_Expiration_Year__c = orderToCheck.ChargentOrders__Card_Expiration_Year__c,
-                                        ChargentOrders__Card_Last_4__c = orderToCheck.ChargentOrders__Card_Last_4__c,
-                                        ChargentOrders__Payment_Status__c = orderToCheck.ChargentOrders__Payment_Status__c,
-                                        ChargentOrders__Payment_Stop__c = orderToCheck.ChargentOrders__Payment_Stop__c,
-                                        ChargentOrders__Payment_Frequency__c = orderToCheck.ChargentOrders__Payment_Frequency__c,  
-                                        ChargentOrders__Charge_Date__c = orderToCheck.ChargentOrders__Charge_Date__c,
-                                        ChargentOrders__Payment_Start_Date__c = orderToCheck.ChargentOrders__Payment_Start_Date__c,
-                                        ChargentOrders__Payment_End_Date__c = orderToCheck.ChargentOrders__Payment_End_Date__c,
-                                        ChargentOrders__Charge_Amount__c = orderToCheck.ChargentOrders__Charge_Amount__c );
+                                Parent_Order__c = orderToCheck.Id,
+                                Order_Type__c = 'Credit Card Fee (3%)',
+                                Create_Duplicate_CC_Fees_On_Insert__c = FALSE,
+                                ChargentOrders__Gateway__c = orderToCheck.ChargentOrders__Gateway__c,
+                                ChargentOrders__Billing_First_Name__c = orderToCheck.ChargentOrders__Billing_First_Name__c,
+                                ChargentOrders__Billing_Last_Name__c = orderToCheck.ChargentOrders__Billing_Last_Name__c,
+                                ChargentOrders__Shipping_Name__c = orderToCheck.ChargentOrders__Shipping_Name__c,
+                                Entity__c = orderToCheck.Entity__c,
+                                ChargentOrders__Billing_Address__c = orderToCheck.ChargentOrders__Billing_Address__c,
+                                ChargentOrders__Billing_Zip_Postal__c = orderToCheck.ChargentOrders__Billing_Zip_Postal__c,
+                                ChargentOrders__Subtotal__c = 0,
+                                ChargentOrders__Payment_Method__c = orderToCheck.ChargentOrders__Payment_Method__c,
+                                ChargentOrders__Card_Type__c = orderToCheck.ChargentOrders__Card_Type__c,
+                                ChargentOrders__Card_Number__c = orderToCheck.ChargentOrders__Card_Number__c,
+                                ChargentOrders__Card_Security_Code__c = orderToCheck.ChargentOrders__Card_Security_Code__c,
+                                ChargentOrders__Card_Expiration_Month__c = orderToCheck.ChargentOrders__Card_Expiration_Month__c,
+                                ChargentOrders__Card_Expiration_Year__c = orderToCheck.ChargentOrders__Card_Expiration_Year__c,
+                                ChargentOrders__Card_Last_4__c = orderToCheck.ChargentOrders__Card_Last_4__c,
+                                ChargentOrders__Payment_Status__c = orderToCheck.ChargentOrders__Payment_Status__c,
+                                ChargentOrders__Payment_Stop__c = orderToCheck.ChargentOrders__Payment_Stop__c,
+                                ChargentOrders__Payment_Frequency__c = orderToCheck.ChargentOrders__Payment_Frequency__c,
+                                ChargentOrders__Charge_Date__c = orderToCheck.ChargentOrders__Charge_Date__c,
+                                ChargentOrders__Payment_Start_Date__c = orderToCheck.ChargentOrders__Payment_Start_Date__c,
+                                ChargentOrders__Payment_End_Date__c = orderToCheck.ChargentOrders__Payment_End_Date__c,
+                                ChargentOrders__Charge_Amount__c = orderToCheck.ChargentOrders__Charge_Amount__c
+                            );
                             insertList.add(order1);
                     }
                 }
@@ -117,13 +121,15 @@ public with sharing class CreditCardFeeUpdateHandler {
         }
 
         if (parentIdList.size() > 0){
-            List<ChargentOrders__ChargentOrder__c> feeorders = [   SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Payment_Stop__c, 
-                                                                    ChargentOrders__Payment_Frequency__c, ChargentOrders__Charge_Date__c,
-                                                                    ChargentOrders__Payment_Start_Date__c, ChargentOrders__Shipping_Name__c, 
-                                                                    Parent_Order__c, ChargentOrders__Payment_End_Date__c,
-                                                                    ChargentOrders__Next_Transaction_Date__c, ChargentOrders__Charge_Amount__c
-                                                                    FROM ChargentOrders__ChargentOrder__c
-                                                                    WHERE Parent_Order__c IN : parentIdList ];
+            List<ChargentOrders__ChargentOrder__c> feeorders = [
+                SELECT Id, ChargentOrders__Payment_Status__c, ChargentOrders__Payment_Stop__c,
+                    ChargentOrders__Payment_Frequency__c, ChargentOrders__Charge_Date__c,
+                    ChargentOrders__Payment_Start_Date__c, Entity__c, ChargentOrders__Shipping_Name__c,
+                    Parent_Order__c, ChargentOrders__Payment_End_Date__c,
+                    ChargentOrders__Next_Transaction_Date__c, ChargentOrders__Charge_Amount__c
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE Parent_Order__c IN : parentIdList
+            ];
             if (feeorders.size() > 0){
                 for(ChargentOrders__ChargentOrder__c ccOrder : feeorders){
                         feemap.put(ccOrder.Parent_Order__c, ccOrder);

@@ -50,14 +50,60 @@ public class TestBillCreationandPayment {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1',
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent = new Account(name = 'Account Parent',
+            RecordTypeId = parentAccountRT);
+        insert accountParent;
+        Account accountParent2 = new Account(name = 'Account Parent',
+            RecordTypeId = parentAccountRT);
+        insert accountParent2;
+
+        Contact contactA = new Contact( FirstName = 'Contact',
+            LastName = 'A',
+            AccountId = accountParent.Id);
+        insert contactA;
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
+
+        User userRecord = new User(
+            FirstName = 'Jordan',
+            Lastname ='Testcase',
+            Alias = 'xxx234',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Emailencodingkey ='UTF-8',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactA.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='testBillCreationandPay@bluewavesolar.com');
+        Util.insertSobjs(new list<User>{userRecord});
+
+        ChargentBase__Gateway__c chGateway  =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Debug__c = True,
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
+
+        Entity__c entity1 = new Entity__c (
+            Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id);
+            Client_Account__c = clientAccount.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
 
-        Entity__c entity2 = new Entity__c (Name = 'Oxford Barrett St. P2',
+        Entity__c entity2 = new Entity__c (
+            Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id);
+            Client_Account__c = clientAccount2.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity2;
 
         Shared_Solar_System__c sss1 =
@@ -106,22 +152,6 @@ public class TestBillCreationandPayment {
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
-        Id parentAccountRT =
-            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        Account accountParent = new Account(name = 'Account Parent',
-            RecordTypeId = parentAccountRT);
-        Account accountParent2 = new Account(name = 'Account Parent2',
-            RecordTypeId = parentAccountRT);
-        insert new List<Account>{accountParent, accountParent2};
-
-        Contact contactA = new Contact( FirstName = 'Contact',
-            LastName = 'A',
-            AccountId = accountParent.Id);
-        Contact contactB = new Contact( FirstName = 'Contact',
-            LastName = 'B',
-            AccountId = accountParent2.Id);
-        insert new List<Contact>{contactA, contactB};
 
         Account accountA = new Account(name = 'Account A',
             Parent_Account__c = accountParent.Id);
@@ -129,34 +159,7 @@ public class TestBillCreationandPayment {
             Parent_Account__c = accountParent2.Id);
         insert new List<Account>{accountA, accountB};
 
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
-        User userRecord = new User(
-            FirstName = 'Jordan',
-            Lastname ='Testcase',
-            Alias = 'xxx234',
-            Email = 'jpentaleri@bluewavesolar.com',
-            Emailencodingkey ='UTF-8',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Profileid = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactA.Id,
-            Timezonesidkey='America/Los_Angeles',
-            Username='testBillCreationandPay@bluewavesolar.com');
-
-        Util.insertSobj(userRecord);
-
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                Shared_Solar_System__c = sss1.id,
-                ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
-                OwnerId = userRecord.Id,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
@@ -248,6 +251,7 @@ public class TestBillCreationandPayment {
 
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
+        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
             Adjustment_Amount__c = 24);
@@ -734,9 +738,13 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c
-        FROM ChargentBase__Gateway__c
-        LIMIT 1];
+        Entity__c entity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+
+
         Test.startTest();
 
         for (Account_Bill__c abill : accountbilllist) {
@@ -749,8 +757,8 @@ public class TestBillCreationandPayment {
         for (Account_Bill__c accountbill : accountbilllist) {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
-                        ChargentOrders__Shipping_Name__c = chGateway.Entity__c,
+                    new ChargentOrders__ChargentOrder__c(
+                        Entity__c = entity.Id,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -770,8 +778,8 @@ public class TestBillCreationandPayment {
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                         ChargentOrders__Amount__c = 50,
                         ChargentOrders__Response_Status__c ='Approved',
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -785,8 +793,8 @@ public class TestBillCreationandPayment {
                         ChargentOrders__Amount__c = 700,
                         ChargentOrders__Response_Status__c ='Approved',
                         ChargentOrders__Recurring__c = true,
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -859,9 +867,11 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c
-        FROM ChargentBase__Gateway__c
-        LIMIT 1];
+        Entity__c entity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
 
         for (Account_Bill__c abill : accountbilllist) {
             abill.Published__c = True;
@@ -873,8 +883,9 @@ public class TestBillCreationandPayment {
         for (Account_Bill__c accountbill : accountbilllist) {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
-                        ChargentOrders__Shipping_Name__c = chGateway.Entity__c,
+                    new ChargentOrders__ChargentOrder__c(
+                        Entity__c = entity.Id,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -895,8 +906,8 @@ public class TestBillCreationandPayment {
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                         ChargentOrders__Amount__c = 50,
                         ChargentOrders__Response_Status__c ='Approved',
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -910,8 +921,8 @@ public class TestBillCreationandPayment {
                         ChargentOrders__Amount__c = 700,
                         ChargentOrders__Response_Status__c ='Approved',
                         ChargentOrders__Recurring__c = true,
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -1073,7 +1084,7 @@ public class TestBillCreationandPayment {
                 ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
                     Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
                     ChargentOrders__Subtotal__c = (Decimal)lineItem.get('ChargentOrders__Subtotal__c'),
-                    ChargentOrders__Shipping_Name__c = (String)lineItem.get('ChargentOrders__Shipping_Name__c'));
+                    Entity__c = (String)lineItem.get('Entity__c'));
                 chOrderList.add(billsToCharge);
             }
             System.assertEquals(1, chOrderList.size());
@@ -1119,10 +1130,12 @@ public class TestBillCreationandPayment {
             List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, false);
             List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, true);
 
-            List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c,
-                Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
-            FROM ChargentOrders__ChargentOrder__c
-            ORDER BY ChargentOrders__Payment_Method__c];
+            List<ChargentOrders__ChargentOrder__c> newOrders = [
+                SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, Entity__c,
+                    Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
+                FROM ChargentOrders__ChargentOrder__c
+                ORDER BY ChargentOrders__Payment_Method__c
+            ];
             System.assertEquals(50, getStatesList.size());
 
             // Checking that the orders were inserted and that the merged data mapped correctly:
