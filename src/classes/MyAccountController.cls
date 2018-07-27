@@ -237,31 +237,50 @@ public without sharing class MyAccountController {
    @AuraEnabled
    public static String sendEmail(String emailAddress) {
         try {
-            EmailTemplate et = [Select Id from EmailTemplate where DeveloperName = 'Community_Referral_email'];
+            EmailTemplate et = [Select Id, HtmlValue from EmailTemplate where DeveloperName = 'Community_Referral_email'];
             User u = customerUser;
-            Partner__c customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :u.Contact.Account.Partner__c];
+            Partner__c customerPartner;
+            BSST__c salesRep;
+
+            String htmlBody = et.HtmlValue;
+
+            Opportunity opp = getMostRecentOpportunityInfo();
+
+            if (opp.Partner_tag_lookup__c != null && opp.BS_Sales_ID__c != null){
+                customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :opp.Partner_tag_lookup__c];
+                salesRep = [SELECT Id FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c];
+            } else {
+                //Currently setting default partner and sales rep to Bluewave Customer Care and Bluewave Testcase
+                customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Bluewave Customer Care'];
+                salesRep = [SELECT Id FROM BSST__c WHERE Name = 'Bluewave Testcase'];
+            }
+
+            htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
+            htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
+            htmlBody = htmlBody.replace('{!Contact.Id}', u.Contact.Id);
+
             Messaging.SingleEmailMessage sem = new Messaging.SingleEmailMessage();
+            sem.setHtmlBody(htmlBody);
             sem.setTemplateId(et.Id);
             sem.setTargetObjectId(u.ContactId);
+            sem.setSubject('A Community Solar Share for you!');
             sem.setTreatTargetObjectAsRecipient(false);
             sem.setToAddresses(new String[] { emailAddress});
             sem.setCcAddresses(new String[] { customerPartner.Email__c});
+
             Messaging.SendEmailResult[] results = Messaging.sendEmail(new Messaging.SingleEmailMessage[] {sem});
+
             if(results != null && results[0].isSuccess()) {
-                return 'success';
+
                 //CREATE TASK FOR PARTNER
-                Partner_Task__c partnerTask = new Partner_Task__c();
-                    partnerTask.RecordTypeId = '012j0000000uhmQ';
-                    partnerTask.Name = 'New Referral Email Sent';
-                    partnerTask.Partner__c = customerPartner.Id;
-                insert partnerTask;
+                Task emailTask = new Task();
+                    emailTask.RecordTypeId = '012j00000000HIw';
+                    emailTask.WhatId = customerPartner.Id;
+                    emailTask.Subject = 'Email: Your Customer Referred a Friend for CS!';
+                    emailTask.Description = 'Your customer, ' + u.FirstName + ' ' + u.LastName + ', referred a friend at ' + emailAddress + ' to join BlueWave Community Solar!';
+                insert emailTask;
 
-                Task partnerTask2 = new Task();
-                    partnerTask2.RecordTypeId = '012j00000000HIw';
-                    partnerTask2.WhatId = customerPartner.Id;
-                    partnerTask2.Subject = 'Email: Your Customer Referred a Friend for CS!';
-
-
+                return 'success';
 
             }
             if(results[0] != null)
@@ -272,36 +291,49 @@ public without sharing class MyAccountController {
         }
     }
 
+    public static Opportunity getMostRecentOpportunityInfo () {
+        User u = customerUser;
+
+        Account parentAccount = [SELECT Id, Name, Partner__c, Sales_Representative__c FROM Account WHERE Id = :u.Parent_Account_ID__c ];
+
+        Account propertyAccount = [SELECT Id, Product_Line__c, Name, ParentId, CreatedDate
+        FROM Account
+        WHERE Parent_Account__c = :parentAccount.Id AND Product_Line__c = 'Community Solar'
+        ORDER BY CreatedDate DESC LIMIT 1 ];
+
+        //How to catch error if SOQL returns null?
+        Opportunity opp = [ SELECT Id, Partner_tag_lookup__c, CloseDate, AccountId, BS_Sales_ID__c
+        FROM Opportunity
+        WHERE AccountID = :propertyAccount.Id AND StageName = 'Complete'
+        ORDER BY CloseDate DESC LIMIT 1];
+
+        return opp;
+
+    }
+
     @AuraEnabled
     public static String generateReferralURL () {
         User u = customerUser;
         String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
         String referralUrl = host + 'apply/s/csap';
 
-        Account parentAccount = [SELECT Id, Name, Partner__c, Sales_Representative__c FROM Account WHERE Id = :u.Parent_Account_ID__c ];
-
-        Account propertyAccount = [SELECT Id, Product_Line__c, Name, ParentId, CreatedDate
-                                            FROM Account
-                                            WHERE ParentId = :parentAccount.Id AND Product_Line__c = 'Community Solar'
-                                            ORDER BY CreatedDate DESC LIMIT 1 ];
-
-        Opportunity opp = [ SELECT Id, Partner_tag_lookup__c, CloseDate, AccountId, BS_Sales_ID__c
-                                        FROM Opportunity
-                                        WHERE AccountID = :propertyAccount.Id
-                                        ORDER BY CloseDate DESC LIMIT 1];
+        Opportunity opp = getMostRecentOpportunityInfo();
 
         if (customerUser.Contact.Product_Line__c == 'Community Solar') {
             String partnerId = opp.Partner_tag_lookup__c;
             String salesRepId = opp.BS_Sales_ID__c;
             String referralCode= u.ContactId;
-            if (partnerId != null) {
+
+            if(opp.Partner_tag_lookup__c != null){
+           // if (partnerId != null) {
                 referralUrl += '?partnerId=' + partnerId + '&salesRepId=' + salesRepId +
                     '&referralCode=' + referralCode;
             } else {
                 referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=' + referralCode ;
             }
         }
-            return referralUrl;
+
+        return referralUrl;
         }
 
 

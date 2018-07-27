@@ -88,6 +88,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         Account propAccountNew = new Account(
             Name = 'Property Account B New',
             ParentId = parentAccount.Id,
+            Parent_Account__c = parentAccount.Id,
             Product_Line__c = 'Community Solar'
         );
 
@@ -196,7 +197,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             // test the getMenuLabelList() method
             List<Account> menuLabelRespList = new List<Account>(MyAccountController.getMenuLabelList());
-            System.assertEquals(1, menuLabelRespList.size());
+            System.assertEquals(2, menuLabelRespList.size());
             System.assertEquals(customerAccountMap.get('Account A').Id, menuLabelRespList.get(0).Id);
 
             //test the getSystemBills() method
