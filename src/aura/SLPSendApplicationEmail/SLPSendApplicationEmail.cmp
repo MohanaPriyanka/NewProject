@@ -221,6 +221,50 @@
                       </div>
                     </fieldset>
                   </aura:if>
+                  <aura:if isTrue="{!v.Sales_Partner__c.Storage_Approved__c}">
+                    <div>
+                      <lightning:input type="checkbox" label="Add Storage"
+                                           checked="{!v.newLead.Storage__c}"/>
+                    </div>
+                  </aura:if>
+                  <aura:if isTrue="{!v.newLead.Storage__c}">
+                    <div class="slds-form-element__row">
+                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid goes down?</b></label>
+                        <div class="slds-form-element__control">
+                          <ui:inputSelect aura:id="backup-storage" class="slds-input" value="{!v.systemInfoObj.storage_grid_hybrid__c}">
+                            <ui:inputSelectOption text="" label="Select"/>
+                            <ui:inputSelectOption text="Yes" label="Yes"/>
+                            <ui:inputSelectOption text="No" label="No"/>
+                          </ui:inputSelect>
+                        </div>
+                      </div>
+                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
+                        <ui:inputText aura:id="moduleType" class="slds-input" value="{!v.systemInfoObj.storage_full_or_partial__c}"/>
+                      </div>
+                    </div>
+                    <div class="slds-form-element__row">
+                      <div class="slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
+                        <ui:inputText aura:id="batteryManufacturer" class="slds-input" value="{!v.systemInfoObj.battery_manufacturer__c}"/>
+                      </div>
+                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
+                        <ui:inputText aura:id="batteryModel" class="slds-input" value="{!v.systemInfoObj.battery_model__c}"/>
+                      </div>
+                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Number of Units</b></label>
+                        <ui:inputNumber aura:id="batteryNumber" class="slds-input" value="{!v.systemInfoObj.number_of_batteries__c}"/>
+                      </div>
+                    </div>
+                    <div class="slds-form-element__row">
+                      <div class="slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Cost of Storage System</b></label>
+                        <ui:outputCurrency aura:id="batteryCost" class="slds-input" value="{!v.systemInfoObj.battery_cost__c}"/>
+                      </div>
+                    </div>
+                  </aura:if>
                 </fieldset>
               </div>
             </aura:set>
