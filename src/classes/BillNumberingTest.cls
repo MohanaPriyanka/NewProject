@@ -6,7 +6,7 @@
 
 @isTest
 public with sharing class BillNumberingTest {
-    @testSetup public static void testSetup() {
+    @isTest public static void testBillNumbering() {
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -323,9 +323,6 @@ public with sharing class BillNumberingTest {
         insert newConga;
         newConga.Apply_Overpay_Adjust__c = true;
         update newConga;
-    }
-
-    @isTest public static void testBillNumbering() {
         Test.startTest();
 
         Energy_Usage_Update__c productionupdateB2 = [
