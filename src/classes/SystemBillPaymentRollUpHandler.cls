@@ -36,59 +36,22 @@ public with sharing class   SystemBillPaymentRollUpHandler {
     }
     
     public static void rollUpPayments(List<Id> triggeredtransactions) {
-        DateTime systemBillCreatedDate; 
-        List<ChargentOrders__Transaction__c> queriedTransactions = new List<ChargentOrders__Transaction__c>();
-        List<Id> propertyAcctIds = new List<Id>();
-        Map<Id,Account> propaccountMap = new Map <Id,Account>();
-        Map<Id,Account_Bill__c> accountBillMap = new Map <Id,Account_Bill__c>();
+        DateTime systemBillCreatedDate;
+        List<ChargentOrders__Transaction__c> queriedTransactions;
+        Map<Id,Account> propaccountMap;
+        List<System_Bill__c> systemBills;
+        Map<Id,Account_Bill__c> accountBillMap;
 
         List<System_Bill__c> finalGroupedSystemBillsToUpdate = new List<System_Bill__c>();
         List<Account_Bill__c> finalAccountBillsToUpdate = new List<Account_Bill__c>();
         List<Bill_Adjustment__c> finalAdjustmentsToInsertList = new List<Bill_Adjustment__c>();
 
-        for (ChargentOrders__Transaction__c insertedTransaction : [ SELECT Id, Name, ChargentOrders__Response_Status__c,
-                                                                    Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
-            ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id, ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
-            ChargentOrders__Order__r.Entity__c,
-                                                                    Distributed_Among_System_Bills__c,
-                                                                    ChargentOrders__Recurring__c
-                                                                    FROM ChargentOrders__Transaction__c 
-                                                                    WHERE Id IN : triggeredtransactions
-                                                                    AND ChargentOrders__Response_Status__c = 'Approved']){
-            propertyAcctIds.add(insertedTransaction.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id);
-            queriedTransactions.add(insertedTransaction);
-        }
+        SystemBillRepo sbRepo = new SystemBillRepo(triggeredtransactions);
+        queriedTransactions = sbRepo.getTransactions();
+        systemBills = sbRepo.getSystemBills();
+        accountBillMap = sbRepo.getAccountBillMap();
+        propaccountMap = sbRepo.getPropertyAccountMap();
 
-        List<System_Bill__c> systemBills = [SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c, 
-                                            Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c, Account_Bill__r.Name,
-                                            Shared_Solar_System_ID__c, Entity_ID__c, Opportunity_Id__c, Account_Bill__c,
-                                            Account_Bill_Number__c, Account_Bill__r.Parent_Account__r.Id, Early_Payments__c, Carry_Forward_Payments__c,
-                                            Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id,
-                                            Opportunity__r.Id
-                                            FROM System_Bill__c
-                                            WHERE Account_Bill__r.Parent_Account__r.Id IN : propertyAcctIds 
-                                            ORDER BY Account_Bill_Number__c];
-
-        List<Account> propertyaccounts = [  SELECT Id, Date_of_last_Payment__c
-                                            FROM Account
-                                            WHERE Id IN : propertyAcctIds];
-
-        for (Account_Bill__c accountBill : [SELECT Id, Overpayment_Amount__c, Parent_Account__r.Id
-                                            FROM Account_Bill__c
-                                            WHERE Parent_Account__r.Id IN : propertyAcctIds] ) {
-                accountBillMap.put(String.valueOf(accountBill.Id).substring(0,15), accountBill);
-        }
-
-        List<AggregateResult> lateFeeList = [SELECT Opportunity__c oppId, 
-                                            SUM(Late_Fees__c) totalLateFees, 
-                                            SUM(Late_Fee_Payments__c) totalLateFeePayments
-                                            FROM System_Bill__c
-                                            WHERE Account_Bill__r.Parent_Account__r.Id IN : propertyAcctIds 
-                                            GROUP BY Opportunity__c];
-
-        for (Account prop : propertyaccounts) {
-            propaccountMap.put(prop.Id, prop);
-        }
         for (ChargentOrders__Transaction__c chTransaction : queriedTransactions) {
             List<System_Bill__c> groupedSystemBillsList = new List<System_Bill__c>();
             String parentID = chTransaction.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id;  
@@ -108,7 +71,7 @@ public with sharing class   SystemBillPaymentRollUpHandler {
                 }
             } 
             listObject objectList = distributePaymentToSBs( groupedSystemBillsList, 
-                                                            lateFeeList, 
+                                                            sbRepo.getLateFees(),
                                                             accountBillMap, 
                                                             payment, 
                                                             maxbillnumber, 
@@ -118,7 +81,7 @@ public with sharing class   SystemBillPaymentRollUpHandler {
             finalAccountBillsToUpdate.addAll(objectList.listTwo);
             finalAdjustmentsToInsertList.addAll(objectList.listThree);
             propaccountMap.get(parentID).Date_of_Last_Payment__c = dateOfLastPayment; 
-        } 
+        }
         if (finalGroupedSystemBillsToUpdate.size() > 0) {
             update finalGroupedSystemBillsToUpdate;
         }
@@ -128,14 +91,14 @@ public with sharing class   SystemBillPaymentRollUpHandler {
         if (finalAccountBillsToUpdate.size() > 0) {
             update finalAccountBillsToUpdate;
         }
-        update propaccountMap.values();   
+        update propaccountMap.values();
     }
 
-    public static Decimal checkForLateFees (System_Bill__c systemBill, List<AggregateResult> lateFeeList) {   
+    public static Decimal checkForLateFees (System_Bill__c systemBill, List<LateFee> lateFeeList) {
         Decimal newLateFeePayment = 0;
-        for (AggregateResult lateFee : lateFeeList) {
-            if (lateFee.get('oppId') == systemBill.Opportunity__r.Id){
-                newLateFeePayment = (Decimal)lateFee.get('totalLateFees') - (Decimal)latefee.get('totalLateFeePayments');
+        for (LateFee lateFee : lateFeeList) {
+            if (lateFee.opportunityId == systemBill.Opportunity__r.Id){
+                newLateFeePayment = lateFee.totalLateFees - latefee.totalLateFeePayments;
                 if (newLateFeePayment > 0) {
                     return newLateFeePayment;
                 } else {
@@ -163,7 +126,7 @@ public with sharing class   SystemBillPaymentRollUpHandler {
     }
 
     public static listObject distributePaymentToSBs (  List<System_Bill__c> groupedSystemBillsList, 
-                                                        List<AggregateResult> lateFeeList, 
+                                                        List<LateFee> lateFeeList,
                                                         Map<Id,Account_Bill__c> accountBillMap, 
                                                         Decimal payment, 
                                                         Decimal maxbillnumber, 
@@ -246,5 +209,103 @@ public with sharing class   SystemBillPaymentRollUpHandler {
         Lists.listTwo = accountBillsToUpdate;
         Lists.listThree = adjustmentsToInsertList;
         return lists;
+    }
+
+    private class SystemBillRepo {
+        private List<ChargentOrders__Transaction__c> transactionList;
+        private List<System_Bill__c> systemBills;
+        private Map<Id, Account> propertyAccountMap;
+        private Map<Id,Account_Bill__c> accountBillMap;
+        private Map<Id, LateFee> lateFeeMap;
+
+        SystemBillRepo(List<Id> transactions) {
+            transactionList = [
+                SELECT Id, Name, ChargentOrders__Response_Status__c, Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
+                    Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c,
+                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
+                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c,
+                    ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
+                    ChargentOrders__Order__r.Entity__c
+                FROM ChargentOrders__Transaction__c
+                WHERE Id IN :transactions
+                AND ChargentOrders__Response_Status__c = 'Approved'];
+
+            propertyAccountMap = new Map<Id, Account>();
+            for (ChargentOrders__Transaction__c trx : transactionList) {
+                Account propertyAccount = new Account(
+                    Id = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
+                    Date_of_Last_Payment__c = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c
+                );
+                propertyAccountMap.put(propertyAccount.Id, propertyAccount);
+            }
+
+            systemBills = [
+                SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c,
+                    Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c, Shared_Solar_System_ID__c,
+                    Entity_ID__c, Opportunity_Id__c, Account_Bill__c, Account_Bill_Number__c, Early_Payments__c,
+                    Carry_Forward_Payments__c, Opportunity__r.Id, Opportunity__c, Late_Fees__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id,
+                    Account_Bill__r.Name, Account_Bill__r.Overpayment_Amount__c,
+                    Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c
+                FROM System_Bill__c
+                WHERE Account_Bill__r.Parent_Account__r.Id IN :propertyAccountMap.keySet()
+                ORDER BY Account_Bill_Number__c];
+
+            accountBillMap = new Map<Id, Account_Bill__c>();
+            lateFeeMap = new Map<Id, LateFee>();
+            for (System_Bill__c systemBill : systemBills) {
+                if (accountBillMap.get(systemBill.Account_Bill__c) == null) {
+                    Account_Bill__c accountBill = new Account_Bill__c(
+                        Id = systemBill.Account_Bill__c,
+                        Overpayment_Amount__c = systemBill.Account_Bill__r.Overpayment_Amount__c
+                    );
+                    accountBillMap.put(accountBill.Id, accountBill);
+                }
+
+                if (lateFeeMap.containsKey(systemBill.Opportunity__c)) {
+                    lateFeeMap.get(systemBill.Opportunity__c).totalLateFees += systemBill.Late_Fees__c;
+                    lateFeeMap.get(systemBill.Opportunity__c).totalLateFeePayments += systemBill.Late_Fee_Payments__c;
+                } else {
+                    LateFee lateFee = new LateFee(
+                        systemBill.Opportunity__c,
+                        systemBill.Late_Fees__c,
+                        systemBill.Late_Fee_Payments__c
+                    );
+                    lateFeeMap.put(systemBill.Opportunity__c, lateFee);
+                }
+            }
+        }
+
+        public List<ChargentOrders__Transaction__c> getTransactions() {
+            return transactionList;
+        }
+
+        public List<System_Bill__c> getSystemBills() {
+            return systemBills;
+        }
+
+        public Map<Id, Account_Bill__c> getAccountBillMap() {
+            return accountBillMap;
+        }
+
+        public List<LateFee> getLateFees() {
+            return lateFeeMap.values();
+        }
+
+        public Map<Id, Account> getPropertyAccountMap() {
+            return propertyAccountMap;
+        }
+    }
+
+    private class LateFee {
+        Id opportunityId;
+        Decimal totalLateFees;
+        Decimal totalLateFeePayments;
+
+        public LateFee(Id oppId, Decimal totalLateFees, Decimal totalLateFeePayments) {
+            this.opportunityId = oppId;
+            this.totalLateFees = totalLateFees;
+            this.totalLateFeePayments = totalLateFeePayments;
+        }
     }
 }

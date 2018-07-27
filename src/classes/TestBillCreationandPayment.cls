@@ -858,7 +858,6 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testAdjustments2() {
-        Test.startTest();
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -877,6 +876,7 @@ public class TestBillCreationandPayment {
             abill.Published__c = True;
         }
         update accountbilllist;
+        Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
@@ -983,8 +983,8 @@ public class TestBillCreationandPayment {
         APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert congaRecord;
         congaRecord.Apply_Overpay_Adjust__c = true;
-        Test.stopTest();
         update congaRecord;
+        Test.stopTest();
 
         List<Adjustment_Application__c> secondAdjustApp =   [SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
             Overpayment_Amount__c, Adjustment_Amount__c,
