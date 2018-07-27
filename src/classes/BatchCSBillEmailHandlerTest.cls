@@ -65,8 +65,8 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
-
-        System.assertEquals(9, MessagingService.emailsSent.size());
+        // There might be more than 9 emails since SeeAllData is true
+        System.assertEquals(true, MessagingService.emailsSent.size() >= 9);
     }
 
     @IsTest(SeeAllData=true)

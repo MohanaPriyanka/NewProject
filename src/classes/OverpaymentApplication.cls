@@ -49,9 +49,10 @@ public with sharing class OverpaymentApplication {
 	                                        Property_Account_ID__c, Balance_Adjustments__c,
 	                                        Opportunity_ID__c
 	                                        FROM System_Bill__c
-	                                        WHERE Account_Bill__r.Published__c = false 
+			                                WHERE Account_Bill__r.Published__c = false
 	                                        AND (Property_Account_ID__c IN : propertyAccountIdList
-	                                        OR Opportunity_ID__c IN : opportunityIdList)] ) {
+	                                        OR Opportunity_ID__c IN : opportunityIdList)
+			                                ORDER BY Bill_Number__c] ) {
 
 				adjustAmount = checkForAdjustments(sbill);
 				if ( adjustAmount != 0) {
