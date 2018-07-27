@@ -1,7 +1,8 @@
 /**
  * Created by mstackhouse on 7/26/2018.
- * Description: 
- * Test: 
+ * Description: Removed this test from TestBillCreationandPayment because the testSetup in that class wasn't completely
+ * necessary for this test. This test isn't actually required for code coverage, but is important.
+ *
  */
 
 @isTest
@@ -12,12 +13,7 @@ public with sharing class BillNumberingTest {
             Number_of_Decimal_Places__c = 2
         );
 
-        Utility__c national_grid = new Utility__c(
-            Name = 'National Grid',
-            Number_of_Decimal_Places__c = 2
-        );
-
-        insert new List<Utility__c>{eversource, national_grid};
+        insert eversource;
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
@@ -25,13 +21,7 @@ public with sharing class BillNumberingTest {
             Value_of_Net_Metering_Credit__c = 0.1848,
             Sizing_Rate__c = TRUE);
 
-        Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c (Name = 'National Grid WCMA Class 2',
-            Utility__c = 'National Grid',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-
-        insert new List<Utility_NMC_Tariff__c>{eversizeNMC, ngridsizeNMC};
+        insert eversizeNMC;
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             Load_zone__c = 'SEMA Eversource',
@@ -39,13 +29,7 @@ public with sharing class BillNumberingTest {
             Utility__C = 'Eversource',
             Town__c= 'Medfield');
 
-        Load_U__c ngridLZU = new Load_U__c (Name = '01570',
-            Load_zone__c= 'WCMA National Grid',
-            LZ__c = 'WCMA',
-            Utility__C = 'National Grid',
-            Town__c= 'Westtown');
-
-        insert new List<Load_U__c>{everLZU, ngridLZU};
+        insert everLZU;
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
         Account clientAccount = new Account(name = 'Client Account',
@@ -86,7 +70,7 @@ public with sharing class BillNumberingTest {
             ContactId = contactA.Id,
             Timezonesidkey='America/Los_Angeles',
             Username='testBillCreationandPay@bluewavesolar.com');
-        Util.insertSobjs(new list<User>{userRecord});
+        Util.insertSobj(userRecord);
 
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
@@ -95,15 +79,6 @@ public with sharing class BillNumberingTest {
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
 
-
-        Entity__c entity1 = new Entity__c (
-            Name = 'Oxford Barrett St. P1',
-            Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id,
-            Gateway__c = chGateway.Id
-        );
-        insert entity1;
-
         Entity__c entity2 = new Entity__c (
             Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
@@ -111,28 +86,6 @@ public with sharing class BillNumberingTest {
             Gateway__c = chGateway.Id
         );
         insert entity2;
-
-        Shared_Solar_System__c sss1 =
-            new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'SEMA',
-                Service_Territories__c = 'SEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '0',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c  = 996,
-                System_Utility__c = 'Eversource',
-                Credit_Score_Requirement__c = 200,
-                Assignment_order__c = '1',
-                Utility_NMC_Tariff__c = eversizeNMC.Id,
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Sales_Partners__c = 'All',
-                Billing_Method__c = 'NMC',
-                BWC_Project_Entity_Manual__c = entity1.Id,
-                Maximum_Subscription_Assemblage__c = 25,
-                Utility__c = eversource.Id
-            );
 
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
@@ -156,7 +109,7 @@ public with sharing class BillNumberingTest {
                 Utility__c = eversource.Id
             );
 
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        insert sss2;
 
 
         Account accountA = new Account(name = 'Account A',
@@ -194,14 +147,6 @@ public with sharing class BillNumberingTest {
             Monthly_Late_Fee__c = 1);
         insert normalCSProduct;
 
-        Opportunity opportunityone =
-            new Opportunity(Name = 'AOpp One',
-                AccountId = accountA.Id,
-                Shared_Solar_System__c = sss1.Id,
-                StageName = 'Complete',
-                Product__c = normalCSProduct.Id,
-                CloseDate = System.today());
-
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp One',
                 AccountId = accountA.Id,
@@ -217,16 +162,7 @@ public with sharing class BillNumberingTest {
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
-
-        Utility_Account_Subscription__c uasone =
-            new Utility_Account_Subscription__c(Name = '0000234',
-                Utility_Account_Log__c = ualog.Id,
-                Opportunity__c = opportunityone.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+        insert new List<Opportunity>{opportunitytwo, opportunitythree};
 
         Utility_Account_Subscription__c uastwo =
             new Utility_Account_Subscription__c(Name = '000-0234',
@@ -237,15 +173,6 @@ public with sharing class BillNumberingTest {
                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
-        Utility_Account_Subscription__c uasthree =
-            new Utility_Account_Subscription__c(Name = '0000237',
-                Utility_Account_Log__c = ualog.Id,
-                Opportunity__c = opportunityone.Id,
-                Next_Schedule_Z_Status__c = 'Inactive Subscription',
-                Annual_kwh_subscription_future__c = 8000,
-                Calculated_Annual_Cost_of_Electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
-
         Utility_Account_Subscription__c uasfour =
             new Utility_Account_Subscription__c(Name = '0000345',
                 Utility_Account_Log__c = ualog2.Id,
@@ -255,30 +182,16 @@ public with sharing class BillNumberingTest {
                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        insert new List<Utility_Account_Subscription__c>{uastwo, uasfour};
 
-        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
-        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
-            Utility_Account_Subscription__c = uasOne.Id,
-            Adjustment_Amount__c = 24);
-        insert adjustOne;
-
-        uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
         uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
-        update new List<Utility_Account_Subscription__c>{uasone, uastwo};
+        update uastwo;
 
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
         Date myDateMar = Date.newInstance(2016, 3, 3);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
-            Name = '18-0515 Oxford Barrett St. P1',
-            Shared_Solar_System__c = sss1.Id,
-            Status__c = 'Billing'
-        );
-
-        insert scheduleZ1;
 
         Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P2',
@@ -324,15 +237,6 @@ public with sharing class BillNumberingTest {
         newConga.Apply_Overpay_Adjust__c = true;
         update newConga;
         Test.startTest();
-
-        Energy_Usage_Update__c productionupdateB2 = [
-            SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
-                MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-                Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - February 2016'
-            LIMIT 1
-        ];
 
         TestBillCreationandPayment.simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
 
