@@ -356,28 +356,28 @@ public class TestBillCreationandPayment {
 
         setBillsToPublished();
 
-        productionupdateA2.Generate_Bills__c = TRUE;
+        productionupdateA2.Generate_Bills__c = true;
         update productionupdateA2;
     }
 
-    static testMethod void setBillsToPublished() {
-        List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
+    static void setBillsToPublished() {
+        List <Account_Bill__c> listAccountBills = [SELECT Id, Published__c
                                                     FROM Account_Bill__c
-                                                    WHERE Published__c = False];
-        for (Account_Bill__c acctBill : listaccountBills) {
+                                                    WHERE Published__c = FALSE];
+        for (Account_Bill__c acctBill : listAccountBills) {
             acctBill.Published__c = True;
         }
-        update listaccountBills;
+        update listAccountBills;
     }
 
     static testMethod void undoSetBillsToPublished() {
-        List <Account_Bill__c> listaccountBills = [SELECT Id, Published__c
+        List <Account_Bill__c> listABs = [SELECT Id, Published__c
                                                     FROM Account_Bill__c
-                                                    WHERE Published__c = True];
-        for (Account_Bill__c acctBill : listaccountBills) {
+                                                    WHERE Published__c = TRUE];
+        for (Account_Bill__c acctBill : listABs) {
             acctBill.Published__c = False;
         }
-        update listaccountBills;
+        update listABs;
     }
 
     @isTest public static void testPreviewBills(){
