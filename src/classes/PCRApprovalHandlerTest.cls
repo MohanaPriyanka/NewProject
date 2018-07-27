@@ -863,53 +863,128 @@ private class PCRApprovalHandlerTest {
         Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
         mslp2.Program__c = 'MSLP';
         mslp2.IBLS_Category__c = 'Category 2';
-        insert new List<Product2>{bwsl1, mslp1, mslp2};
+        insert new List<Product2>{
+            bwsl1, mslp1, mslp2
+        };
 
-        String applicationJSON =
-            '{"application":[ ' +
-                '  {"key":1, "income":200001, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"key":2, "income":2, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"key":3, "income":200002, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"} ' +
-                ']}';
+        Lead lead_1 = (Lead) TestFactory.createSObject(new Lead(LastName = 'Chan',
+            FirstName = 'Joey',
+            Email = 'test@email.com',
+            Electricity_Provider__c = 'National Grid',
+            Utility_1__c = 'National Grid',
+            Load_Zone__c = 'WCMA',
+            Company = 'Cloud Jedi',
+            Status = 'Qualified',
+            Product_line__c = 'Residential Loan',
+            Product__c = mslp1.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order'));
+        insert lead_1;
 
-        ApplicationSet applicationSet = parse(applicationJSON);
-        applicationSet.insertLeads(partner.Id);
-        applicationSet.insertPCRs();
-        LoanHandlerTestClass.convertleads(new List<Lead>{applicationSet.getLead(1),
-            applicationSet.getLead(2),
-            applicationSet.getLead(3)});
+        Lead lead_2 = new Lead(LastName = 'Jordan',
+            FirstName = 'Pentaleri',
+            Email = 'test@email.com',
+            Electricity_Provider__c = 'National Grid',
+            Utility_1__c = 'National Grid',
+            Load_Zone__c = 'WCMA',
+            Company = 'Cloud Jedi',
+            Status = 'Qualified',
+            Product_line__c = 'Residential Loan',
+            Product__c = mslp2.Id,
+            System_Assignment__c = 'Automatic - Assignment Order');
+        insert lead_2;
+//        Lead lead_1 = applicationSet.getLead(1);
+//        Lead lead_2 = applicationSet.getLead(2);
+//        Lead lead_3 = applicationSet.getLead(3);
 
-        List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
-        LASERCA__Personal_Credit_Report__c pcr_1 = applicationSet.getPCR(1);
-        LASERCA__Personal_Credit_Report__c pcr_2 = applicationSet.getPCR(2);
-        LASERCA__Personal_Credit_Report__c pcr_3 = applicationSet.getPCR(3);
-        pcr_1.Avidia_Review_Status__c = 'Reviewed - Declined';
-        pcr_2.Avidia_Review_Status__c = 'Reviewed - Declined';
-        pcr_3.Avidia_Review_Status__c = 'Reviewed - Approved';
-        pcrToUpdate.add(pcr_1);
-        pcrToUpdate.add(pcr_2);
-        pcrToUpdate.add(pcr_3);
-        update pcrToUpdate;
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = lead_1.Id,
+            LASERCA__Credit_Score_TransUnion__c = '700',
+            Avidia_Review_Status__c = 'Reviewed - Approved');
 
-        Test.startTest();
-        applicationSet.insertCreditReportLogs();
-        Test.stopTest();
+        LASERCA__Personal_Credit_Report__c pcr2 = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = lead_2.Id,
+            LASERCA__Credit_Score_TransUnion__c = '700',
+            Avidia_Review_Status__c = 'Reviewed - Approved');
+        insert pcr;
+        insert pcr2;
 
-        Lead lead_1 = applicationSet.getLead(1);
-        Lead lead_2 = applicationSet.getLead(2);
-        Lead lead_3 = applicationSet.getLead(3);
-        Opportunity opp_1 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_1.Id LIMIT 1];
-        Opportunity opp_2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_2.Id LIMIT 1];
-        Opportunity opp_3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_3.Id LIMIT 1];
+        lead_1.Personal_Credit_Report__c = pcr.Id;
+        lead_2.Personal_Credit_Report__c = pcr2.Id;
+        update lead_1;
+        update lead_2;
 
+        LoanHandlerTestClass.convertLeads(new List<Lead>{
+            lead_1, lead_2
+        });
+
+        Opportunity opp_1 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :pcr.LASERCA__Lead__c LIMIT 1];
+        Opportunity opp_2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :pcr2.LASERCA__Lead__c LIMIT 1];
+        System.debug(pcr.LASERCA__Lead__c);
+
+        System.assertEquals('Reviewed - Declined', lead_1.Personal_Credit_Report__r.Avidia_Review_Status__c);
         System.assertEquals('Voided', opp_1.StageName);
-        System.assertEquals('Voided', opp_2.StageName);
-        System.assertEquals('New', opp_3.StageName);
+        System.assertEquals('New', opp_2.StageName);
 
-
+//        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+//        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+//
+//        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+//        mslp1.Program__c = 'MSLP';
+//        mslp1.IBLS_Category__c = 'Category 1';
+//
+//        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+//        mslp2.Program__c = 'MSLP';
+//        mslp2.IBLS_Category__c = 'Category 2';
+//        insert new List<Product2>{
+//            bwsl1, mslp1, mslp2
+//        };
+//
+//        String applicationJSON =
+//            '{"application":[ ' +
+//                '  {"key":1, "income":200001, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+//                '  {"key":2, "income":2, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+//                '  {"key":3, "income":200002, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"} ' +
+//                ']}';
+//
+//        ApplicationSet applicationSet = parse(applicationJSON);
+//        applicationSet.insertLeads(partner.Id);
+//        applicationSet.insertPCRs();
+//        LoanHandlerTestClass.convertleads(new List<Lead>{
+//            applicationSet.getLead(1),
+//            applicationSet.getLead(2),
+//            applicationSet.getLead(3)
+//        });
+//        applicationSet.insertCreditReportLogs();
+//
+//        List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
+//        LASERCA__Personal_Credit_Report__c pcr_1 = applicationSet.getPCR(1);
+//        LASERCA__Personal_Credit_Report__c pcr_2 = applicationSet.getPCR(2);
+//        LASERCA__Personal_Credit_Report__c pcr_3 = applicationSet.getPCR(3);
+//        pcr_1.Avidia_Review_Status__c = 'Reviewed - Declined';
+//        pcr_2.Avidia_Review_Status__c = 'Reviewed - Declined';
+//        pcr_3.Avidia_Review_Status__c = 'Reviewed - Approved';
+//        pcrToUpdate.add(pcr_1);
+//        pcrToUpdate.add(pcr_2);
+//        pcrToUpdate.add(pcr_3);
+//        update pcrToUpdate;
+//
+//        Test.startTest();
+//        Test.stopTest();
+//
+//        Lead lead_1 = applicationSet.getLead(1);
+//        Lead lead_2 = applicationSet.getLead(2);
+//        Lead lead_3 = applicationSet.getLead(3);
+//        Opportunity opp_1 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_1.Id LIMIT 1];
+//        Opportunity opp_2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_2.Id LIMIT 1];
+//        Opportunity opp_3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_3.Id LIMIT 1];
+//
+//        System.assertEquals('Voided', opp_1.StageName);
+//        System.assertEquals('Voided', opp_2.StageName);
+//        System.assertEquals('New', opp_3.StageName);
     }
 
-    // set an integer to use as a key, fico + income was confusing
+
     public class Application {
         public Integer income, loan;
         public Id prodId;

@@ -172,7 +172,7 @@ public without sharing class PCRApprovalHandler {
                 }
             }
         }
-        checkAllAvidiaStatuses(leadsToUpdate);
+        checkAllAvidiaStatuses(leadMap);
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
@@ -572,20 +572,34 @@ public without sharing class PCRApprovalHandler {
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
     }
 
-    private static void checkAllAvidiaStatuses(Map<Id,Lead> leadsToUpdate){
-        List<String> leadIds = new List<String>();
+    private static void checkAllAvidiaStatuses(Map<Id,Lead> leadsToCheck){
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
-        for(Lead lead : leadsToUpdate.values()){
+        Set<Id> leadIds = new Set<Id>();
+
+        for(Lead lead : leadsToCheck.values()){
             if (lead.Personal_Credit_Report__r.Avidia_Review_Status__c == 'Reviewed - Declined') {
                 leadIds.add(lead.Id);
             }
         }
-        for(Opportunity opp : [SELECT Id, StageName FROM Opportunity WHERE Lead__c in :leadIds]){
+        for(Opportunity opp : [SELECT Id, StageName FROM Opportunity WHERE Lead__c IN :leadIds]){
             opp.StageName = 'Voided';
             oppsToUpdate.add(opp);
         }
         update oppsToUpdate;
     }
+
+//    private static void checkAllAvidiaStatuses(Map<Id,Lead> leadsToUpdate){
+//        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+//        String oppQuery = 'SELECT Id, (SELECT Id, Avidia_Review_Status__c FROM Personal_Credit_Report__r WHERE LASERCA__Lead__c IN \'' + leadsToUpdate.keySet() + '\'), ' +
+//            '(SELECT Id, StageName FROM Opportunity__r WHERE Lead__c IN \'' + leadsToUpdate.keySet() + '\'), ' +
+//            ' FROM Lead WHERE Id IN \'' + leadsToUpdate.keySet() + '\' ';
+//        for(Lead lead : Database.query(oppQuery)) {
+//            if (lead.Personal_Credit_Report__r.Avidia_Review_Status__c == 'Reviewed - Declined') {
+//                lead.()
+//            }
+//        }
+//        update oppsToUpdate;
+//    }
 
     @TestVisible
     public class CreditResultSummary {
