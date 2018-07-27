@@ -592,112 +592,6 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testBillNumbering() {
-        Test.startTest();
-
-        Energy_Usage_Update__c productionupdateB1 = [
-          SELECT Id, Generate_Bills__c, Month_Number__c
-          FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - January 2016'
-            LIMIT 1
-        ];
-
-        Energy_Usage_Update__c productionupdateB2 = [
-          SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
-              MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-              Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
-          FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - February 2016'
-            LIMIT 1
-        ];
-
-        productionupdateB1.Generate_Bills__c = TRUE;
-        update productionupdateB1;
-
-        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
-
-        Test.stopTest();
-
-        Opportunity oppOne = [
-            SELECT Id, AccountId, Name
-            FROM Opportunity
-            WHERE Name = 'BOpp One'
-            LIMIT 1
-        ];
-
-        Opportunity oppTwo = [
-            SELECT Id, AccountId, Name
-            FROM Opportunity
-            WHERE Name = 'BOpp Two'
-            LIMIT 1
-        ];
-
-        List<Account_Bill__c> oppOneAccountBills = [
-            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : oppOne.AccountId
-            ORDER BY Bill_Number__c
-        ];
-
-        List<Account_Bill__c> oppTwoAccountBills = [
-            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : oppTwo.AccountId
-            ORDER BY Bill_Number__c
-        ];
-
-        List<System_Bill__c> oppOneSystemBills = [
-            SELECT Id, Bill_Number__c, Month__c
-            FROM System_Bill__c
-            WHERE Property_Account__c = : oppOne.AccountId
-                AND Shared_Solar_System__c = : productionupdateB2.Shared_Solar_System__c
-            ORDER BY Bill_Number__c
-        ];
-
-        List<System_Bill__c> oppTwoSystemBills = [
-            SELECT Id, Bill_Number__c, Month__c
-            FROM System_Bill__c
-            WHERE Opportunity__c = : oppTwo.Id
-            ORDER BY Bill_Number__c
-        ];
-
-        Account_Bill__c oppOneJanuaryAccountBill = oppOneAccountBills[0];
-        Account_Bill__c oppOneFebruaryAccountBill = oppOneAccountBills[1];
-        System_Bill__c oppOneJanuarySystemBill = oppOneSystemBills[0];
-        System_Bill__c oppOneFebruarySystemBill = oppOneSystemBills[1];
-
-        System.AssertEquals(2, oppOneAccountBills.size());
-        System.AssertEquals(1, oppOneJanuaryAccountBill.Bill_Number__c);
-        System.AssertEquals(1, oppOneJanuaryAccountBill.Month__c);
-        System.AssertEquals(2, oppOneFebruaryAccountBill.Bill_Number__c);
-        System.AssertEquals(2, oppOneFebruaryAccountBill.Month__c);
-        System.AssertEquals(oppOneJanuaryAccountBill.Total_Due__c, oppOneFebruaryAccountBill.Past_Bill__c);
-
-        System.AssertEquals(2, oppOneSystemBills.size());
-        System.AssertEquals(1, oppOneJanuarySystemBill.Bill_Number__c);
-        System.AssertEquals(1, oppOneJanuarySystemBill.Month__c);
-        System.AssertEquals(2, oppOneFebruarySystemBill.Bill_Number__c);
-        System.AssertEquals(2, oppOneFebruarySystemBill.Month__c);
-
-        Account_Bill__c oppTwoJanuaryAccountBill = oppTwoAccountBills[0];
-        Account_Bill__c oppTwoFebruaryAccountBill = oppTwoAccountBills[1];
-        System_Bill__c oppTwoJanuarySystemBill = oppTwoSystemBills[0];
-        System_Bill__c oppTwoFebruarySystemBill = oppTwoSystemBills[1];
-
-        System.AssertEquals(2, oppTwoAccountBills.size());
-        System.AssertEquals(1, oppTwoJanuaryAccountBill.Bill_Number__c);
-        System.AssertEquals(1, oppTwoJanuaryAccountBill.Month__c);
-        System.AssertEquals(2, oppTwoFebruaryAccountBill.Bill_Number__c);
-        System.AssertEquals(2, oppTwoFebruaryAccountBill.Month__c);
-        System.AssertEquals(oppTwoJanuaryAccountBill.Total_Due__c, oppTwoFebruaryAccountBill.Past_Bill__c);
-
-        System.AssertEquals(2, oppTwoSystemBills.size());
-        System.AssertEquals(1, oppTwoJanuarySystemBill.Bill_Number__c);
-        System.AssertEquals(1, oppTwoJanuarySystemBill.Month__c);
-        System.AssertEquals(2, oppTwoFebruarySystemBill.Bill_Number__c);
-        System.AssertEquals(2, oppTwoFebruarySystemBill.Month__c);
-    }
-
     @isTest public static void testSystemBills() {
         Test.startTest();
         List<System_Bill__c> systemBillList =
@@ -858,7 +752,6 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testAdjustments2() {
-        Test.startTest();
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -877,6 +770,7 @@ public class TestBillCreationandPayment {
             abill.Published__c = True;
         }
         update accountbilllist;
+        Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
@@ -983,8 +877,8 @@ public class TestBillCreationandPayment {
         APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert congaRecord;
         congaRecord.Apply_Overpay_Adjust__c = true;
-        Test.stopTest();
         update congaRecord;
+        Test.stopTest();
 
         List<Adjustment_Application__c> secondAdjustApp =   [SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
             Overpayment_Amount__c, Adjustment_Amount__c,
