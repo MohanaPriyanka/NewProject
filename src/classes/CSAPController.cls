@@ -271,12 +271,14 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Lead convertCSLead(Id leadId, String email) {
-        Lead lead = getLead(leadId, email);
+        Lead primaryLead = getLead(leadId, email);
         List<Lead> leads = [
             SELECT Id
             FROM Lead
-            WHERE Parent_Account__c = :lead.Parent_Account__c
+            WHERE Parent_Account__c = :primaryLead.Parent_Account__c
+            AND Status = 'Qualified'
         ];
+
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         for (Lead leadToConvert : leads) {
             Database.LeadConvert leadConvert = new Database.LeadConvert();
@@ -285,6 +287,7 @@ public without sharing class CSAPController {
             leadConvert.setDoNotCreateOpportunity(true);
             leadConverts.add(leadConvert);
         }
+
         List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
         for (Database.LeadConvertResult lcr : lcrs) {
             if (!lcr.isSuccess()) {

@@ -303,10 +303,12 @@ public without sharing class LeadTriggerHandler {
             List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
             List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
             for (Shared_Solar_System__c sss : sssList) {
-                if (sss.Service_Territories__c.contains(lead.Load_Zone__c) &&
-                    sss.System_Utility__c == lead.Utility__c &&
-                    (sss.Sales_Partners__c.contains('All') ||
-                        sss.Sales_Partners__c.contains(lead.Partner_Name__c)) &&
+                if (sss.System_Utility__c == lead.Utility__c &&
+                    (sss.Service_Territories__c != null &&
+                        sss.Service_Territories__c.contains(lead.Load_Zone__c)) &&
+                    (sss.Sales_Partners__c != null &&
+                        (sss.Sales_Partners__c.contains('All') ||
+                            sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
                     (lead.Product__c == null ||
                         sss.Product__c == lead.Product__c)) {
                     sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
