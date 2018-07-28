@@ -61,7 +61,7 @@
                     sobjectType: "Lead",
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
                     Parent_Account__c: oldLead.Parent_Account__c,
-                    Partner_lookup__c : oldLead.Partner_lookup__c,
+                    Partner_Lookup__c : oldLead.Partner_Lookup__c,
                     Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
                     Email : oldLead.Email,
                     FirstName: oldLead.FirstName,
@@ -106,7 +106,7 @@
         });
         action.setCallback(this, function(resp) {
             if (resp.getState() !== "SUCCESS") {
-                reject(Error("Unknown error"));
+                this.logError("CSAPEnergyInfoHelper", "convertLeadFunction", resp.getError(), component.get("v.lead"));
             }
         });
         $A.enqueueAction(action);

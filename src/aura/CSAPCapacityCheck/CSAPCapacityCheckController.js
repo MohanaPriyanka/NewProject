@@ -8,10 +8,6 @@
             component.set("v.loading", true);
             component.set("v.loadingText", "Checking if there are Community Solar projects in your area...");
             window.setTimeout(function() {
-                component.set("v.loadingText", "Checking if there is availability...");
-            }, 3000);
-            window.setTimeout(function() {
-                component.set("v.loadingText", "Just a second...");
                 component.set("v.hasCapacity", "");
                 var lead = component.get("v.lead");
                 if (lead && lead.Id){
@@ -43,14 +39,16 @@
                     });
                     $A.enqueueAction(hasAvailableCapacityAction);
                 }
-            }, 6000);
+            }, 3000);
         }
     },
+
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if(lead.Personal_Credit_Report__c == null){
+        if (lead.Personal_Credit_Report__c == null) {
             helper.finishStage(component, event, helper);
-        }else{
+        } else {
+            component.set('v.page', 'Done');
             //Skip to the Energy Use page
             var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
             stageChangeEvent.setParams({"stageName": "NAV_Energy_Information"});
@@ -58,8 +56,17 @@
             stageChangeEvent.setParams({"eventType": "INITIATED"});
             stageChangeEvent.setParams({"lead": lead});
             stageChangeEvent.fire();
-
         }
-        
     },
+
+    skipToEnd : function(component, event, helper) {
+        component.set('v.page', 'Done');
+        //Skip to the Add More or Finish page
+        var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
+        stageChangeEvent.setParams({"stageName": "NAV_Energy_Information"});
+        stageChangeEvent.setParams({"options": {"pageName": "AddMore"}});
+        stageChangeEvent.setParams({"eventType": "INITIATED"});
+        stageChangeEvent.setParams({"lead": component.get('v.lead')});
+        stageChangeEvent.fire();
+    }
 })

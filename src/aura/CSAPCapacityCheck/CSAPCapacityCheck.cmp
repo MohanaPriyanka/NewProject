@@ -51,11 +51,20 @@
               <b>You've been added to our wait list and will be notified if and when we have a project in your area!</b>
             </div>
           </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>You can now close this application.</b>
-            </div>
-          </lightning:layoutItem>
+          <aura:if isTrue="{!v.lead.Parent_Account__c == null}">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <div class="slds-align--absolute-center slds-text-body--large--blue">
+                <b>You can now close this application.</b>
+              </div>
+            </lightning:layoutItem>
+            <aura:set attribute="else">
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+                <div class="slds-align--absolute-center">
+                  <lightning:button label="Continue Application" onclick="{!c.skipToEnd}"/>
+                </div>
+              </lightning:layoutItem>
+            </aura:set>
+          </aura:if>
         </lightning:layout>
       </aura:if>
     </aura:if>

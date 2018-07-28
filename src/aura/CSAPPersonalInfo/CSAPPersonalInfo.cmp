@@ -183,17 +183,16 @@
         </div>
       </div>
     </aura:if>
-     <aura:if isTrue="{!v.page == 'AddressForm'}">
+    <aura:if isTrue="{!v.page == 'AddressForm'}">
       <div aria-labelledby="homeAddressForm">
-          <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
+        <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">What is your Primary  </b>
-              <b class="slds-section__title--large--stream"> Home Address?</b>
+              <b class="slds-section__title--large">Where would you like to receive Community Solar?</b>
             </legend>
             <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
-              <b>Please provide the primary address for the Community Solar applicant (hint: this might not be the same address as the property address that will receive Community Solar credits).</b>
+              <b>Please provide the address of the property that will receive Community Solar credits.</b>
             </div>
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
@@ -232,20 +231,22 @@
                 </lightning:layoutItem>
               </lightning:layout>
 
-              <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="sendBillToHome"
-                                    label="Is this where you would like us to send your bill?"
-                                    value="{!v.sendBillToHome}"
-                                    required="true">
+              <aura:if isTrue="{!v.lead.Parent_Account__c == null}">
+                <lightning:layout multipleRows="true">
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                    <lightning:select aura:id="field" name="sendBillToHome"
+                                      label="Is this where you would like us to send your bill?"
+                                      value="{!v.sendBillToHome}"
+                                      required="true">
                       <option value="">Choose one...</option>
                       <option value="Yes">Yes</option>
                       <option value="No">No</option>
-                  </lightning:select>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                </lightning:layoutItem>
-              </lightning:layout>
+                    </lightning:select>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                  </lightning:layoutItem>
+                </lightning:layout>
+              </aura:if>
             </form>
             </fieldset>
           </aura:if>

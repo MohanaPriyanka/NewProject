@@ -1,7 +1,11 @@
 ({
     handleNavEvent : function(component, event, helper) {
-        helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
-        if (component.get('v.STAGENAME') == 'NAV_Energy_Information' && component.get('v.page') == 'UtilityAccountInformation') {
+        if (event.getParam('options') && event.getParam('options').pageName) {
+            helper.handleNavEvent(component, event, helper, event.getParam('options').pageName);
+        } else {
+            helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
+        }
+        if (component.get('v.STAGENAME') === 'NAV_Energy_Information' && component.get('v.page') === 'UtilityAccountInformation') {
             var action = component.get("c.getProduct");
             var productId = event.getParam("lead").Product__c;
             action.setParams({"productId" : productId});

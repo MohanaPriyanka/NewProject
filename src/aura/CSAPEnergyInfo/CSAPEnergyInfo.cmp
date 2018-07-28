@@ -14,7 +14,7 @@
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
-  {!v.programType}
+
   <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
     <div aria-labelledby="utilityAccountInformationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">

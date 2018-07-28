@@ -57,12 +57,9 @@
     goToCheckCapacity : function(component, event, helper) {
         if(helper.validatePageFields(component)){
             component.set('v.loading', true);
-            component.set("v.loadingText", "Saving your information...");
-            window.setTimeout(function() {
-                helper.processLead(component, event, helper);
-                helper.upsertRecords(component, event, helper);
-                component.set("v.loadingText", "Locating your address...");
-            }, 2000);
+            component.set("v.loadingText", "Locating your address...");
+            helper.processLead(component, event, helper);
+            helper.upsertRecords(component, event, helper);
         }
     },
 })
