@@ -10,11 +10,24 @@
   <aura:attribute name="electricBill2" type="Object"/>
   <aura:attribute name="selectedProduct" type="Object"/>
   <aura:attribute name="annualElectricHistory" type="Object"/>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="loadingText" type="Boolean"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
 
+  <aura:if isTrue="{!v.loading}">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <span class="slds-assistive-text">Loading</span>
+    </div>
+    <div class="slds-text-body--regular slds-align_absolute-center">
+      {!v.loadingText}
+    </div>
+  </aura:if>
   <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
     <div aria-labelledby="utilityAccountInformationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">

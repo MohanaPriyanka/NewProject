@@ -18,11 +18,11 @@
 
   <!-- ABOUT_YOURSELF -->
   <aura:if isTrue="{!v.loading}">
-    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Description of the icon when needed">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
       <div class="slds-icon-eq__bar"></div>
       <div class="slds-icon-eq__bar"></div>
       <div class="slds-icon-eq__bar"></div>
-      <span class="slds-assistive-text">Text alternative when needed</span>
+      <span class="slds-assistive-text">Loading</span>
     </div>
     <div class="slds-text-body--regular slds-align_absolute-center">
       {!v.loadingText}

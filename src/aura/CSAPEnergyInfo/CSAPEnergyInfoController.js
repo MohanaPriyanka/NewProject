@@ -125,6 +125,7 @@
     },
     
     finishStage : function(component, event, helper) {
+        component.set('v.loading', true);
         helper.convertLeadFunction(component, event, helper);
         helper.finishStage(component, event, helper);
     },
