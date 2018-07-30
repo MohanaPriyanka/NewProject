@@ -17,14 +17,16 @@ public with sharing class LetterStreamService {
         // 3. Create batches of ContentVersion.Size where Total Size < 10 Mb
         //
         // for each batch (Map<ContentVersion ID, Account_Bill__c>, List<ContentVersion>):
-        // 1. Create Zippex file
-        // 2. Add ContentVersion.VersionData to zippex
-        // 3. Zippex.addFile(String fileName, Blob fileData, null)
-        // 4. Build CSV to LetterStream's specs
-        // 5. Zippex.addFile(String csvName, Blob fileData, null)
+        // done - 1. Create Zippex file
+        // done - 2. Add ContentVersion.VersionData to zippex
+        // done - 3. Zippex.addFile(String fileName, Blob fileData, null)
+        // done - 4. Build CSV to LetterStream's specs
+        // done - 5. Zippex.addFile(String csvName, Blob fileData, null)
         // 6. POST to LetterStream
         //      - If Failed, we need to re-queue / schedule for another time
         //      - If succeeded, record LetterStream job for Bills.
+
+        // add 'https://secure.letterstream.com/apis/index.php' to remote sites
         Account_Bill__c testAccountBill = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet,
                 Parent_Account__r.BillingCity, Parent_Account__r.BillingState,
@@ -35,7 +37,7 @@ public with sharing class LetterStreamService {
 
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         List<ContentDocument> documents = [
-            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData
+            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
             FROM ContentDocument
             WHERE Id = '0694C000000PskrQAC'
             OR Id = '0694C000000Psl1QAC'
@@ -60,16 +62,35 @@ public with sharing class LetterStreamService {
 
         lettersToSend.addFile('summary.csv', csvBlob, null);
 
-        Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
-        attachment.fileName = 'letters.zip';
-        attachment.body = lettersToSend.getZipArchive();
+        Map<String, String> letterStreamHeaders = letterStreamHeaders();
+        String endpoint = 'https://secure.letterstream.com/apis/index.php?';
+        endpoint += ('a=' + letterStreamHeaders.get('apiId'));
+        endpoint += ('&' + 'h=' + letterStreamHeaders.get('hashedId'));
+        endpoint += ('&' + 't=' + letterStreamHeaders.get('uniqueId'));
 
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setSubject('Sending Zip Files!!');
-        mail.setHtmlBody('Wahoo');
-        mail.setFileAttachments(new List<Messaging.EmailFileAttachment>{attachment});
-        mail.setToAddresses(new List<String>{'mstackhouse@bluewavesolar.com'});
-        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(endpoint);
+        request.setMethod('POST');
+        request.setBodyAsBlob(lettersToSend.getZipArchive());
+
+        HttpResponse response = http.send(request);
+        System.debug(LoggingLevel.ERROR, response.getBody());
+
+//        System.debug(LoggingLevel.ERROR, 'api id: ' + letterStreamHeaders.get('apiId'));
+//        System.debug(LoggingLevel.ERROR, 'unique id: ' + letterStreamHeaders.get('uniqueId'));
+//        System.debug(LoggingLevel.ERROR, 'MD5 hashed: ' + letterStreamHeaders.get('hashedId'));
+//        System.debug(LoggingLevel.ERROR, 'raw hash: ' + letterStreamHeaders.get('rawHashedId'));
+//
+//        Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+//        attachment.fileName = 'letters.zip';
+//        attachment.body = lettersToSend.getZipArchive();
+//
+//        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+//        mail.setSubject('Sending Zip Files!!');
+//        mail.setHtmlBody('Wahoo');
+//        mail.setFileAttachments(new List<Messaging.EmailFileAttachment>{attachment});
+//        mail.setToAddresses(new List<String>{'mstackhouse@bluewavesolar.com'});
+//        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
     }
 
     public void addLetterToCSV(LetterParameters params) {
@@ -120,5 +141,25 @@ public with sharing class LetterStreamService {
             recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
             pages = accountBill.Number_of_Pages_in_Template__c.toPlainString();
         }
+    }
+
+    private Map<String, String> letterStreamHeaders() {
+        String uniqueId = String.valueOf(DateTime.now().getTime());
+        Integer uniqueIdLength = uniqueId.length();
+        String apiId = '86fjkb92';
+        String apiKey = 'wkpv3417e9r2d3qx';
+        String hashedId;
+        String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
+        Blob md5HashedId = Crypto.generateDigest('MD5', Blob.valueOf(rawHashedId));
+        hashedId = EncodingUtil.base64Encode(md5HashedId);
+
+        Map<String, String> headers = new Map<String, String>();
+
+        headers.put('apiId', apiId);
+        headers.put('uniqueId', uniqueId);
+        headers.put('hashedId', hashedId);
+        headers.put('rawHashedId', rawHashedId);
+
+        return headers;
     }
 }
