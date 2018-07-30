@@ -632,7 +632,7 @@
               <input type="radio" id="radio-12" name="alimony" checked="{!v.lead.Reliant_on_Alimony_Child_Support_Other__c}" value="true" onchange="{!c.setAlimony}" disabled="{!v.piLocked}"/>
               <label class="slds-radio__label" for="radio-12">
                 <span class="slds-radio_faux"></span>
-                <span class="slds-form-element__label">Yes, I will rely on these payments to repay this oligation.</span>
+                <span class="slds-form-element__label">Yes, I will rely on these payments to repay this obligation.</span>
               </label>
             </span>
             <span class="slds-radio">

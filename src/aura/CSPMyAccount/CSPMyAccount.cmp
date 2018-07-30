@@ -319,7 +319,7 @@
                     <th scope="row"> {!paymentLog.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name} </th> 
                     <th scope="row"> {!paymentLog.Date_of_Transaction__c} <ui:outputCurrency value="{!paymentLog.Negative_Amount__c}" /></th> 
                     <aura:if isTrue="{!!$Browser.isPhone}">
-                      <th scope="row"> {!paymentLog.ChargentOrders__Order__r.ChargentOrders__Gateway__r.Entity__r.Name} </th>
+                      <th scope="row"> {!paymentLog.ChargentOrders__Order__r.Entity__r.Name} </th>
                       <th scope="row"> {!paymentLog.ChargentOrders__Type__c} </th>
                     </aura:if>
                   </tr>
