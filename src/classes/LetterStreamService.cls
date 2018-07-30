@@ -1,7 +1,9 @@
 /**
  * Created by mstackhouse on 7/17/2018.
- * Description: 
- * Test: 
+ * Description: This class communicates with the LetterSteam API in order to automatically initiate letter jobs to
+ * send paper bills to customers.
+ *
+ * Test: LetterStreamServiceTest
  */
 
 
@@ -13,7 +15,7 @@ public with sharing class LetterStreamService {
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
         'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
 
-    public void downloadZipFiles() {
+    public void sendAccountBills() {
         // 1. Query for Account bills that need to be sent
         // 2. Collect ContentVersion files (Account_Bill.Bill_Attach_Version)
         // 3. Create batches of ContentVersion.Size where Total Size < 10 Mb
@@ -29,6 +31,8 @@ public with sharing class LetterStreamService {
         //      - If succeeded, record LetterStream job for Bills.
 
         // add 'https://secure.letterstream.com/apis/index.php' to remote sites
+
+        // build Package
         Account_Bill__c testAccountBill = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet,
                 Parent_Account__r.BillingCity, Parent_Account__r.BillingState,
@@ -64,11 +68,12 @@ public with sharing class LetterStreamService {
 
         lettersToSend.addFile('bw_bills.csv', csvBlob, null);
 
+        // end build package
         Blob letterPackage = lettersToSend.getZipArchive();
 
         String endpoint = 'https://secure.letterstream.com/apis/';
 
-        HttpRequest request = uploadZippedPackage(letterPackage, 'filename.zip', endpoint);
+        HttpRequest request = buildRequestWithFile(letterPackage, 'filename.zip', endpoint);
         HttpResponse response = http.send(request);
 
         Dom.Document responseXML = response.getBodyDocument();
@@ -117,7 +122,7 @@ public with sharing class LetterStreamService {
         }
     }
 
-    public HttpRequest uploadZippedPackage(Blob file_body, String file_name, String endpoint){
+    public HttpRequest buildRequestWithFile(Blob file_body, String file_name, String endpoint){
         // Repost of code  with fix for file corruption issue
         // Orignal code postings and explanations
         // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
