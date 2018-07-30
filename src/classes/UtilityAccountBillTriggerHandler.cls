@@ -45,7 +45,8 @@ public with sharing class UtilityAccountBillTriggerHandler {
                 Utility_Account_Subscription__r.UAS_Number__c,
                 Utility_Account_Subscription__r.Share_of_System__c ,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c, 
-                Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c, 
+                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
+                Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,
                 Utility_Account_Subscription__r.Max_Account_Bill_Number__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN : scheduleZIds
@@ -153,22 +154,24 @@ public with sharing class UtilityAccountBillTriggerHandler {
         printSOQLLimits('After Building UASBs');
 
         // if there are utility account subscription bills insert them
-        printSOQLLimits('Before Upserting UASBs');
 
         if(uasbSet.size() > 0) {
+            printSOQLLimits('Before Upserting UASBs');
             List<UASB__c> billList = new List<UASB__c>(uasbSet);
             upsert billList Unique_Id__c;
             // connect bill adjustments to UASBs
+            printSOQLLimits('After Inserting UASBs');
             for (UASB__c bill : billList) {
                 if (adjustmentsToUpdateMap.containsKey(bill.Unique_Id__c)) {
                     adjustmentsToUpdateMap.get(bill.Unique_Id__c).UASB__c = bill.Id;
                 }
             }
+            printSOQLLimits('Before Updating Adjustments');
             if(adjustmentsToUpdateMap.size() > 0) {
                 update adjustmentsToUpdateMap.Values();
             }
+            printSOQLLimits('After Updating Adjustments');
         }
-        printSOQLLimits('After Inserting UASBs');
 
     }
 
@@ -185,9 +188,10 @@ public with sharing class UtilityAccountBillTriggerHandler {
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
-        if (prodUpdate.Size_off_NMCs__c){
+        String billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
+        if (billingMethod == 'NMC'){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
-        } else {
+        } else if (billingMethod == 'kWh') {
             subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }
 
@@ -204,13 +208,15 @@ public with sharing class UtilityAccountBillTriggerHandler {
                                     NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                                     Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-                                    Size_off_NMCs__c = prodUpdate.Size_off_NMCs__c,
                                     NMC_Rate__c = nmcRate,
                                     Total_System_NMCs__c = systemNMCs,
                                     Total_System_Production_kWh__c = systemProduction,
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
                                     Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP));
+        if (billingMethod == 'NMC'){
+            generatedUASB.Size_off_NMCs__c = true;
+        }
         return generatedUASB;     
     }
 

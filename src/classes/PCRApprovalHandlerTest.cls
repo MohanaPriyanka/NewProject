@@ -124,6 +124,9 @@ private class PCRApprovalHandlerTest {
         LASERCA__Trade_Accounts__c coAppTradeAccount =
             new LASERCA__Trade_Accounts__c(
                 LASERCA__Personal_Credit_Report__c = coAppPCR.id,
+                LASERCA__Name_of_the_Institution__c = 'coapp trade account',
+                LASERCA__Account_Ownership_Type__c = 'Individual',
+                LASERCA__Open_Date__c = Date.today(),
                 LASERCA__Monthly_Payment__c = 400,
                 LASERCA__Account_Balance__c = 2000);
         insert coAppTradeAccount;
@@ -852,6 +855,55 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Pending Credit Review', pcrAG.LASERCA__Lead__r.Status);
     }
 
+    static testMethod void testCurrentBankruptcy() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+
+        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Program__c = 'MSLP';
+        mslp1.IBLS_Category__c = 'Category 1';
+
+        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Program__c = 'MSLP';
+        mslp2.IBLS_Category__c = 'Category 2';
+        insert new List<Product2>{bwsl1, mslp1, mslp2};
+
+        // should add tests that go off lead debt fields...
+        String applicationJSON =
+            '{"application":[ ' +
+                '  {"key":1, "income":200001, "loan":65000, "fico":700, "publicRecord":"BankruptcyChapter7", "publicRecordStatus":"Filed", "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":2, "income":65112, "loan":28068, "fico":700, "publicRecord":"BankruptcyChapter13", "publicRecordStatus":"Filed", "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":3, "income":65112, "loan":28068, "fico":700, "publicRecord":"BankruptcyChapter7", "publicRecordStatus":"Discharged", "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":4, "income":65112, "loan":28068, "fico":700, "publicRecord":"BankruptcyChapter7", "publicRecordStatus":"Dismissed", "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":5, "income":65112, "loan":28068, "fico":700, "publicRecord":"BankruptcyChapter13", "publicRecordStatus":"Discharged", "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":6, "income":65112, "loan":28068, "fico":700, "publicRecord":"BankruptcyChapter13", "publicRecordStatus":"Dismissed", "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
+                '  {"key":7, "income":65112, "loan":28068, "fico":700, "publicRecord":"Foreclosure", "publicRecordStatus":"Unsatisfied", "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"} ' +
+                ']}';
+
+        ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+
+        Test.startTest();
+        applicationSet.connectJointPCRs();
+        applicationSet.insertTradeAccounts();
+        applicationSet.insertPublicRecords();
+        applicationSet.insertCreditReportLogs();
+
+        Test.stopTest();
+
+        Map<Id, LASERCA__Personal_Credit_Report__c> pcrMap = new Map<Id, LASERCA__Personal_Credit_Report__c>([
+            SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c, DTI_After__c,
+                LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
+            FROM LASERCA__Personal_Credit_Report__c
+        ]);
+
+        for (Application app : ApplicationSet.application) {
+            app.assert(pcrMap.get(app.pcrId));
+        }
+    }
+    // fico+income is used as a unique key!
+
     static testMethod void testOppVoidStatusOnLeadDecline() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
@@ -909,8 +961,7 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Voided', opp_2.StageName);
         System.assertEquals('New', opp_3.StageName);
     }
-
-
+  
     public class Application {
         public Integer income, loan;
         public Id prodId;
@@ -923,6 +974,8 @@ private class PCRApprovalHandlerTest {
         public String coAppCode1, coAppCode2, coAppCode3, coAppCode4;
         public Id leadId, pcrId, coAppPCRId, contactId;
         public String expectedSLAStatus, expectedStatus;
+        public String publicRecord, publicRecordStatus;
+        public String coAppPublicRecord, coAppPublicRecordStatus;
         public Boolean denialSent;
         public Boolean sendEmails;
         public Boolean bankruptcy, coAppBankruptcy;
@@ -961,6 +1014,7 @@ private class PCRApprovalHandlerTest {
 
             List<Lead> leads = new List<Lead>();
             for (Application app : application) {
+                Boolean doer = app.doer==null?false:app.doer;
                 Lead newLead = new Lead(LastName = 'Testcase',
                     RecordTypeId = solarLoanType.Id,
                     FirstName = 'test',
@@ -973,9 +1027,9 @@ private class PCRApprovalHandlerTest {
                     Loan_Amount__c = app.loan,
                     Requested_Loan_Amount__c = app.loan,
                     Product__c = app.prodId,
-                    DOER_Solar_Loan__c = app.doer,
+                    DOER_Solar_Loan__c = doer,
                     Product_Line__c = 'Residential Loan',
-                    Product_Program__c = app.doer ? 'MSLP' : 'BlueWave Solar Loan',
+                    Product_Program__c = doer ? 'MSLP' : 'BlueWave Solar Loan',
                     LASERCA__Home_State__c = 'MA',
                     Unfinished_Lead__c = true,
                     IBLS_Category__c = app.ibls,
@@ -1076,17 +1130,54 @@ private class PCRApprovalHandlerTest {
             }
         }
 
+        public void insertPublicRecords() {
+            List<LASERCA__Public_Records__c> publicRecords = new List<LASERCA__Public_Records__c>();
+            Date myDateJan = Date.newInstance(2016, 1, 1);
+            Date myDateMarch = Date.newInstance(2016, 3, 1);
+            for (Application app : application) {
+                if (app.publicRecord != null) {
+                    publicRecords.add(new LASERCA__Public_Records__c(
+                        Name = app.publicRecord,
+                        LASERCA__Type__c = app.publicRecord,
+                        LASERCA__Disposition__c = app.publicRecordStatus,
+                        LASERCA__Date_Filed__c = myDateJan,
+                        LASERCA__Disposition_Date__c = app.publicRecordStatus == 'Filed'?null:myDateMarch,
+                        LASERCA__Personal_Credit_Report__c = app.pcrId
+                    ));
+                }
+                if (app.applicationType != null
+                    && app.applicationType.contains('Joint')
+                    && app.coAppPublicRecord != null) {
+                    publicRecords.add(new LASERCA__Public_Records__c(
+                        Name = app.coAppPublicRecord,
+                        LASERCA__Type__c = app.coAppPublicRecord,
+                        LASERCA__Disposition__c = app.coAppPublicRecordStatus,
+                        LASERCA__Date_Filed__c = myDateJan,
+                        LASERCA__Disposition_Date__c = app.publicRecordStatus == 'Filed'?null:myDateMarch,
+                        LASERCA__Personal_Credit_Report__c = app.coAppPCRId
+                    ));
+                }
+            }
+            insert publicRecords;
+        }
+
         public void insertTradeAccounts() {
             List<LASERCA__Trade_Accounts__c> tradeAccts = new List<LASERCA__Trade_Accounts__c>();
             for (Application app : application) {
                 tradeAccts.add(new LASERCA__Trade_Accounts__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
-                    LASERCA__Monthly_Payment__c = app.debt,
-                    LASERCA__Account_Balance__c = app.balance
+                    LASERCA__Name_of_the_Institution__c = 'primary trade account',
+                    LASERCA__Account_Ownership_Type__c = 'Individual',
+                    LASERCA__Open_Date__c = Date.today(),
+                    LASERCA__Monthly_Payment__c = Util.nullToZero(app.debt),
+                    LASERCA__Account_Balance__c = Util.nullToZero(app.balance)
                 ));
                 if (app.applicationType != null && app.applicationType.contains('Joint')) {
                     tradeAccts.add(new LASERCA__Trade_Accounts__c(
                         LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
+                        LASERCA__Name_of_the_Institution__c = 'co app trade account',
+                        LASERCA__Account_Ownership_Type__c = 'Individual',
+                        LASERCA__Open_Date__c = Date.today(),
                         LASERCA__Monthly_Payment__c = Util.nullToZero(app.coAppDebt),
                         LASERCA__Account_Balance__c = Util.nullToZero(app.coAppBalance)
                     ));
