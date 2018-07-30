@@ -66,42 +66,114 @@ public with sharing class LetterStreamService {
 
         Blob letterPackage = lettersToSend.getZipArchive();
 
+        String endpoint = 'https://secure.letterstream.com/apis/';
+
+        HttpRequest request = uploadZippedPackage(letterPackage, 'filename.zip', endpoint);
+        HttpResponse response = http.send(request);
+
+        Dom.Document responseXML = response.getBodyDocument();
+        XmlStreamReader responseReader = new XmlStreamReader(responseXML.toXmlString());
+
+        String responseCode;
+        List<Account_Bill__c> sentAccountBills = new List<Account_Bill__c>();
+        while(responseReader.hasNext()) {
+//            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+//                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
+//                if ('code' == responseReader.getLocalName()) {
+//                    responseCode = responseReader.getText();
+//                }
+//                // handle responseCodes
+//                if ('doc' == responseReader.getLocalName()) {
+//                    String subXML = responseReader.getText();
+//                    XmlStreamReader docReader = new XmlStreamReader(subXML);
+//                    while(docReader.hasNext()) {
+//                        String accountBillId;
+//                        String jobId;
+//                        Decimal pieceCost;
+//                        // response contains an xml doc
+//                        if ('id' == docReader.getLocalName()) {
+//                            accountBillId = docReader.getText();
+//                        } else if ('job' == docReader.getLocalName()) {
+//                            jobId = docReader.getText();
+//                        } else if ('cost' == docReader.getLocalName()) {
+//                            pieceCost = (Decimal) docReader.getText();
+//                        }
+//                        Account_Bill__c accountBill = new Account_Bill__c(
+//                            Id = accountBillId,
+//                            LetterStreamJobId = jobId, // proposed new fields
+//                            LetterStreamPieceCost = pieceCost, // proposed new fields
+//                            Ready_For_Paper_Bill_Queue__c = false,
+//                            Added_To_Paper_Bill_Queue__c = true
+//                        );
+//                        sentAccountBills.add(accountBill);
+//                        docReader.next();
+//                    }
+//                }
+//            }
+            responseReader.next();
+        }
+        if (sentAccountBills.size() > 0) {
+            update sentAccountBills;
+        }
+    }
+
+    public HttpRequest uploadZippedPackage(Blob file_body, String file_name, String endpoint){
+        // Repost of code  with fix for file corruption issue
+        // Orignal code postings and explanations
+        // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
+        // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
+        // Additional changes commented GW: that fix issue with occasional corruption of files
+        String boundary = '----------------------------741e90d31eff';
         Map<String, String> letterStreamHeaders = letterStreamHeaders();
-        String endpoint = 'https://secure.letterstream.com/apis/index.php';
+
+        String header = '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="a"' + '\r\n\r\n' + letterStreamHeaders.get('apiId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="t"' + '\r\n\r\n' + letterStreamHeaders.get('uniqueId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="h"' + '\r\n\r\n' + letterStreamHeaders.get('hashedId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += 'name="multi_file"; filename="'+file_name+'";\nContent-Type: application/zip';
+        String footer = '--'+boundary+'--';
+        String headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
+        while(headerEncoded.endsWith('=')) {
+            header+=' ';
+            headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
+        }
+        String bodyEncoded = EncodingUtil.base64Encode(file_body);
+        Blob bodyBlob = null;
+        String last4Bytes = bodyEncoded.substring(bodyEncoded.length()-4,bodyEncoded.length());
+        if(last4Bytes.endsWith('==')) {
+            last4Bytes = last4Bytes.substring(0,2) + '0K';
+            bodyEncoded = bodyEncoded.substring(0,bodyEncoded.length()-4) + last4Bytes;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        } else if(last4Bytes.endsWith('=')) {
+            last4Bytes = last4Bytes.substring(0,3) + 'N';
+            bodyEncoded = bodyEncoded.substring(0,bodyEncoded.length()-4) + last4Bytes;
+            footer = '\n' + footer;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        } else {
+            footer = '\r\n' + footer;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        }
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(endpoint);
+
+        request.setHeader('Content-Type','multipart/form-data; boundary=' + boundary);
         request.setMethod('POST');
-        request.setHeader('a', letterStreamHeaders.get('apiId'));
-        request.setHeader('t', letterStreamHeaders.get('uniqueId'));
-        request.setHeader('h', letterStreamHeaders.get('hashedId'));
-        request.setBodyAsBlob(letterPackage);
-
-//        HttpResponse response = http.send(request);
-//
-//        XmlStreamReader reader = response.getXmlStreamReader();
-//        while(reader.hasNext()) {
-//
-//            if (reader.hasText()) {
-//                System.debug(LoggingLevel.ERROR, 'Local Name: ' + reader.getLocalName());
-//                System.debug(LoggingLevel.ERROR, 'Text: ' + reader.getText());
-//            }
-//            reader.next();
-//        }
-
-        Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
-        attachment.fileName = 'letters.zip';
-        attachment.body = letterPackage;
-
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setSubject('Sending Zip Files!!');
-        mail.setHtmlBody('Wahoo');
-        mail.setFileAttachments(new List<Messaging.EmailFileAttachment>{attachment});
-        mail.setToAddresses(new List<String>{'mstackhouse@bluewavesolar.com'});
-        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+        request.setEndpoint(endpoint);
+        request.setBodyAsBlob(bodyBlob);
+        return request;
     }
 
     public void addLetterToCSV(LetterParameters params) {
+        // of the headers is important. ex. API won't know PageCount is in column N even with the correct title.
+        // PageCount must be in column Q
+        // Will need to do some edge case management to make sure the file is built correctly
+
         csv += '\n';
         csv += (params.fileId + ','); // UniqueDocId
         csv += (params.fileName + ','); // PDFFileName
@@ -119,7 +191,7 @@ public with sharing class LetterStreamService {
         csv += 'N,'; // coversheet
         csv += 'N,'; // duplex
         csv += 'C,'; // ink
-        csv += 'W,' // Paper
+        csv += 'W,'; // Paper
     }
 
     public String blueWaveAddress() {
@@ -129,7 +201,7 @@ public with sharing class LetterStreamService {
             FROM BW_Address__c
         ];
         bwAddress += 'BlueWave Solar,'; //SenderName1
-        bwAddress += ',' //SenderName2
+        bwAddress += ','; //SenderName2
         bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
         bwAddress += 'Boston,'; // SenderCity
         bwAddress += 'MA,'; //SenderState
@@ -165,7 +237,12 @@ public with sharing class LetterStreamService {
         Integer uniqueIdLength = uniqueId.length();
         String apiId = '86fjkb92';
         String apiKey = 'wkpv3417e9r2d3qx';
+        // per LetterStreamDocs - String to Hash
         String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
+        // per LetterSteamDocs - Base64Encode string
+        Blob rawHashedIdBlob = Blob.valueOf(rawHashedId);
+        rawHashedId = EncodingUtil.base64Encode(rawHashedIdBlob);
+        // per LetterStreamDocs - MD5 the base64Encoded String
         Blob md5HashedId = Crypto.generateDigest('MD5', Blob.valueOf(rawHashedId));
         String hashedId = EncodingUtil.convertToHex(md5HashedId);
 
@@ -173,8 +250,8 @@ public with sharing class LetterStreamService {
 
         headers.put('apiId', apiId);
         headers.put('uniqueId', uniqueId);
-        headers.put('hashedId', hashedId);
         headers.put('rawHashedId', rawHashedId);
+        headers.put('hashedId', hashedId);
 
         return headers;
     }
