@@ -954,11 +954,11 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="HexUtil" />
+                            <option name="name" value="ZipperHexUtil" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="Puff" />
+                            <option name="name" value="ZipperPuff" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>

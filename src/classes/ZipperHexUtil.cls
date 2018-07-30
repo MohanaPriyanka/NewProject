@@ -1,14 +1,14 @@
 /**
  * Created by mstackhouse on 7/20/2018.
- * Description: 
- * Test: 
+ * Description: Forked from Library: https://github.com/pdalcol/Zippex
+ * Test: ZippexTests
  */
 
 
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
-public class HexUtil {
+public class ZipperHexUtil {
 
     private static final Integer[] table = new List<Integer> {
         0, 1996959894, -301047508, -1727442502, 124634137, 1886057615, -379345611, -1637575261,

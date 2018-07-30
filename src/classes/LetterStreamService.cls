@@ -1,7 +1,9 @@
 /**
  * Created by mstackhouse on 7/17/2018.
- * Description: 
- * Test: 
+ * Description: This class communicates with the LetterSteam API in order to automatically initiate letter jobs to
+ * send paper bills to customers.
+ *
+ * Test: LetterStreamServiceTest
  */
 
 
@@ -13,7 +15,7 @@ public with sharing class LetterStreamService {
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
         'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
 
-    public void downloadZipFiles() {
+    public void sendAccountBills() {
         // 1. Query for Account bills that need to be sent
         // 2. Collect ContentVersion files (Account_Bill.Bill_Attach_Version)
         // 3. Create batches of ContentVersion.Size where Total Size < 10 Mb
@@ -29,6 +31,8 @@ public with sharing class LetterStreamService {
         //      - If succeeded, record LetterStream job for Bills.
 
         // add 'https://secure.letterstream.com/apis/index.php' to remote sites
+
+        // build Package
         Account_Bill__c testAccountBill = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet,
                 Parent_Account__r.BillingCity, Parent_Account__r.BillingState,
@@ -56,7 +60,7 @@ public with sharing class LetterStreamService {
             LetterParameters letterParams = new LetterParameters();
             letterParams.generateFromAccountBill(accountBill, document);
             addLetterToCSV(letterParams);
-            String fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
+            String fileName = letterParams.fileName;
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
@@ -64,60 +68,85 @@ public with sharing class LetterStreamService {
 
         lettersToSend.addFile('bw_bills.csv', csvBlob, null);
 
+        // end build package
         Blob letterPackage = lettersToSend.getZipArchive();
 
-        String endpoint = 'https://secure.letterstream.com/apis/';
 
-        HttpRequest request = uploadZippedPackage(letterPackage, 'filename.zip', endpoint);
+        HttpRequest request = buildRequestWithFile(letterPackage, 'filename.zip');
         HttpResponse response = http.send(request);
 
         Dom.Document responseXML = response.getBodyDocument();
+        System.debug(responseXML.toXmlString());
         XmlStreamReader responseReader = new XmlStreamReader(responseXML.toXmlString());
 
-        String responseCode;
-        List<Account_Bill__c> sentAccountBills = new List<Account_Bill__c>();
-        while(responseReader.hasNext()) {
-//            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
-//                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
-//                if ('code' == responseReader.getLocalName()) {
-//                    responseCode = responseReader.getText();
-//                }
-//                // handle responseCodes
-//                if ('doc' == responseReader.getLocalName()) {
-//                    String subXML = responseReader.getText();
-//                    XmlStreamReader docReader = new XmlStreamReader(subXML);
-//                    while(docReader.hasNext()) {
-//                        String accountBillId;
-//                        String jobId;
-//                        Decimal pieceCost;
-//                        // response contains an xml doc
-//                        if ('id' == docReader.getLocalName()) {
-//                            accountBillId = docReader.getText();
-//                        } else if ('job' == docReader.getLocalName()) {
-//                            jobId = docReader.getText();
-//                        } else if ('cost' == docReader.getLocalName()) {
-//                            pieceCost = (Decimal) docReader.getText();
-//                        }
-//                        Account_Bill__c accountBill = new Account_Bill__c(
-//                            Id = accountBillId,
-//                            LetterStreamJobId = jobId, // proposed new fields
-//                            LetterStreamPieceCost = pieceCost, // proposed new fields
-//                            Ready_For_Paper_Bill_Queue__c = false,
-//                            Added_To_Paper_Bill_Queue__c = true
-//                        );
-//                        sentAccountBills.add(accountBill);
-//                        docReader.next();
-//                    }
-//                }
-//            }
-            responseReader.next();
-        }
+        List<Account_Bill__c> sentAccountBills = parseLetterStreamResponse(responseReader);
         if (sentAccountBills.size() > 0) {
             update sentAccountBills;
         }
     }
 
-    public HttpRequest uploadZippedPackage(Blob file_body, String file_name, String endpoint){
+    /*
+    Example Response:
+    <?xml version="1.0" encoding="UTF-8"?>
+    <messages id="86fjkb92">
+	    <message type="info">
+		    <code>-100</code>
+		    <details>Success</details>
+            <batch>bw_bills</batch>
+            <quantity>2</quantity>
+            <cost>2.82</cost>
+            <doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>
+            <doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>
+        </message>
+    </messages>
+     */
+
+    public List<Account_Bill__c> parseLetterStreamResponse(XmlStreamReader responseReader) {
+        String responseCode;
+        while(responseReader.hasNext()) {
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+                if ('messages' == responseReader.getLocalName()) {
+
+                }
+                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
+                if ('code' == responseReader.getLocalName()) {
+                    responseCode = responseReader.getText();
+                }
+                // handle responseCodes
+                if ('doc' == responseReader.getLocalName()) {
+                    String subXML = responseReader.getText();
+                    XmlStreamReader docReader = new XmlStreamReader(subXML);
+                    String accountBillId;
+                    String jobId;
+                    Decimal pieceCost;
+                    while(docReader.hasNext()) {
+                        // response contains an xml doc
+                        if ('id' == docReader.getLocalName()) {
+                            accountBillId = docReader.getText();
+                        } else if ('job' == docReader.getLocalName()) {
+                            jobId = docReader.getText();
+                        } else if ('cost' == docReader.getLocalName()) {
+                            pieceCost = Decimal.valueOf(docReader.getText());
+                        }
+                    }
+                    Account_Bill__c accountBill = new Account_Bill__c(
+                        Id = accountBillId,
+                        LetterStream_Job_Id__c = jobId, // proposed new fields
+                        LetterStream_Piece_Cost__c = pieceCost, // proposed new fields
+                        Ready_For_Paper_Bill_Queue__c = false,
+                        Added_To_Paper_Bill_Queue__c = true
+                    );
+                    sentAccountBills.add(accountBill);
+                    docReader.next();
+                }
+            }
+            responseReader.next();
+        }
+    }
+
+    public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
+        String endpoint = 'https://secure.letterstream.com/apis/';
+
         // Repost of code  with fix for file corruption issue
         // Orignal code postings and explanations
         // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
