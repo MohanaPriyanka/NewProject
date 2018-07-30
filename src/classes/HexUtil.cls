@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 7/20/2018.
- * Description: 
- * Test: 
+ * Description: Forked from Library: https://github.com/pdalcol/Zippex
+ * Test: ZippexTests
  */
 
 
