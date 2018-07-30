@@ -56,23 +56,17 @@
         }
     },
     goToUAServiceAddress : function(component, event, helper) {
+        if(component.get("v.electricBill1") == null && component.get("v.electricBill2") == null){
+            alert("Please upload your recent electric bill");
+            return;
+        }
+
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
             var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
             ualPromise.then($A.getCallback(function resolve(retVal) {
                 component.set("v.page", "UAServiceAddress");
             }));
-        }
-    },
-    goToAddMore : function(component, event, helper) {
-        if(helper.validatePageFields(component)){
-            var ual = component.get("v.ual");
-            if(ual.Id){
-                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-                ualPromise.then($A.getCallback(function resolve(retVal) {
-                    component.set("v.page", "AddMore");
-                }));
-            }
         }
     },
     goToAddMore : function(component, event, helper) {
