@@ -60,7 +60,7 @@ public with sharing class LetterStreamService {
             LetterParameters letterParams = new LetterParameters();
             letterParams.generateFromAccountBill(accountBill, document);
             addLetterToCSV(letterParams);
-            String fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
+            String fileName = document.LatestPublishedVersion.Title + '.pdf';
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
@@ -71,9 +71,8 @@ public with sharing class LetterStreamService {
         // end build package
         Blob letterPackage = lettersToSend.getZipArchive();
 
-        String endpoint = 'https://secure.letterstream.com/apis/';
 
-        HttpRequest request = buildRequestWithFile(letterPackage, 'filename.zip', endpoint);
+        HttpRequest request = buildRequestWithFile(letterPackage, 'filename.zip');
         HttpResponse response = http.send(request);
 
         Dom.Document responseXML = response.getBodyDocument();
@@ -82,39 +81,39 @@ public with sharing class LetterStreamService {
         String responseCode;
         List<Account_Bill__c> sentAccountBills = new List<Account_Bill__c>();
         while(responseReader.hasNext()) {
-//            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
-//                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
-//                if ('code' == responseReader.getLocalName()) {
-//                    responseCode = responseReader.getText();
-//                }
-//                // handle responseCodes
-//                if ('doc' == responseReader.getLocalName()) {
-//                    String subXML = responseReader.getText();
-//                    XmlStreamReader docReader = new XmlStreamReader(subXML);
-//                    while(docReader.hasNext()) {
-//                        String accountBillId;
-//                        String jobId;
-//                        Decimal pieceCost;
-//                        // response contains an xml doc
-//                        if ('id' == docReader.getLocalName()) {
-//                            accountBillId = docReader.getText();
-//                        } else if ('job' == docReader.getLocalName()) {
-//                            jobId = docReader.getText();
-//                        } else if ('cost' == docReader.getLocalName()) {
-//                            pieceCost = (Decimal) docReader.getText();
-//                        }
-//                        Account_Bill__c accountBill = new Account_Bill__c(
-//                            Id = accountBillId,
-//                            LetterStreamJobId = jobId, // proposed new fields
-//                            LetterStreamPieceCost = pieceCost, // proposed new fields
-//                            Ready_For_Paper_Bill_Queue__c = false,
-//                            Added_To_Paper_Bill_Queue__c = true
-//                        );
-//                        sentAccountBills.add(accountBill);
-//                        docReader.next();
-//                    }
-//                }
-//            }
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
+                if ('code' == responseReader.getLocalName()) {
+                    responseCode = responseReader.getText();
+                }
+                // handle responseCodes
+                if ('doc' == responseReader.getLocalName()) {
+                    String subXML = responseReader.getText();
+                    XmlStreamReader docReader = new XmlStreamReader(subXML);
+                    while(docReader.hasNext()) {
+                        String accountBillId;
+                        String jobId;
+                        Decimal pieceCost;
+                        // response contains an xml doc
+                        if ('id' == docReader.getLocalName()) {
+                            accountBillId = docReader.getText();
+                        } else if ('job' == docReader.getLocalName()) {
+                            jobId = docReader.getText();
+                        } else if ('cost' == docReader.getLocalName()) {
+                            pieceCost = Decimal.valueOf(docReader.getText());
+                        }
+                        Account_Bill__c accountBill = new Account_Bill__c(
+                            Id = accountBillId,
+                            LetterStreamJobId = jobId, // proposed new fields
+                            LetterStreamPieceCost = pieceCost, // proposed new fields
+                            Ready_For_Paper_Bill_Queue__c = false,
+                            Added_To_Paper_Bill_Queue__c = true
+                        );
+                        sentAccountBills.add(accountBill);
+                        docReader.next();
+                    }
+                }
+            }
             responseReader.next();
         }
         if (sentAccountBills.size() > 0) {
@@ -122,7 +121,9 @@ public with sharing class LetterStreamService {
         }
     }
 
-    public HttpRequest buildRequestWithFile(Blob file_body, String file_name, String endpoint){
+    public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
+        String endpoint = 'https://secure.letterstream.com/apis/';
+
         // Repost of code  with fix for file corruption issue
         // Orignal code postings and explanations
         // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
@@ -227,7 +228,7 @@ public with sharing class LetterStreamService {
         public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
             fileId = document.Id;
 //            fileId = accountBill.Id;
-            fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
+            fileName = document.LatestPublishedVersion.Title + '.pdf';
             recipientName = accountBill.Parent_Account__r.Name;
             recipientStreet = accountBill.Parent_Account__r.BillingStreet ;
             recipientCity = accountBill.Parent_Account__r.BillingCity;
