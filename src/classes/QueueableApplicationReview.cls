@@ -21,7 +21,7 @@ public class QueueableApplicationReview implements Queueable {
         Lead lead = pcrApprovalHandler.getLeadsForCreditAnalysis(new Set<Id>{this.leadId})[0];
         if (pcrApprovalHandler.leadReadyForPrequalCheck(lead)) {
             List<LASERCA__Personal_Credit_Report__c> pcrsToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
-            lead = pcrApprovalHandler.runCreditReviewProcess(lead, null, null);
+            lead = pcrApprovalHandler.runCreditReviewProcess(lead, null, null, null);
             update lead;
             pcrsToUpdate.add(lead.Personal_Credit_Report__r);
             if (lead.Personal_Credit_Report_Co_Applicant__c != null) {

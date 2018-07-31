@@ -175,10 +175,13 @@
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+
+                <lightning:helptext
+                  title="Size of Solar System Help Text"
+                  content="Most residential systems range from 3-12 kW DC, while non-residential systems may be larger."/>
                 <lightning:input aura:id="field" name="leadSystemSize"
                                  type="number"
                                  label="What is the size of the solar system, in kW DC?"
-                                 placeholder="Most residential systems range from 3-12 kW DC, while non-residentil systems may be larger."
                                  value="{!v.lead.System_Size_kW_DC__c}"
                                  min="0"
                                  max="1000"
