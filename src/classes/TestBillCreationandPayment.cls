@@ -50,14 +50,60 @@ public class TestBillCreationandPayment {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1',
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent = new Account(name = 'Account Parent',
+            RecordTypeId = parentAccountRT);
+        insert accountParent;
+        Account accountParent2 = new Account(name = 'Account Parent',
+            RecordTypeId = parentAccountRT);
+        insert accountParent2;
+
+        Contact contactA = new Contact( FirstName = 'Contact',
+            LastName = 'A',
+            AccountId = accountParent.Id);
+        insert contactA;
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
+
+        User userRecord = new User(
+            FirstName = 'Jordan',
+            Lastname ='Testcase',
+            Alias = 'xxx234',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Emailencodingkey ='UTF-8',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactA.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='testBillCreationandPay@bluewavesolar.com');
+        Util.insertSobjs(new list<User>{userRecord});
+
+        ChargentBase__Gateway__c chGateway  =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Debug__c = True,
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
+
+        Entity__c entity1 = new Entity__c (
+            Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id);
+            Client_Account__c = clientAccount.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
 
-        Entity__c entity2 = new Entity__c (Name = 'Oxford Barrett St. P2',
+        Entity__c entity2 = new Entity__c (
+            Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id);
+            Client_Account__c = clientAccount2.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity2;
 
         Shared_Solar_System__c sss1 =
@@ -76,6 +122,7 @@ public class TestBillCreationandPayment {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
+                Billing_Method__c = 'NMC',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -97,6 +144,7 @@ public class TestBillCreationandPayment {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
+                Billing_Method__c = 'NMC',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -104,22 +152,6 @@ public class TestBillCreationandPayment {
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
-        Id parentAccountRT =
-            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        Account accountParent = new Account(name = 'Account Parent',
-            RecordTypeId = parentAccountRT);
-        Account accountParent2 = new Account(name = 'Account Parent2',
-            RecordTypeId = parentAccountRT);
-        insert new List<Account>{accountParent, accountParent2};
-
-        Contact contactA = new Contact( FirstName = 'Contact',
-            LastName = 'A',
-            AccountId = accountParent.Id);
-        Contact contactB = new Contact( FirstName = 'Contact',
-            LastName = 'B',
-            AccountId = accountParent2.Id);
-        insert new List<Contact>{contactA, contactB};
 
         Account accountA = new Account(name = 'Account A',
             Parent_Account__c = accountParent.Id);
@@ -127,34 +159,7 @@ public class TestBillCreationandPayment {
             Parent_Account__c = accountParent2.Id);
         insert new List<Account>{accountA, accountB};
 
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
-        User userRecord = new User(
-            FirstName = 'Jordan',
-            Lastname ='Testcase',
-            Alias = 'xxx234',
-            Email = 'jpentaleri@bluewavesolar.com',
-            Emailencodingkey ='UTF-8',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Profileid = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactA.Id,
-            Timezonesidkey='America/Los_Angeles',
-            Username='testBillCreationandPay@bluewavesolar.com');
-
-        Util.insertSobj(userRecord);
-
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                Shared_Solar_System__c = sss1.id,
-                ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
-                OwnerId = userRecord.Id,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
@@ -233,7 +238,7 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 Annual_kwh_subscription_future__c = 8000,
                 Calculated_Annual_Cost_of_Electricity__c = 8000,
-            Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Subscribed_Annual_Cost_of_Electricity__c = 8000);
 
         Utility_Account_Subscription__c uasfour =
             new Utility_Account_Subscription__c(Name = '0000345',
@@ -246,6 +251,7 @@ public class TestBillCreationandPayment {
 
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
+        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
             Adjustment_Amount__c = 24);
@@ -281,7 +287,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
             Production__c = 90000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateFeb,
             Total_System_NMCs__c = 16632,
@@ -295,7 +300,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
             Production__c = 120000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateMar,
             Total_System_NMCs__c = 22176,
@@ -309,7 +313,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
             Production__c = 140000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateApr,
             Total_System_NMCs__c = 25872,
@@ -323,7 +326,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sss2.id,
             Schedule_Z__c = scheduleZ2.id,
             Production__c = 90000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateFeb,
             Total_System_NMCs__c = 16632,
@@ -337,7 +339,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sss2.id,
             Schedule_Z__c = scheduleZ2.id,
             Production__c = 120000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateMar,
             Total_System_NMCs__c = 22176,
@@ -372,8 +373,8 @@ public class TestBillCreationandPayment {
 
     static testMethod void undoSetBillsToPublished() {
         List <Account_Bill__c> listABs = [SELECT Id, Published__c
-                                                    FROM Account_Bill__c
-                                                    WHERE Published__c = TRUE];
+                                            FROM Account_Bill__c
+                                            WHERE Published__c = TRUE];
         for (Account_Bill__c acctBill : listABs) {
             acctBill.Published__c = False;
         }
@@ -398,8 +399,8 @@ public class TestBillCreationandPayment {
         System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
         System.AssertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
         Energy_Usage_Update__c productionUpdate = [
-          SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
-          FROM Energy_Usage_Update__c
+            SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
+            FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - February 2016'
         ];
 
@@ -456,9 +457,9 @@ public class TestBillCreationandPayment {
 
         String utilityAccountBillName = (
             opportunity.Name + ' '
-            + productionupdateA3.MonthDate__c + ' '
-            + productionupdateA3.YearDate__c + ' '
-            + scheduleZSubscriptions[0].Utility_Account_Subscription__r.Name
+                + productionupdateA3.MonthDate__c + ' '
+                + productionupdateA3.YearDate__c + ' '
+                + scheduleZSubscriptions[0].Utility_Account_Subscription__r.Name
         );
 
         List<Utility_Account_Bill__c> utilityAccountBills = [
@@ -583,20 +584,20 @@ public class TestBillCreationandPayment {
 
         insert sbstoupdate;
 
-        List<System_Bill__c> updatedsystemBillList = 
-            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
-             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
-             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
-             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Property_Account__r.Directions_To_Write_Paper_Check__c,
-             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-             Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
-             Adjustments_UASB__c, 
-             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-             FROM System_Bill__c
-             ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillList =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        ORDER BY Bill_Number__c];
 
         System.assertEquals(9, updatedsystemBillList.size());
         for (System_Bill__c sbs : updatedsystemBillList) {
@@ -609,118 +610,6 @@ public class TestBillCreationandPayment {
             }
         }
         Test.stopTest();
-    }
-
-    @isTest public static void testBillNumbering() {
-        // This method upserts new System Bills under pre-existing Account Bills, so the first month has to be set
-        // to unpublished in order to be editable.
-        undoSetBillsToPublished();
-
-        Test.startTest();
-
-        Energy_Usage_Update__c productionupdateB1 = [
-          SELECT Id, Generate_Bills__c, Month_Number__c
-          FROM Energy_Usage_Update__c
-          WHERE Name = 'sssB - January 2016'
-          LIMIT 1
-        ];
-
-        Energy_Usage_Update__c productionupdateB2 = [
-          SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
-              MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-              Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
-          FROM Energy_Usage_Update__c
-          WHERE Name = 'sssB - February 2016'
-          LIMIT 1
-        ];
-
-        productionupdateB1.Generate_Bills__c = TRUE;
-        update productionupdateB1;
-
-        setBillsToPublished();
-
-        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
-
-        Test.stopTest();
-
-        Opportunity oppOne = [
-            SELECT Id, AccountId, Name
-            FROM Opportunity
-            WHERE Name = 'BOpp One'
-            LIMIT 1
-        ];
-
-        Opportunity oppTwo = [
-            SELECT Id, AccountId, Name
-            FROM Opportunity
-            WHERE Name = 'BOpp Two'
-            LIMIT 1
-        ];
-
-        List<Account_Bill__c> oppOneAccountBills = [
-            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : oppOne.AccountId
-            ORDER BY Bill_Number__c
-        ];
-
-        List<Account_Bill__c> oppTwoAccountBills = [
-            SELECT Id, Bill_Number__c, Past_Bill__c, Total_Due__c, Month__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : oppTwo.AccountId
-            ORDER BY Bill_Number__c
-        ];
-
-        List<System_Bill__c> oppOneSystemBills = [
-            SELECT Id, Bill_Number__c, Month__c
-            FROM System_Bill__c
-            WHERE Property_Account__c = : oppOne.AccountId
-                AND Shared_Solar_System__c = : productionupdateB2.Shared_Solar_System__c
-            ORDER BY Bill_Number__c
-        ];
-
-        List<System_Bill__c> oppTwoSystemBills = [
-            SELECT Id, Bill_Number__c, Month__c
-            FROM System_Bill__c
-            WHERE Opportunity__c = : oppTwo.Id
-            ORDER BY Bill_Number__c
-        ];
-
-        Account_Bill__c oppOneJanuaryAccountBill = oppOneAccountBills[0];
-        Account_Bill__c oppOneFebruaryAccountBill = oppOneAccountBills[1];
-        System_Bill__c oppOneJanuarySystemBill = oppOneSystemBills[0];
-        System_Bill__c oppOneFebruarySystemBill = oppOneSystemBills[1];
-
-        System.AssertEquals(2, oppOneAccountBills.size());
-        System.AssertEquals(1, oppOneJanuaryAccountBill.Bill_Number__c);
-        System.AssertEquals(1, oppOneJanuaryAccountBill.Month__c);
-        System.AssertEquals(2, oppOneFebruaryAccountBill.Bill_Number__c);
-        System.AssertEquals(2, oppOneFebruaryAccountBill.Month__c);
-        System.AssertEquals(oppOneJanuaryAccountBill.Total_Due__c, oppOneFebruaryAccountBill.Past_Bill__c);
-
-        System.AssertEquals(2, oppOneSystemBills.size());
-        System.AssertEquals(1, oppOneJanuarySystemBill.Bill_Number__c);
-        System.AssertEquals(1, oppOneJanuarySystemBill.Month__c);
-        System.AssertEquals(2, oppOneFebruarySystemBill.Bill_Number__c);
-        System.AssertEquals(2, oppOneFebruarySystemBill.Month__c);
-
-        Account_Bill__c oppTwoJanuaryAccountBill = oppTwoAccountBills[0];
-        Account_Bill__c oppTwoFebruaryAccountBill = oppTwoAccountBills[1];
-        System_Bill__c oppTwoJanuarySystemBill = oppTwoSystemBills[0];
-        System_Bill__c oppTwoFebruarySystemBill = oppTwoSystemBills[1];
-
-        System.AssertEquals(2, oppTwoAccountBills.size());
-        System.AssertEquals(1, oppTwoJanuaryAccountBill.Bill_Number__c);
-        System.AssertEquals(1, oppTwoJanuaryAccountBill.Month__c);
-        System.AssertEquals(2, oppTwoFebruaryAccountBill.Bill_Number__c);
-        System.AssertEquals(2, oppTwoFebruaryAccountBill.Month__c);
-        System.AssertEquals(oppTwoJanuaryAccountBill.Total_Due__c, oppTwoFebruaryAccountBill.Past_Bill__c);
-
-        System.AssertEquals(2, oppTwoSystemBills.size());
-        System.AssertEquals(1, oppTwoJanuarySystemBill.Bill_Number__c);
-        System.AssertEquals(1, oppTwoJanuarySystemBill.Month__c);
-        System.AssertEquals(2, oppTwoFebruarySystemBill.Bill_Number__c);
-        System.AssertEquals(2, oppTwoFebruarySystemBill.Month__c);
     }
 
     @isTest public static void testSystemBills() {
@@ -740,11 +629,8 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
-        // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
-        // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
-
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
-        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
+        System.AssertEquals(606.83,systembillList[1].Total_Due__c);
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
         System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
         System.AssertEquals(24,systembillList[0].Adjustments_UASB__c);
@@ -753,6 +639,8 @@ public class TestBillCreationandPayment {
         System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
         Test.stopTest();
+
+
     }
 
     @isTest public static void testAdjustments() {
@@ -764,9 +652,13 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c
-        FROM ChargentBase__Gateway__c
-        LIMIT 1];
+        Entity__c entity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+
+
         Test.startTest();
 
         setBillsToPublished();
@@ -776,8 +668,8 @@ public class TestBillCreationandPayment {
         for (Account_Bill__c accountbill : accountbilllist) {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
-                        ChargentOrders__Shipping_Name__c = chGateway.Entity__c,
+                    new ChargentOrders__ChargentOrder__c(
+                        Entity__c = entity.Id,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -797,8 +689,8 @@ public class TestBillCreationandPayment {
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                         ChargentOrders__Amount__c = 50,
                         ChargentOrders__Response_Status__c ='Approved',
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -812,8 +704,8 @@ public class TestBillCreationandPayment {
                         ChargentOrders__Amount__c = 700,
                         ChargentOrders__Response_Status__c ='Approved',
                         ChargentOrders__Recurring__c = true,
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -849,20 +741,20 @@ public class TestBillCreationandPayment {
         System.AssertEquals(1, adjustApp.size());
         System.AssertEquals(0, adjustApp[0].Bill_Adjustment__r.Outstanding__c);
 
-        List<System_Bill__c> updatedsystemBillListOne = 
-            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
-             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
-             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
-             Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c, 
-             Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
-             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-             Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
-             Adjustments_UASB__c, 
-             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-             FROM System_Bill__c
-             ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillListOne =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        ORDER BY Bill_Number__c];
 
         System.AssertEquals(282.96, updatedsystemBillListOne[0].Total_Due__c);
         System.AssertEquals(282.96, updatedsystemBillListOne[0].Late_Payments__c);
@@ -877,7 +769,6 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testAdjustments2() {
-        Test.startTest();
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -886,19 +777,24 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c
-        FROM ChargentBase__Gateway__c
-        LIMIT 1];
+        Entity__c entity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
 
         setBillsToPublished();
+
+        Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();
         for (Account_Bill__c accountbill : accountbilllist) {
             if(accountbill.Bill_Number__c == 2) {
                 ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = chGateway.Id,
-                        ChargentOrders__Shipping_Name__c = chGateway.Entity__c,
+                    new ChargentOrders__ChargentOrder__c(
+                        Entity__c = entity.Id,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         ChargentOrders__Billing_First_Name__c = 'Cole',
                         ChargentOrders__Billing_Last_Name__c = 'Swain',
                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -919,8 +815,8 @@ public class TestBillCreationandPayment {
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                         ChargentOrders__Amount__c = 50,
                         ChargentOrders__Response_Status__c ='Approved',
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -934,8 +830,8 @@ public class TestBillCreationandPayment {
                         ChargentOrders__Amount__c = 700,
                         ChargentOrders__Response_Status__c ='Approved',
                         ChargentOrders__Recurring__c = true,
-                        ChargentOrders__Gateway_ID__c = chGateway.id,
-                        ChargentOrders__Gateway__c = chGateway.id,
+                        ChargentOrders__Gateway_ID__c = entity.Gateway__c,
+                        ChargentOrders__Gateway__c = entity.Gateway__c,
                         Distributed_Among_System_Bills__c = false,
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
@@ -996,8 +892,8 @@ public class TestBillCreationandPayment {
         APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert congaRecord;
         congaRecord.Apply_Overpay_Adjust__c = true;
-        Test.stopTest();
         update congaRecord;
+        Test.stopTest();
 
         List<Adjustment_Application__c> secondAdjustApp =   [SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
             Overpayment_Amount__c, Adjustment_Amount__c,
@@ -1007,20 +903,20 @@ public class TestBillCreationandPayment {
         System.AssertEquals(1, secondAdjustApp.size());
         System.AssertEquals(-118.93, secondAdjustApp[0].Overpayment_Amount__c);
 
-        List<System_Bill__c> updatedsystemBillList = 
-            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
-             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
-             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
-             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Property_Account__r.Directions_To_Write_Paper_Check__c,
-             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-             Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
-             Adjustments_UASB__c, 
-             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-             FROM System_Bill__c
-             ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillList =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        ORDER BY Bill_Number__c];
 
         System.assertEquals(281.07, updatedsystemBillList[2].Total_Due__c );
         System.assertEquals(283.90, updatedsystemBillList[2].Balance_Net_late_Payments__c );
@@ -1091,7 +987,7 @@ public class TestBillCreationandPayment {
                 ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
                     Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
                     ChargentOrders__Subtotal__c = (Decimal)lineItem.get('ChargentOrders__Subtotal__c'),
-                    ChargentOrders__Shipping_Name__c = (String)lineItem.get('ChargentOrders__Shipping_Name__c'));
+                    Entity__c = (String)lineItem.get('Entity__c'));
                 chOrderList.add(billsToCharge);
             }
             System.assertEquals(1, chOrderList.size());
@@ -1137,10 +1033,12 @@ public class TestBillCreationandPayment {
             List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoACH, false);
             List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountandInsert(chOrderList, paymentInfoCC, true);
 
-            List<ChargentOrders__ChargentOrder__c> newOrders = [SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c,
-                Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
-            FROM ChargentOrders__ChargentOrder__c
-            ORDER BY ChargentOrders__Payment_Method__c];
+            List<ChargentOrders__ChargentOrder__c> newOrders = [
+                SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, Entity__c,
+                    Account_Bill__c, ChargentOrders__Bank_Name__c, ChargentOrders__Card_Expiration_Year__c
+                FROM ChargentOrders__ChargentOrder__c
+                ORDER BY ChargentOrders__Payment_Method__c
+            ];
             System.assertEquals(50, getStatesList.size());
 
             // Checking that the orders were inserted and that the merged data mapped correctly:
@@ -1256,8 +1154,8 @@ public class TestBillCreationandPayment {
         Test.startTest();
         Energy_Usage_Update__c productionupdateA3 = [
             SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
-            MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-            Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
+                MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
+                Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
             LIMIT 1

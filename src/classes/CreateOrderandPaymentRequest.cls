@@ -77,7 +77,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
                 if (amountToCharge > 0.01 ) {
                     ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false, true, true, false);
-                    orderA.ChargentOrders__Shipping_Name__c = (String) chargeAmount.get('ChargentOrders__Shipping_Name__c');
+                    orderA.Entity__c = (String) chargeAmount.get('Entity__c');
                     orderA.ChargentOrders__Subtotal__c = amountToCharge;
                     orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
                     orderA.Comments__c = 'Created from Lightning';
@@ -91,7 +91,7 @@ public without sharing class CreateOrderandPaymentRequest {
                     }
 
                     accountBillIdSet.add(orderA.Account_Bill__c);
-                    entityIdSet.add(orderA.ChargentOrders__Shipping_Name__c);
+                    entityIdSet.add(orderA.Entity__c);
                     ordersToInsert.add(orderA);
                 }
             }
@@ -110,7 +110,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 WHERE ( Id NOT IN :ordersToInsert)
                 AND ChargentOrders__Payment_Status__c = 'Recurring'
                 AND Account_Bill__r.Parent_Account__r.Id IN : accountSet
-                AND ChargentOrders__Gateway__r.Entity__r.Id IN : entityIdSet
+                AND Entity__r.Id IN : entityIdSet
             ];
             if(chargentOrderList.size() > 0){
                 for(ChargentOrders__ChargentOrder__c co : chargentOrderList){

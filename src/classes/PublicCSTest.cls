@@ -36,7 +36,17 @@ public class PublicCSTest {
         insert new List<Load_U__c>{everLZU};
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = TRUE
+        );
+        insert chGateway;
+
+        Entity__c entity1 = new Entity__c (
+            Name = 'Oxford Barrett St. P1',
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
         
         Shared_Solar_System__c sss1 = 
@@ -56,17 +66,11 @@ public class PublicCSTest {
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Maximum_Subscription_Assemblage__c = 25,
+                                       Billing_Method__c = 'NMC',
                                        Utility__c = eversource.Id
             );
         insert new List<Shared_Solar_System__c>{sss1};
 
-        ChargentBase__Gateway__c chGateway  = 
-        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                                         ChargentBase__Merchant_ID__c = '235986',
-                                         Shared_Solar_System__c = sss1.id,
-                                         Entity__c = entity1.Id,
-                                         ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Id parentAccountRT = 
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -158,7 +162,6 @@ public class PublicCSTest {
                 Production__c = 400000,
                 Net_Metering_Rate_Applied__c = 0.1125,
                 Billing_Period_End_Date__c = myDateFeb,
-                Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 45000,
                 Date__c = myDateJan 
                 );
@@ -172,7 +175,6 @@ public class PublicCSTest {
                 Production__c = 60000,
                 Net_Metering_Rate_Applied__c = 0.05, 
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = true,
                 Total_System_NMCs__c = 3000,
                 Date__c = myDateFeb
                 );
