@@ -24,16 +24,4 @@
         }
     },
 
-    doInit : function(component, event, helper) {
-        var action = component.get("c.generateReferralURL");
-        action.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.referralURL", resp.getReturnValue());
-            } else {
-                $A.log("Errors", resp.getError());
-            }
-        })
-        $A.enqueueAction(action);
-
-    }
 })

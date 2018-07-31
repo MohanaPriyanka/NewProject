@@ -10,8 +10,7 @@ public without sharing class MyAccountController {
 
     public static User customerUser = new User();
     static {
-        customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId, Contact.Product_Line__c,
-                                 Contact.Account.Partner__c, Contact.Account.Sales_Representative__c
+        customerUser = [SELECT Id, FirstName, LastName, ContactId, Client_Brand_Key__c, Parent_account_id__c, Contact.Account.Id, Contact.AccountId, Contact.Product_Line__c
                         FROM User 
                         WHERE Id = :UserInfo.getUserId()];
     }
@@ -221,18 +220,6 @@ public without sharing class MyAccountController {
         return chargentTransactionsList;
     }  
 
-    @AuraEnabled
-    public static String getCode() {
-        User u = customerUser;
-        String code;
-        if(u.ContactId != null) {
-            try {
-              code = [Select Id, Referral_Code__c from Contact where Id = :u.ContactId].Referral_Code__c;
-            }catch(Exception ex) { 
-            }
-        }
-        return code;
-    }  
 
    @AuraEnabled
    public static String sendEmail(String emailAddress) {
@@ -311,30 +298,7 @@ public without sharing class MyAccountController {
 
     }
 
-    @AuraEnabled
-    public static String generateReferralURL () {
-        User u = customerUser;
-        String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
-        String referralUrl = host + 'apply/s/csap';
 
-        Opportunity opp = getMostRecentOpportunityInfo();
-
-        if (customerUser.Contact.Product_Line__c == 'Community Solar') {
-            String partnerId = opp.Partner_tag_lookup__c;
-            String salesRepId = opp.BS_Sales_ID__c;
-            String referralCode= u.ContactId;
-
-            if(opp.Partner_tag_lookup__c != null){
-           // if (partnerId != null) {
-                referralUrl += '?partnerId=' + partnerId + '&salesRepId=' + salesRepId +
-                    '&referralCode=' + referralCode;
-            } else {
-                referralURL += '?partnerId=' + '&salesRepId=' + '&referralCode=' + referralCode ;
-            }
-        }
-
-        return referralUrl;
-        }
 
 
 }

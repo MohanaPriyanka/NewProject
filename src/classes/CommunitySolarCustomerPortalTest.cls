@@ -226,14 +226,15 @@ public without sharing class CommunitySolarCustomerPortalTest {
             System.assert(coPrAcc != null);
             System.assert(coAll != null);
 
-            //test the getCode() method
-            String referralCode = MyAccountController.getCode();
-            System.assertEquals(referralCode, 'bluewaveFLast');
+            //Test getMostRecentOpportunityInfo() and sendEmail URL()
+            Opportunity checkOpp = MyAccountController.getMostRecentOpportunityInfo();
+            String checkPartnerId = checkOpp.Partner_tag_lookup__c;
+            String checkSalesRepId = checkOpp.BS_Sales_ID__c;
+            String checkContactId = ContactfromUser.Id;
 
-            //Test generateReferralURL()
-            String checkURL = URL.getSalesforceBaseURL().toExternalForm() + '/' + 'apply/s/csap' + '?partnerId=' + opportunityNEW.Partner_tag_lookup__c + '&salesRepId=' + opportunityNEW.BS_Sales_ID__c + '&referralCode=' + con.Id;
-            String referralURL = MyAccountController.generateReferralURL();
-            System.assertEquals(checkURL, referralURL);
+            System.assertEquals(opportunityNEW.Partner_tag_lookup__c, checkPartnerId);
+            System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
+            System.assertEquals(con.Id, checkContactId);
 
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');

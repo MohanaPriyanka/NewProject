@@ -1,6 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
   <aura:attribute name="referCode" type="String"/>
-  <aura:attribute name="referralURL" type="String"/>
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
     <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
