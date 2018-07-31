@@ -261,20 +261,21 @@ public without sharing class MyAccountController {
 
                 //CREATE TASK FOR PARTNER
                 Task emailTask = new Task();
-                    emailTask.RecordTypeId = '012j00000000HIw';
+                    emailTask.RecordTypeId = [SELECT Id, SobjectType, Name FROM RecordType WHERE Name = 'Customer Care Task' AND SobjectType = 'Task' LIMIT 1].Id;
                     emailTask.WhatId = customerPartner.Id;
                     emailTask.Subject = 'Email: Your Customer Referred a Friend for CS!';
                     emailTask.Description = 'Your customer, ' + u.FirstName + ' ' + u.LastName + ', referred a friend at ' + emailAddress + ' to join BlueWave Community Solar!';
                 insert emailTask;
 
                 return 'success';
-
             }
             if(results[0] != null)
-                return results[0].getErrors()[0].getMessage();
-            return 'There was an error sending the email.';
+                Logger.logNow('MyAccountController', 'sendEmail', results[0].getErrors()[0].getMessage());
+                return 'There was an error sending the email.';
+
         } catch (Exception ex) {
-           return ex.getMessage();
+            Logger.logNow('MyAccountController', 'sendEmail', ex.getMessage());
+            return ex.getMessage();
         }
     }
 
