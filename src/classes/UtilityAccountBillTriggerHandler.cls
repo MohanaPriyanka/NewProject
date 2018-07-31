@@ -154,22 +154,24 @@ public with sharing class UtilityAccountBillTriggerHandler {
         printSOQLLimits('After Building UASBs');
 
         // if there are utility account subscription bills insert them
-        printSOQLLimits('Before Upserting UASBs');
 
         if(uasbSet.size() > 0) {
+            printSOQLLimits('Before Upserting UASBs');
             List<UASB__c> billList = new List<UASB__c>(uasbSet);
             upsert billList Unique_Id__c;
             // connect bill adjustments to UASBs
+            printSOQLLimits('After Inserting UASBs');
             for (UASB__c bill : billList) {
                 if (adjustmentsToUpdateMap.containsKey(bill.Unique_Id__c)) {
                     adjustmentsToUpdateMap.get(bill.Unique_Id__c).UASB__c = bill.Id;
                 }
             }
+            printSOQLLimits('Before Updating Adjustments');
             if(adjustmentsToUpdateMap.size() > 0) {
                 update adjustmentsToUpdateMap.Values();
             }
+            printSOQLLimits('After Updating Adjustments');
         }
-        printSOQLLimits('After Inserting UASBs');
 
     }
 
