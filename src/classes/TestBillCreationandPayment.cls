@@ -371,16 +371,6 @@ public class TestBillCreationandPayment {
         update listAccountBills;
     }
 
-    static testMethod void undoSetBillsToPublished() {
-        List <Account_Bill__c> listABs = [SELECT Id, Published__c
-                                            FROM Account_Bill__c
-                                            WHERE Published__c = TRUE];
-        for (Account_Bill__c acctBill : listABs) {
-            acctBill.Published__c = False;
-        }
-        update listABs;
-    }
-
     @isTest public static void testPreviewBills(){
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [
@@ -785,8 +775,6 @@ public class TestBillCreationandPayment {
             WHERE Name = 'Oxford Barrett St. P1'
         ];
 
-        setBillsToPublished();
-
         Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
@@ -978,10 +966,9 @@ public class TestBillCreationandPayment {
         Account accountA = [SELECT Id, Name
         FROM Account
         WHERE Name = 'Account A'];
+        Test.StartTest();
 
         setBillsToPublished();
-
-        Test.StartTest();
 
         System.runAs(userA){
             List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
