@@ -79,10 +79,7 @@ public with sharing class LetterStreamService {
         System.debug(responseXML.toXmlString());
         XmlStreamReader responseReader = new XmlStreamReader(responseXML.toXmlString());
 
-        List<Account_Bill__c> sentAccountBills = parseLetterStreamResponse(responseReader);
-        if (sentAccountBills.size() > 0) {
-            update sentAccountBills;
-        }
+        parseLetterStreamResponse(responseReader);
     }
 
     /*
@@ -101,47 +98,114 @@ public with sharing class LetterStreamService {
     </messages>
      */
 
-    public List<Account_Bill__c> parseLetterStreamResponse(XmlStreamReader responseReader) {
-        String responseCode;
+    public void parseLetterStreamResponse(XmlStreamReader responseReader) {
         while(responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
-                if ('messages' == responseReader.getLocalName()) {
-
-                }
-                System.debug(responseReader.getLocalName() + ' :' + responseReader.getText());
-                if ('code' == responseReader.getLocalName()) {
-                    responseCode = responseReader.getText();
-                }
-                // handle responseCodes
-                if ('doc' == responseReader.getLocalName()) {
-                    String subXML = responseReader.getText();
-                    XmlStreamReader docReader = new XmlStreamReader(subXML);
-                    String accountBillId;
-                    String jobId;
-                    Decimal pieceCost;
-                    while(docReader.hasNext()) {
-                        // response contains an xml doc
-                        if ('id' == docReader.getLocalName()) {
-                            accountBillId = docReader.getText();
-                        } else if ('job' == docReader.getLocalName()) {
-                            jobId = docReader.getText();
-                        } else if ('cost' == docReader.getLocalName()) {
-                            pieceCost = Decimal.valueOf(docReader.getText());
-                        }
-                    }
-                    Account_Bill__c accountBill = new Account_Bill__c(
-                        Id = accountBillId,
-                        LetterStream_Job_Id__c = jobId, // proposed new fields
-                        LetterStream_Piece_Cost__c = pieceCost, // proposed new fields
-                        Ready_For_Paper_Bill_Queue__c = false,
-                        Added_To_Paper_Bill_Queue__c = true
-                    );
-                    sentAccountBills.add(accountBill);
-                    docReader.next();
+                if ('message' == responseReader.getLocalName()) {
+                    parseLetterStreamMessage(responseReader);
                 }
             }
             responseReader.next();
         }
+    }
+
+    public void parseLetterStreamMessage(XmlStreamReader responseReader) {
+        String responseCode;
+        String details;
+        String batchName;
+        Integer batchQuantity;
+        Decimal batchCost;
+        LetterStreamJob__c newJob;
+        List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
+        while(responseReader.hasNext()) {
+            responseReader.next();
+            System.debug(LoggingLevel.ERROR, responseReader.getLocalName());
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+                if ('code' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    responseCode = responseReader.getText();
+                    System.debug(LoggingLevel.ERROR, responseCode);
+                }
+                if ('details' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    details = responseReader.getText();
+                    System.debug(LoggingLevel.ERROR, details);
+                }
+                if ('batch' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchName = responseReader.getText();
+                    System.debug(LoggingLevel.ERROR, batchName);
+                }
+                if ('quantity' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchQuantity = Integer.valueOf(responseReader.getText());
+                    System.debug(LoggingLevel.ERROR, batchQuantity);
+                }
+                if ('cost' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchCost = Decimal.valueOf(responseReader.getText());
+                    System.debug(LoggingLevel.ERROR, batchCost);
+                }
+                if ('doc' == responseReader.getLocalName()) {
+                    responseReader.next();
+//                    String subXML = responseReader.getText();
+//                    System.debug(LoggingLevel.ERROR, subXML);
+//                    XmlStreamReader docReader = new XmlStreamReader(subXML);
+                    pieces.add(parseLetterStreamPiece(responseReader));
+                }
+            }
+            responseReader.next();
+        }
+        if (responseCode != null
+            && details != null
+            && batchName != null
+            && batchQuantity != null
+            && batchCost != null
+            && pieces.size() > 0) {
+            newJob = new LetterStreamJob__c(
+                Batch_Name__c = batchName,
+                Cost__c = batchCost,
+                Details__c = details,
+                Piece_Count__c = batchQuantity,
+                Job_Id__c = pieces[0].LetterStream_Job_Id__c
+            );
+            insert newJob;
+            for (LetterStream_Piece__c piece : pieces) {
+                piece.LetterStreamJob__c = newJob.Id;
+            }
+            insert pieces;
+        }
+    }
+
+    public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
+        String objectId;
+        String jobId;
+        Decimal pieceCost;
+        while(docReader.hasNext()) {
+            // response contains an xml doc
+            System.debug(LoggingLevel.ERROR, docReader.getLocalName());
+            if (docReader.getEventType() == XmlTag.START_ELEMENT) {
+                if ('id' == docReader.getLocalName()) {
+                    docReader.next();
+                    objectId = docReader.getText();
+                    System.debug(LoggingLevel.ERROR, objectId);
+                } else if ('job' == docReader.getLocalName()) {
+                    docReader.next();
+                    jobId = docReader.getText();
+                    System.debug(LoggingLevel.ERROR, jobId);
+                } else if ('cost' == docReader.getLocalName()) {
+                    docReader.next();
+                    pieceCost = Decimal.valueOf(docReader.getText());
+                    System.debug(LoggingLevel.ERROR, pieceCost);
+                }
+            }
+            docReader.next();
+        }
+        return new LetterStream_Piece__c(
+            Object_Id__c = objectId,
+            Piece_Cost__c = pieceCost,
+            LetterStream_Job_Id__c = jobId
+        );
     }
 
     public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
