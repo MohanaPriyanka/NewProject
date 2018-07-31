@@ -629,8 +629,10 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
+        // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
+        // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
         System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
-        System.AssertEquals(606.83,systembillList[1].Total_Due__c);
+        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
         System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
         System.AssertEquals(24,systembillList[0].Adjustments_UASB__c);
