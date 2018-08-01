@@ -142,6 +142,7 @@ public without sharing class CSAPController {
                         LIMIT 1];
 
         Partner__c partner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :partnerId LIMIT 1];
+        Partner__c defaultPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Quest Energy Solutions' LIMIT 1];
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -174,9 +175,12 @@ public without sharing class CSAPController {
             lead.Partner_lookup__c = partner.Id;
             lead.Partner_Email__c = partner.Email__c;
         } else if (String.isNotBlank(profile.partnerId)) {
-            lead.Partner_lookup__c = profile.partnerId;
-            lead.Partner_Email__c = profile.partnerEmail;
+            lead.Partner_Lookup__c = defaultPartner.Id;
+            lead.Partner_Email__c = defaultPartner.Email__c;
+//            lead.Partner_lookup__c = profile.partnerId;
+//            lead.Partner_Email__c = profile.partnerEmail;
         }
+        //DO WE NEED SALESREPS?
         if (String.isNotBlank(salesRepId)) {
             lead.Bs_Sales_ID__c = salesRepId;
         } else if (String.isNotBlank(profile.salesRepId)) {
