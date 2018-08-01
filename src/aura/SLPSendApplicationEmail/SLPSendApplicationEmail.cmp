@@ -230,16 +230,16 @@
                       </div>
                     </fieldset>
                   </aura:if>
-                  <aura:if isTrue="{!v.partnerRecord.Storage_Approved__c}">
-                    <div>
+                  <!--<aura:if isTrue="{!v.partnerRecord.Storage_Approved__c}">-->
+                    <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
                       <lightning:input type="checkbox" label="Add Storage"
                                            checked="{!v.newLead.Storage__c}"/>
                     </div>
-                  </aura:if>
+                  <!--</aura:if>-->
                   <aura:if isTrue="{!v.newLead.Storage__c}">
                     <div class="slds-form-element__row">
                       <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid goes down?</b></label>
+                        <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid is down?</b></label>
                         <div class="slds-form-element__control">
                           <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.systemInfoObj.storage_hybrid__c}">
                             <ui:inputSelectOption text="" label="Select"/>
@@ -260,7 +260,7 @@
                       </aura:if>
                       <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                         <label class="slds-form-element__label" for="input-03"><b>Cost of Storage System</b></label>
-                        <ui:outputCurrency aura:id="batteryCost" class="slds-input" value="{!v.systemInfoObj.battery_cost__c}"/>
+                        <ui:inputCurrency aura:id="batteryCost" class="slds-input" value="{!v.systemInfoObj.battery_cost__c}"/>
                       </div>
                     </div>
                     <div class="slds-form-element__row">
@@ -278,7 +278,7 @@
                           <ui:inputSelectOption text="Other" label="Other"/>
                         </ui:inputSelect>
                       </div>
-                      <aura:if isTrue="{!v.newLead.batteryManufacturer == 'Other'}">
+                      <aura:if isTrue="{!v.systemInfoObj.battery_manufacturer__c == 'Other'}">
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                           <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
                           <ui:inputText aura:id="batteryManufacturerOther" class="slds-input" value="{!v.systemInfoObj.battery_manufacturer_other__c}"/>
@@ -304,6 +304,7 @@
                           <ui:inputSelectOption text="Xantrex" label="Xantrex"/>
                           <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
                           <ui:inputSelectOption text="SMA" label="SMA"/>
+                          <ui:inputSelectOption text="Other" label="Other"/>
                         </ui:inputSelect>
                       </div>
                       <aura:if isTrue="{!v.newLead.batteryInverterManufacturer == 'Other'}">
