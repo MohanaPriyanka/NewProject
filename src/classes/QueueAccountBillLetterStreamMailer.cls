@@ -7,19 +7,41 @@
  */
 
 
-public with sharing class QueueAccountBillLetterStreamMailer Implements Queueable{
-    public Map<Id, Account_Bill__c> accountBillsByDocIds;
-    public List<ContentDocument> documents;
+public class QueueAccountBillLetterStreamMailer implements Queueable{
+    public Set<Id> accountBills;
+    public Set<Id> documentsIds;
     public Integer jobNumber;
 
-    public QueueAccountBillLetterStreamMailer(Map<Id, Account_Bill__c> accountBillsByDocIds,List<ContentDocument> documents, Integer jobNumber) {
-        this.accountBillsByDocIds = accountBillsByDocIds;
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Integer jobNumber) {
+        this.accountBills = accountBills;
         this.jobNumber = jobNumber;
-        this.documents = documents;
-        String checkout;
+        this.documentsIds = documentsIds;
     }
 
     public void execute(QueueableContext context) {
+        Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Number_of_Pages_in_Template__c,
+                Calendar_Month__c, Year__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            WHERE Id IN : accountBills
+        ];
+
+        if (accountBills.isEmpty()) {
+            return ;
+        }
+
+        for (Account_Bill__c accountBill : accountBills) {
+            accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
+        }
+
+        List<ContentDocument> documents = [
+            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
+            FROM ContentDocument
+            WHERE Id IN : documentsIds
+        ];
+
         LetterStreamService lss = new LetterStreamService();
 
         Zippex lettersToSend = new Zippex();
@@ -45,12 +67,20 @@ public with sharing class QueueAccountBillLetterStreamMailer Implements Queueabl
 
         HttpRequest request = lss.buildRequestWithFile(letterPackage, 'filename.zip');
         Http http = new Http();
-        HttpResponse response = http.send(request);
-
-        String checkpoint;
+        HttpResponse response;
+        String responseXMLString;
+        if (Test.isRunningTest()) {
+            // need to directly mock response here, mock classes don't work in async apex
+            LetterStreamAPIMock mock = new LetterStreamAPIMock(accountBills);
+            response = mock.respond(request);
+            responseXMLString = response.getBody();
+        } else {
+            response = http.send(request);
+            Dom.Document responseXML = response.getBodyDocument();
+            responseXMLString = responseXML.toXmlString();
+        }
         // will return null if a job wasn't posted correctly
-        Dom.Document responseXML = response.getBodyDocument();
-        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXML.toXmlString());
+        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
         if (newJob != null) {
             update markAccountBillsAsMailed(accountBillsByDocIds.values(), newJob);

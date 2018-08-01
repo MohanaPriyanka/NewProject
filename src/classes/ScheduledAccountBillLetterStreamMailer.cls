@@ -45,13 +45,13 @@ public with sharing class ScheduledAccountBillLetterStreamMailer Implements Sche
 
         Integer packageSize = 0;
         Integer jobNumber = 1;
-        Map<Id, Account_Bill__c> packageAccountBills = new Map<Id, Account_Bill__c>();
-        List<ContentDocument> packageContentDocuments = new List<ContentDocument>();
+        Set<Id> packageAccountBills = new Set<Id>();
+        Set<Id> packageContentDocuments = new Set<Id>();
 
         for (ContentDocument doc : documents) {
             packageSize += doc.ContentSize;
-            packageAccountBills.put(doc.Id, accountBillsByDocIds.get(doc.Id));
-            packageContentDocuments.add(doc);
+            packageAccountBills.add(accountBillsByDocIds.get(doc.Id).Id);
+            packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
                 Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
