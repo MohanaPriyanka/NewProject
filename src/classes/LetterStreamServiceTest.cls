@@ -179,4 +179,25 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(expectedEncodedHashedId, headers.get('encodedHashedId'));
         System.assertEquals(expectedHashedId, headers.get('hashedId'));
     }
+
+    @isTest public static void testLetterStreamRequest() {
+        LetterStream_Settings__c ls = new LetterStream_Settings__c(
+            Name = 'Global',
+            API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+            API_Id__c = 'bluewave',
+            API_Key__c = 'bluewaveAPIKey'
+        );
+        insert ls;
+
+        LetterStreamService lss = new LetterStreamService();
+        Blob testFile = Blob.valueOf('test file');
+
+        HttpRequest testRequest = lss.buildRequestWithFile(testFile, 'test_file.zip');
+
+        System.assertEquals('https://secure.letterstream.com/apis/', testRequest.getEndpoint());
+
+        String contentType = 'multipart/form-data; boundary=----------------------------741e90d31eff';
+        System.assertEquals(contentType, testRequest.getHeader('Content-Type'));
+        System.assertEquals('POST', testRequest.getMethod());
+    }
 }

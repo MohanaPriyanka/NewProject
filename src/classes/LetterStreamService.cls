@@ -131,7 +131,11 @@ public with sharing class LetterStreamService {
     }
 
     public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
-        String endpoint = 'https://secure.letterstream.com/apis/';
+        List<LetterStream_Settings__c> letterStreamSettings = LetterStream_Settings__c.getall().values();
+        String endpoint = letterStreamSettings.get(0).API_Endpoint__c;
+        String apiId = letterStreamSettings[0].API_Id__c;
+        String apiKey = letterStreamSettings[0].API_Key__c;
+        String uniqueId = String.valueOf(DateTime.now().getTime());
 
         // Repost of code  with fix for file corruption issue
         // Orignal code postings and explanations
@@ -139,10 +143,6 @@ public with sharing class LetterStreamService {
         // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
         // Additional changes commented GW: that fix issue with occasional corruption of files
         String boundary = '----------------------------741e90d31eff';
-
-        String uniqueId = String.valueOf(DateTime.now().getTime());
-        String apiId = '86fjkb92';
-        String apiKey = 'wkpv3417e9r2d3qx';
 
         Map<String, String> letterStreamHeaders = letterStreamHeaders(uniqueId, apiId, apiKey);
 
