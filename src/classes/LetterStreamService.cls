@@ -82,28 +82,12 @@ public with sharing class LetterStreamService {
         parseLetterStreamResponse(responseReader);
     }
 
-    /*
-    Example Response:
-    <?xml version="1.0" encoding="UTF-8"?>
-    <messages id="86fjkb92">
-	    <message type="info">
-		    <code>-100</code>
-		    <details>Success</details>
-            <batch>bw_bills</batch>
-            <quantity>2</quantity>
-            <cost>2.82</cost>
-            <doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>
-            <doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>
-        </message>
-    </messages>
-     */
-
     public void parseLetterStreamResponse(XmlStreamReader responseReader) {
         while(responseReader.hasNext()) {
-            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
-                if ('message' == responseReader.getLocalName()) {
-                    parseLetterStreamMessage(responseReader);
-                }
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT
+                && 'message' == responseReader.getLocalName()) {
+                responseReader.next();
+                parseLetterStreamMessage(responseReader);
             }
             responseReader.next();
         }
@@ -118,43 +102,38 @@ public with sharing class LetterStreamService {
         LetterStreamJob__c newJob;
         List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
         while(responseReader.hasNext()) {
-            responseReader.next();
-            System.debug(LoggingLevel.ERROR, responseReader.getLocalName());
-            if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT
+                && 'doc' == responseReader.getLocalName()) {
+                responseReader.next();
+                pieces.add(parseLetterStreamPiece(responseReader));
+            } else if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('code' == responseReader.getLocalName()) {
                     responseReader.next();
                     responseCode = responseReader.getText();
-                    System.debug(LoggingLevel.ERROR, responseCode);
                 }
                 if ('details' == responseReader.getLocalName()) {
                     responseReader.next();
                     details = responseReader.getText();
-                    System.debug(LoggingLevel.ERROR, details);
                 }
                 if ('batch' == responseReader.getLocalName()) {
                     responseReader.next();
                     batchName = responseReader.getText();
-                    System.debug(LoggingLevel.ERROR, batchName);
                 }
                 if ('quantity' == responseReader.getLocalName()) {
                     responseReader.next();
                     batchQuantity = Integer.valueOf(responseReader.getText());
-                    System.debug(LoggingLevel.ERROR, batchQuantity);
                 }
                 if ('cost' == responseReader.getLocalName()) {
                     responseReader.next();
                     batchCost = Decimal.valueOf(responseReader.getText());
-                    System.debug(LoggingLevel.ERROR, batchCost);
                 }
-                if ('doc' == responseReader.getLocalName()) {
-                    responseReader.next();
-//                    String subXML = responseReader.getText();
-//                    System.debug(LoggingLevel.ERROR, subXML);
-//                    XmlStreamReader docReader = new XmlStreamReader(subXML);
-                    pieces.add(parseLetterStreamPiece(responseReader));
-                }
+                responseReader.next();
+            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT
+                && 'message' == responseReader.getLocalName()) {
+                break;
+            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT) {
+                responseReader.next();
             }
-            responseReader.next();
         }
         if (responseCode != null
             && details != null
@@ -182,24 +161,26 @@ public with sharing class LetterStreamService {
         String jobId;
         Decimal pieceCost;
         while(docReader.hasNext()) {
-            // response contains an xml doc
-            System.debug(LoggingLevel.ERROR, docReader.getLocalName());
             if (docReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('id' == docReader.getLocalName()) {
                     docReader.next();
                     objectId = docReader.getText();
-                    System.debug(LoggingLevel.ERROR, objectId);
                 } else if ('job' == docReader.getLocalName()) {
                     docReader.next();
                     jobId = docReader.getText();
-                    System.debug(LoggingLevel.ERROR, jobId);
                 } else if ('cost' == docReader.getLocalName()) {
                     docReader.next();
                     pieceCost = Decimal.valueOf(docReader.getText());
-                    System.debug(LoggingLevel.ERROR, pieceCost);
                 }
+                docReader.next();
             }
-            docReader.next();
+            if (docReader.getEventType() == XmlTag.END_ELEMENT
+                && 'doc' == docReader.getLocalName()) {
+                docReader.next();
+                break;
+            } else if (docReader.getEventType() == XmlTag.END_ELEMENT) {
+                docReader.next();
+            }
         }
         return new LetterStream_Piece__c(
             Object_Id__c = objectId,
@@ -263,9 +244,8 @@ public with sharing class LetterStreamService {
     }
 
     public void addLetterToCSV(LetterParameters params) {
-        // of the headers is important. ex. API won't know PageCount is in column N even with the correct title.
-        // PageCount must be in column Q
-        // Will need to do some edge case management to make sure the file is built correctly
+        // Order of the headers and data is important:
+        // ex. API won't know PageCount is in column 6 even with the correct title. PageCount must be in column 16
 
         csv += '\n';
         csv += (params.fileId + ','); // UniqueDocId
@@ -278,8 +258,7 @@ public with sharing class LetterStreamService {
         csv += (params.recipientState + ','); // RecipientState
         csv += (params.recipientPostalCode + ','); //RecipientZip
         csv += blueWaveAddress();
-        csv += ('2' + ','); // page count
-//        csv += (params.pages + ','); // page count
+        csv += (params.pages + ','); // page count
         csv += 'firstclass,'; // mailType
         csv += 'N,'; // coversheet
         csv += 'N,'; // duplex
@@ -313,8 +292,7 @@ public with sharing class LetterStreamService {
         public String pages;
 
         public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
-            fileId = document.Id;
-//            fileId = accountBill.Id;
+            fileId = accountBill.Id;
             fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
             recipientName = accountBill.Parent_Account__r.Name;
             recipientStreet = accountBill.Parent_Account__r.BillingStreet ;

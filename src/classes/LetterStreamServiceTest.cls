@@ -17,6 +17,8 @@ public with sharing class LetterStreamServiceTest {
                     '<cost>2.82</cost>' +
                     '<doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>' +
                     '<doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+                    '<doc><id>0694C000000Psm1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+                    '<doc><id>0694C000000Psx1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
                 '</message>' +
             '</messages>';
 
@@ -43,9 +45,12 @@ public with sharing class LetterStreamServiceTest {
             FROM LetterStream_Piece__c
         ];
 
-        System.assertEquals(2, pieces.size());
-        System.assertEquals(jobs[0].Id, pieces[0].LetterStreamJob__c);
+        System.assertEquals(4, pieces.size());
         System.assertEquals('0694C000000PskrQAC', pieces[0].Object_Id__c);
-        System.assertEquals(1.41, pieces[0].Piece_Cost__c);
+        for (LetterStream_Piece__c piece : pieces) {
+            System.assertEquals(jobs[0].Id, piece.LetterStreamJob__c);
+            System.assertEquals(1.41, piece.Piece_Cost__c);
+
+        }
     }
 }
