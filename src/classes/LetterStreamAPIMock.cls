@@ -6,10 +6,10 @@
 
 @isTest
 global class LetterStreamAPIMock implements HttpCalloutMock {
-    public List<Account_Bill__c> accountBills = new List<Account_Bill__c>();
+    public List<Account_Bill__c> accountBills;
 
     public LetterStreamAPIMock(List<Account_Bill__c> accountBills) {
-        accountBills = accountBills;
+        this.accountBills = accountBills;
     }
 
     global HTTPResponse respond(HTTPRequest req) {
