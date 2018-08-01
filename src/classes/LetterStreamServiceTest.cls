@@ -304,10 +304,11 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        ScheduledAccountBillLetterStreamMailer batchToRun = new ScheduledAccountBillLetterStreamMailer();
+        ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
         Datetime dt = Datetime.now().addMinutes(0);
         String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, batchToRun);
+        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, mailer);
+        mailer.execute(null);
         Test.stopTest();
 
         List<Account_Bill__c> accountBillsAfterSend = [
