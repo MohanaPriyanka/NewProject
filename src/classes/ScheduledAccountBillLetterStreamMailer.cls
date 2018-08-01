@@ -52,14 +52,16 @@ public with sharing class ScheduledAccountBillLetterStreamMailer Implements Sche
             packageSize += doc.ContentSize;
             packageAccountBills.put(doc.Id, accountBillsByDocIds.get(doc.Id));
             packageContentDocuments.add(doc);
-
+            // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 jobNumber += 1;
                 packageSize = 0;
             }
         }
+        // if we never hit max heap size, send at end
+        Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
     }
 }

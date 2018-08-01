@@ -16,6 +16,7 @@ public with sharing class QueueAccountBillLetterStreamMailer Implements Queueabl
         this.accountBillsByDocIds = accountBillsByDocIds;
         this.jobNumber = jobNumber;
         this.documents = documents;
+        String checkout;
     }
 
     public void execute(QueueableContext context) {
@@ -46,6 +47,7 @@ public with sharing class QueueAccountBillLetterStreamMailer Implements Queueabl
         Http http = new Http();
         HttpResponse response = http.send(request);
 
+        String checkpoint;
         // will return null if a job wasn't posted correctly
         Dom.Document responseXML = response.getBodyDocument();
         LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXML.toXmlString());
