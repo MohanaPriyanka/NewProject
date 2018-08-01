@@ -1,7 +1,6 @@
 /**
  * Created by mstackhouse on 7/17/2018.
- * Description: 
- * Test: 
+ * Description: Used to test LetterStreamService Methods
  */
 
 @isTest
@@ -22,11 +21,9 @@ public with sharing class LetterStreamServiceTest {
                 '</message>' +
             '</messages>';
 
-        XmlStreamReader response = new XmlStreamReader(exampleResponse);
-
         LetterStreamService lss = new LetterStreamService();
 
-        lss.parseLetterStreamResponse(response);
+        lss.parseLetterStreamResponse(exampleResponse);
 
         List<LetterStreamJob__c> jobs = [
             SELECT Id, Batch_Name__c, Cost__c, Details__c, Job_Id__c, Piece_Count__c
@@ -52,5 +49,109 @@ public with sharing class LetterStreamServiceTest {
             System.assertEquals(1.41, piece.Piece_Cost__c);
 
         }
+    }
+
+    @isTest(SeeAllData=true) public static void testCSVBuilder() {
+        LetterStreamService lss = new LetterStreamService();
+
+        System.assertEquals('', lss.csv);
+
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+        insert accountParent;
+
+        Account_Bill__c accountBill = new Account_Bill__c(
+            Parent_Account__c = accountParent.Id
+        );
+
+        insert accountBill;
+
+        ContentVersion documentVersion = new ContentVersion(
+            Title = 'test document',
+            PathOnClient = 'test_Doc.pdf',
+            VersionData = Blob.valueOf('testDoc')
+        );
+        insert documentVersion;
+
+        accountBill = [
+            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Number_of_Pages_in_Template__c,
+                Calendar_Month__c, Year__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : accountParent.Id
+            LIMIT 1
+        ];
+
+        ContentDocument document = [
+            SELECT Id, LatestPublishedVersion.Title
+            FROM ContentDocument
+            WHERE LatestPublishedVersionId = : documentVersion.Id
+            LIMIT 1
+        ];
+
+        LetterStreamService.LetterParameters params = new LetterStreamService.LetterParameters();
+        params.generateFromAccountBill(accountBill, document);
+
+        System.assertEquals(accountBill.Id, params.fileId);
+        System.assertEquals('test_document.pdf', params.fileName);
+        System.assertEquals('Account Parent', params.recipientName);
+        System.assertEquals('123 Fake St', params.recipientStreet);
+        System.assertEquals('City', params.recipientCity);
+        System.assertEquals('Colorado', params.recipientState);
+        System.assertEquals('80525', params.recipientPostalCode);
+        System.assertEquals('4', params.pages);
+
+        lss.addLetterToCSV(params);
+
+        System.assertNotEquals('', lss.csv);
+
+        // Recipient Info
+        System.assert(lss.csv.contains('Account Parent'));
+        System.assert(lss.csv.contains('test_document.pdf'));
+        System.assert(lss.csv.contains('123 Fake St'));
+        System.assert(lss.csv.contains('City'));
+        System.assert(lss.csv.contains('Colorado'));
+        System.assert(lss.csv.contains('80525'));
+        System.assert(lss.csv.contains('4'));
+
+        // BW Address info
+        System.assert(lss.csv.contains('BlueWave Solar'));
+        System.assert(lss.csv.contains('137 Newbury St'));
+        System.assert(lss.csv.contains('4th Floor'));
+        System.assert(lss.csv.contains('Boston'));
+        System.assert(lss.csv.contains('MA'));
+        System.assert(lss.csv.contains('02116'));
+
+        // LetterStream Headers
+        System.assert(lss.csv.contains('UniqueDocId'));
+        System.assert(lss.csv.contains('PDFFileName'));
+        System.assert(lss.csv.contains('RecipientName1'));
+        System.assert(lss.csv.contains('RecipientAddr1'));
+        System.assert(lss.csv.contains('RecipientAddr2'));
+        System.assert(lss.csv.contains('RecipientCity'));
+        System.assert(lss.csv.contains('RecipientState'));
+        System.assert(lss.csv.contains('RecipientZip'));
+        System.assert(lss.csv.contains('SenderName1'));
+        System.assert(lss.csv.contains('SenderName2'));
+        System.assert(lss.csv.contains('SenderAddr1'));
+        System.assert(lss.csv.contains('SenderAddr2'));
+        System.assert(lss.csv.contains('SenderCity'));
+        System.assert(lss.csv.contains('SenderState'));
+        System.assert(lss.csv.contains('SenderZip'));
+        System.assert(lss.csv.contains('PageCount'));
+        System.assert(lss.csv.contains('MailType'));
+        System.assert(lss.csv.contains('CoverSheet'));
+        System.assert(lss.csv.contains('Duplex'));
+        System.assert(lss.csv.contains('Ink'));
+        System.assert(lss.csv.contains('Paper'));
     }
 }

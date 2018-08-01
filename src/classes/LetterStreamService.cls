@@ -10,92 +10,30 @@
 public with sharing class LetterStreamService {
     public Http http = new Http();
 
-    public String csv = 'UniqueDocId,PDFFileName,RecipientName1,RecipientAddr1,RecipientAddr2,RecipientCity,' +
+    public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientAddr1,RecipientAddr2,RecipientCity,' +
         'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
         'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
 
-    public void sendAccountBills() {
-        // 1. Query for Account bills that need to be sent
-        // 2. Collect ContentVersion files (Account_Bill.Bill_Attach_Version)
-        // 3. Create batches of ContentVersion.Size where Total Size < 10 Mb
-        //
-        // for each batch (Map<ContentVersion ID, Account_Bill__c>, List<ContentVersion>):
-        // done - 1. Create Zippex file
-        // done - 2. Add ContentVersion.VersionData to zippex
-        // done - 3. Zippex.addFile(String fileName, Blob fileData, null)
-        // done - 4. Build CSV to LetterStream's specs
-        // done - 5. Zippex.addFile(String csvName, Blob fileData, null)
-        // 6. POST to LetterStream
-        //      - If Failed, we need to re-queue / schedule for another time
-        //      - If succeeded, record LetterStream job for Bills.
+    public String csv = '';
 
-        // add 'https://secure.letterstream.com/apis/index.php' to remote sites
+    public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
+        System.debug(responseXML);
+        XmlStreamReader responseReader = new XmlStreamReader(responseXML);
 
-        // build Package
-        Account_Bill__c testAccountBill = [
-            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet,
-                Parent_Account__r.BillingCity, Parent_Account__r.BillingState,
-                Parent_Account__r.BillingPostalCode, Number_of_Pages_in_Template__c
-            FROM Account_Bill__c
-            WHERE Id = 'a1n4C0000009JmJQAU'
-        ];
-
-        Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
-        List<ContentDocument> documents = [
-            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
-            FROM ContentDocument
-            WHERE Id = '0694C000000PskrQAC'
-            OR Id = '0694C000000Psl1QAC'
-        ];
-
-        for (ContentDocument doc : documents) {
-            accountBillsByDocIds.put(doc.Id, testAccountBill);
-        }
-
-        Zippex lettersToSend = new Zippex();
-
-        for (ContentDocument document : documents) {
-            Account_Bill__c accountBill = accountBillsByDocIds.get(document.Id);
-            LetterParameters letterParams = new LetterParameters();
-            letterParams.generateFromAccountBill(accountBill, document);
-            addLetterToCSV(letterParams);
-            String fileName = letterParams.fileName;
-            lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
-        }
-
-        Blob csvBlob = Blob.valueOf(csv);
-
-        lettersToSend.addFile('bw_bills.csv', csvBlob, null);
-
-        // end build package
-        Blob letterPackage = lettersToSend.getZipArchive();
-
-
-        HttpRequest request = buildRequestWithFile(letterPackage, 'filename.zip');
-        HttpResponse response = http.send(request);
-
-        Dom.Document responseXML = response.getBodyDocument();
-        System.debug(responseXML.toXmlString());
-        XmlStreamReader responseReader = new XmlStreamReader(responseXML.toXmlString());
-
-        String responseCode = parseLetterStreamResponse(responseReader);
-    }
-
-    public String parseLetterStreamResponse(XmlStreamReader responseReader) {
-        String responseCode;
+        LetterStreamJob__c newJob;
         while(responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'message' == responseReader.getLocalName()) {
                 responseReader.next();
-                responseCode = parseLetterStreamMessage(responseReader);
+                newJob = parseLetterStreamMessage(responseReader);
             }
             responseReader.next();
         }
-        return responseCode;
+        return newJob;
     }
 
-    public String parseLetterStreamMessage(XmlStreamReader responseReader) {
+    public LetterStreamJob__c parseLetterStreamMessage(XmlStreamReader responseReader) {
         String responseCode;
         String details;
         String batchName;
@@ -156,7 +94,7 @@ public with sharing class LetterStreamService {
             }
             insert pieces;
         }
-        return responseCode;
+        return newJob;
     }
 
     public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
@@ -201,7 +139,12 @@ public with sharing class LetterStreamService {
         // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
         // Additional changes commented GW: that fix issue with occasional corruption of files
         String boundary = '----------------------------741e90d31eff';
-        Map<String, String> letterStreamHeaders = letterStreamHeaders();
+
+        String uniqueId = String.valueOf(DateTime.now().getTime());
+        String apiId = '86fjkb92';
+        String apiKey = 'wkpv3417e9r2d3qx';
+
+        Map<String, String> letterStreamHeaders = letterStreamHeaders(uniqueId, apiId, apiKey);
 
         String header = '--'+boundary+'\nContent-Disposition: form-data; ';
         header += ('name="a"' + '\r\n\r\n' + letterStreamHeaders.get('apiId')+ '\r\n');
@@ -249,7 +192,9 @@ public with sharing class LetterStreamService {
     public void addLetterToCSV(LetterParameters params) {
         // Order of the headers and data is important:
         // ex. API won't know PageCount is in column 6 even with the correct title. PageCount must be in column 16
-
+        if (csv == '') {
+            csv += csvHeaders;
+        }
         csv += '\n';
         csv += (params.fileId + ','); // UniqueDocId
         csv += (params.fileName + ','); // PDFFileName
@@ -306,11 +251,8 @@ public with sharing class LetterStreamService {
         }
     }
 
-    public Map<String, String> letterStreamHeaders() {
-        String uniqueId = String.valueOf(DateTime.now().getTime());
+    public Map<String, String> letterStreamHeaders(String uniqueId, String apiId, String apiKey) {
         Integer uniqueIdLength = uniqueId.length();
-        String apiId = '86fjkb92';
-        String apiKey = 'wkpv3417e9r2d3qx';
         // per LetterStreamDocs - String to Hash
         String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
         // per LetterSteamDocs - Base64Encode string
