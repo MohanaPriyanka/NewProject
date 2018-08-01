@@ -200,4 +200,71 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(contentType, testRequest.getHeader('Content-Type'));
         System.assertEquals('POST', testRequest.getMethod());
     }
+
+    @IsTest(SeeAllData=true) public static void testSendLetters() {
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent1 = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+        insert accountParent1;
+
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 2
+        );
+
+        insert accountBill1;
+
+        ContentVersion documentVersion = new ContentVersion(
+            Title = 'test document',
+            PathOnClient = 'test_Doc.pdf',
+            VersionData = Blob.valueOf('testDoc')
+        );
+        insert documentVersion;
+
+        accountBill1.Bill_Attach_Version__c = documentVersion.Id;
+        update accountBill1;
+
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : accountParent1.Id
+        ];
+
+        for (Account_Bill__c accountBill :  accountBills) {
+            accountBill.Published__c = true;
+            accountBill.Ready_For_Paper_Bill_Queue__c = true;
+        }
+        update accountBills;
+        String checkpoint;
+//
+//        Test.startTest();
+//        Test.setMock(WebServiceMock.class, new LetterStreamAPIMock());
+//        ScheduledAccountBillLetterStreamMailer batchToRun = new ScheduledAccountBillLetterStreamMailer();
+//        Datetime dt = Datetime.now().addMinutes(0);
+//        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+//        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, batchToRun);
+//        Test.stopTest();
+//
+//        List<Account_Bill__c> accountBillsAfterSend = [
+//            SELECT Id, Published__c, Ready_For_Paper_Bill_Queue__c, Added_To_Paper_Bill_Queue__c, LetterStreamJob__c
+//            FROM Account_Bill__c
+//        ];
+//
+//        for (Account_Bill__c accountBill : accountBillsAfterSend) {
+//            if (accountBill.Published__c) {
+//                System.assertEquals(false, accountBill.Ready_For_Paper_Bill_Queue__c);
+//                System.assertEquals(true, accountBill.Added_To_Paper_Bill_Queue__c);
+//                System.assertNotEquals(null, accountBill.LetterStreamJob__c);
+//            }
+//        }
+    }
 }

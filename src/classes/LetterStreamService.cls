@@ -8,8 +8,6 @@
 
 
 public with sharing class LetterStreamService {
-    public Http http = new Http();
-
     public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientAddr1,RecipientAddr2,RecipientCity,' +
         'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
