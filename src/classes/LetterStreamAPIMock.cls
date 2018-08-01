@@ -5,18 +5,37 @@
  */
 
 @isTest
-global class LetterStreamAPIMock implements WebServiceMock, HttpCalloutMock {
+global class LetterStreamAPIMock implements HttpCalloutMock {
+    public List<Account_Bill__c> accountBills = new List<Account_Bill__c>();
+
+    public LetterStreamAPIMock(List<Account_Bill__c> accountBills) {
+        accountBills = accountBills;
+    }
+
     global HTTPResponse respond(HTTPRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
 
-        // Create a fake response
-        if (endpoint == 'https://secure.letterstream.com/apis/') {
-            return handleRequest();
+        String exampleResponse = '<?xml version="1.0" encoding="UTF-8"?>' +
+            '<messages id="bluewave">' +
+            '<message type="info">' +
+            '<code>-100</code>' +
+            '<details>Success</details>' +
+            '<batch>' + date.today().format() + '_Job_' + '1' + '</batch>' +
+            '<quantity>' + accountBills.size() + '</quantity>' +
+            '<cost>' + (accountBills.size() * 1.41) + '</cost>';
+        for (Account_Bill__c accountBill : accountBills) {
+            exampleResponse += '<doc>';
+            exampleResponse += ('<id>' + accountBill.Id + '</id>');
+            exampleResponse += '<job>1234567</job>';
+            exampleResponse += '<cost>1.41</cost>';
+            exampleResponse += '</doc>';
         }
-    }
-
-    public static handleRequest() {
-
+        exampleResponse += '</message></messages>';
+        HttpResponse response = new HttpResponse();
+        response.setBody(exampleResponse);
+        response.setStatus('200');
+        response.setHeader('Content-Type', 'text/xml');
+        return response;
     }
 }
