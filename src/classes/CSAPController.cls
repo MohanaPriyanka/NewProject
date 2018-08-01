@@ -140,6 +140,9 @@ public without sharing class CSAPController {
                         WHERE Name = 'API'
                         AND IsActive = True
                         LIMIT 1];
+
+        Partner__c partner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :partnerId LIMIT 1];
+
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
         account.Name = lead.FirstName + ' ' + lead.LastName;
@@ -168,9 +171,11 @@ public without sharing class CSAPController {
             lead.Customer_Type__c = 'Business';
         }
         if (String.isNotBlank(partnerId)) {
-            lead.Partner_lookup__c = partnerId;
+            lead.Partner_lookup__c = partner.Id;
+            lead.Partner_Email__c = partner.Email__c;
         } else if (String.isNotBlank(profile.partnerId)) {
             lead.Partner_lookup__c = profile.partnerId;
+            lead.Partner_Email__c = profile.partnerEmail;
         }
         if (String.isNotBlank(salesRepId)) {
             lead.Bs_Sales_ID__c = salesRepId;
