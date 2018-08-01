@@ -154,4 +154,29 @@ public with sharing class LetterStreamServiceTest {
         System.assert(lss.csv.contains('Ink'));
         System.assert(lss.csv.contains('Paper'));
     }
+
+    @isTest public static void testLetterStreamHeaders() {
+        // Per LetterStream docs for authorization
+        String uniqueId = '1234567890987654321';
+        String apiId = 'BlueWave';
+        String apiKey = 'BlueWaveAPIKEY';
+
+        LetterStreamService lss = new LetterStreamService();
+        Map<String, String> headers = lss.letterStreamHeaders(uniqueId, apiId, apiKey);
+
+
+        // Per LetterStream docs for authorization
+        // build string format: last 6 of uniqueId + apiKey + first 6 of uniqueId
+        String expectedRawHashedId = '654321BlueWaveAPIKEY123456';
+        // base64 encode string
+        String expectedEncodedHashedId = EncodingUtil.base64Encode(Blob.valueOf(expectedRawHashedId));
+        // MD5 encrypt base64 string and convertToHex (php format)
+        String expectedHashedId = EncodingUtil.convertToHex(Crypto.generateDigest('MD5', Blob.valueOf(expectedEncodedHashedId)));
+
+        System.assertEquals(apiId, headers.get('apiId'));
+        System.assertEquals(uniqueId, headers.get('uniqueId'));
+        System.assertEquals(expectedRawHashedId, headers.get('rawHashedId'));
+        System.assertEquals(expectedEncodedHashedId, headers.get('encodedHashedId'));
+        System.assertEquals(expectedHashedId, headers.get('hashedId'));
+    }
 }

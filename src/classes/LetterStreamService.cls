@@ -257,9 +257,9 @@ public with sharing class LetterStreamService {
         String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
         // per LetterSteamDocs - Base64Encode string
         Blob rawHashedIdBlob = Blob.valueOf(rawHashedId);
-        rawHashedId = EncodingUtil.base64Encode(rawHashedIdBlob);
+        String encodedHashedId = EncodingUtil.base64Encode(rawHashedIdBlob);
         // per LetterStreamDocs - MD5 the base64Encoded String
-        Blob md5HashedId = Crypto.generateDigest('MD5', Blob.valueOf(rawHashedId));
+        Blob md5HashedId = Crypto.generateDigest('MD5', Blob.valueOf(encodedHashedId));
         String hashedId = EncodingUtil.convertToHex(md5HashedId);
 
         Map<String, String> headers = new Map<String, String>();
@@ -267,6 +267,7 @@ public with sharing class LetterStreamService {
         headers.put('apiId', apiId);
         headers.put('uniqueId', uniqueId);
         headers.put('rawHashedId', rawHashedId);
+        headers.put('encodedHashedId', encodedHashedId);
         headers.put('hashedId', hashedId);
 
         return headers;
