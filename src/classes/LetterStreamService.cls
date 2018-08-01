@@ -79,21 +79,23 @@ public with sharing class LetterStreamService {
         System.debug(responseXML.toXmlString());
         XmlStreamReader responseReader = new XmlStreamReader(responseXML.toXmlString());
 
-        parseLetterStreamResponse(responseReader);
+        String responseCode = parseLetterStreamResponse(responseReader);
     }
 
-    public void parseLetterStreamResponse(XmlStreamReader responseReader) {
+    public String parseLetterStreamResponse(XmlStreamReader responseReader) {
+        String responseCode;
         while(responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'message' == responseReader.getLocalName()) {
                 responseReader.next();
-                parseLetterStreamMessage(responseReader);
+                responseCode = parseLetterStreamMessage(responseReader);
             }
             responseReader.next();
         }
+        return responseCode;
     }
 
-    public void parseLetterStreamMessage(XmlStreamReader responseReader) {
+    public String parseLetterStreamMessage(XmlStreamReader responseReader) {
         String responseCode;
         String details;
         String batchName;
@@ -154,6 +156,7 @@ public with sharing class LetterStreamService {
             }
             insert pieces;
         }
+        return responseCode;
     }
 
     public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
