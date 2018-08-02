@@ -50,7 +50,9 @@
     },
 
     copyCreditFromPrevious : function(component, event, helper, secondaryLead) {
-        component.set("v.page", "CreditCheckResult");
+        window.setTimeout(function() {
+            component.set("v.page", "CreditCheckResult");
+        }, 3000);
         var lead = component.get("v.lead");
         helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
