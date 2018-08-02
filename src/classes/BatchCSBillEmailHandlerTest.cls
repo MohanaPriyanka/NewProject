@@ -32,7 +32,7 @@ private class BatchCSBillEmailHandlerTest {
 
         // insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        for (i=0;i<9;i++) {
+        for (i=0;i<5;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
                                         Name = 'Bill' + i,
                                         Bill_Number__c = i,
@@ -66,7 +66,65 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
         // There might be more than 9 emails since SeeAllData is true
-        System.assertEquals(true, MessagingService.emailsSent.size() >= 9);
+        System.assertEquals(5, MessagingService.emailsSent.size());
+    }
+
+    @isTest
+    static void testAccountBillsPublished() {
+        setupTestData();
+        List<Account_Bill__c> abList = new List<Account_Bill__c>();
+
+        Account parentAccount = new Account ( Name = 'Parent Account');
+        insert parentAccount;
+
+        Account propertyAccount = new Account ( Name = 'Property Account',
+            Parent_Account__c = parentAccount.Id);
+        insert propertyAccount;
+
+        Contact contactOne = new Contact (  FirstName = 'First',
+            LastName = 'Last',
+            AccountId = parentAccount.Id);
+        insert contactOne;
+
+
+        Contact contactTwo = new Contact (  FirstName = 'First',
+            LastName = 'Second',
+            AccountId = parentAccount.Id,
+            Email = 'pentalerij@gmail.com');
+        insert contactTwo;
+
+        propertyAccount.Send_Bills_Contact__c = contactOne.Id;
+        propertyAccount.Additional_Contact__c = contactTwo.Id;
+        update propertyAccount;
+
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
+        for (Integer i=0;i<4;i++) {
+            Account_Bill__c abOne = new Account_Bill__c (
+                Name = 'Bill' + i,
+                Bill_Number__c = i,
+                Parent_Account__c = propertyAccount.Id,
+                Ready_for_Email_Send__c = true,
+                Published__c = false);
+            abList.add(abOne);
+        }
+        insert abList;
+
+        Test.StartTest();
+        APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
+        insert congaConduct;
+        congaConduct.Emails_Sent__c = true;
+        update congaConduct;
+        Test.StopTest();
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Published__c, Ready_for_Email_Send__c
+            FROM Account_Bill__c
+        ];
+
+        for (Account_Bill__c accountBill : accountBills) {
+            System.assert(accountBill.Published__c);
+        }
     }
 
     @IsTest(SeeAllData=true)
