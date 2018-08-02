@@ -299,7 +299,7 @@
                 </span>
                 <span class="slds-visual-picker__body">
                   <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
-                  <div class="slds-text-body--large--stream"><b>{!v.lead.FirstName + ' ' + v.lead.LastName}</b></div>
+                  <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
                 </span>
               </label>
             </a>
