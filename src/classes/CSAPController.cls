@@ -143,6 +143,7 @@ public without sharing class CSAPController {
 
         Partner__c partner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :partnerId LIMIT 1];
         Partner__c defaultPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Quest Energy Solutions' LIMIT 1];
+        BSST__c defaultSalesRep  = [SELECT Id FROM BSST__c WHERE Name = 'Nate Radford'];
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -174,17 +175,14 @@ public without sharing class CSAPController {
         if (String.isNotBlank(partnerId)) {
             lead.Partner_lookup__c = partner.Id;
             lead.Partner_Email__c = partner.Email__c;
-        } else if (String.isNotBlank(profile.partnerId)) {
+        } else {
             lead.Partner_Lookup__c = defaultPartner.Id;
             lead.Partner_Email__c = defaultPartner.Email__c;
-//            lead.Partner_lookup__c = profile.partnerId;
-//            lead.Partner_Email__c = profile.partnerEmail;
         }
-        //DO WE NEED SALESREPS?
         if (String.isNotBlank(salesRepId)) {
             lead.Bs_Sales_ID__c = salesRepId;
-        } else if (String.isNotBlank(profile.salesRepId)) {
-            lead.Bs_Sales_ID__c = profile.salesRepId;
+        } else {
+            lead.BS_Sales_ID__c = defaultSalesRep.Id;
         }
         if (String.isBlank(referralCode) || referralCode == 'undefined') {
             lead.Customer_Referral__c = null;

@@ -227,6 +227,7 @@ public without sharing class MyAccountController {
             EmailTemplate et = [Select Id, HtmlValue from EmailTemplate where DeveloperName = 'Community_Referral_email'];
             User u = customerUser;
             Partner__c customerPartner;
+            BSST__c salesRep;
 
             String htmlBody = et.HtmlValue;
 
@@ -234,12 +235,16 @@ public without sharing class MyAccountController {
 
             if (opp.Partner_tag_lookup__c != null && opp.BS_Sales_ID__c != null){
                 customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :opp.Partner_tag_lookup__c];
+                salesRep = [ SELECT Id FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
+
             } else {
                 //Currently setting default partner to Quest Energy Solutions
                 customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Quest Energy Solutions'];
+                salesRep = [ SELECT Id FROM BSST__c WHERE Name = 'Nate Radford'];
             }
 
             htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
+            htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
             htmlBody = htmlBody.replace('{!Contact.Id}', u.Contact.Id);
 
             Messaging.SingleEmailMessage sem = new Messaging.SingleEmailMessage();
