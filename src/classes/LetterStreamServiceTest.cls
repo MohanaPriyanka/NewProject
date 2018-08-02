@@ -23,13 +23,14 @@ public with sharing class LetterStreamServiceTest {
 
         LetterStreamService lss = new LetterStreamService();
 
-        lss.parseLetterStreamResponse(exampleResponse);
+        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(exampleResponse);
 
         List<LetterStreamJob__c> jobs = [
             SELECT Id, Batch_Name__c, Cost__c, Details__c, Job_Id__c, Piece_Count__c
             FROM LetterStreamJob__c
         ];
 
+        System.assertEquals(newJob.Id, jobs[0].Id);
         System.assertEquals(1, jobs.size());
         System.assertEquals('Success', jobs[0].Details__c);
         System.assertEquals('bw_bills', jobs[0].Batch_Name__c);
@@ -49,6 +50,22 @@ public with sharing class LetterStreamServiceTest {
             System.assertEquals(1.41, piece.Piece_Cost__c);
 
         }
+    }
+
+    @isTest public static void testFailedResponseParser() {
+        String exampleResponse = '<?xml version="1.0" encoding="UTF-8"?>' +
+            '<messages id="86fjkb92">' +
+            '<message type="info">' +
+            '<code>-900</code>' +
+            '<details>Failed: Job name must be 8 to 20 characters (a-zA-Z0-9_-)</details>' +
+            '</message>' +
+            '</messages>';
+
+        LetterStreamService lss = new LetterStreamService();
+
+        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(exampleResponse);
+
+        System.assertEquals(null, newJob);
     }
 
     @isTest(SeeAllData=true) public static void testCSVBuilder() {
