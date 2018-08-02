@@ -26,7 +26,10 @@
         component.set("v.page", "AboutYourself");
     },
     goToApplyingFor : function(component, event, helper) {
-        if(event.getSource().get("v.label") == "Previous"){
+        var errorMessage = helper.checkBirthDate(component, event, helper);
+        if (errorMessage != ""){
+            component.set("v.ShowDateError", true);
+        } else if(event.getSource().get("v.label") == "Previous"){
             component.set("v.page", "ApplyingFor");
         } else if(helper.validatePageFields(component)){
             component.set("v.page", "ApplyingFor");
