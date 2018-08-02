@@ -45,7 +45,16 @@
 
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if (lead.Personal_Credit_Report__c == null) {
+
+        if (lead.Application_Source_Phase_2__c == 'CSAP Additional Property') {
+            component.set('v.page', 'Done');
+            var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
+            stageChangeEvent.setParams({"stageName": "NAV_Credit_Check"});
+            stageChangeEvent.setParams({"options": {"pageName": "CreditAlreadyRun"}});
+            stageChangeEvent.setParams({"eventType": "INITIATED"});
+            stageChangeEvent.setParams({"lead": lead});
+            stageChangeEvent.fire();
+        } else if (lead.Personal_Credit_Report__c == null) {
             helper.finishStage(component, event, helper);
         } else {
             component.set('v.page', 'Done');

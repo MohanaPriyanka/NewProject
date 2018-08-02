@@ -62,7 +62,7 @@
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
                     Parent_Account__c: oldLead.Parent_Account__c,
                     Partner_Lookup__c : oldLead.Partner_Lookup__c,
-                    Bs_Sales_ID__c : oldLead.Bs_Sales_ID__c,
+                    bs_Sales_ID__c : oldLead.bs_Sales_ID__c,
                     Email : oldLead.Email,
                     FirstName: oldLead.FirstName,
                     LastName: oldLead.LastName,
@@ -71,6 +71,7 @@
                     LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
                     LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
                     Application_Type__c : applicationType,
+                    Application_Source_Phase_2__c : 'CSAP Additional Property',
                     Product_line__c : 'Community Solar'
                 };
                 component.set("v.lead", newLead);

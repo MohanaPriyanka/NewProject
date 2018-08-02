@@ -73,23 +73,62 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static SSSResult checkLeadCreditIfQualified(Id leadId) {
         Decimal creditScore = 0;
+        SSSResult result = new SSSResult();
+        result.sssCreditQualification = 'Ready for Credit Check';
+
+        //Get the latest Credit Report Log completed for the Lead and get the PCR's Credit Score
+        List<LASERCA__Credit_Report_Log__c> crList = [
+            SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
+            FROM LASERCA__Credit_Report_Log__c
+            WHERE LASERCA__Lead__c = :leadId
+            AND LASERCA__Status__c = 'Completed'
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
+        if (crList.size() > 0) {
+            if (crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c != null) {
+                creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
+                result = checkCreditReport(leadId, creditScore);
+            }
+        }
+        return result;
+    }
+
+    @AuraEnabled
+    public static SSSResult checkForAlreadyRunCredit(Lead secondLead) {
+        Decimal creditScore = 0;
+        SSSResult result = new SSSResult();
+        result.sssCreditQualification = 'Ready for Credit Check';
+
+        List<LASERCA__Personal_Credit_Report__c> pcrList = [
+            SELECT LASERCA__Credit_Score__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Lead__r.Parent_Account__c = : secondlead.Parent_Account__c
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
+
+        if (pcrList.size() > 0) {
+            if (pcrList[0].LASERCA__Credit_Score__c != null) {
+                creditScore = Decimal.valueOf(pcrList[0].LASERCA__Credit_Score__c);
+                secondLead.Personal_Credit_Report__c = pcrList[0].Id;
+                update secondLead;
+            }
+        }
+
+        result = checkCreditReport(secondLead.Id, creditScore);
+        return result;
+    }
+
+    @AuraEnabled
+    public static SSSResult checkCreditReport(Id leadId, Decimal creditScore) {
         SSSResult sssResult = new SSSResult();
         Id srecId;
         Id smartId;
         sssResult.sssCreditQualification = 'Ready for Credit Check';
         List<Shared_Solar_System__c> srecSystems = new List<Shared_Solar_System__c>();
         List<Shared_Solar_System__c> smartSystems = new List<Shared_Solar_System__c>();
-        //Get the latest Credit Report Log completed for the Lead and get the PCR's Credit Score
-        List<LASERCA__Credit_Report_Log__c> crList = [SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
-                                                          FROM LASERCA__Credit_Report_Log__c
-                                                          WHERE LASERCA__Lead__c = :leadId
-                                                          AND LASERCA__Status__c = 'Completed'
-                                                          ORDER BY CreatedDate DESC
-                                                          LIMIT 1];
-        if (crList.size() > 0){
-            if (crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c != null){
-                creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
-            }
+
             Lead lead = [SELECT Id, Status, Partner_Name__c, Utility__c FROM Lead WHERE Id = :leadId];
             String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
             sssQuery +=       'FROM Shared_Solar_System__c ';
@@ -128,9 +167,10 @@ public without sharing class CSAPController {
             } else {
                 sssResult.sssCreditQualification = 'Unqualified';
             }
-        }
+
         return sssResult;
     }
+
     @AuraEnabled
     public static Lead addAdditionalLead(Lead lead){
         lead = processLead(lead);
