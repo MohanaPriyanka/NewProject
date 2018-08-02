@@ -121,7 +121,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String propertyAccountId = String.valueOf(customerAccountMap.get('Account A').Id).subString(0,15);
             List<AggregateResult> systemBillPrAccRespList = new List<AggregateResult>(MyAccountController.getSystemBills(propertyAccountId));
             List<AggregateResult> systemBillallList = new List<AggregateResult>(MyAccountController.getSystemBills('all'));
-            System.assertEquals(606.83, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
+            System.assertEquals(631.07, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
             System.assertEquals(entity1.Id, systemBillallList[0].get('Entity__c'));
 
             //test the getAccountBills() method
@@ -210,6 +210,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
     }
 
     @isTest static void testGetAllSystemBills() {
+        Test.startTest();
+
         User user = [
             SELECT Id, Contact.Account.Id, Contact.AccountId
             FROM User
@@ -292,9 +294,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
         insert newSub;
 
-        Test.startTest();
-
-
         Energy_Usage_Update__c productionupdateB2 = [
             SELECT Id, Generate_Bills__c, Month_Number__c, Shared_Solar_System__c
             FROM Energy_Usage_Update__c
@@ -315,14 +314,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
         }
         update accountBills;
 
-        Test.stopTest();
-
-
         List<System_Bill__c> systemBills = [
             SELECT Id, Bill_Number__c, Account_Bill_Number__c, Shared_Solar_System__c, Month__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Parent_Account__c = : user.Contact.Account.Id
         ];
+        Test.stopTest();
 
         System.runAs(user) {
             String propertyAccount = 'All';
