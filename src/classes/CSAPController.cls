@@ -29,7 +29,7 @@ public without sharing class CSAPController {
                     Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c, 
                     Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
-                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
+                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c
             FROM Lead
@@ -129,12 +129,14 @@ public without sharing class CSAPController {
         List<Shared_Solar_System__c> srecSystems = new List<Shared_Solar_System__c>();
         List<Shared_Solar_System__c> smartSystems = new List<Shared_Solar_System__c>();
 
-            Lead lead = [SELECT Id, Status, Partner_Name__c, Utility__c FROM Lead WHERE Id = :leadId];
+            Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, Load_Zone__c, Utility__c FROM Lead WHERE Id = :leadId];
             String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
             sssQuery +=       'FROM Shared_Solar_System__c ';
             sssQuery +=       'WHERE Open__c = true ';
             sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
             sssQuery +=       'AND System_Utility__c IN (\'' + lead.Utility__c + '\') ';
+            sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.Load_Zone__c + '\') ';
+
             if (lead.Partner_Name__c != null){
                 sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
             } else {
@@ -254,12 +256,13 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
-        Lead lead = [SELECT Id, Load_Zone__c, Utility__c, Partner_Name__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
+        Lead lead = [SELECT Id, Load_Zone__c, Utility__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
         sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
+        sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.Load_Zone__c + '\') ';
         if (lead.Partner_Name__c != null){
             sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
         } else {
@@ -291,7 +294,7 @@ public without sharing class CSAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Personal_Credit_Report__c, Date_of_Application__c
+        Lead l = [SELECT Id, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
                   FROM Lead
                   WHERE Id =:lead.Id];
 
