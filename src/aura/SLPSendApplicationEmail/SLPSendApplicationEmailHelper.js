@@ -218,7 +218,7 @@
         }
     },
 
-    setManufacturers(component) {
+    setManufacturers : function(component) {
         var systemInfo = component.get('v.systemInfoObj');
         var storageManufacturer = systemInfo.storage_manufacturer__c;
         var otherStorageManufacturer = systemInfo.storage_manufacturer_other__c;
