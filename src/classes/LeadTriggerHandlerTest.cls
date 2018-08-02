@@ -2,6 +2,15 @@
 private class LeadTriggerHandlerTest {
     
     @isTest static void customerSubscriptionProcessTest() {
+        System_Properties__c sysProp = new System_Properties__c(
+            Name = 'System',
+            DocuSign_API_Account_ID__c = '123',
+            DocuSign_Customer_Care_User__c = '123@123.com',
+            DocuSign_Guest_User__c = '123@345.com',
+            DocuSign_Guest_User_Credential__c = '234234',
+            DocuSign_Integrator_Key__c = '123123-123123'
+        );
+        insert sysProp;
 
         Utility_NMC_Tariff__c nmcRate =  (Utility_NMC_Tariff__c)TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 1,
                                                                                                                     Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -104,7 +113,6 @@ private class LeadTriggerHandlerTest {
         insert ual2;
 
 
-        Test.startTest();
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
@@ -119,12 +127,57 @@ private class LeadTriggerHandlerTest {
         ld.setConvertedStatus(convertStatus2.MasterLabel);
         ld.setDoNotCreateOpportunity(true);
         Database.LeadConvertResult ldr = Database.convertLead(ld);
-       
-        List<Opportunity> oppList = [Select Id, Name, AccountId, Shared_Solar_System__c, Shared_Solar_System__r.Name From Opportunity ];
 
+        for (Opportunity opp : [SELECT Id FROM Opportunity]){
+
+            dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
+                dsfs__Opportunity__c = opp.Id,
+                dsfs__Envelope_Status__c = 'Sent',
+                dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
+            );
+            insert newDocStat;
+
+            dsfs__DocuSign_Recipient_Status__c newDRS = new dsfs__DocuSign_Recipient_Status__c(
+                Name = 'TestCase',
+                dsfs__Parent_Status_Record__c =newDocStat.Id,
+                dsfs__DocuSign_Recipient_Id__c = 'D50030',
+                dsfs__DocuSign_Recipient_Email__c = 'nobody@bluewavesolar.com',
+                dsfs__Recipient_Status__c = 'Sent'
+            );
+            insert newDRS;
+        }
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        List<Id> idList = new List<Id>();
+        List<Opportunity> oppList = [SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c,
+            Sales_tag__c, Application_Type__c,
+            Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c,
+            Docusign_Template__c, Shared_Solar_System__r.Name,
+            AccountId, Shared_Solar_System__c
+        FROM Opportunity];
         System.assertEquals(1, oppList.size());
+        idList.add(oppList[0].Id);
+
+        DocuSignHelper.sendCSPackage(oppList[0],1,1);
         Test.stopTest();
-    } 
+
+        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c
+        FROM Error_Log__c];
+
+        system.debug('ERRORLOGS' + errorLogs);
+        
+        Opportunity opp = [
+            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
+                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c,
+            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+        ];
+        System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
+        System.assertEquals('Sent', opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__Envelope_Status__c);
+    }
 
     @isTest static void testCaseandContactConversion() {
         Map<Id,Id> leadContactIdMap = new Map<Id,Id>();
