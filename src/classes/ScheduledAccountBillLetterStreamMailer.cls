@@ -44,7 +44,6 @@ public with sharing class ScheduledAccountBillLetterStreamMailer Implements Sche
         ];
 
         Integer packageSize = 0;
-        Integer jobNumber = 1;
         Set<Id> packageAccountBills = new Set<Id>();
         Set<Id> packageContentDocuments = new Set<Id>();
 
@@ -54,14 +53,13 @@ public with sharing class ScheduledAccountBillLetterStreamMailer Implements Sche
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
-                jobNumber += 1;
                 packageSize = 0;
             }
         }
         // if we never hit max heap size, send at end
-        Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, jobNumber));
+        Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments));
     }
 }

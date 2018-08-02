@@ -304,9 +304,6 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
-        Datetime dt = Datetime.now().addMinutes(0);
-        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, mailer);
         mailer.execute(null);
         Test.stopTest();
 
@@ -329,5 +326,14 @@ public with sharing class LetterStreamServiceTest {
                 System.assertNotEquals(null, accountBill.LetterStreamJob__c);
             }
         }
+    }
+
+    @isTest static void testCanScheduleJob() {
+        Test.startTest();
+        ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
+        Datetime dt = Datetime.now().addMinutes(0);
+        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, mailer);
+        Test.stopTest();
     }
 }

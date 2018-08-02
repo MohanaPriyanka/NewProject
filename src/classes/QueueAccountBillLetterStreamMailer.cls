@@ -7,18 +7,20 @@
  */
 
 
-public class QueueAccountBillLetterStreamMailer implements Queueable{
+public class QueueAccountBillLetterStreamMailer implements Queueable {
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
-    public Integer jobNumber;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Integer jobNumber) {
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds) {
         this.accountBills = accountBills;
-        this.jobNumber = jobNumber;
         this.documentsIds = documentsIds;
     }
 
     public void execute(QueueableContext context) {
+        sendAccountBills();
+    }
+
+    public void sendAccountBills() {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         List<Account_Bill__c> accountBills = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
