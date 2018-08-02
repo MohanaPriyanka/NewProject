@@ -4,7 +4,7 @@
        
         if (objectRecords == null || !objectRecords.length) {
             return null;
-         }
+        }
         columnDivider = ',';
         lineDivider =  '\n';
         
@@ -20,8 +20,8 @@
  
               // add , [comma] after every String value,. [except first]
                   if (counter > 0){ 
-                      csvStringResult += columnDivider; 
-                   }   
+                      csvStringResult += columnDivider;
+                  }
                
                csvStringResult += '"'+ objectRecords[i][skey]+'"'; 
                

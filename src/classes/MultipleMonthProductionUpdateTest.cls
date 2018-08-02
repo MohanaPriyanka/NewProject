@@ -226,12 +226,12 @@ public class MultipleMonthProductionUpdateTest {
     }
 
     @isTest public static void testBillCreation() {
-        List<UASB__c> uasblist = 
-            [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c, 
-            Due_Date__c, Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
-            Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c
+        List<UASB__c> uasblist =
+            [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c,
+                Due_Date__c, Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
+                Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c, Schedule_Z_Subscription__c
             FROM UASB__c
-            ORDER BY Date__c , NMC_Rate__c];
+            ORDER BY Date__c, NMC_Rate__c];
 
         Date firstBillDate = Date.newInstance(2016, 1, 1);
         Date secondBillDate = Date.newInstance(2016, 2, 2);
@@ -242,6 +242,11 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(firstBillDate, uasblist[7].Date__c);
         System.assertEquals(secondBillDate, uasblist[8].Date__c);
         System.assertEquals(secondBillDate, uasblist[11].Date__c);
+
+        // ensure that Schedule Z Subscription lookup field is being populated
+        for (UASB__c uasb : uasblist) {
+            System.assert(uasb.Schedule_Z_Subscription__c != null);
+        }
 
         System.assertEquals(0.10, uasblist[0].NMC_Rate__c);
         System.assertEquals(575, uasblist[1].Total_System_NMCs__c);
