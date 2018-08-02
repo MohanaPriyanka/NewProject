@@ -937,29 +937,42 @@ private class PCRApprovalHandlerTest {
         });
         applicationSet.insertCreditReportLogs();
 
+        Lead lead = applicationSet.getLead(1);
+        Lead lead2 = applicationSet.getLead(2);
+        Lead lead3 = applicationSet.getLead(3);
+
+        Opportunity opp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
+        Opportunity opp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
+        Opportunity opp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
+        opp.StageName = 'Expired';
+        update opp;
+
+        System.assertEquals('Expired', opp.StageName);
+        System.assertEquals('New', opp2.StageName);
+        System.assertEquals('New', opp3.StageName);
+
+        Test.startTest();
         List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
-        LASERCA__Personal_Credit_Report__c pcr_1 = applicationSet.getPCR(1);
-        LASERCA__Personal_Credit_Report__c pcr_2 = applicationSet.getPCR(2);
-        LASERCA__Personal_Credit_Report__c pcr_3 = applicationSet.getPCR(3);
-        pcr_1.Avidia_Review_Status__c = 'Reviewed - Declined';
-        pcr_2.Avidia_Review_Status__c = 'Reviewed - Declined';
-        pcr_3.Avidia_Review_Status__c = 'Reviewed - Approved';
-        pcrToUpdate.add(pcr_1);
-        pcrToUpdate.add(pcr_2);
-        pcrToUpdate.add(pcr_3);
-        System.debug(pcrToUpdate);
+        LASERCA__Personal_Credit_Report__c pcr = applicationSet.getPCR(1);
+        LASERCA__Personal_Credit_Report__c pcr2 = applicationSet.getPCR(2);
+        LASERCA__Personal_Credit_Report__c pcr3 = applicationSet.getPCR(3);
+        pcr.Avidia_Review_Status__c = 'Reviewed - Declined';
+        pcr2.Avidia_Review_Status__c = 'Reviewed - Declined';
+        pcr3.Avidia_Review_Status__c = 'Reviewed - Approved';
+        pcrToUpdate.add(pcr);
+        pcrToUpdate.add(pcr2);
+        pcrToUpdate.add(pcr3);
         update pcrToUpdate;
+        Test.stopTest();
 
-        Lead lead_1 = applicationSet.getLead(1);
-        Lead lead_2 = applicationSet.getLead(2);
-        Lead lead_3 = applicationSet.getLead(3);
-        Opportunity opp_1 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_1.Id LIMIT 1];
-        Opportunity opp_2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_2.Id LIMIT 1];
-        Opportunity opp_3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead_3.Id LIMIT 1];
+        Opportunity updatedOpp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
+        Opportunity updatedOpp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
+        Opportunity updatedOpp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
 
-        System.assertEquals('Voided', opp_1.StageName);
-        System.assertEquals('Voided', opp_2.StageName);
-        System.assertEquals('New', opp_3.StageName);
+//      Asserts that the pcr trigger didn't change the 'Expired' opp status
+        System.assertEquals('Expired', updatedOpp.StageName);
+        System.assertEquals('Voided', updatedOpp2.StageName);
+        System.assertEquals('New', updatedOpp3.StageName);
     }
   
     public class Application {
