@@ -57,9 +57,9 @@ public class QueueAccountBillLetterStreamMailer implements Queueable{
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = date.today().format() + '_Job_' + jobNumber;
+        String jobName = 'Job_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '.csv';
 
-        lettersToSend.addFile('bw_bills.csv', csvBlob, null);
+        lettersToSend.addFile(jobName, csvBlob, null);
 
         // end build package
         Blob letterPackage = lettersToSend.getZipArchive();
@@ -82,7 +82,9 @@ public class QueueAccountBillLetterStreamMailer implements Queueable{
         // will return null if a job wasn't posted correctly
         LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
-        if (newJob != null) {
+        if (newJob == null) {
+            Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
+        } else {
             update markAccountBillsAsMailed(accountBillsByDocIds.values(), newJob);
         }
     }
