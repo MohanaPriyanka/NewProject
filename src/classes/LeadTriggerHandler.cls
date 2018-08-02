@@ -223,7 +223,7 @@ public without sharing class LeadTriggerHandler {
         opp.Project_Identification_Number__c = lead.Project_Identification_Number__c;
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.Residence_Owner__c = lead.Residence_Owner__c;
-        opp.BS_Sales_ID__c = lead.Sales_Person__c;
+        opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Sales_Person_Tag__c = lead.Sales_Person__c;
         opp.Security_Type__c = lead.Security_Type__c;
         opp.Service_Territory__c = lead.Load_Zone__c;
@@ -256,6 +256,7 @@ public without sharing class LeadTriggerHandler {
             repo.createUAS(lead);
         }
         repo.insertUASes();
+        repo.sendContracts();
     }
 
     private class SubscriptionRepo {
@@ -263,6 +264,8 @@ public without sharing class LeadTriggerHandler {
         private List<Shared_Solar_System__c> sssList;
         private Map<Id, List<Opportunity>> leadOppsMap;
         private List<Utility_Account_Subscription__c> uasList;
+        private List<Id> oppIdList;
+
         public SubscriptionRepo(List<Lead> leads) {
             List<Id> leadIds = new List<Id>();
             for (Lead lead : leads) {
@@ -287,6 +290,7 @@ public without sharing class LeadTriggerHandler {
 
             leadOppsMap = new Map<Id, List<Opportunity>>();
             uasList = new List<Utility_Account_Subscription__c>();
+            oppIdList = new List<Id>();
         }
 
         public List<Utility_Account_Log__c> getUALList(Lead lead) {
@@ -375,6 +379,8 @@ public without sharing class LeadTriggerHandler {
 
         public void createUAS(Lead lead) {
             Map<Id, Decimal> sssRemainingSubscriptionCostMap = new Map<Id, Decimal>();
+            List<Id> oppIdsWithUASes = new List<Id>();
+
             for (Shared_Solar_System__c sss : getSortedSharedSolarSystems(lead)) {
                 sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
             }
@@ -404,6 +410,7 @@ public without sharing class LeadTriggerHandler {
                                 Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                             ));
                             uasNumberCounter++;
+                            oppIdList.add(opp.Id);
                         }
                     }
                 }
@@ -412,6 +419,10 @@ public without sharing class LeadTriggerHandler {
 
         public void insertUASes() {
             insert uasList;
+        }
+
+        public void sendContracts() {
+            DocuSignHelper.sendCSPackageFuture(oppIdList);
         }
     }
 
