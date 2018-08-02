@@ -108,6 +108,7 @@ public without sharing class PCRApprovalHandler {
     @TestVisible
     private static boolean noDelay = false;
     public static void calcDTIAndEmailOnlyOld(List<LASERCA__Personal_Credit_Report__c> newPCR) {
+        System.debug('Already Ran = ' + alreadyRan);
         if (alreadyRan) {
             return;
         }
@@ -184,6 +185,7 @@ public without sharing class PCRApprovalHandler {
                 }
             }
         }
+        updateOppStagesVoid(newPCRs);
         if (!leadsToUpdate.isEmpty()) {
             update leadsToUpdate.values();
         }
@@ -285,7 +287,7 @@ public without sharing class PCRApprovalHandler {
             pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
             lead = setLeadStatus(pcr.Solar_Loan_Approval_Status__c, lead);
         }
-        
+
         return lead;
     }
 
@@ -413,6 +415,7 @@ public without sharing class PCRApprovalHandler {
                 Personal_Credit_Report__r.LASERCA__Code_4__c,
                 Personal_Credit_Report__r.Credit_PreApproval_Email_Sent__c,
                 Personal_Credit_Report__r.Credit_Denial_Email_Sent__c,
+                Personal_Credit_Report__r.Avidia_Review_Status__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Contact__c,
@@ -599,6 +602,24 @@ public without sharing class PCRApprovalHandler {
         mail.setTargetObjectId(targetObjectId);
         system.debug(mail);
         MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    }
+
+    private static void updateOppStagesVoid(List<LASERCA__Personal_Credit_Report__c> pcrsToCheck){
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        Set<Id> leadIds = new Set<Id>();
+
+        for(LASERCA__Personal_Credit_Report__c pcr : pcrsToCheck){
+            if (pcr.Avidia_Review_Status__c == 'Reviewed - Declined') {
+                leadIds.add(pcr.LASERCA__Lead__c);
+            }
+        }
+        for(Opportunity opp : [SELECT Id, Lead__c, StageName FROM Opportunity WHERE Lead__c IN :leadIds]){
+            if (opp.StageName != 'Expired' && opp.StageName != 'Dead') {
+                opp.StageName = 'Voided';
+                oppsToUpdate.add(opp);
+            }
+        }
+        update oppsToUpdate;
     }
 
     @TestVisible
