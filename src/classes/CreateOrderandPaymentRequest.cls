@@ -75,7 +75,7 @@ public without sharing class CreateOrderandPaymentRequest {
             Set<Id> entityIdSet = new Set<Id>();
             for (SObject chargeAmount : chargeAmounts) {
                 Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
-                if (amountToCharge > 0.01 ) {
+                if (amountToCharge > 0.01) {
                     ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false, true, true, false);
                     orderA.Entity__c = (String) chargeAmount.get('Entity__c');
                     orderA.ChargentOrders__Subtotal__c = amountToCharge;
@@ -99,7 +99,7 @@ public without sharing class CreateOrderandPaymentRequest {
             Set<Id> accountSet = new Set<Id>();
             for (Account_Bill__c accountBill : [SELECT Id, Name, Parent_Account__r.Id
                                                 FROM Account_Bill__c
-                                                WHERE Id IN : accountBillIdSet]){
+                                                WHERE Id IN : accountBillIdSet]) {
                 accountSet.add(accountBill.Parent_Account__r.Id);
             }
 
@@ -107,14 +107,18 @@ public without sharing class CreateOrderandPaymentRequest {
             List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
                 SELECT Id, ChargentOrders__Payment_Status__c, Reason_for_Recurring_Stop__c
                 FROM ChargentOrders__ChargentOrder__c
-                WHERE ( Id NOT IN :ordersToInsert)
-                AND ChargentOrders__Payment_Status__c = 'Recurring'
+                WHERE Id NOT IN :ordersToInsert
+                AND (ChargentOrders__Payment_Status__c = 'Recurring' OR ChargentOrders__Payment_Status__c = 'Error')
                 AND Account_Bill__r.Parent_Account__r.Id IN : accountSet
                 AND Entity__r.Id IN : entityIdSet
             ];
-            if(chargentOrderList.size() > 0){
-                for(ChargentOrders__ChargentOrder__c co : chargentOrderList){
-                    co.ChargentOrders__Payment_Status__c = 'Stopped';
+            if (chargentOrderList.size() > 0) {
+                for (ChargentOrders__ChargentOrder__c co : chargentOrderList) {
+                    if (co.ChargentOrders__Payment_Status__c == 'Recurring') {
+                        co.ChargentOrders__Payment_Status__c = 'Stopped';
+                    } else {
+                        co.ChargentOrders__Payment_Status__c = 'Complete';
+                    }
                     co.Reason_for_Recurring_Stop__c = 'Replaced with New Payment Info From Portal';
                 }
                 update chargentOrderList;
