@@ -1071,24 +1071,17 @@ public class TestBillCreationandPayment {
     @IsTest
     public static void testPriorBillHandling(){
         List<SObject> chOrderList = new List<SObject>();
-        User userA = [SELECT Id
-        FROM User
-        WHERE Username='testBillCreationandPay@bluewavesolar.com'
-        ];
+        User userA = [SELECT Id FROM User WHERE Username='testBillCreationandPay@bluewavesolar.com'];
 
-        Account accountA = [SELECT Id, Name
-        FROM Account
-        WHERE Name = 'Account A'];
+        Account accountA = [SELECT Id, Name FROM Account WHERE Name = 'Account A'];
 
-        List<Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
+        List<Account_Bill__c> accountBillList = [ SELECT Id, Published__c FROM Account_Bill__c];
 
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
+        for (Account_Bill__c acctBill : accountBillList) {
+            acctBill.Published__c = true;
         }
-
-        update listaccountBills;
-        Test.StartTest();
+        Test.startTest();
+        update accountBillList;
 
         System.runAs(userA){
             List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
@@ -1138,8 +1131,8 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Billing_Zip_Postal__c  = '02114',
                     ChargentOrders__Billing_First_Name__c = 'Jordan',
                     ChargentOrders__Billing_Last_Name__c = 'Testcase');
-            List<ChargentOrders__ChargentOrder__c> resultOne = CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoACH, false);
-            List<ChargentOrders__ChargentOrder__c> resultTwo = CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoCC, true);
+            CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoACH, false);
+            CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoCC, true);
 
             List<ChargentOrders__ChargentOrder__c> orders = [
                 SELECT Id, Name, ChargentOrders__Subtotal__c, ChargentOrders__Shipping_Name__c, Entity__c,
@@ -1150,16 +1143,19 @@ public class TestBillCreationandPayment {
 
             // Checking that the orders were inserted and that the merged data mapped correctly:
             System.assertEquals(2, orders.size());
-            System.assertNotEquals(null, orders[0].Account_Bill__c);
-            System.assertNotEquals(null, orders[1].Account_Bill__c);
-            System.assertEquals(606.83, orders[0].ChargentOrders__Subtotal__c);
-            System.assertEquals(606.83, orders[1].ChargentOrders__Subtotal__c);
-            System.assertEquals('2020', orders[0].ChargentOrders__Card_Expiration_Year__c);
-            System.assertEquals('Bank of America', orders[1].ChargentOrders__Bank_Name__c);
+            ChargentOrders__ChargentOrder__c ccOrder = orders[0];
+            ChargentOrders__ChargentOrder__c achOrder = orders[1];
+            System.assertNotEquals(null, ccOrder.Account_Bill__c);
+            System.assertNotEquals(null, achOrder.Account_Bill__c);
+            System.assertEquals(631.07, ccOrder.ChargentOrders__Subtotal__c);
+            System.assertEquals(631.07, achOrder.ChargentOrders__Subtotal__c);
+            System.assertEquals('2020', ccOrder.ChargentOrders__Card_Expiration_Year__c);
+            System.assertEquals('Bank of America', achOrder.ChargentOrders__Bank_Name__c);
 
             // Set the non-recurring payment to be Error, this should get set to Complete when a new order is added
-            orders[1].ChargentOrders__Payment_Status__c  = 'Error';
-            update orders[1];
+            achOrder.ChargentOrders__Payment_Status__c = 'Error';
+            update achOrder;
+
             paymentInfoACH.ChargentOrders__Bank_Name__c = 'New Bank';
             CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoACH, false);
             orders = [
@@ -1170,11 +1166,11 @@ public class TestBillCreationandPayment {
             ];
             System.assertEquals(3, orders.size());
             for (ChargentOrders__ChargentOrder__c order : orders) {
-                if (order.ChargentOrders__Bank_Name__c == '') {
+                if (order.Id == ccOrder.Id) {
                     System.assertEquals('Stopped', order.ChargentOrders__Payment_Status__c);
-                } else if (order.ChargentOrders__Bank_Name__c == 'Bank of America') {
+                } else if (order.Id == achOrder.Id) {
                     System.assertEquals('Complete', order.ChargentOrders__Payment_Status__c);
-                } else if (order.ChargentOrders__Bank_Name__c == 'New Bank') {
+                } else {
                     System.assertEquals(null, order.ChargentOrders__Payment_Status__c);
                 }
             }
