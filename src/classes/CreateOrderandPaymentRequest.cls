@@ -74,26 +74,26 @@ public without sharing class CreateOrderandPaymentRequest {
             Set<Id> accountBillIdSet = new Set<Id>();
             Set<Id> entityIdSet = new Set<Id>();
             for (SObject chargeAmount : chargeAmounts) {
-                ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
-                orderA.Entity__c = (String) chargeAmount.get('Entity__c');
-                orderA.ChargentOrders__Subtotal__c = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');              
-                orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
-                orderA.Comments__c = 'Created from Lightning';
+                Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
+                if (amountToCharge > 0.01) {
+                    ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false, true, true, false);
+                    orderA.Entity__c = (String) chargeAmount.get('Entity__c');
+                    orderA.ChargentOrders__Subtotal__c = amountToCharge;
+                    orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
+                    orderA.Comments__c = 'Created from Lightning';
 
-                if (autopay) {
-                    orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
-                    orderA.ChargentOrders__Payment_Status__c = 'Recurring';
-                    orderA.ChargentOrders__Payment_Stop__c = 'Unending';
-                    orderA.ChargentOrders__Charge_Date__c = '01';
-                    orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
-                }
+                    if (autopay) {
+                        orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                        orderA.ChargentOrders__Payment_Status__c = 'Recurring';
+                        orderA.ChargentOrders__Payment_Stop__c = 'Unending';
+                        orderA.ChargentOrders__Charge_Date__c = '01';
+                        orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
+                    }
 
-                if (orderA.ChargentOrders__Subtotal__c < 0 ) {
-                    orderA.ChargentOrders__Subtotal__c = 0;
+                    accountBillIdSet.add(orderA.Account_Bill__c);
+                    entityIdSet.add(orderA.Entity__c);
+                    ordersToInsert.add(orderA);
                 }
-                accountBillIdSet.add(orderA.Account_Bill__c);
-                entityIdSet.add(orderA.Entity__c);
-                ordersToInsert.add(orderA);
             }
             insert ordersToInsert;
             Set<Id> accountSet = new Set<Id>();

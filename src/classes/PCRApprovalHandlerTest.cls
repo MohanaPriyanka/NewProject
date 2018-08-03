@@ -883,6 +883,7 @@ private class PCRApprovalHandlerTest {
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
+
         Test.startTest();
         applicationSet.connectJointPCRs();
         applicationSet.insertTradeAccounts();
@@ -901,8 +902,79 @@ private class PCRApprovalHandlerTest {
             app.assert(pcrMap.get(app.pcrId));
         }
     }
-
     // fico+income is used as a unique key!
+
+    static testMethod void testOppVoidStatusOnLeadDecline() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+
+        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Program__c = 'MSLP';
+        mslp1.IBLS_Category__c = 'Category 1';
+
+        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Program__c = 'MSLP';
+        mslp2.IBLS_Category__c = 'Category 2';
+        insert new List<Product2>{
+            bwsl1, mslp1, mslp2
+        };
+
+        String applicationJSON =
+            '{"application":[ ' +
+                '  {"key":1, "income":200001, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":2, "income":2, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
+                '  {"key":3, "income":200002, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"} ' +
+                ']}';
+
+        ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+        PCRApprovalHandler.noDelay = true;
+        LoanHandlerTestClass.convertleads(new List<Lead>{
+            applicationSet.getLead(1),
+            applicationSet.getLead(2),
+            applicationSet.getLead(3)
+        });
+        applicationSet.insertCreditReportLogs();
+
+        Lead lead = applicationSet.getLead(1);
+        Lead lead2 = applicationSet.getLead(2);
+        Lead lead3 = applicationSet.getLead(3);
+
+        Opportunity opp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
+        Opportunity opp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
+        Opportunity opp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
+        opp.StageName = 'Expired';
+        update opp;
+
+        System.assertEquals('Expired', opp.StageName);
+        System.assertEquals('New', opp2.StageName);
+        System.assertEquals('New', opp3.StageName);
+
+        Test.startTest();
+        List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
+        LASERCA__Personal_Credit_Report__c pcr = applicationSet.getPCR(1);
+        LASERCA__Personal_Credit_Report__c pcr2 = applicationSet.getPCR(2);
+        LASERCA__Personal_Credit_Report__c pcr3 = applicationSet.getPCR(3);
+        pcr.Avidia_Review_Status__c = 'Reviewed - Declined';
+        pcr2.Avidia_Review_Status__c = 'Reviewed - Declined';
+        pcr3.Avidia_Review_Status__c = 'Reviewed - Approved';
+        pcrToUpdate.add(pcr);
+        pcrToUpdate.add(pcr2);
+        pcrToUpdate.add(pcr3);
+        update pcrToUpdate;
+        Test.stopTest();
+
+        Opportunity updatedOpp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
+        Opportunity updatedOpp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
+        Opportunity updatedOpp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
+
+//      Asserts that the pcr trigger didn't change the 'Expired' opp status
+        System.assertEquals('Expired', updatedOpp.StageName);
+        System.assertEquals('Voided', updatedOpp2.StageName);
+        System.assertEquals('New', updatedOpp3.StageName);
+    }
+  
     public class Application {
         public Integer income, loan;
         public Id prodId;
@@ -1139,7 +1211,9 @@ private class PCRApprovalHandlerTest {
                         LASERCA__Status__c = 'Completed'));
                 }
             }
+            System.debug('Before Insert CRLs');
             insert crls;
+            System.debug('After Insert CRLs');
         }
 
         public void connectJointPCRs() {
