@@ -28,7 +28,7 @@
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
               <lightning:helptext
                 title="Social Security Number Help Text"
-                content="In order to qualify for Community Solar, we need your social security number to check your credit score, to see which solar gardens you qualify for. This information is securely stored and we do not disclose it to any outside party."/>
+                content="In order to qualify for Community Solar, we need your social security number to check your credit score, to see which solar projects you qualify for. This information is securely stored and we do not disclose it to any outside party."/>
               <lightning:input aura:id="field" name="leadSSN"
                        type="password"
                        label="Social Security Number"
