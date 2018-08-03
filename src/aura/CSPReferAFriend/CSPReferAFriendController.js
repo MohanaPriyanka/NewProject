@@ -26,10 +26,7 @@
     doInit : function(component, event, helper) {
         var action = component.get("c.getContactInfo");
         action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
-                //component.set("v.referCode", resp.getReturnValue());
-            }
-            else {
+            if (resp.getState() != 'SUCCESS') {
                 $A.log("Errors", resp.getError());
             }
         });

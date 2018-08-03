@@ -264,6 +264,7 @@ public without sharing class MyAccountController {
                 Task emailTask = new Task();
                     emailTask.RecordTypeId = [SELECT Id, SobjectType, Name FROM RecordType WHERE Name = 'Customer Care Task' AND SobjectType = 'Task' LIMIT 1].Id;
                     emailTask.WhatId = customerPartner.Id;
+                    emailTask.Product_Line__c = 'Community Solar';
                     emailTask.Subject = 'Email: Your Customer Referred a Friend for CS!';
                     emailTask.Description = 'Your customer, ' + u.FirstName + ' ' + u.LastName + ', referred a friend at ' + emailAddress + ' to join BlueWave Community Solar!';
                 insert emailTask;
