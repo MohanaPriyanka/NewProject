@@ -238,9 +238,9 @@ public without sharing class MyAccountController {
                 salesRep = [ SELECT Id FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
 
             } else {
-                //Currently setting default partner to Quest Energy Solutions
-                customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Quest Energy Solutions'];
-                salesRep = [ SELECT Id FROM BSST__c WHERE Name = 'Nate Radford'];
+                //Currently setting default partner to Mass Renewables and default Sales Rep to Dianne Martz
+                customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
+                salesRep = [ SELECT Id FROM BSST__c WHERE Name = 'Dianne Martz' LIMIT 1];
             }
 
             htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
