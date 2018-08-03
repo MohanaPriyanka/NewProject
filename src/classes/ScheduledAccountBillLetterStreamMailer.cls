@@ -57,9 +57,12 @@ public with sharing class ScheduledAccountBillLetterStreamMailer Implements Sche
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
+                Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
             }
         }
         // if we never hit max heap size, send at end
         Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments));
+        Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
+        Logger.flushLogs();
     }
 }
