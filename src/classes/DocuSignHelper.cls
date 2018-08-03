@@ -2,7 +2,7 @@
  * Created By:  Peter Yao
  * Description: Convenience methods to use DocuSignAPI class generated from WSDL. Originally
  *              used in the loan change order and contingent contracting process
- * Test: DocuSignHelperTest
+ * Test: DocuSignHelperTest,LeadTriggerHandlerTest
  *************************************************************************************/
 
 public without sharing class DocuSignHelper {
@@ -164,15 +164,6 @@ public without sharing class DocuSignHelper {
         envelope.AccountId = apiAccountId;
 
         DocuSignAPI.EnvelopeTemplate et = dsAPI.RequestTemplateWithDocumentFields(opp.Docusign_Template__c, true);
-        if (et == null && Test.isRunningTest()) {
-            et = new DocuSignAPI.EnvelopeTemplate();
-            et.Envelope = new DocuSignAPI.Envelope();
-            et.Envelope.Recipients = new DocuSignAPI.ArrayOfRecipient();
-            et.Envelope.Recipients.Recipient = new List<DocuSignAPI.Recipient>();
-            DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
-            recipient.RoleName = 'Signer 1';
-            et.Envelope.Recipients.Recipient.add(recipient);
-        }
         for (DocuSignAPI.Recipient r : et.Envelope.Recipients.Recipient) {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Name;
@@ -258,24 +249,6 @@ public without sharing class DocuSignHelper {
         envelope.AccountId = apiAccountId;
         Integer csBWSignatureGroup = getSigningGroup('BW CS');
         DocuSignAPI.EnvelopeTemplate et = dsAPI.RequestTemplateWithDocumentFields(opp.Docusign_Template__c, true);
-        if (et == null && Test.isRunningTest()) {
-            et = new DocuSignAPI.EnvelopeTemplate();
-            et.Envelope = new DocuSignAPI.Envelope();
-            et.Envelope.Recipients = new DocuSignAPI.ArrayOfRecipient();
-            et.Envelope.Recipients.Recipient = new List<DocuSignAPI.Recipient>();
-            DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
-            recipient.RoleName = 'Signer 1';
-            et.Envelope.Recipients.Recipient.add(recipient);
-            DocuSignAPI.Recipient recipient2 = new DocuSignAPI.Recipient();
-            recipient2.RoleName = 'Signer 2';
-            et.Envelope.Recipients.Recipient.add(recipient);
-            DocuSignAPI.Recipient recipient3 = new DocuSignAPI.Recipient();
-            recipient3.RoleName = 'Recipient 1';
-            et.Envelope.Recipients.Recipient.add(recipient);
-            DocuSignAPI.Recipient recipient4 = new DocuSignAPI.Recipient();
-            recipient4.RoleName = 'Recipient 3';
-            et.Envelope.Recipients.Recipient.add(recipient);
-        }
         for (DocuSignAPI.Recipient r : et.Envelope.Recipients.Recipient) {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Parent_Account_Name__c;
@@ -323,7 +296,6 @@ public without sharing class DocuSignHelper {
         if (result == null || result.EnvelopeID == null) {
             Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'Unsuccessful CreateEnvelopeFromTemplatesAndForms ' +
                 'for Opportunity ' + opp.Id);
-        } else {
         }
         Logger.flushLogs();
         return result;
