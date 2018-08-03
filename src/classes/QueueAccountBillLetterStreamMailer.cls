@@ -71,16 +71,9 @@ public class QueueAccountBillLetterStreamMailer implements Queueable {
         Http http = new Http();
         HttpResponse response;
         String responseXMLString;
-        if (Test.isRunningTest()) {
-            // need to directly mock response here, mock classes don't work in async apex
-            LetterStreamAPIMock mock = new LetterStreamAPIMock(accountBills);
-            response = mock.respond(request);
-            responseXMLString = response.getBody();
-        } else {
-            response = http.send(request);
-            Dom.Document responseXML = response.getBodyDocument();
-            responseXMLString = responseXML.toXmlString();
-        }
+        response = http.send(request);
+        Dom.Document responseXML = response.getBodyDocument();
+        responseXMLString = responseXML.toXmlString();
         // will return null if a job wasn't posted correctly
         LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 

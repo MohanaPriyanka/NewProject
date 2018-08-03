@@ -320,6 +320,7 @@ public with sharing class LetterStreamServiceTest {
         update accountBills;
 
         Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
         ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
         mailer.execute(null);
         Test.stopTest();
