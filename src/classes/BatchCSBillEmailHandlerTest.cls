@@ -32,7 +32,7 @@ private class BatchCSBillEmailHandlerTest {
 
         // insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        for (i=0;i<5;i++) {
+        for (i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
                                         Name = 'Bill' + i,
                                         Bill_Number__c = i,
@@ -66,12 +66,11 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
         // There might be more than 9 emails since SeeAllData is true
-        System.assertEquals(5, MessagingService.emailsSent.size());
+        System.assertEquals(true, MessagingService.emailsSent.size() >= 9);
     }
 
     @isTest
-    static void testAccountBillsPublished() {
-        setupTestData();
+    static void testAccountBillsPublishedWithoutEmails() {
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
 
         Account parentAccount = new Account ( Name = 'Parent Account');
@@ -99,7 +98,7 @@ private class BatchCSBillEmailHandlerTest {
 
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        for (Integer i=0;i<4;i++) {
+        for (Integer i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
                 Name = 'Bill' + i,
                 Bill_Number__c = i,
@@ -109,6 +108,10 @@ private class BatchCSBillEmailHandlerTest {
             abList.add(abOne);
         }
         insert abList;
+        Set<Id> abIds = new Set<Id>{};
+        for (Account_Bill__c accountBill : abList) {
+            abIds.add(accountBill.Id);
+        }
 
         Test.StartTest();
         APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
@@ -120,6 +123,7 @@ private class BatchCSBillEmailHandlerTest {
         List<Account_Bill__c> accountBills = [
             SELECT Id, Published__c, Ready_for_Email_Send__c
             FROM Account_Bill__c
+            WHERE Id IN : abIds
         ];
 
         for (Account_Bill__c accountBill : accountBills) {
