@@ -86,7 +86,11 @@ public without sharing class DocuSignHelper {
             voidPackage(env.dsfs__DocuSign_Envelope_ID__c, 'Voided due to a change order.');
         }
         for (Opportunity o : oppsToResend) {
-            sendLoanPackage(o.Id);
+            try {
+                sendLoanPackage(o.Id);
+            } catch (Util.BWException bwe) {
+                break;
+            }
         }
         // DML needs to happen after the callouts
         for (Opportunity o : oppsToResend) {
@@ -139,9 +143,14 @@ public without sharing class DocuSignHelper {
         ];
         Integer oppNumber = 1;
         for (Opportunity opp : oppList) {
-            sendCSPackage(opp, oppNumber, oppIdList.size());
+            try {
+                sendCSPackage(opp, oppNumber, oppIdList.size());
+            } catch (Util.BWException bwe) {
+                break;
+            }
             oppNumber++;
         }
+        Logger.flushLogs();
     }
 
     // Makes callouts to DocuSign to send loan docs, and sets Contract Signature partner task to Pending
@@ -297,13 +306,13 @@ public without sharing class DocuSignHelper {
             Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'Unsuccessful CreateEnvelopeFromTemplatesAndForms ' +
                 'for Opportunity ' + opp.Id);
         }
-        Logger.flushLogs();
+        // Don't flush logs here, since this is called in a loop which will result in another callout
+        // Logger.flushLogs();
         return result;
     }
 
     public static void getBaseUrl() {
-        String json = requestResource('/login_information', 'GET');
-        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        DocuSignHelper result = requestResource('/login_information', 'GET');
         baseUrl = result.loginAccounts[0].baseUrl;
         accountId = result.loginAccounts[0].accountId;
     }
@@ -312,8 +321,7 @@ public without sharing class DocuSignHelper {
         if (baseUrl == null) {
             getBaseUrl();
         }
-        String json = requestResource('/accounts/'+accountId+'/signing_groups', 'GET');
-        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        DocuSignHelper result = requestResource('/accounts/'+accountId+'/signing_groups', 'GET');
         for (SigningGroup sg : result.groups) {
             if (sg.groupName == groupName) {
                 return Integer.valueOf(sg.signingGroupId);
@@ -322,7 +330,7 @@ public without sharing class DocuSignHelper {
         return 0;
     }
 
-    public static String requestResource(String endpoint, String method) {
+    public static DocuSignHelper requestResource(String endpoint, String method) {
         connect();
         HttpRequest req = new HttpRequest();
         req.setEndpoint(restAPIServer + endpoint);
@@ -332,9 +340,17 @@ public without sharing class DocuSignHelper {
 
         Http http = new Http();
         HTTPResponse res = http.send(req);
-        return res.getBody();
+        String json = res.getBody();
+        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        if (result.errorCode != null) {
+            Logger.logLater('DocuSignHelper', 'getBaseUrl', result.message);
+            throw new Util.BWException(result.message);
+        }
+        return result;
     }
 
+    public String errorCode;
+    public String message;
 
     public class LoginAccounts {
         public String name;
