@@ -6,6 +6,12 @@
                 var slpSettings = resp.getReturnValue();
                 var customSetting = slpSettings[0].Types_of_Documents_Available_for_Upload__c; 
                 var docList = customSetting.split(',');
+                var today = new Date();
+                var thisYear = today.getFullYear();
+                var previousYearTaxReturn = (thisYear - 1).toString() + ' Tax Return (Previous Year)';
+                var previous2YearTaxReturn = (thisYear - 2).toString() + ' Tax Return (Two Years Previous)';
+                docList.unshift(previous2YearTaxReturn);
+                docList.unshift(previousYearTaxReturn);
                 component.set("v.fileTypes", docList);
             } else {
                 $A.log("Errors", resp.getError());
