@@ -157,14 +157,14 @@
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
               <lightning:select aura:id="field" name="leadPreviousBWApplicant"
                                 label="Have you successfully applied for a BlueWave Home Solar Loan in the last 60 Days?"
-                                value="{!v.lead.Previous_BW_Applicant__c}"
+                                value="{!v.ual.Previous_BW_CL_Applicant__c}"
                                 required="true">
                 <option value="">Choose one...</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </lightning:select>
             </lightning:layoutItem>
-            <aura:if isTrue="{!v.lead.Previous_BW_Applicant__c == 'No'}">
+            <aura:if isTrue="{!v.ual.Previous_BW_CL_Applicant__c == 'No'}">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
                                   label="Do you have solar panels on your property?"
@@ -183,7 +183,7 @@
                 <lightning:input aura:id="field" name="leadEstimatedInstallDate"
                                  type="date"
                                  label="What is the approximate date the solar system was installed?"
-                                 value="{!v.lead.Estimated_Install_Date__c}"
+                                 value="{!v.ual.Solar_System_Installation_Date__c}"
                                  required="false"/>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
@@ -196,7 +196,7 @@
                                  type="number"
                                  label="What is the size of the solar system, in kW DC?"
                                  placeholder="Most residential systems range from 3-12 kW DC, while non-residential systems may be larger."
-                                 value="{!v.lead.System_Size_kW_DC__c}"
+                                 value="{!v.ual.Solar_System_Size_kW_DC__c}"
                                  min="0"
                                  max="1000"
                                  required="false"/>
