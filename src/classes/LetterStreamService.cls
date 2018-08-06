@@ -46,24 +46,19 @@ public with sharing class LetterStreamService {
                 pieces.add(parseLetterStreamPiece(responseReader));
             } else if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('code' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    responseCode = responseReader.getText();
+                    responseCode = getNodeText(responseReader);
                 }
                 if ('details' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    details = responseReader.getText();
+                    details = getNodeText(responseReader);
                 }
                 if ('batch' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchName = responseReader.getText();
+                    batchName = getNodeText(responseReader);
                 }
                 if ('quantity' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchQuantity = Integer.valueOf(responseReader.getText());
+                    batchQuantity = Integer.valueOf(getNodeText(responseReader));
                 }
                 if ('cost' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchCost = Decimal.valueOf(responseReader.getText());
+                    batchCost = Decimal.valueOf(getNodeText(responseReader));
                 }
                 responseReader.next();
             } else if (responseReader.getEventType() == XmlTag.END_ELEMENT
@@ -95,6 +90,11 @@ public with sharing class LetterStreamService {
         return newJob;
     }
 
+    public String getNodeText(XmlStreamReader xmlReader) {
+        xmlReader.next();
+        return xmlReader.getText();
+    }
+
     public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
         String objectId;
         String jobId;
@@ -102,14 +102,11 @@ public with sharing class LetterStreamService {
         while(docReader.hasNext()) {
             if (docReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('id' == docReader.getLocalName()) {
-                    docReader.next();
-                    objectId = docReader.getText();
+                    objectId = getNodeText(docReader);
                 } else if ('job' == docReader.getLocalName()) {
-                    docReader.next();
-                    jobId = docReader.getText();
+                    jobId = getNodeText(docReader);
                 } else if ('cost' == docReader.getLocalName()) {
-                    docReader.next();
-                    pieceCost = Decimal.valueOf(docReader.getText());
+                    pieceCost = Decimal.valueOf(getNodeText(docReader));
                 }
                 docReader.next();
             }
