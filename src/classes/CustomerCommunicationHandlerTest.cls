@@ -1,31 +1,33 @@
 @isTest
 public class CustomerCommunicationHandlerTest{
     @testSetup public static void setupData() {
-        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
-                                                                       Utility__c = 'Eversource',
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Current_Billing_Rate__c = TRUE);
+        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 2',
+            Value_of_Net_Metering_Credit__c = 0.1848,
+            Current_Billing_Rate__c = TRUE);
 
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
-                                                                       Utility__c = 'Eversource',
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Sizing_Rate__c = TRUE);
+        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 2',
+            Value_of_Net_Metering_Credit__c = 0.1848,
+            Sizing_Rate__c = TRUE);
 
-        insert new List<Utility_NMC_Tariff__c>{everbillNMC, eversizeNMC};
+        insert new List<Utility_NMC_Tariff__c>{
+            everbillNMC, eversizeNMC
+        };
 
-        Load_U__c everLZU = new Load_U__c (Name = '02633',
-                                           Load_zone__c = 'SEMA Eversource',
-                                           LZ__c = 'SEMA',
-                                           Utility__C = 'Eversource',
-                                           Town__c= 'Medfield');
+        Load_U__c everLZU = new Load_U__c(Name = '02633',
+            Load_zone__c = 'SEMA Eversource',
+            LZ__c = 'SEMA',
+            Utility__C = 'Eversource',
+            Town__c = 'Medfield');
 
         insert everLZU;
 
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;
 
         Shared_Solar_System__c sss1 =
@@ -45,7 +47,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss1;
 
             Shared_Solar_System__c sss2 =
@@ -65,7 +68,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss2;
 
 
@@ -86,7 +90,8 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25);
+                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Billing_Method__c = 'NMC');
             insert sss3;
 
             Account accountParent1 = new Account(Name = 'Par Account 1', Client_Brand_Key__c = 'BluewaveLogo');
@@ -250,7 +255,6 @@ public class CustomerCommunicationHandlerTest{
         Energy_Usage_Update__c productionupdate = new Energy_Usage_Update__c (
                 Name = 'sssA - March 2016',
                 Shared_Solar_System__c = sssID,
-                Size_off_NMCs__c = true,
                 Schedule_Z__c = scheduleZ1.Id,
                 Production__c = 160000,
                 Total_System_NMCs__c = 36000,

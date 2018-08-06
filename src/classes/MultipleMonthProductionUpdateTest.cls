@@ -36,7 +36,16 @@ public class MultipleMonthProductionUpdateTest {
         insert new List<Load_U__c>{everLZU};
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
-        Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1');
+        ChargentBase__Gateway__c chGateway  =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
+        Entity__c entity1 = new Entity__c (
+            Name = 'Oxford Barrett St. P1',
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
         
         Shared_Solar_System__c sss1 = 
@@ -56,16 +65,10 @@ public class MultipleMonthProductionUpdateTest {
                                        Sales_Partners__c = 'All',
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Utility__c = eversource.Id,
-                                       Maximum_Subscription_Assemblage__c = 25);
+                                       Maximum_Subscription_Assemblage__c = 25,
+                                       Billing_Method__c = 'kWh');
         insert new List<Shared_Solar_System__c>{sss1};
 
-        ChargentBase__Gateway__c chGateway  = 
-        new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                                         ChargentBase__Merchant_ID__c = '235986',
-                                         Shared_Solar_System__c = sss1.id,
-                                         Entity__c = entity1.Id,
-                                         ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Id parentAccountRT = 
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -172,7 +175,6 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateFeb,
-                Size_Off_NMCs__c = true,
                 Date__c = myDateJan, 
                 Total_System_NMCs__c = 45000,
                 Net_Metering_Rate_Applied__c = 0.1234,
@@ -193,7 +195,6 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = true,
                 Date__c = myDateFeb,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,
@@ -208,8 +209,7 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
-                Size_Off_NMCs__c = false,
-                Date__c = myDateMar,
+                Date__c = myDateFeb,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,
                 Production__c = 80296);
@@ -226,12 +226,12 @@ public class MultipleMonthProductionUpdateTest {
     }
 
     @isTest public static void testBillCreation() {
-        List<UASB__c> uasblist = 
-            [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c, 
-            Due_Date__c, Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
-            Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c
+        List<UASB__c> uasblist =
+            [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c,
+                Due_Date__c, Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
+                Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c, Schedule_Z_Subscription__c
             FROM UASB__c
-            ORDER BY Date__c , NMC_Rate__c];
+            ORDER BY Date__c, NMC_Rate__c];
 
         Date firstBillDate = Date.newInstance(2016, 1, 1);
         Date secondBillDate = Date.newInstance(2016, 2, 2);
@@ -242,6 +242,11 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(firstBillDate, uasblist[7].Date__c);
         System.assertEquals(secondBillDate, uasblist[8].Date__c);
         System.assertEquals(secondBillDate, uasblist[11].Date__c);
+
+        // ensure that Schedule Z Subscription lookup field is being populated
+        for (UASB__c uasb : uasblist) {
+            System.assert(uasb.Schedule_Z_Subscription__c != null);
+        }
 
         System.assertEquals(0.10, uasblist[0].NMC_Rate__c);
         System.assertEquals(575, uasblist[1].Total_System_NMCs__c);
@@ -268,7 +273,7 @@ public class MultipleMonthProductionUpdateTest {
 
         prodUpdateSizeoffKwh.Generate_Bills__c = true;
         update prodUpdateSizeoffKwh;
-        test.StopTest();
+        Test.stopTest();
 
         UASB__c generatedBill = 
             [SELECT Id, Name, Utility_Account_Subscription__r.Name,
