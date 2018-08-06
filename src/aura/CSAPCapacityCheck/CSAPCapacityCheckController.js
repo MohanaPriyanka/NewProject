@@ -7,39 +7,37 @@
             component.set("v.supressWaiting", false);
             component.set("v.loading", true);
             component.set("v.loadingText", "Checking if there are Community Solar projects in your area...");
-            window.setTimeout(function() {
-                component.set("v.hasCapacity", "");
-                var lead = component.get("v.lead");
-                if (lead && lead.Id){
-                    component.set("v.loadingText", "Returning the results...");
-                    var hasAvailableCapacityAction = component.get("c.hasAvailableCapacity");
-                    hasAvailableCapacityAction.setParams({
-                        "leadId": lead.Id
-                    });
-                    hasAvailableCapacityAction.setCallback(this, function(actionResult) {
-                        if (actionResult.getReturnValue() != null) {
-                            var hasAvailableCapacity = actionResult.getReturnValue();
-                            if (hasAvailableCapacity) {
-                                helper.saveSObject(component, lead.Id, "Lead", "Status", "Qualified").then(
-                                    $A.getCallback(function resolve() {
-                                        component.set("v.loading", false);
-                                        component.set("v.hasCapacity", "Yes");
-                                        $A.util.addClass(component.find("greatNews"), 'pulse');
-                                    }));
-                            } else {
-                                helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
-                                    $A.getCallback(function resolve() {
-                                        component.set("v.loading", false);
-                                        component.set("v.hasCapacity", "No");
-                                    }));
-                            }
+            component.set("v.hasCapacity", "");
+            var lead = component.get("v.lead");
+            if (lead && lead.Id){
+                component.set("v.loadingText", "Returning the results...");
+                var hasAvailableCapacityAction = component.get("c.hasAvailableCapacity");
+                hasAvailableCapacityAction.setParams({
+                    "leadId": lead.Id
+                });
+                hasAvailableCapacityAction.setCallback(this, function(actionResult) {
+                    if (actionResult.getReturnValue() != null) {
+                        var hasAvailableCapacity = actionResult.getReturnValue();
+                        if (hasAvailableCapacity) {
+                            helper.saveSObject(component, lead.Id, "Lead", "Status", "Qualified").then(
+                                $A.getCallback(function resolve() {
+                                    component.set("v.loading", false);
+                                    component.set("v.hasCapacity", "Yes");
+                                    $A.util.addClass(component.find("greatNews"), 'pulse');
+                                }));
                         } else {
-                            alert("There was an issue. Please go back and verify the information provided is correct.");
+                            helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
+                                $A.getCallback(function resolve() {
+                                    component.set("v.loading", false);
+                                    component.set("v.hasCapacity", "No");
+                                }));
                         }
-                    });
-                    $A.enqueueAction(hasAvailableCapacityAction);
-                }
-            }, 3000);
+                    } else {
+                        alert("There was an issue. Please go back and verify the information provided is correct.");
+                    }
+                });
+                $A.enqueueAction(hasAvailableCapacityAction);
+            }
         }
     },
 
