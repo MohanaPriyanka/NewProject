@@ -216,7 +216,12 @@ public with sharing class LetterStreamService {
         ];
         bwAddress += 'BlueWave Solar,'; //SenderName1
         bwAddress += ','; //SenderName2
-        bwAddress += (address.Street_Address__c + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
+        String streetAddress = address.Street_Address__c;
+        if (streetAddress.contains(',')) {
+            bwAddress += (streetAddress + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
+        } else {
+            bwAddress += (streetAddress + ',,'); //SenderAddr1 & Adds extra comma if not in text for SenderAddr2
+        }
         bwAddress += (address.City__c + ','); // SenderCity
         bwAddress += (address.State__c + ','); //SenderState
         bwAddress += (address.Zipcode__c + ','); //SenderZip
