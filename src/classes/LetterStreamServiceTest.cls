@@ -3,7 +3,7 @@
  * Description: Used to test LetterStreamService Methods
  */
 
-@isTest
+@IsTest
 public with sharing class LetterStreamServiceTest {
     @isTest public static void testResponseParser() {
         String exampleResponse = '<?xml version="1.0" encoding="UTF-8"?>' +
@@ -124,7 +124,7 @@ public with sharing class LetterStreamServiceTest {
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
         Account accountParent = new Account(
-            name = 'Account Parent',
+            Name = 'Account Parent',
             RecordTypeId = parentAccountRT,
             BillingStreet = '123 Fake St',
             BillingCity = 'City',

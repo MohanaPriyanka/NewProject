@@ -16,11 +16,10 @@ public with sharing class LetterStreamService {
     public String csv = '';
 
     public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
-        System.debug(responseXML);
         XmlStreamReader responseReader = new XmlStreamReader(responseXML);
 
         LetterStreamJob__c newJob;
-        while(responseReader.hasNext()) {
+        while (responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'message' == responseReader.getLocalName()) {
                 responseReader.next();
@@ -39,31 +38,26 @@ public with sharing class LetterStreamService {
         Decimal batchCost;
         LetterStreamJob__c newJob;
         List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
-        while(responseReader.hasNext()) {
+        while (responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'doc' == responseReader.getLocalName()) {
                 responseReader.next();
                 pieces.add(parseLetterStreamPiece(responseReader));
             } else if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('code' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    responseCode = responseReader.getText();
+                    responseCode = getNodeText(responseReader);
                 }
                 if ('details' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    details = responseReader.getText();
+                    details = getNodeText(responseReader);
                 }
                 if ('batch' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchName = responseReader.getText();
+                    batchName = getNodeText(responseReader);
                 }
                 if ('quantity' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchQuantity = Integer.valueOf(responseReader.getText());
+                    batchQuantity = Integer.valueOf(getNodeText(responseReader));
                 }
                 if ('cost' == responseReader.getLocalName()) {
-                    responseReader.next();
-                    batchCost = Decimal.valueOf(responseReader.getText());
+                    batchCost = Decimal.valueOf(getNodeText(responseReader));
                 }
                 responseReader.next();
             } else if (responseReader.getEventType() == XmlTag.END_ELEMENT
@@ -95,21 +89,23 @@ public with sharing class LetterStreamService {
         return newJob;
     }
 
+    public String getNodeText(XmlStreamReader xmlReader) {
+        xmlReader.next();
+        return xmlReader.getText();
+    }
+
     public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
         String objectId;
         String jobId;
         Decimal pieceCost;
-        while(docReader.hasNext()) {
+        while (docReader.hasNext()) {
             if (docReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('id' == docReader.getLocalName()) {
-                    docReader.next();
-                    objectId = docReader.getText();
+                    objectId = getNodeText(docReader);
                 } else if ('job' == docReader.getLocalName()) {
-                    docReader.next();
-                    jobId = docReader.getText();
+                    jobId = getNodeText(docReader);
                 } else if ('cost' == docReader.getLocalName()) {
-                    docReader.next();
-                    pieceCost = Decimal.valueOf(docReader.getText());
+                    pieceCost = Decimal.valueOf(getNodeText(docReader));
                 }
                 docReader.next();
             }
@@ -136,7 +132,7 @@ public with sharing class LetterStreamService {
         String uniqueId = String.valueOf(DateTime.now().getTime());
 
         // Repost of code  with fix for file corruption issue
-        // Orignal code postings and explanations
+        // Original code postings and explanations
         // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
         // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
         // Additional changes commented GW: that fix issue with occasional corruption of files

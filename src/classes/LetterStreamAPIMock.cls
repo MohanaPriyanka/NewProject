@@ -12,7 +12,7 @@ global class LetterStreamAPIMock implements HttpCalloutMock {
         this.accountBills = accountBills;
     }
 
-    global HTTPResponse respond(HTTPRequest req) {
+    global HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
 
@@ -21,7 +21,7 @@ global class LetterStreamAPIMock implements HttpCalloutMock {
             '<message type="info">' +
             '<code>-100</code>' +
             '<details>Success</details>' +
-            '<batch>' + date.today().format() + '_Job_' + '1' + '</batch>' +
+            '<batch>' + Date.today().format() + '_Job_' + '1' + '</batch>' +
             '<quantity>' + accountBills.size() + '</quantity>' +
             '<cost>' + (accountBills.size() * 1.41) + '</cost>';
         for (Account_Bill__c accountBill : accountBills) {
