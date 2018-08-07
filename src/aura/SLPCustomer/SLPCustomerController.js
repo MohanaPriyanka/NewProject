@@ -19,6 +19,8 @@
         
         var leadId = sessionStorage.getItem('loanId');
         helper.openCustomerWindow(component, event, helper, leadId);
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Inverter_Manufacturer__c', "v.availableStorageInverterManufacturers");
     },
 
     exitCustomerWindow : function(component, event, helper) {
