@@ -44,7 +44,7 @@
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
 
-        if (lead.Application_Source_Phase_2__c == 'CSAP Additional Property') {
+        if (lead.Application_Source_Phase_2__c === 'CSAP Additional Property') {
             component.set('v.page', 'Done');
             var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
             stageChangeEvent.setParams({"stageName": "NAV_Credit_Check"});

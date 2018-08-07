@@ -2,13 +2,13 @@
     processLead : function(component, event, helper) {
         var lead = component.get("v.lead");
         var sendBillToHome = component.get("v.sendBillToHome");
-        if(sendBillToHome == "Yes"){
+        if(sendBillToHome === "Yes"){
             lead.Street = lead.LASERCA__Home_Address__c;
             lead.City = lead.LASERCA__Home_City__c
             lead.State = lead.LASERCA__Home_State__c
             lead.PostalCode = lead.LASERCA__Home_Zip__c
         }
-        if(lead.Application_Type__c == "Residential" && lead.Company == null){
+        if(lead.Application_Type__c === "Residential" && lead.Company == null){
             lead.Company = lead.FirstName + " " + lead.LastName;
         }
         if (component.get('v.partnerId') != null) {
@@ -22,7 +22,7 @@
 
     upsertRecords : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if(lead.Application_Source_Phase_2__c == null || lead.Application_Source_Phase_2__c === 'CSAP Duplicate Attempt'){
+        if (lead.Application_Source_Phase_2__c === null || lead.Application_Source_Phase_2__c === 'CSAP Duplicate Attempt'){
             var upsertCSAPRecordsAction = component.get("c.upsertCSAPRecords");
             upsertCSAPRecordsAction.setParams({
                 "lead": lead,
@@ -30,7 +30,7 @@
                 "salesRepId" : component.get("v.salesRepId")
             });
             upsertCSAPRecordsAction.setCallback(this, function(actionResult) {
-                if (actionResult.getReturnValue() != null) {
+                if (actionResult.getReturnValue() !== null) {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
@@ -43,13 +43,13 @@
                 }
             });
             $A.enqueueAction(upsertCSAPRecordsAction);
-        }else{
+        } else {
             var addAdditionalLeadAction = component.get("c.addAdditionalLead");
             addAdditionalLeadAction.setParams({
                 "lead": lead
             });
             addAdditionalLeadAction.setCallback(this, function(actionResult) {
-                if (actionResult.getReturnValue() != null) {
+                if (actionResult.getReturnValue() !== null) {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
