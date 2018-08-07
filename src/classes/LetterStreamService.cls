@@ -16,11 +16,10 @@ public with sharing class LetterStreamService {
     public String csv = '';
 
     public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
-        System.debug(responseXML);
         XmlStreamReader responseReader = new XmlStreamReader(responseXML);
 
         LetterStreamJob__c newJob;
-        while(responseReader.hasNext()) {
+        while (responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'message' == responseReader.getLocalName()) {
                 responseReader.next();
@@ -39,7 +38,7 @@ public with sharing class LetterStreamService {
         Decimal batchCost;
         LetterStreamJob__c newJob;
         List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
-        while(responseReader.hasNext()) {
+        while (responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'doc' == responseReader.getLocalName()) {
                 responseReader.next();
@@ -99,7 +98,7 @@ public with sharing class LetterStreamService {
         String objectId;
         String jobId;
         Decimal pieceCost;
-        while(docReader.hasNext()) {
+        while (docReader.hasNext()) {
             if (docReader.getEventType() == XmlTag.START_ELEMENT) {
                 if ('id' == docReader.getLocalName()) {
                     objectId = getNodeText(docReader);
@@ -133,7 +132,7 @@ public with sharing class LetterStreamService {
         String uniqueId = String.valueOf(DateTime.now().getTime());
 
         // Repost of code  with fix for file corruption issue
-        // Orignal code postings and explanations
+        // Original code postings and explanations
         // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
         // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
         // Additional changes commented GW: that fix issue with occasional corruption of files
