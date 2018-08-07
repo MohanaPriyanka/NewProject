@@ -247,20 +247,19 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String checkSalesRepId = checkOpp.BS_Sales_ID__c;
             String checkContactId = ContactfromUser.Id;
 
-              System.debug(checkOpp);
             System.assertEquals(opportunityNEW.Partner_tag_lookup__c, checkPartnerId);
             System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
             System.assertEquals(con.Id, checkContactId);
 
-              //Test getPartner()
-              Partner__c checkPartner = MyAccountController.getPartner(checkPartnerId);
-              //oppNEW
-              System.assertEquals('CS Partner', checkPartner.Name);
-              System.assertEquals(salesRep2.Id, checkPartner.Default_Sales_Rep__c );
-              //Default getPartner()
-              Partner__c defaultPartner = MyAccountController.getPartner(null);
-              System.assertEquals('CS Partner', defaultPartner.Name);
-              System.assertEquals(salesRep2.Id, defaultPartner.Default_Sales_Rep__c);
+            //Test getPartner()
+            Partner__c checkPartner = MyAccountController.getPartner(checkPartnerId);
+            System.assertEquals('CS Partner', checkPartner.Name);
+            System.assertEquals(salesRep2.Id, checkPartner.Default_Sales_Rep__c );
+
+            //Default getPartner()
+            Partner__c defaultPartner = MyAccountController.getPartner(null);
+            System.assertEquals('CS Partner', defaultPartner.Name);
+            System.assertEquals(salesRep2.Id, defaultPartner.Default_Sales_Rep__c);
 
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');
