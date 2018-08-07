@@ -248,22 +248,20 @@
                 </lightning:layoutItem>
               </lightning:layout>
 
-              <aura:if isTrue="{!v.lead.Parent_Account__c == null}">
-                <lightning:layout multipleRows="true">
-                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                    <lightning:select aura:id="field" name="sendBillToHome"
-                                      label="Is this where you would like us to send your bill?"
-                                      value="{!v.sendBillToHome}"
-                                      required="true">
-                      <option value="">Choose one...</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </lightning:select>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  </lightning:layoutItem>
-                </lightning:layout>
-              </aura:if>
+              <lightning:layout multipleRows="true">
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:select aura:id="field" name="sendBillToHome"
+                                    label="Is this where you would like us to send your bill?"
+                                    value="{!v.sendBillToHome}"
+                                    required="true">
+                    <option value="">Choose one...</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                </lightning:layoutItem>
+              </lightning:layout>
             </form>
             </fieldset>
           </aura:if>
