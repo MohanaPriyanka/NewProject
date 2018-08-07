@@ -22,7 +22,7 @@
 
     upsertRecords : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if (lead.Application_Source_Phase_2__c === null || lead.Application_Source_Phase_2__c === 'CSAP Duplicate Attempt'){
+        if (!lead.Application_Source_Phase_2__c || lead.Application_Source_Phase_2__c === 'CSAP Duplicate Attempt'){
             var upsertCSAPRecordsAction = component.get("c.upsertCSAPRecords");
             upsertCSAPRecordsAction.setParams({
                 "lead": lead,
@@ -30,7 +30,7 @@
                 "salesRepId" : component.get("v.salesRepId")
             });
             upsertCSAPRecordsAction.setCallback(this, function(actionResult) {
-                if (actionResult.getReturnValue() !== null) {
+                if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
@@ -49,7 +49,7 @@
                 "lead": lead
             });
             addAdditionalLeadAction.setCallback(this, function(actionResult) {
-                if (actionResult.getReturnValue() !== null) {
+                if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
