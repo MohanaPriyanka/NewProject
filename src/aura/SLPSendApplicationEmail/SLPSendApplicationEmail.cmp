@@ -101,7 +101,7 @@
                     <div class="slds-form-element__row">
                       <div aura:id="systemCostElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label"><b>Total System Cost</b>&nbsp;
-                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, inclusive of down payments. 
+                          <c:BlueWaveInputToolTip popoverText="Total installation system cost, including storage system if applicable, inclusive of down payments.
                                                                The applicant's requested loan amount is the difference between 
                                                                total system cost and down payment."/>
                         </label>
@@ -232,92 +232,96 @@
                         </div>
                       </div>
                     </fieldset>
-                    <aura:if isTrue="{!and(v.enableStorage, v.newLead.Product__c != 'MSLP')}">
+                    <aura:if isTrue="{!and(v.enableStorage, v.newLead.Product__c != 'MSLP', v.newLead.Contingent_Contract__c)}">
                       <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
                         <lightning:input type="checkbox" label="Add Storage"
                                        checked="{!v.newLead.Storage__c}"/>
                       </div>
                     </aura:if>
-                  </aura:if>
-                  <aura:if isTrue="{!v.newLead.Storage__c}">
-                    <div class="slds-form-element__row">
-                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid is down?</b></label>
-                        <div class="slds-form-element__control">
-                          <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.systemInfoObj.storage_hybrid__c}">
-                            <ui:inputSelectOption text="" label="Select"/>
-                            <ui:inputSelectOption text="Yes" label="Yes"/>
-                            <ui:inputSelectOption text="No" label="No"/>
-                          </ui:inputSelect>
-                        </div>
-                      </div>
-                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Cost of Storage System</b></label>
-                        <ui:inputCurrency aura:id="storageCost" class="slds-input" value="{!v.systemInfoObj.storage_cost__c}"/>
-                      </div>
-                    </div>
-                    <aura:if isTrue="{!v.systemInfoObj.storage_hybrid__c == 'Yes'}">
-                    <div class="slds-form-element__row">
+                    <aura:if isTrue="{!v.newLead.Storage__c}">
+                      <div class="slds-form-element__row">
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                          <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
-                          <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.storage_full_or_partial__c}">
-                            <ui:inputSelectOption text="" label="Select"/>
-                            <ui:inputSelectOption text="Partial" label="Partial home backup"/>
-                            <ui:inputSelectOption text="Full" label="Full home backup"/>
-                          </ui:inputSelect>
+                          <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid is down?</b></label>
+                          <div class="slds-form-element__control">
+                            <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.systemInfoObj.storage_hybrid__c}">
+                              <ui:inputSelectOption text="" label="Select"/>
+                              <ui:inputSelectOption text="Yes" label="Yes"/>
+                              <ui:inputSelectOption text="No" label="No"/>
+                            </ui:inputSelect>
+                          </div>
                         </div>
-                    </div>
-                    </aura:if>
-                    <div class="slds-form-element__row">
-                      <div class="slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
-                        <ui:inputSelect aura:id="storageManufacturer" class="slds-input" value="{!v.systemInfoObj.storage_manufacturer__c}">
-                          <ui:inputSelectOption text="" label="Select"/>
-                          <ui:inputSelectOption text="Tesla" label="Tesla"/>
-                          <ui:inputSelectOption text="Sonnen" label="Sonnen"/>
-                          <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
-                          <ui:inputSelectOption text="Panasonic" label="Panasonic"/>
-                          <ui:inputSelectOption text="Simpliphi" label="Simpliphi"/>
-                          <ui:inputSelectOption text="Sunverge" label="Sunverge"/>
-                          <ui:inputSelectOption text="Trojan" label="Trojan"/>
-                          <ui:inputSelectOption text="Other" label="Other"/>
-                        </ui:inputSelect>
-                      </div>
-                      <aura:if isTrue="{!v.systemInfoObj.storage_manufacturer__c == 'Other'}">
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                          <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
-                          <ui:inputText aura:id="storageManufacturerOther" class="slds-input" value="{!v.systemInfoObj.storage_manufacturer_other__c}"/>
+                          <label class="slds-form-element__label" for="input-03"><b>Storage Capacity (kW)</b></label>
+                          <ui:inputNumber aura:id="storageCost" class="slds-input" value="{!v.systemInfoObj.storage_capacity__c}"/>
                         </div>
+                      </div>
+                      <aura:if isTrue="{!v.systemInfoObj.storage_hybrid__c == 'Yes'}">
+                      <div class="slds-form-element__row">
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
+                            <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.storage_full_or_partial__c}">
+                              <ui:inputSelectOption text="" label="Select"/>
+                              <ui:inputSelectOption text="Partial" label="Partial home backup"/>
+                              <ui:inputSelectOption text="Full" label="Full home backup"/>
+                            </ui:inputSelect>
+                          </div>
+                      </div>
                       </aura:if>
-                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
-                        <ui:inputText aura:id="storageModel" class="slds-input" value="{!v.systemInfoObj.storage_model__c}"/>
+                      <div class="slds-form-element__row">
+                        <div class="slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
+                          <ui:inputSelect aura:id="storageManufacturer" class="slds-input" value="{!v.systemInfoObj.storage_manufacturer__c}">
+                            <ui:inputSelectOption text="" label="Select"/>
+                            <ui:inputSelectOption text="Tesla" label="Tesla"/>
+                            <ui:inputSelectOption text="Sonnen" label="Sonnen"/>
+                            <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
+                            <ui:inputSelectOption text="Panasonic" label="Panasonic"/>
+                            <ui:inputSelectOption text="Simpliphi" label="Simpliphi"/>
+                            <ui:inputSelectOption text="Sunverge" label="Sunverge"/>
+                            <ui:inputSelectOption text="Trojan" label="Trojan"/>
+                          </ui:inputSelect>
+                        </div>
+                        <aura:if isTrue="{!v.systemInfoObj.storage_manufacturer__c == 'Other'}">
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
+                            <ui:inputText aura:id="storageManufacturerOther" class="slds-input" value="{!v.systemInfoObj.storage_manufacturer_other__c}"/>
+                          </div>
+                        </aura:if>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
+                          <ui:inputText aura:id="storageModel" class="slds-input" value="{!v.systemInfoObj.storage_model__c}"/>
+                        </div>
                       </div>
-                    </div>
-                    <div class="slds-form-element__row">
-                      <div class="slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
-                        <ui:inputSelect aura:id="storageInverterManufacturer" class="slds-input" value="{!v.systemInfoObj.storage_inverter_manufacturer__c}">
-                          <ui:inputSelectOption text="" label="Select"/>
-                          <ui:inputSelectOption text="Tesla" label="Tesla"/>
-                          <ui:inputSelectOption text="Sonnen" label="Schneider Electric"/>
-                          <ui:inputSelectOption text="SolarEdge" label="SolarEdge"/>
-                          <ui:inputSelectOption text="Pika" label="Pika"/>
-                          <ui:inputSelectOption text="EnPhase" label="EnPhase"/>
-                          <ui:inputSelectOption text="Outback" label="Outback"/>
-                          <ui:inputSelectOption text="Power" label="Power"/>
-                          <ui:inputSelectOption text="Fronius" label="Fronius"/>
-                          <ui:inputSelectOption text="Xantrex" label="Xantrex"/>
-                          <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
-                          <ui:inputSelectOption text="SMA" label="SMA"/>
-                          <!--<c:StorageInverterManufacturers value="{!v.systemInfoObj.storage_inverter_manufacturer__c}" label="Inverter Manufacturer"/>-->
-                        </ui:inputSelect>
+                      <div class="slds-form-element__row">
+                        <div class="slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
+                          <ui:inputSelect aura:id="storageInverterManufacturer" class="slds-input" value="{!v.systemInfoObj.storage_inverter_manufacturer__c}">
+                            <ui:inputSelectOption text="" label="Select"/>
+                            <ui:inputSelectOption text="Tesla" label="Tesla"/>
+                            <ui:inputSelectOption text="Sonnen" label="Schneider Electric"/>
+                            <ui:inputSelectOption text="SolarEdge" label="SolarEdge"/>
+                            <ui:inputSelectOption text="Pika" label="Pika"/>
+                            <ui:inputSelectOption text="EnPhase" label="EnPhase"/>
+                            <ui:inputSelectOption text="Outback" label="Outback"/>
+                            <ui:inputSelectOption text="Power" label="Power"/>
+                            <ui:inputSelectOption text="Fronius" label="Fronius"/>
+                            <ui:inputSelectOption text="Xantrex" label="Xantrex"/>
+                            <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
+                            <ui:inputSelectOption text="SMA" label="SMA"/>
+                            <!--<c:StorageInverterManufacturers value="{!v.systemInfoObj.storage_inverter_manufacturer__c}" label="Inverter Manufacturer"/>-->
+                          </ui:inputSelect>
+                        </div>
+                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                          <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
+                          <ui:inputText aura:id="storageInverterModel" class="slds-input" value="{!v.systemInfoObj.storage_inverter_model__c}"/>
+                        </div>
                       </div>
-                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
-                        <ui:inputText aura:id="storageInverterModel" class="slds-input" value="{!v.systemInfoObj.storage_inverter_model__c}"/>
+                      <div class="slds-form-element_row slds-m-left_small slds-m-bottom_small slds-m-top_small slds-text-title">
+                        <p>
+                          We are always looking to expand our storage equipment list to include additional high quality vendors, if a vendor that you would like to use is missing from our list please call Partner Support at (888) 817-2703.
+                        </p>
                       </div>
-                    </div>
+                    </aura:if>
                   </aura:if>
                 </fieldset>
               </div>
