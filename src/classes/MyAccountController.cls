@@ -228,18 +228,28 @@ public without sharing class MyAccountController {
 
             Opportunity opp = getMostRecentOpportunityInfo();
 
-            if ( opp != null && opp.Partner_tag_lookup__c != null && opp.BS_Sales_ID__c != null){
-                customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :opp.Partner_tag_lookup__c];
-                salesRep = [ SELECT Id FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
-
+            //Currently setting default partner to Mass Renewables and default Sales Rep to Dianne Martz
+            if ( opp != null ) {
+                if (opp.Partner_tag_lookup__c != null){
+                    customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :opp.Partner_tag_lookup__c];
+                } else {
+                    customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
+                }
+                if (opp.BS_Sales_ID__c != null) {
+                    salesRep = [SELECT Id FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
+                }
             } else {
-                //Currently setting default partner to Mass Renewables and default Sales Rep to Dianne Martz
                 customerPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
                 salesRep = [ SELECT Id FROM BSST__c WHERE Name = 'Dianne Martz' LIMIT 1];
             }
 
+            if( salesRep != null) {
+                htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
+            } else {
+                htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', '');
+            }
+            
             htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
-            htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
             htmlBody = htmlBody.replace('{!Contact.Id}', u.Contact.Id);
             htmlBody = htmlBody.replace('{!Contact.FirstName}', u.FirstName);
             htmlBody = htmlBody.replace('{!Contact.LastName}', u.LastName);
