@@ -9,7 +9,15 @@
             component.set("v.loadingText", "Checking if there are Community Solar projects in your area...");
             component.set("v.hasCapacity", "");
             var lead = component.get("v.lead");
-            if (lead && lead.Id){
+            if (lead && lead.Id) {
+                if (lead.Number_of_Years_in_Business__c < 3) {
+                    component.set("v.loading", false);
+                    component.set("v.hasCapacity", "No");
+                    component.set('v.newBusiness', true);
+                    return;
+                } else {
+                    component.set('v.newBusiness', false);
+                }
                 component.set("v.loadingText", "Returning the results...");
                 var hasAvailableCapacityAction = component.get("c.hasAvailableCapacity");
                 hasAvailableCapacityAction.setParams({
