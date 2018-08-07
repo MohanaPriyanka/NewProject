@@ -287,4 +287,18 @@
         evtCustomerPage.fire(); 
         helper.closeWindow(component);
     },
+
+    getPreviousTaxYear : function() {
+        var previousTaxYear;
+        var today = new Date();
+        var thisYear = today.getFullYear();
+        if (today.getMonth() > 3) {
+            // return last year if we've past the tax deadline month, (April 15)
+            previousTaxYear = thisYear - 1;
+        } else {
+            // return the year before last if we haven't past the tax deadline
+            previousTaxYear = thisYear - 2;
+        }
+        return previousTaxYear;
+    },
 })
