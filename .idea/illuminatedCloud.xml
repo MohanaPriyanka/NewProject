@@ -4,9 +4,9 @@
     <option name="connections">
       <list>
         <IlluminatedCloudConnection>
-          <option name="connectionName" value="Max2" />
+          <option name="connectionName" value="Dev1" />
           <option name="defaultModuleName" value="SMP" />
-          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/Max2/OfflineSymbolTable.zip" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/Dev1/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>
