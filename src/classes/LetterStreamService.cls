@@ -211,7 +211,7 @@ public with sharing class LetterStreamService {
     public String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
-            SELECT Id, Street_Address__c, Zipcode__c, City__c, State__c
+            SELECT Id, Street_Address__c, Zip_Code__c, City__c, State__c
             FROM BW_Address__c
         ];
         bwAddress += 'BlueWave Solar,'; //SenderName1
