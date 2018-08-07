@@ -1,0 +1,273 @@
+/**
+ * Created by mstackhouse on 7/17/2018.
+ * Description: This class communicates with the LetterSteam API in order to automatically initiate letter jobs to
+ * send paper bills to customers.
+ *
+ * Test: LetterStreamServiceTest
+ */
+
+
+public with sharing class LetterStreamService {
+    public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientAddr1,RecipientAddr2,RecipientCity,' +
+        'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
+        'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
+        'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
+
+    public String csv = '';
+
+    public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
+        System.debug(responseXML);
+        XmlStreamReader responseReader = new XmlStreamReader(responseXML);
+
+        LetterStreamJob__c newJob;
+        while(responseReader.hasNext()) {
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT
+                && 'message' == responseReader.getLocalName()) {
+                responseReader.next();
+                newJob = parseLetterStreamMessage(responseReader);
+            }
+            responseReader.next();
+        }
+        return newJob;
+    }
+
+    public LetterStreamJob__c parseLetterStreamMessage(XmlStreamReader responseReader) {
+        String responseCode;
+        String details;
+        String batchName;
+        Integer batchQuantity;
+        Decimal batchCost;
+        LetterStreamJob__c newJob;
+        List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
+        while(responseReader.hasNext()) {
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT
+                && 'doc' == responseReader.getLocalName()) {
+                responseReader.next();
+                pieces.add(parseLetterStreamPiece(responseReader));
+            } else if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
+                if ('code' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    responseCode = responseReader.getText();
+                }
+                if ('details' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    details = responseReader.getText();
+                }
+                if ('batch' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchName = responseReader.getText();
+                }
+                if ('quantity' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchQuantity = Integer.valueOf(responseReader.getText());
+                }
+                if ('cost' == responseReader.getLocalName()) {
+                    responseReader.next();
+                    batchCost = Decimal.valueOf(responseReader.getText());
+                }
+                responseReader.next();
+            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT
+                && 'message' == responseReader.getLocalName()) {
+                break;
+            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT) {
+                responseReader.next();
+            }
+        }
+        if (responseCode != null
+            && details != null
+            && batchName != null
+            && batchQuantity != null
+            && batchCost != null
+            && pieces.size() > 0) {
+            newJob = new LetterStreamJob__c(
+                Batch_Name__c = batchName,
+                Cost__c = batchCost,
+                Details__c = details,
+                Piece_Count__c = batchQuantity,
+                Job_Id__c = pieces[0].LetterStream_Job_Id__c
+            );
+            insert newJob;
+            for (LetterStream_Piece__c piece : pieces) {
+                piece.LetterStreamJob__c = newJob.Id;
+            }
+            insert pieces;
+        }
+        return newJob;
+    }
+
+    public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
+        String objectId;
+        String jobId;
+        Decimal pieceCost;
+        while(docReader.hasNext()) {
+            if (docReader.getEventType() == XmlTag.START_ELEMENT) {
+                if ('id' == docReader.getLocalName()) {
+                    docReader.next();
+                    objectId = docReader.getText();
+                } else if ('job' == docReader.getLocalName()) {
+                    docReader.next();
+                    jobId = docReader.getText();
+                } else if ('cost' == docReader.getLocalName()) {
+                    docReader.next();
+                    pieceCost = Decimal.valueOf(docReader.getText());
+                }
+                docReader.next();
+            }
+            if (docReader.getEventType() == XmlTag.END_ELEMENT
+                && 'doc' == docReader.getLocalName()) {
+                docReader.next();
+                break;
+            } else if (docReader.getEventType() == XmlTag.END_ELEMENT) {
+                docReader.next();
+            }
+        }
+        return new LetterStream_Piece__c(
+            Object_Id__c = objectId,
+            Piece_Cost__c = pieceCost,
+            LetterStream_Job_Id__c = jobId
+        );
+    }
+
+    public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
+        List<LetterStream_Settings__c> letterStreamSettings = LetterStream_Settings__c.getall().values();
+        String endpoint = letterStreamSettings.get(0).API_Endpoint__c;
+        String apiId = letterStreamSettings[0].API_Id__c;
+        String apiKey = letterStreamSettings[0].API_Key__c;
+        String uniqueId = String.valueOf(DateTime.now().getTime());
+
+        // Repost of code  with fix for file corruption issue
+        // Orignal code postings and explanations
+        // http://enreeco.blogspot.in/2013/01/salesforce-apex-post-mutipartform-data.html
+        // http://salesforce.stackexchange.com/questions/24108/post-multipart-without-base64-encoding-the-body
+        // Additional changes commented GW: that fix issue with occasional corruption of files
+        String boundary = '----------------------------741e90d31eff';
+
+        Map<String, String> letterStreamHeaders = letterStreamHeaders(uniqueId, apiId, apiKey);
+
+        String header = '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="a"' + '\r\n\r\n' + letterStreamHeaders.get('apiId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="t"' + '\r\n\r\n' + letterStreamHeaders.get('uniqueId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += ('name="h"' + '\r\n\r\n' + letterStreamHeaders.get('hashedId')+ '\r\n');
+        header += '--'+boundary+'\nContent-Disposition: form-data; ';
+        header += 'name="multi_file"; filename="'+file_name+'";\nContent-Type: application/zip';
+        String footer = '--'+boundary+'--';
+        String headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
+        while(headerEncoded.endsWith('=')) {
+            header+=' ';
+            headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
+        }
+        String bodyEncoded = EncodingUtil.base64Encode(file_body);
+        Blob bodyBlob = null;
+        String last4Bytes = bodyEncoded.substring(bodyEncoded.length()-4,bodyEncoded.length());
+        if(last4Bytes.endsWith('==')) {
+            last4Bytes = last4Bytes.substring(0,2) + '0K';
+            bodyEncoded = bodyEncoded.substring(0,bodyEncoded.length()-4) + last4Bytes;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        } else if(last4Bytes.endsWith('=')) {
+            last4Bytes = last4Bytes.substring(0,3) + 'N';
+            bodyEncoded = bodyEncoded.substring(0,bodyEncoded.length()-4) + last4Bytes;
+            footer = '\n' + footer;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        } else {
+            footer = '\r\n' + footer;
+            String footerEncoded = EncodingUtil.base64Encode(Blob.valueOf(footer));
+            bodyBlob = EncodingUtil.base64Decode(headerEncoded+bodyEncoded+footerEncoded);
+        }
+
+        HttpRequest request = new HttpRequest();
+
+        request.setHeader('Content-Type','multipart/form-data; boundary=' + boundary);
+        request.setMethod('POST');
+        request.setEndpoint(endpoint);
+        request.setBodyAsBlob(bodyBlob);
+        return request;
+    }
+
+    public void addLetterToCSV(LetterParameters params) {
+        // Order of the headers and data is important:
+        // ex. API won't know PageCount is in column 6 even with the correct title. PageCount must be in column 16
+        if (csv == '') {
+            csv += csvHeaders;
+        }
+        csv += '\n';
+        csv += (params.fileId + ','); // UniqueDocId
+        csv += (params.fileName + ','); // PDFFileName
+        csv += (params.recipientName + ','); // RecipientName1
+        csv += (','); // RecipientName2
+        csv += (params.recipientStreet + ','); // RecipientAddr1
+        csv += (','); // RecipientAddr2
+        csv += (params.recipientCity + ','); // RecipientCity
+        csv += (params.recipientState + ','); // RecipientState
+        csv += (params.recipientPostalCode + ','); //RecipientZip
+        csv += blueWaveAddress();
+        csv += (params.pages + ','); // page count
+        csv += 'firstclass,'; // mailType
+        csv += 'N,'; // coversheet
+        csv += 'N,'; // duplex
+        csv += 'C,'; // ink
+        csv += 'W,'; // Paper
+    }
+
+    public String blueWaveAddress() {
+        String bwAddress = '';
+        BW_Address__c address = [
+            SELECT Id, Address_Line_One__c, Address_Line_Two__c
+            FROM BW_Address__c
+        ];
+        bwAddress += 'BlueWave Solar,'; //SenderName1
+        bwAddress += ','; //SenderName2
+        bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
+        bwAddress += 'Boston,'; // SenderCity
+        bwAddress += 'MA,'; //SenderState
+        bwAddress += '02116,'; //SenderZip
+        return bwAddress;
+    }
+
+    public class LetterParameters {
+        public String fileId;
+        public String fileName;
+        public String recipientName;
+        public String recipientStreet;
+        public String recipientCity;
+        public String recipientState;
+        public String recipientPostalCode;
+        public String pages;
+
+        public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
+            fileId = accountBill.Id;
+            fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
+            recipientName = accountBill.Parent_Account__r.Name;
+            recipientStreet = accountBill.Parent_Account__r.BillingStreet ;
+            recipientCity = accountBill.Parent_Account__r.BillingCity;
+            recipientState = accountBill.Parent_Account__r.BillingState;
+            recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
+            pages = accountBill.Number_of_Pages_in_Template__c.toPlainString();
+        }
+    }
+
+    public Map<String, String> letterStreamHeaders(String uniqueId, String apiId, String apiKey) {
+        Integer uniqueIdLength = uniqueId.length();
+        // per LetterStreamDocs - String to Hash
+        String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
+        // per LetterSteamDocs - Base64Encode string
+        Blob rawHashedIdBlob = Blob.valueOf(rawHashedId);
+        String encodedHashedId = EncodingUtil.base64Encode(rawHashedIdBlob);
+        // per LetterStreamDocs - MD5 the base64Encoded String
+        Blob md5HashedId = Crypto.generateDigest('MD5', Blob.valueOf(encodedHashedId));
+        String hashedId = EncodingUtil.convertToHex(md5HashedId);
+
+        Map<String, String> headers = new Map<String, String>();
+
+        headers.put('apiId', apiId);
+        headers.put('uniqueId', uniqueId);
+        headers.put('rawHashedId', rawHashedId);
+        headers.put('encodedHashedId', encodedHashedId);
+        headers.put('hashedId', hashedId);
+
+        return headers;
+    }
+}
