@@ -27,328 +27,328 @@
     <div class="slds-text-body--regular slds-align_absolute-center">
       {!v.loadingText}
     </div>
-  <aura:set attribute="else">
-  <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
-    <div aria-labelledby="utilityAccountInformationForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-        <legend id="utilityAccountInformationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large">Now we need some information about your </b>
-          <b class="slds-section__title--large--stream">Utility Account</b>
-        </legend>
+    <aura:set attribute="else">
+      <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
+        <div aria-labelledby="utilityAccountInformationForm">
+          <fieldset class="slds-box slds-theme--default slds-container_center">
+            <legend id="utilityAccountInformationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-section__title--large">Now we need some information about your </b>
+              <b class="slds-section__title--large--stream">Utility Account</b>
+            </legend>
 
-        <div class="slds-p-around--small slds-text-body--regular">
-          <b>This section contains information located on your monthly Electric Bill. It is important that this is entered exactly as it appears on your bill so that we can tell the Utility where to send your solar credits.</b>
+            <div class="slds-p-around--small slds-text-body--regular">
+              <b>This section contains information located on your monthly Electric Bill. It is important that this is entered exactly as it appears on your bill so that we can tell the Utility where to send your solar credits.</b>
+            </div>
+
+            <form class="slds-form--stacked">
+              <lightning:layout multipleRows="true">
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:select aura:id="field" name="leadElectricityProvider"
+                                    label="Electricity Provider"
+                                    value="{!v.lead.Electricity_Provider__c}"
+                                    required="true">
+                    <option value="">Choose one...</option>
+                    <option value="Eversource">Eversource</option>
+                    <option value="National Grid">National Grid</option>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                  <lightning:input aura:id="field" name="ualUtilityAccountNumber"
+                                   type="text"
+                                   label="Utility Account Number"
+                                   value="{!v.ual.Name}"
+                                   required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input aura:id="field" name="ualNameOnAccount"
+                                   type="text"
+                                   label="Name exactly as it appears on your utility account"
+                                   value="{!v.ual.Name_on_Account__c}"
+                                   required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                  <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
+                                   type="number"
+                                   formatter="currency"
+                                   label="Roughly, how much do you spend on electricity per year?"
+                                   value="{!v.ual.Annual_Cost_of_Electricity__c}"
+                                   required="true"/>
+                </lightning:layoutItem>
+              </lightning:layout>
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_left">
+                </div>
+                <div class="slds-float_right">
+                  <aura:if isTrue="{!v.ualList.length > 0}">
+                    <lightning:button label="Cancel adding Utility Account and Complete the Application" onclick="{!c.cancelAddUAL}"/>
+                  </aura:if>
+                  <lightning:button label="Next" onclick="{!c.goToGridUsageHistory}"/>
+                </div>
+              </div>
+            </form>
+          </fieldset>
         </div>
-
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:select aura:id="field" name="leadElectricityProvider" 
-                                label="Electricity Provider"
-                                value="{!v.lead.Electricity_Provider__c}"
-                                required="true">
-                  <option value="">Choose one...</option>
-                  <option value="Eversource">Eversource</option>
-                  <option value="National Grid">National Grid</option>
-              </lightning:select>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="ualUtilityAccountNumber"
-                       type="text"
-                       label="Utility Account Number"
-                       value="{!v.ual.Name}"
-                       required="true"/> 
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:input aura:id="field" name="ualNameOnAccount"
-                       type="text"
-                       label="Name exactly as it appears on your utility account"
-                       value="{!v.ual.Name_on_Account__c}"
-                       required="true"/>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
-                       type="number"
-                       formatter="currency"
-                       label="Roughly, how much do you spend on electricity per year?"
-                       value="{!v.ual.Annual_Cost_of_Electricity__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-            </div>
-            <div class="slds-float_right">
-              <aura:if isTrue="{!v.ualList.length > 0}">
-                <lightning:button label="Cancel adding Utility Account and Complete the Application" onclick="{!c.cancelAddUAL}"/>
-              </aura:if>
-              <lightning:button label="Next" onclick="{!c.goToGridUsageHistory}"/>
-            </div>
-          </div>
-        </form>
-      </fieldset>
-    </div>
-  </aura:if>
-  <aura:if isTrue="{!v.page == 'GridUsageHistory'}">
-    <div aria-labelledby="GridUsageHistoryForm">
-      <fieldset class="slds-box slds-theme--default slds-container_center">
-        <legend id="gridUsageHistoryForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large">To give you the right amount of</b>
-          <b class="slds-section__title--large--stream"> solar </b>
-          <b class="slds-section__title--large">we also need your</b>&nbsp;
-          <b class="slds-section__title--large--stream">{!v.lead.Electricity_Provider__c} </b>&nbsp;
-          <b class="slds-section__title--large">energy usage history</b>
-        </legend>
-        <lightning:layout multipleRows="true">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <lightning:input aura:id="field" type="file" label="Please upload a Recent Electric Bill" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
-            <br></br>
-            <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
-              <lightning:input aura:id="field" type="file" label="Page 2 of Bill, if separate file" name="files" multiple="true" onchange="{!c.handleEBill2}"/>
-            </aura:if>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
-              Uploaded Bills:
-              <ul>
-                <aura:iteration items="{!v.electricBill1}" var="attachment">
-                  <li class="slds-text-body--regular">{!attachment}</li>
-                </aura:iteration>
-                <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
-                  <aura:iteration items="{!v.electricBill2}" var="attachment">
-                    <li>{!attachment}</li>
-                  </aura:iteration>
-                </aura:if>
-              </ul>
-            </aura:if>
-          </lightning:layoutItem>
-        </lightning:layout>
-        <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
-          <div class="slds-p-around--small slds-text-body--regular">
-            <p>In order to subscribe you to the correct amount of net metering credits, we need information about your annual electric spend and kWh usage. Giving us this data will ensure that you are subscribing only to the amount of electricity that you need. This requires you to login to your {!v.lead.Electricity_Provider__c} portal where you normally pay your electric bill. </p>
-            <p>
-              <br></br>
-              <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'Eversource'}">
-                Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www.eversource.com/security/account/login?ReturnUrl=/nstar/CustomerCare/Residential/GreenButton" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/Eversource-Green-Button-Instructions-e1478199020569.jpg" label="here" target="_blank"/>. Please ensure the file is in csv format.
-              </aura:if>
-              <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'National Grid'}">
-                Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www1.nationalgridus.com/UsageCostGraphElectric" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/NGRID-Green-Button-Instructions.jpg" label="here" target="_blank"/>. Please ensure the file is in xls format.
-              </aura:if>
-            </p>
-          </div>
-        </aura:if>
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
-            <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+      </aura:if>
+      <aura:if isTrue="{!v.page == 'GridUsageHistory'}">
+        <div aria-labelledby="GridUsageHistoryForm">
+          <fieldset class="slds-box slds-theme--default slds-container_center">
+            <legend id="gridUsageHistoryForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
+              <b class="slds-section__title--large">To give you the right amount of</b>
+              <b class="slds-section__title--large--stream"> solar </b>
+              <b class="slds-section__title--large">we also need your</b>&nbsp;
+              <b class="slds-section__title--large--stream">{!v.lead.Electricity_Provider__c} </b>&nbsp;
+              <b class="slds-section__title--large">energy usage history</b>
+            </legend>
+            <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <lightning:input aura:id="field" type="file" label="Upload your Annual Electric History File Here" name="files" multiple="true" onchange="{!c.handleAnnualElectricHistory}"/>
+                <lightning:input aura:id="field" type="file" label="Please upload a Recent Electric Bill" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
+                <br></br>
+                <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+                  <lightning:input aura:id="field" type="file" label="Page 2 of Bill, if separate file" name="files" multiple="true" onchange="{!c.handleEBill2}"/>
+                </aura:if>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <aura:if isTrue="{!not(empty(v.annualElectricHistory))}">
-                  Uploaded Annual Electric History Files:
+                <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
+                  Uploaded Bills:
                   <ul>
-                    <aura:iteration items="{!v.annualElectricHistory}" var="attachment">
-                      <li>{!attachment}</li>
+                    <aura:iteration items="{!v.electricBill1}" var="attachment">
+                      <li class="slds-text-body--regular">{!attachment}</li>
                     </aura:iteration>
+                    <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+                      <aura:iteration items="{!v.electricBill2}" var="attachment">
+                        <li>{!attachment}</li>
+                      </aura:iteration>
+                    </aura:if>
                   </ul>
                 </aura:if>
               </lightning:layoutItem>
+            </lightning:layout>
+            <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+              <div class="slds-p-around--small slds-text-body--regular">
+                <p>In order to subscribe you to the correct amount of net metering credits, we need information about your annual electric spend and kWh usage. Giving us this data will ensure that you are subscribing only to the amount of electricity that you need. This requires you to login to your {!v.lead.Electricity_Provider__c} portal where you normally pay your electric bill. </p>
+                <p>
+                  <br></br>
+                  <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'Eversource'}">
+                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www.eversource.com/security/account/login?ReturnUrl=/nstar/CustomerCare/Residential/GreenButton" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/Eversource-Green-Button-Instructions-e1478199020569.jpg" label="here" target="_blank"/>. Please ensure the file is in csv format.
+                  </aura:if>
+                  <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'National Grid'}">
+                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www1.nationalgridus.com/UsageCostGraphElectric" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/NGRID-Green-Button-Instructions.jpg" label="here" target="_blank"/>. Please ensure the file is in xls format.
+                  </aura:if>
+                </p>
+              </div>
             </aura:if>
-            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <lightning:select aura:id="field" name="leadPreviousBWApplicant"
-                                label="Have you successfully applied for a BlueWave Home Solar Loan in the last 60 Days?"
-                                value="{!v.ual.Previous_BW_CL_Applicant__c}"
-                                required="true">
-                <option value="">Choose one...</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </lightning:select>
-            </lightning:layoutItem>
-            <aura:if isTrue="{!v.ual.Previous_BW_CL_Applicant__c == 'No'}">
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
-                                  label="Do you have solar panels on your property?"
-                                  value="{!v.haveSolarPanelsOnProperty}"
-                                  required="true">
-                  <option value="">Choose one...</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </lightning:select>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
-            </aura:if>
+            <form class="slds-form--stacked">
+              <lightning:layout multipleRows="true">
+                <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                    <lightning:input aura:id="field" type="file" label="Upload your Annual Electric History File Here" name="files" multiple="true" onchange="{!c.handleAnnualElectricHistory}"/>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                    <aura:if isTrue="{!not(empty(v.annualElectricHistory))}">
+                      Uploaded Annual Electric History Files:
+                      <ul>
+                        <aura:iteration items="{!v.annualElectricHistory}" var="attachment">
+                          <li>{!attachment}</li>
+                        </aura:iteration>
+                      </ul>
+                    </aura:if>
+                  </lightning:layoutItem>
+                </aura:if>
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  <lightning:select aura:id="field" name="leadPreviousBWApplicant"
+                                    label="Have you successfully applied for a BlueWave Home Solar Loan in the last 60 Days?"
+                                    value="{!v.ual.Previous_BW_CL_Applicant__c}"
+                                    required="true">
+                    <option value="">Choose one...</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <aura:if isTrue="{!v.ual.Previous_BW_CL_Applicant__c == 'No'}">
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                    <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                                      label="Do you have solar panels on your property?"
+                                      value="{!v.haveSolarPanelsOnProperty}"
+                                      required="true">
+                      <option value="">Choose one...</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </lightning:select>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
+                </aura:if>
 
-            <aura:if isTrue="{!v.haveSolarPanelsOnProperty == 'Yes'}">
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <lightning:input aura:id="field" name="leadEstimatedInstallDate"
-                                 type="date"
-                                 label="What is the approximate date the solar system was installed?"
-                                 value="{!v.ual.Solar_System_Installation_Date__c}"
-                                 required="false"/>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <aura:if isTrue="{!v.haveSolarPanelsOnProperty == 'Yes'}">
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                    <lightning:input aura:id="field" name="leadEstimatedInstallDate"
+                                     type="date"
+                                     label="What is the approximate date the solar system was installed?"
+                                     value="{!v.ual.Solar_System_Installation_Date__c}"
+                                     required="false"/>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
+                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
 
-                <lightning:helptext
-                  title="Size of Solar System Help Text"
-                  content="Most residential systems range from 3-12 kW DC, while non-residential systems may be larger."/>
-                <lightning:input aura:id="field" name="leadSystemSize"
-                                 type="number"
-                                 label="What is the size of the solar system, in kW DC?"
-                                 value="{!v.ual.Solar_System_Size_kW_DC__c}"
-                                 min="0"
-                                 max="1000"
-                                 required="false"/>
-              </lightning:layoutItem>
-            </aura:if>
-          </lightning:layout>
-          <div class="slds-p-left--small slds-p-top--small slds-text-body--regular">
-            Is there anything else that you would like to mention that has impacted your annual cost of electricity over the last year, or may impact your annual cost of electricity over the next year?
-            <em>(fixed price contract with a 3rd Party Supplier, solar panels on your roof, planned addition to your house, planned energy efficiency measures, etc.)</em>
-          </div>
-          <lightning:layout multipleRows="true" class="slds-p-left--small">
-            <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <ui:inputTextArea value="{!v.ual.Comments_About_Sizings__c}"/>
-            </lightning:layoutItem>
-          </lightning:layout>
+                    <lightning:helptext
+                      title="Size of Solar System Help Text"
+                      content="Most residential systems range from 3-12 kW DC, while non-residential systems may be larger."/>
+                    <lightning:input aura:id="field" name="leadSystemSize"
+                                     type="number"
+                                     label="What is the size of the solar system, in kW DC?"
+                                     value="{!v.ual.Solar_System_Size_kW_DC__c}"
+                                     min="0"
+                                     max="1000"
+                                     required="false"/>
+                  </lightning:layoutItem>
+                </aura:if>
+              </lightning:layout>
+              <div class="slds-p-left--small slds-p-top--small slds-text-body--regular">
+                Is there anything else that you would like to mention that has impacted your annual cost of electricity over the last year, or may impact your annual cost of electricity over the next year?
+                <em>(fixed price contract with a 3rd Party Supplier, solar panels on your roof, planned addition to your house, planned energy efficiency measures, etc.)</em>
+              </div>
+              <lightning:layout multipleRows="true" class="slds-p-left--small">
+                <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  <ui:inputTextArea value="{!v.ual.Comments_About_Sizings__c}"/>
+                </lightning:layoutItem>
+              </lightning:layout>
 
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-              <lightning:button label="Previous" onclick="{!c.goToUtilityAccountInformation}"/>
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_left">
+                  <lightning:button label="Previous" onclick="{!c.goToUtilityAccountInformation}"/>
 
-            </div>
-            <div class="slds-float_right">
-              <lightning:button label="Next" onclick="{!c.goToUAServiceAddress}"/>
-            </div>
-          </div>
-        </form>
-      </fieldset>
-    </div>
-  </aura:if>
-  <aura:if isTrue="{!v.page == 'UAServiceAddress'}">
-    <div aria-labelledby="uaServiceAddressForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-        <legend id="uaServiceAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large--stream">One last thing!</b>
-          <b class="slds-section__title--large"> Please provide your Utility Account</b>
-          <b class="slds-section__title--large--stream"> Service Address</b>
-        </legend>
-
-        <div class="slds-p-around--small slds-text-body--regular">
-          Please provide the service address located on this Utility Account's Electric Bill. This is the address that BlueWave will send Net Metering Credits to.
+                </div>
+                <div class="slds-float_right">
+                  <lightning:button label="Next" onclick="{!c.goToUAServiceAddress}"/>
+                </div>
+              </div>
+            </form>
+          </fieldset>
         </div>
+      </aura:if>
+      <aura:if isTrue="{!v.page == 'UAServiceAddress'}">
+        <div aria-labelledby="uaServiceAddressForm">
+          <fieldset class="slds-box slds-theme--default slds-container_center">
+            <legend id="uaServiceAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
+              <b class="slds-section__title--large--stream">One last thing!</b>
+              <b class="slds-section__title--large"> Please provide your Utility Account</b>
+              <b class="slds-section__title--large--stream"> Service Address</b>
+            </legend>
 
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:input aura:id="field" name="ualServiceAddress"
-                       label="Street Address"
-                       value="{!v.ual.Service_Address__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="ualServiceCity"
-                       label="City"
-                       value="{!v.ual.Service_City__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+            <div class="slds-p-around--small slds-text-body--regular">
+              Please provide the service address located on this Utility Account's Electric Bill. This is the address that BlueWave will send Net Metering Credits to.
+            </div>
 
-              <lightning:select aura:id="field" name="ualServiceState" 
-                                label="State" 
-                                value="{!v.ual.Service_State__c}"
-                                required="true">
-                  <option value="">Choose state...</option>
-                  <aura:iteration items="{!v.abbrevStates}" var="s">
+            <form class="slds-form--stacked">
+              <lightning:layout multipleRows="true">
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input aura:id="field" name="ualServiceAddress"
+                                   label="Street Address"
+                                   value="{!v.ual.Service_Address__c}"
+                                   required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                  <lightning:input aura:id="field" name="ualServiceCity"
+                                   label="City"
+                                   value="{!v.ual.Service_City__c}"
+                                   required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+
+                  <lightning:select aura:id="field" name="ualServiceState"
+                                    label="State"
+                                    value="{!v.ual.Service_State__c}"
+                                    required="true">
+                    <option value="">Choose state...</option>
+                    <aura:iteration items="{!v.abbrevStates}" var="s">
                       <option value="{!s}" text="{!s}"></option>
-                  </aura:iteration>
-              </lightning:select>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="ualServiceZipCode"
-                               label="Zip Code"
-                               value="{!v.ual.Service_Zip_Code__c}"
-                               required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
+                    </aura:iteration>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                  <lightning:input aura:id="field" name="ualServiceZipCode"
+                                   label="Zip Code"
+                                   value="{!v.ual.Service_Zip_Code__c}"
+                                   required="true"/>
+                </lightning:layoutItem>
+              </lightning:layout>
 
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-              <lightning:button label="Previous" onclick="{!c.goToGridUsageHistory}"/>
-            </div>
-            <div class="slds-float_right">
-              <lightning:button label="Next" onclick="{!c.goToAddMore}"/>
-            </div>
-          </div>
-        </form>
-      </fieldset>
-    </div>
-  </aura:if>
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_left">
+                  <lightning:button label="Previous" onclick="{!c.goToGridUsageHistory}"/>
+                </div>
+                <div class="slds-float_right">
+                  <lightning:button label="Next" onclick="{!c.goToAddMore}"/>
+                </div>
+              </div>
+            </form>
+          </fieldset>
+        </div>
+      </aura:if>
 
-  <aura:if isTrue="{!v.page == 'AddMore'}">
-    <div aria-labelledby="addToApplicationForm">
-      <fieldset class="slds-form-element slds-align_absolute-center">
-        <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-          <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
-        </legend>
-        <div class="slds-form-element__control slds-align_absolute-center">
-          <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
-          <div class="slds-visual-picker slds-visual-picker_large">
-            <a onclick="{!c.addUAL}">
-              <label for="visual-picker-add-utility">
+      <aura:if isTrue="{!v.page == 'AddMore'}">
+        <div aria-labelledby="addToApplicationForm">
+          <fieldset class="slds-form-element slds-align_absolute-center">
+            <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
+              <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
+            </legend>
+            <div class="slds-form-element__control slds-align_absolute-center">
+              <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
+                <div class="slds-visual-picker slds-visual-picker_large">
+                  <a onclick="{!c.addUAL}">
+                    <label for="visual-picker-add-utility">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
                   <span class="slds-icon_container" title="description of icon when needed">
                     <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
                   </span>
                 </span>
-                <span class="slds-visual-picker__body">
+                      <span class="slds-visual-picker__body">
                   <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
                   <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
                 </span>
-              </label>
-            </a>
-          </div>
-          </aura:if>
+                    </label>
+                  </a>
+                </div>
+              </aura:if>
 
-          <div class="slds-visual-picker slds-visual-picker_large">
-            <a onclick="{!c.addResidence}">
-              <label for="visual-picker-residential">
+              <div class="slds-visual-picker slds-visual-picker_large">
+                <a onclick="{!c.addResidence}">
+                  <label for="visual-picker-residential">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
                   <span class="slds-icon_container" title="description of icon when needed">
                     <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
                   </span>
                 </span>
-                <span class="slds-visual-picker__body">
+                    <span class="slds-visual-picker__body">
                   <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
                   <div class="slds-text-body--large--stream"><b>Home</b></div>
                 </span>
-              </label>
-            </a>
-          </div>
-          <div class="slds-visual-picker slds-visual-picker_large">
-            <a onclick="{!c.addBusiness}">
-              <label for="visual-picker-business">
+                  </label>
+                </a>
+              </div>
+              <div class="slds-visual-picker slds-visual-picker_large">
+                <a onclick="{!c.addBusiness}">
+                  <label for="visual-picker-business">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
                   <span class="slds-icon_container" title="description of icon when needed">
                     <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
                   </span>
                 </span>
-                <span class="slds-visual-picker__body">
+                    <span class="slds-visual-picker__body">
                   <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
                   <div class="slds-text-body--large--stream"><b>Business</b></div>
                 </span>
-              </label>
-            </a>
-          </div>
+                  </label>
+                </a>
+              </div>
+            </div>
+          </fieldset>
         </div>
-      </fieldset>
-    </div>
 
-    <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
-      <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
-    </div>
-  </aura:if>
-  </aura:set>
+        <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
+          <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+        </div>
+      </aura:if>
+    </aura:set>
   </aura:if>
 
 
