@@ -141,6 +141,8 @@ public without sharing class CSAPController {
                         AND IsActive = True
                         LIMIT 1];
 
+        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
         account.Name = lead.FirstName + ' ' + lead.LastName;
@@ -156,6 +158,10 @@ public without sharing class CSAPController {
         account.OwnerId = apiUser.Id;
         upsert account;
 
+        lead.Partner_Lookup__c = customerPartner.Id;
+        lead.Partner_Email__c = customerPartner.Email__c;
+        lead.Bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
+
         if (lead.Date_of_Application__c == null) {
             lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
         }
@@ -168,21 +174,7 @@ public without sharing class CSAPController {
         if (lead.Application_Type__c == 'Non-Residential') {
             lead.Customer_Type__c = 'Business';
         }
-        if (String.isNotBlank(partnerId)) {
-            Partner__c partner = [SELECT Id, Email__c FROM Partner__c WHERE Id = :partnerId LIMIT 1];
-            lead.Partner_lookup__c = partner.Id;
-            lead.Partner_Email__c = partner.Email__c;
-        } else {
-            Partner__c defaultPartner = [SELECT Id, Email__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
-            lead.Partner_Lookup__c = defaultPartner.Id;
-            lead.Partner_Email__c = defaultPartner.Email__c;
-        }
-        if (String.isNotBlank(salesRepId)) {
-            lead.Bs_Sales_ID__c = salesRepId;
-        } else {
-            BSST__c defaultSalesRep  = [SELECT Id FROM BSST__c WHERE Name = 'Dianne Martz' LIMIT 1];
-            lead.BS_Sales_ID__c = defaultSalesRep.Id;
-        }
+
         if (String.isNotBlank(referralCode) && referralCode != 'undefined'){
             List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
             if(referralContacts.size() == 1){
