@@ -45,6 +45,7 @@ public without sharing class LeadTriggerHandler {
         'Referral_Email__c'=>'Referral_Email__c',
         'Requested_Loan_Amount__c'=>'Requested_Loan_Amount__c',
         'Residence_Owner__c'=>'Residence_Owner__c',
+        'bs_Sales_ID__c'=>'BS_Sales_ID__c',
         'Sales_Person__c'=>'Sales_Person_Tag__c',
         'SREC_Product__c'=>'SREC_Product__c',
         'State_of_Issuance__c'=>'State_of_Issuance__c',
@@ -220,6 +221,7 @@ public without sharing class LeadTriggerHandler {
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.Residence_Owner__c = lead.Residence_Owner__c;
         opp.BS_Sales_ID__c = lead.Sales_Person__c;
+        opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Sales_Person_Tag__c = lead.Sales_Person__c;
         opp.Security_Type__c = lead.Security_Type__c;
         opp.Service_Territory__c = lead.Load_Zone__c;

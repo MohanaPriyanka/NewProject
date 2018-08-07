@@ -9,14 +9,15 @@
             var action = component.get("c.sendEmail");
             action.setParams({ emailAddress : component.find("email").get("v.value") });
             action.setCallback(this,function(resp){
-                if (resp.getState() == 'SUCCESS') {
-                    if (resp.getReturnValue() == 'success') {
+                if (resp.getState() === 'SUCCESS') {
+                    if (resp.getReturnValue() === 'success') {
                         component.find("emailstatus").set("v.value", "The email was sent successfully.");
                     } else {
                         alert('fail');
-                        component.find("emailstatus").set("v.value", resp.getReturnValue());
+                        component.find("emailstatus").set("v.value", 'Unable to send email: ' + resp.getReturnValue());
                     }
                 } else {
+
                     component.find("emailstatus").set("v.value", resp.getError());
                 }
             });
@@ -26,7 +27,7 @@
     doInit : function(component, event, helper) {
         var action = component.get("c.getContactInfo");
         action.setCallback(this,function(resp){
-            if (resp.getState() != 'SUCCESS') {
+            if (resp.getState() !== 'SUCCESS') {
                 $A.log("Errors", resp.getError());
             }
         });
