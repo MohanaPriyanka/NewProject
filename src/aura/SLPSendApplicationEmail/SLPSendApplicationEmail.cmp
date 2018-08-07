@@ -6,6 +6,7 @@
   <aura:registerEvent name="apexErrorEvent" type="c:ApexCallbackError"/>
   <aura:attribute name="partnerRecord" type="Object" />
   <aura:attribute name="disableOrigination" type="Boolean" default="false"/>
+  <aura:attribute name="enableStorage" type="Boolean" default="false"/>
   <aura:attribute name="activeStates" type="List" />
   <aura:attribute name="downPayment" type="Decimal" />
   <aura:attribute name="customerEmail" type="String" />
@@ -13,7 +14,9 @@
   <aura:attribute name="availableSRECProducts" type="Product2[]"/>
   <aura:attribute name="productProgram" type="String"/>
   <aura:attribute name="iblsRequired" type="Boolean"/>
-  <aura:attribute name="newLead" type="Lead" 
+  <aura:attribute name="availableStorageManufacturers" type="List" />
+  <aura:attribute name="availableStorageInverterManufacturers" type="List" />
+  <aura:attribute name="newLead" type="Lead"
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
     'LastName': '',
@@ -38,7 +41,7 @@
     'inverter_model_number__c': '',
     'Estimated_Completion_Date__c': '',
     'generator_nameplate_capacity__c': '',
-    'storage_hybrid__c': '',
+    'storage_grid_hybrid__c': '',
     'storage_full_or_partial__c': '',
     'storage_cost__c': '',
     'storage_manufacturer__c': '',
@@ -229,12 +232,12 @@
                         </div>
                       </div>
                     </fieldset>
-                  </aura:if>
-                  <aura:if isTrue="{!v.partnerRecord.Storage_Approved__c}">
-                    <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
-                      <lightning:input type="checkbox" label="Add Storage"
-                                           checked="{!v.newLead.Storage__c}"/>
-                    </div>
+                    <aura:if isTrue="{!and(v.enableStorage, v.newLead.Product__c != 'MSLP')}">
+                      <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
+                        <lightning:input type="checkbox" label="Add Storage"
+                                       checked="{!v.newLead.Storage__c}"/>
+                      </div>
+                    </aura:if>
                   </aura:if>
                   <aura:if isTrue="{!v.newLead.Storage__c}">
                     <div class="slds-form-element__row">
@@ -248,7 +251,13 @@
                           </ui:inputSelect>
                         </div>
                       </div>
-                      <aura:if isTrue="{!v.systemInfoObj.storage_hybrid__c == 'Yes'}">
+                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                        <label class="slds-form-element__label" for="input-03"><b>Cost of Storage System</b></label>
+                        <ui:inputCurrency aura:id="storageCost" class="slds-input" value="{!v.systemInfoObj.storage_cost__c}"/>
+                      </div>
+                    </div>
+                    <aura:if isTrue="{!v.systemInfoObj.storage_hybrid__c == 'Yes'}">
+                    <div class="slds-form-element__row">
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                           <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
                           <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.storage_full_or_partial__c}">
@@ -257,12 +266,8 @@
                             <ui:inputSelectOption text="Full" label="Full home backup"/>
                           </ui:inputSelect>
                         </div>
-                      </aura:if>
-                      <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                        <label class="slds-form-element__label" for="input-03"><b>Cost of Storage System</b></label>
-                        <ui:inputCurrency aura:id="storageCost" class="slds-input" value="{!v.systemInfoObj.storage_cost__c}"/>
-                      </div>
                     </div>
+                    </aura:if>
                     <div class="slds-form-element__row">
                       <div class="slds-p-horizontal--small slds-size_1-of-3">
                         <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
@@ -295,24 +300,19 @@
                         <ui:inputSelect aura:id="storageInverterManufacturer" class="slds-input" value="{!v.systemInfoObj.storage_inverter_manufacturer__c}">
                           <ui:inputSelectOption text="" label="Select"/>
                           <ui:inputSelectOption text="Tesla" label="Tesla"/>
-                          <ui:inputSelectOption text="Schneider Electric" label="Schneider Electric"/>
+                          <ui:inputSelectOption text="Sonnen" label="Schneider Electric"/>
                           <ui:inputSelectOption text="SolarEdge" label="SolarEdge"/>
                           <ui:inputSelectOption text="Pika" label="Pika"/>
                           <ui:inputSelectOption text="EnPhase" label="EnPhase"/>
-                          <ui:inputSelectOption text="Outback Power" label="Outback Power"/>
+                          <ui:inputSelectOption text="Outback" label="Outback"/>
+                          <ui:inputSelectOption text="Power" label="Power"/>
                           <ui:inputSelectOption text="Fronius" label="Fronius"/>
                           <ui:inputSelectOption text="Xantrex" label="Xantrex"/>
                           <ui:inputSelectOption text="LG Chem" label="LG Chem"/>
                           <ui:inputSelectOption text="SMA" label="SMA"/>
-                          <ui:inputSelectOption text="Other" label="Other"/>
+                          <!--<c:StorageInverterManufacturers value="{!v.systemInfoObj.storage_inverter_manufacturer__c}" label="Inverter Manufacturer"/>-->
                         </ui:inputSelect>
                       </div>
-                      <aura:if isTrue="{!v.newLead.storageInverterManufacturer == 'Other'}">
-                        <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                          <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
-                          <ui:inputText aura:id="storageInverterManufacturerOther" class="slds-input" value="{!v.systemInfoObj.storage_inverter_manufacturer_other__c}"/>
-                        </div>
-                      </aura:if>
                       <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                         <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
                         <ui:inputText aura:id="storageInverterModel" class="slds-input" value="{!v.systemInfoObj.storage_inverter_model__c}"/>

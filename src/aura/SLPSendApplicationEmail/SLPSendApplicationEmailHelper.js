@@ -219,15 +219,15 @@
     },
 
     setManufacturers : function(component) {
-        var systemInfo = component.get('v.systemInfoObj');
-        var storageManufacturer = systemInfo.storage_manufacturer__c;
-        var otherStorageManufacturer = systemInfo.storage_manufacturer_other__c;
-        if(storageManufacturer == 'Other'){
+        let systemInfo = component.get('v.systemInfoObj');
+        let storageManufacturer = systemInfo.storage_manufacturer__c;
+        let otherStorageManufacturer = systemInfo.storage_manufacturer_other__c;
+        if (storageManufacturer === 'Other') {
             component.set('v.systemInfoObj.storage_manufacturer__c', otherStorageManufacturer);
         }
-        var inverterManufacturer = systemInfo.storage_inverter_manufacturer__c;
-        var otherInverterManufacturer = systemInfo.storage_inverter_manufacturer_other__c;
-        if(inverterManufacturer == 'Other'){
+        let inverterManufacturer = systemInfo.storage_inverter_manufacturer__c;
+        let otherInverterManufacturer = systemInfo.storage_inverter_manufacturer_other__c;
+        if (inverterManufacturer === 'Other') {
             inverterManufacturer = otherInverterManufacturer;
             component.set('v.systemInfoObj.storage_inverter_manufacturer__c', otherInverterManufacturer);
         }
