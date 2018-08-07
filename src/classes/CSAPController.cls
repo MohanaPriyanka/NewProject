@@ -186,12 +186,7 @@ public without sharing class CSAPController {
         }
         lead.State = BlueWaveParent.convertAbbreviationToState(lead.State);
         lead.Parcel_Zip__c = lead.LASERCA__Home_Zip__c;
-        if (lead.Application_Type__c == 'Residential') {
-            lead.Customer_type__c = 'Residential';
-        }
-        if (lead.Application_Type__c == 'Non-Residential') {
-            lead.Customer_type__c = 'Business';
-        }
+        lead.Customer_type__c = lead.Application_Type__c;
         return lead;
     }
     @AuraEnabled
