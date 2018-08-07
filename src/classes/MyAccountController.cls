@@ -241,6 +241,8 @@ public without sharing class MyAccountController {
             htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
             htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
             htmlBody = htmlBody.replace('{!Contact.Id}', u.Contact.Id);
+            htmlBody = htmlBody.replace('{!Contact.FirstName}', u.FirstName);
+            htmlBody = htmlBody.replace('{!Contact.LastName}', u.LastName);
 
             Messaging.SingleEmailMessage sem = new Messaging.SingleEmailMessage();
             sem.setHtmlBody(htmlBody);

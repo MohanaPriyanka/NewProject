@@ -14,9 +14,10 @@
                         component.find("emailstatus").set("v.value", "The email was sent successfully.");
                     } else {
                         alert('fail');
-                        component.find("emailstatus").set("v.value", resp.getReturnValue());
+                        component.find("emailstatus").set("v.value", 'Unable to send email: ' + resp.getReturnValue());
                     }
                 } else {
+
                     component.find("emailstatus").set("v.value", resp.getError());
                 }
             });
