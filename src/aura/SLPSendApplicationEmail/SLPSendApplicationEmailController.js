@@ -17,10 +17,11 @@
                 helper.logError("SLPSendApplicationEmailController", "doInit", resp.getError());
             }
         });    
-        $A.enqueueAction(action);    
+        $A.enqueueAction(action);
 
         helper.callApexMethod(component, "getActiveStates", ["activeStates"]);
-        // helper.getPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Inverter_Manufacturer__c', component.find('availableStorageManufacturers'));
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Inverter_Manufacturer__c', "v.availableStorageInverterManufacturers");
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');
