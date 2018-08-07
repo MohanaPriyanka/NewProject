@@ -221,16 +221,16 @@ public without sharing class MyAccountController {
     public static Partner__c getPartner(String partnerId){
         Partner__c partner = new Partner__c();
 
-        if (partnerId != null){
+        if (partnerId != null && partnerId != ''){
             partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c
+                SELECT Id, Email__c, Default_Sales_Rep__c, Name
                 FROM Partner__c
                 WHERE Id = :partnerId
                 LIMIT 1
             ];
         } else {
             partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, CS_Referral_Status__c
+                SELECT Id, Email__c, Default_Sales_Rep__c, CS_Referral_Status__c, Name
                 FROM Partner__c
                 WHERE CS_Referral_Status__c = 'Default CS Partner'
                 LIMIT 1
@@ -247,6 +247,7 @@ public without sharing class MyAccountController {
             EmailTemplate et = [Select Id, HtmlValue from EmailTemplate where DeveloperName = 'Community_Referral_email'];
             User u = customerUser;
             Partner__c customerPartner;
+            BSST__c salesRep;
 
             String htmlBody = et.HtmlValue;
 
@@ -254,12 +255,18 @@ public without sharing class MyAccountController {
 
             if (opp != null) {
                 customerPartner = getPartner(opp.Partner_tag_lookup__c);
+
+                if (opp.BS_Sales_ID__c != null) {
+                    salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
+                } else {
+                    salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :customerPartner.Default_Sales_Rep__c];
+                }
             } else {
                 customerPartner = getPartner(null);
+                salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :customerPartner.Default_Sales_Rep__c];
             }
 
-
-            htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', customerPartner.Default_Sales_Rep__c);
+            htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
             htmlBody = htmlBody.replace('{!Account.PartnerId__c}', customerPartner.Id);
             htmlBody = htmlBody.replace('{!Contact.Id}', u.Contact.Id);
             htmlBody = htmlBody.replace('{!Contact.FirstName}', u.FirstName);

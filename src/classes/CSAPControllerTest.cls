@@ -39,6 +39,7 @@ public with sharing class CSAPControllerTest {
 
         Partner__c partner2 = new Partner__c(
             Name = 'Mass Renewables',
+            CS_Referral_Status__c = 'Default CS Partner',
             Email__c = 'massRenewables@test.com');
         insert partner2;
 
@@ -47,6 +48,9 @@ public with sharing class CSAPControllerTest {
             Partner__c = partner2.Id,
             Email__c = 'martz@testemail.com');
         insert salesRep2;
+
+        partner2.Default_Sales_Rep__c = salesRep2.Id;
+        update partner2;
 
         Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
         insert customerAccount;
@@ -287,11 +291,10 @@ public with sharing class CSAPControllerTest {
 
         CSAPController.upsertCSAPRecords(defaultLead, null, null, customerContact.Id );
 
-
         Test.stopTest();
 
-        Partner__c defaultPartner = [ SELECT Id, Email__c FROM Partner__c WHERE Name = 'Mass Renewables'];
-        BSST__c defaultSalesRep = [ SELECT Id FROM BSST__c WHERE Name = 'Dianne Martz'];
+        Partner__c defaultPartner = [ SELECT Id, Email__c, Default_Sales_Rep__c FROM Partner__c WHERE CS_Referral_Status__c = 'Default CS Partner' LIMIT 1];
+        BSST__c defaultSalesRep = [ SELECT Id FROM BSST__c WHERE Id = :defaultPartner.Default_Sales_Rep__c];
 
         System.assertEquals(defaultPartner.Id, defaultLead.Partner_Lookup__c);
         System.assertEquals(defaultSalesRep.Id, defaultLead.Bs_Sales_ID__c);
@@ -339,7 +342,7 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(otherUser) {
-            CSAPController.upsertCSAPRecords(leadToInsert, '', '', '');
+            CSAPController.upsertCSAPRecords(leadToInsert, null, null, '');
         }
 
         Lead lead = [

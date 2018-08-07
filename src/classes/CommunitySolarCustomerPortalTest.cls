@@ -71,16 +71,37 @@ public without sharing class CommunitySolarCustomerPortalTest {
         // To avoid UNABLE_TO_LOCK_ROW:
         Util.insertSobjs(new list<User>{communityUser});
 
+        Partner__c partner = new Partner__c (
+            Name = 'Partner',
+            Products__c = 'Community Solar'
+        );
+        insert partner;
+
+        BSST__c salesRep = new BSST__c(
+            Name = 'Sales Rep A',
+            Partner__c = partner.Id
+        );
+        insert salesRep;
+
+        BSST__c salesRep2 = new BSST__c (
+            Name = 'Sales Rep B',
+            Partner__c = partner.Id
+        );
+        insert salesRep2;
+
 
         Partner__c csPartner = new Partner__c (
             Name = 'CS Partner',
-            Products__c = 'Community Solar'
+            Products__c = 'Community Solar',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Default_Sales_Rep__c = salesRep2.Id
         );
         insert csPartner;
 
         Partner__c oldPartner = new Partner__c(
             Name = 'Old Partner',
-            Products__c = 'Community Solar'
+            Products__c = 'Community Solar',
+            Default_Sales_Rep__c = salesRep.Id
         );
         insert oldPartner;
 
@@ -94,12 +115,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
         insert propAccountNew;
 
-        BSST__c salesRep = new BSST__c(
-            Name = 'Sales Rep A',
-            Partner__c = csPartner.Id
-        );
-        insert salesRep;
-
         Date yesterday = Date.Today().addDays(-1);
 
         //Old Opportunity with wrong partner
@@ -110,7 +125,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
             StageName = 'Complete',
             Product__c = normalCSProduct.Id,
             Partner_tag_lookup__c = oldPartner.Id,
-            BS_Sales_ID__c = salesRep.Id,
             CloseDate = yesterday
         );
         insert opportunityOLD;
@@ -126,6 +140,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             CloseDate = System.today()
         );
         insert opportunityNEW;
+
 
         for (Account_Bill__c aBill : accountBillList){
             aBill.Published__c = true;
@@ -232,9 +247,20 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String checkSalesRepId = checkOpp.BS_Sales_ID__c;
             String checkContactId = ContactfromUser.Id;
 
+              System.debug(checkOpp);
             System.assertEquals(opportunityNEW.Partner_tag_lookup__c, checkPartnerId);
             System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
             System.assertEquals(con.Id, checkContactId);
+
+              //Test getPartner()
+              Partner__c checkPartner = MyAccountController.getPartner(checkPartnerId);
+              //oppNEW
+              System.assertEquals('CS Partner', checkPartner.Name);
+              System.assertEquals(salesRep2.Id, checkPartner.Default_Sales_Rep__c );
+              //Default getPartner()
+              Partner__c defaultPartner = MyAccountController.getPartner(null);
+              System.assertEquals('CS Partner', defaultPartner.Name);
+              System.assertEquals(salesRep2.Id, defaultPartner.Default_Sales_Rep__c);
 
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');
