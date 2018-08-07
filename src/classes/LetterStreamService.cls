@@ -224,7 +224,7 @@ public with sharing class LetterStreamService {
         }
         bwAddress += (address.City__c + ','); // SenderCity
         bwAddress += (address.State__c + ','); //SenderState
-        bwAddress += (address.Zipcode__c + ','); //SenderZip
+        bwAddress += (address.Zip_Code__c + ','); //SenderZip
         return bwAddress;
     }
 
