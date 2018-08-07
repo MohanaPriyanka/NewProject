@@ -11,7 +11,7 @@
   <aura:attribute name="selectedProduct" type="Object"/>
   <aura:attribute name="annualElectricHistory" type="Object"/>
   <aura:attribute name="loading" type="Boolean"/>
-  <aura:attribute name="loadingText" type="Boolean"/>
+  <aura:attribute name="loadingText" type="String"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -27,7 +27,7 @@
     <div class="slds-text-body--regular slds-align_absolute-center">
       {!v.loadingText}
     </div>
-  </aura:if>
+  <aura:set attribute="else">
   <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
     <div aria-labelledby="utilityAccountInformationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
@@ -195,7 +195,6 @@
                 <lightning:input aura:id="field" name="leadSystemSize"
                                  type="number"
                                  label="What is the size of the solar system, in kW DC?"
-                                 placeholder="Most residential systems range from 3-12 kW DC, while non-residential systems may be larger."
                                  value="{!v.ual.Solar_System_Size_kW_DC__c}"
                                  min="0"
                                  max="1000"
@@ -349,7 +348,8 @@
       <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
     </div>
   </aura:if>
-
+  </aura:set>
+  </aura:if>
 
 
 </aura:component>

@@ -106,6 +106,7 @@
         component.set("v.ual", ual);
         component.set("v.ualList", ualList);
         component.set("v.page", "UtilityAccountInformation");
+        helper.clearAttachments(component, event, helper);
     },
     handleEBill1 : function(component, event, helper) {
         helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
@@ -121,6 +122,7 @@
     
     finishStage : function(component, event, helper) {
         component.set('v.loading', true);
+        component.set('v.loadingText', 'Submitting your application...');
         helper.convertLeadFunction(component, event, helper);
         helper.finishStage(component, event, helper);
     },
