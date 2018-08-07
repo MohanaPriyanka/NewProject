@@ -47,6 +47,12 @@
         var parentId = component.get("v.ual.Id");
         helper.uploadFiles(component, files, parentId, helper.showUploadSuccess, description, helper);
     },
+
+    clearAttachments : function(component, event, helper){
+        component.set("v.electricBill1", "");
+        component.set("v.electricBill2", "");
+        component.set("v.annualElectricHistory","");
+    },
     addNewLead : function(component, event, helper, applicationType) {
         var action = component.get("c.getLead");
         action.setParams({
