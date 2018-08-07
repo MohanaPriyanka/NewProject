@@ -293,6 +293,7 @@
           <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
         </legend>
         <div class="slds-form-element__control slds-align_absolute-center">
+          <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
           <div class="slds-visual-picker slds-visual-picker_large">
             <a onclick="{!c.addUAL}">
               <label for="visual-picker-add-utility">
@@ -308,7 +309,7 @@
               </label>
             </a>
           </div>
-          
+          </aura:if>
 
           <div class="slds-visual-picker slds-visual-picker_large">
             <a onclick="{!c.addResidence}">

@@ -63,6 +63,18 @@
             if (resp.getState() === "SUCCESS") {
                 //Clone the fields from the old lead
                 var oldLead = resp.getReturnValue();
+
+                /*
+                   If they have already run credit on a previous property, set CSAP Additional Property
+                   and do not run credit again. If they have not run credit (ie they are waitlisted)
+                   set CSAP Duplicate Attempt and run credit.
+                */
+
+                var runCredit = 'CSAP Additional Property';
+                if (oldLead.Credit_Check_Acknowledged__c === false){
+                    runCredit = 'CSAP Duplicate Attempt';
+                }
+                console.log(oldLead.Parent_Account__c);
                 var newLead = {
                     sobjectType: "Lead",
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
@@ -77,7 +89,8 @@
                     LASERCA__Birthdate__c: oldLead.LASERCA__Birthdate__c,
                     LASERCA__SSN__c : oldLead.LASERCA__SSN__c,
                     Application_Type__c : applicationType,
-                    Application_Source_Phase_2__c : 'CSAP Additional Property',
+                    Application_Source_Phase_2__c : runCredit,
+                    Credit_Check_Acknowledged__c : oldLead.Credit_Check_Acknowledged__c,
                     Product_line__c : 'Community Solar'
                 };
                 component.set("v.lead", newLead);

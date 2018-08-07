@@ -22,7 +22,7 @@
 
     upsertRecords : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if(lead.Personal_Credit_Report__c == null){
+        if(lead.Application_Source_Phase_2__c == null || lead.Application_Source_Phase_2__c === 'CSAP Duplicate Attempt'){
             var upsertCSAPRecordsAction = component.get("c.upsertCSAPRecords");
             upsertCSAPRecordsAction.setParams({
                 "lead": lead,

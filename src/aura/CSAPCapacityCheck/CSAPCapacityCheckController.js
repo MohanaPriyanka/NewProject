@@ -52,17 +52,8 @@
             stageChangeEvent.setParams({"eventType": "INITIATED"});
             stageChangeEvent.setParams({"lead": lead});
             stageChangeEvent.fire();
-        } else if (lead.Personal_Credit_Report__c == null) {
-            helper.finishStage(component, event, helper);
         } else {
-            component.set('v.page', 'Done');
-            //Skip to the Energy Use page
-            var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
-            stageChangeEvent.setParams({"stageName": "NAV_Energy_Information"});
-            stageChangeEvent.setParams({"options": {"pageName": "UtilityAccountInformation"}});
-            stageChangeEvent.setParams({"eventType": "INITIATED"});
-            stageChangeEvent.setParams({"lead": lead});
-            stageChangeEvent.fire();
+            helper.finishStage(component, event, helper);
         }
     },
 

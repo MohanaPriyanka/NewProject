@@ -202,7 +202,7 @@
               <b>Please provide the address of the property that will receive Community Solar credits.</b>
             </div>
               <lightning:layout multipleRows="true">
-                <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c == 'CSAP Additional Property', v.lead.Application_Type__c != 'Non-Residential')}">
+                <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">
                   <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                     <lightning:input aura:id="field" name="name"
                                      label="Property Name"
