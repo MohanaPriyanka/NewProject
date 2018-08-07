@@ -2,11 +2,11 @@
     doInit : function(component, event, helper) {
         var action = component.get("c.getUser");
         action.setCallback(this,function(resp){
-            if(resp.getState() == 'SUCCESS') {
+            if (resp.getState() == 'SUCCESS') {
                 component.set("v.logoFile", resp.getReturnValue().Client_Brand_Key__c);
                 var brand = component.get("v.logoFile");
-                if(brand !=null ){
-                    if(brand == 'BluewaveLogo'){
+                if (brand !== null ){
+                    if (brand === 'BluewaveLogo'){
                         component.set("v.showBW", true);
                     } else {
                         component.set("v.showBW", false);

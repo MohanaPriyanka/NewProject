@@ -183,9 +183,7 @@ public without sharing class CSAPController {
             BSST__c defaultSalesRep  = [SELECT Id FROM BSST__c WHERE Name = 'Dianne Martz' LIMIT 1];
             lead.BS_Sales_ID__c = defaultSalesRep.Id;
         }
-        if (String.isBlank(referralCode) || referralCode == 'undefined') {
-            lead.Customer_Referral__c = null;
-        } else {
+        if (String.isNotBlank(referralCode) && referralCode != 'undefined'){
             List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
             if(referralContacts.size() == 1){
                 lead.Customer_Referral__c = referralContacts[0].Id;

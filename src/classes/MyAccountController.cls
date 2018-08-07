@@ -43,14 +43,11 @@ public without sharing class MyAccountController {
 
     @AuraEnabled
     public static List<Account> getMenuLabelList() {
-        list<Account> propertyAccountLabelList = new list<Account>();
-        User u = customerUser;
-        String userAccountId = (String)u.Contact.Account.Id;
-        for(Account propertyAccount : [ SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
-        FROM Account
-        WHERE Parent_Account__c = : u.Contact.AccountId]) {
-            propertyAccountLabelList.add(propertyAccount);
-        }
+        List<Account> propertyAccountLabelList = [
+            SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
+            FROM Account
+            WHERE Parent_Account__c = : customerUser.Contact.AccountId];
+
         return propertyAccountLabelList;
     }
 
@@ -66,14 +63,16 @@ public without sharing class MyAccountController {
                 WHERE Account_ID__c = : u.Parent_Account_ID__c
                 AND Published__c = true
                 AND Is_Most_Recent__c = true
-                ORDER BY Bill_Number__c DESC];
+                ORDER BY Bill_Number__c DESC
+            ];
 
-            for (AggregateResult systemBillsListParent : [  SELECT Account_Bill__c,
-                Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
-                SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
-            FROM System_Bill__c
-            WHERE Account_Bill__c IN : acctBillsParent
-            GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
+            for (AggregateResult systemBillsListParent : [
+                SELECT Account_Bill__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
+                    SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
+                FROM System_Bill__c
+                WHERE Account_Bill__c IN : acctBillsParent
+                GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
                 aggresultlist.add(systemBillsListParent);
             }
         } else {
@@ -83,14 +82,17 @@ public without sharing class MyAccountController {
                 WHERE Parent_Account__r.Id = : propertyAccountId
                 AND Published__c = true
                 AND Is_Most_Recent__c = true
-                ORDER BY Bill_Number__c];
+                ORDER BY Bill_Number__c
+            ];
 
-            for ( AggregateResult systemBillsListProperty : [SELECT Account_Bill__c,
-                Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
-                SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
-            FROM System_Bill__c
-            WHERE Account_Bill__r.Id = : mostRecentAccountBill.Id
-            GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
+            for ( AggregateResult systemBillsListProperty : [
+                SELECT Account_Bill__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
+                    SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
+                FROM System_Bill__c
+                WHERE Account_Bill__r.Id = : mostRecentAccountBill.Id
+                GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c
+            ]) {
                 aggresultlist.add(systemBillsListProperty);
             }
         }
@@ -265,24 +267,24 @@ public without sharing class MyAccountController {
 
             Messaging.SendEmailResult[] results = Messaging.sendEmail(new Messaging.SingleEmailMessage[] {sem});
 
-            if (results != null && results[0].isSuccess()) {
+            if (results != null ) {
+                if (results[0].isSuccess()) {
 
-                //CREATE TASK FOR PARTNER
-                Task emailTask = new Task();
-                emailTask.RecordTypeId = [SELECT Id, SobjectType, Name FROM RecordType WHERE Name = 'Customer Care Task' AND SobjectType = 'Task' LIMIT 1].Id;
-                emailTask.WhatId = customerPartner.Id;
-                emailTask.Product_Line__c = 'Community Solar';
-                emailTask.Subject = 'Email: Your Customer Referred a Friend for CS!';
-                emailTask.Description = 'Your customer, ' + u.FirstName + ' ' + u.LastName + ', referred a friend at ' + emailAddress + ' to join BlueWave Community Solar!';
-                insert emailTask;
-
-                return 'success';
-            } else if (results[0] != null) {
-                Logger.logNow('MyAccountController', 'sendEmail', results[0].getErrors()[0].getMessage());
-                return 'There was an error sending the email.';
-            } else {
-                return 'There was an error sending the email.';
+                    //CREATE TASK FOR PARTNER
+                    Task emailTask = new Task();
+                    emailTask.RecordTypeId = [SELECT Id, SobjectType, Name FROM RecordType WHERE Name = 'Customer Care Task' AND SobjectType = 'Task' LIMIT 1].Id;
+                    emailTask.WhatId = customerPartner.Id;
+                    emailTask.Product_Line__c = 'Community Solar';
+                    emailTask.Subject = 'Email: Your Customer Referred a Friend for CS!';
+                    emailTask.Description = 'Your customer, ' + u.FirstName + ' ' + u.LastName + ', referred a friend at ' + emailAddress + ' to join BlueWave Community Solar!';
+                    insert emailTask;
+                    return 'success';
+                } else {
+                    Logger.logNow('MyAccountController', 'sendEmail', results[0].getErrors()[0].getMessage());
+                }
             }
+            return 'There was an error sending the email.';
+
 
         } catch (Exception ex) {
             Logger.logNow('MyAccountController', 'sendEmail', ex.getMessage());
@@ -293,17 +295,25 @@ public without sharing class MyAccountController {
     public static Opportunity getMostRecentOpportunityInfo () {
         User u = customerUser;
 
-        Account parentAccount = [SELECT Id, Name, Partner__c, Sales_Representative__c FROM Account WHERE Id = :u.Parent_Account_ID__c ];
+        Account parentAccount = [
+            SELECT Id, Name, Partner__c, Sales_Representative__c
+            FROM Account
+            WHERE Id = :u.Parent_Account_ID__c
+        ];
 
-        Account propertyAccount = [SELECT Id, Product_Line__c, Name, ParentId, CreatedDate
-        FROM Account
-        WHERE Parent_Account__c = :parentAccount.Id AND Product_Line__c = 'Community Solar'
-        ORDER BY CreatedDate DESC LIMIT 1 ];
+        Account propertyAccount = [
+            SELECT Id, Product_Line__c, Name, ParentId, CreatedDate
+            FROM Account
+            WHERE Parent_Account__c = :parentAccount.Id AND Product_Line__c = 'Community Solar'
+            ORDER BY CreatedDate DESC LIMIT 1
+        ];
 
-        List<Opportunity> oppList = [SELECT Id, Partner_tag_lookup__c, CloseDate, AccountId, BS_Sales_ID__c
-        FROM Opportunity
-        WHERE AccountID = :propertyAccount.Id AND StageName = 'Complete'
-        ORDER BY CloseDate DESC LIMIT 1];
+        List<Opportunity> oppList = [
+            SELECT Id, Partner_tag_lookup__c, CloseDate, AccountId, BS_Sales_ID__c
+            FROM Opportunity
+            WHERE AccountID = :propertyAccount.Id AND StageName = 'Complete'
+            ORDER BY CloseDate DESC LIMIT 1
+        ];
 
         if (oppList.size() == 1) {
             return oppList[0];
