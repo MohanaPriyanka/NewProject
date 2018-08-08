@@ -4,8 +4,8 @@
 
 public without sharing class LeadTriggerHandler {
     public static Boolean firstRun = true;
-    @TestVisible
-    private static DocuSignHelper dsh;
+    @TestVisible private static DocuSignHelper dsh;
+    @TestVisible private static Boolean skipContractSend = false;
     private Map<String, String> leadToOppConvertMap = new Map<String, String> {
         'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
         'Application__c'=>'Application_Date__c',
@@ -256,7 +256,9 @@ public without sharing class LeadTriggerHandler {
             repo.createUAS(lead);
         }
         repo.insertUASes();
-        repo.sendContracts();
+        if (!skipContractSend) {
+            repo.sendContracts();
+        }
     }
 
     private class SubscriptionRepo {
