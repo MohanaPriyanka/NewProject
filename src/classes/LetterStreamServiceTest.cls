@@ -339,6 +339,139 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
+        Set<Id> documentsToTest = new Set<Id>();
+        Set<Id> accountBillsToTest = new Set<Id>();
+
+        for (ContentDocument doc : contentDocuments) {
+            if (doc.LatestPublishedVersionId == documentVersion1.Id) {
+                accountBill1.Bill_Attach_Version__c = documentVersion1.Id;
+                accountBill1.Bill_Attach_Document__c = doc.Id;
+            } else if (doc.LatestPublishedVersionId == documentVersion2.Id) {
+                accountBill2.Bill_Attach_Version__c = documentVersion2.Id;
+                accountBill2.Bill_Attach_Document__c = doc.Id;
+            } else if (doc.LatestPublishedVersionId == documentVersion3.Id) {
+                accountBill3.Bill_Attach_Version__c = documentVersion3.Id;
+                accountBill3.Bill_Attach_Document__c = doc.Id;
+            }
+            documentsToTest.add(doc.Id);
+        }
+        update new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : accountIds
+        ];
+
+        for (Account_Bill__c accountBill :  accountBills) {
+            accountBill.Published__c = true;
+            accountBill.Ready_For_Paper_Bill_Queue__c = true;
+            accountBillsToTest.add(accountBill.Id);
+        }
+        update accountBills;
+
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
+        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
+        mailer.sendAccountBills();
+        Test.stopTest();
+
+        List<Account_Bill__c> accountBillsAfterSend = [
+            SELECT Id, Published__c, Ready_For_Paper_Bill_Queue__c, Added_To_Paper_Bill_Queue__c, LetterStreamJob__c
+            FROM Account_Bill__c
+        ];
+
+        List<LetterStreamJob__c> jobs = [
+            SELECT Id
+            FROM LetterStreamJob__c
+        ];
+
+        System.assertEquals(1, jobs.size());
+
+        for (Account_Bill__c accountBill : accountBillsAfterSend) {
+            if (accountBill.Published__c) {
+                System.assertEquals(false, accountBill.Ready_For_Paper_Bill_Queue__c);
+                System.assertEquals(true, accountBill.Added_To_Paper_Bill_Queue__c);
+                System.assertNotEquals(null, accountBill.LetterStreamJob__c);
+            }
+        }
+    }
+
+    @IsTest(SeeAllData=true) public static void testQueueSendLetters() {
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent1 = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+
+        Account accountParent2 = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+
+        Account accountParent3 = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+        insert new List<Account>{accountParent1, accountParent2, accountParent3};
+        List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
+
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 2
+        );
+
+        Account_Bill__c accountBill2 = new Account_Bill__c(
+            Parent_Account__c = accountParent2.Id,
+            Bill_Number__c = 2
+        );
+
+        Account_Bill__c accountBill3 = new Account_Bill__c(
+            Parent_Account__c = accountParent3.Id,
+            Bill_Number__c = 2
+        );
+
+        insert new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+
+        ContentVersion documentVersion1 = new ContentVersion(
+            Title = 'test document',
+            PathOnClient = 'test_Doc.pdf',
+            VersionData = Blob.valueOf('testDoc')
+        );
+        ContentVersion documentVersion2 = new ContentVersion(
+            Title = 'test document',
+            PathOnClient = 'test_Doc.pdf',
+            VersionData = Blob.valueOf('testDoc')
+        );
+        ContentVersion documentVersion3 = new ContentVersion(
+            Title = 'test document',
+            PathOnClient = 'test_Doc.pdf',
+            VersionData = Blob.valueOf('testDoc')
+        );
+        insert new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3};
+        List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id, documentVersion3.Id};
+
+        List<ContentDocument> contentDocuments = [
+            SELECT Id, LatestPublishedVersionId
+            FROM ContentDocument
+            WHERE LatestPublishedVersionId IN : contentVersionIds
+        ];
+
         for (ContentDocument doc : contentDocuments) {
             if (doc.LatestPublishedVersionId == documentVersion1.Id) {
                 accountBill1.Bill_Attach_Version__c = documentVersion1.Id;
@@ -369,28 +502,11 @@ public with sharing class LetterStreamServiceTest {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
         ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
+        mailer.makeCallout = false;
         mailer.execute(null);
         Test.stopTest();
 
-        List<Account_Bill__c> accountBillsAfterSend = [
-            SELECT Id, Published__c, Ready_For_Paper_Bill_Queue__c, Added_To_Paper_Bill_Queue__c, LetterStreamJob__c
-            FROM Account_Bill__c
-        ];
 
-        List<LetterStreamJob__c> jobs = [
-            SELECT Id
-            FROM LetterStreamJob__c
-        ];
-
-        System.assertEquals(1, jobs.size());
-
-        for (Account_Bill__c accountBill : accountBillsAfterSend) {
-            if (accountBill.Published__c) {
-                System.assertEquals(false, accountBill.Ready_For_Paper_Bill_Queue__c);
-                System.assertEquals(true, accountBill.Added_To_Paper_Bill_Queue__c);
-                System.assertNotEquals(null, accountBill.LetterStreamJob__c);
-            }
-        }
     }
 
     @isTest static void testCanScheduleJob() {
