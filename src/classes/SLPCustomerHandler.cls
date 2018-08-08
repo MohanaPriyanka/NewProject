@@ -45,7 +45,7 @@ public without sharing class SLPCustomerHandler {
 		'Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, ' +
 		'Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, ' +
 		'Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, ' +
-        'Storage_Grid_Hybrid__c, Storage_Full_or_Partial__c, Storage_Cost__c, Storage_Manufacturer__c, Storage_Model__c, Storage_Inverter_Manufacturer__c, ' +
+        'Storage_Grid_Hybrid__c, Storage_Full_or_Partial_Home__c, Storage_Capacity__c, Storage_Model__c, Storage_Inverter_Manufacturer__c, ' +
 		'Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, ' +
 		'PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, ' +
 		'Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, ' +
@@ -54,7 +54,7 @@ public without sharing class SLPCustomerHandler {
 		'Loan__r.Lead__r.System_Cost__c, Loan__r.Lead__r.Requested_Loan_Amount__c, Opportunity__r.Loan_Principle__c, ' +
 		'Loan__r.Lead__r.Loan_System_Information__c, Loan__r.Lead__r.Change_Order_Status__c, Loan__r.Opportunity__c, ' +
         'Loan__r.Lead__r.Email, Loan__r.Sales_Agent__r.Email__c, Loan__r.Lead__c, Loan__r.Lead__r.FirstName, Loan__r.Lead__r.ConvertedContactId, ' +
-        'Loan__r.Lead__r.CAP_Stage__c, Loan__r.Estimated_Completion_Date__c, Loan__r.Lead__r.Storage__c, ' +
+        'Loan__r.Lead__r.CAP_Stage__c, Loan__r.Estimated_Completion_Date__c, Loan__r.Lead__r.Storage__c, Storage_Manufacturer__c, ' +
 		'(SELECT Id, Name, Description from Attachments) ' ;
 	equipQuery += '      FROM Residential_Equipment__c' ;
 	equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
