@@ -45,6 +45,7 @@ public without sharing class LeadTriggerHandler {
         'Referral_Email__c'=>'Referral_Email__c',
         'Requested_Loan_Amount__c'=>'Requested_Loan_Amount__c',
         'Residence_Owner__c'=>'Residence_Owner__c',
+        'bs_Sales_ID__c'=>'BS_Sales_ID__c',
         'Sales_Person__c'=>'Sales_Person_Tag__c',
         'SREC_Product__c'=>'SREC_Product__c',
         'State_of_Issuance__c'=>'State_of_Issuance__c',

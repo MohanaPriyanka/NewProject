@@ -10,6 +10,7 @@
   <aura:attribute name="loadingText" type="Boolean"/>
   <aura:attribute name="Residential" type="Boolean"/>
   <aura:attribute name="NonResidential" type="Boolean"/>
+  <aura:attribute name="referralCode" type="String"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>

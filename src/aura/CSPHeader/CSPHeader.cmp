@@ -1,6 +1,7 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
   <aura:attribute name="logoFile" type="String"/>
+  <aura:attribute name="showBW" type="Boolean"/>
 
   <div style="height: 100px;"/>
   <header class="slds-global-header_container">
@@ -25,7 +26,11 @@
         <lightning:menuItem label="Dashboard" value="/" />
         <lightning:menuItem label="My Account" value="/myaccount" />
         <lightning:menuItem label="My Solar" value="/mysolar" />
-        <lightning:menuItem label="Refer a Friend" value="/referafriend" />
+
+        <aura:if isTrue="{!v.showBW}">
+          <lightning:menuItem label="Refer a Friend" value="/referafriend" />
+        </aura:if>
+
         <lightning:menuItem label="Settings" value="/accountinfo" />
         <lightning:menuItem label="Logout" value="../secur/logout.jsp" />
       </lightning:buttonMenu>
@@ -49,11 +54,14 @@
                   <b>My Solar</b>
               </a>
           </li>
-          <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
-              <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
-                  <b>Refer a Friend</b>
-              </a>
-          </li>    
+
+          <aura:if isTrue="{!v.showBW}">
+            <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
+                <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
+                    <b>Refer a Friend</b>
+                </a>
+            </li>
+          </aura:if>
           <li class="slds-tabs_default__item" title="Account Settings" role="presentation">
               <a class="slds-tabs--default__link slds-text-body_small" href="accountinfo" >
                   <b>Settings</b>

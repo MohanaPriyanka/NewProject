@@ -31,7 +31,7 @@ public without sharing class CSAPController {
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c
+                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -190,12 +190,14 @@ public without sharing class CSAPController {
         return lead;
     }
     @AuraEnabled
-    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId){
+    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         User apiUser = [SELECT Id, Name, Username 
                         FROM User 
                         WHERE Name = 'API'
                         AND IsActive = True
                         LIMIT 1];
+
+        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
         Account account = getAccount(lead.Id, lead.Email);
         account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -214,15 +216,22 @@ public without sharing class CSAPController {
 
         lead = processLead(lead);
 
-        if (String.isNotBlank(partnerId)) {
-            lead.Partner_lookup__c = partnerId;
-        } else if (String.isNotBlank(profile.partnerId)) {
-            lead.Partner_lookup__c = profile.partnerId;
+        lead.Partner_Lookup__c = customerPartner.Id;
+        lead.Partner_Email__c = customerPartner.Email__c;
+
+        if (salesRepId != null && salesRepId != ''){
+            lead.bs_Sales_ID__c = [SELECT Id FROM BSST__c WHERE Id = :salesRepId LIMIT 1].Id;
+        } else {
+            lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
-        if (String.isNotBlank(salesRepId)) {
-            lead.Bs_Sales_ID__c = salesRepId;
-        } else if (String.isNotBlank(profile.salesRepId)) {
-            lead.Bs_Sales_ID__c = profile.salesRepId;
+
+        if (String.isNotBlank(referralCode) && referralCode != 'undefined'){
+            List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
+            if(referralContacts.size() == 1){
+                lead.Customer_Referral__c = referralContacts[0].Id;
+            } else {
+                Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
+            }
         }
         lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
         lead.Parent_Account__c = account.Id;
