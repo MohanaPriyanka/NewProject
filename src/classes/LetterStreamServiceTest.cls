@@ -116,12 +116,6 @@ public with sharing class LetterStreamServiceTest {
     }
 
     @isTest(SeeAllData=true) public static void testCSVBuilder() {
-        insert new BW_Address__c(
-            Name = 'BlueWaveTest',
-            Address_Line_One__c = '137 Newbury Street, 4th Floor',
-            Address_Line_Two__c = 'Boston, MA 02114'
-        );
-
         LetterStreamService lss = new LetterStreamService();
 
         System.assertEquals('', lss.csv);
