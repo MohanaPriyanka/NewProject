@@ -39,7 +39,8 @@ public without sharing class SLPUserHelper {
         User u = [SELECT Id, Partner_Id__c, Sales_Representative_Id__c, Contact.Partner_Lookup__c, 
                     Contact.Account.Enable_CS_Application_in_Portal__c, Contact.Sales_Representative__r.Custom_ID__c,
                     Contact.Partner_Lookup__r.Name, Sales_Representative_Email__c, Contact.Partner_Lookup__r.Email__c,
-                    PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name, Contact.Account.Community_Solar_Application_Type__c
+                    PortalRole, Profile.Name, Contact.Account.State_Market__c, UserRole.Name, Contact.Account.Community_Solar_Application_Type__c,
+                    Contact.Account.Enable_Storage_Application_in_Portal__c
                   FROM User 
                   WHERE Id = :UserInfo.getUserId()];
         if (u.Partner_Id__c == null || u.Sales_Representative_Id__c == null) {
