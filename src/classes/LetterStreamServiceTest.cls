@@ -115,7 +115,13 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(null, newJob);
     }
 
-    @isTest(SeeAllData=true) public static void testCSVBuilder() {
+    @isTest public static void testCSVBuilder() {
+        insert new BW_Address__c(
+            Name = 'BlueWaveTest',
+            Address_Line_One__c = '137 Newbury Street, 4th Floor',
+            Address_Line_Two__c = 'Boston, MA 02114'
+        );
+
         LetterStreamService lss = new LetterStreamService();
 
         System.assertEquals('', lss.csv);
@@ -265,9 +271,21 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals('POST', testRequest.getMethod());
     }
 
-    @IsTest(SeeAllData=true) public static void testSendLetters() {
+    @IsTest public static void testSendLetters() {
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        insert new BW_Address__c(
+            Name = 'BlueWaveTest',
+            Address_Line_One__c = '137 Newbury Street',
+            Address_Line_Two__c = 'Boston, MA 02114'
+        );
+        insert new LetterStream_Settings__c(
+            Name = 'Global Setting',
+            API_Id__c = 'BlueWave',
+            API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+            API_Key__c = 'BlueWaveKey'
+        );
 
         Account accountParent1 = new Account(
             name = 'Account Parent',
@@ -298,23 +316,6 @@ public with sharing class LetterStreamServiceTest {
         insert new List<Account>{accountParent1, accountParent2, accountParent3};
         List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
 
-        Account_Bill__c accountBill1 = new Account_Bill__c(
-            Parent_Account__c = accountParent1.Id,
-            Bill_Number__c = 2
-        );
-
-        Account_Bill__c accountBill2 = new Account_Bill__c(
-            Parent_Account__c = accountParent2.Id,
-            Bill_Number__c = 2
-        );
-
-        Account_Bill__c accountBill3 = new Account_Bill__c(
-            Parent_Account__c = accountParent3.Id,
-            Bill_Number__c = 2
-        );
-
-        insert new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
-
         ContentVersion documentVersion1 = new ContentVersion(
             Title = 'test document',
             PathOnClient = 'test_Doc.pdf',
@@ -339,37 +340,40 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
-        Set<Id> documentsToTest = new Set<Id>();
-        Set<Id> accountBillsToTest = new Set<Id>();
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[0].Id
+        );
 
+        Account_Bill__c accountBill2 = new Account_Bill__c(
+            Parent_Account__c = accountParent2.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[1].Id
+        );
+
+        Account_Bill__c accountBill3 = new Account_Bill__c(
+            Parent_Account__c = accountParent3.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[2].Id
+        );
+        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+        insert accountBills;
+
+        Set<Id> documentsToTest = new Set<Id>();
         for (ContentDocument doc : contentDocuments) {
-            if (doc.LatestPublishedVersionId == documentVersion1.Id) {
-                accountBill1.Bill_Attach_Version__c = documentVersion1.Id;
-                accountBill1.Bill_Attach_Document__c = doc.Id;
-            } else if (doc.LatestPublishedVersionId == documentVersion2.Id) {
-                accountBill2.Bill_Attach_Version__c = documentVersion2.Id;
-                accountBill2.Bill_Attach_Document__c = doc.Id;
-            } else if (doc.LatestPublishedVersionId == documentVersion3.Id) {
-                accountBill3.Bill_Attach_Version__c = documentVersion3.Id;
-                accountBill3.Bill_Attach_Document__c = doc.Id;
-            }
             documentsToTest.add(doc.Id);
         }
-        update new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
-
-
-        List<Account_Bill__c> accountBills = [
-            SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : accountIds
-        ];
-
-        for (Account_Bill__c accountBill :  accountBills) {
-            accountBill.Published__c = true;
-            accountBill.Ready_For_Paper_Bill_Queue__c = true;
-            accountBillsToTest.add(accountBill.Id);
-        }
-        update accountBills;
+        Set<Id> accountBillsToTest = new Set<Id>{accountBill1.Id, accountBill2.Id, accountBill3.Id};
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
@@ -398,9 +402,21 @@ public with sharing class LetterStreamServiceTest {
         }
     }
 
-    @IsTest(SeeAllData=true) public static void testQueueSendLetters() {
+    @IsTest public static void testQueueSendLetters() {
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        insert new BW_Address__c(
+            Name = 'BlueWaveTest',
+            Address_Line_One__c = '137 Newbury Street',
+            Address_Line_Two__c = 'Boston, MA 02114'
+        );
+        insert new LetterStream_Settings__c(
+            Name = 'Global Setting',
+            API_Id__c = 'BlueWave',
+            API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+            API_Key__c = 'BlueWaveKey'
+        );
 
         Account accountParent1 = new Account(
             name = 'Account Parent',
@@ -431,23 +447,6 @@ public with sharing class LetterStreamServiceTest {
         insert new List<Account>{accountParent1, accountParent2, accountParent3};
         List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
 
-        Account_Bill__c accountBill1 = new Account_Bill__c(
-            Parent_Account__c = accountParent1.Id,
-            Bill_Number__c = 2
-        );
-
-        Account_Bill__c accountBill2 = new Account_Bill__c(
-            Parent_Account__c = accountParent2.Id,
-            Bill_Number__c = 2
-        );
-
-        Account_Bill__c accountBill3 = new Account_Bill__c(
-            Parent_Account__c = accountParent3.Id,
-            Bill_Number__c = 2
-        );
-
-        insert new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
-
         ContentVersion documentVersion1 = new ContentVersion(
             Title = 'test document',
             PathOnClient = 'test_Doc.pdf',
@@ -472,32 +471,34 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
-        for (ContentDocument doc : contentDocuments) {
-            if (doc.LatestPublishedVersionId == documentVersion1.Id) {
-                accountBill1.Bill_Attach_Version__c = documentVersion1.Id;
-                accountBill1.Bill_Attach_Document__c = doc.Id;
-            } else if (doc.LatestPublishedVersionId == documentVersion2.Id) {
-                accountBill2.Bill_Attach_Version__c = documentVersion2.Id;
-                accountBill2.Bill_Attach_Document__c = doc.Id;
-            } else if (doc.LatestPublishedVersionId == documentVersion3.Id) {
-                accountBill3.Bill_Attach_Version__c = documentVersion3.Id;
-                accountBill3.Bill_Attach_Document__c = doc.Id;
-            }
-        }
-        update new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[0].Id
+        );
 
+        Account_Bill__c accountBill2 = new Account_Bill__c(
+            Parent_Account__c = accountParent2.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[1].Id
+        );
 
-        List<Account_Bill__c> accountBills = [
-            SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : accountIds
-        ];
-
-        for (Account_Bill__c accountBill :  accountBills) {
-            accountBill.Published__c = true;
-            accountBill.Ready_For_Paper_Bill_Queue__c = true;
-        }
-        update accountBills;
+        Account_Bill__c accountBill3 = new Account_Bill__c(
+            Parent_Account__c = accountParent3.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[2].Id
+        );
+        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+        insert accountBills;
 
         Datetime now = Datetime.now();
 
