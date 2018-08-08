@@ -443,7 +443,6 @@ private class LeadTriggerHandlerTest {
         additionalProperty.Utility_1__c = 'National Grid';
         additionalProperty.Electricity_Provider__c = 'National Grid';
         insert new List<Lead>{primaryProperty, additionalProperty};
-        System.debug(LoggingLevel.ERROR, primaryProperty.Id + ' ' + additionalProperty.Id);
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = primaryProperty.Id,
@@ -481,7 +480,9 @@ private class LeadTriggerHandlerTest {
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-        // Since stopTest
+        // Since there are contracts to send here, we will run into "You have uncommitted work pending"
+        // because of the DML in convertCSLead. The customerSubscriptionProcessTest method tests
+        // the sendCSPackage method (which convertCSLead and sendContracts wraps) explicitly.
         LeadTriggerHandler.skipContractSend = true;
         CSAPController.convertCSLead(primaryProperty.Id, primaryProperty.Email);
         Test.stopTest();
