@@ -162,9 +162,9 @@ public without sharing class CSAPController {
         lead.Partner_Email__c = customerPartner.Email__c;
 
         if (salesRepId != null && salesRepId != ''){
-            lead.Bs_Sales_ID__c = [SELECT Id FROM BSST__c WHERE Id = :salesRepId LIMIT 1].Id;
+            lead.bs_Sales_ID__c = [SELECT Id FROM BSST__c WHERE Id = :salesRepId LIMIT 1].Id;
         } else {
-            lead.Bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
+            lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
 
         if (lead.Date_of_Application__c == null) {

@@ -223,14 +223,14 @@ public without sharing class MyAccountController {
 
         if (partnerId != null && partnerId != ''){
             partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, Name
+                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
                 FROM Partner__c
                 WHERE Id = :partnerId
                 LIMIT 1
             ];
         } else {
             partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, CS_Referral_Status__c, Name
+                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, CS_Referral_Status__c, Name
                 FROM Partner__c
                 WHERE CS_Referral_Status__c = 'Default CS Partner'
                 LIMIT 1
@@ -259,11 +259,11 @@ public without sharing class MyAccountController {
                 if (opp.BS_Sales_ID__c != null) {
                     salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :opp.BS_Sales_ID__c LIMIT 1];
                 } else {
-                    salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :customerPartner.Default_Sales_Rep__c];
+                    salesRep = new BSST__c(Id = customerPartner.Default_Sales_Rep__c, Name = customerPartner.Default_Sales_Rep__r.Name);
                 }
             } else {
                 customerPartner = getPartner(null);
-                salesRep = [SELECT Id, Name FROM BSST__c WHERE Id = :customerPartner.Default_Sales_Rep__c];
+                salesRep = new BSST__c(Id = customerPartner.Default_Sales_Rep__c, Name = customerPartner.Default_Sales_Rep__r.Name);
             }
 
             htmlBody = htmlBody.replace('{!Account.Sales_RepresentativeId__c}', salesRep.Id);
