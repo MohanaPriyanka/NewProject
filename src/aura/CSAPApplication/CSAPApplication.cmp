@@ -3,12 +3,13 @@
   <aura:attribute name="email" type="String"/>
   <aura:attribute name="partnerId" type="String"/>
   <aura:attribute name="salesRepId" type="String"/>
+  <aura:attribute name="referralCode" type="String"/>
 
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
   <c:LightningErrorHandler/>
   <c:CSAPStart supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}"/>
-  <c:CSAPPersonalInfo supressWaiting="true" leadId="{!v.leadId}" partnerId="{!v.partnerId}" salesRepId="{!v.salesRepId}"/>
+  <c:CSAPPersonalInfo supressWaiting="true" leadId="{!v.leadId}" partnerId="{!v.partnerId}" salesRepId="{!v.salesRepId}" referralCode="{!v.referralCode}"/>
   <c:CSAPCapacityCheck supressWaiting="true"/>
   <c:CSAPCreditCheck supressWaiting="true"/>
   <c:CSAPEnergyInfo supressWaiting="true"/>

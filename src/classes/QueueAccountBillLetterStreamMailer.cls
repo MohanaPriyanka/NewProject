@@ -7,17 +7,21 @@
  */
 
 
-public class QueueAccountBillLetterStreamMailer implements Queueable {
+public class QueueAccountBillLetterStreamMailer implements Queueable, Database.AllowsCallouts {
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
+    public Boolean makeCallout;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds) {
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout) {
         this.accountBills = accountBills;
         this.documentsIds = documentsIds;
+        this.makeCallout = makeCallout;
     }
 
     public void execute(QueueableContext context) {
-        sendAccountBills();
+        if (makeCallout) {
+            sendAccountBills();
+        }
     }
 
     public void sendAccountBills() {
