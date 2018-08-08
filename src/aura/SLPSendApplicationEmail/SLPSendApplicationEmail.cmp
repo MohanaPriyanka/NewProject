@@ -16,6 +16,7 @@
   <aura:attribute name="iblsRequired" type="Boolean"/>
   <aura:attribute name="availableStorageManufacturers" type="List" />
   <aura:attribute name="availableStorageInverterManufacturers" type="List" />
+  <aura:attribute name="storageHybrid" type="String" />
   <aura:attribute name="newLead" type="Lead"
     default="{ 'sobjectType' : 'Lead',
     'FirstName': '',
@@ -40,10 +41,9 @@
     'Inverter_Manufacturer__c': '',
     'Inverter_Model_Number__c': '',
     'Estimated_Completion_Date__c': '',
-    'Generator_Gameplate_Capacity__c': '',
+    'Generator_Nameplate_Capacity__c': '',
     'Storage_Grid_Hybrid__c': '',
     'Storage_Full_or_Partial__c': '',
-    'Storage_Cost__c': '',
     'Storage_Manufacturer__c': '',
     'Storage_Model__c': '',
     'Storage_Inverter_Manufacturer__c': '',
@@ -241,8 +241,8 @@
                         <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                           <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid is down?</b></label>
                           <div class="slds-form-element__control">
-                            <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.systemInfoObj.Storage_Grid_Hybrid__c}">
-                              <ui:inputSelectOption text="" label="Select"/>
+                            <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.storageHybrid}">
+                              <ui:inputSelectOption text='' label="Select"/>
                               <ui:inputSelectOption text="Yes" label="Yes"/>
                               <ui:inputSelectOption text="No" label="No"/>
                             </ui:inputSelect>
@@ -253,17 +253,17 @@
                           <ui:inputNumber aura:id="storageCost" class="slds-input" value="{!v.systemInfoObj.Storage_Capacity__c}"/>
                         </div>
                       </div>
-                      <aura:if isTrue="{!v.systemInfoObj.Storage_Grid_Hybrid__c == 'Yes'}">
-                      <div class="slds-form-element__row">
-                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                            <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
-                            <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.Storage_Full_or_Partial__c}">
-                              <ui:inputSelectOption text="" label="Select"/>
-                              <ui:inputSelectOption text="Partial" label="Partial home backup"/>
-                              <ui:inputSelectOption text="Full" label="Full home backup"/>
-                            </ui:inputSelect>
-                          </div>
-                      </div>
+                      <aura:if isTrue="{!v.systemInfoObj.storageHybrid == 'Yes'}">
+                        <div class="slds-form-element__row">
+                            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                              <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
+                              <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.Storage_Full_or_Partial__c}">
+                                <ui:inputSelectOption text="" label="Select"/>
+                                <ui:inputSelectOption text="Partial" label="Partial home backup"/>
+                                <ui:inputSelectOption text="Full" label="Full home backup"/>
+                              </ui:inputSelect>
+                            </div>
+                        </div>
                       </aura:if>
                       <div class="slds-form-element__row">
                         <div class="slds-p-horizontal--small slds-size_1-of-3">

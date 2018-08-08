@@ -84,6 +84,7 @@
 
     startApplication : function(component, event, helper) {
         var newLead = component.get("v.newLead");
+        helper.setValueForStorageGridHybrid(component);
         newLead.Loan_System_Information__c = JSON.stringify(component.get('v.systemInfoObj'));
         var downPayment = component.get("v.downPayment");
         if (downPayment) {
@@ -216,4 +217,11 @@
             return products[0].Program__c;
         }
     },
+
+    setValueForStorageGridHybrid : function(component) {
+        var gridHybrid = component.get("v.storageHybrid");
+        if (gridHybrid === "Yes") {
+            component.set("v.systemInfoObj.Storage_Grid_Hybrid__c", true);
+        }
+    }
 })
