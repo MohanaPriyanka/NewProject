@@ -62,8 +62,10 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
             }
         }
         // if we never hit max heap size, send at end
-        Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
-        Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
+        if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+            Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
+        }
         Logger.flushLogs();
     }
 }

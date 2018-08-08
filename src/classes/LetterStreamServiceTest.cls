@@ -499,14 +499,25 @@ public with sharing class LetterStreamServiceTest {
         }
         update accountBills;
 
+        Datetime now = Datetime.now();
+
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
         ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
         mailer.makeCallout = false;
+        // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
+        // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
+        mailer.maxPackageSize = 10;
         mailer.execute(null);
         Test.stopTest();
 
+        List<AsyncApexJob> asyncApexJobs = [
+            SELECT Id
+            FROM AsyncApexJob
+            WHERE CreatedDate > : now.addSeconds(-1)
+        ];
 
+        System.assertEquals(2, asyncApexJobs.size());
     }
 
     @isTest static void testCanScheduleJob() {
