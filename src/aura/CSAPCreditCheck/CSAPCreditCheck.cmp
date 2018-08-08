@@ -157,6 +157,17 @@
     </div>
   </aura:if>
 
+  <aura:if isTrue="{!v.page == 'CreditAlreadyRun'}">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center" title="Description of the icon when needed">
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <span class="slds-assistive-text">Text alternative when needed</span>
+    </div>
+    <div class="slds-text-body--regular slds-align_absolute-center">
+      Checking if you are qualified for the projects in your area...
+    </div>
+  </aura:if>
 
   <aura:if isTrue="{!v.page == 'CreditCheckResult'}">
     <aura:if isTrue="{!!v.creditChecked}">

@@ -2,6 +2,7 @@
   <aura:attribute name="hasCapacity" type="String"/>
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="Boolean"/>
+  <aura:attribute name="newBusiness" type="Boolean" default="false"/>
   <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <ltng:require styles="{!$Resource.animations}"/>
@@ -41,21 +42,50 @@
 
       <aura:if isTrue="{!v.hasCapacity == 'No'}">
         <lightning:layout multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>Unfortunately, we do not have any projects in your area.</b>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>You've been added to our waitlist and will be notified if and when we have a project in your area!</b>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>You can now close this application.</b>
-            </div>
-          </lightning:layoutItem>
+          <aura:if isTrue="{!v.newBusiness}">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <div class="slds-align--absolute-center slds-text-body--large--blue">
+                <b>Unfortunately at this time we cannot approve your Community Solar application. We require our small business customers to be in business for a minimum of three years for eligibility.</b>
+              </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <div class="slds-align--absolute-center slds-text-body--large--blue">
+                <b>We would be happy to revisit your application once this criteria has been met!</b>
+              </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <div class="slds-align--absolute-center slds-text-body--large--blue">
+                <b>Thank you for considering BlueWave, we hope to be able to serve you in the future.</b>
+              </div>
+            </lightning:layoutItem>
+            <aura:set attribute="else">
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                  <b>Unfortunately, we do not have any projects in your area.</b>
+                </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                  <b>You've been added to our wait list and will be notified if and when we have a project in your area!</b>
+                </div>
+              </lightning:layoutItem>
+            </aura:set>
+          </aura:if>
+
+          <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c == null}">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <div class="slds-align--absolute-center slds-text-body--large--blue">
+                <b>You can now close this application.</b>
+              </div>
+            </lightning:layoutItem>
+            <aura:set attribute="else">
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+                <div class="slds-align--absolute-center">
+                  <lightning:button label="Continue Application" onclick="{!c.skipToEnd}"/>
+                </div>
+              </lightning:layoutItem>
+            </aura:set>
+          </aura:if>
         </lightning:layout>
       </aura:if>
     </aura:if>

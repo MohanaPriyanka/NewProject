@@ -619,7 +619,7 @@ private class DocuSignAPIWebSvcTest {
 	@isTest static void coverCodeForRequestTemplateWithDocumentFields(){
 		Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
 		DocuSignAPI.APIServiceSoap testObject = new DocuSignAPI.APIServiceSoap();
-		System.assertEquals(null, testObject.RequestTemplateWithDocumentFields(null, null));
+		System.assertNotEquals(null, testObject.RequestTemplateWithDocumentFields(null, null));
 	}
 	@isTest static void coverCodeForSaveTemplate(){
 		Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());

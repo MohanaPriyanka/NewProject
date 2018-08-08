@@ -49,6 +49,25 @@
         }
     },
 
+    copyCreditFromPrevious : function(component, event, helper, secondaryLead) {
+        window.setTimeout(function() {
+            component.set("v.page", "CreditCheckResult");
+        }, 3000);
+        var lead = component.get("v.lead");
+        helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
+
+        var actionFindPCR = component.get("c.checkForAlreadyRunCredit");
+        actionFindPCR.setParams({"secondLead" : secondaryLead});
+        actionFindPCR.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                helper.checkCreditResponse(component, helper, resp.getReturnValue());
+            } else {
+                helper.logError("CSAPCreditCheckHelper", "copyCreditFromPrevious", resp.getError(), secondaryLead);
+            }
+        });
+        $A.enqueueAction(actionFindPCR);
+    },
+
     handleCreditCheckResponse : function(component, helper, divToShow) {
         $A.util.addClass(component.find("creditStatus"), "noDisplay");
         if (divToShow) {

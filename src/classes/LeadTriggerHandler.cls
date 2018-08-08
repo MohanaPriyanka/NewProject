@@ -4,8 +4,8 @@
 
 public without sharing class LeadTriggerHandler {
     public static Boolean firstRun = true;
-    @TestVisible
-    private static DocuSignHelper dsh;
+    @TestVisible private static DocuSignHelper dsh;
+    @TestVisible private static Boolean skipContractSend = false;
     private Map<String, String> leadToOppConvertMap = new Map<String, String> {
         'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
         'Application__c'=>'Application_Date__c',
@@ -76,14 +76,18 @@ public without sharing class LeadTriggerHandler {
         updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
     }
     public void onAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
-        //Check if lead got converted in this trigger instance (Changed from IsConverted = false into true)
-        if (updatedLeads.size() == 1 
-            && updatedLeads[0].IsConverted && oldLeads[0].IsConverted == false
-            && updatedLeads[0].ConvertedAccountId != null
-            && updatedLeads[0].Product_line__c == 'Community Solar'
-            && firstRun) {
-            deleteDuplicateContact(updatedLeads[0]);
-            customerSubscriptionProcess(updatedLeads[0]);
+        List<Lead> convertedCSLeads = new List<Lead>();
+        for (Lead lead : updatedLeads) {
+            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted &&
+                lead.ConvertedAccountId != null &&
+                lead.Product_line__c == 'Community Solar' &&
+                firstRun) {
+                convertedCSLeads.add(lead);
+            }
+        }
+        if (!convertedCSLeads.isEmpty()) {
+            deleteDuplicateContact(convertedCSLeads);
+            customerSubscriptionProcess(convertedCSLeads);
             firstRun = false;
         } 
 
@@ -157,7 +161,7 @@ public without sharing class LeadTriggerHandler {
     }
 
     // Used by the CS process since opportunities aren't created on lead conversion
-    private Opportunity setDefaultOppFields(Lead lead, Opportunity opp){
+    private static Opportunity setDefaultOppFields(Lead lead, Opportunity opp){
         opp.AccountId = lead.convertedAccountId;
         opp.Assessors_Parcel_Number__c = lead.Accessor_s_Parcel_Number__c;
         opp.Annual_Independent_Income__c = lead.Annual_Income_Currency__c;
@@ -219,7 +223,7 @@ public without sharing class LeadTriggerHandler {
         opp.Project_Identification_Number__c = lead.Project_Identification_Number__c;
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.Residence_Owner__c = lead.Residence_Owner__c;
-        opp.BS_Sales_ID__c = lead.Sales_Person__c;
+        opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Sales_Person_Tag__c = lead.Sales_Person__c;
         opp.Security_Type__c = lead.Security_Type__c;
         opp.Service_Territory__c = lead.Load_Zone__c;
@@ -237,132 +241,262 @@ public without sharing class LeadTriggerHandler {
         return opp;
     }
 
-    private void customerSubscriptionProcess(Lead lead){
-        //Get the list of Utility Account Logs linked to the Lead
-        List<Utility_Account_Log__c> ualList = [Select Id, Name, Annual_Cost_of_Electricity__c, Name_On_Account__c
-                              From Utility_Account_Log__c
-                              Where Lead__c = :lead.Id
-                              Order By Annual_Cost_of_Electricity__c DESC];
-        //Get the total annual cost of electricity
-        Decimal totalAnnualCostofElectricity = 0;
-        for (Utility_Account_Log__c ual : ualList){
-            if (ual.Annual_Cost_of_Electricity__c > 0){
-                totalAnnualCostofElectricity += ual.Annual_Cost_of_Electricity__c;
+    private void customerSubscriptionProcess(List<Lead> leads) {
+        SubscriptionRepo repo = new SubscriptionRepo(leads);
+        for (Integer leadIndex = 0; leadIndex < leads.size(); leadIndex++) {
+            if (repo.getTotalAnnualCostOfElectricity(leads[leadIndex]) == 0) {
+                leads.remove(leadIndex);
             }
         }
-
-        //No need to process the rest if the total cost of electricity is 0
-        if (totalAnnualCostofElectricity == 0){
-            return;
+        for (Lead lead : leads) {
+            repo.createOpportunity(lead);
         }
-
-        //Get the Shared Solar Systems based on the Lead Details that are still open
-        String sssQuery = 'Select Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c, Utility_NMC_Tariff__c, Credit_Score_Requirement__c  ';
-        sssQuery +=       'From Shared_Solar_System__c ';
-        sssQuery +=       'Where Open__c = true ';
-        sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
-        sssQuery +=       'AND Service_Territories__c includes (\'' + lead.Load_Zone__c + '\') ';
-        sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
-        if (lead.Product__c != null) {
-            sssQuery +=       'AND Product__c = \'' + lead.Product__c + '\' ';
+        repo.insertOpps();
+        for (Lead lead : leads) {
+            repo.createUAS(lead);
         }
-        sssQuery +=       'AND Sales_Partners__c includes( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
-
-        if (lead.System_Assignment__c == 'Automatic - COD Date/Available Capacity' || lead.System_Assignment__c == null){
-            sssQuery += 'ORDER BY Estimated_COD_Date_QC__c ASC, Project_Capacity_Available_kW_DC__c ASC';
-        }else if (lead.System_Assignment__c == 'Automatic - Assignment Order'){
-            sssQuery += 'ORDER BY Assignment_order__c ASC';
+        repo.insertUASes();
+        if (!skipContractSend) {
+            repo.sendContracts();
         }
+    }
 
-        Decimal remainingAccountCostToAllocate = totalAnnualCostofElectricity;
-        List<Opportunity> oppListToCreate = new List<Opportunity>();
-        Map<Id, Decimal> sssRemainingSubscriptionCostMap = new Map<Id, Decimal>();
+    private class SubscriptionRepo {
+        private List<Utility_Account_Log__c> ualList;
+        private List<Shared_Solar_System__c> sssList;
+        private Map<Id, List<Opportunity>> leadOppsMap;
+        private List<Utility_Account_Subscription__c> uasList;
+        private List<Id> oppIdList;
 
-        Integer oppCounter = 1;
-        for (Shared_Solar_System__c sss : Database.query(sssQuery)){
-            sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
-
-            if (  Integer.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c && remainingAccountCostToAllocate > 0){
-                Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
-                remainingAccountCostToAllocate = remainingAccountCostToAllocate - annualElectricityCostAssigned;
-                Opportunity opp = new Opportunity(AccountId = lead.ConvertedAccountId,
-                                                  Shared_Solar_System__c = sss.Id,
-                                                  Reserved_System_Capacity_kW_DC2__c = sss.Reserved_Capacity_kW_DC__c,
-                                                  Available_System_Capacity_kW_DC__c = sss.Project_Capacity_Available_kW_DC__c,
-                                                  Product__c = sss.Product__c,
-                                                  System_Assigned__c = true,
-                                                  NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
-                                                  Name = lead.FirstName + ' ' + lead.LastName,
-                                                  StageName = 'New',
-                                                  CloseDate = Date.today(),
-                                                  UAS_Created__c = true,
-                                                  Annual_Electricity_Cost__c = annualElectricityCostAssigned,
-                                                  Annual_Electricity_Cost2__c = annualElectricityCostAssigned,
-                                                  Opportunity_Order__c = oppCounter);
-                opp = setDefaultOppFields(lead, opp);
-                oppListToCreate.add(opp);
-                oppCounter++;
-                
+        public SubscriptionRepo(List<Lead> leads) {
+            List<Id> leadIds = new List<Id>();
+            for (Lead lead : leads) {
+                leadIds.add(lead.Id);
             }
+            ualList = [
+                SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c
+                FROM Utility_Account_Log__c
+                WHERE Lead__c IN :leadIds
+                ORDER BY Annual_Cost_of_Electricity__c DESC
+            ];
+
+            sssList = [
+                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Product__c,
+                    Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
+                    Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c,
+                    Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c
+                FROM Shared_Solar_System__c
+                WHERE Open__c = TRUE
+                AND Capacity_Available_to_be_Reserved__c > 0
+            ];
+
+            leadOppsMap = new Map<Id, List<Opportunity>>();
+            uasList = new List<Utility_Account_Subscription__c>();
+            oppIdList = new List<Id>();
         }
-        if (oppListToCreate.size() > 0){
-            insert oppListToCreate;
+
+        public List<Utility_Account_Log__c> getUALList(Lead lead) {
+            List<Utility_Account_Log__c> ualListForLead = new List<Utility_Account_Log__c>();
+            for (Utility_Account_Log__c ual : ualList) {
+                if (ual.Lead__c == lead.Id) {
+                    ualListForLead.add(ual);
+                }
+            }
+            return ualListForLead;
         }
 
-        //Create the Utility_Account_Subscription__c records (From the createUAS.trigger)
-        List<Utility_Account_Subscription__c> uasListToCreate = new List<Utility_Account_Subscription__c>();
-        for (Utility_Account_Log__c ual : ualList){
-            Integer uasNumberCounter = 1;
+        public List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
+            List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
+            List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
+            for (Shared_Solar_System__c sss : sssList) {
+                if (sss.System_Utility__c == lead.Utility__c &&
+                    (sss.Service_Territories__c != null &&
+                        sss.Service_Territories__c.contains(lead.Load_Zone__c)) &&
+                    (sss.Sales_Partners__c != null &&
+                        (sss.Sales_Partners__c.contains('All') ||
+                            sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
+                    (lead.Product__c == null ||
+                        sss.Product__c == lead.Product__c)) {
+                    sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
+                }
+            }
+            sssWrappers.sort();
+            for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
+                sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
+            }
+            return sortedSharedSolarSystems;
+        }
 
-            Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
+        public Decimal getTotalAnnualCostOfElectricity(Lead lead) {
+            Decimal totalAnnualCostOfElectricity = 0;
+            for (Utility_Account_Log__c ual : ualList) {
+                if (ual.Lead__c == lead.Id) {
+                    totalAnnualCostOfElectricity += ual.Annual_Cost_of_Electricity__c;
+                }
+            }
+            return totalAnnualCostOfElectricity;
+        }
 
-            for (Opportunity opp : oppListToCreate){
-                if (sssRemainingSubscriptionCostMap.containsKey(opp.Shared_Solar_System__c)){
-                    Decimal sssRemainingSubscriptionCost = sssRemainingSubscriptionCostMap.get(opp.Shared_Solar_System__c);
-                    
-                    Decimal annualElectricityCostAssigned = Math.min(remainingUALCostToAllocate, sssRemainingSubscriptionCost);
-                    System.debug('remainingUALCostToAllocate ' + remainingUALCostToAllocate);
-                    System.debug('sssRemainingSubscriptionCost ' + sssRemainingSubscriptionCost);
-                    
-                    if (annualElectricityCostAssigned > 0){
-                        //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
-                        sssRemainingSubscriptionCost -= annualElectricityCostAssigned;
-                        sssRemainingSubscriptionCostMap.put(opp.Shared_Solar_System__c, sssRemainingSubscriptionCost);
+        public void createOpportunity(Lead lead) {
+            Decimal remainingAccountCostToAllocate = getTotalAnnualCostOfElectricity(lead);
+            List<Opportunity> oppListToCreate = new List<Opportunity>();
+            Integer oppCounter = 1;
+            for (Shared_Solar_System__c sss : getSortedSharedSolarSystems(lead)) {
+                if (Integer.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c &&
+                    remainingAccountCostToAllocate > 0) {
+                    Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
+                    remainingAccountCostToAllocate = remainingAccountCostToAllocate - annualElectricityCostAssigned;
+                    Opportunity opp = new Opportunity(
+                        AccountId = lead.ConvertedAccountId,
+                        Shared_Solar_System__c = sss.Id,
+                        Reserved_System_Capacity_kW_DC2__c = sss.Reserved_Capacity_kW_DC__c,
+                        Available_System_Capacity_kW_DC__c = sss.Project_Capacity_Available_kW_DC__c,
+                        Product__c = sss.Product__c,
+                        System_Assigned__c = true,
+                        NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
+                        Name = lead.FirstName + ' ' + lead.LastName,
+                        StageName = 'New',
+                        CloseDate = Date.today(),
+                        UAS_Created__c = true,
+                        Annual_Electricity_Cost__c = annualElectricityCostAssigned,
+                        Annual_Electricity_Cost2__c = annualElectricityCostAssigned,
+                        Opportunity_Order__c = oppCounter,
+                        Lead__c = lead.Id
+                    );
+                    opp = setDefaultOppFields(lead, opp);
+                    oppListToCreate.add(opp);
+                    oppCounter++;
+                }
+            }
+            leadOppsMap.put(lead.Id, oppListToCreate);
+        }
 
-                        remainingUALCostToAllocate = remainingUALCostToAllocate - annualElectricityCostAssigned;
-                        uasListToCreate.add(new Utility_Account_Subscription__c(Name = ual.Name,
-                                                                        Name_On_account__c = ual.Name_On_Account__c, 
-                                                                        Opportunity__c = opp.Id,
-                                                                        Annual_Cost_of_Electricity__c = ual.Annual_Cost_of_Electricity__c, 
-                                                                        Utility_Account_Log__c = ual.Id,
-                                                                        UAS_Number__c = uasNumberCounter,
-                                                                        Calculated_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned,
-                                                                        Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
-                                                                        ));
-                        uasNumberCounter++;
+        public void insertOpps() {
+            List<Opportunity> oppsToInsert = new List<Opportunity>();
+            for (List<Opportunity> opps : leadOppsMap.values()) {
+                oppsToInsert.addAll(opps);
+            }
+            insert oppsToInsert;
+        }
+
+        public void createUAS(Lead lead) {
+            Map<Id, Decimal> sssRemainingSubscriptionCostMap = new Map<Id, Decimal>();
+            List<Id> oppIdsWithUASes = new List<Id>();
+
+            for (Shared_Solar_System__c sss : getSortedSharedSolarSystems(lead)) {
+                sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
+            }
+
+            for (Utility_Account_Log__c ual : getUALList(lead)) {
+                Integer uasNumberCounter = 1;
+                Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
+
+                for (Opportunity opp : leadOppsMap.get(lead.Id)) {
+                    if (sssRemainingSubscriptionCostMap.containsKey(opp.Shared_Solar_System__c)){
+                        Decimal sssRemainingSubscriptionCost = sssRemainingSubscriptionCostMap.get(opp.Shared_Solar_System__c);
+                        Decimal annualElectricityCostAssigned = Math.min(remainingUALCostToAllocate, sssRemainingSubscriptionCost);
+                        if (annualElectricityCostAssigned > 0) {
+                            //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
+                            sssRemainingSubscriptionCost -= annualElectricityCostAssigned;
+                            sssRemainingSubscriptionCostMap.put(opp.Shared_Solar_System__c, sssRemainingSubscriptionCost);
+
+                            remainingUALCostToAllocate = remainingUALCostToAllocate - annualElectricityCostAssigned;
+                            uasList.add(new Utility_Account_Subscription__c(
+                                Name = ual.Name,
+                                Name_on_Account__c = ual.Name_on_Account__c,
+                                Opportunity__c = opp.Id,
+                                Annual_Cost_of_Electricity__c = ual.Annual_Cost_of_Electricity__c,
+                                Utility_Account_Log__c = ual.Id,
+                                UAS_Number__c = uasNumberCounter,
+                                calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
+                                Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
+                            ));
+                            uasNumberCounter++;
+                            oppIdList.add(opp.Id);
+                        }
                     }
                 }
             }
         }
-        if (uasListToCreate.size() > 0){
-            insert uasListToCreate;
+
+        public void insertUASes() {
+            insert uasList;
+        }
+
+        public void sendContracts() {
+            DocuSignHelper.sendCSPackageFuture(oppIdList);
         }
     }
 
-    private void deleteDuplicateContact (Lead convertedLead){
-        Account propertyAccount = new Account();
+    public class SSSWrapper implements Comparable {
+        public Shared_Solar_System__c sss;
+        public String systemAssignment;
+        public SSSWrapper(Shared_Solar_System__c sss, String systemAssignment) {
+            this.sss = sss;
+            this.systemAssignment = systemAssignment;
+        }
+        public Integer compareTo(Object compareTo) {
+            SSSWrapper compareToSSS = (SSSWrapper) compareTo;
+            Integer returnValue = 0;
+            if (systemAssignment == 'Automatic - COD Date/Available Capacity' || systemAssignment == null) {
+                if (sss.Estimated_COD_Date_QC__c > compareToSSS.sss.Estimated_COD_Date_QC__c) {
+                    returnValue = 1;
+                } else if (sss.Estimated_COD_Date_QC__c < compareToSSS.sss.Estimated_COD_Date_QC__c) {
+                    returnValue = -1;
+                } else {
+                    if (sss.Project_Capacity_Available_kW_DC__c > compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
+                        returnValue = 1;
+                    } else if (sss.Project_Capacity_Available_kW_DC__c < compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
+                        returnValue = -1;
+                    }
+                }
+            } else if (systemAssignment == 'Automatic - Assignment Order') {
+                if (sss.Assignment_Order__c > compareToSSS.sss.Assignment_Order__c) {
+                    return 1;
+                } else if (sss.Assignment_Order__c < compareToSSS.sss.Assignment_Order__c) {
+                    return -1;
+                }
+            }
+            return returnValue;
+        }
+    }
 
-        for (Contact relatedContact : [SELECT Id, Name, AccountId
-                                        FROM Contact 
-                                        WHERE (Id = : convertedLead.ConvertedContactId OR AccountId = : convertedLead.Parent_AccountId__c)
-                                        LIMIT 2]) {
-            if (relatedContact.Id == convertedLead.ConvertedContactId){
-                delete relatedContact;
-            } else {
-                propertyAccount.Id = convertedLead.ConvertedAccountId;
-                propertyAccount.Send_Bills_Contact__c = relatedContact.Id;
-                update propertyAccount;
-            }      
+    private void deleteDuplicateContact (List<Lead> convertedLeads) {
+        Set<Id> parentAccountIds = new Set<Id>();
+        List<Contact> contactsToDelete = new List<Contact>();
+        Set<Account> propertyAccountsToUpdate = new Set<Account>();
+        Map<Id, Id> propertyToParentAccountMap = new Map<Id, Id>();
+        Map<Id, Id> parentAccountToContactMap = new Map<Id, Id>();
+        for (Lead lead : convertedLeads) {
+            parentAccountIds.add(lead.Parent_AccountId__c);
+            propertyToParentAccountMap.put(lead.ConvertedAccountId, lead.Parent_AccountId__c);
+        }
+
+        List<Contact> relatedContacts = [
+            SELECT Id, Name, AccountId
+            FROM Contact
+            WHERE AccountId = :parentAccountIds
+        ];
+        for (Contact contact : relatedContacts) {
+            parentAccountToContactMap.put(contact.AccountId, contact.Id);
+        }
+
+        // Converted CS contacts are always duplicates, because we create the parent account's contact explicitly
+        for (Lead lead : convertedLeads) {
+            contactsToDelete.add(new Contact(Id = lead.ConvertedContactId));
+
+            // We need to set the billing contact on the converted lead's account
+            Id billingContact = parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId));
+            if (billingContact != null) {
+                propertyAccountsToUpdate.add(new Account(
+                    Id = lead.ConvertedAccountId,
+                    Send_Bills_Contact__c = parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId))
+                ));
+            }
+        }
+        delete contactsToDelete;
+        if (!propertyAccountsToUpdate.isEmpty()) {
+            update new List<Account>(propertyAccountsToUpdate);
         }
     }
 

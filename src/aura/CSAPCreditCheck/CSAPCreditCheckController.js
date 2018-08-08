@@ -1,6 +1,14 @@
 ({
     handleNavEvent : function(component, event, helper) {
-        helper.handleNavEvent(component, event, helper, "SSNPage");
+        if (event.getParam('options') && event.getParam('options').pageName) {
+            helper.handleNavEvent(component, event, helper, event.getParam('options').pageName);
+            if (event.getParam('options').pageName == 'CreditAlreadyRun'){
+                var lead = component.get("v.lead");
+                helper.copyCreditFromPrevious(component, event, helper, lead);
+            }
+        } else {
+            helper.handleNavEvent(component, event, helper, "SSNPage");
+        }
         
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
