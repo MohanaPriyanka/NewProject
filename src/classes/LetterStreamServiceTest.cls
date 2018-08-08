@@ -115,7 +115,7 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(null, newJob);
     }
 
-    @isTest public static void testCSVBuilder() {
+    @isTest(SeeAllData=true) public static void testCSVBuilder() {
         insert new BW_Address__c(
             Name = 'BlueWaveTest',
             Address_Line_One__c = '137 Newbury Street, 4th Floor',
@@ -271,21 +271,9 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals('POST', testRequest.getMethod());
     }
 
-    @IsTest public static void testSendLetters() {
+    @IsTest(SeeAllData=true) public static void testSendLetters() {
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        insert new BW_Address__c(
-            Name = 'BlueWaveTest',
-            Address_Line_One__c = '137 Newbury Street',
-            Address_Line_Two__c = 'Boston, MA 02114'
-        );
-        insert new LetterStream_Settings__c(
-            Name = 'Global Setting',
-            API_Id__c = 'BlueWave',
-            API_Endpoint__c = 'https://secure.letterstream.com/apis/',
-            API_Key__c = 'BlueWaveKey'
-        );
 
         Account accountParent1 = new Account(
             name = 'Account Parent',
@@ -402,21 +390,9 @@ public with sharing class LetterStreamServiceTest {
         }
     }
 
-    @IsTest public static void testQueueSendLetters() {
+    @IsTest(SeeAllData=true) public static void testQueueSendLetters() {
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        insert new BW_Address__c(
-            Name = 'BlueWaveTest',
-            Address_Line_One__c = '137 Newbury Street',
-            Address_Line_Two__c = 'Boston, MA 02114'
-        );
-        insert new LetterStream_Settings__c(
-            Name = 'Global Setting',
-            API_Id__c = 'BlueWave',
-            API_Endpoint__c = 'https://secure.letterstream.com/apis/',
-            API_Key__c = 'BlueWaveKey'
-        );
 
         Account accountParent1 = new Account(
             name = 'Account Parent',
