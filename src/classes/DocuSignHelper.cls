@@ -2,7 +2,7 @@
  * Created By:  Peter Yao
  * Description: Convenience methods to use DocuSignAPI class generated from WSDL. Originally
  *              used in the loan change order and contingent contracting process
- * Test: DocuSignHelperTest
+ * Test: DocuSignHelperTest,LeadTriggerHandlerTest
  *************************************************************************************/
 
 public without sharing class DocuSignHelper {
@@ -86,7 +86,11 @@ public without sharing class DocuSignHelper {
             voidPackage(env.dsfs__DocuSign_Envelope_ID__c, 'Voided due to a change order.');
         }
         for (Opportunity o : oppsToResend) {
-            sendLoanPackage(o.Id);
+            try {
+                sendLoanPackage(o.Id);
+            } catch (Util.BWException bwe) {
+                break;
+            }
         }
         // DML needs to happen after the callouts
         for (Opportunity o : oppsToResend) {
@@ -129,10 +133,30 @@ public without sharing class DocuSignHelper {
         sendLoanPackage(oppId);
     }
 
+    @Future(Callout=true)
+    public static void sendCSPackageFuture(List<Id> oppIdList) {
+        List<Opportunity> oppList = [
+            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
+                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
+            FROM Opportunity
+            WHERE Id IN : oppIdList
+        ];
+        Integer oppNumber = 1;
+        for (Opportunity opp : oppList) {
+            try {
+                sendCSPackage(opp, oppNumber, oppIdList.size());
+            } catch (Util.BWException bwe) {
+                break;
+            }
+            oppNumber++;
+        }
+        Logger.flushLogs();
+    }
+
     // Makes callouts to DocuSign to send loan docs, and sets Contract Signature partner task to Pending
     public static DocuSignAPI.EnvelopeStatus sendLoanPackage(Id oppId) {
         connect();
-        Integer chrisGoslineGroupId = getSigningGroup('Chris Gosline');
+        Integer chrisGoslineGroupId = getSigningGroup('BW RL');
         Integer qcGroupId = getSigningGroup('BW QC Signature');
         Opportunity opp = [
             SELECT Id, Name, Application_Type__c, Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c,
@@ -149,15 +173,6 @@ public without sharing class DocuSignHelper {
         envelope.AccountId = apiAccountId;
 
         DocuSignAPI.EnvelopeTemplate et = dsAPI.RequestTemplateWithDocumentFields(opp.Docusign_Template__c, true);
-        if (et == null && Test.isRunningTest()) {
-            et = new DocuSignAPI.EnvelopeTemplate();
-            et.Envelope = new DocuSignAPI.Envelope();
-            et.Envelope.Recipients = new DocuSignAPI.ArrayOfRecipient();
-            et.Envelope.Recipients.Recipient = new List<DocuSignAPI.Recipient>();
-            DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
-            recipient.RoleName = 'Signer 1';
-            et.Envelope.Recipients.Recipient.add(recipient);
-        }
         for (DocuSignAPI.Recipient r : et.Envelope.Recipients.Recipient) {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Name;
@@ -235,9 +250,69 @@ public without sharing class DocuSignHelper {
         return result;
     }
 
+    public static DocuSignAPI.EnvelopeStatus sendCSPackage(Opportunity opp, Integer count, Integer total) {
+        connect();
+        DocuSignAPI.EnvelopeInformation envelope = new DocuSignAPI.EnvelopeInformation();
+        envelope.Subject = opp.Name + ' Community Solar Contract ' + '(' + count + ' of ' + total + ')';
+        envelope.EmailBlurb = 'Please Review and Sign this Contract';
+        envelope.AccountId = apiAccountId;
+        Integer csBWSignatureGroup = getSigningGroup('BW CS');
+        DocuSignAPI.EnvelopeTemplate et = dsAPI.RequestTemplateWithDocumentFields(opp.Docusign_Template__c, true);
+        for (DocuSignAPI.Recipient r : et.Envelope.Recipients.Recipient) {
+            if (r.RoleName == 'Signer 1') {
+                r.UserName = opp.Parent_Account_Name__c;
+                r.Email = opp.Email__c;
+            } else if (r.RoleName == 'Signer 2'){
+                r.SigningGroupId = csBWSignatureGroup;
+            } else if (r.RoleName == 'Recipient 1'){
+                r.UserName = opp.Sales_tag__c;
+                r.Email = opp.Salesperson_Email__c;
+            } else if (r.RoleName == 'Recipient 3'){
+                r.UserName = opp.Parent_Account_Name__c;
+                r.Email = opp.Email__c;
+            } else {
+                Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
+                    'Callout Exception caught in CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
+                        ' error message: ');
+            }
+        }
+        DocuSignAPI.InlineTemplate it = new DocuSignAPI.InlineTemplate();
+        it.Sequence = 1;
+        it.Envelope = et.Envelope;
+        DocuSignAPI.ArrayOfCompositeTemplate compositeTemplates = new DocuSignAPI.ArrayOfCompositeTemplate();
+        compositeTemplates.CompositeTemplate = new DocuSignAPI.CompositeTemplate[1];
+        compositeTemplates.CompositeTemplate[0] = new DocuSignAPI.CompositeTemplate();
+        compositeTemplates.CompositeTemplate[0].InlineTemplates = new DocuSignAPI.ArrayOfInlineTemplate();
+        compositeTemplates.CompositeTemplate[0].InlineTemplates.InlineTemplate = new DocuSignAPI.InlineTemplate[1];
+        compositeTemplates.CompositeTemplate[0].InlineTemplates.InlineTemplate[0] = it;
+        DocuSignAPI.CustomField field = new DocuSignAPI.CustomField();
+        field.Name = '##SFOpportunity';
+        field.Value = opp.Id;    //value of your external source Id
+        field.Show = 'false';
+        DocuSignAPI.ArrayOfCustomField arrayOfCustomField = new DocuSignAPI.ArrayOfCustomField();
+        arrayOfCustomField.CustomField = new DocuSignAPI.CustomField[1];
+        arrayOfCustomField.CustomField[0] = field;
+        it.Envelope.CustomFields = arrayOfCustomField;
+        DocuSignAPI.EnvelopeStatus result;
+        try {
+            result = dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
+            // if we want to i-frame in the portal we could use: RequestRecipientToken
+        } catch (CalloutException e) {
+            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
+                'Callout Exception caught in CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
+                    ' error message: ' + e.getMessage());
+        }
+        if (result == null || result.EnvelopeID == null) {
+            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'Unsuccessful CreateEnvelopeFromTemplatesAndForms ' +
+                'for Opportunity ' + opp.Id);
+        }
+        // Don't flush logs here, since this is called in a loop which will result in another callout
+        // Logger.flushLogs();
+        return result;
+    }
+
     public static void getBaseUrl() {
-        String json = requestResource('/login_information', 'GET');
-        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        DocuSignHelper result = requestResource('/login_information', 'GET');
         baseUrl = result.loginAccounts[0].baseUrl;
         accountId = result.loginAccounts[0].accountId;
     }
@@ -246,8 +321,7 @@ public without sharing class DocuSignHelper {
         if (baseUrl == null) {
             getBaseUrl();
         }
-        String json = requestResource('/accounts/'+accountId+'/signing_groups', 'GET');
-        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        DocuSignHelper result = requestResource('/accounts/'+accountId+'/signing_groups', 'GET');
         for (SigningGroup sg : result.groups) {
             if (sg.groupName == groupName) {
                 return Integer.valueOf(sg.signingGroupId);
@@ -256,7 +330,7 @@ public without sharing class DocuSignHelper {
         return 0;
     }
 
-    public static String requestResource(String endpoint, String method) {
+    public static DocuSignHelper requestResource(String endpoint, String method) {
         connect();
         HttpRequest req = new HttpRequest();
         req.setEndpoint(restAPIServer + endpoint);
@@ -266,9 +340,17 @@ public without sharing class DocuSignHelper {
 
         Http http = new Http();
         HTTPResponse res = http.send(req);
-        return res.getBody();
+        String json = res.getBody();
+        DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
+        if (result.errorCode != null) {
+            Logger.logLater('DocuSignHelper', 'getBaseUrl', result.message);
+            throw new Util.BWException(result.message);
+        }
+        return result;
     }
 
+    public String errorCode;
+    public String message;
 
     public class LoginAccounts {
         public String name;

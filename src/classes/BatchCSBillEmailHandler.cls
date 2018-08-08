@@ -86,7 +86,6 @@
                     htmlBody = htmlBody.replace('{!AccountName}', acctBill.Property_Account_Name__c);
                     htmlBody = htmlBody.replace('{!Account_Bill_Property_Id}', acctBill.Property_Account_ID__c);
                     htmlBody = htmlBody.replace('{!Credits_Period}', acctBill.Credits_on_Bill_Period__c ); 
-                    acctBill.Published__c = true;
                     acctBill.Ready_for_Email_Send__c = false;
                     attachmentIds.add(attachIDMap.get(acctBill.Id));
                 } else {
@@ -99,6 +98,7 @@
                 errorCode = 'EMAIL SEND FAILED FOR: ' + acctBill.Id + ' because no email was found on the Send Bills Contact';
                 htmlBody = errorCode;
             }
+            acctBill.Published__c = true;
             mail.setOrgWideEmailAddressId(senderEmail.Id); 
             mail.setSubject(acctBill.Property_Account_Name__c + ', Your Community Solar Share Has Posted');
             mail.setHtmlBody(htmlBody);

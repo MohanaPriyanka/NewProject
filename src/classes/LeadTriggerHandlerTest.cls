@@ -2,6 +2,15 @@
 private class LeadTriggerHandlerTest {
     
     @isTest static void customerSubscriptionProcessTest() {
+        System_Properties__c sysProp = new System_Properties__c(
+            Name = 'System',
+            DocuSign_API_Account_ID__c = '123',
+            DocuSign_Customer_Care_User__c = '123@123.com',
+            DocuSign_Guest_User__c = '123@345.com',
+            DocuSign_Guest_User_Credential__c = '234234',
+            DocuSign_Integrator_Key__c = '123123-123123'
+        );
+        insert sysProp;
 
         Utility_NMC_Tariff__c nmcRate =  (Utility_NMC_Tariff__c)TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 1,
                                                                                                                     Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -104,7 +113,6 @@ private class LeadTriggerHandlerTest {
         insert ual2;
 
 
-        Test.startTest();
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
@@ -119,12 +127,55 @@ private class LeadTriggerHandlerTest {
         ld.setConvertedStatus(convertStatus2.MasterLabel);
         ld.setDoNotCreateOpportunity(true);
         Database.LeadConvertResult ldr = Database.convertLead(ld);
-       
-        List<Opportunity> oppList = [Select Id, Name, AccountId, Shared_Solar_System__c, Shared_Solar_System__r.Name From Opportunity ];
 
+        for (Opportunity opp : [SELECT Id FROM Opportunity]){
+
+            dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
+                dsfs__Opportunity__c = opp.Id,
+                dsfs__Envelope_Status__c = 'Sent',
+                dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
+            );
+            insert newDocStat;
+
+            dsfs__DocuSign_Recipient_Status__c newDRS = new dsfs__DocuSign_Recipient_Status__c(
+                Name = 'TestCase',
+                dsfs__Parent_Status_Record__c =newDocStat.Id,
+                dsfs__DocuSign_Recipient_Id__c = 'D50030',
+                dsfs__DocuSign_Recipient_Email__c = 'nobody@bluewavesolar.com',
+                dsfs__Recipient_Status__c = 'Sent'
+            );
+            insert newDRS;
+        }
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        List<Id> idList = new List<Id>();
+        List<Opportunity> oppList = [SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c,
+            Sales_tag__c, Application_Type__c,
+            Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c,
+            Docusign_Template__c, Shared_Solar_System__r.Name,
+            AccountId, Shared_Solar_System__c
+        FROM Opportunity];
         System.assertEquals(1, oppList.size());
+        idList.add(oppList[0].Id);
+
+        DocuSignHelper.sendCSPackage(oppList[0],1,1);
         Test.stopTest();
-    } 
+
+        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
+        System.assertEquals(0, errorLogs.size());
+
+        Opportunity opp = [
+            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
+                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c,
+            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+        ];
+        System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
+        System.assertEquals('Sent', opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__Envelope_Status__c);
+    }
 
     @isTest static void testCaseandContactConversion() {
         Map<Id,Id> leadContactIdMap = new Map<Id,Id>();
@@ -309,5 +360,204 @@ private class LeadTriggerHandlerTest {
             System.assertEquals(leadMap.get(opp.Lead__c).Co_Applicant_First_Name__c, opp.Co_Applicant_First_Name__c);
             System.assertEquals(leadMap.get(opp.Lead__c).Co_Applicant_Last_Name__c, opp.Co_Applicant_Last_Name__c);
         }
+    }
+
+    @IsTest static void testMultipleSubscriptions() {
+        System_Properties__c sysProp = new System_Properties__c(
+            Name = 'System',
+            DocuSign_API_Account_ID__c = '123',
+            DocuSign_Customer_Care_User__c = '123@123.com',
+            DocuSign_Guest_User__c = '123@345.com',
+            DocuSign_Guest_User_Credential__c = '234234',
+            DocuSign_Integrator_Key__c = '123123-123123'
+        );
+        insert sysProp;
+
+        Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .1848,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()
+        );
+        insert nmcRate;
+
+        Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Monthly_Late_Fee__c = 1);
+        insert csProduct;
+
+        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P1');
+        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P2');
+        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, 'National Grid', 'National Grid P1');
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
+
+        Shared_Solar_System__c sssCheck = [
+            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sss1.Id
+        ];
+        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kW_DC__c);
+        System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c);
+
+        Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
+        insert partner;
+        BSST__c salesTeam = new BSST__c (Name = 'Partner',
+            Partner__c = partner.Id,
+            Custom_ID__c = 'partner'
+        );
+        insert salesTeam;
+
+        Account parentAccount = new Account(Name = 'Parent');
+        insert parentAccount;
+
+        Contact contact = new Contact(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            AccountId = parentAccount.Id
+        );
+
+        Lead primaryProperty = new Lead(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            Email = 'test@test.com',
+            Electricity_Provider__c = 'Eversource',
+            Utility_1__c = 'Eversource',
+            Load_Zone__c = 'WCMA',
+            Company = 'Test',
+            Status = 'Qualified',
+            Product_line__c = 'Community Solar',
+            Product__c = csProduct.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Parent_Account__c = parentAccount.Id
+        );
+        Lead additionalProperty = primaryProperty.clone();
+        additionalProperty.Utility_1__c = 'National Grid';
+        additionalProperty.Electricity_Provider__c = 'National Grid';
+        insert new List<Lead>{primaryProperty, additionalProperty};
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = primaryProperty.Id,
+            LASERCA__Credit_Score_TransUnion__c = '720'
+        );
+        insert pcr;
+        primaryProperty.Personal_Credit_Report__c = pcr.Id;
+        additionalProperty.Personal_Credit_Report__c = pcr.Id;
+        update new List<Lead>{primaryProperty, additionalProperty};
+
+        // kW DC = Annual Cost / NMC Rate / Yield
+        Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
+            Lead__c = primaryProperty.Id,
+            Annual_Cost_of_Electricity__c = 7207, // should result in 30 kW DC
+            Name_on_Account__c = 'Primary 1'
+        );
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Lead__c = primaryProperty.Id,
+            Annual_Cost_of_Electricity__c = 1201, // should result in 5 kW DC
+            Name_on_Account__c = 'Primary 2'
+        );
+        Utility_Account_Log__c ual3 = new Utility_Account_Log__c(
+            Lead__c = additionalProperty.Id,
+            Annual_Cost_of_Electricity__c = 7207, // should result in 30 kW DC
+            Name_on_Account__c = 'Additional 1'
+        );
+        insert new List<Utility_Account_Log__c>{ual1, ual2, ual3};
+
+        List<Opportunity> opps = [SELECT Id FROM Opportunity];
+        List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
+        // There should be no opps or uases to start
+        System.assertEquals(0, opps.size());
+        System.assertEquals(0, uases.size());
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        // Since there are contracts to send here, we will run into "You have uncommitted work pending"
+        // because of the DML in convertCSLead. The customerSubscriptionProcessTest method tests
+        // the sendCSPackage method (which convertCSLead and sendContracts wraps) explicitly.
+        LeadTriggerHandler.skipContractSend = true;
+        CSAPController.convertCSLead(primaryProperty.Id, primaryProperty.Email);
+        Test.stopTest();
+
+        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'Eversource'];
+        System.assertEquals(1, eversourceLeads.size());
+
+        // 2 opps for the Eversource lead (one for each SSS)
+        opps = [
+            SELECT Id, Name, Shared_Solar_System__c, AccountId
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.System_Utility__c = 'Eversource'
+            AND AccountId =: eversourceLeads[0].ConvertedAccountId
+        ];
+        System.assertEquals(2, opps.size());
+
+        List<AggregateResult> uasAggregate = [
+            SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
+            GROUP BY Opportunity__r.AccountId
+        ];
+        // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
+        System.assertEquals(3, uasAggregate[0].get('num'));
+        System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+        System.assertEquals(25, uasAggregate[0].get('maximum'));
+        System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+
+        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'National Grid'];
+        System.assertEquals(1, ngridLeads.size());
+
+        // Just 1 opp for NGrid since there's only one system
+        opps = [
+            SELECT Id, Name, Shared_Solar_System__c, AccountId
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.System_Utility__c = 'National Grid'
+            AND AccountId =: ngridLeads[0].ConvertedAccountId
+        ];
+        System.assertEquals(1, opps.size());
+
+        uasAggregate = [
+            SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.AccountId =: ngridLeads[0].ConvertedAccountId
+            GROUP BY Opportunity__r.AccountId
+        ];
+        // Just one 25kW UAS
+        System.assertEquals(1, uasAggregate[0].get('num'));
+        System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+        System.assertEquals(25, uasAggregate[0].get('maximum'));
+        System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+    }
+
+    private static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
+        String utility, String name) {
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = name,
+            Service_Territories__c = 'WCMA; SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '0',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            System_Utility__c = utility,
+            Credit_Score_Requirement__c = 700,
+            Assignment_Order__c = '1',
+            Utility_NMC_Tariff__c = nmcRate.Id,
+            Product__c = csProduct.Id,
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Assemblage__c = 25,
+            Sales_Partners__c = 'All'
+        );
+        return sss1;
     }
 }
