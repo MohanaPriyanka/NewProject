@@ -134,7 +134,7 @@ private class BatchCSBillEmailHandlerTest {
     @IsTest(SeeAllData=true)
     static void testCreateLink() {
         setupTestData();
-        Test.StartTest();
+        Test.startTest();
         ContentVersion csBillCV = new ContentVersion (Title ='Community Solar Bill.pdf',
                                                       PathOnClient='/Community Solar Bill.pdf' );
         csBillCV.VersionData = Blob.valueOf('This is the body of the pdf');
@@ -143,20 +143,24 @@ private class BatchCSBillEmailHandlerTest {
                                         FROM ContentVersion 
                                         WHERE Id = : csBillCV.Id]; 
 
-        Account_Bill__c accountBill = [  SELECT Id, Name
-                                          FROM Account_Bill__c LIMIT 1];
+        Account_Bill__c accountBill = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Bill_Number__c != NULL
+            LIMIT 1
+        ];
 
         ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                                 LinkedEntityId = accountBill.Id,
                                                                 ShareType = 'V' );
         insert newLink;
-        Test.StopTest();
+        Test.stopTest();
 
         Account_Bill__c abUpdated = [   SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
                                         FROM Account_Bill__c 
                                         WHERE Id = : accountBill.Id];
-        system.AssertNotEquals('', abUpdated.Bill_Attach_Version__c);
-        system.AssertNotEquals('', abUpdated.Bill_Attach_Document__c);
+        System.assertNotEquals('', abUpdated.Bill_Attach_Version__c);
+        System.assertNotEquals('', abUpdated.Bill_Attach_Document__c);
     }
 
 }
