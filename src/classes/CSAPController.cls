@@ -222,7 +222,7 @@ public without sharing class CSAPController {
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
             lead.bs_Sales_ID__c = salesRepId;
-        } else if (false) {
+        } else if (UserInfo.getUserType() == 'PowerPartner') {
             lead.bs_Sales_ID__c = profile.salesRepId;
         } else {
             lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;

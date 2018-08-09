@@ -231,7 +231,7 @@ public without sharing class MyAccountController {
                 WHERE Id = :partnerId
                 LIMIT 1
             ];
-        } else if (false) {
+        } else if (UserInfo.getUserType() == 'PowerPartner') {
             partner = [
                 SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
                 FROM Partner__c
