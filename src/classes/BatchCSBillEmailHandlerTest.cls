@@ -96,7 +96,14 @@ private class BatchCSBillEmailHandlerTest {
         propertyAccount.Additional_Contact__c = contactTwo.Id;
         update propertyAccount;
 
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        insert new BW_Address__c(
+            Name = 'BlueWave',
+            Address_Line_One__c = '137 Newbury Street',
+            Address_Line_Two__c = '',
+            City__c = 'Boston',
+            State__c = 'MA',
+            Zip_Code__c = '02114'
+        );
 
         for (Integer i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
