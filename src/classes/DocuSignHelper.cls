@@ -2,7 +2,7 @@
  * Created By:  Peter Yao
  * Description: Convenience methods to use DocuSignAPI class generated from WSDL. Originally
  *              used in the loan change order and contingent contracting process
- * Test: DocuSignHelperTest,LeadTriggerHandlerTest
+ * Test: DocuSignHelperTest,LeadTriggerHandlerTest,CAPControllerTest
  *************************************************************************************/
 
 public without sharing class DocuSignHelper {
@@ -263,7 +263,7 @@ public without sharing class DocuSignHelper {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
-            } else if (r.RoleName == 'Signer 2') {
+            } else if (r.RoleName == 'Signer 2'){
                 r.SigningGroupId = csBWSignatureGroup;
             } else if (r.RoleName == 'QC Approver'){
                 r.SigningGroupId = qcSignatureGroup;
