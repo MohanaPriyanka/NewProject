@@ -217,7 +217,10 @@ public without sharing class CSAPController {
         lead = processLead(lead);
 
         lead.Partner_Lookup__c = customerPartner.Id;
-        lead.Partner_Email__c = customerPartner.Email__c;
+        if(customerPartner.Email__c != null){
+            lead.Partner_Email__c = customerPartner.Email__c;
+        }
+
 
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
