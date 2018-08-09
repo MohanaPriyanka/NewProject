@@ -150,7 +150,7 @@ public with sharing class AccountBillHandler{
         }
         defaultAddress += (' '+ bwAddress[0].City__c + ',');
         defaultAddress += (' '+ bwAddress[0].State__c + ' ');
-        defaultAddress += (' '+ bwAddress[0].Zip_Code__c + ',');
+        defaultAddress += (' '+ bwAddress[0].Zip_Code__c);
 
         for (AggregateResult lineItem : checkAddress)  {
             checkLine = '';
