@@ -98,14 +98,13 @@
   <aura:attribute name="availableStorageManufacturers" type="List" />
   <aura:attribute name="availableStorageInverterManufacturers" type="List" />
   <aura:attribute name="enableStorage" type="Boolean" default="true" />
-  <aura:attribute name="gridHybridOptions" type="List" default="[
-                           {text:'Yes'},
-                           {text:'No'}]"/>
-  <aura:attribute name="homeBackupOptions" type="List" default="[
-                           {text:'Partial home backup'},
-                           {text:'Full home backup'}]"/>
-  <aura:attribute name="storageHybrid" type="String" default='No'/>
-
+  <aura:attribute name="storageHybrid" type="String" default='Yes'/>
+  <aura:attribute name="gridHybridOptions" type="List"
+                  default="[
+                  {'opt': 'Yes'}
+                  {'opt': 'No' }
+                  ]"/>
+  <aura:attribute name="homeBackupOptions" type="List"/>
 
   <!-- main issues include the ability to break out subTasks within the task
        table. The tasks break out for each task with subTasks,
@@ -456,10 +455,10 @@
                               <!--</label>-->
                               <!--<ui:inputSelect aura:id="backupStorage"-->
                                               <!--class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}"-->
-                                              <!--value="{!v.customerInformation.Storage_Grid_Hybrid__change}">-->
+                                              <!--value="{!v.storageHybrid}">-->
                                 <!--<ui:inputSelectOption text="" label="Select"/>-->
                                 <!--<aura:iteration items="{!v.gridHybridOptions}" var="opts">-->
-                                  <!--<ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Grid_Hybrid__c}"/>-->
+                                  <!--<ui:inputSelectOption label="{!opts.opt}" text="{!opts.opt}" value="{!opts.text == v.storageHybrid}"/>-->
                                 <!--</aura:iteration>-->
                               <!--</ui:inputSelect>-->
                             <!--</div>-->
@@ -482,10 +481,10 @@
                               </label>
                               <ui:inputSelect aura:id="partialOrFullHome"
                                               class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial__c!=v.changeOrder.Storage_Full_or_Partial__change?'input-changed':'')}"
-                                              value="{!v.customerInformation.Storage_Full_or_Partial__change}">
+                                              value="{!v.changeOrder.Storage_Full_or_Partial__change}">
                                 <ui:inputSelectOption text="" label="Select"/>
                                 <aura:iteration items="{!v.homeBackupOptions}" var="opts">
-                                  <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!product.text == v.customerInformation.Storage_Full_or_Partial__c}"/>
+                                  <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Full_or_Partial__c}"/>
                                 </aura:iteration>
                               </ui:inputSelect>
                             </div>
