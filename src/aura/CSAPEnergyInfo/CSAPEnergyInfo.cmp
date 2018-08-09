@@ -103,9 +103,7 @@
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <lightning:input aura:id="field" type="file" label="Please upload a Recent Electric Bill" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
                 <br></br>
-                <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
-                  <lightning:input aura:id="field" type="file" label="Page 2 of Bill, if separate file" name="files" multiple="true" onchange="{!c.handleEBill2}"/>
-                </aura:if>
+                <lightning:input aura:id="field" type="file" label="Page 2 of Bill, if separate file" name="files" multiple="true" onchange="{!c.handleEBill2}"/>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
@@ -114,11 +112,9 @@
                     <aura:iteration items="{!v.electricBill1}" var="attachment">
                       <li class="slds-text-body--regular">{!attachment}</li>
                     </aura:iteration>
-                    <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
-                      <aura:iteration items="{!v.electricBill2}" var="attachment">
-                        <li>{!attachment}</li>
-                      </aura:iteration>
-                    </aura:if>
+                    <aura:iteration items="{!v.electricBill2}" var="attachment">
+                      <li>{!attachment}</li>
+                    </aura:iteration>
                   </ul>
                 </aura:if>
               </lightning:layoutItem>

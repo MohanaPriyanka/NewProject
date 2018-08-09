@@ -57,7 +57,7 @@
         }
     },
     goToUAServiceAddress : function(component, event, helper) {
-        if(component.get("v.electricBill1") == null && component.get("v.electricBill2") == null){
+        if (!component.get("v.electricBill1")) {
             alert("Please upload your recent electric bill");
             return;
         }

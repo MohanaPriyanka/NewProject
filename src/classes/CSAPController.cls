@@ -217,10 +217,16 @@ public without sharing class CSAPController {
         lead = processLead(lead);
 
         lead.Partner_Lookup__c = customerPartner.Id;
-        lead.Partner_Email__c = customerPartner.Email__c;
+        if(customerPartner.Email__c != null){
+            lead.Partner_Email__c = customerPartner.Email__c;
+        }
 
+
+        // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
-            lead.bs_Sales_ID__c = [SELECT Id FROM BSST__c WHERE Id = :salesRepId LIMIT 1].Id;
+            lead.bs_Sales_ID__c = salesRepId;
+        } else if (UserInfo.getUserType() == 'PowerPartner') {
+            lead.bs_Sales_ID__c = profile.salesRepId;
         } else {
             lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }

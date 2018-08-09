@@ -101,8 +101,17 @@ public without sharing class SLPUserHelper {
         if (!partnerRecords.isEmpty()) {
             partnerRecord = partnerRecords[0];
         } else {
-            partnerRecord = [SELECT Id FROM Partner__c 
-                             WHERE Name like '%BlueWave%' or Name like '%Testcase%' LIMIT 1];
+            List<Partner__c> backupPartners = [
+                SELECT Id FROM Partner__c
+                WHERE Name LIKE '%BlueWave%'
+                OR Name LIKE '%Testcase%'
+                LIMIT 1
+            ];
+            if (!backupPartners.isEmpty()) {
+                partnerRecord = backupPartners[0];
+            } else {
+                return null;
+            }
         }
         return(String.valueOf(partnerRecord.Id).subString(0,15));
     }

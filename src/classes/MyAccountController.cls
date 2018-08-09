@@ -217,24 +217,38 @@ public without sharing class MyAccountController {
         return chargentTransactionsList;
     }
 
+    // If partner is passed (from a URL parameter) use that.
+    // If it's an installer, use that partner
+    // Otherwise, use the default partner (if a guest user)
     @AuraEnabled
     public static Partner__c getPartner(String partnerId){
         Partner__c partner = new Partner__c();
 
-        if (partnerId != null && partnerId != ''){
+        if (partnerId != null && partnerId != '') {
             partner = [
                 SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
                 FROM Partner__c
                 WHERE Id = :partnerId
                 LIMIT 1
             ];
-        } else {
+        } else if (UserInfo.getUserType() == 'PowerPartner') {
             partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, CS_Referral_Status__c, Name
+                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
                 FROM Partner__c
-                WHERE CS_Referral_Status__c = 'Default CS Partner'
+                WHERE Id = :CSAPController.profile.partnerId
                 LIMIT 1
             ];
+        } else {
+            List<Partner__c> partners = [
+                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
+                FROM Partner__c
+                WHERE CS_Referral_Status__c = 'Default CS Partner'
+            ];
+            if (partners.isEmpty()) {
+                return null;
+            } else {
+                partner = partners[0];
+            }
         }
 
         return partner;
