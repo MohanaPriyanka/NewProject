@@ -10,6 +10,7 @@
 public with sharing class ScheduledAccountBillLetterStreamMailer implements Schedulable {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public Integer maxPackageSize = 10*1000*1000;
+    public Boolean makeCallout = true;
 
     public void execute(SchedulableContext sc){
         batchAccountBills();
@@ -53,7 +54,7 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
@@ -61,8 +62,10 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
             }
         }
         // if we never hit max heap size, send at end
-        Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments));
-        Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
+        if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+            Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', 'Package of ' + packageSize/1000/1000 + ' MB sent to letter stream. ' + 'JobID: ' + jobId);
+        }
         Logger.flushLogs();
     }
 }

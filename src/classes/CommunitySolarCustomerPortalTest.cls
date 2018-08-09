@@ -20,11 +20,34 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                 Bill_Number__c, Property_Account_ID__c
                                                 FROM Account_Bill__c];
 
-        Contact con = new Contact(FirstName = 'First',
-                                  Email = 'communitiesUserContact@bluewave-capital.com',
-                                  LastName = 'Last',
-                                  AccountId = parentAccount.Id, 
-                                  Active_Communities_User__c = true);
+        Shared_Solar_System__c sss = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P2'
+        ];
+
+        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 20,
+            Monthly_Late_Fee__c = 1);
+        insert normalCSProduct;
+
+        Contact con = new Contact(
+            FirstName = 'First',
+            Email = 'communitiesUserContact@bluewave-capital.com',
+            LastName = 'Last',
+            AccountId = parentAccount.Id,
+            Active_Communities_User__c = true,
+            Product_Line__c = 'Community Solar'
+        );
         insert con;
 
         User communityUser = new User (
@@ -43,6 +66,77 @@ public without sharing class CommunitySolarCustomerPortalTest {
         );
         // To avoid UNABLE_TO_LOCK_ROW:
         Util.insertSobjs(new list<User>{communityUser});
+
+        Partner__c partner = new Partner__c (
+            Name = 'Partner',
+            Products__c = 'Community Solar'
+        );
+        insert partner;
+
+        BSST__c salesRep = new BSST__c(
+            Name = 'Sales Rep A',
+            Partner__c = partner.Id
+        );
+        insert salesRep;
+
+        BSST__c salesRep2 = new BSST__c (
+            Name = 'Sales Rep B',
+            Partner__c = partner.Id
+        );
+        insert salesRep2;
+
+
+        Partner__c csPartner = new Partner__c (
+            Name = 'CS Partner',
+            Products__c = 'Community Solar',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Default_Sales_Rep__c = salesRep2.Id
+        );
+        insert csPartner;
+
+        Partner__c oldPartner = new Partner__c(
+            Name = 'Old Partner',
+            Products__c = 'Community Solar',
+            Default_Sales_Rep__c = salesRep.Id
+        );
+        insert oldPartner;
+
+        //Most recent Property Account
+        Account propAccountNew = new Account(
+            Name = 'Property Account B New',
+            ParentId = parentAccount.Id,
+            Parent_Account__c = parentAccount.Id,
+            Product_Line__c = 'Community Solar'
+        );
+
+        insert propAccountNew;
+
+        Date yesterday = Date.Today().addDays(-1);
+
+        //Old Opportunity with wrong partner
+        Opportunity opportunityOLD = new Opportunity(
+            Name = 'OLD Opp',
+            AccountId = propAccountNew.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'Complete',
+            Product__c = normalCSProduct.Id,
+            Partner_tag_lookup__c = oldPartner.Id,
+            CloseDate = yesterday
+        );
+        insert opportunityOLD;
+
+        Opportunity opportunityNEW = new Opportunity(
+            Name = 'NEW Opp',
+            AccountId = propAccountNew.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'Complete',
+            Product__c = normalCSProduct.Id,
+            Partner_tag_lookup__c = csPartner.Id,
+            BS_Sales_ID__c = salesRep.Id,
+            CloseDate = System.today()
+        );
+        insert opportunityNEW;
+
 
         for (Account_Bill__c aBill : accountBillList){
             aBill.Published__c = true;
@@ -74,10 +168,10 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                          ChargentOrders__Card_Security_Code__c = '999',
                                                          ChargentOrders__Card_Expiration_Month__c = '02',
                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
-                                                         ChargentOrders__Card_Last_4__c = '1111'); 
+                                                         ChargentOrders__Card_Last_4__c = '1111');
         insert orderA;
 
-        ChargentOrders__Transaction__c transA = 
+        ChargentOrders__Transaction__c transA =
                     new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
                                                        ChargentOrders__Amount__c = 50,
                                                        ChargentOrders__Response_Status__c ='Approved',
@@ -86,10 +180,10 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                        Distributed_Among_System_Bills__c = FALSE,
                                                        ChargentOrders__Response_Message__c = 'OK',
                                                        ChargentOrders__Type__c = 'Charge',
-                                                       ChargentOrders__Payment_Method__c = 'Credit Card',                                    
+                                                       ChargentOrders__Payment_Method__c = 'Credit Card',
                                                        Activity_Type__c = 'Payment');
-        insert transA;  
-        
+        insert transA;
+
         Map<String, Account> customerAccountMap = new Map<String, Account>();
         for (Account customerAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
                                         FROM Account]){
@@ -97,7 +191,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         }
 
 
-                                                                         
+
           System.runAs(communityUser){
 
             //test the getContactInfo() method
@@ -114,7 +208,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             // test the getMenuLabelList() method
             List<Account> menuLabelRespList = new List<Account>(MyAccountController.getMenuLabelList());
-            System.assertEquals(1, menuLabelRespList.size());
+            System.assertEquals(2, menuLabelRespList.size());
             System.assertEquals(customerAccountMap.get('Account A').Id, menuLabelRespList.get(0).Id);
 
             //test the getSystemBills() method
@@ -143,9 +237,25 @@ public without sharing class CommunitySolarCustomerPortalTest {
             System.assert(coPrAcc != null);
             System.assert(coAll != null);
 
-            //test the getCode() method
-            String referralCode = MyAccountController.getCode();
-            System.assertEquals(referralCode, 'bluewaveFLast');
+            //Test getMostRecentOpportunityInfo() and sendEmail URL()
+            Opportunity checkOpp = MyAccountController.getMostRecentOpportunityInfo();
+            String checkPartnerId = checkOpp.Partner_tag_lookup__c;
+            String checkSalesRepId = checkOpp.BS_Sales_ID__c;
+            String checkContactId = ContactfromUser.Id;
+
+            System.assertEquals(opportunityNEW.Partner_tag_lookup__c, checkPartnerId);
+            System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
+            System.assertEquals(con.Id, checkContactId);
+
+            //Test getPartner()
+            Partner__c checkPartner = MyAccountController.getPartner(checkPartnerId);
+            System.assertEquals('CS Partner', checkPartner.Name);
+            System.assertEquals(salesRep2.Id, checkPartner.Default_Sales_Rep__c );
+
+            //Default getPartner()
+            Partner__c defaultPartner = MyAccountController.getPartner(null);
+            System.assertEquals('CS Partner', defaultPartner.Name);
+            System.assertEquals(salesRep2.Id, defaultPartner.Default_Sales_Rep__c);
 
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');

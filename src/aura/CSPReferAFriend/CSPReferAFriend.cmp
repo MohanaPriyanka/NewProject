@@ -6,20 +6,30 @@
       <div class="slds-col slds-size_1-of-6"/>
       <div class="slds-col slds-size_4-of-6">
         <div class="slds-text-heading_large slds-p-top_large"><b>Refer a Friend</b></div>
-        <div class="slds-text-heading_small slds-p-top_large">Share A Code</div>
+        <div class="slds-text-heading_small slds-p-top_large slds-text-color_weak"><b>Who Qualifies?</b></div>
         <div class="slds-text-body_regular slds-p-top_small">
-          Type an email address in the box below and hit “send” to share information about BlueWave Community Solar and your referral code with friends. For every friend that signs up with your referral code, you will receive $100. 
+          Anyone with a National Grid or Eversource electric utility bill in Massachusetts is eligible for BlueWave Community Solar, even your friends with rooftop solar.
         </div>
-        <h3 class="slds-p-top_large slds-p-bottom_small slds-align--absolute-center">
-          <b>
-            <ui:outputText class="slds-form-element slds-text-color_default" 
-                          value="{!v.referCode}"/>
-          </b>
-        </h3>
-        <div class="slds-text-heading_small slds-p-top_large">Send an Email</div>
+        <br/>
+        <div class="slds-text-heading_small slds-p-top_large slds-text-color_weak"><b>Benefits of Sharing</b></div>
         <div class="slds-text-body_regular slds-p-top_small">
-          Spread the word about the benefits of BlueWave Community Solar with friends by sharing your referral code.
+          Why share in the savings of Community Solar?
         </div>
+        <ul class="slds-list--vertical-space-medium slds-is-nested slds-has-inline-block-links--space">
+          <br/>
+          <li class="slds-list__item">Each successful referral earns both you and your friend <b>$100 each </b>in BlueWave bill credits!</li>
+          <li class="slds-list__item">Both of you continue to save on your monthly energy costs.</li>
+          <li class="slds-list__item">You and your friend join the community of BlueWavers supporting local clean energy &amp; jobs!</li>
+        </ul>
+        <br/>
+        <div class="slds-text-heading_small slds-p-top_large slds-text-color_weak"><b>Send an Email</b></div>
+        <div class="slds-text-body_regular slds-p-top_small">
+          Type an email address in the box below and hit “send” to share information about BlueWave Community Solar and your custom referral link with friends.
+          <br/>
+          <br/>
+          Once you refer your friend, one of our partners will follow up to help answer any questions along the way.
+        </div>
+        <br/>
         <div class="slds-col slds-size_3-of-6 slds-p-top_small slds-p-bottom_small slds-align--absolute-center">
             <ui:inputEmail aura:id="email" class="slds-form-element"/>
         </div>

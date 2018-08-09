@@ -23,11 +23,16 @@
     raiseNavEvent : function(eventType, options) {
         var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
         stageChangeEvent.setParams({"eventType": eventType});
-        if (options && options.hasOwnProperty("stageName")) {
-            stageChangeEvent.setParams({"stageName": options.stageName});
-        }
-        if (options && options.hasOwnProperty("lead")) {
-            stageChangeEvent.setParams({"lead": options.lead});
+        if(options){
+            if (options.hasOwnProperty("stageName")) {
+                stageChangeEvent.setParams({"stageName": options.stageName});
+            }
+            if (options.hasOwnProperty("lead")) {
+                stageChangeEvent.setParams({"lead": options.lead});
+            }
+            if (options.hasOwnProperty("page")) {
+                stageChangeEvent.setParams({"page": options.page});
+            }
         }
         stageChangeEvent.fire();
     },
@@ -61,11 +66,11 @@
             var promise = helper.saveSObject(component, lead.Id, "Lead", "CSAP_Stage__c", stageName);
             promise.then($A.getCallback(function resolve(value) {
                 helper.closePageFireComplete(component, helper, stageName, lead);
-                component.set('v.loading', false);
+                component.set("v.loading", false);
             }));
         } else {
             helper.closePageFireComplete(component, helper, stageName, lead);
-            component.set('v.loading', false);
+            component.set("v.loading", false);
         }
     },
     closePageFireComplete : function(component, helper, stageName, lead) {

@@ -10,21 +10,28 @@
             component.set("v.STAGENAME", "NAV_Personal_Information");
             component.set("v.page", "AboutYourself");
         }
-
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
     },
     handleNavEvent : function(component, event, helper) {
-        helper.handleNavEvent(component, event, helper, "AboutYourself");
+        const options = event.getParam("options");
+        if (options && options.pageName) {
+            helper.handleNavEvent(component, event, helper, options.pageName);
+        }else{
+            helper.handleNavEvent(component, event, helper, "AboutYourself");
+        }
     },
     goToAboutYourself : function(component, event, helper) {
         component.set("v.page", "AboutYourself");
     },
     goToApplyingFor : function(component, event, helper) {
-        if(event.getSource().get("v.label") == "Next" && helper.validatePageFields(component)){
+        var errorMessage = helper.checkBirthDate(component, event, helper);
+        if (errorMessage != ""){
+            component.set("v.ShowDateError", true);
+        } else if(event.getSource().get("v.label") == "Previous"){
             component.set("v.page", "ApplyingFor");
-        }else{
+        } else if(helper.validatePageFields(component)){
             component.set("v.page", "ApplyingFor");
         }
     },
@@ -53,12 +60,9 @@
     goToCheckCapacity : function(component, event, helper) {
         if(helper.validatePageFields(component)){
             component.set('v.loading', true);
-            component.set("v.loadingText", "Saving your information...");
-            window.setTimeout(function() {
-                helper.processLead(component, event, helper);
-                helper.upsertRecords(component, event, helper);
-                component.set("v.loadingText", "Locating your address...");
-            }, 2000);
+            component.set("v.loadingText", "Locating your address...");
+            helper.processLead(component, event, helper);
+            helper.upsertRecords(component, event, helper);
         }
     },
 })

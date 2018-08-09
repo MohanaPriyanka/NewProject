@@ -63,14 +63,26 @@ public class CSPaymentTest {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
+
+        ChargentBase__Gateway__c chGateway =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Debug__c = True,
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id);
+            Client_Account__c = clientAccount.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
 
         Entity__c entity2 = new Entity__c(Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id);
+            Client_Account__c = clientAccount2.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity2;
 
         Shared_Solar_System__c sss1 =
@@ -85,6 +97,7 @@ public class CSPaymentTest {
                 System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '1',
+                Billing_Method__c = 'NMC',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
@@ -120,6 +133,7 @@ public class CSPaymentTest {
                 System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
+                Billing_Method__c = 'NMC',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
@@ -134,14 +148,6 @@ public class CSPaymentTest {
             sss1, sss2
         };
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                Shared_Solar_System__c = sss1.id,
-                ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         // 4 Properties Under the Same Parent, 1 Alone:
         String firstName1 = 'ADonut';
@@ -257,7 +263,6 @@ public class CSPaymentTest {
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
             Production__c = 90000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateFeb,
             Total_System_NMCs__c = 16632,
@@ -269,7 +274,6 @@ public class CSPaymentTest {
             Shared_Solar_System__c = sss1.id,
             Schedule_Z__c = scheduleZ1.id,
             Production__c = 120000,
-            Size_off_NMCs__c = true,
             Net_Metering_Rate_Applied__c = 0.1848,
             Billing_Period_End_Date__c = myDateMar,
             Total_System_NMCs__c = 22176,
