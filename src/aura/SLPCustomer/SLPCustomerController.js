@@ -508,6 +508,13 @@
                    equipment.Inverter_Manufacturer__c != changeOrder.Inverter_Manufacturer__change ||
                    equipment.Inverter_Model_Number__c != changeOrder.Inverter_Model_Number__change ||
                    equipment.Number_of_Inverters__c != changeOrder.Number_of_Inverters__change ||
+                   equipment.Storage_Grid_Hybrid__c != changeOrder.Storage_Grid_Hybrid__change ||
+                   equipment.Storage_Full_or_Partial_Home__c != changeOrder.Storage_Full_or_Partial_Home__change ||
+                   equipment.Storage_Capacity__c != changeOrder.Storage_Capacity__change ||
+                   equipment.Storage_Manufacturer__c != changeOrder.Storage_Manufacturer__change ||
+                   equipment.Storage_Model__c != changeOrder.Storage_Model__change ||
+                   equipment.Storage_Inverter_Manufacturer__c != changeOrder.Storage_Inverter_Manufacturer__change ||
+                   equipment.Storage_Inverter_Model__c != changeOrder.Storage_Inverter_Model__change ||
                    (!equipment.Loan__r.Estimated_Completion_Date__c?'':helper.getFormattedDate(equipment.Loan__r.Estimated_Completion_Date__c)) != changeOrder.Estimated_Completion_date__change) {
             // Ignore types above so that undefined == null
             component.set('v.requestButtonEnabled', true);
