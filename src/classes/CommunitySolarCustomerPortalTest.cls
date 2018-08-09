@@ -20,10 +20,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                 Bill_Number__c, Property_Account_ID__c
                                                 FROM Account_Bill__c];
 
-        ChargentBase__Gateway__c chGateway  = [SELECT Id, Name, Entity__c
-                                                FROM ChargentBase__Gateway__c
-                                                LIMIT 1];
-
         Shared_Solar_System__c sss = [
             SELECT Id
             FROM Shared_Solar_System__c

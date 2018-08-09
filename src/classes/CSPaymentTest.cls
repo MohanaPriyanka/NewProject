@@ -56,14 +56,26 @@ public class CSPaymentTest {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
+
+        ChargentBase__Gateway__c chGateway =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Debug__c = True,
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id);
+            Client_Account__c = clientAccount.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
 
         Entity__c entity2 = new Entity__c(Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id);
+            Client_Account__c = clientAccount2.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity2;
 
         Shared_Solar_System__c sss1 =
@@ -129,14 +141,6 @@ public class CSPaymentTest {
             sss1, sss2
         };
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                Shared_Solar_System__c = sss1.id,
-                ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         // 4 Properties Under the Same Parent, 1 Alone:
         String firstName1 = 'ADonut';
