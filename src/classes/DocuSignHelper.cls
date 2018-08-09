@@ -257,13 +257,16 @@ public without sharing class DocuSignHelper {
         envelope.EmailBlurb = 'Please Review and Sign this Contract';
         envelope.AccountId = apiAccountId;
         Integer csBWSignatureGroup = getSigningGroup('BW CS');
+        Integer qcSignatureGroup = getSigningGroup('BW QC Signature');
         DocuSignAPI.EnvelopeTemplate et = dsAPI.RequestTemplateWithDocumentFields(opp.Docusign_Template__c, true);
         for (DocuSignAPI.Recipient r : et.Envelope.Recipients.Recipient) {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
-            } else if (r.RoleName == 'Signer 2'){
+            } else if (r.RoleName == 'Signer 2') {
                 r.SigningGroupId = csBWSignatureGroup;
+            } else if (r.RoleName == 'QC Approver'){
+                r.SigningGroupId = qcSignatureGroup;
             } else if (r.RoleName == 'Recipient 1'){
                 r.UserName = opp.Sales_tag__c;
                 r.Email = opp.Salesperson_Email__c;
@@ -271,9 +274,7 @@ public without sharing class DocuSignHelper {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
             } else {
-                Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
-                    'Callout Exception caught in CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
-                        ' error message: ');
+                Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'error in mapping this recipient:' + String.valueOf(r.RoleName));
             }
         }
         DocuSignAPI.InlineTemplate it = new DocuSignAPI.InlineTemplate();
