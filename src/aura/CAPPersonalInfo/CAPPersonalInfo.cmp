@@ -207,7 +207,7 @@
               <div  class="slds-text-body--regular animated">
                 <lightning:input type="checkbox" 
                  checked="{!v.lead.Express_Consent__c}"
-                 label="I express consent."
+                 label="I consent."
                  aura:id="expressConsent"/>
                </div>
              </div>

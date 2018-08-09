@@ -134,6 +134,7 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 				new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
 			responseX.CreateEnvelopeFromTemplatesAndFormsResult = new DocuSignAPI.EnvelopeStatus();
 			responseX.CreateEnvelopeFromTemplatesAndFormsResult.Status = 'Created';
+			responseX.CreateEnvelopeFromTemplatesAndFormsResult.EnvelopeID = 'DummyID';
 			response.put( 'response_x', responseX);
 		}
 		else if(request instanceOf DocuSignAPI.DeleteAccountBrands_element) {
@@ -293,7 +294,20 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 			response.put( 'response_x', new DocuSignAPI.RequestTemplatesResponse_element());
 		}
 		else if(request instanceOf DocuSignAPI.RequestTemplateWithDocumentFields_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element());
+			DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element templateResponse =
+				new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element();
+			templateResponse.RequestTemplateWithDocumentFieldsResult =
+				new DocuSignAPI.EnvelopeTemplate();
+			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope =
+				new DocuSignAPI.Envelope();
+			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients =
+				new DocuSignAPI.ArrayOfRecipient();
+			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient =
+				new List<DocuSignAPI.Recipient>();
+			DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
+			recipient.RoleName = 'Signer 1';
+			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient.add(recipient);
+			response.put( 'response_x', templateResponse);
 		}
 		else if(request instanceOf DocuSignAPI.SaveTemplate_element) {
 			response.put( 'response_x', new DocuSignAPI.SaveTemplateResponse_element());

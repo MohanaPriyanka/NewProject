@@ -36,6 +36,7 @@ public with sharing class ReferralCodeHandler {
                 leadReferralCodeList.add(leadRecord.Custom_Id__c);
             }
         }
+
         leadReferralCodeList.add('holder');
         // As of 5/24/17, Custom ID on Leads starts being populated with a Partner ID. This
         // method should use the ID to find a partner as well as a Custom ID.
@@ -43,10 +44,13 @@ public with sharing class ReferralCodeHandler {
                                 FROM BSST__c
                                 WHERE Custom_Id__c IN :leadReferralCodeList
                                 OR Id IN :leadReferralCodeList]) {
+
+
             partnerMap.put(partner.Custom_Id__c, partner);
             partnerMap.put(((String) partner.Id).left(15), partner);
             partnerMap.put(partner.Id, partner);
         }
+
         for (Contact contact : [SELECT Id, Custom_Id__c, Email
                                 FROM Contact
                                 WHERE Custom_Id__c IN : leadReferralCodeList]) {
@@ -68,6 +72,7 @@ public with sharing class ReferralCodeHandler {
                         leadRecord.Bs_sales_id__c = partner.Id;
                         leadRecord.Partner_Email__c = partner.Email__c;
                     } else if (contactReferralMap.containsKey(leadRecord.Custom_Id__c)) {
+                            // Referral code is only being populated when the custom ID is associated with a contact
                         Contact contact = contactReferralMap.get(leadRecord.Custom_Id__c);
                         leadRecord.Customer_referral__c = contact.Id;
                         leadRecord.Referral_email__c = contact.Email;

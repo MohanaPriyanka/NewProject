@@ -8,7 +8,7 @@ trigger EnergyUsageUpdateTrigger on Energy_Usage_Update__c (after update) {
                 Boolean oldBox = Trigger.OldMap.get(newvalueID).Generate_Bills__c;
                 if (newBox && !oldBox) { 
                     trigProdUpdateList.add(productionUpdate);
-                } 
+                }
             }
         } 
         if (trigProdUpdateList.size() > 0) {

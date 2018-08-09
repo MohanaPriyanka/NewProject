@@ -123,9 +123,18 @@ public class ScheduleZTriggerHandlerTest {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
+        ChargentBase__Gateway__c chGateway  =
+            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Debug__c = True,
+                ChargentBase__Active__c = TRUE);
+        insert chGateway;
+
         Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id);
+            Client_Account__c = clientAccount.Id,
+            Gateway__c = chGateway.Id
+        );
         insert entity1;
 
         Entity__c entity2 = new Entity__c (Name = 'Oxford Barrett St. P2',
@@ -208,16 +217,6 @@ public class ScheduleZTriggerHandlerTest {
             Timezonesidkey='America/Los_Angeles',
             Username='testBillCreationandPay@bluewavesolar.com');
         Util.insertSobjs(new list<User>{userRecord});
-
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                Shared_Solar_System__c = sss1.id,
-                ChargentBase__Debug__c = True,
-                Entity__c = entity1.Id,
-                OwnerId = userRecord.Id,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',

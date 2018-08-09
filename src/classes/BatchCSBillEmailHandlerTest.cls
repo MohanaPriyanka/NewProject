@@ -65,14 +65,76 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals(0, job.NumberOfErrors);
         System.assertEquals('Completed', job.Status);
         System.assertEquals(1, job.TotalJobItems);
+        // There might be more than 9 emails since SeeAllData is true
+        System.assertEquals(true, MessagingService.emailsSent.size() >= 9);
+    }
 
-        System.assertEquals(9, MessagingService.emailsSent.size());
+    @isTest
+    static void testAccountBillsPublishedWithoutEmails() {
+        List<Account_Bill__c> abList = new List<Account_Bill__c>();
+
+        Account parentAccount = new Account ( Name = 'Parent Account');
+        insert parentAccount;
+
+        Account propertyAccount = new Account ( Name = 'Property Account',
+            Parent_Account__c = parentAccount.Id);
+        insert propertyAccount;
+
+        Contact contactOne = new Contact (  FirstName = 'First',
+            LastName = 'Last',
+            AccountId = parentAccount.Id);
+        insert contactOne;
+
+
+        Contact contactTwo = new Contact (  FirstName = 'First',
+            LastName = 'Second',
+            AccountId = parentAccount.Id,
+            Email = 'pentalerij@gmail.com');
+        insert contactTwo;
+
+        propertyAccount.Send_Bills_Contact__c = contactOne.Id;
+        propertyAccount.Additional_Contact__c = contactTwo.Id;
+        update propertyAccount;
+
+        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+
+        for (Integer i=0;i<9;i++) {
+            Account_Bill__c abOne = new Account_Bill__c (
+                Name = 'Bill' + i,
+                Bill_Number__c = i,
+                Parent_Account__c = propertyAccount.Id,
+                Ready_for_Email_Send__c = true,
+                Published__c = false);
+            abList.add(abOne);
+        }
+        insert abList;
+        Set<Id> abIds = new Set<Id>{};
+        for (Account_Bill__c accountBill : abList) {
+            abIds.add(accountBill.Id);
+        }
+
+        Test.StartTest();
+        APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
+        insert congaConduct;
+        congaConduct.Emails_Sent__c = true;
+        update congaConduct;
+        Test.StopTest();
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Published__c, Ready_for_Email_Send__c
+            FROM Account_Bill__c
+            WHERE Id IN : abIds
+        ];
+
+        for (Account_Bill__c accountBill : accountBills) {
+            System.assert(accountBill.Published__c);
+        }
     }
 
     @IsTest(SeeAllData=true)
     static void testCreateLink() {
         setupTestData();
-        Test.StartTest();
+        Test.startTest();
         ContentVersion csBillCV = new ContentVersion (Title ='Community Solar Bill.pdf',
                                                       PathOnClient='/Community Solar Bill.pdf' );
         csBillCV.VersionData = Blob.valueOf('This is the body of the pdf');
@@ -81,20 +143,24 @@ private class BatchCSBillEmailHandlerTest {
                                         FROM ContentVersion 
                                         WHERE Id = : csBillCV.Id]; 
 
-        Account_Bill__c accountBill = [  SELECT Id, Name
-                                          FROM Account_Bill__c LIMIT 1];
+        Account_Bill__c accountBill = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Bill_Number__c != NULL
+            LIMIT 1
+        ];
 
         ContentDocumentLink newLink = new ContentDocumentLink ( ContentDocumentId = testContent.ContentDocumentId,
                                                                 LinkedEntityId = accountBill.Id,
                                                                 ShareType = 'V' );
         insert newLink;
-        Test.StopTest();
+        Test.stopTest();
 
         Account_Bill__c abUpdated = [   SELECT Id, Bill_Attach_Version__c, Bill_Attach_Document__c
                                         FROM Account_Bill__c 
                                         WHERE Id = : accountBill.Id];
-        system.AssertNotEquals('', abUpdated.Bill_Attach_Version__c);
-        system.AssertNotEquals('', abUpdated.Bill_Attach_Document__c);
+        System.assertNotEquals('', abUpdated.Bill_Attach_Version__c);
+        System.assertNotEquals('', abUpdated.Bill_Attach_Document__c);
     }
 
 }
