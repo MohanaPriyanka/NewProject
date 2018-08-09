@@ -327,10 +327,35 @@ public with sharing class CSAPControllerTest {
     }
 
     @IsTest static void testSLPortalCSAPApplication() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
-        Contact contactPartner = [SELECT Id FROM Contact LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
+        Partner__c partner = new Partner__c(
+            Name = 'Solar Installer',
+            Email__c = 'test@test.com');
+        insert partner;
+
+        BSST__c salesRep = new BSST__c(
+            Name = 'Test Tester',
+            Partner__c = partner.Id,
+            Email__c = 'test@test.com');
+        insert salesRep;
+
+        Account account = new Account(
+            Name = 'Solar Installer',
+            State_Market__c = 'MA',
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP'
+        );
+        insert account;
+
+        Contact contact = new Contact(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            AccountId = account.Id,
+            Partner_Lookup__c = partner.Id,
+            Sales_Representative__c = salesRep.Id
+        );
+        insert contact;
 
         User otherUser = new User(
             FirstName = 'User',
@@ -344,7 +369,7 @@ public with sharing class CSAPControllerTest {
             ProfileId = profileRecord.Id,
             Country ='United States',
             IsActive = true,
-            ContactId = contactPartner.Id,
+            ContactId = contact.Id,
             TimeZoneSidKey='America/Los_Angeles',
             Username='jUser132@aol.com');
         Util.insertSObj(otherUser);
@@ -379,6 +404,7 @@ public with sharing class CSAPControllerTest {
             WHERE Email = 'testymctesterson@tester.com'];
         //Check upserted Lead, Contact and Account records
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
+        // The lead's partner should be the same partner that is running the CSAP (not the default partner)
         System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
         System.assert(CSAPController.getContact(lead.Id, lead.Email).Id != null);
         System.assert(CSAPController.getAccount(lead.Id, lead.Email).Id != null);
