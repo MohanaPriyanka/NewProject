@@ -98,6 +98,13 @@
   <aura:attribute name="availableStorageManufacturers" type="List" />
   <aura:attribute name="availableStorageInverterManufacturers" type="List" />
   <aura:attribute name="enableStorage" type="Boolean" default="true" />
+  <aura:attribute name="gridHybridOptions" type="List" default="[
+                           {text:'Yes'},
+                           {text:'No'}]"/>
+  <aura:attribute name="homeBackupOptions" type="List" default="[
+                           {text:'Partial home backup'},
+                           {text:'Full home backup'}]"/>
+  <aura:attribute name="storageHybrid" type="String" default='No'/>
 
 
   <!-- main issues include the ability to break out subTasks within the task
@@ -431,102 +438,117 @@
                       </div>
                     </div>
                   </fieldset>
-                    <aura:if isTrue="{!v.enableStorage &amp;&amp; v.customer.Loan__r.Product__r.External_Name__c != 'MSLP' &amp;&amp; v.customerInformation.Loan__r.Lead__r.Storage__c == false}">
-                      <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
-                        <lightning:input type="checkbox" label="Add Storage"
-                                         checked="{!v.addStorage}"/>
+                  <aura:if isTrue="{!v.enableStorage &amp;&amp; v.customer.Loan__r.Product__r.External_Name__c != 'MSLP' &amp;&amp; v.customerInformation.Loan__r.Lead__r.Storage__c == false}">
+                    <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
+                      <lightning:input type="checkbox" label="Add Storage"
+                                       checked="{!v.addStorage}"/>
+                    </div>
+                  </aura:if>
+                  <aura:if isTrue="{!or(v.customerInformation.Loan__r.Lead__r.Storage__c, v.addStorage)}">
+                    <fieldset class="slds-form--compound">
+                      <div class="slds-form-element__group">
+                        <div class="slds-form-element__row">
+
+
+                            <!--<div class="slds-p-horizontal&#45;&#45;small slds-size_1-of-3">-->
+                              <!--<label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}">-->
+                                <!--<b>Does the system provide backup power when the grid is down?</b>-->
+                              <!--</label>-->
+                              <!--<ui:inputSelect aura:id="backupStorage"-->
+                                              <!--class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}"-->
+                                              <!--value="{!v.customerInformation.Storage_Grid_Hybrid__change}">-->
+                                <!--<ui:inputSelectOption text="" label="Select"/>-->
+                                <!--<aura:iteration items="{!v.gridHybridOptions}" var="opts">-->
+                                  <!--<ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Grid_Hybrid__c}"/>-->
+                                <!--</aura:iteration>-->
+                              <!--</ui:inputSelect>-->
+                            <!--</div>-->
+
+
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}">
+                              <b>Storage Capacity (kW)</b>
+                            </label>
+                            <ui:inputNumber aura:id="storageCost"
+                                            class="{!'slds-input ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}"
+                                            value="{!v.changeOrder.Storage_Capacity__change}"/>
+                          </div>
+                        </div>
+                        <aura:if isTrue="{!v.storageHybrid == 'Yes'}">
+                          <div class="slds-form-element__row">
+                            <div class="slds-p-horizontal--small slds-size_1-of-3">
+                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial__c!=v.changeOrder.Storage_Full_or_Partial__change?'input-changed':'')}">
+                                <b>Partial or full home backup</b>
+                              </label>
+                              <ui:inputSelect aura:id="partialOrFullHome"
+                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial__c!=v.changeOrder.Storage_Full_or_Partial__change?'input-changed':'')}"
+                                              value="{!v.customerInformation.Storage_Full_or_Partial__change}">
+                                <ui:inputSelectOption text="" label="Select"/>
+                                <aura:iteration items="{!v.homeBackupOptions}" var="opts">
+                                  <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!product.text == v.customerInformation.Storage_Full_or_Partial__c}"/>
+                                </aura:iteration>
+                              </ui:inputSelect>
+                            </div>
+                          </div>
+                        </aura:if>
                       </div>
-                    </aura:if>
-                    <aura:if isTrue="{!or(v.customerInformation.Loan__r.Lead__r.Storage__c, v.addStorage)}">
-                      <fieldset class="slds-form--compound">
-                        <div class="slds-form-element__group">
-                          <div class="slds-form-element__row">
-                            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="slds-form-element__label" for="input-03"><b>Does the system provide backup power when the grid is down?</b></label>
-                              <div class="slds-form-element__control">
-                                <ui:inputSelect aura:id="backupStorage" class="slds-input" value="{!v.equipmentUpdate.Storage_Grid_Hybrid__c}">
-                                  <ui:inputSelectOption text="" label="Select"/>
-                                  <ui:inputSelectOption text="Yes" label="Yes"/>
-                                  <ui:inputSelectOption text="No" label="No"/>
-                                </ui:inputSelect>
-                              </div>
-                            </div>
-                            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}">
-                                <b>Storage Capacity (kW)</b>
-                              </label>
-                              <ui:inputNumber aura:id="storageCost"
-                                              class="{!'slds-input ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}"
-                                              value="{!v.changeOrder.Storage_Capacity__change}"/>
-                            </div>
+                    </fieldset>
+                    <fieldset class="slds-form--compound">
+                      <div class="slds-form-element__group">
+                        <div class="slds-form-element__row">
+                          <div class="slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}">
+                              <b>Battery Manufacturer</b>
+                            </label>
+                            <ui:inputSelect aura:id="storageManufacturer"
+                                            class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}"
+                                            value="{!v.customerInformation.Storage_Manufacturer__change}">
+                              <ui:inputSelectOption text="" label="Select"/>
+                              <aura:iteration items="{!v.availableStorageManufacturers}" var="product">
+                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Manufacturer__c}"/>
+                              </aura:iteration>
+                            </ui:inputSelect>
                           </div>
-                          <aura:if isTrue="{!v.equipmentUpdate.Storage_Grid_Hybrid__c == 'Yes'}">
-                            <div class="slds-form-element__row">
-                              <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                                <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
-                                <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.equipmentUpdate.Storage_Full_or_Partial__c}">
-                                  <ui:inputSelectOption text="" label="Select"/>
-                                  <ui:inputSelectOption text="Partial" label="Partial home backup"/>
-                                  <ui:inputSelectOption text="Full" label="Full home backup"/>
-                                </ui:inputSelect>
-                              </div>
-                            </div>
-                          </aura:if>
-                        </div>
-                      </fieldset>
-                      <fieldset class="slds-form--compound">
-                        <div class="slds-form-element__group">
-                          <div class="slds-form-element__row">
-                            <div class="slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}">
-                                <b>Battery Manufacturer</b>
-                              </label>
-                              <ui:inputSelect aura:id="storageManufacturer"
-                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}"
-                                              value="{!v.customerInformation.Storage_Manufacturer__change}">
-                                <ui:inputSelectOption text="" label="Select"/>
-                                <aura:iteration items="{!v.availableStorageManufacturers}" var="product">
-                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Manufacturer__c}"/>
-                                </aura:iteration>
-                              </ui:inputSelect>
-                            </div>
-                            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}">
-                                <b>Model Number</b>
-                              </label>
-                              <ui:inputNumber aura:id="storageModel"
-                                              class="{!'slds-input ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}"
-                                              value="{!v.changeOrder.Storage_Model__change}"/>
-                            </div>
-                          </div>
-                          <div class="slds-form-element__row">
-                            <div class="slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}">
-                                <b>Inverter Manufacturer</b>
-                              </label>
-                              <ui:inputSelect aura:id="storageInverterManufacturer"
-                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}"
-                                              value="{!v.customerInformation.Storage_Inverter_Manufacturer__change}">
-                                <ui:inputSelectOption text="" label="Select"/>
-                                <aura:iteration items="{!v.availableStorageInverterManufacturers}" var="product">
-                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Inverter_Manufacturer__c}"/>
-                                </aura:iteration>
-                              </ui:inputSelect>
-                            </div>
-                            <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
-                              <ui:inputText aura:id="storageInverterModel" class="slds-input" value="{!v.equipmentUpdate.Storage_Inverter_Model__c}"/>
-                            </div>
-                          </div>
-                          <div class="slds-form-element_row slds-m-left_small slds-m-bottom_small slds-m-top_small slds-text-title">
-                            <p>
-                              We are always looking to expand our storage equipment list to include additional high quality vendors, if a vendor that you would like to use is missing from our list please call Partner Support at (888) 817-2703.
-                            </p>
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}">
+                              <b>Battery Model Number</b>
+                            </label>
+                            <ui:inputText aura:id="storageModel"
+                                          class="{!'slds-input ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}"
+                                          value="{!v.changeOrder.Storage_Model__change}"/>
                           </div>
                         </div>
-                      </fieldset>
-                    </aura:if>
-                  <!--</fieldset>-->
+                        <div class="slds-form-element__row">
+                          <div class="slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}">
+                              <b>Inverter Manufacturer</b>
+                            </label>
+                            <ui:inputSelect aura:id="storageInverterManufacturer"
+                                            class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}"
+                                            value="{!v.customerInformation.Storage_Inverter_Manufacturer__change}">
+                              <ui:inputSelectOption text="" label="Select"/>
+                              <aura:iteration items="{!v.availableStorageInverterManufacturers}" var="product">
+                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Inverter_Manufacturer__c}"/>
+                              </aura:iteration>
+                            </ui:inputSelect>
+                          </div>
+                          <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
+                            <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Model__c!=v.changeOrder.Storage_Inverter_Model__change?'input-changed':'')}">
+                              <b>Inverter Model Number</b>
+                            </label>
+                            <ui:inputText aura:id="storageInverterModel"
+                                          class="{!'slds-input ' + (v.customerInformation.Storage_Inverter_Model__c!=v.changeOrder.Storage_Inverter_Model__change?'input-changed':'')}"
+                                          value="{!v.changeOrder.Storage_Inverter_Model__change}"/>
+                          </div>
+                        </div>
+                        <div class="slds-form-element_row slds-m-left_small slds-m-bottom_small slds-m-top_small slds-text-title">
+                          <p>
+                            We are always looking to expand our storage equipment list to include additional high quality vendors, if a vendor that you would like to use is missing from our list please call Partner Support at (888) 817-2703.
+                          </p>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </aura:if>
                 </div>
                 <aura:if isTrue="{!not(v.contractSent)}">
                   <div class="slds-p-horizontal--small">
