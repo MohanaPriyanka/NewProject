@@ -331,6 +331,13 @@ public without sharing class CAPController {
         re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
         re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
         re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
+        re.Storage_Grid_Hybrid__c = (Boolean) changeOrder.get('Storage_Grid_Hybrid__change');
+        re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
+        re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
+        re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
+        re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
+        re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
+        re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
 
         Loan__c loan;
         if (completionDate != null && completionDate != '') {

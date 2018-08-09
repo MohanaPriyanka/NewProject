@@ -171,6 +171,13 @@
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Manufacturer', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Model_Number', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Number_of_Inverters', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Grid_Hybrid', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Full_or_Partial_Home', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Capacity', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Manufacturer', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Model', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Inverter_Manufacturer', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Inverter_Model', customer);
                 if (!changeOrder.hasOwnProperty('Down_Payment__change')) {
                     changeOrder['Down_Payment__change'] = changeOrder.System_Cost__change - changeOrder.Requested_Loan_Amount__change;
                 }

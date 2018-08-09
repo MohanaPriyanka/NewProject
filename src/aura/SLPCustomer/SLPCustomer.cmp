@@ -478,26 +478,38 @@
                         <div class="slds-form-element__group">
                           <div class="slds-form-element__row">
                             <div class="slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="slds-form-element__label" for="input-03"><b>Battery Manufacturer</b></label>
-                              <ui:inputSelect aura:id="storageManufacturer" class="slds-input" value="{!v.equipmentUpdate.Storage_Manufacturer__c}">
+                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}">
+                                <b>Battery Manufacturer</b>
+                              </label>
+                              <ui:inputSelect aura:id="storageManufacturer"
+                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}"
+                                              value="{!v.customerInformation.Storage_Manufacturer__change}">
                                 <ui:inputSelectOption text="" label="Select"/>
                                 <aura:iteration items="{!v.availableStorageManufacturers}" var="product">
-                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}"/>
+                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Manufacturer__c}"/>
                                 </aura:iteration>
                               </ui:inputSelect>
                             </div>
                             <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="slds-form-element__label" for="input-03"><b>Model Number</b></label>
-                              <ui:inputText aura:id="storageModel" class="slds-input" value="{!v.equipmentUpdate.Storage_Model__c}"/>
+                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}">
+                                <b>Model Number</b>
+                              </label>
+                              <ui:inputNumber aura:id="storageModel"
+                                              class="{!'slds-input ' + (v.customerInformation.Storage_Model__c!=v.changeOrder.Storage_Model__change?'input-changed':'')}"
+                                              value="{!v.changeOrder.Storage_Model__change}"/>
                             </div>
                           </div>
                           <div class="slds-form-element__row">
                             <div class="slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="slds-form-element__label" for="input-03"><b>Inverter Manufacturer</b></label>
-                              <ui:inputSelect aura:id="storageInverterManufacturer" class="slds-input" value="{!v.equipmentUpdate.Storage_Inverter_Manufacturer__c}">
+                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}">
+                                <b>Inverter Manufacturer</b>
+                              </label>
+                              <ui:inputSelect aura:id="storageInverterManufacturer"
+                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}"
+                                              value="{!v.customerInformation.Storage_Inverter_Manufacturer__change}">
                                 <ui:inputSelectOption text="" label="Select"/>
                                 <aura:iteration items="{!v.availableStorageInverterManufacturers}" var="product">
-                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}"/>
+                                  <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Inverter_Manufacturer__c}"/>
                                 </aura:iteration>
                               </ui:inputSelect>
                             </div>
