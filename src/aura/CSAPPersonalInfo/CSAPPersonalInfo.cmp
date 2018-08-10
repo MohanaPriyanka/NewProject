@@ -10,7 +10,8 @@
   <aura:attribute name="loadingText" type="Boolean"/>
   <aura:attribute name="Residential" type="Boolean"/>
   <aura:attribute name="NonResidential" type="Boolean"/>
-
+  <aura:attribute name="referralCode" type="String"/>
+  <aura:attribute name="ShowDateError" type="Boolean"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -18,11 +19,11 @@
 
   <!-- ABOUT_YOURSELF -->
   <aura:if isTrue="{!v.loading}">
-    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Description of the icon when needed">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
       <div class="slds-icon-eq__bar"></div>
       <div class="slds-icon-eq__bar"></div>
       <div class="slds-icon-eq__bar"></div>
-      <span class="slds-assistive-text">Text alternative when needed</span>
+      <span class="slds-assistive-text">Loading</span>
     </div>
     <div class="slds-text-body--regular slds-align_absolute-center">
       {!v.loadingText}
@@ -73,8 +74,16 @@
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                 <div aura:id="birthdateElement">
-                  <label class="slds-form-element__label">Date of Birth</label>
+                  <label class="slds-form-element__label">
+                    <span class="slds-text-color_error">*</span>
+                    Date of Birth
+                  </label>
                   <c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" required="true"/>
+                  <aura:if isTrue="{!v.ShowDateError}">
+                    <div class="slds-text-color_error slds-text-body_small">
+                      Please enter birth date in the format 01/01/2000
+                    </div>
+                  </aura:if>
                 </div>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
@@ -182,18 +191,27 @@
         </div>
       </div>
     </aura:if>
-     <aura:if isTrue="{!v.page == 'AddressForm'}">
+    <aura:if isTrue="{!v.page == 'AddressForm'}">
       <div aria-labelledby="homeAddressForm">
-          <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
+        <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">What is your Primary  </b>
-              <b class="slds-section__title--large--stream"> Home Address?</b>
+              <b class="slds-section__title--large">Where would you like to receive Community Solar?</b>
             </legend>
             <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
-              <b>Please provide the primary address for the Community Solar applicant (hint: this might not be the same address as the property address that will receive Community Solar credits).</b>
+              <b>Please provide the address of the property that will receive Community Solar credits.</b>
             </div>
+              <lightning:layout multipleRows="true">
+                <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                    <lightning:input aura:id="field" name="name"
+                                     label="Property Name"
+                                     value="{!v.lead.Company}"
+                                     required="true"/>
+                  </lightning:layoutItem>
+                </aura:if>
+              </lightning:layout>
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:input aura:id="field" name="leadHomeAddress"
@@ -237,9 +255,9 @@
                                     label="Is this where you would like us to send your bill?"
                                     value="{!v.sendBillToHome}"
                                     required="true">
-                      <option value="">Choose one...</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
+                    <option value="">Choose one...</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </lightning:select>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
@@ -309,7 +327,8 @@
                   <lightning:input aura:id="field" name="leadCompany"
                            label="Name of Business"
                            value="{!v.lead.Company}"
-                           required="false"/>
+                           maxlength="80"
+                           required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:select aura:id="field" name="leadTypeOfBusiness"
@@ -346,9 +365,11 @@
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:input aura:id="field" name="leadBusinessTitle"
-                           label="Business Title"
-                           value="{!v.lead.Business_Title__c}"
-                           required="false"/>
+                                   label="Business Title of Applicant"
+                                   value="{!v.lead.Business_Title__c}"
+                                   maxlength="25"
+                                   messageWhenValueMissing="Please Complete this field. For example: CEO, President, Manager"
+                                   required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 </lightning:layoutItem>
@@ -362,7 +383,7 @@
                            max="200"
                            label="How many years has the business been in operation?"
                            value="{!v.lead.Number_of_Years_in_Business__c}"
-                           required="false"/>
+                           required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 </lightning:layoutItem>
@@ -389,7 +410,9 @@
       <div class="slds-clearfix">
         <div class="slds-clearfix slds-p-top_medium">
           <div class="slds-float_left">
-            <lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>
+            <aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">
+              <lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>
+            </aura:if>
           </div>
           <div class="slds-float_right">
             <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>

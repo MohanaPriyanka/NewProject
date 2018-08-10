@@ -71,9 +71,15 @@ public class CSCPChartHandlerTest {
 			Current_Billing_Rate__c = true,
 			Date__c = Date.today());            
 		insert nmcRate;   
-		insert nmcBillingRate;     
+		insert nmcBillingRate;
 
-		Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo');  
+		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+			//Shared_Solar_System__c = sss1.Id
+			ChargentBase__Merchant_ID__c = '235986',
+			ChargentBase__Active__c = TRUE);
+		insert chGateway;
+
+		Entity__c entityone = new Entity__c (Name = 'Barrett ProjectCo', Gateway__c = chGateway.Id);
 		Entity__c entitytwo = new Entity__c (Name = 'Two ProjectCo');
 
 		insert new List <Entity__c>{entityone, entitytwo};
@@ -109,6 +115,7 @@ public class CSCPChartHandlerTest {
 			Utility_NMC_Tariff__c = nmcRate.Id,
 			Expected_Yield_kWh_kW__c = 1300,
 			Assemblage_Count__c = 1,
+			Billing_Method__c = 'NMC',
 			Maximum_Subscription_Assemblage__c = 25);
 		Shared_Solar_System__c sss2 = 
 		new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
@@ -121,7 +128,9 @@ public class CSCPChartHandlerTest {
 			Total_System_Size_kWh_DC__c = 1000,
 			System_Utility__c = 'National Grid',
 			Credit_Score_Requirement__c = 200,
-			Assignment_order__c = '2'); 
+			Assignment_order__c = '2',
+                       Billing_Method__c = 'NMC');
+
 		insert new List<Shared_Solar_System__c>{sss1, sss2};
 
 		Opportunity opp1 = new Opportunity(Name = 'Opp1',
@@ -274,7 +283,6 @@ public class CSCPChartHandlerTest {
 			Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab.Id,
 			Date__c = billingDate1,
-			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
 			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   
@@ -292,7 +300,6 @@ public class CSCPChartHandlerTest {
 			Customer_Subscription_KW_DC__c = uas2.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab2.Id,
 			Date__c = billingDate1,
-			Size_off_NMCs__c = true,
 			NMC_Discount__c	= 10,
 			Share_of_System__c = 2.5,   
 			Total_System_Production_kWh__c = 150000,   
@@ -308,17 +315,14 @@ public class CSCPChartHandlerTest {
 			Unique_ID__c = opp2.Shared_Solar_System__c + ' - ' + uas2.Id + ' - ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
 		insert new List<UASB__c>{uasb, uasb2};
 
-		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-			//Shared_Solar_System__c = sss1.Id 
-			ChargentBase__Merchant_ID__c = '235986',
-			ChargentBase__Active__c = TRUE);
-		insert chGateway;  
+
 	    
 	    Date recurringDate = Date.newInstance(2016, 2, 17);	
 
 		ChargentOrders__ChargentOrder__c chOrder  = new ChargentOrders__ChargentOrder__c(
 			ChargentOrders__Account__c = propertyAcc.Id,
 			ChargentOrders__Gateway__c = chGateway.Id,
+			Entity__c = entityone.Id,
 			ChargentOrders__Shipping_Name__c = sss1.Id,
 			ChargentOrders__Billing_First_Name__c = 'Cole',
 			ChargentOrders__Billing_Last_Name__c = 'Swain',

@@ -5,7 +5,7 @@
  * This class is only creating the admin details of the bills. Sets up the correct relationships and such.
  * Money Due, kWh, etc aren't calculated.
  *
- * Tested by: RecurringPaymentsHandlerTestClass
+ * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> {
@@ -96,14 +96,14 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             abKeyToAccountBillMap.put(accountBill.Unique_ID__c, accountBill);
         }
 
-        Set<String> previousBillsSet = new Set<String>();
+        Map<String, System_Bill__c> previousBillsSet = new Map<String, System_Bill__c>();
         for (System_Bill__c systemBill : [
             SELECT Id, Unique_ID__c
             FROM System_Bill__c
             WHERE Month__c IN : euuMonths
             AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
         ]) {
-            previousBillsSet.add(systemBill.Unique_ID__c);
+            previousBillsSet.put(systemBill.Unique_ID__c, systemBill);
         }
 
         printCPULimit('Before first uas loop');
@@ -138,7 +138,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
             String parentKey = opp.Account.Id + ' ' + getDate(euu);
             String sysBillUniqueId = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
-            if (abKeyToAccountBillMap.containsKey(parentKey) && !previousBillsSet.contains(sysBillUniqueId)) {
+            if (abKeyToAccountBillMap.containsKey(parentKey) && !previousBillsSet.containsKey(sysBillUniqueId)) {
                 Integer maxSysBill = maxSysBillByOppId.get(opp.Id);
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
                 try {
@@ -148,6 +148,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                     String message = 'System Bill Creation Failed for Parent Id ' + parentKey  + 'Error: ' + String.valueOf(e);
                     Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateSystemBill', message);
                 }
+            } else if (previousBillsSet.containsKey(sysBillUniqueId)) {
+                System_Bill__c systemBill = previousBillsSet.get(sysBillUniqueId);
+                systemBillMap.put(systemBill.Unique_ID__c, systemBill);
             }
         }
 
@@ -334,4 +337,5 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(euu);
         return uab;
     }
+
 }

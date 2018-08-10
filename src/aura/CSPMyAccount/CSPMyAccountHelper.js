@@ -31,7 +31,7 @@
             var systemBillList = resp.getReturnValue(); 
             var sbStep;
             var totalOutstandingBalance = 0;
-                if (systemBillList === undefined || systemBillList.length === 0) {
+                if (systemBillList === undefined || systemBillList === null || systemBillList.length === 0) {
                     component.set("v.myBill", 0);
                 } else {
                     for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {

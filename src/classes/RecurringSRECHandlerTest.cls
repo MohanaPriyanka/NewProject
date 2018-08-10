@@ -169,16 +169,23 @@ private class RecurringSRECHandlerTest{
         insert new List<SREC__c>{srecOne, srecTwo, srecThree};
 
         SREC_Invoice__c invoice = new SREC_Invoice__c(  Name = 'SREC Invoice #1',
-                                                        SREC__c = srecThree.Id,
-                                                        Residential_Equipment__c = resiEquipThree.Id);
-        insert invoice;
+                                                        SREC__c = srecOne.Id,
+                                                        Residential_Equipment__c = resiEquipOne.Id);
+        SREC_Invoice__c invoiceTwo = new SREC_Invoice__c(   Name = 'SREC Invoice #2',
+                                                            SREC__c = srecTwo.Id,
+                                                            Residential_Equipment__c = resiEquipTwo.Id);
+        SREC_Invoice__c invoiceThree = new SREC_Invoice__c( Name = 'SREC Invoice #3',
+                                                            SREC__c = srecThree.Id,
+                                                            Residential_Equipment__c = resiEquipThree.Id);
+        insert new List<SREC_Invoice__c>{invoice, invoiceTwo, invoiceThree};
+
 
         alreadyReady.SREC_Invoice__c = invoice.Id;
         update alreadyReady;
     }
 
     static testMethod void updateSRECandOrder() {
-        
+        // Mocks quarterly process, where Orders are updated by the SREC trigger:
         List<ChargentOrders__ChargentOrder__c> prelimReadyForSend = [  SELECT Id, Name
                                                                         FROM ChargentOrders__ChargentOrder__c
                                                                         WHERE SREC_Status__c = 'Ready'];
@@ -229,10 +236,10 @@ private class RecurringSRECHandlerTest{
         System.assertEquals(0.03, choReadyForSend[3].ChargentOrders__Credit_Amount__c);
     }
 
-    static testMethod void runBatch() {
+    static testMethod void runBatchofOne() {
+        // Outside tests, batch size = 1 because Chargent only accepts 1 order at a time in callout:
         Test.startTest();
-        BatchCreditSRECHandler m = new BatchCreditSRECHandler();
-        Database.executeBatch(m, 1);
+        BatchCreditSRECHandler.executeBatch();
         Test.stopTest();
 
         ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name, 
@@ -249,5 +256,45 @@ private class RecurringSRECHandlerTest{
                                                         LIMIT 1];
 
         System.assertEquals('Success', updatedCho.SREC_Status__c);
+    }
+
+    static testMethod void runBatchofFour() {
+        // Outside tests, batch size = 1 but we want to test with > 1 so that finish method is tested
+        // with > 1 record. We won't hit callout exception in a test because Chargent callout is mocked
+        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [SELECT Id, Name
+                                                                  FROM ChargentOrders__ChargentOrder__c];
+
+        List<SREC_Invoice__c> prelimInvoiceList = [ SELECT Id, Name, Date_Paid__c
+                                                    FROM SREC_Invoice__c];
+
+        // For monthly SRECs, the SREC Status is set by a flow, not by a trigger. This mocks that:
+        Integer count = 0;
+        Integer numberOfInvoices = prelimInvoiceList.size();
+
+        for (ChargentOrders__ChargentOrder__c choOrder : prelimOrderList){
+            choOrder.SREC_Status__c = 'Ready';
+            if (count < numberOfInvoices) {
+                choOrder.SREC_Invoice__c = prelimInvoiceList[count].Id;
+            }
+            count ++;
+        }
+        update prelimOrderList;
+        System.assertEquals(4,prelimOrderList.size());
+        System.assertEquals(3,numberOfInvoices);
+
+        Test.startTest();
+            BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
+            Database.executeBatch(batchJob, 4);
+        Test.stopTest();
+
+        for (SREC_Invoice__c updatedInvoice : [ SELECT Id, Name, Date_Paid__c
+                                                FROM SREC_Invoice__c]){
+            System.AssertEquals(System.Today(), updatedInvoice.Date_Paid__c);
+        }
+
+        List<ChargentOrders__ChargentOrder__c> postBatchList = [SELECT Id, Name, SREC_Invoice__c
+                                                                FROM ChargentOrders__ChargentOrder__c
+                                                                WHERE SREC_Status__c = 'Success'];
+        System.AssertEquals(4, postBatchList.size());
     }
 }

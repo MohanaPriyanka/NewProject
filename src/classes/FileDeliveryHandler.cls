@@ -6,63 +6,63 @@
  + * ContentDistribution is child of ContentVersion and generates a public url (used in community)
  + * ContentDocumentLink is a child of ContentDocument and controls what records a doc is linked to (QSS Record)
  + * 
- + * Tested By: SLPQuickSalesSheetTestclass and BatchCSBillEmailHandlerTestclass
+ + * Tested By: SLPQuickSalesSheetTest and BatchCSBillEmailHandlerTestclass
  + *************************************************************************************/
 
 
 public without sharing class FileDeliveryHandler {
 
   public static void createDistribution (List<ContentVersion> newContent) {
-    List<ContentDistribution> distList = new List<ContentDistribution> ();
-    List<ContentDocumentLink> linkToCommList = new List<ContentDocumentLink> ();   
+      List<ContentDistribution> distList = new List<ContentDistribution> ();
+      List<ContentDocumentLink> linkToCommList = new List<ContentDocumentLink> ();
 
-    Date todaysDate = System.Today();
-    Date expyDate = todaysDate.addDays(15);
-    String communityID;
-    try {
-        ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
-        for (ConnectApi.Community community : comm.communities) {
-            if (community.Name == 'BlueWave Member Portal'){
-                communityID = community.Id;
-            }
-        }
-    } catch (ConnectApi.ConnectApiException cae) {
-        Logger.logLater('FileDeliveryHandler', 'createDistribution', cae.getMessage() + ' caught when inserting: ');
-        for (ContentVersion cont : newContent) {
-            Logger.logLater(
-                'FileDeliveryHandler',
-                'createDistribution',
-                'Title: ' + cont.Title + ' FileType: ' + cont.FileType + ' Description: ' + cont.Description);
-        }
-        Logger.flushLogs();
-        communityId = null;
-    }
-    for (ContentVersion cont : newContent){
-        if (cont.Title == 'Loan Summary Sheet.pdf') {
-            ContentDistribution cd = new ContentDistribution();
-            cd.Name = cont.Title;
-            cd.ContentVersionId = cont.id;
-            cd.PreferencesAllowOriginalDownload = true;
-            cd.PreferencesAllowViewInBrowser = true;
-            cd.PreferencesAllowPdfDownload = true;
-            cd.ExpiryDate = expydate;
-            cd.PreferencesExpires = true; 
-            distList.add(cd); 
-        } else if (cont.Title.contains('Community Solar Bill')) {
-            ContentDocumentLink cdl = new ContentDocumentLink();
-            cdl.LinkedEntityId = communityID;
-            cdl.Visibility = 'AllUsers';
-            cdl.ShareType = 'V';
-            cdl.ContentDocumentId = cont.ContentDocumentId;
-            linkToCommList.add(cdl);
-        }
-    }       
-    if (distList.size() > 0) {
-        insert distList;  
-    }
-    if (linkToCommList.size() > 0) {
-        insert linkToCommList;
-    }
+      Date todaysDate = System.today();
+      Date expyDate = todaysDate.addDays(15);
+      String communityID;
+
+      for (ContentVersion cont : newContent) {
+          if (cont.Title.contains('Community Solar Bill')) {
+              try {
+                  ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
+                  for (ConnectApi.Community community : comm.communities) {
+                      if (community.name == 'BlueWave Member Portal') {
+                          communityID = community.id;
+                      }
+                  }
+              } catch (ConnectApi.ConnectApiException cae) {
+                  Logger.logNow('FileDeliveryHandler', 'createDistribution',
+                      cae.getMessage() + ' caught when inserting:' +
+                      'Title: ' + cont.Title + ' FileType: ' + cont.FileType + ' Description: ' + cont.Description);
+              }
+              break;
+          }
+      }
+      for (ContentVersion cont : newContent){
+          if (cont.Title == 'Loan Summary Sheet.pdf') {
+              ContentDistribution cd = new ContentDistribution();
+              cd.Name = cont.Title;
+              cd.ContentVersionId = cont.Id;
+              cd.PreferencesAllowOriginalDownload = true;
+              cd.PreferencesAllowViewInBrowser = true;
+              cd.PreferencesAllowPDFDownload = true;
+              cd.ExpiryDate = expyDate;
+              cd.PreferencesExpires = true;
+              distList.add(cd);
+          } else if (cont.Title.contains('Community Solar Bill')) {
+              ContentDocumentLink cdl = new ContentDocumentLink();
+              cdl.LinkedEntityId = communityID;
+              cdl.Visibility = 'AllUsers';
+              cdl.ShareType = 'V';
+              cdl.ContentDocumentId = cont.ContentDocumentId;
+              linkToCommList.add(cdl);
+          }
+      }
+      if (distList.size() > 0) {
+          insert distList;
+      }
+      if (linkToCommList.size() > 0) {
+          insert linkToCommList;
+      }
   }
   
   public static void findRelatedObject (List<ContentDocumentLink> newShare) {
