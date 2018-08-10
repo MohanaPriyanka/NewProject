@@ -29,6 +29,8 @@ public without sharing class SLPUserHelper {
 
         public Boolean csEnabled;
 
+        public Boolean storageEnabled;
+
         public String csApplicationType;
     }
 
@@ -57,6 +59,7 @@ public without sharing class SLPUserHelper {
                 partnerProfile.referralCode = 'bluewave';
              }
              partnerProfile.csEnabled = u.Contact.Account.Enable_CS_Application_in_Portal__c;
+             partnerProfile.storageEnabled = u.Contact.Account.Enable_Storage_Application_in_Portal__c;
              if (u.Contact.Account.Enable_CS_Application_in_Portal__c) {
                partnerProfile.csApplicationType = u.Contact.Account.Community_Solar_Application_Type__c;
              }

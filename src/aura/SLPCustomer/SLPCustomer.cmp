@@ -97,13 +97,13 @@
   <aura:attribute name="confirmMessage" type="String"/>
   <aura:attribute name="availableStorageManufacturers" type="List" />
   <aura:attribute name="availableStorageInverterManufacturers" type="List" />
-  <aura:attribute name="enableStorage" type="Boolean" default="true" />
-  <aura:attribute name="storageHybrid" type="String" default='Yes'/>
-  <aura:attribute name="gridHybridOptions" type="List"
-                  default="[
-                  {'opt': 'Yes'}
-                  {'opt': 'No' }
-                  ]"/>
+  <aura:attribute name="enableStorage" type="Boolean" default="false" />
+  <aura:attribute name="storageHybrid" type="String" default='No'/>
+  <!--<aura:attribute name="gridHybridOptions" type="List"-->
+                  <!--default="[-->
+                  <!--{'opt': 'Yes'}-->
+                  <!--{'opt': 'No' }-->
+                  <!--]"/>-->
   <aura:attribute name="homeBackupOptions" type="List"/>
 
   <!-- main issues include the ability to break out subTasks within the task
@@ -447,23 +447,17 @@
                     <fieldset class="slds-form--compound">
                       <div class="slds-form-element__group">
                         <div class="slds-form-element__row">
-
-
-                            <!--<div class="slds-p-horizontal&#45;&#45;small slds-size_1-of-3">-->
-                              <!--<label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}">-->
-                                <!--<b>Does the system provide backup power when the grid is down?</b>-->
-                              <!--</label>-->
-                              <!--<ui:inputSelect aura:id="backupStorage"-->
-                                              <!--class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}"-->
-                                              <!--value="{!v.storageHybrid}">-->
-                                <!--<ui:inputSelectOption text="" label="Select"/>-->
-                                <!--<aura:iteration items="{!v.gridHybridOptions}" var="opts">-->
-                                  <!--<ui:inputSelectOption label="{!opts.opt}" text="{!opts.opt}" value="{!opts.text == v.storageHybrid}"/>-->
-                                <!--</aura:iteration>-->
-                              <!--</ui:inputSelect>-->
-                            <!--</div>-->
-
-
+                            <div class="slds-p-horizontal--small slds-size_1-of-3">
+                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}">
+                                <b>Does the system provide backup power when the grid is down?</b>
+                              </label>
+                              <ui:inputSelect aura:id="backupStorage"
+                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Grid_Hybrid__c!=v.changeOrder.Storage_Grid_Hybrid__change?'input-changed':'')}"
+                                              value="{!v.storageHybrid}">
+                                <ui:inputSelectOption label="Yes" text="Yes"/>
+                                <ui:inputSelectOption label="No" text="No"/>
+                              </ui:inputSelect>
+                            </div>
                           <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                             <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}">
                               <b>Storage Capacity (kW)</b>
@@ -475,19 +469,18 @@
                         </div>
                         <aura:if isTrue="{!v.storageHybrid == 'Yes'}">
                           <div class="slds-form-element__row">
-                            <div class="slds-p-horizontal--small slds-size_1-of-3">
-                              <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial__c!=v.changeOrder.Storage_Full_or_Partial__change?'input-changed':'')}">
-                                <b>Partial or full home backup</b>
-                              </label>
-                              <ui:inputSelect aura:id="partialOrFullHome"
-                                              class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial__c!=v.changeOrder.Storage_Full_or_Partial__change?'input-changed':'')}"
-                                              value="{!v.changeOrder.Storage_Full_or_Partial__change}">
-                                <ui:inputSelectOption text="" label="Select"/>
-                                <aura:iteration items="{!v.homeBackupOptions}" var="opts">
-                                  <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Full_or_Partial__c}"/>
-                                </aura:iteration>
-                              </ui:inputSelect>
-                            </div>
+                              <div class="slds-p-horizontal--small slds-size_1-of-3">
+                                <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial_Home__c!=v.changeOrder.Storage_Full_or_Partial_Home__change?'input-changed':'')}">
+                                  <b>Partial or full home backup</b>
+                                </label>
+                                <ui:inputSelect aura:id="partialOrFullHome"
+                                                class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial_Home__c!=v.changeOrder.Storage_Full_or_Partial_Home__change?'input-changed':'')}"
+                                                value="{!v.changeOrder.Storage_Full_or_Partial_Home__change}">
+                                  <aura:iteration items="{!v.homeBackupOptions}" var="opts">
+                                    <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Full_or_Partial_Home__c}"/>
+                                  </aura:iteration>
+                                </ui:inputSelect>
+                              </div>
                           </div>
                         </aura:if>
                       </div>

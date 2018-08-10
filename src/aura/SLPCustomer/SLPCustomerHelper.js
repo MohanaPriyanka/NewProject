@@ -119,6 +119,9 @@
                             component.set('v.bwExecuted', true);
                         }
                     }
+                    if (customer.Storage_Grid_Hybrid__c) {
+                        component.set('v.storageHybrid', 'Yes')
+                    }
                     helper.getDocuSignPresent(component, helper).then(
                         $A.getCallback(function() {
                             helper.setChangeOrder(component, customer, ltg)
