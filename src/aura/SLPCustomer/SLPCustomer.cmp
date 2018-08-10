@@ -99,11 +99,6 @@
   <aura:attribute name="availableStorageInverterManufacturers" type="List" />
   <aura:attribute name="enableStorage" type="Boolean" default="false" />
   <aura:attribute name="storageHybrid" type="String" default='No'/>
-  <!--<aura:attribute name="gridHybridOptions" type="List"-->
-                  <!--default="[-->
-                  <!--{'opt': 'Yes'}-->
-                  <!--{'opt': 'No' }-->
-                  <!--]"/>-->
   <aura:attribute name="homeBackupOptions" type="List"/>
 
   <!-- main issues include the ability to break out subTasks within the task
