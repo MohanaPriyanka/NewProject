@@ -113,14 +113,7 @@ public class ScheduleZTriggerHandlerTest {
             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
-        insert new BW_Address__c(
-            Name = 'BlueWave',
-            Address_Line_One__c = '137 Newbury Street',
-            Address_Line_Two__c = '',
-            City__c = 'Boston',
-            State__c = 'MA',
-            Zip_Code__c = '02114'
-        );
+        TestFactory.insertBWAddress();
 
         Account clientAccount = new Account(name = 'Client Account',
             Client_Brand_Key__c = 'AmpBlack');

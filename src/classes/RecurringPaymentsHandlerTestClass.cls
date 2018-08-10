@@ -89,14 +89,8 @@ private class RecurringPaymentsHandlerTestClass{
         );
 
         insert entitytwo;
-        insert new BW_Address__c(
-            Name = 'BlueWave',
-            Address_Line_One__c = '137 Newbury Street',
-            Address_Line_Two__c = '',
-            City__c = 'Boston',
-            State__c = 'MA',
-            Zip_Code__c = '02114'
-        );
+        TestFactory.insertBWAddress();
+
         // Create Shared Solar Systems
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
