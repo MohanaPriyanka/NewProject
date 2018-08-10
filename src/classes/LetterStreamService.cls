@@ -211,17 +211,13 @@ public with sharing class LetterStreamService {
     public String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
-            SELECT Id, Address_Line_One__c, Zip_Code__c, City__c, State__c
+            SELECT Id, Address_Line_One__c, Address_Line_Two__c, Zip_Code__c, City__c, State__c
             FROM BW_Address__c
         ];
         bwAddress += 'BlueWave Solar,'; //SenderName1
         bwAddress += ','; //SenderName2
-        String streetAddress = address.Address_Line_One__c;
-        if (streetAddress.contains(',')) {
-            bwAddress += (streetAddress + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
-        } else {
-            bwAddress += (streetAddress + ',,'); //SenderAddr1 & Adds extra comma if not in text for SenderAddr2
-        }
+        bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1
+        bwAddress += (address.Address_Line_Two__c + ','); //SenderAddr2
         bwAddress += (address.City__c + ','); // SenderCity
         bwAddress += (address.State__c + ','); //SenderState
         bwAddress += (address.Zip_Code__c + ','); //SenderZip

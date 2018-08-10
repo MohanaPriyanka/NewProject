@@ -951,7 +951,7 @@ public class TestBillCreationandPayment {
         WHERE Name = 'Account A'];
 
         System.assertEquals('No Payment Due', propertyAccount.Directions_To_Write_Paper_Check__c);
-        System.assertEquals('BlueWave 137 Newbury Street Boston, MA 02114', propertyAccount.Send_Checks_Address__c);
+        System.assertEquals('BlueWave 137 Newbury Street, 4th Floor Boston, MA 02114', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
         Test.stopTest();
 

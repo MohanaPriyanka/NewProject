@@ -150,10 +150,10 @@ public class TestFactory {
 		insert new BW_Address__c(
 			Name = 'BlueWave',
 			Address_Line_One__c = '137 Newbury Street',
-			Address_Line_Two__c = '',
+			Address_Line_Two__c = '4th Floor',
 			City__c = 'Boston',
 			State__c = 'MA',
-			Zip_Code__c = '02114'
+			Zip_Code__c = '02116'
 		);
 	}
 }

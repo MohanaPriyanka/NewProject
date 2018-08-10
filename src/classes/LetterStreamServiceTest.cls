@@ -195,11 +195,7 @@ public with sharing class LetterStreamServiceTest {
 
         // BW Address info
         System.assert(lss.csv.contains('BlueWave Solar'));
-        System.assert(lss.csv.contains('137 Newbury St'));
-        System.assert(lss.csv.contains('4th Floor'));
         System.assert(lss.csv.contains('Boston'));
-        System.assert(lss.csv.contains('MA'));
-        System.assert(lss.csv.contains('02116'));
 
         // LetterStream Headers
         System.assert(lss.csv.contains('UniqueDocId'));
@@ -223,6 +219,24 @@ public with sharing class LetterStreamServiceTest {
         System.assert(lss.csv.contains('Duplex'));
         System.assert(lss.csv.contains('Ink'));
         System.assert(lss.csv.contains('Paper'));
+    }
+
+    @isTest public static void testBWAddress() {
+        TestFactory.insertBWAddress();
+        // BW Address info
+        String bwAddress = 'BlueWave Solar,'; // SenderName1
+        bwAddress += ','; //SenderName2 - blank
+        bwAddress += '137 Newbury Street,'; //SenderAddr1
+        bwAddress += '4th Floor,'; //SenderAddr2
+        bwAddress += 'Boston,'; //SenderCity
+        bwAddress += 'MA,'; //SenderState
+        bwAddress += '02116,'; //SenderZip
+
+        LetterStreamService lss = new LetterStreamService();
+
+        String bwAddressUnderTest = lss.blueWaveAddress();
+
+        System.assertEquals(bwAddress, bwAddressUnderTest);
     }
 
     @isTest public static void testLetterStreamHeaders() {
