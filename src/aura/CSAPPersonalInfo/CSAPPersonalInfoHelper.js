@@ -65,16 +65,4 @@
             $A.enqueueAction(addAdditionalLeadAction);
         }
     },
-    // checkBirthDate : function(component, event, helper) {
-    //     component.set("v.ShowDateError", false);
-    //     var errorMessage = "";
-    //     var lead = component.get("v.lead");
-    //     errorMessage += helper.getFieldError(component, {
-    //         'fieldValue': lead.LASERCA__Birthdate__c,
-    //         'fieldId': "birthdateElement",
-    //         'errorMessage': "Enter or check Date of Birth (format: 01/01/2000)",
-    //         'fieldType': 'date'
-    //     });
-    //     return errorMessage;
-    // },
 })

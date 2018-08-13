@@ -72,20 +72,6 @@
                </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout multipleRows="true">
-              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                <!--<div aura:id="birthdateElement">-->
-                  <!--<label class="slds-form-element__label">-->
-                    <!--<span class="slds-text-color_error">*</span>-->
-                    <!--Date of Birth-->
-                  <!--</label>-->
-                  <!--<c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" required="true"/>-->
-                  <!--<aura:if isTrue="{!v.ShowDateError}">-->
-                    <!--<div class="slds-text-color_error slds-text-body_small">-->
-                      <!--Please enter birth date in the format 01/01/2000-->
-                    <!--</div>-->
-                  <!--</aura:if>-->
-                <!--</div>-->
-              <!--</lightning:layoutItem>-->
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                 <lightning:input aura:id="field" name="leadPhone"
                                  type="tel"
@@ -94,7 +80,6 @@
                                  maxlength="10"/>
               </lightning:layoutItem>
             </lightning:layout>
-
             <div class="slds-clearfix slds-p-top_medium">
               <div class="slds-float_left">
               </div>

@@ -34,16 +34,6 @@
             component.set("v.page", "ApplyingFor")
         }
     },
-
-        // var errorMessage = helper.checkBirthDate(component, event, helper);
-        // if (errorMessage != ""){
-        //     component.set("v.ShowDateError", true);
-        // } else if(event.getSource().get("v.label") == "Previous"){
-        //     component.set("v.page", "ApplyingFor");
-        // } else if(helper.validatePageFields(component)){
-        //     component.set("v.page", "ApplyingFor");
-        // }
-
     goToAddressForm : function(component, event, helper) {
         if(component.get("v.lead.Application_Type__c") != null) {
             component.set("v.page", "AddressForm");

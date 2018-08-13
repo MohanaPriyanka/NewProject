@@ -21,12 +21,10 @@
         var errorMessage = helper.checkBirthDate(component, event, helper);
         if(errorMessage != ""){
             component.set("v.ShowDateError", true);
-            console.log("Are we making it here?");
         } else {
             if(helper.validatePageFields(component)) {
                 var lead = component.get("v.lead");
                 helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
-                console.log("Or here?");
                 component.set("v.page", "PersonalInfoConfirmation");
             }
         }
