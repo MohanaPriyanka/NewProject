@@ -537,7 +537,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         Account propAccount1 = new Account(
             Name = accountName1,
             Parent_Account__c = accountParent1.Id,
-            Send_Bills_Contact__c = contact1.Id);
+            Send_Bills_Contact__c = contact1.Id,
+            RecordTypeId = '012j00000010HeQ');
         return propAccount1;
     }
 
@@ -661,6 +662,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             uas1, uas2, uas3, uas4, uas5
         };
     }
+
     public static void deleteCSRecords() {
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
 
