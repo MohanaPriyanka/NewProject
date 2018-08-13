@@ -16,6 +16,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
+        System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
     global static void deleteScheduledJob(String jobname) {
