@@ -95,7 +95,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             // Build a list of all fields that need to be queried
             List<String> emailFields = soEmailFieldMap.get(objectName);
             List<String> fieldList = new List<String>();
-            fieldList.addAll(emaiLFields);
+            fieldList.addAll(emailFields);
             fieldList.addAll(conditionals.keySet());
             // Generate a SOQL query to get records with non null emails
             String soql = getSOQL(objectName, fieldList);
@@ -124,7 +124,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    private static boolean checkConditions(SObject record, Map<String, Object> conditionals) {
+    private static Boolean checkConditions(SObject record, Map<String, Object> conditionals) {
         for (String field : conditionals.keySet()) {
             Object value = record.get(field);
             Object condition = conditionals.get(field);
@@ -147,7 +147,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
     }
 
-    global class LoadZoneHelper implements Queueable {
+    global class CSRecordLoader implements Queueable {
         global void execute(QueueableContext context) {
             Load_U__c everLZU = new Load_U__c(Name = '02633',
                 Load_Zone__c = 'SEMA Eversource',
@@ -214,7 +214,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             };
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
-            Utility_NMC_Tariff__c ngridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Sizing Rate' LIMIT 1];
             Account clientAccount = new Account(Name = 'Test Client');
             insert clientAccount;
 
@@ -230,47 +229,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
             insert eversource;
 
-            Shared_Solar_System__c sss1 =
-                new Shared_Solar_System__c(Name = 'Project A Oak Road',
-                    Service_Territory__c = 'SEMA',
-                    Open__c = true,
-                    Client_Account__c = clientAccount.Id,
-                    Reserved_Capacity_kW_DC__c = '0',
-                    Capacity_Committed_kW_DC__c = 0,
-                    Total_System_Size_kWh_DC__c = 1445.86,
-                    Total_System_Size_kW_AC__c = 996,
-                    System_Utility__c = 'Eversource',
-                    Credit_Score_Requirement__c = 200,
-                    Assignment_Order__c = '1',
-                    Utility_NMC_Tariff__c = eversizeNMC.Id,
-                    Expected_Yield_kWh_kW__c = 1300,
-                    Assemblage_Count__c = 1,
-                    Product__c = normalCSProduct.Id,
-                    Sales_Partners__c = 'All',
-                    BWC_Project_Entity_Manual__c = entity1.Id,
-                    Maximum_Subscription_Assemblage__c = 25,
-                    Utility__c = eversource.Id);
+            Shared_Solar_System__c sss1 = getSolarSystem('Project A Oak Road', '1', clientAccount, eversizeNMC, normalCSProduct, entity1, eversource);
+            Shared_Solar_System__c sss2 = getSolarSystem('Project B Main St', '2', clientAccount, eversizeNMC, normalCSProduct, entity1, eversource);
 
-            Shared_Solar_System__c sss2 =
-                new Shared_Solar_System__c(Name = 'Project B Main St',
-                    Service_Territory__c = 'SEMA',
-                    Open__c = true,
-                    Client_Account__c = clientAccount.Id,
-                    Reserved_Capacity_kW_DC__c = '0',
-                    Capacity_Committed_kW_DC__c = 0,
-                    Total_System_Size_kWh_DC__c = 1445.86,
-                    Total_System_Size_kW_AC__c = 996,
-                    System_Utility__c = 'Eversource',
-                    Credit_Score_Requirement__c = 200,
-                    Assignment_Order__c = '2',
-                    Utility_NMC_Tariff__c = eversizeNMC.Id,
-                    Expected_Yield_kWh_kW__c = 1300,
-                    Assemblage_Count__c = 1,
-                    Product__c = normalCSProduct.Id,
-                    Sales_Partners__c = 'All',
-                    BWC_Project_Entity_Manual__c = entity2.Id,
-                    Maximum_Subscription_Assemblage__c = 25,
-                    Utility__c = eversource.Id);
             insert new List<Shared_Solar_System__c>{
                 sss1, sss2
             };
@@ -278,6 +239,32 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.GatewayHelper());
             }
+        }
+
+        private Shared_Solar_System__c getSolarSystem(String name, String order, Account clientAccount,
+            Utility_NMC_Tariff__c nmc, Product2 product, Entity__c entity, Utility__c utility) {
+            Shared_Solar_System__c sss =
+                new Shared_Solar_System__c(Name = name,
+                    Service_Territory__c = 'SEMA',
+                    Billing_Method__c = 'NMC',
+                    Open__c = true,
+                    Client_Account__c = clientAccount.Id,
+                    Reserved_Capacity_kW_DC__c = '0',
+                    Capacity_Committed_kW_DC__c = 0,
+                    Total_System_Size_kWh_DC__c = 1445.86,
+                    Total_System_Size_kW_AC__c = 996,
+                    System_Utility__c = 'Eversource',
+                    Credit_Score_Requirement__c = 200,
+                    Assignment_Order__c = order,
+                    Utility_NMC_Tariff__c = nmc.Id,
+                    Expected_Yield_kWh_kW__c = 1300,
+                    Assemblage_Count__c = 1,
+                    Product__c = product.Id,
+                    Sales_Partners__c = 'All',
+                    BWC_Project_Entity_Manual__c = entity.Id,
+                    Maximum_Subscription_Assemblage__c = 25,
+                    Utility__c = utility.Id);
+            return sss;
         }
     }
 
@@ -489,16 +476,20 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     global class PaymentHelper implements Queueable {
         global void execute(QueueableContext context) {
-            ChargentBase__Gateway__c gatewayOne = [ SELECT Id, Entity__r.Id
-            FROM ChargentBase__Gateway__c
-            WHERE Name = 'Chargent Gateway'];
+            ChargentBase__Gateway__c gatewayOne = [
+                SELECT Id, Entity__r.Id
+                FROM ChargentBase__Gateway__c
+                WHERE Name = 'Chargent Gateway'
+            ];
 
-            List<Account_Bill__c> accountbilllist = [SELECT Id, Name, Carry_Over_Balance__c,
-                Bill_Number__c, Property_Account_ID__c
-            FROM Account_Bill__c
-            WHERE Total_Due__c > 0
-            ORDER BY Bill_Number__c DESC
-            LIMIT 3];
+            List<Account_Bill__c> accountbilllist = [
+                SELECT Id, Name, Carry_Over_Balance__c,
+                    Bill_Number__c, Property_Account_ID__c
+                FROM Account_Bill__c
+                WHERE Total_Due__c > 0
+                ORDER BY Bill_Number__c DESC
+                LIMIT 3
+            ];
 
             for (Account_Bill__c accountbill : accountbilllist) {
                 ChargentOrders__ChargentOrder__c orderA =
@@ -520,7 +511,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 insert orderA;
 
                 ChargentOrders__Transaction__c transA =
-                    new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
+                    new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.Id,
                         ChargentOrders__Amount__c = accountbill.Carry_Over_Balance__c,
                         ChargentOrders__Response_Status__c ='Approved',
                         ChargentOrders__Gateway_ID__c = gatewayOne.Id,
@@ -669,6 +660,33 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5
         };
+    }
+    public static void deleteCSRecords() {
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+
+        if (o.IsSandbox || Test.isRunningTest()) {
+            delete [SELECT Id FROM ChargentOrders__Transaction__c];
+            delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
+            delete [SELECT Id FROM Account_Bill__c];
+            delete [SELECT Id FROM Utility_Account_Bill__c];
+            delete [SELECT Id FROM System_Bill__c];
+            delete [SELECT Id FROM UASB__c];
+            delete [SELECT Id FROM Energy_Usage_Update__c];
+            delete [SELECT Id FROM Schedule_Z__c];
+            delete [SELECT Id FROM Schedule_Z_Subscription__c];
+            delete [SELECT Id FROM Utility_Account_Subscription__c];
+            delete [SELECT Id FROM Utility_Account_Log__c];
+            delete [SELECT Id FROM Opportunity];
+            delete [SELECT Id FROM Contact];
+            delete [SELECT Id FROM Account];
+            delete [SELECT Id FROM ChargentBase__Gateway__c];
+            delete [SELECT Id FROM Shared_Solar_System__c];
+            delete [SELECT Id FROM Utility__c];
+            delete [SELECT Id FROM Entity__c];
+            delete [SELECT Id FROM Utility_NMC_Tariff__c];
+            delete [SELECT Id FROM Load_U__c];
+            delete [SELECT Id FROM Product2 WHERE ProductCode = 'CS - BlueWave - 10%'];
+        }
     }
 
 }
