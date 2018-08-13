@@ -14,7 +14,6 @@
   <aura:attribute name="selectedProduct" type="Object"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
 
-
   <aura:set attribute="STAGENAME" value="NAV_Credit_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
 
