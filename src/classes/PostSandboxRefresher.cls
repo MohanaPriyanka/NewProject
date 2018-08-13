@@ -19,18 +19,22 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     global static void deleteScheduledJob(String jobname) {
-        List<CronTrigger> crons = [SELECT Id, CronJobDetail.Name, CronExpression 
-                                   FROM CronTrigger
-                                   WHERE CronJobDetail.Name = :jobname];
+        List<CronTrigger> crons = [
+            SELECT Id, CronJobDetail.Name, CronExpression
+            FROM CronTrigger
+            WHERE CronJobDetail.Name = :jobname
+        ];
         for (CronTrigger ct : crons) {
             System.abortJob(ct.Id);
         }
     }
 
-    static Map<String, Map<String, Object>> objectConditionals = 
-        new Map<String, Map <String, Object>> {
-        'Lead' => new Map<String, Object> {'isConverted' => false}
-    };
+    static Map<String, Map<String, Object>> objectConditionals =
+        new Map<String, Map <String, Object>>{
+            'Lead' => new Map<String, Object>{
+                'isConverted' => false
+            }
+        };
 
     global static void disableEmails() {
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
@@ -46,9 +50,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     private static Map<String, List<String>> findEmaiLFields() {
-        Map<String, List<String>> soEmailFieldMap = new Map<String, List<String>> ();
+        Map<String, List<String>> soEmailFieldMap = new Map<String, List<String>>();
         // Iterate over all SObjects
-        for (SObjectType soType: Schema.getGlobalDescribe().values()) {
+        for (SObjectType soType : Schema.getGlobalDescribe().values()) {
             DescribeSObjectResult soDescribe = soType.getDescribe();
             // Skip objects we cannot query or update
             if (!soDescribe.isQueryable() || !soDescribe.isUpdateable() || soDescribe.getName() == 'User') {
@@ -56,7 +60,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             }
             String objectTypeName = soDescribe.getName();
             // Iterate over all fields found on a given SObject
-            for (SObjectField soField: soDescribe.fields.getMap().values()) {
+            for (SObjectField soField : soDescribe.fields.getMap().values()) {
                 DescribeFieldResult field = soField.getDescribe();
                 // Skip non Email type fields
                 if (field.getType() != Schema.DisplayType.EMAIL) {
@@ -70,8 +74,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 if (soEmailFieldMap.containsKey(objectTypeName)) {
                     soEmailFieldMap.get(objectTypeName).add(field.getName());
                 } else {
-                    soEmailFieldMap.put(objectTypeName, 
-                                        new List<String> {field.getName()});
+                    soEmailFieldMap.put(objectTypeName,
+                        new List<String>{
+                            field.getName()
+                        });
                 }
             }
         }
@@ -80,29 +86,29 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     private static void processEmailFields(Map<String, List<String>> soEmailFieldMap) {
         // Iterate over the SObject to Email Fields collection
-        for (String objectName: soEmailFieldMap.keySet()) {
+        for (String objectName : soEmailFieldMap.keySet()) {
             // Get any specified conditionals
-            Map<String, Object> conditionals = new Map<String, Object> ();
+            Map<String, Object> conditionals = new Map<String, Object>();
             if (objectConditionals.containsKey(objectName)) {
                 conditionals = objectConditionals.get(objectName);
             }
             // Build a list of all fields that need to be queried
             List<String> emailFields = soEmailFieldMap.get(objectName);
-            List<String> fieldList = new List<String> ();
+            List<String> fieldList = new List<String>();
             fieldList.addAll(emaiLFields);
             fieldList.addAll(conditionals.keySet());
             // Generate a SOQL query to get records with non null emails
             String soql = getSOQL(objectName, fieldList);
             System.debug(soql);
-            List<SObject> records = new List<SObject> ();
+            List<SObject> records = new List<SObject>();
             // Iterate over queried SObject records
-            for (SObject record: Database.query(soql)) {
+            for (SObject record : Database.query(soql)) {
                 // Skip records that do not match specified conditons
                 if (!checkConditions(record, conditionals)) {
                     continue;
                 }
                 // Iterate over Email fields found on SObject and invalidate values
-                for (String field: emailFields) {
+                for (String field : emailFields) {
                     String email = (String) record.get(field);
                     if (String.isEmpty(email)) {
                         continue;
@@ -119,7 +125,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     private static boolean checkConditions(SObject record, Map<String, Object> conditionals) {
-        for (String field: conditionals.keySet()) {
+        for (String field : conditionals.keySet()) {
             Object value = record.get(field);
             Object condition = conditionals.get(field);
             if (value != condition) {
@@ -130,8 +136,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     global static String getSOQL(String objectTypeName, List<String> fieldList) {
-        List<String> conditionals = new List<String> ();
-        for (String field: fieldList) {
+        List<String> conditionals = new List<String>();
+        for (String field : fieldList) {
             conditionals.add(field + ' != null');
         }
         String soql = 'SELECT {!fieldList} FROM {!objectTypeName} WHERE {!conditionals}';
@@ -140,4 +146,529 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!objectTypeName}', objectTypeName)
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
     }
+
+    global class LoadZoneHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            Load_U__c everLZU = new Load_U__c(Name = '02633',
+                Load_Zone__c = 'SEMA Eversource',
+                LZ__c = 'SEMA',
+                Utility__c = 'Eversource',
+                Town__c = 'Medfield');
+
+            Load_U__c ngridLZU = new Load_U__c(Name = '01570',
+                Load_Zone__c = 'WCMA National Grid',
+                LZ__c = 'WCMA',
+                Utility__c = 'National Grid',
+                Town__c = 'Westtown');
+
+            insert new List<Load_U__c>{
+                everLZU, ngridLZU
+            };
+
+            Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
+                Name = 'Eversource SEMA Class 2',
+                Utility__c = 'Eversource',
+                Class__c = 'Class 2',
+                Value_of_Net_Metering_Credit__c = 0.1848,
+                Current_Billing_Rate__c = true);
+
+            Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c(
+                Name = 'National Grid WCMA Class 2 Billing Rate',
+                Utility__c = 'National Grid',
+                Class__c = 'Class 2',
+                Value_of_Net_Metering_Credit__c = 0.1848,
+                Current_Billing_Rate__c = true);
+
+            Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(
+                Name = 'National Grid WCMA Class 2 Sizing Rate',
+                Utility__c = 'National Grid',
+                Class__c = 'Class 2',
+                Value_of_Net_Metering_Credit__c = 0.1848,
+                Sizing_Rate__c = true);
+
+            insert new List<Utility_NMC_Tariff__c>{
+                everbillNMC, ngridsizeNMC, ngridbillNMC
+            };
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.SolarSystemHelper());
+            }
+        }
+    }
+
+    global class SolarSystemHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - BlueWave - 10%',
+                IsActive = true,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 10,
+                Annual_kWh_Maximum__c = 100000000,
+                NM_Rate_Floor__c = 0,
+                Monthly_Late_Fee__c = 1);
+            insert new List<Product2>{
+                normalCSProduct
+            };
+
+            Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
+            Utility_NMC_Tariff__c ngridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Sizing Rate' LIMIT 1];
+            Account clientAccount = new Account(Name = 'Test Client');
+            insert clientAccount;
+
+            Contact clientContact = new Contact(AccountId = clientAccount.Id, FirstName = 'Test', LastName = 'Client');
+            insert clientContact;
+
+            Entity__c entity1 = new Entity__c(Name = 'Project A Oak Road');
+            insert entity1;
+
+            Entity__c entity2 = new Entity__c(Name = 'Project B Main St');
+            insert entity2;
+
+            Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
+            insert eversource;
+
+            Shared_Solar_System__c sss1 =
+                new Shared_Solar_System__c(Name = 'Project A Oak Road',
+                    Service_Territory__c = 'SEMA',
+                    Open__c = true,
+                    Client_Account__c = clientAccount.Id,
+                    Reserved_Capacity_kW_DC__c = '0',
+                    Capacity_Committed_kW_DC__c = 0,
+                    Total_System_Size_kWh_DC__c = 1445.86,
+                    Total_System_Size_kW_AC__c = 996,
+                    System_Utility__c = 'Eversource',
+                    Credit_Score_Requirement__c = 200,
+                    Assignment_Order__c = '1',
+                    Utility_NMC_Tariff__c = eversizeNMC.Id,
+                    Expected_Yield_kWh_kW__c = 1300,
+                    Assemblage_Count__c = 1,
+                    Product__c = normalCSProduct.Id,
+                    Sales_Partners__c = 'All',
+                    BWC_Project_Entity_Manual__c = entity1.Id,
+                    Maximum_Subscription_Assemblage__c = 25,
+                    Utility__c = eversource.Id);
+
+            Shared_Solar_System__c sss2 =
+                new Shared_Solar_System__c(Name = 'Project B Main St',
+                    Service_Territory__c = 'SEMA',
+                    Open__c = true,
+                    Client_Account__c = clientAccount.Id,
+                    Reserved_Capacity_kW_DC__c = '0',
+                    Capacity_Committed_kW_DC__c = 0,
+                    Total_System_Size_kWh_DC__c = 1445.86,
+                    Total_System_Size_kW_AC__c = 996,
+                    System_Utility__c = 'Eversource',
+                    Credit_Score_Requirement__c = 200,
+                    Assignment_Order__c = '2',
+                    Utility_NMC_Tariff__c = eversizeNMC.Id,
+                    Expected_Yield_kWh_kW__c = 1300,
+                    Assemblage_Count__c = 1,
+                    Product__c = normalCSProduct.Id,
+                    Sales_Partners__c = 'All',
+                    BWC_Project_Entity_Manual__c = entity2.Id,
+                    Maximum_Subscription_Assemblage__c = 25,
+                    Utility__c = eversource.Id);
+            insert new List<Shared_Solar_System__c>{
+                sss1, sss2
+            };
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.GatewayHelper());
+            }
+        }
+    }
+
+    global class GatewayHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id
+                FROM Shared_Solar_System__c
+                ORDER BY Name DESC
+            ];
+
+            ChargentBase__Gateway__c chGateway =
+                new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
+                    ChargentBase__Merchant_ID__c = '235986',
+                    Shared_Solar_System__c = sssList[0].Id,
+                    Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
+                    ChargentBase__Active__c = true);
+            insert chGateway;
+
+            ChargentBase__Gateway__c chGateway2 =
+                new ChargentBase__Gateway__c(Name = 'Chargent Gateway B',
+                    ChargentBase__Merchant_ID__c = '235986',
+                    Shared_Solar_System__c = sssList[1].Id,
+                    Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
+                    ChargentBase__Active__c = true);
+            insert chGateway2;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper());
+            }
+        }
+    }
+
+    global class FirstAccountHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            createSubscriptions(
+                0,
+                new List<String>{'Ashley', 'Steven', 'Marie', 'Justin', 'Russell'},
+                new List<String>{'Smith', 'Ward', 'Mitchell', 'Jenkins', 'Butler'}
+            );
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.SecondAccountHelper());
+            }
+        }
+
+    }
+
+    global class SecondAccountHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            createSubscriptions(
+                1,
+                new List<String>{'Joshua', 'Donna', 'Keith', 'Mark', 'Albert'},
+                new List<String>{'Phillips', 'Simmons', 'Morgan', 'Allen', 'Price'}
+            );
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper());
+            }
+        }
+    }
+
+    global class ProductionUpdateHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+            FROM Shared_Solar_System__c
+            ORDER BY Name DESC];
+
+            Date myDateJan = Date.newInstance(2018, 1, 15);
+            Date myDateFeb = Date.newInstance(2018, 2, 15);
+            Date myDateMar = Date.newInstance(2018, 3, 15);
+            Date myDateApr = Date.newInstance(2018, 4, 15);
+
+            Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+                Name = '2016 - sssA',
+                Shared_Solar_System__c = sssList[0].Id,
+                Status__c = 'Enacted by Utility'
+            );
+            insert scheduleZ1;
+
+            Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
+                Name = '2016 - sssB',
+                Shared_Solar_System__c = sssList[1].Id,
+                Status__c = 'Enacted by Utility'
+            );
+            insert scheduleZ2;
+
+            Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
+                Name = 'sssA - August 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 81869.00,
+                Due_Date__c = myDateJan,
+                Billing_Period_End_Date__c = myDateFeb,
+                Total_System_NMCs__c = 13483.66,
+                Size_off_NMCs__c = true,
+                Date__c = myDateJan,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateA1;
+
+            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+                Name = 'sssA - September 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 73072.00,
+                Due_Date__c = myDateFeb,
+                Billing_Period_End_Date__c = myDateMar,
+                Total_System_NMCs__c = 12033.73,
+                Size_off_NMCs__c = true,
+                Date__c = myDateFeb,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB2;
+
+            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+                Name = 'sssA - October 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 327001.00,
+                Due_Date__c = myDateMar,
+                Billing_Period_End_Date__c = myDateApr,
+                Total_System_NMCs__c = 36424.44,
+                Size_off_NMCs__c = true,
+                Date__c = myDateMar,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB3;
+
+            Energy_Usage_Update__c prodUpdateBB = new Energy_Usage_Update__c (
+                Name = 'sssB - August 2016',
+                Shared_Solar_System__c = sssList[1].Id,
+                Production__c = 367918.00,
+                Due_Date__c = myDateJan,
+                Billing_Period_End_Date__c = myDateFeb,
+                Total_System_NMCs__c = 40983.43,
+                Size_off_NMCs__c = true,
+                Date__c = myDateJan,
+                Schedule_Z__c =  scheduleZ2.Id
+            );
+
+            insert prodUpdateBB;
+
+            Energy_Usage_Update__c prodUpdateCC = new Energy_Usage_Update__c (
+                Name = 'sssB - September 2016',
+                Shared_Solar_System__c = sssList[1].Id,
+                Production__c = 81869.00,
+                Due_Date__c = myDateFeb,
+                Billing_Period_End_Date__c = myDateMar,
+                Total_System_NMCs__c = 13483.66,
+                Size_off_NMCs__c = true,
+                Date__c = myDateFeb,
+                Schedule_Z__c =  scheduleZ2.Id
+            );
+
+            insert prodUpdateCC;
+
+            Energy_Usage_Update__c prodUpdateDD = new Energy_Usage_Update__c (
+                Name = 'sssB - October 2016',
+                Shared_Solar_System__c = sssList[1].Id,
+                Production__c = 73072.00,
+                Due_Date__c = myDateMar,
+                Billing_Period_End_Date__c = myDateApr,
+                Total_System_NMCs__c = 12033.73,
+                Size_off_NMCs__c = true,
+                Date__c = myDateMar,
+                Schedule_Z__c =  scheduleZ2.Id
+            );
+
+            insert prodUpdateDD;
+
+            productionupdateA1.Generate_Bills__c = true;
+            productionupdateB2.Generate_Bills__c = true;
+            productionupdateB3.Generate_Bills__c = true;
+            prodUpdateBB.Generate_Bills__c = true;
+            prodUpdateCC.Generate_Bills__c = true;
+            prodUpdateDD.Generate_Bills__c = true;
+            update productionupdateA1;
+            update productionupdateB2;
+            update productionupdateB3;
+            update prodUpdateBB;
+            update prodUpdateCC;
+            update prodUpdateDD;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.AccountBillHelper());
+            }
+        }
+    }
+
+    global class AccountBillHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            List <Account_Bill__c> listaccountBills = [
+                SELECT Id, Published__c
+                FROM Account_Bill__c
+            ];
+
+            for (Account_Bill__c acctBill : listaccountBills) {
+                acctBill.Published__c = true;
+            }
+
+            update listaccountBills;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.PaymentHelper());
+            }
+        }
+    }
+
+    global class PaymentHelper implements Queueable {
+        global void execute(QueueableContext context) {
+            ChargentBase__Gateway__c gatewayOne = [ SELECT Id, Entity__r.Id
+            FROM ChargentBase__Gateway__c
+            WHERE Name = 'Chargent Gateway'];
+
+            List<Account_Bill__c> accountbilllist = [SELECT Id, Name, Carry_Over_Balance__c,
+                Bill_Number__c, Property_Account_ID__c
+            FROM Account_Bill__c
+            WHERE Total_Due__c > 0
+            ORDER BY Bill_Number__c DESC
+            LIMIT 3];
+
+            for (Account_Bill__c accountbill : accountbilllist) {
+                ChargentOrders__ChargentOrder__c orderA =
+                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = gatewayOne.Id,
+                        ChargentOrders__Shipping_Name__c = gatewayOne.Entity__r.Id,
+                        ChargentOrders__Billing_First_Name__c = 'Jordan',
+                        ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+                        ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                        ChargentOrders__Billing_Zip_Postal__c = '02467',
+                        ChargentOrders__Subtotal__c = accountbill.Carry_Over_Balance__c,
+                        ChargentOrders__Payment_Method__c = 'Credit Card',
+                        Account_Bill__c = accountbill.Id,
+                        ChargentOrders__Card_Type__c = 'Visa',
+                        ChargentOrders__Card_Number__c = '411111111111',
+                        ChargentOrders__Card_Security_Code__c = '999',
+                        ChargentOrders__Card_Expiration_Month__c = '02',
+                        ChargentOrders__Card_Expiration_Year__c = '2018',
+                        ChargentOrders__Card_Last_4__c = '1111');
+                insert orderA;
+
+                ChargentOrders__Transaction__c transA =
+                    new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
+                        ChargentOrders__Amount__c = accountbill.Carry_Over_Balance__c,
+                        ChargentOrders__Response_Status__c ='Approved',
+                        ChargentOrders__Gateway_ID__c = gatewayOne.Id,
+                        ChargentOrders__Gateway__c = gatewayOne.Id,
+                        Distributed_Among_System_Bills__c = false,
+                        ChargentOrders__Response_Message__c = 'OK',
+                        ChargentOrders__Type__c = 'Charge',
+                        ChargentOrders__Payment_Method__c = 'Credit Card',
+                        Activity_Type__c = 'Payment');
+                insert transA;
+                transA.Distributed_Among_System_Bills__c = true;
+                update transA;
+            }
+        }
+    }
+
+    private static Contact getContact(String firstName1, String lastName1, Account accountParent1) {
+        Contact contact1 = new Contact(FirstName = firstName1, LastName = lastName1, AccountId = accountParent1.Id);
+        return contact1;
+    }
+
+    private static Account getPropertyAccount(String accountName1, Account accountParent1, Contact contact1) {
+        Account propAccount1 = new Account(
+            Name = accountName1,
+            Parent_Account__c = accountParent1.Id,
+            Send_Bills_Contact__c = contact1.Id);
+        return propAccount1;
+    }
+
+    private static Utility_Account_Log__c getUtilityAccountLog(String name, Decimal cost, Account propAccount1,
+        String accountName1) {
+        Utility_Account_Log__c ualog1 = new Utility_Account_Log__c(
+            Name = name,
+            Account__c = propAccount1.Id,
+            Annual_Cost_of_Electricity__c = cost,
+            Name_on_Account__c = accountName1);
+        return ualog1;
+    }
+
+    private static Opportunity getOpportunity(String accountName1, Account propAccount1, Shared_Solar_System__c sss) {
+        Opportunity opportunity1 = new Opportunity(
+            Name = accountName1,
+            AccountId = propAccount1.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'Complete',
+            Product__c = sss.Product__r.Id,
+            CloseDate = System.today()
+        );
+        return opportunity1;
+    }
+
+    private static Utility_Account_Subscription__c getUtilityAccountSubscription(String name, Integer subscription,
+        Utility_Account_Log__c ualog1, Opportunity opportunity1) {
+        Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(
+            Name = name,
+            Utility_Account_Log__c = ualog1.Id,
+            Opportunity__c = opportunity1.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            calculated_annual_cost_of_electricity__c = 1400,
+            Subscribed_Annual_Cost_of_Electricity__c = 1400,
+            Customer_Subscription_KW_DC_STATIC__c = subscription
+        );
+        return uas1;
+    }
+
+    private static void createSubscriptions(Integer sssIndex, List<String> firstNames, List<String> lastNames) {
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+            FROM Shared_Solar_System__c
+            ORDER BY Name DESC
+        ];
+        String firstName1 = firstNames[0];
+        String firstName2 = firstNames[1];
+        String firstName3 = firstNames[2];
+        String firstName4 = firstNames[3];
+        String firstName5 = firstNames[4];
+
+        String lastName1 = lastNames[0];
+        String lastName2 = lastNames[1];
+        String lastName3 = lastNames[2];
+        String lastName4 = lastNames[3];
+        String lastName5 = lastNames[4];
+
+        String accountName1 = firstName1 + ' ' + lastName1;
+        String accountName2 = firstName2 + ' ' + lastName2;
+        String accountName3 = firstName3 + ' ' + lastName3;
+        String accountName4 = firstName4 + ' ' + lastName4;
+        String accountName5 = firstName5 + ' ' + lastName5;
+
+        Account accountParent1 = new Account(Name = accountName1);
+        Account accountParent2 = new Account(Name = accountName2);
+        Account accountParent3 = new Account(Name = accountName3);
+        Account accountParent4 = new Account(Name = accountName4);
+        Account accountParent5 = new Account(Name = accountName5);
+
+        insert new List<Account>{
+            accountParent1, accountParent2, accountParent3, accountParent4, accountParent5
+        };
+
+        Contact contact1 = getContact(firstName1, lastName1, accountParent1);
+        Contact contact2 = getContact(firstName2, lastName2, accountParent2);
+        Contact contact3 = getContact(firstName3, lastName3, accountParent3);
+        Contact contact4 = getContact(firstName4, lastName4, accountParent4);
+        Contact contact5 = getContact(firstName5, lastName5, accountParent5);
+
+        insert new List<Contact>{
+            contact1, contact2, contact3, contact4, contact5
+        };
+
+        Account propAccount1 = getPropertyAccount(accountName1, accountParent1, contact1);
+        Account propAccount2 = getPropertyAccount(accountName2, accountParent2, contact2);
+        Account propAccount3 = getPropertyAccount(accountName3, accountParent3, contact3);
+        Account propAccount4 = getPropertyAccount(accountName4, accountParent4, contact4);
+        Account propAccount5 = getPropertyAccount(accountName5, accountParent5, contact5);
+
+        insert new List<Account>{
+            propAccount1, propAccount2, propAccount3, propAccount4, propAccount5
+        };
+
+        Utility_Account_Log__c ualog1 = getUtilityAccountLog('0000234', 10000, propAccount1, accountName1);
+        Utility_Account_Log__c ualog2 = getUtilityAccountLog('0000235', 10000, propAccount2, accountName2);
+        Utility_Account_Log__c ualog3 = getUtilityAccountLog('0000236', 10000, propAccount3, accountName3);
+        Utility_Account_Log__c ualog4 = getUtilityAccountLog('0000237', 10000, propAccount4, accountName4);
+        Utility_Account_Log__c ualog5 = getUtilityAccountLog('0000238', 10000, propAccount5, accountName5);
+
+        insert new List<Utility_Account_Log__c>{
+            ualog1, ualog2, ualog3, ualog4, ualog5
+        };
+
+        Opportunity opportunity1 = getOpportunity(accountName1, propAccount1, sssList[sssIndex]);
+        Opportunity opportunity2 = getOpportunity(accountName2, propAccount2, sssList[sssIndex]);
+        Opportunity opportunity3 = getOpportunity(accountName3, propAccount3, sssList[sssIndex]);
+        Opportunity opportunity4 = getOpportunity(accountName4, propAccount4, sssList[sssIndex]);
+        Opportunity opportunity5 = getOpportunity(accountName5, propAccount5, sssList[sssIndex]);
+
+        insert new List<Opportunity>{
+            opportunity1, opportunity2, opportunity3, opportunity4, opportunity5
+        };
+
+        Utility_Account_Subscription__c uas1 = getUtilityAccountSubscription('000234', 25, ualog1, opportunity1);
+        Utility_Account_Subscription__c uas2 = getUtilityAccountSubscription('000234', 10, ualog2, opportunity2);
+        Utility_Account_Subscription__c uas3 = getUtilityAccountSubscription('000234', 20, ualog3, opportunity3);
+        Utility_Account_Subscription__c uas4 = getUtilityAccountSubscription('000234', 19, ualog4, opportunity4);
+        Utility_Account_Subscription__c uas5 = getUtilityAccountSubscription('000234', 17, ualog5, opportunity5);
+
+        insert new List<Utility_Account_Subscription__c>{
+            uas1, uas2, uas3, uas4, uas5
+        };
+    }
+
 }
