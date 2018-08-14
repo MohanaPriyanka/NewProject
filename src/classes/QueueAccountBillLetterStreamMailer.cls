@@ -79,21 +79,7 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
         response = http.send(request);
         Dom.Document responseXML = response.getBodyDocument();
         String responseXMLString = responseXML.toXmlString();
-        handleResponse(responseXMLString, accountBillIds);
-    }
-
-    @Future
-    public static void handleResponse(String responseXMLString, Set<Id> accountBillIds) {
-        System.debug(LoggingLEVEL.ERROR, responseXMLString);
-        // will return null if a job wasn't posted correctly
-        LetterStreamService lss = new LetterStreamService();
-        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
-
-        if (newJob == null) {
-            Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
-        } else {
-            update markAccountBillsAsMailed(accountBillIds, newJob.Id);
-        }
+        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds));
     }
 
     public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
@@ -108,5 +94,27 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
             accountBill.LetterStreamJob__c = newJobId;
         }
         return accountBills;
+    }
+
+    public class QueueHandleResponse implements Queueable {
+        public String responseXMLString;
+        public Set<Id> accountBillIds;
+
+        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds) {
+            this.responseXMLString = responseXMLString;
+            this.accountBillIds = accountBillIds;
+        }
+
+        public void execute(QueueableContext contact) {
+            System.debug(responseXMLString);
+            LetterStreamService lss = new LetterStreamService();
+            LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
+
+            if (newJob == null) {
+                Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
+            } else {
+                update markAccountBillsAsMailed(accountBillIds, newJob.Id);
+            }
+        }
     }
 }
