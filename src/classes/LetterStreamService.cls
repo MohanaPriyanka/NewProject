@@ -65,6 +65,8 @@ public with sharing class LetterStreamService {
                 break;
             } else if (responseReader.getEventType() == XmlTag.END_ELEMENT) {
                 responseReader.next();
+            } else {
+                responseReader.next();
             }
         }
         if (responseCode != null
@@ -107,6 +109,7 @@ public with sharing class LetterStreamService {
                 } else if ('cost' == docReader.getLocalName()) {
                     pieceCost = Decimal.valueOf(getNodeText(docReader));
                 }
+                docReader.next();
                 docReader.next();
             }
             if (docReader.getEventType() == XmlTag.END_ELEMENT
