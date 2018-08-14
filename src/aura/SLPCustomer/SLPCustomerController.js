@@ -15,8 +15,18 @@
             }
         });
         $A.enqueueAction(actionLicenseType);
+        var actionStorageEnabled = component.get("c.getStorageEnabled");
+        actionLicenseType.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                if (resp.getReturnValue()) {
+                    component.set("v.enableStorage", true);
+                }
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(actionStorageEnabled);
         component.set("v.vendorIdLabel", "Unique Identifier");
-        helper.getStorageEnabled(component);
         var leadId = sessionStorage.getItem('loanId');
         helper.openCustomerWindow(component, event, helper, leadId);
         helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");
