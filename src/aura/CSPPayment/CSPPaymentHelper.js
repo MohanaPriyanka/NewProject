@@ -13,7 +13,6 @@
         } else {
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Type__c, 'CCType', 4, '');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Number__c, 'CCNumber', 15, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Security_Code__c, 'CVV', 3, 'Credit Card Security code should be 3 or 4 digits.');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Month__c, 'ExpyMonth', 1, '');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Year__c, 'ExpyYear', 4, '');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_Zip_Postal__c, 'BillingZipcode', 5, '');
@@ -26,22 +25,15 @@
                     'Your ' + inputFields.ChargentOrders__Card_Type__c +
                     ' number is too long. Please use numbers only, no spaces');
             }
-            if ((inputFields.ChargentOrders__Card_Type__c === 'Visa' ||
-                 inputFields.ChargentOrders__Card_Type__c === 'Mastercard' ||
-                 inputFields.ChargentOrders__Card_Type__c === 'Discover') &&
-                inputFields.ChargentOrders__Card_Security_Code__c.length !== 3) {
+            if (inputFields.ChargentOrders__Card_Security_Code__c.length !==
+                this.CVV_REQUIREMENTS[inputFields.ChargentOrders__Card_Type__c]) {
                 this.addErrorAnimation(component, 'CVV');
                 this.unhideFieldsShowError(
                     component,
-                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be 3 digits');
-            }
-            if ((inputFields.ChargentOrders__Card_Type__c === 'AMEX' ||
-                 inputFields.ChargentOrders__Card_Type__c === 'American Express') &&
-                inputFields.ChargentOrders__Card_Security_Code__c.length !== 4) {
-                this.addErrorAnimation(component, 'CVV');
-                this.unhideFieldsShowError(
-                    component,
-                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be 4 digits');
+                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be ' +
+                    this.CVV_REQUIREMENTS[inputFields.ChargentOrders__Card_Type__c] + ' digits');
+            } else {
+                this.removeErrorAnimation(component, 'CVV');
             }
         }
 
@@ -59,7 +51,9 @@
 
         var errorsExist = component.get("v.showErrorText");
         return errorsExist; 
-    },    
+    },
+
+    CVV_REQUIREMENTS : {'Visa':3, 'Mastercard': 3, 'Discover': 3, 'AMEX': 4, 'American Express': 4},
 
     addErrorAnimation : function(component, fieldName) { 
         $A.util.addClass(component.find(fieldName), 'slds-has-error'); 
