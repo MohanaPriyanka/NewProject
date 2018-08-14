@@ -106,7 +106,6 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
         }
 
         public void execute(QueueableContext contact) {
-            System.debug(responseXMLString);
             LetterStreamService lss = new LetterStreamService();
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
