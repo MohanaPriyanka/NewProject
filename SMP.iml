@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="Max2" />
+        <option name="connectionName" value="Dev1" />
         <option name="defaultSourceRootUrl" value="file://$MODULE_DIR$/src" />
         <option name="moduleContents">
           <ModuleContents>
@@ -942,6 +942,22 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
+                            <option name="name" value="PCRPublicRecordHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PCRTradeAccountHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PCRTradeAccountHandlerTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="BillNumberingTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
                             <option name="name" value="ManagedPackageLicenseHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -983,6 +999,10 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="LetterStreamAPIMock" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="CSPaymentTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1785,7 +1805,7 @@
       <excludeFolder url="file://$MODULE_DIR$/projectFilesBackup" />
       <excludePattern pattern="*~" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Max2)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev1)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

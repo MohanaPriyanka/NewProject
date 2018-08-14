@@ -54,23 +54,29 @@ global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Datab
     public void finish(Database.BatchableContext bc){
         Logger.flushLogs(); 
         update updatedChOrders;
-        
+
         Date todaysDate = date.newinstance(system.today().year(), system.today().month(), system.today().day());
 
         if (successSRECList.size() > 0){
-            SREC__c srecsToUpdate = [SELECT Id, Name, Date_Distributed_to_Customer__c
-                                    FROM SREC__c
-                                    WHERE Id IN : successSRECList];
-            srecsToUpdate.Date_Distributed_to_Customer__c = todaysDate;
-            update srecsToUpdate;
+            List<SREC__c> srecsToUpdateList = new List<SREC__c>();
+            for (SREC__c srecToUpdate : [SELECT Id, Name, Date_Distributed_to_Customer__c
+                                        FROM SREC__c
+                                        WHERE Id IN : successSRECList]){
+                srecToUpdate.Date_Distributed_to_Customer__c = todaysDate;
+                srecsToUpdateList.add(srecToUpdate);
+            }
+            update srecsToUpdateList;
         }
 
         if (successInvoiceList.size() > 0){
-            SREC_Invoice__c invoiceToUpdate = [SELECT Id, Name, Date_Paid__c
-                                            FROM SREC_Invoice__c
-                                            WHERE Id IN : successInvoiceList];
-            invoiceToUpdate.Date_Paid__c = todaysDate;
-            update invoiceToUpdate;
+            List<SREC_Invoice__c> invoicesToUpdateList = new List<SREC_Invoice__c>();
+            for (SREC_Invoice__c invoiceToUpdate : [SELECT Id, Name, Date_Paid__c
+                                                    FROM SREC_Invoice__c
+                                                    WHERE Id IN : successInvoiceList]){
+                invoiceToUpdate.Date_Paid__c = todaysDate;
+                invoicesToUpdateList.add(invoiceToUpdate);
+            }
+            update invoicesToUpdateList;
         }
 
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 

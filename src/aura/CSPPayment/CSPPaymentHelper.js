@@ -136,25 +136,26 @@
         This submits one order to the database at a time so as to avoid that limit 
     */
 
-    submitPayments : function(component, orderList, helper) { 
-        var chargePromise = this.submitPayment(component, orderList[0], helper);
+    submitPayments : function(component, orderList, helper, isFirstOrder) {
+        var chargePromise = this.submitPayment(component, orderList[0], helper, isFirstOrder);
         var self = this;
         chargePromise.then(
             $A.getCallback(function(result) {
                 orderList.splice(0,1);
                 if (orderList.length > 0) {
-                    self.submitPayments(component, orderList, helper);
+                    self.submitPayments(component, orderList, helper, false);
                 } else {
-                    self.postSubmitProcessing(component, helper);
+                    self.postSubmitProcessing(component, helper, true);
                 }
             })
         );
     },
 
-    submitPayment : function(component, orderToCharge, helper) { 
+    submitPayment : function(component, orderToCharge, helper, isFirstOrder) {
+        var self = this;
+
         return new Promise(function(resolve, reject) {
             var actionCharge = component.get("c.chargeOrder");  
-            var self = this;
 
             actionCharge.setParams({
                 "chOrder": orderToCharge
@@ -163,16 +164,23 @@
             actionCharge.setCallback(this,function(resp){
                 if (resp.getState() === 'SUCCESS') {
                     var listResponse = resp.getReturnValue().split(",",2);
+
+                    // If the first transaction fails, show error so they can modify it.
+                    // If the first transaction goes through but any subsequent transaction fails, don't allow resubmit.
+
                     if (listResponse[1] === 'Approved'){
                         resolve();
                         var transList = component.get("v.transactionsCreated");
                         transList.push(listResponse[0]);
                         component.set("v.transactionsCreated", transList);
-                    } else {
-                        component.set("v.ErrorText",  listResponse[1]);   
+                    } else if (isFirstOrder) {
+                        component.set("v.ErrorText",  listResponse[1]);
                         component.set("v.showErrorText", true);
                         component.set("v.hideFields", false);
                         component.set("v.Spinner", false);
+                        reject();
+                    } else {
+                        self.postSubmitProcessing(component, helper, false);
                         reject();
                     }
                 } else {
@@ -184,7 +192,7 @@
         });   
     },
 
-    postSubmitProcessing : function(component, helper) { 
+    postSubmitProcessing : function(component, helper, showApproval) {
         var transactionIDList = component.get("v.transactionsCreated");  
         var updateRecords = component.get("c.processingPostSubmit");  
 
@@ -195,7 +203,7 @@
         updateRecords.setCallback(this,function(resp){
             var self = this;
 
-            if (resp.getState() === 'SUCCESS' && resp.getReturnValue()) {
+            if (resp.getState() === 'SUCCESS' && resp.getReturnValue() && showApproval) {
                 self.showApproved(component);   
             } else {
                 // because of the try-catch block in apex, this is rare:
