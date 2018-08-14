@@ -178,7 +178,7 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals('City', params.recipientCity);
         System.assertEquals('Colorado', params.recipientState);
         System.assertEquals('80525', params.recipientPostalCode);
-        System.assertEquals('0', params.pages);
+        System.assertEquals('4', params.pages);
 
         lss.addLetterToCSV(params);
 
