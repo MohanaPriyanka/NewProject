@@ -480,4 +480,19 @@
         );
         return isAllValid;
     },
+
+    getStorageEnabled : function(component) {
+        var action = component.get("c.getStorageEnabled");
+        action.setCallback(this,function(resp){
+            if(resp.getState() == 'SUCCESS') {
+                if(resp.getReturnValue().length > 0){
+                    component.set("v.enableStorage", resp.getReturnValue());
+                }
+            }
+            else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(action);
+    },
 })

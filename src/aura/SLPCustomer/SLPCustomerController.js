@@ -16,7 +16,7 @@
         });
         $A.enqueueAction(actionLicenseType);
         component.set("v.vendorIdLabel", "Unique Identifier");
-        
+        helper.getStorageEnabled(component);
         var leadId = sessionStorage.getItem('loanId');
         helper.openCustomerWindow(component, event, helper, leadId);
         helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");

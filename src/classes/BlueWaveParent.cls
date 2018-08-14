@@ -159,4 +159,10 @@ public without sharing class BlueWaveParent {
         }
         return states;
     }
+
+    @AuraEnabled
+    public static Boolean getStorageEnabled() {
+        SLPUserHelper.PartnerProfile profile = SLPUserHelper.getPartnerProfile();
+        return profile.storageEnabled;
+    }
 }
