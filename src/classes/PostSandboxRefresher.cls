@@ -148,6 +148,21 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
     }
 
+    /*
+     CS Record Loader loads community solar records for testing. Currently, bill numbers aren't advanced
+     because roll-up summaries aren't recalculated before the next bills are loaded, but updating the
+     last bill number will allow total due to show in the customer portal. Occasionally the Energy Usage Update Handler
+     hits UNABLE_TO_LOCK_ROW which we should investigate.
+
+     To avoid governor limits, the methods below chain queueable methods, loading in this order:
+     - Insert Load Zones and Tariffs
+     - Insert a Product, Utility_NMC_Tariff, Entity, Utility, and Shared Solar Systems
+     - Insert Gateways
+     - Insert Parent Account, Contact, Property Account, Utility Account Log, Opportunity, and Utility Account Subscription
+     - Insert Schedule Z and Production Updates, then updating them to generate UASBs, System Bills, and Account Bills
+     - Update Account Bills to publish them
+     - Insert Chargent Orders to create transactions
+     */
     global class CSRecordLoader implements Queueable {
         global void execute(QueueableContext context) {
             Load_U__c everLZU = new Load_U__c(Name = '02633',
@@ -529,6 +544,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
+    // Helper methods used when loading CS records
     private static Contact getContact(String firstName1, String lastName1, Account accountParent1) {
         Contact contact1 = new Contact(FirstName = firstName1, LastName = lastName1, AccountId = accountParent1.Id);
         return contact1;
