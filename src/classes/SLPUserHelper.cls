@@ -34,7 +34,7 @@ public without sharing class SLPUserHelper {
         public String csApplicationType;
     }
 
-    @AuraEnabled 
+    @AuraEnabled
     public static PartnerProfile getPartnerProfile() {
         PartnerProfile partnerProfile = new PartnerProfile();
 

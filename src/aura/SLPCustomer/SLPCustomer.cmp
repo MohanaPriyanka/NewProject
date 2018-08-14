@@ -489,7 +489,7 @@
                             </label>
                             <ui:inputSelect aura:id="storageManufacturer"
                                             class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Manufacturer__c!=v.changeOrder.Storage_Manufacturer__change?'input-changed':'')}"
-                                            value="{!v.customerInformation.Storage_Manufacturer__change}">
+                                            value="{!v.changeOrder.Storage_Manufacturer__change}">
                               <ui:inputSelectOption text="" label="Select"/>
                               <aura:iteration items="{!v.availableStorageManufacturers}" var="product">
                                 <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Manufacturer__c}"/>
@@ -512,7 +512,7 @@
                             </label>
                             <ui:inputSelect aura:id="storageInverterManufacturer"
                                             class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Inverter_Manufacturer__c!=v.changeOrder.Storage_Inverter_Manufacturer__change?'input-changed':'')}"
-                                            value="{!v.customerInformation.Storage_Inverter_Manufacturer__change}">
+                                            value="{!v.changeOrder.Storage_Inverter_Manufacturer__change}">
                               <ui:inputSelectOption text="" label="Select"/>
                               <aura:iteration items="{!v.availableStorageInverterManufacturers}" var="product">
                                 <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Inverter_Manufacturer__c}"/>
