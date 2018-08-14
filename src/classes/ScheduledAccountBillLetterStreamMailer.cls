@@ -9,7 +9,7 @@
 
 public with sharing class ScheduledAccountBillLetterStreamMailer implements Schedulable {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
-    public Integer maxPackageSize = 10*1000*1000;
+    public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
 
     public void execute(SchedulableContext sc){
