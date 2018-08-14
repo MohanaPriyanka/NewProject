@@ -165,6 +165,7 @@
             if (customer.Loan__r.Lead__r.Loan_System_Information__c) {
                 const changeOrder = JSON.parse(customer.Loan__r.Lead__r.Loan_System_Information__c);
                 helper.defaultChangeOrderLeadField(changeOrder, 'System_Cost', customer);
+                helper.defaultChangeOrderLeadField(changeOrder, 'Storage', customer);
                 helper.defaultChangeOrderLeadField(changeOrder, 'Requested_Loan_Amount', customer);
                 helper.defaultChangeOrderLoanField(changeOrder, 'Estimated_Completion_Date', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Generator_Nameplate_Capacity', customer);
@@ -426,5 +427,21 @@
         $A.util.removeClass(component.find("closeBuildingPermitModalButton"), 'noDisplay');
         $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
+    },
+
+    validateStorageFields : function(component) {
+        let previousValue = component.get('v.customerInformtation.Loan__r.Lead__r.Storage__c')
+        let currentValue = component.get('v.changeOrder.Storage__change')
+        if (!currentValue && previousValue) {
+            let changeOrder = component.get('v.changeOrder')
+            changeOrder.Storage_Grid_Hybrid__change = false;
+            changeOrder.Storage_Full_or_Partial_Home__change = '';
+            changeOrder.Storage_Capacity__change = '';
+            changeOrder.Storage_Manufacturer__change  = '';
+            changeOrder.Storage_Model__change = '';
+            changeOrder.Storage_Inverter_Manufacturer__change = '';
+            changeOrder.Storage_Inverter_Model__change = '';
+            component.set('v.changeOrder', changeOrder);
+        }
     },
 })

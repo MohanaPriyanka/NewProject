@@ -100,6 +100,8 @@
   <aura:attribute name="enableStorage" type="Boolean" default="false" />
   <aura:attribute name="storageHybrid" type="String" default='No'/>
   <aura:attribute name="homeBackupOptions" type="List"/>
+  <aura:attribute name="addStorage" type="Boolean"/>
+
 
   <!-- main issues include the ability to break out subTasks within the task
        table. The tasks break out for each task with subTasks,
@@ -258,7 +260,7 @@
                 <ui:outputText value="{!v.customerInformation.Storage_Manufacturer__c}"/>
               </div>
             </div>
-            <div class="slds-col slds-size_2-of-3 slds-form-element slds-p-bottom_small">
+            <div class="slds-col slds-size_1-of-3 slds-form-element slds-p-bottom_small">
               <label class="slds-form-element__label" for="input-03">Model Number</label>
               <div class="slds-form-element__control">
                 <ui:outputText value="{!v.customerInformation.Storage_Model__c}"/>
@@ -432,13 +434,14 @@
                       </div>
                     </div>
                   </fieldset>
-                  <aura:if isTrue="{!v.enableStorage &amp;&amp; v.customer.Loan__r.Product__r.External_Name__c != 'MSLP' &amp;&amp; v.customerInformation.Loan__r.Lead__r.Storage__c == false}">
+                  <aura:if isTrue="{!v.enableStorage &amp;&amp; v.customer.Loan__r.Product__r.External_Name__c != 'MSLP'}">
+
                     <div class="slds-text-heading--label slds-m-left_small slds-m-bottom_medium slds-m-top_small">
                       <lightning:input type="checkbox" label="Add Storage"
-                                       checked="{!v.addStorage}"/>
+                                       checked="{!v.changeOrder.Storage__change}"/>
                     </div>
                   </aura:if>
-                  <aura:if isTrue="{!or(v.customerInformation.Loan__r.Lead__r.Storage__c, v.addStorage)}">
+                  <aura:if isTrue="{!v.changeOrder.Storage__change}">
                     <fieldset class="slds-form--compound">
                       <div class="slds-form-element__group">
                         <div class="slds-form-element__row">
@@ -457,7 +460,7 @@
                             <label class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}">
                               <b>Storage Capacity (kW)</b>
                             </label>
-                            <ui:inputNumber aura:id="storageCost"
+                            <ui:inputNumber aura:id="storageCapacity"
                                             class="{!'slds-input ' + (v.customerInformation.Storage_Capacity__c!=v.changeOrder.Storage_Capacity__change?'input-changed':'')}"
                                             value="{!v.changeOrder.Storage_Capacity__change}"/>
                           </div>
@@ -472,7 +475,7 @@
                                                 class="{!'slds-form-element__label ' + (v.customerInformation.Storage_Full_or_Partial_Home__c!=v.changeOrder.Storage_Full_or_Partial_Home__change?'input-changed':'')}"
                                                 value="{!v.changeOrder.Storage_Full_or_Partial_Home__change}">
                                   <aura:iteration items="{!v.homeBackupOptions}" var="opts">
-                                    <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" value="{!opts.text == v.customerInformation.Storage_Full_or_Partial_Home__c}"/>
+                                    <ui:inputSelectOption label="{!opts.text}" text="{!opts.text}" />
                                   </aura:iteration>
                                 </ui:inputSelect>
                               </div>
@@ -492,7 +495,7 @@
                                             value="{!v.changeOrder.Storage_Manufacturer__change}">
                               <ui:inputSelectOption text="" label="Select"/>
                               <aura:iteration items="{!v.availableStorageManufacturers}" var="product">
-                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Manufacturer__c}"/>
+                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}"/>
                               </aura:iteration>
                             </ui:inputSelect>
                           </div>
@@ -515,7 +518,7 @@
                                             value="{!v.changeOrder.Storage_Inverter_Manufacturer__change}">
                               <ui:inputSelectOption text="" label="Select"/>
                               <aura:iteration items="{!v.availableStorageInverterManufacturers}" var="product">
-                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}" value="{!product.text == v.customerInformation.Storage_Inverter_Manufacturer__c}"/>
+                                <ui:inputSelectOption label="{!product.text}" text="{!product.text}"/>
                               </aura:iteration>
                             </ui:inputSelect>
                           </div>

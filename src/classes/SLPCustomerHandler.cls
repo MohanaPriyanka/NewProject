@@ -324,14 +324,19 @@ public without sharing class SLPCustomerHandler {
             re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
             re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
             re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
-            re.Storage_Grid_Hybrid__c = (Boolean) changeOrder.get('Storage_Grid_Hybrid__change');
             re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
             re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
             re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
             re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
             re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
             re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
-
+            re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
+            update re.Loan__r.Lead__r;
+            if (changeOrder.get('Storage_Grid_Hybrid__change') === 'Yes') {
+                re.Storage_Grid_Hybrid__c = true;
+            } else {
+                re.Storage_Grid_Hybrid__c = false;
+            }
             if (changeOrder.get('Estimated_Completion_Date__change') != '') {
                 re.Loan__r.Estimated_Completion_Date__c = Date.parse((String) changeOrder.get('Estimated_Completion_Date__change'));
                 Loan__c loan = re.Loan__r;
@@ -343,6 +348,7 @@ public without sharing class SLPCustomerHandler {
                 update re.Loan__r;
             }
             update re;
+
             // Toggling Update Dummy on Lead checks RE and closes out the Provide System Info task if complete
             Lead lead = new Lead(
                 Id = re.Loan__r.Lead__c,
