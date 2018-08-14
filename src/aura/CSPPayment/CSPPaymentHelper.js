@@ -11,15 +11,40 @@
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Bank_Account_Number__c, 'BankAccountNumber', 2, '');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Bank_Account_Name__c,'BankAccountName', 2, '');
         } else {
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Type__c,'CCType',4, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Number__c,'CCNumber',15, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Security_Code__c,'CVV',3, 'Credit Card Security code should be 3 or 4 digits.');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Month__c,'ExpyMonth',1, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Year__c,'ExpyYear',4, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_Zip_Postal__c,'BillingZipcode',5, '');
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_First_Name__c,'FirstName',2, '');            
-            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_Last_Name__c,'LastName',2, '');
-        } 
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Type__c, 'CCType', 4, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Number__c, 'CCNumber', 15, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Security_Code__c, 'CVV', 3, 'Credit Card Security code should be 3 or 4 digits.');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Month__c, 'ExpyMonth', 1, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Card_Expiration_Year__c, 'ExpyYear', 4, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_Zip_Postal__c, 'BillingZipcode', 5, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_First_Name__c, 'FirstName', 2, '');
+            this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Billing_Last_Name__c, 'LastName', 2, '');
+            if (inputFields.ChargentOrders__Card_Number__c.length > 16) {
+                this.addErrorAnimation(component, 'CCNumber');
+                this.unhideFieldsShowError(
+                    component,
+                    'Your ' + inputFields.ChargentOrders__Card_Type__c +
+                    ' number is too long. Please use numbers only, no spaces');
+            }
+            if ((inputFields.ChargentOrders__Card_Type__c === 'Visa' ||
+                 inputFields.ChargentOrders__Card_Type__c === 'Mastercard' ||
+                 inputFields.ChargentOrders__Card_Type__c === 'Discover') &&
+                inputFields.ChargentOrders__Card_Security_Code__c.length !== 3) {
+                this.addErrorAnimation(component, 'CVV');
+                this.unhideFieldsShowError(
+                    component,
+                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be 3 digits');
+            }
+            if ((inputFields.ChargentOrders__Card_Type__c === 'AMEX' ||
+                 inputFields.ChargentOrders__Card_Type__c === 'American Express') &&
+                inputFields.ChargentOrders__Card_Security_Code__c.length !== 4) {
+                this.addErrorAnimation(component, 'CVV');
+                this.unhideFieldsShowError(
+                    component,
+                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be 4 digits');
+            }
+        }
+
         // Because it is a picklist, v.Autopay & v.ACH are stored as text:
         if (!component.get("v.AutopayAcknowledgement") && component.get("v.Autopay") === 'true') {
             this.unhideFieldsShowError(component, component.get("v.ErrorText") + 'You must acknowledge the autopay disclaimer to sign up for Autopay.');
@@ -118,14 +143,20 @@
             });
 
             actionSubmit.setCallback(this,function(resp){
-                var self = this;
-
                 if (resp.getState() === 'SUCCESS') {
                     resolve('continue');
                     component.set("v.readyToChargeOrders", resp.getReturnValue());
                 } else {
-                    component.set("v.Spinner", false);   
-                    this.showFinalError(component);
+                    component.set("v.Spinner", false);
+                    chargentFields.ChargentOrders__Card_Number__c = '(removed)';
+                    helper.raiseError(
+                        'CSPPaymentHelper',
+                        'insertOrders',
+                        resp.getState() + ' caught: ' + JSON.stringify(resp.getError(), null, 2),
+                        JSON.stringify(actionSubmit.getParams()),
+                        {suppressAlert: true}
+                    );
+                    helper.showFinalError(component);
                 }
             });   
             $A.enqueueAction(actionSubmit);  
