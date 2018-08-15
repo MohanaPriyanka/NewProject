@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="CreateOrderandPaymentRequest">
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="CreateOrderandPaymentRequest" extends="c:BlueWaveParent">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="StaticTotalDue" type="Decimal" default="0.00"/>
   <aura:attribute name="DynamicTotalDue" type="Decimal" default="0.00"/>
@@ -37,6 +37,7 @@
   <aura:attribute name="ErrorText" type="String"/>
   <aura:attribute name="showErrorText" type="Boolean" default="false"/>
 
+  <c:LightningErrorHandler/>
   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
     <div class="slds-col slds-align--absolute-center">
       <fieldset class="slds-theme--default">
