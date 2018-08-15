@@ -429,19 +429,19 @@
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
     },
 
-    validateStorageFields : function(component) {
-        let previousValue = component.get('v.customerInformtation.Loan__r.Lead__r.Storage__c')
-        let currentValue = component.get('v.changeOrder.Storage__change')
-        if (!currentValue && previousValue) {
-            let changeOrder = component.get('v.changeOrder')
-            changeOrder.Storage_Grid_Hybrid__change = false;
-            changeOrder.Storage_Full_or_Partial_Home__change = '';
-            changeOrder.Storage_Capacity__change = '';
-            changeOrder.Storage_Manufacturer__change  = '';
-            changeOrder.Storage_Model__change = '';
-            changeOrder.Storage_Inverter_Manufacturer__change = '';
-            changeOrder.Storage_Inverter_Model__change = '';
-            component.set('v.changeOrder', changeOrder);
-        }
-    },
+    // validateStorageFields : function(component) {
+    //     let previousValue = component.get('v.customerInformation.Loan__r.Lead__r.Storage__c');
+    //     let currentValue = component.get('v.changeOrder.Storage__change');
+    //     alert('outside if block');
+    //     if (!currentValue && previousValue) {
+    //         component.set('v.changeOrder.Storage_Grid_Hybrid__change', 'No');
+    //         component.set('v.changeOrder.Storage_Full_or_Partial_Home__change', 'N/A');
+    //         component.set('v.changeOrder.Storage_Capacity__change', '');
+    //         component.set('v.changeOrder.Storage_Manufacturer__change', '');
+    //         component.set('v.changeOrder.Storage_Model__change', '');
+    //         component.set('v.changeOrder.Storage_Inverter_Manufacturer__change', '');
+    //         component.set('v.changeOrder.Storage_Inverter_Model__change', '');
+    //         alert('inside if block');
+    //     }
+    // },
 })

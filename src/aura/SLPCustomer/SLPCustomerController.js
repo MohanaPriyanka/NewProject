@@ -536,7 +536,7 @@
     },
 
     saveAndRequestChangeOrder : function(component, event, helper) {
-        helper.validateStorageFields(component);
+        // helper.validateStorageFields(component);
         const saveAction = component.get("c.saveChangeOrder");
         const changeOrder = component.get('v.changeOrder');
         changeOrder['Requested_Loan_Amount__change'] = changeOrder.System_Cost__change - changeOrder.Down_Payment__change;

@@ -33,7 +33,7 @@ public without sharing class SLPAddCustomer {
         if (newLead.LASERCA__Home_State__c.length() > 2) {
             newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
         }
-        
+
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Unfinished_Lead__c = true;
