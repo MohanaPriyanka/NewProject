@@ -38,8 +38,10 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
             return ;
         }
 
+        Set<Id> accountBillIds = new Set<Id>();
         for (Account_Bill__c accountBill : accountBills) {
             accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
+            accountBillIds.add(accountBill.Id);
         }
 
         List<ContentDocument> documents = [
@@ -74,26 +76,44 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
         HttpRequest request = lss.buildRequestWithFile(letterPackage, 'filename.zip');
         Http http = new Http();
         HttpResponse response;
-        String responseXMLString;
         response = http.send(request);
         Dom.Document responseXML = response.getBodyDocument();
-        responseXMLString = responseXML.toXmlString();
-        // will return null if a job wasn't posted correctly
-        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
-
-        if (newJob == null) {
-            Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
-        } else {
-            update markAccountBillsAsMailed(accountBillsByDocIds.values(), newJob);
-        }
+        String responseXMLString = responseXML.toXmlString();
+        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds));
     }
 
-    public List<Account_Bill__c> markAccountBillsAsMailed(List<Account_Bill__c> accountBills, LetterStreamJob__c newJob) {
+    public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
+        List<Account_Bill__c> accountBills = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Id IN : accountBillIds
+        ];
         for (Account_Bill__c accountBill : accountBills) {
             accountBill.Ready_For_Paper_Bill_Queue__c = false;
             accountBill.Added_To_Paper_Bill_Queue__c = true;
-            accountBill.LetterStreamJob__c = newJob.Id;
+            accountBill.LetterStreamJob__c = newJobId;
         }
         return accountBills;
+    }
+
+    public class QueueHandleResponse implements Queueable {
+        public String responseXMLString;
+        public Set<Id> accountBillIds;
+
+        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds) {
+            this.responseXMLString = responseXMLString;
+            this.accountBillIds = accountBillIds;
+        }
+
+        public void execute(QueueableContext contact) {
+            LetterStreamService lss = new LetterStreamService();
+            LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
+
+            if (newJob == null) {
+                Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
+            } else {
+                update markAccountBillsAsMailed(accountBillIds, newJob.Id);
+            }
+        }
     }
 }
