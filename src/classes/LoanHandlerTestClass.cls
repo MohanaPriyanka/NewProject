@@ -870,7 +870,9 @@ public class LoanHandlerTestClass {
         }
         List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
         for (Database.LeadConvertResult lcr : lcrs)  {
-            System.assert(lcr.isSuccess());
+            if (!lcr.isSuccess()) {
+                System.assertEquals(null, System.JSON.serializePretty(lcr.getErrors()));
+            }
         }
     }
 

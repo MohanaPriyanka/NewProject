@@ -1222,6 +1222,86 @@ public class TestBillCreationandPayment {
 
     }
 
+    @IsTest public static void testCreditCardFailures(){
+        List<SObject> chOrderList = new List<SObject>();
+        User userA = [SELECT Id FROM User WHERE Username='testBillCreationandPay@bluewavesolar.com'];
+        Account accountA = [SELECT Id, Name FROM Account WHERE Name = 'Account A'];
+
+        Test.startTest();
+
+        setBillsToPublished();
+
+        System.runAs(userA){
+            List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
+            for (AggregateResult lineItem : systemBills) {
+                ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
+                    Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
+                    ChargentOrders__Subtotal__c = (Decimal)lineItem.get('ChargentOrders__Subtotal__c'),
+                    Entity__c = (String)lineItem.get('Entity__c'));
+                chOrderList.add(billsToCharge);
+            }
+            System.assertEquals(1, chOrderList.size());
+            ChargentOrders__ChargentOrder__c paymentInfoCCTooLong =
+                new ChargentOrders__ChargentOrder__c(
+                    ChargentOrders__Payment_Method__c = 'Credit Card',
+                    ChargentOrders__Bank_Name__c = '',
+                    ChargentOrders__Bank_Routing_Number__c = '',
+                    ChargentOrders__Bank_Account_Type__c = '',
+                    ChargentOrders__Bank_Account_Number__c = '',
+                    ChargentOrders__Bank_Account_Name__c = '',
+                    ChargentOrders__Card_Number__c = '12345678901234567',
+                    ChargentOrders__Card_Security_Code__c = '121',
+                    ChargentOrders__Card_Expiration_Month__c = '02',
+                    ChargentOrders__Card_Expiration_Year__c = '2020',
+                    ChargentOrders__Card_Type__c = 'Master Card',
+                    ChargentOrders__Billing_Address__c = '200 Street',
+                    ChargentOrders__Billing_City__c = 'City',
+                    ChargentOrders__Billing_State__c = 'MA',
+                    ChargentOrders__Billing_Zip_Postal__c  = '02114',
+                    ChargentOrders__Billing_First_Name__c = 'Jordan',
+                    ChargentOrders__Billing_Last_Name__c = 'Testcase');
+
+            ChargentOrders__ChargentOrder__c paymentInfoCSCTooLong =
+                new ChargentOrders__ChargentOrder__c(
+                    ChargentOrders__Payment_Method__c = 'Credit Card',
+                    ChargentOrders__Bank_Name__c = '',
+                    ChargentOrders__Bank_Routing_Number__c = '',
+                    ChargentOrders__Bank_Account_Type__c = '',
+                    ChargentOrders__Bank_Account_Number__c = '',
+                    ChargentOrders__Bank_Account_Name__c = '',
+                    ChargentOrders__Card_Number__c = '123456789012345',
+                    ChargentOrders__Card_Security_Code__c = '12134',
+                    ChargentOrders__Card_Expiration_Month__c = '02',
+                    ChargentOrders__Card_Expiration_Year__c = '2020',
+                    ChargentOrders__Card_Type__c = 'Mastercard',
+                    ChargentOrders__Billing_Address__c = '200 Street',
+                    ChargentOrders__Billing_City__c = 'City',
+                    ChargentOrders__Billing_State__c = 'MA',
+                    ChargentOrders__Billing_Zip_Postal__c  = '02114',
+                    ChargentOrders__Billing_First_Name__c = 'Jordan',
+                    ChargentOrders__Billing_Last_Name__c = 'Testcase');
+
+            Boolean caughtException = false;
+            try {
+                CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoCCTooLong, true);
+            } catch (AuraHandledException ahe) {
+                caughtException = true;
+            }
+            // We should catch credit cards that are too long and throw an AHE for the lighting component to handle
+            System.assertEquals(true, caughtException);
+
+            caughtException = false;
+            try {
+                CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoCSCTooLong, true);
+            } catch (AuraHandledException ahe) {
+                caughtException = true;
+            }
+            // We should catch security codes that are too long and throw an AHE for the lighting component to handle
+            System.assertEquals(true, caughtException);
+        }
+        Test.stopTest();
+    }
+
     @IsTest
     public static void testPriorBillHandling(){
         List<SObject> chOrderList = new List<SObject>();
