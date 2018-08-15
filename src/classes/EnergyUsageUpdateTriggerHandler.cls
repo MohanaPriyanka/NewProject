@@ -58,7 +58,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                         ' WHERE Schedule_Z__c IN : scheduleZs ' +
                         ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c= \'BlueWave\' ' +
                         ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
-                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' ';
+                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
         return Database.getQueryLocator(query);
     }
 
