@@ -123,6 +123,7 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
+                Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -145,6 +146,7 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
+                Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -193,6 +195,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
@@ -201,6 +204,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
@@ -209,6 +213,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountB.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Non-Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
         insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
@@ -399,6 +404,155 @@ public class TestBillCreationandPayment {
         System.AssertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
         Test.stopTest();
     }
+
+    @IsTest public static void testRadianGenAnchorBills(){
+        Test.startTest();
+
+        Shared_Solar_System__c sssRadianGen = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Name =  'Oxford Barrett St. P1'
+        ];
+
+
+        Schedule_Z__c schedZ = [
+            SELECT Id, Name
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+
+        Utility_Account_Log__c ualog = [
+            SELECT Id
+            FROM Utility_Account_Log__c
+            WHERE Name = '0000234'
+        ];
+
+        //create more opps
+        Opportunity opp1 = [
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, Product__c
+            FROM Opportunity
+            WHERE Name = 'AOpp One'
+        ];
+        Account accountParent = [SELECT Id FROM Account WHERE Name = 'Account Parent' LIMIT 1];
+
+        Account accountC = new Account(name = 'Account C',
+            Parent_Account__c = accountParent.Id);
+
+        Opportunity opp4 = new Opportunity(
+            Name = 'Opp Four',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'Complete',
+            Customer_Group__c = 'Anchor',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        Opportunity opp5 = new Opportunity(
+            Name = 'Opp Five',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'Complete',
+            Customer_Group__c = 'Public Offtake',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        Opportunity opp6 = new Opportunity(
+            Name = 'Opp Six',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'PPA/NMCPA Signed',
+            Customer_Group__c = 'Residential',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        insert new List<Opportunity> {opp4, opp5, opp6};
+
+        Utility_Account_Subscription__c uas4 =
+            new Utility_Account_Subscription__c(Name = '0000444',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp4.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        Utility_Account_Subscription__c uas5 =
+            new Utility_Account_Subscription__c(Name = '0000555',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp5.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        Utility_Account_Subscription__c uas6 =
+            new Utility_Account_Subscription__c(Name = '0000666',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp6.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        insert new List<Utility_Account_Subscription__c> {uas4, uas5, uas6};
+
+        Schedule_Z__c schedZ3 = new Schedule_Z__c(
+            Name = 'Z3 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Status__c = 'Billing'
+        );
+        insert schedZ3;
+
+        Date myDateMar = Date.newInstance(2016, 3, 3);
+        Date myDateApr = Date.newInstance(2016, 4, 4);
+
+        Energy_Usage_Update__c prodUpdate = new Energy_Usage_Update__c (
+            Name = 'sssA RadianGen - April 2016',
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Schedule_Z__c = schedZ3.Id,
+            Production__c = 90000,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateApr,
+            Total_System_NMCs__c = 16632,
+            Date__c = myDateMar
+        );
+
+        insert prodUpdate;
+
+        //The PPA/NMCPA Signed Opp should not be showing up in Previews
+        System.assertEquals(3, (PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
+
+        sssRadianGen.Billing_Anchors__c = 'RadianGen';
+        update sssRadianGen;
+        System.assertEquals(1,(PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
+
+        //Test whether bills have been generated for anchor bills
+        prodUpdate.Generate_Bills__c = true;
+        update  prodUpdate;
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Opportunity__c
+            FROM System_Bill__c
+            WHERE Opportunity__c = : opp4.Id
+        ];
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : opp4.AccountId
+        ];
+
+        System.assertEquals(0, systemBills.size());
+        System.assertEquals(0, accountBills.size());
+
+        Test.stopTest();
+    }
+
+
 
     @isTest public static void testDontGenerateBills(){
         Test.startTest();

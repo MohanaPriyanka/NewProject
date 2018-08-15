@@ -29,9 +29,14 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             Database.executeBatch(this, 10);
         } else {
             List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
+                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Name,Utility_Account_Subscription__r.Opportunity__c,
+                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
+                    Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c
                 FROM Schedule_Z_Subscription__c
                 WHERE Schedule_Z__c IN : scheduleZs
+                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
+                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
+                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential')
             ];
             createBills(scheduleZSubscriptions);
         }
@@ -50,7 +55,10 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
                         ' FROM Schedule_Z_Subscription__c ' +
-                        ' WHERE Schedule_Z__c IN : scheduleZs';
+                        ' WHERE Schedule_Z__c IN : scheduleZs ' +
+                        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c= \'BlueWave\' ' +
+                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
+                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' ';
         return Database.getQueryLocator(query);
     }
 
@@ -73,8 +81,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
         List<Opportunity> oppList = [
-            SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
-                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+            SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__r.Billing_Anchors__c,
+                Shared_Solar_System__c, AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
