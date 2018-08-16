@@ -313,28 +313,36 @@
                   </td>
                 </tr>
               </aura:if>
-              <aura:if isTrue="{!or((v.equipment.Storage_Grid_Hybrid__c != v.changeOrder.Storage_Grid_Hybrid__change), (v.equipment.Storage_Full_or_Partial_Home__c != v.changeOrder.Storage_Full_or_Partial_Home__change))}">
+              <aura:if isTrue="{!(v.equipment.Storage_Grid_Hybrid__c != v.changeOrder.Storage_Grid_Hybrid__change)}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Does the system provide backup power when the grid is down?"/>
+                  </td>
+                  <aura:if isTrue="{!v.equipment.Storage_Grid_Hybrid__c}">
+                    <td>
+                      <ui:outputText value="Yes"/>
+                    </td>
+                  </aura:if>
+                  <aura:if isTrue="{!!v.equipment.Storage_Grid_Hybrid__c}">
+                    <td>
+                      <ui:outputText value="No"/>
+                    </td>
+                  </aura:if>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Storage_Grid_Hybrid__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!and((v.changeOrder.Storage_Grid_Hybrid__change),(v.equipment.Storage_Full_or_Partial_Home__c != v.changeOrder.Storage_Full_or_Partial_Home__change))}">
                 <tr>
                   <td>
                     <ui:outputText value="Home Backup Options"/>
                   </td>
                   <td>
-                    <aura:if isTrue="{!and(v.equipment.Storage_Full_or_Partial_Home__c == null, v.equipment.Storage_Grid_Hybrid__c == null)}">
-                      <ui:outputText value=""/>
-                      <aura:set attribute="else">
-                        <ui:outputText value="{!v.equipment.Storage_Grid_Hybrid__c}"/>
-                        <ui:outputText value="{!v.equipment.Storage_Full_or_Partial_Home__c}"/>
-                      </aura:set>
-                    </aura:if>
+                    <ui:outputText value="{!v.equipment.Storage_Full_or_Partial_Home__c}"/>
                   </td>
                   <td>
-                    <aura:if isTrue="{!and(v.changeOrder.Storage_Grid_Hybrid__change == null, v.changeOrder.Storage_Model__change == null)}">
-                      <ui:outputText value=""/>
-                      <aura:set attribute="else">
-                        <ui:outputText value="{!v.changeOrder.Storage_Grid_Hybrid__change}"/>
-                        <ui:outputText value="{!v.changeOrder.Storage_Full_or_Partial_Home__c}"/>
-                      </aura:set>
-                    </aura:if>
+                    <ui:outputText value="{!v.changeOrder.Storage_Full_or_Partial_Home__change}"/>
                   </td>
                 </tr>
               </aura:if>

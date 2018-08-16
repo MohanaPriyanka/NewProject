@@ -347,6 +347,7 @@ public without sharing class CAPController {
                 re.Storage_Grid_Hybrid__c = true;
             } else {
                 re.Storage_Grid_Hybrid__c = false;
+                re.Storage_Full_or_Partial_Home__c = 'N/A';
             }
             update re.Loan__r.Lead__r;
         } else {
