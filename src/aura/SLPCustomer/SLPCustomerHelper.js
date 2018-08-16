@@ -175,7 +175,7 @@
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Manufacturer', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Model_Number', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Number_of_Inverters', customer);
-                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Grid_Hybrid', customer);
+                helper.defaultChangeOrderStringtoBooleanField(changeOrder, 'Storage_Grid_Hybrid', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Full_or_Partial_Home', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Capacity', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Manufacturer', customer);
@@ -208,6 +208,16 @@
     defaultChangeOrderEquipmentField : function(changeOrder, field, customer) {
         if (!changeOrder.hasOwnProperty(field + '__change')) {
             changeOrder[field + '__change'] = customer[field + '__c'];
+        }
+    },
+
+    defaultChangeOrderStringtoBooleanField : function(changeOrder, field, customer) {
+        if (!changeOrder.hasOwnProperty(field + '__change')) {
+            if (customer[field + '__c']) {
+                changeOrder[field + '__change'] = 'Yes'
+            } else {
+                changeOrder[field + '__change'] = 'No'
+            }
         }
     },
 
@@ -428,20 +438,4 @@
         $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
     },
-
-    // validateStorageFields : function(component) {
-    //     let previousValue = component.get('v.customerInformation.Loan__r.Lead__r.Storage__c');
-    //     let currentValue = component.get('v.changeOrder.Storage__change');
-    //     alert('outside if block');
-    //     if (!currentValue && previousValue) {
-    //         component.set('v.changeOrder.Storage_Grid_Hybrid__change', 'No');
-    //         component.set('v.changeOrder.Storage_Full_or_Partial_Home__change', 'N/A');
-    //         component.set('v.changeOrder.Storage_Capacity__change', '');
-    //         component.set('v.changeOrder.Storage_Manufacturer__change', '');
-    //         component.set('v.changeOrder.Storage_Model__change', '');
-    //         component.set('v.changeOrder.Storage_Inverter_Manufacturer__change', '');
-    //         component.set('v.changeOrder.Storage_Inverter_Model__change', '');
-    //         alert('inside if block');
-    //     }
-    // },
 })

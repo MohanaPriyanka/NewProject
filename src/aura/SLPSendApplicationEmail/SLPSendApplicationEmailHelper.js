@@ -176,7 +176,7 @@
         component.set('v.availableSRECProducts', null);
     },
 
-    getAvailableLoanProducts : function(component, event, helper) { 
+    getAvailableLoanProducts : function(component, event, helper) {
         var action = component.get("c.getProducts");
         action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c"),
                           productType: 'Residential Loan'});

@@ -300,6 +300,103 @@
                   </td>
                 </tr>
               </aura:if>
+              <aura:if isTrue="{!v.equipment.Loan__r.Lead__r.Storage__c != v.changeOrder.Storage__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Add or Remove Solar Storage"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{! '' + v.equipment.Loan__r.Lead__r.Storage__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{! '' + v.changeOrder.Storage__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!or((v.equipment.Storage_Grid_Hybrid__c != v.changeOrder.Storage_Grid_Hybrid__change), (v.equipment.Storage_Full_or_Partial_Home__c != v.changeOrder.Storage_Full_or_Partial_Home__change))}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Home Backup Options"/>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.equipment.Storage_Full_or_Partial_Home__c == null, v.equipment.Storage_Grid_Hybrid__c == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.equipment.Storage_Grid_Hybrid__c}"/>
+                        <ui:outputText value="{!v.equipment.Storage_Full_or_Partial_Home__c}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.changeOrder.Storage_Grid_Hybrid__change == null, v.changeOrder.Storage_Model__change == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.changeOrder.Storage_Grid_Hybrid__change}"/>
+                        <ui:outputText value="{!v.changeOrder.Storage_Full_or_Partial_Home__c}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!v.equipment.Storage_Capacity__c != v.changeOrder.Storage_Capacity__change}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Storage Capacity (kW)"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.equipment.Storage_Capacity__c}"/>
+                  </td>
+                  <td>
+                    <ui:outputText value="{!v.changeOrder.Storage_Capacity__change}"/>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!or((v.equipment.Storage_Manufacturer__c != v.changeOrder.Storage_Manufacturer__change), (v.equipment.Storage_Model__c != v.changeOrder.Storage_Model__change))}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Battery Make (Model)"/>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.equipment.Storage_Model__c == null, v.equipment.Storage_Manufacturer__c == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.equipment.Storage_Manufacturer__c + ' (' + v.equipment.Storage_Model__c + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.changeOrder.Storage_Manufacturer__change == null, v.changeOrder.Storage_Model__change == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.changeOrder.Storage_Manufacturer__change + ' (' + v.changeOrder.Storage_Model__change + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:if>
+              <aura:if isTrue="{!or((v.equipment.Storage_Inverter_Manufacturer__c != v.changeOrder.Storage_Inverter_Manufacturer__change), (v.equipment.Storage_Inverter_Model__c != v.changeOrder.Storage_Inverter_Model__change))}">
+                <tr>
+                  <td>
+                    <ui:outputText value="Battery Inverter Make (Model)"/>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.equipment.Storage_Inverter_Model__c == null, v.equipment.Storage_Inverter_Manufacturer__c == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.equipment.Storage_Inverter_Manufacturer__c + ' (' + v.equipment.Storage_Inverter_Model__c + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                  <td>
+                    <aura:if isTrue="{!and(v.changeOrder.Storage_Inverter_Manufacturer__change == null, v.changeOrder.Storage_Inverter_Model__change == null)}">
+                      <ui:outputText value=""/>
+                      <aura:set attribute="else">
+                        <ui:outputText value="{!v.changeOrder.Storage_Inverter_Manufacturer__change + ' (' + v.changeOrder.Storage_Inverter_Model__change + ')'}"/>
+                      </aura:set>
+                    </aura:if>
+                  </td>
+                </tr>
+              </aura:if>
               </tbody>
             </table>
           </div>

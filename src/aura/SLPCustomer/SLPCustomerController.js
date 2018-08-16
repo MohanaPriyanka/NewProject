@@ -526,7 +526,7 @@
                    equipment.Storage_Model__c != changeOrder.Storage_Model__change ||
                    equipment.Storage_Inverter_Manufacturer__c != changeOrder.Storage_Inverter_Manufacturer__change ||
                    equipment.Storage_Inverter_Model__c != changeOrder.Storage_Inverter_Model__change ||
-                   equipment.Loan__r.Lead__r.Storage__c != changeOrder.Storage__c ||
+                   equipment.Loan__r.Lead__r.Storage__c != changeOrder.Storage__change ||
                    (!equipment.Loan__r.Estimated_Completion_Date__c?'':helper.getFormattedDate(equipment.Loan__r.Estimated_Completion_Date__c)) != changeOrder.Estimated_Completion_date__change) {
             // Ignore types above so that undefined == null
             component.set('v.requestButtonEnabled', true);
@@ -536,7 +536,6 @@
     },
 
     saveAndRequestChangeOrder : function(component, event, helper) {
-        // helper.validateStorageFields(component);
         const saveAction = component.get("c.saveChangeOrder");
         const changeOrder = component.get('v.changeOrder');
         changeOrder['Requested_Loan_Amount__change'] = changeOrder.System_Cost__change - changeOrder.Down_Payment__change;

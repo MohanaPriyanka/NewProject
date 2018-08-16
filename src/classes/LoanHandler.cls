@@ -889,7 +889,7 @@ public without sharing class LoanHandler{
         }
 
         for (Residential_Equipment__c equipment : [SELECT Id, Lead__c, Lead__r.Id, Loan__c, Loan__r.Id, Loan__r.Commencement_Datee__c,
-                                                    Lead__r.Requested_Loan_Amount__c, Type_of_Module__c, Type_of_Inverter__c,
+                                                    Lead__r.Requested_Loan_Amount__c, Type_of_Module__c, Type_of_Inverter__c, Loan__r.Lead__c,
                                                     Number_of_Modules__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
                                                     Module_Manufacturer__c, Module_Model_Number__c, Inverter_Manufacturer__c, Inverter_Model_Number__c,
                                                     Loan__r.Lead__r.Storage__c, Storage_Grid_Hybrid__c, Storage_Full_or_Partial_Home__c, Storage_Capacity__c,
@@ -914,23 +914,23 @@ public without sharing class LoanHandler{
     }
 
     public static Boolean equipmentPopulated(Residential_Equipment__c equipment) {
-        if (equipment.Loan__r.Lead__r.Storage__c) {
-            return (equipment.Module_Manufacturer__c != null
-                && equipment.Module_Model_Number__c != null
-                && equipment.Number_of_Modules__c != null
-                && equipment.Inverter_Manufacturer__c != null
-                && equipment.Inverter_Model_Number__c != null
-                && equipment.Number_of_Inverters__c != null
-                && equipment.Generator_Nameplate_Capacity__c != null
-                && equipment.Loan__r.Commencement_Datee__c != null
-                && equipment.Storage_Grid_Hybrid__c != null
-                && equipment.Storage_Full_or_Partial_Home__c != null
-                && equipment.Storage_Capacity__c != null
-                && equipment.Storage_Manufacturer__c != null
-                && equipment.Storage_Model__c != null
-                && equipment.Storage_Inverter_Manufacturer__c != null
-                && equipment.Storage_Inverter_Model__c != null);
-        } else {
+//        if (equipment.Loan__r.Lead__r.Storage__c) {
+//            return (equipment.Module_Manufacturer__c != null
+//                && equipment.Module_Model_Number__c != null
+//                && equipment.Number_of_Modules__c != null
+//                && equipment.Inverter_Manufacturer__c != null
+//                && equipment.Inverter_Model_Number__c != null
+//                && equipment.Number_of_Inverters__c != null
+//                && equipment.Generator_Nameplate_Capacity__c != null
+//                && equipment.Loan__r.Commencement_Datee__c != null
+//                && equipment.Storage_Grid_Hybrid__c != null
+//                && equipment.Storage_Full_or_Partial_Home__c != null
+//                && equipment.Storage_Capacity__c != null
+//                && equipment.Storage_Manufacturer__c != null
+//                && equipment.Storage_Model__c != null
+//                && equipment.Storage_Inverter_Manufacturer__c != null
+//                && equipment.Storage_Inverter_Model__c != null);
+//        } else {
             return (equipment.Module_Manufacturer__c != null
                 && equipment.Module_Model_Number__c != null
                 && equipment.Number_of_Modules__c != null
@@ -939,7 +939,7 @@ public without sharing class LoanHandler{
                 && equipment.Number_of_Inverters__c != null
                 && equipment.Generator_Nameplate_Capacity__c != null
                 && equipment.Loan__r.Commencement_Datee__c != null);
-        }
+//        }
 
     }
 
