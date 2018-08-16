@@ -701,7 +701,7 @@ public class TestBillCreationandPayment {
         System.AssertEquals(345.28,updatedSBs[1].Due_This_Month__c);
 
         // Total payments should change:
-        System.AssertEquals(200,updatedSBs[1].Total_Payments_This_Month__c)
+        System.AssertEquals(200,updatedSBs[1].Total_Payments_This_Month__c);
 
         Test.stopTest();
     }
