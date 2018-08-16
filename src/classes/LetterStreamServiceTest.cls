@@ -389,7 +389,7 @@ public with sharing class LetterStreamServiceTest {
         List<LetterStreamJob__c> jobs = [
             SELECT Id
             FROM LetterStreamJob__c
-            WHERE CreatedDate > : now
+            WHERE CreatedDate > : now.addSeconds(-5)
         ];
 
         System.assertEquals(1, jobs.size());
