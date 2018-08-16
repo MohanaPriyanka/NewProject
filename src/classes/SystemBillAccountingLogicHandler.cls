@@ -175,7 +175,8 @@ public with sharing class SystemBillAccountingLogicHandler {
         trigsb.Payment_Plan_Balance__c = setNullToZero(oldSBMap.get(trigsb.Id).Payment_Plan_Balance__c);
         trigsb.Adjustments__c = setNullToZero(oldSBMap.get(trigsb.Id).Adjustments__c);
         trigsb.Total_Due__c = setNullToZero(oldSBMap.get(trigsb.Id).Total_Due__c);
-        // Previous Overpayments is not Writeable
+        // Previous Overpayments is not Writeable because it is a rollup field. Validation rule (cannot add/remove an
+        // overpayment to a published system bill)
 
         setAllNullsToZero(trigsb);
 
