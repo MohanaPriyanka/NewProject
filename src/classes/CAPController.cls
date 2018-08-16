@@ -51,7 +51,7 @@ public without sharing class CAPController {
                     Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
                     Loan__r.Commencement_Datee__c, Loan__r.Estimated_Completion_Date__c, Storage_Grid_Hybrid__c,
                     Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c,
-                    Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c
+                    Storage_Inverter_Model__c, Storage_Manufacturer__c, Storage_Model__c, Loan__r.Lead__r.Storage__c
                 FROM Residential_Equipment__r),
                 (SELECT Id, Name, Status__c FROM Partner_Tasks__r)
                 FROM Lead
@@ -300,7 +300,7 @@ public without sharing class CAPController {
                 Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
                 Lead__r.Maximum_monthly_Disbursement__c, Loan__r.DOER_Solar_Loann__c, Loan__r.Estimated_Completion_Date__c,
                 Storage_Grid_Hybrid__c, Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c,
-                Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c
+                Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c, Storage_Model__c
             FROM Residential_Equipment__c
             WHERE Loan__r.Lead__c =: leadId LIMIT 1
         ];
