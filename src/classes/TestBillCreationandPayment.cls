@@ -539,7 +539,8 @@ public class TestBillCreationandPayment {
         systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
         update systemBillList[1];
 
-        List <System_Bill__c> sbstoupdate = new list <System_Bill__c>();
+        List<Account_Bill__c> abList = new List<Account_Bill__c>();
+        List<System_Bill__c> sbstoupdate = new List<System_Bill__c>();
 
         for (Integer j = 3; j < 10 ; j++) {
             Boolean latefee = FALSE;
@@ -555,10 +556,12 @@ public class TestBillCreationandPayment {
                 new Account_Bill__c (Bill_Number__c = j,
                     Parent_Account__c = systemBillList[1].Property_Account_Id__c,
                     Name = 'First Last Month 2016' + j,
-                    Published__c = published,
+                    Published__c = false,
                     Unique_ID__c = '000111000111000111FAS' + j );
             insert accBillThree;
-
+            if (published) {
+                abList.add(accBillThree);
+            }
             System_Bill__c billThree =
                 new System_Bill__c (Shared_Solar_System__c = systemBillList[1].Shared_Solar_System_Id__c,
                     Shared_Solar_System_ID2__c = systemBillList[1].Shared_Solar_System_Id__c,
@@ -573,6 +576,11 @@ public class TestBillCreationandPayment {
         }
 
         insert sbstoupdate;
+
+        for (Account_Bill__c abToPub : abList){
+            abToPub.Published__c = true;
+        }
+        update abList;
 
         List<System_Bill__c> updatedsystemBillList =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -631,8 +639,71 @@ public class TestBillCreationandPayment {
         System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
         Test.stopTest();
+    }
 
+    @isTest public static void publishedBillsUnEditable() {
+        Test.startTest();
+        setBillsToPublished();
 
+        List<System_Bill__c> systemBillList =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c, Monthly_Late_Fee_Interest__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        WHERE Account_Bill__r.Published__c = true
+        ORDER BY Bill_Number__c];
+
+        // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
+        // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
+        System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
+        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
+        System.AssertEquals(0,systemBillList[0].Late_Fees__c);
+        System.AssertEquals(2.83,systembillList[1].Late_Fees__c);
+        System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
+        System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
+        System.AssertEquals(0,systembillList[1].Total_Payments_This_Month__c);
+
+        systembillList[1].Monthly_Late_Fee_Interest__c = 34;
+        systembillList[1].Due_This_Month__c = 0;
+        systembillList[1].Total_Payments_This_Month__c = 200;
+        update systemBillList[1];
+
+        List<System_Bill__c> updatedSBs =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        WHERE Account_Bill__r.Published__c = true
+        ORDER BY Bill_Number__c];
+
+        // Bill fields should NOT change:
+        System.AssertEquals(282.96,updatedSBs[0].Total_Due__c);
+        System.AssertEquals(631.07,updatedSBs[1].Total_Due__c);
+        System.AssertEquals(0,updatedSBs[0].Late_Fees__c);
+        System.AssertEquals(2.83,updatedSBs[1].Late_Fees__c);
+        System.AssertEquals(258.96,updatedSBs[0].Due_This_Month__c);
+        System.AssertEquals(345.28,updatedSBs[1].Due_This_Month__c);
+
+        // Total payments should change:
+        System.AssertEquals(200,updatedSBs[1].Total_Payments_This_Month__c)
+
+        Test.stopTest();
     }
 
     @isTest public static void testAdjustments() {
@@ -921,7 +992,7 @@ public class TestBillCreationandPayment {
         Account_Bill__c acctBillToInsert = new Account_Bill__c (Bill_Number__c = 10,
             Parent_Account__c = oppSSS2[0].AccountId,
             Name = 'First Last Month 2016 B',
-            Published__c = true,
+            Published__c = false,
             Unique_ID__c = '0001110001110022222AS');
         insert acctBillToInsert;
 
@@ -944,6 +1015,9 @@ public class TestBillCreationandPayment {
             Name = 'First Last March 2016 B',
             Unique_ID__c = '0001110001222222FAS');
         insert sysBillToInsertTwo;
+
+        acctBillToInsert.Published__c = true;
+        update acctBillToInsert;
 
         Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c,
             Send_Checks_Address__c, Client_Brand_Key__c
@@ -1257,7 +1331,6 @@ public class TestBillCreationandPayment {
         }
         Test.stopTest();
     }
-
 
     @isTest public static void testScheduleZStatusIsSaved() {
         Test.startTest();
