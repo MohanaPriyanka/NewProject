@@ -214,15 +214,16 @@ public with sharing class LetterStreamService {
     public String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
-            SELECT Id, Address_Line_One__c, Address_Line_Two__c
+            SELECT Id, Address_Line_One__c, Address_Line_Two__c, Zip_Code__c, City__c, State__c
             FROM BW_Address__c
         ];
         bwAddress += 'BlueWave Solar,'; //SenderName1
         bwAddress += ','; //SenderName2
-        bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1 (& SenderAddr2 because comma in text)
-        bwAddress += 'Boston,'; // SenderCity
-        bwAddress += 'MA,'; //SenderState
-        bwAddress += '02116,'; //SenderZip
+        bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1
+        bwAddress += (address.Address_Line_Two__c + ','); //SenderAddr2
+        bwAddress += (address.City__c + ','); // SenderCity
+        bwAddress += (address.State__c + ','); //SenderState
+        bwAddress += (address.Zip_Code__c + ','); //SenderZip
         return bwAddress;
     }
 
