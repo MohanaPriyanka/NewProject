@@ -507,22 +507,30 @@ public class TestBillCreationandPayment {
         );
         insert schedZ3;
 
-        Date myDateMar = Date.newInstance(2016, 3, 3);
+        Date myDateMay = Date.newInstance(2016, 5, 5);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Energy_Usage_Update__c prodUpdate = new Energy_Usage_Update__c (
+        Energy_Usage_Update__c prodUpdateA = new Energy_Usage_Update__c (
             Name = 'sssA RadianGen - April 2016',
             Shared_Solar_System__c = sssRadianGen.Id,
             Schedule_Z__c = schedZ3.Id,
             Production__c = 90000,
             Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateApr,
+            Billing_Period_End_Date__c = myDateMay,
             Total_System_NMCs__c = 16632,
-            Date__c = myDateMar
+            Date__c = myDateApr
         );
 
-        insert prodUpdate;
+        insert prodUpdateA;
 
+        //Query to have Month_Number for bill generation
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Generate_Bills__c, Month_Number__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA RadianGen - April 2016'
+        ];
+
+        //4 Opps total: 1 Complete, 1 PPA/NMCPA, 1 Anchor, 1 Public Offtake
         //The PPA/NMCPA Signed Opp should not be showing up in Previews
         System.assertEquals(3, (PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
 
@@ -534,20 +542,41 @@ public class TestBillCreationandPayment {
         prodUpdate.Generate_Bills__c = true;
         update  prodUpdate;
 
-        List<System_Bill__c> systemBills = [
+        List<System_Bill__c> systemBills1 = [
+            SELECT Id, Opportunity__c, Name
+            FROM System_Bill__c
+            WHERE Opportunity__c = : opp1.Id
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        List<Account_Bill__c> accountBills1 = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : opp1.AccountId
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        List<System_Bill__c> systemBills4 = [
             SELECT Id, Opportunity__c
             FROM System_Bill__c
             WHERE Opportunity__c = : opp4.Id
+            AND Month__c = :prodUpdate.Month_Number__c
         ];
 
-        List<Account_Bill__c> accountBills = [
+        List<Account_Bill__c> accountBills4 = [
             SELECT Id
             FROM Account_Bill__c
             WHERE Parent_Account__c = : opp4.AccountId
+            AND Month__c = :prodUpdate.Month_Number__c
         ];
 
-        System.assertEquals(0, systemBills.size());
-        System.assertEquals(0, accountBills.size());
+        //Check that bills are generated for Complete Opp
+        System.assertEquals(1, systemBills1.size());
+        System.assertEquals(1, accountBills1.size());
+
+        //No bills generated for Anchor Opp
+        System.assertEquals(0, systemBills4.size());
+        System.assertEquals(0, accountBills4.size());
 
         Test.stopTest();
     }
@@ -1233,6 +1262,7 @@ public class TestBillCreationandPayment {
 
         System.runAs(userA){
             List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
+            System.debug(systemBills.size());
             for (AggregateResult lineItem : systemBills) {
                 ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
                     Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),

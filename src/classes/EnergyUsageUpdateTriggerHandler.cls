@@ -34,7 +34,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                     Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c
                 FROM Schedule_Z_Subscription__c
                 WHERE Schedule_Z__c IN : scheduleZs
-                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
+                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
                 OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
                 OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential')
             ];
@@ -56,7 +56,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
                         ' FROM Schedule_Z_Subscription__c ' +
                         ' WHERE Schedule_Z__c IN : scheduleZs ' +
-                        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c= \'BlueWave\' ' +
+                        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
                         ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
                         ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
         return Database.getQueryLocator(query);
