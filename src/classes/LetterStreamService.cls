@@ -8,7 +8,7 @@
 
 
 public with sharing class LetterStreamService {
-    public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientAddr1,RecipientAddr2,RecipientCity,' +
+    public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientName2,RecipientAddr1,RecipientAddr2,RecipientCity,' +
         'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
         'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
@@ -65,6 +65,8 @@ public with sharing class LetterStreamService {
                 break;
             } else if (responseReader.getEventType() == XmlTag.END_ELEMENT) {
                 responseReader.next();
+            } else {
+                responseReader.next();
             }
         }
         if (responseCode != null
@@ -107,6 +109,7 @@ public with sharing class LetterStreamService {
                 } else if ('cost' == docReader.getLocalName()) {
                     pieceCost = Decimal.valueOf(getNodeText(docReader));
                 }
+                docReader.next();
                 docReader.next();
             }
             if (docReader.getEventType() == XmlTag.END_ELEMENT

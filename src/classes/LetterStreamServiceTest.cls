@@ -385,6 +385,8 @@ public with sharing class LetterStreamServiceTest {
         }
         Set<Id> accountBillsToTest = new Set<Id>{accountBill1.Id, accountBill2.Id, accountBill3.Id};
 
+        Datetime now = Datetime.now();
+
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
         QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
@@ -397,9 +399,11 @@ public with sharing class LetterStreamServiceTest {
             WHERE Id IN : accountBillsToTest
         ];
 
+
         List<LetterStreamJob__c> jobs = [
             SELECT Id
             FROM LetterStreamJob__c
+            WHERE CreatedDate > : now.addSeconds(-5)
         ];
 
         System.assertEquals(1, jobs.size());

@@ -5,7 +5,7 @@
  + * Tested By: RecurringSRECHandlerTest
  + *************************************************************************************/
 
-global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.Stateful {
+global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.AllowsCallouts,Database.Stateful {
     webservice static void executeBatch (){
         BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
         Database.executeBatch(batchJob, 1);

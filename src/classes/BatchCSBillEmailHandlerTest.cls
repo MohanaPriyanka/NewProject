@@ -133,7 +133,7 @@ private class BatchCSBillEmailHandlerTest {
     static void testCreateLink() {
         setupTestData();
         Test.startTest();
-        ContentVersion csBillCV = new ContentVersion (Title ='Community Solar Bill.pdf',
+        ContentVersion csBillCV = new ContentVersion (Title ='Cole\'s Coffee August 2017 Community Solar Bill.pdf',
                                                       PathOnClient='/Community Solar Bill.pdf' );
         csBillCV.VersionData = Blob.valueOf('This is the body of the pdf');
         Util.insertSObj(csBillCV);

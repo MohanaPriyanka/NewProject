@@ -2,11 +2,11 @@
  * Created By: Peter Yao
  * Description: Tests actions taken after refreshing a sandbox
  **/
-@isTest 
+@IsTest
 private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
 
-    @testSetup public static void setupTestData() {
+    @TestSetup public static void setupTestData() {
         Account testAcct = new Account(Name='Test');
         insert testAcct;
         List<Contact> contactList = new List<Contact>();
@@ -37,13 +37,13 @@ private class PostSandboxRefresherTest {
         PostSandboxRefresher.deleteScheduledJob(JOBNAME);
         Test.stopTest();
  
-        List<Contact> contactList = [SELECT Id, email
+        List<Contact> contactList = [SELECT Id, Email
                                      FROM Contact
-                                     WHERE Email like '%@email.com'];
+                                     WHERE Email LIKE '%@email.com'];
         System.assertEquals(contactList.size(), 0);
-        List<Lead> leadList = [SELECT Id, email
+        List<Lead> leadList = [SELECT Id, Email
                                FROM Lead
-                               WHERE Email like '%@email.com'];
+                               WHERE Email LIKE '%@email.com'];
         System.assertEquals(leadList.size(), 0);
 
         List<CronTrigger> crons = [SELECT Id, CronJobDetail.Name, CronExpression 
@@ -53,15 +53,15 @@ private class PostSandboxRefresherTest {
     }
 
     static testMethod void testBatchUpdateFailure() {
-        List<Lead> leadList = [SELECT Id, company
+        List<Lead> leadList = [SELECT Id, Company
                                FROM Lead
-                               WHERE Email like '%@email.com'];
+                               WHERE Email LIKE '%@email.com'];
 
         System.assertEquals(MessagingService.emailsSent, null);
 
         Test.startTest();
         for (Lead lead : leadList) {
-            lead.company = null;
+            lead.Company = null;
         }
 
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
@@ -74,13 +74,13 @@ private class PostSandboxRefresherTest {
 
     static testMethod void testBatchInsertFailures() {
         List<Lead> leadList = new List<Lead>();
-        Lead lead = new Lead(Firstname = 'Test',
-                             Lastname = 'Tester');
+        Lead lead = new Lead(FirstName = 'Test',
+                             LastName = 'Tester');
         leadList.add(lead);
 
         System.assertEquals(null, MessagingService.emailsSent);
 
-        List<Error_Log__c> errorLogs = [SELECT Id from Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
 
 
@@ -93,7 +93,63 @@ private class PostSandboxRefresherTest {
         System.assertEquals(MessagingService.emailsSent.size(), 1);
         System.debug(MessagingService.emailsSent);
 
-        errorLogs = [SELECT Id from Error_Log__c];
+        errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size());
+    }
+
+    @IsTest
+    static void testAccountHelper() {
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        csRecordLoader.execute(null);
+
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        solarSystemHelper.execute(null);
+
+        Test.startTest();
+        PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper();
+        firstAccountHelper.execute(null);
+
+        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper();
+        SecondAccountHelper.execute(null);
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void testProductionUpdateHelper() {
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        csRecordLoader.execute(null);
+
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        solarSystemHelper.execute(null);
+
+        Test.startTest();
+        PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper();
+        productionUpdateHelper.execute(null);
+
+        PostSandboxRefresher.accountBillHelper accountBillHelper = new PostSandboxRefresher.accountBillHelper();
+        accountBillHelper.execute(null);
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void testPaymentHelper() {
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        csRecordLoader.execute(null);
+
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        solarSystemHelper.execute(null);
+
+        PostSandboxRefresher.GatewayHelper gatewayHelper = new PostSandboxRefresher.GatewayHelper();
+        gatewayHelper.execute(null);
+
+        Test.startTest();
+        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper();
+        paymentHelper.execute(null);
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void testDeleteCSRecords() {
+        PostSandboxRefresher.deleteCSRecords();
     }
 }

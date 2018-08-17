@@ -6,7 +6,7 @@
  + * ContentDistribution is child of ContentVersion and generates a public url (used in community)
  + * ContentDocumentLink is a child of ContentDocument and controls what records a doc is linked to (QSS Record)
  + * 
- + * Tested By: SLPQuickSalesSheetTestclass and BatchCSBillEmailHandlerTestclass
+ + * Tested By: SLPQuickSalesSheetTest and BatchCSBillEmailHandlerTestclass
  + *************************************************************************************/
 
 
@@ -21,7 +21,7 @@ public without sharing class FileDeliveryHandler {
       String communityID;
 
       for (ContentVersion cont : newContent) {
-          if (cont.Title == 'Community Solar Bill.pdf') {
+          if (cont.Title.contains('Community Solar Bill')) {
               try {
                   ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
                   for (ConnectApi.Community community : comm.communities) {
