@@ -1,0 +1,4 @@
+Id,Billing__c,Customer_Subscription_kW_DC__c,Deactivated__c,Enacted__c,Number_of_Decimal_Places__c,Submitted__c,System_Size_kW_DC__c,Regenerate_Bill__c,Utility_Account_Subscription__c,Schedule_Z__c
+a544C000000CyutQAC,false,25.0000,false,false,2,false,1445.86,false,a1d4C00000084F6QAI,a3z4C000000W8PhQAK
+a544C000000CyuuQAC,false,20.0000,false,false,2,false,1445.86,false,a1d4C00000084F7QAI,a3z4C000000W8PiQAK
+a544C000000CyuvQAC,false,20.0000,false,false,2,false,1445.86,false,a1d4C00000084F8QAI,a3z4C000000W8PiQAK

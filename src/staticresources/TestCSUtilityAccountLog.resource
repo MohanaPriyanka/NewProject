@@ -1,0 +1,3 @@
+Id,Name,Opportunity__c,Cost_not_yet_Allocated__c,Annual_Cost_of_Electricity__c,Username__c,Password__c,Partner__c,Lead__c,Name_on_Account__c,Multiple_Copies__c,Account__c,Comments_About_Sizings__c,Service_Address__c,Service_City__c,Service_Apt_Suite__c,Service_State__c,Service_Zip_Code__c,Create_Online_Account__c,Annual_kWh__c,Previous_BW_CL_Applicant__c,Solar_System_Size_kW_DC__c,Premise_Number__c
+a1b4C0000006tHyQAI,0000234,,,10000.00,,,,,jordan pentaleri,false,0014C00000JKiH8QAL,,,,,,,false,,false,,
+a1b4C0000006tHzQAI,0000256,,,15000.00,,,,,nick speyer,false,0014C00000JKiH9QAL,,,,,,,false,,false,,
