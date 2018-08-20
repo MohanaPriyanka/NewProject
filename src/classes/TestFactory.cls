@@ -156,4 +156,13 @@ public class TestFactory {
 			Zip_Code__c = '02116'
 		);
 	}
+
+	public static void insertLetterStreamSettings() {
+		insert new LetterStream_Settings__c(
+			Name = 'Test',
+			API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+			API_Id__c = 'foo',
+			API_Key__c = 'bar'
+		);
+	}
 }

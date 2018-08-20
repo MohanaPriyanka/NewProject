@@ -115,7 +115,10 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(null, newJob);
     }
 
-    @isTest(SeeAllData=true) public static void testCSVBuilder() {
+    @isTest public static void testCSVBuilder() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         LetterStreamService lss = new LetterStreamService();
 
         System.assertEquals('', lss.csv);
@@ -285,7 +288,10 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals('POST', testRequest.getMethod());
     }
 
-    @IsTest(SeeAllData=true) public static void testSendLetters() {
+    @IsTest public static void testSendLetters() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
@@ -417,7 +423,10 @@ public with sharing class LetterStreamServiceTest {
         }
     }
 
-    @IsTest(SeeAllData=true) public static void testQueueSendLetters() {
+    @IsTest public static void testQueueSendLetters() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
