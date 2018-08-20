@@ -16,7 +16,7 @@
         });
         $A.enqueueAction(actionLicenseType);
         var actionStorageEnabled = component.get("c.getStorageEnabled");
-        actionLicenseType.setCallback(this,function(resp) {
+        actionStorageEnabled.setCallback(this,function(resp) {
             if (resp.getState() == 'SUCCESS') {
                 if (resp.getReturnValue()) {
                     component.set("v.enableStorage", true);
@@ -582,4 +582,5 @@
         });
         $A.enqueueAction(withdrawAction);
     },
+
 })

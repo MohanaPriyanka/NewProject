@@ -185,6 +185,7 @@
                 if (!changeOrder.hasOwnProperty('Down_Payment__change')) {
                     changeOrder['Down_Payment__change'] = changeOrder.System_Cost__change - changeOrder.Requested_Loan_Amount__change;
                 }
+                helper.setGridHybridBooleanToString(component, customer);
                 component.set('v.changeOrder', changeOrder);
             }
             resolve();
@@ -214,11 +215,20 @@
     defaultChangeOrderStringtoBooleanField : function(changeOrder, field, customer) {
         if (!changeOrder.hasOwnProperty(field + '__change')) {
             if (customer[field + '__c']) {
-                changeOrder[field + '__change'] = 'Yes'
+                changeOrder[field + '__change'] = 'Yes';
             } else {
-                changeOrder[field + '__change'] = 'No'
+                changeOrder[field + '__change'] = 'No';
             }
         }
+    },
+
+    setGridHybridBooleanToString : function(component, customer) {
+        // var incomingValue = component.get('v.customer.Storage_Grid_Hybrid__c');
+        if (customer.Storage_Grid_Hybrid__c) {
+            component.set('v.gridHybridBooleanToString', 'Yes');
+        } else {
+            component.set('v.gridHybridBooleanToString', 'No');
+        };
     },
 
     getCustomerAttachments : function(component, helper) {
@@ -438,4 +448,5 @@
         $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
     },
+
 })

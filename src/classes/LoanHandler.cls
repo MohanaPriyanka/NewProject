@@ -914,7 +914,7 @@ public without sharing class LoanHandler{
     }
 
     public static Boolean equipmentPopulated(Residential_Equipment__c equipment) {
-        if (equipment.Loan__r.Lead__r.Storage__c) {
+        if (equipment.Loan__r.Lead__r.Storage__c && equipment.Storage_Grid_Hybrid__c) {
             return (equipment.Module_Manufacturer__c != null
                 && equipment.Module_Model_Number__c != null
                 && equipment.Number_of_Modules__c != null
@@ -925,6 +925,21 @@ public without sharing class LoanHandler{
                 && equipment.Loan__r.Commencement_Datee__c != null
                 && equipment.Storage_Grid_Hybrid__c != null
                 && equipment.Storage_Full_or_Partial_Home__c != null
+                && equipment.Storage_Capacity__c != null
+                && equipment.Storage_Manufacturer__c != null
+                && equipment.Storage_Model__c != null
+                && equipment.Storage_Inverter_Manufacturer__c != null
+                && equipment.Storage_Inverter_Model__c != null);
+        } else if (equipment.Loan__r.Lead__r.Storage__c && !equipment.Storage_Grid_Hybrid__c) {
+            return (equipment.Module_Manufacturer__c != null
+                && equipment.Module_Model_Number__c != null
+                && equipment.Number_of_Modules__c != null
+                && equipment.Inverter_Manufacturer__c != null
+                && equipment.Inverter_Model_Number__c != null
+                && equipment.Number_of_Inverters__c != null
+                && equipment.Generator_Nameplate_Capacity__c != null
+                && equipment.Loan__r.Commencement_Datee__c != null
+                && equipment.Storage_Grid_Hybrid__c != null
                 && equipment.Storage_Capacity__c != null
                 && equipment.Storage_Manufacturer__c != null
                 && equipment.Storage_Model__c != null
