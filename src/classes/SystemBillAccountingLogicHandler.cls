@@ -10,20 +10,20 @@
  + *************************************************************************************/
 
 public with sharing class SystemBillAccountingLogicHandler {
-    public void accountingRefresh (List <System_Bill__c> systemBill, Map<Id, System_Bill__c> oldSBMap) {
+    public static void accountingRefresh (List <System_Bill__c> systemBill, Map<Id, System_Bill__c> oldSBMap) {
         Decimal carryoverbalance = 0;  
         Decimal pastbillamount = 0;
         Decimal pastbillpayment = 0;
         Decimal pastbilloverpayment = 0;
         Decimal pastbilloveradjust = 0;
-        List<Id> propertyaccountIds = new List<id>();
+        List<Id> propertyAccountIDs = new List<Id>();
         List<System_Bill__c> unPublishedBillList = new List<System_Bill__c>();
 
         for (System_Bill__c sbill : systemBill) {
             if (sbill.Published__c){
                 doNotAllowUpdate(sbill, oldSBMap);
             } else {
-                propertyaccountIds.add(sbill.Property_Account__c);
+                propertyAccountIDs.add(sbill.Property_Account__c);
                 unPublishedBillList.add(sbill);
             }
         }
@@ -45,7 +45,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                                                     Entity_ID__c
                                                 FROM System_Bill__c
                                                 WHERE Property_Account__c
-                                                IN : propertyaccountIds
+                                                IN : propertyAccountIDs
                                                 ORDER BY Bill_Number__c DESC];
         
         for (System_Bill__c trigsb : unPublishedBillList) {
@@ -155,35 +155,41 @@ public with sharing class SystemBillAccountingLogicHandler {
     }
 
     private static void setAllNullsToZero(System_Bill__c trigsb){
-        trigsb.Late_Payments__c = setNullToZero(trigsb.Late_Payments__c);
-        trigsb.Total_Payments_This_Month__c = setNullToZero(trigsb.Total_Payments_This_Month__c);
-        trigsb.Payments_Net_Previous_Balances__c = setNullToZero(trigsb.Payments_Net_Previous_Balances__c);
-        trigsb.Carry_Over_Balance__c = setNullToZero(trigsb.Carry_Over_Balance__c);
-        trigsb.Balance_Net_Late_Payments__c = setNullToZero(trigsb.Balance_Net_Late_Payments__c);
-        trigsb.Late_Fee_Payments__c = setNullToZero(trigsb.Late_Fee_Payments__c);
-        trigsb.Late_Fees__c = setNullToZero(trigsb.Late_Fees__c);
-        trigsb.Adjustments__c = setNullToZero(trigsb.Adjustments__c);
-        trigsb.Carry_Forward_Adjustments__c = setNullToZero(trigsb.Carry_Forward_Adjustments__c);
-        trigsb.Carry_Forward_Payments__c = setNullToZero(trigsb.Carry_Forward_Payments__c);
-        trigsb.Early_Payments__c = setNullToZero(trigsb.Early_Payments__c);
+        trigsb.Late_Payments__c = Util.nullToZero(trigsb.Late_Payments__c);
+        trigsb.Total_Payments_This_Month__c = Util.nullToZero(trigsb.Total_Payments_This_Month__c);
+        trigsb.Payments_Net_Previous_Balances__c = Util.nullToZero(trigsb.Payments_Net_Previous_Balances__c);
+        trigsb.Carry_Over_Balance__c = Util.nullToZero(trigsb.Carry_Over_Balance__c);
+        trigsb.Balance_Net_Late_Payments__c = Util.nullToZero(trigsb.Balance_Net_Late_Payments__c);
+        trigsb.Late_Fee_Payments__c = Util.nullToZero(trigsb.Late_Fee_Payments__c);
+        trigsb.Late_Fees__c = Util.nullToZero(trigsb.Late_Fees__c);
+        trigsb.Adjustments__c = Util.nullToZero(trigsb.Adjustments__c);
+        trigsb.Carry_Forward_Adjustments__c = Util.nullToZero(trigsb.Carry_Forward_Adjustments__c);
+        trigsb.Carry_Forward_Payments__c = Util.nullToZero(trigsb.Carry_Forward_Payments__c);
+        trigsb.Early_Payments__c = Util.nullToZero(trigsb.Early_Payments__c);
     }
 
     private static void doNotAllowUpdate (System_Bill__c trigsb, Map<Id,System_Bill__c> oldSBMap){
-        trigsb.Due_This_Month__c = setNullToZero(oldSBMap.get(trigsb.Id).Due_This_Month__c);
-        trigsb.Previous_Month_Overdue_Balance__c = setNullToZero(oldSBMap.get(trigsb.Id).Previous_Month_Overdue_Balance__c);
-        trigsb.Late_Fees__c = setNullToZero(oldSBMap.get(trigsb.Id).Late_Fees__c);
-        trigsb.Payment_Plan_Balance__c = setNullToZero(oldSBMap.get(trigsb.Id).Payment_Plan_Balance__c);
-        trigsb.Adjustments__c = setNullToZero(oldSBMap.get(trigsb.Id).Adjustments__c);
-        trigsb.Total_Due__c = setNullToZero(oldSBMap.get(trigsb.Id).Total_Due__c);
-        // Previous Overpayments is not Writeable because it is a rollup field. Validation rule (cannot add/remove an
-        // overpayment to a published system bill)
-
-        setAllNullsToZero(trigsb);
-
-        if (trigsb.Payment_Plan_Balance_to_Distribute__c == null){
-            balanceCalculations(trigsb, false);
+        if (trigsb.Due_This_Month__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Due_This_Month__c)){
+            trigsb.addError('Cannot update Due This Month on an already published bill.');
+        } else if (trigsb.Previous_Month_Overdue_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Previous_Month_Overdue_Balance__c)){
+            trigsb.addError('Cannot update Previous Month Overdue Balance on an already published bill.');
+        } else if (trigsb.Late_Fees__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Late_Fees__c)){
+            trigsb.addError('Cannot update Late Fees on an already published bill.');
+        } else if (trigsb.Payment_Plan_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Payment_Plan_Balance__c)){
+            trigsb.addError('Cannot update Payment Plan Balance on an already published bill.');
+        } else if (trigsb.Adjustments__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Adjustments__c)) {
+            trigsb.addError('Cannot update Adjustments on an already published bill.');
+        } else if (trigsb.Previous_Overpayments__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Previous_Overpayments__c)){
+            trigsb.addError('Cannot update Overpayments on an already published bill.');
+        } else if (trigsb.Total_Due__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Total_Due__c)) {
+            trigsb.addError('Cannot update Total Due on an already published bill.');
         } else {
-            balanceCalculations(trigsb, true);
+            setAllNullsToZero(trigsb);
+            if (trigsb.Payment_Plan_Balance_to_Distribute__c == null) {
+                balanceCalculations(trigsb, false);
+            } else {
+                balanceCalculations(trigsb, true);
+            }
         }
     }
 
@@ -197,13 +203,4 @@ public with sharing class SystemBillAccountingLogicHandler {
         }
         trigsb.Balance_Net_Late_Payments__c  = trigsb.Due_This_Month__c + trigsb.Balance_Adjustment__c + trigsb.Previous_Overpayments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c;
     }
-
-    private static Decimal setNullToZero (Decimal systemBillField) {
-        if ( systemBillField == NULL) {
-          return 0;
-        } else {
-          return systemBillField;
-        }
-    }   
-  
 }

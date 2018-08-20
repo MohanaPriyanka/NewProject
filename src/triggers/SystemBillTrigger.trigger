@@ -4,7 +4,6 @@ trigger SystemBillTrigger on System_Bill__c (before insert, before update) {
         systemProperties[0].Disable_System_Bill_Trigger__c) {
         // Don't run trigger
     } else {
-        SystemBillAccountingLogicHandler systemBillAccountingLogicHandler = new SystemBillAccountingLogicHandler();
         systemBillAccountingLogicHandler.accountingRefresh(Trigger.new, Trigger.oldMap);
     }
 }

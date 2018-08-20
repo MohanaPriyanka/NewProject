@@ -671,10 +671,26 @@ public class TestBillCreationandPayment {
         System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
         System.AssertEquals(0,systembillList[1].Total_Payments_This_Month__c);
 
-        systembillList[1].Monthly_Late_Fee_Interest__c = 34;
-        systembillList[1].Due_This_Month__c = 0;
         systembillList[1].Total_Payments_This_Month__c = 200;
         update systemBillList[1];
+        // This should work without throwing an error
+
+        systembillList[1].Monthly_Late_Fee_Interest__c = 34;
+        systembillList[1].Total_Payments_This_Month__c = 200;
+
+        try {
+            update systemBillList[1];
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains('Cannot update Late Fees on an already published bill'));
+        }
+
+        systembillList[1].Due_This_Month__c = 0;
+        systembillList[1].Total_Payments_This_Month__c = 200;
+        try {
+            update systemBillList[1];
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains('Cannot update Due This Month on an already published bill'));
+        }
 
         List<System_Bill__c> updatedSBs =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
