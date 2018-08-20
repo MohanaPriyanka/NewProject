@@ -670,10 +670,10 @@ public class TestBillCreationandPayment {
         System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
         System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
         System.AssertEquals(0,systembillList[1].Total_Payments_This_Month__c);
-
+        
+        // This should work without throwing an error
         systembillList[1].Total_Payments_This_Month__c = 200;
         update systemBillList[1];
-        // This should work without throwing an error
 
         systembillList[1].Monthly_Late_Fee_Interest__c = 34;
         systembillList[1].Total_Payments_This_Month__c = 200;
