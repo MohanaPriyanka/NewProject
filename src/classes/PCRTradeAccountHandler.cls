@@ -36,6 +36,8 @@ public with sharing class PCRTradeAccountHandler {
                 monthlyPayment = tradeAccount.LASERCA__Monthly_Payment__c;
             } else if (tradeAccount.LASERCA__Account_Balance__c > 0 && (tradeAccount.LASERCA__Monthly_Payment__c == tradeAccount.LASERCA__Account_Balance__c ||
                 tradeAccount.LASERCA__Monthly_Payment__c == null)){
+                tradeAccount.LASERCA__Monthly_Payment__c = tradeAccount.LASERCA__Account_Balance__c * 0.03;
+                update tradeAccount;
                 monthlyPayment = (tradeAccount.LASERCA__Account_Balance__c * 0.03);
             }
         }

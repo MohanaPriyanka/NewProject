@@ -217,6 +217,93 @@ public with sharing class PCRTradeAccountHandlerTest {
         }
     }
 
+    @isTest static void testMonthlyPaymentCreation() {
+        Test.startTest();
+        Lead lead = getLeadForTest();
+
+        List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForLead(lead);
+
+        List<LASERCA__Trade_Accounts__c> tradeAccounts = new List<LASERCA__Trade_Accounts__c>();
+
+        // automotive trade account with more than 6 payments left should be included in rollup
+        tradeAccounts.add(new LASERCA__Trade_Accounts__c(
+            LASERCA__Name_of_the_Institution__c = 'More than 6 remaining term',
+            LASERCA__Account_Ownership_Type__c = 'Individual',
+            LASERCA__Credit_Loan_Type__c = 'InstallmentLoan',
+            LASERCA__Account_Balance__c = 1200.00,
+            LASERCA__Monthly_Payment__c = 112,
+            LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
+            LASERCA__Remaining_Term__c = '12',
+            Exclude_From_Rollup__c = false,
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
+        ));
+
+        // automotive trade account with 6 payments left should be excluded from rollup
+        tradeAccounts.add(new LASERCA__Trade_Accounts__c(
+            LASERCA__Name_of_the_Institution__c = 'Less than 6 remaining term',
+            LASERCA__Account_Ownership_Type__c = 'Individual',
+            LASERCA__Credit_Loan_Type__c = 'CreditCard',
+            LASERCA__Account_Balance__c = 2000.00,
+            LASERCA__Monthly_Payment__c = null,
+            LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
+            LASERCA__Remaining_Term__c = '6',
+            Exclude_From_Rollup__c = false,
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
+        ));
+
+        // automotive trade account with Remaining_Term = null left should be excluded from rollup
+        tradeAccounts.add(new LASERCA__Trade_Accounts__c(
+            LASERCA__Name_of_the_Institution__c = 'null remaining term',
+            LASERCA__Account_Ownership_Type__c = 'Individual',
+            LASERCA__Credit_Loan_Type__c = 'CreditCard',
+            LASERCA__Account_Balance__c = 1000.00,
+            LASERCA__Monthly_Payment__c = 1000.00,
+            LASERCA__Open_Date__c = Date.newInstance(2011, 4, 1),
+            Exclude_From_Rollup__c = false,
+            LASERCA__Personal_Credit_Report__c = lead.Personal_Credit_Report__c
+        ));
+        insert tradeAccounts;
+
+        Map<Id, LASERCA__Trade_Accounts__c> tradeAccountsFromDB = new Map<Id, LASERCA__Trade_Accounts__c>([
+            SELECT Id, LASERCA__Account_Ownership_Type__c, LASERCA__Account_Status_Type__c, LASERCA__Account_Type__c,
+                LASERCA__Open_Date__c, LASERCA__Name_of_the_Institution__c, LASERCA__Last_Activity_Date__c,
+                LASERCA__Payment_Pattern_Data__c, LASERCA__Remaining_Term__c, LASERCA__Credit_Text__c,
+                LASERCA__Account_Balance__c, LASERCA__Personal_Credit_Report__c, Exclude_From_Rollup__c,
+                LASERCA__Credit_Loan_Type__c, LASERCA__Monthly_Payment__c
+            FROM LASERCA__Trade_Accounts__c
+            WHERE LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report__c
+            OR LASERCA__Personal_Credit_Report__c = : lead.Personal_Credit_Report_Co_Applicant__c
+        ]);
+
+        System.assertEquals(1200.00, tradeAccounts[0].LASERCA__Account_Balance__c);
+        System.assertEquals(112, tradeAccounts[0].LASERCA__Monthly_Payment__c);
+        System.assertEquals(2000.00, tradeAccounts[1].LASERCA__Account_Balance__c);
+        System.assertEquals(null, tradeAccounts[1].LASERCA__Monthly_Payment__c);
+        System.assertEquals(1000.00, tradeAccounts[2].LASERCA__Account_Balance__c);
+        System.assertEquals(1000.00, tradeAccounts[2].LASERCA__Monthly_Payment__c);
+
+        Test.stopTest();
+
+        lead = getLeadForTest();
+        tradeAccounts = [
+            SELECT Id, Exclude_From_Rollup__c, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c
+            FROM LASERCA__Trade_Accounts__c ORDER BY Id ASC
+        ];
+
+        for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
+            PCRTradeAccountHandler.calculateMonthlyPayment(tradeAccount, null);
+            }
+
+
+        // Monthly payments that are null or equal to Account balance should be adjusted to 3% of balance.
+        System.assertEquals(1200.00, tradeAccounts[0].LASERCA__Account_Balance__c);
+        System.assertEquals(112, tradeAccounts[0].LASERCA__Monthly_Payment__c);
+        System.assertEquals(2000.00, tradeAccounts[1].LASERCA__Account_Balance__c);
+        System.assertEquals(60.00, tradeAccounts[1].LASERCA__Monthly_Payment__c);
+        System.assertEquals(1000.00, tradeAccounts[2].LASERCA__Account_Balance__c);
+        System.assertEquals(30.00, tradeAccounts[2].LASERCA__Monthly_Payment__c);
+    }
+
     static Lead getLeadForTest() {
         Lead lead = [
             SELECT Id, Application_Type__c, Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
