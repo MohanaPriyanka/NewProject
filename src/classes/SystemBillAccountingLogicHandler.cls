@@ -173,7 +173,8 @@ public with sharing class SystemBillAccountingLogicHandler {
             trigsb.addError('Cannot update Due This Month on an already published bill.');
         } else if (trigsb.Previous_Month_Overdue_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Previous_Month_Overdue_Balance__c)){
             trigsb.addError('Cannot update Previous Month Overdue Balance on an already published bill.');
-        } else if (trigsb.Late_Fees__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Late_Fees__c)){
+        } else if ( trigsb.Late_Fees__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Late_Fees__c) ||
+                    trigsb.Waive_Late_Fees__c != oldSBMap.get(trigsb.Id).Waive_Late_Fees__c){
             trigsb.addError('Cannot update Late Fees on an already published bill.');
         } else if (trigsb.Payment_Plan_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Payment_Plan_Balance__c)){
             trigsb.addError('Cannot update Payment Plan Balance on an already published bill.');
