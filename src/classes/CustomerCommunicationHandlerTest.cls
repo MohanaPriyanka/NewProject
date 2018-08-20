@@ -25,7 +25,7 @@ public class CustomerCommunicationHandlerTest{
 
         insert everLZU;
 
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
 
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;

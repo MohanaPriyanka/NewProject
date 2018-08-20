@@ -115,7 +115,10 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(null, newJob);
     }
 
-    @isTest(SeeAllData=true) public static void testCSVBuilder() {
+    @isTest public static void testCSVBuilder() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         LetterStreamService lss = new LetterStreamService();
 
         System.assertEquals('', lss.csv);
@@ -195,11 +198,7 @@ public with sharing class LetterStreamServiceTest {
 
         // BW Address info
         System.assert(lss.csv.contains('BlueWave Solar'));
-        System.assert(lss.csv.contains('137 Newbury St'));
-        System.assert(lss.csv.contains('4th Floor'));
         System.assert(lss.csv.contains('Boston'));
-        System.assert(lss.csv.contains('MA'));
-        System.assert(lss.csv.contains('02116'));
 
         // LetterStream Headers
         System.assert(lss.csv.contains('UniqueDocId'));
@@ -223,6 +222,24 @@ public with sharing class LetterStreamServiceTest {
         System.assert(lss.csv.contains('Duplex'));
         System.assert(lss.csv.contains('Ink'));
         System.assert(lss.csv.contains('Paper'));
+    }
+
+    @isTest public static void testBWAddress() {
+        TestFactory.insertBWAddress();
+        // BW Address info
+        String bwAddress = 'BlueWave Solar,'; // SenderName1
+        bwAddress += ','; //SenderName2 - blank
+        bwAddress += '137 Newbury Street,'; //SenderAddr1
+        bwAddress += '4th Floor,'; //SenderAddr2
+        bwAddress += 'Boston,'; //SenderCity
+        bwAddress += 'MA,'; //SenderState
+        bwAddress += '02116,'; //SenderZip
+
+        LetterStreamService lss = new LetterStreamService();
+
+        String bwAddressUnderTest = lss.blueWaveAddress();
+
+        System.assertEquals(bwAddress, bwAddressUnderTest);
     }
 
     @isTest public static void testLetterStreamHeaders() {
@@ -271,7 +288,10 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals('POST', testRequest.getMethod());
     }
 
-    @IsTest(SeeAllData=true) public static void testSendLetters() {
+    @IsTest public static void testSendLetters() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
@@ -371,6 +391,8 @@ public with sharing class LetterStreamServiceTest {
         }
         Set<Id> accountBillsToTest = new Set<Id>{accountBill1.Id, accountBill2.Id, accountBill3.Id};
 
+        Datetime now = Datetime.now();
+
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
         QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
@@ -383,9 +405,11 @@ public with sharing class LetterStreamServiceTest {
             WHERE Id IN : accountBillsToTest
         ];
 
+
         List<LetterStreamJob__c> jobs = [
             SELECT Id
             FROM LetterStreamJob__c
+            WHERE CreatedDate > : now.addSeconds(-5)
         ];
 
         System.assertEquals(1, jobs.size());
@@ -399,7 +423,10 @@ public with sharing class LetterStreamServiceTest {
         }
     }
 
-    @IsTest(SeeAllData=true) public static void testQueueSendLetters() {
+    @IsTest public static void testQueueSendLetters() {
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
+
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 

@@ -144,7 +144,11 @@ public with sharing class AccountBillHandler{
                                                 ORDER BY SUM(Total_Due__c) DESC];
 
         List<BW_Address__c> bwAddress = BW_Address__c.getall().values();
-        String defaultAddress = 'BlueWave ' + bwAddress[0].Address_Line_One__c +' '+ bwAddress[0].Address_Line_Two__c; 
+        String defaultAddress = 'BlueWave ' + bwAddress[0].Address_Line_One__c;
+        defaultAddress += (', '+ bwAddress[0].Address_Line_Two__c);
+        defaultAddress += (' '+ bwAddress[0].City__c + ',');
+        defaultAddress += (' '+ bwAddress[0].State__c);
+        defaultAddress += (' '+ bwAddress[0].Zip_Code__c);
 
         for (AggregateResult lineItem : checkAddress)  {
             checkLine = '';

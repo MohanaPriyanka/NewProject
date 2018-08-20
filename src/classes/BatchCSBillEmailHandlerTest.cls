@@ -30,8 +30,6 @@ private class BatchCSBillEmailHandlerTest {
         propertyAccount.Additional_Contact__c = contactTwo.Id;
         update propertyAccount;
 
-        // insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
-
         for (i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
                                         Name = 'Bill' + i,
@@ -96,7 +94,7 @@ private class BatchCSBillEmailHandlerTest {
         propertyAccount.Additional_Contact__c = contactTwo.Id;
         update propertyAccount;
 
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
 
         for (Integer i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
