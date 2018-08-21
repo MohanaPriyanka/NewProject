@@ -60,7 +60,7 @@ public without sharing class PreviewProductionUpdateResults{
                                           FROM Energy_Usage_Update__c
                                           WHERE Id = : parentId];
         Schedule_Z__c scheduleZ = [
-          SELECT Id
+          SELECT Id, Shared_Solar_System__r.Billing_Anchors__c
           FROM Schedule_Z__c
           WHERE Id = : scheduleZId
           AND Shared_Solar_System__c = : production.Shared_Solar_System__c
@@ -71,18 +71,24 @@ public without sharing class PreviewProductionUpdateResults{
           SELECT  Name, Customer_Subscription_KW_DC__c, Utility_Account_Subscription__c, Percent_Share__c, System_Size_kW_DC__c,
               Utility_Account_Subscription__r.Name,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
+              Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
               Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-              Utility_Account_Subscription__r.Next_Schedule_Z_Status__c, Utility_Account_Subscription__r.Opportunity_Stage__c,
+              Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+              Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
+              Utility_Account_Subscription__r.Opportunity_Stage__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
               Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,
               Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-              Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
+              Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : scheduleZ.Id
+            AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
+            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
+            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential' )
             ORDER BY Utility_Account_Subscription__r.Name_on_Account_From_Log__c
       ];
       for (Schedule_Z_Subscription__c szs: szsList) {
@@ -113,8 +119,11 @@ public without sharing class PreviewProductionUpdateResults{
           SELECT Name, Customer_Subscription_KW_DC__c, Utility_Account_Subscription__c, Percent_Share__c, System_Size_kW_DC__c,
               Utility_Account_Subscription__r.Name,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
+              Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
               Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-              Utility_Account_Subscription__r.Next_Schedule_Z_Status__c, Utility_Account_Subscription__r.Opportunity_Stage__c,
+              Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+              Utility_Account_Subscription__r.Opportunity_Stage__c,
+              Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
               Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
@@ -126,6 +135,9 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
             FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Id = : parentId
+            AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
+            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
+            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential' )
             ORDER BY Name
       ];
       for (Schedule_Z_Subscription__c szs : szsListFromAcct) {
