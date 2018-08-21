@@ -626,11 +626,13 @@ private class RecurringPaymentsHandlerTestClass {
             WHERE Opportunity__r.AccountId = :accountA.Id
             OR Opportunity__r.AccountId = :accountB.Id
         ];
-        // The three Chargent Orders will still be on the old Account Bills for the old amounts and an old Start Date
+        // The three Chargent Orders will still be on the old Account Bills for the old amounts and an old Start Date.
+        // They haven't moved to the new Account Bill yet (which the RecurringPaymentsHandler does below), so the
+        // amounts were the previous billed amounts
         System.assertEquals(3, chargentOrders.size());
         for (ChargentOrders__ChargentOrder__c chargentOrder : chargentOrders) {
-            System.assertEquals(true, chargentOrder.ChargentOrders__Charge_Amount__c > 0);
-            System.assertEquals(true, chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
+            System.assert(chargentOrder.ChargentOrders__Charge_Amount__c > 0);
+            System.assert(chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
         }
 
         Test.startTest();
@@ -658,7 +660,7 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals(expectedChargeDate, chargentOrder.ChargentOrders__Payment_Start_Date__c);
             } else if (chargentOrder.Opportunity__r.Account.Name == 'Account B') {
                 System.assertEquals(321.33, chargentOrder.ChargentOrders__Charge_Amount__c);
-                System.assertEquals(true, chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
+                System.assert(chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
             } else {
                 System.assertEquals('Account A or B', chargentOrder.Opportunity__r.Account.Name);
             }
