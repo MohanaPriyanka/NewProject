@@ -1,3 +1,3 @@
 Id,Name,Service_Territory__c,Number_of_Decimal_Places__c
-a1M4C0000002EPoUAM,Eversource,,2
-a1M4C0000002EPpUAM,National Grid,,2
+TestUtilityEversource,Eversource,,2
+TestUtilityNGrid,National Grid,,2

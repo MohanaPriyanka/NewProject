@@ -1,5 +1,5 @@
-Id,Name,Utility__c,Class__c,Year_of_Tariff__c,Distribution_Charge__c,Default_service_kWh_charge__c,Transmission_kWh_Charge__c,Transition_kWh_Charge__c,Distribution_kWh_Charge__c,January__c,January_Previous_Year__c,February__c,February_Previous_Year__c,March__c,March_Previous_Year__c,April__c,April_Previous_Year__c,May__c,May_Previous_Year__c,June__c,June_Previous_Year__c,July__c,July_Previous_Year__c,August__c,August_Previous_Year__c,September__c,September_Previous_Year__c,October__c,October_Previous_Year__c,November__c,November_Previous_Year__c,December__c,December_Previous_Year__c,Value_of_Net_Metering_Credit__c,Transmission_Charge__c,Transition_Charge__c,Generation_Charge__c,Active__c,Valid_for_Period__c,Expiration_Date__c,Sizing_Rate__c,Current_Billing_Rate__c,Date__c,Tariff_Period__c,Load_Zone__c
-a1D4C0000008K3EUAU,Eversource SEMA Class 2,Eversource,Class 2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.1848,,,,false,,,false,true,,,
-a1D4C0000008K3FUAU,Eversource SEMA Class 2,Eversource,Class 2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.1848,,,,false,,,true,false,,,
-a1D4C0000008K3GUAU,National Grid WCMA Class 2,National Grid,Class 2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.1848,,,,false,,,true,false,,,
-a1D4C0000008K3HUAU,National Grid WCMA Class 2,National Grid,Class 2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.1848,,,,false,,,false,true,,,
+Id,Name,Utility__c,Class__c,Value_of_Net_Metering_Credit__c,Active__c,Sizing_Rate__c,Current_Billing_Rate__c
+a1D4C0000008K3EUAU,Eversource SEMA Class 2,Eversource,Class 2,0.1848,false,false,true
+TestUtilityNMCEversource,Eversource SEMA Class 2,Eversource,Class 2,0.1848,false,true,false
+a1D4C0000008K3GUAU,National Grid WCMA Class 2,National Grid,Class 2,0.1848,false,true,false
+a1D4C0000008K3HUAU,National Grid WCMA Class 2,National Grid,Class 2,0.1848,false,false,true
