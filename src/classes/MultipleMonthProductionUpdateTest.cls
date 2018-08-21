@@ -34,7 +34,7 @@ public class MultipleMonthProductionUpdateTest {
                                            Town__c= 'Medfield');
 
         insert new List<Load_U__c>{everLZU};
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
 
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',

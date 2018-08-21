@@ -40,7 +40,7 @@ public class TestBillCreationandPayment {
             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
 
         Account clientAccount = new Account(name = 'Client Account',
             Client_Brand_Key__c = 'AmpBlack');
@@ -1134,7 +1134,7 @@ public class TestBillCreationandPayment {
         WHERE Name = 'Account A'];
 
         System.assertEquals('No Payment Due', propertyAccount.Directions_To_Write_Paper_Check__c);
-        System.assertEquals('BlueWave 137 Newbury Street Boston, MA 02114', propertyAccount.Send_Checks_Address__c);
+        System.assertEquals('BlueWave 137 Newbury Street, 4th Floor Boston, MA 02116', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
         Test.stopTest();
 

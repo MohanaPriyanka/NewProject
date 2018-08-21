@@ -84,7 +84,8 @@ public class CSCPChartHandlerTest {
 
 		insert new List <Entity__c>{entityone, entitytwo};
 
-		insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+		TestFactory.insertBWAddress();
+
 
 		Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
                       Family = 'Community Solar',
