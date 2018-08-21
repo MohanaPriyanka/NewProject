@@ -130,4 +130,10 @@ public without sharing class SLPAllCustomersHandler {
         }
         return leadRecords;
     }
+
+    @AuraEnabled
+    public static String sendApplication(Lead lead) {
+        // loan amount isn't used in the CAP Community, only for
+        return SLPAddCustomer.sendApplication(lead, null);
+    }
 }

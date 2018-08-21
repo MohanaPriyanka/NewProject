@@ -110,8 +110,8 @@
                          conditionalColorField="Status"
                          conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
                          buttonConditionalField="Status"
-                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application'}"
-                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication'}"
+                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application', 'Unfinished': 'Resend Application'}"
+                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication', 'Unfinished': 'resendApplication'}"
                          defaultButtonLabels=""
                          defaultButtonEvents=""/>
  <br></br>

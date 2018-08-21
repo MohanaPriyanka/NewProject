@@ -132,6 +132,16 @@
                         }
                     }
                 )
+            case 'resendApplication':
+                var action = component.get('c.sendApplication');
+                action.setParams({lead: record});
+                action.setCallback(this,function(resp) {
+                    if (resp.getState() === 'SUCCESS') {
+
+                    } else {
+                        helper.logError('SLPAllCustomersController', 'resendApplication', resp.getError(), record);
+                    }
+                })
         }  
     },    
     changeTableToCompletedCustomers : function(component, event, helper) {
