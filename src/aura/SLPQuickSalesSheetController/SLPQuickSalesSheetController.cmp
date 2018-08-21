@@ -54,10 +54,10 @@
                   value="{!v.quicksalessheet.System_Size__c}"
                   required="true"
                   onfocus="{!c.eraseZeros}"
-                  step=".1"
+                  step=".01"
                   max="100"
                   min="0"
-                  messageWhenRangeOverflow="System size is too large"
+                  messageWhenRangeOverflow="Please enter a system size less than 100 kW."
                   messageWhenRangeUnderflow="System size cannot be negative"/>
               </div>
             </div>             
