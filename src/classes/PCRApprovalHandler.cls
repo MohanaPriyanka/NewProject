@@ -517,7 +517,9 @@ public without sharing class PCRApprovalHandler {
         Decimal monthlyPayment = getMonthlyPayment(creditSummary);
         Decimal applicantMonthlyIncome = getApplicantMonthlyIncome(lead, pcr);
 
-        if (lead.Application_Type__c == 'Joint' && lead.Joint_Applicant_Type__c == 'Co-Signer') {
+        if (lead.Application_Type__c == 'Joint'
+            && lead.Joint_Applicant_Type__c == 'Co-Signer'
+            && pcr.Adjusted_Monthly_Personal_Debt__c != null) {
             personalDTIAfter = (100 * (monthlyPayment + pcr.Adjusted_Monthly_Personal_Debt__c) / applicantMonthlyIncome).setScale(2);
         } else {
             personalDTIAfter = creditSummary.highestDTI;
