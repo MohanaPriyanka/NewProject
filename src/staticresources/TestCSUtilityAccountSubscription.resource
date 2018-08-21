@@ -1,0 +1,4 @@
+Id,Name,RecordTypeId,calculated_annual_cost_of_electricity__c,Opportunity__c,Subscribed_Annual_Cost_of_Electricity__c,Utility_Account_Log__c,Customer_Subscription_KW_DC_STATIC__c,Auto_Unround__c,Next_Schedule_Z_Status__c
+TestUASAccountAOppOne,0000234,012j00000004TNgAAM,4000.00,TestAccountAOppOne,4000.000000,TestUAL-AccountA,25.0000,true,Active Subscription
+TestUASAccountAOppTwo,000-0235,012j00000004TNgAAM,6000.00,TestAccountAOppTwo,6000.000000,TestUAL-AccountA,20.0000,true,Active Subscription
+TestUASAccountBOpp,000-0236,012j00000004TNgAAM,1800.00,TestAccountBOpp,1800.000000,TestUAL-AccountB,20.0000,true,Active Subscription
