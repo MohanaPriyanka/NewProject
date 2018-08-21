@@ -48,6 +48,7 @@
   <aura:attribute name="selectedTable" type="String"/>
   <aura:attribute name="loadingSpinner" type="Boolean"/>
 
+  <lightning:notificationsLibrary aura:id="notifLib"/>
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
       <c:BlueWaveInputToolTip popoverText="Applicants who have begun an application but have not yet been qualified or declined.">
