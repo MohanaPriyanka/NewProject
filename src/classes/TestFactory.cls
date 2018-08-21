@@ -145,4 +145,24 @@ public class TestFactory {
 			};
 		}
 	}
+
+	public static void insertBWAddress() {
+		insert new BW_Address__c(
+			Name = 'BlueWave',
+			Address_Line_One__c = '137 Newbury Street',
+			Address_Line_Two__c = '4th Floor',
+			City__c = 'Boston',
+			State__c = 'MA',
+			Zip_Code__c = '02116'
+		);
+	}
+
+	public static void insertLetterStreamSettings() {
+		insert new LetterStream_Settings__c(
+			Name = 'Test',
+			API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+			API_Id__c = 'foo',
+			API_Key__c = 'bar'
+		);
+	}
 }

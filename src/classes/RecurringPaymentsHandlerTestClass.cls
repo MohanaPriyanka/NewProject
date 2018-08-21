@@ -89,7 +89,7 @@ private class RecurringPaymentsHandlerTestClass{
         );
 
         insert entitytwo;
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
 
         // Create Shared Solar Systems
 
@@ -171,18 +171,21 @@ private class RecurringPaymentsHandlerTestClass{
         Opportunity opportunityone = new Opportunity(Name = 'OppOne',
             AccountId = accountA.Id,
             Shared_Solar_System__c = sss1.Id,
+            Customer_Group__c = 'Residential',
             StageName = 'Complete',
             CloseDate = System.today());
 
         Opportunity opportunitytwo = new Opportunity(Name = 'OppTwo',
             AccountId = accountA.Id,
             Shared_Solar_System__c = sss2.Id,
+            Customer_Group__c = 'Non-Residential',
             StageName = 'Complete',
             CloseDate = System.today());
 
         Opportunity opportunitythree = new Opportunity(Name = 'OppThree',
             AccountId = accountB.Id,
             Shared_Solar_System__c = sss2.Id,
+            Customer_Group__c = 'Residential',
             StageName = 'Complete',
             CloseDate = System.today());
 
@@ -826,6 +829,7 @@ private class RecurringPaymentsHandlerTestClass{
             AccountId = propAccountA.Id,
             Shared_Solar_System__c = sssA.Id,
             StageName = 'Complete',
+            Customer_Group__c = 'Non-Residential',
             CloseDate = System.today());
 
         insert opportunityA;
