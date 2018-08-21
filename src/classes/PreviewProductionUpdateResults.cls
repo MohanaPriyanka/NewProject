@@ -86,7 +86,7 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : scheduleZ.Id
-            AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
+            AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
             OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
             OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential' )
             ORDER BY Utility_Account_Subscription__r.Name_on_Account_From_Log__c

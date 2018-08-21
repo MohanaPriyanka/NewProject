@@ -1262,7 +1262,6 @@ public class TestBillCreationandPayment {
 
         System.runAs(userA){
             List<AggregateResult> systemBills = MyAccountController.getSystemBills(accountA.Id);
-            System.debug(systemBills.size());
             for (AggregateResult lineItem : systemBills) {
                 ChargentOrders__ChargentOrder__c billsToCharge = new ChargentOrders__ChargentOrder__c(
                     Account_Bill__c = (Id)lineItem.get('Account_Bill__c'),
