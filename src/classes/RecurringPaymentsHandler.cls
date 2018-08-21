@@ -6,12 +6,12 @@
  + * Scheduling this class to run on the dya bills are generated will allow this to only
  + * run once, and should include any adjustments that occur on the bills that day.
  + *
-   * - If a ChargentOrder status is reoccuring, set the parent account autopay checkbox to true
-   * - If a ChargentOrder status is anything else, set the partent account autopay checkbox to false
+   * - If a ChargentOrder status is recurring, set the parent account autopay checkbox to true
+   * - If a ChargentOrder status is anything else, set the parent account autopay checkbox to false
 + * Tested By: RecurringPaymentsHandlerTestClass
  + *************************************************************************************/
 
-public without sharing class RecurringPaymentsHandler implements Database.Batchable<sObject>, Schedulable {
+public without sharing class RecurringPaymentsHandler implements Database.Batchable<SObject>, Schedulable {
     public void execute(SchedulableContext sc){
        Database.executeBatch(this, 20);
     }
@@ -59,8 +59,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     public void updateRecurringOrders(List<ChargentOrders__ChargentOrder__c> chOrders){
         String uniqueId;
-        Integer newBillNumber;
-        Decimal newchargeamount;
         String accBillId;
         String abMapKey;
         String entityIdString;
@@ -70,86 +68,127 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
         Map<Id, ChargentOrders__ChargentOrder__c> orderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
-        List<Account_Bill__c> updateABs = new List<Account_Bill__c>();
+        List<Account_Bill__c> uncheckedFirstAccountBills = new List<Account_Bill__c>();
 
         for (ChargentOrders__ChargentOrder__c recOrders : chOrders) {
             accountIDList.add(recOrders.Property_Account_ID__c);
         }
 
-        for (Account_Bill__c newAcctBill : [  SELECT Id, Name, Bill_Number__c, Property_Account_ID__c, Is_First_Bill__c
-                                                FROM Account_Bill__c
-                                                WHERE Property_Account_ID__c IN : accountIDList
-                                                ORDER BY Bill_Number__c] ) {
-
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c, Is_First_Bill__c
+            FROM Account_Bill__c
+            WHERE Property_Account_ID__c IN :accountIDList
+            ORDER BY Bill_Number__c
+        ];
+        for (Account_Bill__c newAcctBill : accountBills) {
             newAcctBillList.add(newAcctBill);
             abMapKey = newAcctBill.Bill_Number__c + '_' + newAcctBill.Property_Account_ID__c;
             abMap.put(abMapKey, newAcctBill);
         }
 
-        for (AggregateResult sysBills : [  SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
-                                            FROM System_Bill__c
-                                            WHERE Account_Bill__c IN : newAcctBillList
-                                            GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c] ) {
-
+        List<AggregateResult> aggregateResults = [
+            SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN :newAcctBillList
+            GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c
+        ];
+        for (AggregateResult sysBills : aggregateResults ) {
             accBillId = String.valueOf(sysBills.get('Account_Bill__c'));
             entityIdString = String.valueOf(sysBills.get('entity'));
-            uniqueID = accBillId + '_' + entityIdString;
-            aggregateSbMap.put(uniqueID , (decimal) sysBills.get('totaldue'));
+            uniqueId = accBillId + '_' + entityIdString;
+            aggregateSbMap.put(uniqueId , (Decimal) sysBills.get('totaldue'));
         }
-
 
         for (ChargentOrders__ChargentOrder__c recurOrder : chOrders) {
             Id entityId = recurOrder.Entity__c;
 
             if (recurOrder.Account_Bill__c != null
                 && recurOrder.Account_Bill__r.Bill_Number__c != null
-                && entityId != null ) {
-                newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
-                if (recurOrder.Account_Bill__r.Is_First_Bill__c){
-                    chargentOrderKey = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
-                    recurOrder.Account_Bill__r.Is_First_Bill__c = false;
-                    updateABs.add(recurOrder.Account_Bill__r);
-                }else {
-                    chargentOrderKey = newBillNumber + '_' + recurOrder.Property_Account_ID__c;
-                }
-                if (abMap.containsKey(chargentOrderKey)){
-                    recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
-                    if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
-                        newchargeamount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
-                        recurOrder.ChargentOrders__Charge_Amount__c = newchargeamount.setScale(2, roundingMode.HALF_UP);
-                    } else {
-                        recurOrder = setChargentOrderToStopped(recurOrder, 'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
-                    }
-                } else {
-                        recurOrder = setChargentOrderToStopped(recurOrder,  'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
-                }
+                && entityId != null) {
+                chargentOrderKey = getChargentOrderKey(recurOrder);
+                unsetFirstAccountBill(recurOrder, uncheckedFirstAccountBills);
+                moveAndSetOrder(abMap, chargentOrderKey, recurOrder, aggregateSbMap, entityId);
             } else {
-                recurOrder = setChargentOrderToStopped(recurOrder, 'Order was not linked to Account Bill and/or Entity, cannot find next in series');
+                recurOrder = setChargentOrderToStopped(recurOrder,
+                    'Order was not linked to Account Bill and/or Entity, cannot find next in series');
             }
             orderMap.put(recurOrder.Account_Bill__c, recurOrder);
         }
-        update updateABs;
+        update uncheckedFirstAccountBills;
         update chOrders;
 
         /* If there are any bills that are left over that don't have a Ch Order, clone one:*/
-        if (aggregateSbMap.size() > 0){
+        if (aggregateSbMap.size() > 0) {
             cloneOrderForNewGateway(aggregateSbMap, orderMap);
         }
     }
 
-    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped (ChargentOrders__ChargentOrder__c orderToStop, String stopMessage) {
+    private String getChargentOrderKey(ChargentOrders__ChargentOrder__c recurOrder) {
+        Integer newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
+        if (recurOrder.Account_Bill__r.Is_First_Bill__c) {
+            return Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
+        } else {
+            return newBillNumber + '_' + recurOrder.Property_Account_ID__c;
+        }
+    }
+
+    private void unsetFirstAccountBill(ChargentOrders__ChargentOrder__c recurOrder, List<Account_Bill__c> updateABs) {
+        if (recurOrder.Account_Bill__r.Is_First_Bill__c) {
+            recurOrder.Account_Bill__r.Is_First_Bill__c = false;
+            updateABs.add(recurOrder.Account_Bill__r);
+        }
+    }
+
+    private void moveAndSetOrder(Map<String, Account_Bill__c> abMap, String chargentOrderKey,
+        ChargentOrders__ChargentOrder__c recurOrder, Map<String, Decimal> aggregateSbMap, Id entityId) {
+        Decimal newChargeAmount;
+        if (abMap.containsKey(chargentOrderKey)) {
+            recurOrder.Account_Bill__c = abMap.get(chargentOrderKey).Id;
+            if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
+                newChargeAmount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
+                recurOrder.ChargentOrders__Charge_Amount__c = newChargeAmount.setScale(2, RoundingMode.HALF_UP);
+                if (recurOrder.ChargentOrders__Charge_Amount__c == 0) {
+                    pushPaymentStartDate(recurOrder);
+                }
+            } else {
+                recurOrder = setChargentOrderToStopped(recurOrder,
+                    'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
+            }
+        } else {
+            recurOrder = setChargentOrderToStopped(recurOrder,
+                'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
+        }
+    }
+
+    // We don't want to charge $0 since that results in extra Chargent Transactions and Errors, so we'll push the
+    // Payment Start Date out to the next cycle
+    private void pushPaymentStartDate(ChargentOrders__ChargentOrder__c recurOrder) {
+        if (recurOrder.ChargentOrders__Charge_Amount__c != 0) {
+            return;
+        }
+        Date nextMonth = Date.today().addMonths(1);
+        Date nextChargeDate = Date.newInstance(
+            nextMonth.year(),
+            nextMonth.month(),
+            Integer.valueOf(recurOrder.ChargentOrders__Charge_Date__c)
+        );
+        recurOrder.ChargentOrders__Payment_Start_Date__c = nextChargeDate;
+    }
+
+    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped(ChargentOrders__ChargentOrder__c orderToStop,
+        String stopMessage) {
         orderToStop.ChargentOrders__Charge_Amount__c = 0;
         orderToStop.ChargentOrders__Payment_Status__c = 'Stopped';
         orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
         return orderToStop;
     }
 
-    public void cloneOrderForNewGateway(Map<String, Decimal> aggregateSbMap, Map<Id, ChargentOrders__ChargentOrder__c> orderMap){
+    public void cloneOrderForNewGateway(Map<String, Decimal> aggregateSbMap, Map<Id, ChargentOrders__ChargentOrder__c> orderMap) {
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         for (String sbWithoutOrder : aggregateSbMap.keySet()) {
             String acctBillid = sbWithoutOrder.substring(0,18);
-            Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, roundingMode.HALF_UP);
-            if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring'){
+            Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, RoundingMode.HALF_UP);
+            if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring') {
                 ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
                 orderA.ChargentOrders__Subtotal__c = amountToCharge;
@@ -168,7 +207,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         insert ordersToInsert;
     }
 
-    public void finish(Database.BatchableContext bc){
+    public void finish(Database.BatchableContext bc) {
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
                             JobItemsProcessed,
                             TotalJobItems, CreatedBy.Email
@@ -180,7 +219,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                             + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
         List<String> postJobEmailAddresses = new List<String>{'jpentaleri@bluewavesolar.com'};
         if (!Test.isRunningTest()){
-            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Recurring Processing Complete', postJobEmailAddresses);
+            MessagingService.createAndSendEmail(emailBody,
+                'customercare@bluewavesolar.com', 'CS Recurring Processing Complete', postJobEmailAddresses);
         }
     }
 

@@ -10,34 +10,28 @@
  + *************************************************************************************/
 
 public with sharing class SystemBillAccountingLogicHandler {
-    // For backward compatibility
-    public SystemBillAccountingLogicHandler(boolean isExecuting, Integer size) {
-    }
-    public SystemBillAccountingLogicHandler() {
-    }
-    public void OnBeforeUpdate (System_Bill__c[] newSystemBill) {
-
-    }
-    public void OnBeforeInsert (System_Bill__c[] newSystemBill) {
-    }
-
-    public void accountingRefresh (List <System_Bill__c> systemBill) {
-        String stringPropertyAccount;
+    public static void accountingRefresh (List <System_Bill__c> systemBill, Map<Id, System_Bill__c> oldSBMap) {
         Decimal carryoverbalance = 0;  
         Decimal pastbillamount = 0;
         Decimal pastbillpayment = 0;
         Decimal pastbilloverpayment = 0;
         Decimal pastbilloveradjust = 0;
-        Decimal origlatefee = 0;
-        Decimal origcarryforward = 0;
-        List<Id> propertyaccountIds = new List<id>();
-        List<String> propertyaccountIdsstring = new List<String>();  
+        List<Id> propertyAccountIDs = new List<Id>();
+        List<System_Bill__c> unPublishedBillList = new List<System_Bill__c>();
 
         for (System_Bill__c sbill : systemBill) {
-            propertyaccountIds.add(sbill.Property_Account_ID__c);
-            stringPropertyAccount = string.valueOf(sbill.Property_Account_ID__c);
-            propertyaccountIdsstring.add(stringPropertyAccount);
-        }       
+            if (sbill.Published__c){
+                setAllNullsToZero(sbill);
+                if (sbill.Payment_Plan_Balance_to_Distribute__c == null) {
+                    balanceCalculations(sbill, false);
+                } else {
+                    balanceCalculations(sbill, true);
+                }
+            } else {
+                propertyAccountIDs.add(sbill.Property_Account__c);
+                unPublishedBillList.add(sbill);
+            }
+        }
 
         List <System_Bill__c> listsystemBills = [SELECT Id, Property_Account_ID__c, Shared_Solar_System_ID__c, 
                                                     Bill_Number__c, Discounted_Bill__c,  
@@ -55,11 +49,11 @@ public with sharing class SystemBillAccountingLogicHandler {
                                                     Production_kWH__c,
                                                     Entity_ID__c
                                                 FROM System_Bill__c
-                                                WHERE Property_Account_ID__c 
-                                                IN : propertyaccountIdsstring 
+                                                WHERE Property_Account__c
+                                                IN : propertyAccountIDs
                                                 ORDER BY Bill_Number__c DESC];
         
-        for (System_Bill__c trigsb : systemBill) {
+        for (System_Bill__c trigsb : unPublishedBillList) {
             // Things that reset for each triggered SB
             String parentID = trigsb.Opportunity_ID__c;          
             Decimal currentbill = trigsb.Bill_Number__c;
@@ -85,22 +79,11 @@ public with sharing class SystemBillAccountingLogicHandler {
             Decimal ytdbilled = 0;
             Decimal ytdpayments = 0;
             Decimal ytdProduction = 0;
-            Boolean morerecentbills = FALSE;
-            Decimal dueThisMonth = trigsb.Discounted_Bill__c ;  
-            Decimal extraAdjustment = 0;
-
-            trigsb.Late_Payments__c = checkForNull(trigsb.Late_Payments__c);
-            trigsb.Total_Payments_This_Month__c = checkForNull(trigsb.Total_Payments_This_Month__c);
-            trigsb.Payments_Net_Previous_Balances__c = checkForNull(trigsb.Payments_Net_Previous_Balances__c);
-            trigsb.Carry_Over_Balance__c = checkForNull(trigsb.Carry_Over_Balance__c);
-            trigsb.Balance_Net_Late_Payments__c = checkForNull(trigsb.Balance_Net_Late_Payments__c);
-            trigsb.Late_Fee_Payments__c = checkForNull(trigsb.Late_Fee_Payments__c);
-            trigsb.Late_Fees__c = checkForNull(trigsb.Late_Fees__c);
-            trigsb.Adjustments__c = checkForNull(trigsb.Adjustments__c);
-            trigsb.Carry_Forward_Adjustments__c = checkForNull(trigsb.Carry_Forward_Adjustments__c);
-            trigsb.Carry_Forward_Payments__c = checkForNull(trigsb.Carry_Forward_Payments__c);
-            trigsb.Early_Payments__c = checkForNull(trigsb.Early_Payments__c);
+            Boolean moreRecentBills = FALSE;
+            Decimal dueThisMonth = trigsb.Discounted_Bill__c ;
             
+            setAllNullsToZero(trigsb);
+
             if ( trigsb.Monthly_Late_Fee_Interest__c == NULL) {
                 trigsb.Monthly_Late_Fee_Interest__c = 1;
             }
@@ -108,7 +91,7 @@ public with sharing class SystemBillAccountingLogicHandler {
             for (System_Bill__c newerbills : listsystemBills) {
                 if (newerbills.Opportunity_ID__c == parentID 
                     && newerbills.Bill_Number__c > currentbill ) {
-                        morerecentbills = TRUE;
+                        moreRecentBills = TRUE;
                 }
             }
             if (currentbill == 1) {
@@ -117,17 +100,8 @@ public with sharing class SystemBillAccountingLogicHandler {
                 trigsb.Previous_Month_Overdue_Balance__c = 0 ;
                 trigsb.Late_Fees__c = 0; 
                 trigsb.Payment_Plan_Balance__c = 0;
-                trigsb.Carry_Over_Balance__c = trigsb.Total_Due__c - trigsb.Total_Payments_This_Month__c;
-                trigsb.Adjustments__c = trigsb.Adjustments_UASB__c; 
-
-                if ((trigsb.Distribute_This_Balance_as_Payment_Plan__c  
-                    || trigsb.Distribute_This_Balance_12mo__c ) 
-                    && !morerecentbills) {
-                      trigsb.Payment_Plan_Balance_to_Distribute__c = trigsb.Carry_Over_Balance__c;
-                }
-                trigsb.Balance_Net_Late_Payments__c = dueThisMonth + trigsb.Adjustments__c + trigsb.Previous_Overpayments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c;
-        
-            } else { 
+                trigsb.Adjustments__c = trigsb.Adjustments_UASB__c;
+            } else {
                 for (System_Bill__c sbill: listsystemBills) {   
                     if ( sbill.Opportunity_ID__c == parentID ) {
                         if (sbill.Bill_Number__c == previousbill) {
@@ -135,7 +109,7 @@ public with sharing class SystemBillAccountingLogicHandler {
                             pastbillpayment = sbill.Total_Payments_This_Month__c;
                             pastbilloverpayment = sbill.Carry_Forward_Payments__c;
                             pastbilloveradjust = sbill.Carry_Forward_Adjustments__c;
-                            if (sbill.Distribute_This_Balance_as_Payment_Plan__c 
+                            if (sbill.Distribute_This_Balance_as_Payment_Plan__c
                                 || sbill.Distribute_This_Balance_12mo__c) {
                                 carryoverbalance = 0;
                             } else {
@@ -180,24 +154,33 @@ public with sharing class SystemBillAccountingLogicHandler {
                 }
                 trigsb.Adjustments__c = trigsb.Adjustments_UASB__c; 
                 trigsb.Total_Due__c = dueThisMonth + trigsb.Late_Fees__c + overdue + trigsb.Payment_Plan_Balance__c + trigsb.Adjustments__c + trigsb.Previous_Overpayments__c;
-                Decimal newbalance = trigsb.Total_Due__c - trigsb.Total_Payments_This_Month__c;
-                trigsb.Carry_Over_Balance__c = newbalance;
-                if (trigsb.Distribute_This_Balance_as_Payment_Plan__c
-                    || trigsb.Distribute_This_Balance_12mo__c 
-                    && !morerecentbills) {
-                        trigsb.Payment_Plan_Balance_to_Distribute__c = trigsb.Carry_Over_Balance__c;
-                }
-                trigsb.Balance_Net_Late_Payments__c  = dueThisMonth + trigsb.Balance_Adjustment__c + trigsb.Previous_Overpayments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c; 
-            }  
+            }
+            balanceCalculations(trigsb, moreRecentBills);
         }
-    }  
+    }
 
-    private static Decimal checkForNull (Decimal systemBillField) {    
-        if ( systemBillField == NULL) {
-          return 0;
-        } else {
-          return systemBillField;
+    private static void setAllNullsToZero(System_Bill__c trigsb){
+        trigsb.Late_Payments__c = Util.nullToZero(trigsb.Late_Payments__c);
+        trigsb.Total_Payments_This_Month__c = Util.nullToZero(trigsb.Total_Payments_This_Month__c);
+        trigsb.Payments_Net_Previous_Balances__c = Util.nullToZero(trigsb.Payments_Net_Previous_Balances__c);
+        trigsb.Carry_Over_Balance__c = Util.nullToZero(trigsb.Carry_Over_Balance__c);
+        trigsb.Balance_Net_Late_Payments__c = Util.nullToZero(trigsb.Balance_Net_Late_Payments__c);
+        trigsb.Late_Fee_Payments__c = Util.nullToZero(trigsb.Late_Fee_Payments__c);
+        trigsb.Late_Fees__c = Util.nullToZero(trigsb.Late_Fees__c);
+        trigsb.Adjustments__c = Util.nullToZero(trigsb.Adjustments__c);
+        trigsb.Carry_Forward_Adjustments__c = Util.nullToZero(trigsb.Carry_Forward_Adjustments__c);
+        trigsb.Carry_Forward_Payments__c = Util.nullToZero(trigsb.Carry_Forward_Payments__c);
+        trigsb.Early_Payments__c = Util.nullToZero(trigsb.Early_Payments__c);
+    }
+
+    private static void balanceCalculations (System_Bill__c trigsb, Boolean moreRecentBills) {
+        Decimal newbalance = trigsb.Total_Due__c - trigsb.Total_Payments_This_Month__c;
+        trigsb.Carry_Over_Balance__c = newbalance;
+        if (trigsb.Distribute_This_Balance_as_Payment_Plan__c
+            || trigsb.Distribute_This_Balance_12mo__c
+            && !morerecentbills) {
+                trigsb.Payment_Plan_Balance_to_Distribute__c = trigsb.Carry_Over_Balance__c;
         }
-    }   
-  
+        trigsb.Balance_Net_Late_Payments__c  = trigsb.Due_This_Month__c + trigsb.Balance_Adjustment__c + trigsb.Previous_Overpayments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c;
+    }
 }

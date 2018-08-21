@@ -1,0 +1,3 @@
+Id,Name,RecordTypeId,ChargentBase__Active__c,ChargentBase__Merchant_ID__c
+TestGatewayOne,Chargent Gateway One,012j00000000H2eAAE,true,235986
+TestGatewayTwo,Chargent Gateway Two,012j00000000H2eAAE,true,235116
