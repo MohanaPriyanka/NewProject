@@ -1,4 +1,4 @@
-public with sharing class RecalculateUALCostController {
+public without sharing class RecalculateUALCostController {
     
     public String ualId {get; set;}
     public String uasId {get; set;}
