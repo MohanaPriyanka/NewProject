@@ -21,7 +21,12 @@ public with sharing class SystemBillAccountingLogicHandler {
 
         for (System_Bill__c sbill : systemBill) {
             if (sbill.Published__c){
-                doNotAllowUpdate(sbill, oldSBMap);
+                setAllNullsToZero(sbill);
+                if (sbill.Payment_Plan_Balance_to_Distribute__c == null) {
+                    balanceCalculations(sbill, false);
+                } else {
+                    balanceCalculations(sbill, true);
+                }
             } else {
                 propertyAccountIDs.add(sbill.Property_Account__c);
                 unPublishedBillList.add(sbill);
@@ -166,32 +171,6 @@ public with sharing class SystemBillAccountingLogicHandler {
         trigsb.Carry_Forward_Adjustments__c = Util.nullToZero(trigsb.Carry_Forward_Adjustments__c);
         trigsb.Carry_Forward_Payments__c = Util.nullToZero(trigsb.Carry_Forward_Payments__c);
         trigsb.Early_Payments__c = Util.nullToZero(trigsb.Early_Payments__c);
-    }
-
-    private static void doNotAllowUpdate (System_Bill__c trigsb, Map<Id,System_Bill__c> oldSBMap){
-        if (trigsb.Due_This_Month__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Due_This_Month__c)){
-            trigsb.addError('Cannot update Due This Month on an already published bill.');
-        } else if (trigsb.Previous_Month_Overdue_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Previous_Month_Overdue_Balance__c)){
-            trigsb.addError('Cannot update Previous Month Overdue Balance on an already published bill.');
-        } else if ( trigsb.Late_Fees__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Late_Fees__c) ||
-                    trigsb.Waive_Late_Fees__c != oldSBMap.get(trigsb.Id).Waive_Late_Fees__c){
-            trigsb.addError('Cannot update Late Fees on an already published bill.');
-        } else if (trigsb.Payment_Plan_Balance__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Payment_Plan_Balance__c)){
-            trigsb.addError('Cannot update Payment Plan Balance on an already published bill.');
-        } else if (trigsb.Adjustments__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Adjustments__c)) {
-            trigsb.addError('Cannot update Adjustments on an already published bill.');
-        } else if (trigsb.Previous_Overpayments__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Previous_Overpayments__c)){
-            trigsb.addError('Cannot update Overpayments on an already published bill.');
-        } else if (trigsb.Total_Due__c != Util.nullToZero(oldSBMap.get(trigsb.Id).Total_Due__c)) {
-            trigsb.addError('Cannot update Total Due on an already published bill.');
-        } else {
-            setAllNullsToZero(trigsb);
-            if (trigsb.Payment_Plan_Balance_to_Distribute__c == null) {
-                balanceCalculations(trigsb, false);
-            } else {
-                balanceCalculations(trigsb, true);
-            }
-        }
     }
 
     private static void balanceCalculations (System_Bill__c trigsb, Boolean moreRecentBills) {
