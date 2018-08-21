@@ -147,6 +147,9 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
                 newChargeAmount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
                 recurOrder.ChargentOrders__Charge_Amount__c = newChargeAmount.setScale(2, RoundingMode.HALF_UP);
+                if (recurOrder.ChargentOrders__Charge_Amount__c == 0) {
+                    pushPaymentStartDate(recurOrder);
+                }
             } else {
                 recurOrder = setChargentOrderToStopped(recurOrder,
                     'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
@@ -155,6 +158,21 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             recurOrder = setChargentOrderToStopped(recurOrder,
                 'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
         }
+    }
+
+    // We don't want to charge $0 since that results in extra Chargent Transactions and Errors, so we'll push the
+    // Payment Start Date out to the next cycle
+    private void pushPaymentStartDate(ChargentOrders__ChargentOrder__c recurOrder) {
+        if (recurOrder.ChargentOrders__Charge_Amount__c != 0) {
+            return;
+        }
+        Date nextMonth = Date.today().addMonths(1);
+        Date nextChargeDate = Date.newInstance(
+            nextMonth.year(),
+            nextMonth.month(),
+            Integer.valueOf(recurOrder.ChargentOrders__Charge_Date__c)
+        );
+        recurOrder.ChargentOrders__Payment_Start_Date__c = nextChargeDate;
     }
 
     public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped(ChargentOrders__ChargentOrder__c orderToStop,
