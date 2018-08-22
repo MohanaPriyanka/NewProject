@@ -514,7 +514,7 @@ public without sharing class PCRApprovalHandler {
 
     private Decimal getPersonalDTIAfter (Lead lead, CreditResultSummary creditSummary, LASERCA__Personal_Credit_Report__c pcr){
         Decimal personalDTIAfter;
-        Decimal monthlyPayment = getMonthlyPayment(creditSummary);
+        Decimal monthlyPayment = Util.nullToZero(getMonthlyPayment(creditSummary));
         Decimal applicantMonthlyIncome = getApplicantMonthlyIncome(lead, pcr);
 
         if (lead.Application_Type__c == 'Joint'

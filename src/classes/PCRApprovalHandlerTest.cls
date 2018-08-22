@@ -63,6 +63,52 @@ private class PCRApprovalHandlerTest {
         }
     }
 
+    @isTest
+    static void testCoSigners() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
+        insert coApplicantAccount;
+
+        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        bwsl1.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        bwsl1.Lender_of_Record__c = 'Avidia';
+
+        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp1.Lender_of_Record__c = 'Avidia';
+        mslp1.Program__c = 'MSLP';
+        mslp1.IBLS_Category__c = 'Category 1';
+
+        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        mslp2.Lender_of_Record__c = 'Avidia';
+        mslp2.Program__c = 'MSLP';
+        mslp2.IBLS_Category__c = 'Category 2';
+        insert new List<Product2>{bwsl1, mslp1, mslp2};
+
+        String applicationJSON =
+            '{"application":[ ' +
+              '  {"key":1, "income":50000, "loan":45000, "doer":true,  "fico":570, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":9.60}, ' +
+              '  {"key":2, "income":50000, "loan":45000, "doer":true,  "fico":820, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58} ' +
+            ']}';
+        ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+        applicationSet.connectJointPCRs();
+        applicationSet.insertTradeAccounts();
+        applicationSet.insertCreditReportLogs();
+
+        Map<Id, LASERCA__Personal_Credit_Report__c> pcrMap = new Map<Id, LASERCA__Personal_Credit_Report__c>([
+            SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c, DTI_After__c,
+                LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
+            FROM LASERCA__Personal_Credit_Report__c
+        ]);
+
+        for (Application app : ApplicationSet.application) {
+            app.assert(pcrMap.get(app.pcrId));
+        }
+    }
+
     static testMethod void testDOERPCRApproval() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Account coApplicantAccount = new Account(Name = 'CoapplicantAccount');
