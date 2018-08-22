@@ -1,0 +1,3 @@
+Id,Name,Service_Territory__c,Number_of_Decimal_Places__c
+TestUtilityEversource,Eversource,,2
+TestUtilityNGrid,National Grid,,2

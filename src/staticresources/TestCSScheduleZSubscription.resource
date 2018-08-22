@@ -1,0 +1,4 @@
+Id,Customer_Subscription_kW_DC__c,Number_of_Decimal_Places__c,System_Size_kW_DC__c,Utility_Account_Subscription__c,Schedule_Z__c
+TestSZS-AccountABarrettP1,25.0000,2,1445.86,TestUASAccountAOppOne,TestSZBarrettP1
+TestSZS-AccountABarrettP2,20.0000,2,1445.86,TestUASAccountAOppTwo,TestSZBarrettP2
+TestSZS-AccountBBarrettP2,20.0000,2,1445.86,TestUASAccountBOpp,TestSZBarrettP2
