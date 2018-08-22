@@ -401,8 +401,8 @@ private class RecurringPaymentsHandlerTestClass {
             Shared_Solar_System__c = sssA.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Non-Residential',
-            CloseDate = System.today()
-        );
+            CloseDate = System.today());
+
         insert opportunityA;
 
         Utility_Account_Subscription__c uasA = new Utility_Account_Subscription__c(

@@ -379,6 +379,36 @@ public class CSPaymentTest {
         }
     }
 
+    @IsTest public static void testPayOffFailed() {
+        // assert Bills were inserted for each property account, for 2 billing periods:
+        List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
+            Account_Bill__r.Is_Most_Recent__c
+        FROM System_Bill__c
+        ORDER BY Account_Bill__r.Name];
+        System.assertEquals(10, systemBillList.size());
+
+        User userA = [SELECT Id FROM User WHERE Username='CSPaymentTest@bluewavesolar.com'];
+
+        Test.startTest();
+        // Make a payment for only ONE property account:
+        List<System_Bill__c> sbList = new List<System_Bill__c>();
+        System.assertEquals('BDonut Shop February 2018',systemBillList[2].Account_Bill__r.Name);
+        System.assertEquals(true,systemBillList[2].Account_Bill__r.Is_Most_Recent__c);
+        sbList.add(systemBillList[2]);
+        mockMakeASinglePayment(sbList);
+
+        System.runAs(userA) {
+            // Try again to make a payment for all property accounts, now this list should be 3 not 4:
+            List<ChargentOrders__ChargentOrder__c> secondOrderList = makePaymentInPortal('All');
+            CreateOrderandPaymentRequest.testResult =
+                CreateOrderandPaymentRequest.ChargentTestResult.CHARGENT_TEST_RESULT_TIMEOUT;
+            String response1 = CreateOrderandPaymentRequest.chargeOrder(secondOrderList[0]);
+            System.assertEquals('trying again.', response1.right(13));
+        }
+        Test.stopTest();
+    }
+
+
     static void setBillsToPublished() {
         List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
                                                     FROM Account_Bill__c
