@@ -1,0 +1,3 @@
+Id,Name,RecordTypeId,Status__c,Gateway__c
+TestEntityBarrett,BarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayOne
+TestEntityNotBarrett,NotBarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayTwo
