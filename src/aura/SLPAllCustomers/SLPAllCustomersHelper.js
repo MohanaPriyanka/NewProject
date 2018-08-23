@@ -51,10 +51,4 @@
         this.clearSearchSelections(component);
     },
 
-    showToast : function(component, title, message) {
-        component.find('notifLib').showToast({
-            "title": title,
-            "message": message
-        });
-    }
 })
