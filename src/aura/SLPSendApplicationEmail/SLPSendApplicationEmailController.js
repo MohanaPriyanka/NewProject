@@ -9,13 +9,19 @@
                     partner.Accounts__r[0].Disable_New_Loan_Applications_in_Portal__c) {
                     component.set("v.disableOrigination", true);
                 }
+                if (partner.Accounts__r[0] &&
+                    partner.Accounts__r[0].Enable_Storage_Application_in_Portal__c) {
+                    component.set("v.enableStorage", true);
+                }
             } else {
                 helper.logError("SLPSendApplicationEmailController", "doInit", resp.getError());
             }
         });    
-        $A.enqueueAction(action);    
+        $A.enqueueAction(action);
 
         helper.callApexMethod(component, "getActiveStates", ["activeStates"]);
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Inverter_Manufacturer__c', "v.availableStorageInverterManufacturers");
 
         //reset the modal so that the email confirmation gets removed and the form gets displayed
         $A.util.addClass(component.find('emailConfirmation'), 'noDisplay');

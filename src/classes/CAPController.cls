@@ -49,7 +49,9 @@ public without sharing class CAPController {
                 (SELECT Id FROM Loans__r),
                 (SELECT Id, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
                     Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
-                    Loan__r.Commencement_Datee__c, Loan__r.Estimated_Completion_Date__c
+                    Loan__r.Commencement_Datee__c, Loan__r.Estimated_Completion_Date__c, Storage_Grid_Hybrid__c,
+                    Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c,
+                    Storage_Inverter_Model__c, Storage_Manufacturer__c, Storage_Model__c, Loan__r.Lead__r.Storage__c
                 FROM Residential_Equipment__r),
                 (SELECT Id, Name, Status__c FROM Partner_Tasks__r)
                 FROM Lead
@@ -296,7 +298,9 @@ public without sharing class CAPController {
             SELECT Id, Loan__c, Loan__r.Lead__r.System_Cost__c, Loan__r.Lead__r.Requested_Loan_Amount__c, Loan__r.Commencement_Datee__c,
                 Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
                 Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Generator_Nameplate_Capacity__c,
-                Lead__r.Maximum_monthly_Disbursement__c, Loan__r.DOER_Solar_Loann__c, Loan__r.Estimated_Completion_Date__c
+                Lead__r.Maximum_monthly_Disbursement__c, Loan__r.DOER_Solar_Loann__c, Loan__r.Estimated_Completion_Date__c,
+                Storage_Grid_Hybrid__c, Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c,
+                Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c, Storage_Model__c
             FROM Residential_Equipment__c
             WHERE Loan__r.Lead__c =: leadId LIMIT 1
         ];
@@ -331,6 +335,32 @@ public without sharing class CAPController {
         re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
         re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
         re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
+        if ((Boolean) changeOrder.get('Storage__change')) {
+            re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
+            re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
+            re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
+            re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
+            re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
+            re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
+            re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
+            if (changeOrder.get('Storage_Grid_Hybrid__change') == 'Yes') {
+                re.Storage_Grid_Hybrid__c = true;
+            } else {
+                re.Storage_Grid_Hybrid__c = false;
+                re.Storage_Full_or_Partial_Home__c = 'N/A';
+            }
+            update re.Loan__r.Lead__r;
+        } else {
+            re.Storage_Grid_Hybrid__c = false;
+            re.Storage_Full_or_Partial_Home__c = null;
+            re.Storage_Capacity__c = null;
+            re.Storage_Manufacturer__c = null;
+            re.Storage_Model__c = null;
+            re.Storage_Inverter_Manufacturer__c = null;
+            re.Storage_Inverter_Model__c = null;
+            re.Loan__r.Lead__r.Storage__c = false;
+            update re.Loan__r.Lead__r;
+        }
 
         Loan__c loan;
         if (completionDate != null && completionDate != '') {
@@ -419,8 +449,11 @@ public without sharing class CAPController {
                 lead.Residential_Equipment__r[0] + ' loans: ' + lead.Loans__r[0]);
         } else {
             try {
+                System.debug('Inside try block');
                 LoanHandler.createResidentialEquipment(new List<Lead>{lead});
+                System.debug('equipment created');
                 LoanHandler.createLoan(new List<Lead>{lead});
+                System.debug('Loan created');
                 // createLoan creates the Loan and Partner Tasks before associating the RE to the Loan. If the RE is complete,
                 // we should close out the system info partner task
                 String searchCriteria = lead.Id + '%';
