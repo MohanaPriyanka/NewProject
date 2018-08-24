@@ -576,7 +576,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Shared_Solar_System__c = sss.Id,
             StageName = 'Complete',
             Product__c = sss.Product__r.Id,
-            CloseDate = System.today()
+            CloseDate = System.today(),
+            RecordTypeId = '012j00000010HPE'
         );
         return opportunity1;
     }
@@ -619,11 +620,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         String accountName4 = firstName4 + ' ' + lastName4;
         String accountName5 = firstName5 + ' ' + lastName5;
 
-        Account accountParent1 = new Account(Name = accountName1);
-        Account accountParent2 = new Account(Name = accountName2);
-        Account accountParent3 = new Account(Name = accountName3);
-        Account accountParent4 = new Account(Name = accountName4);
-        Account accountParent5 = new Account(Name = accountName5);
+        Account accountParent1 = new Account(Name = accountName1, RecordTypeId = '012j00000010Ha3');
+        Account accountParent2 = new Account(Name = accountName2, RecordTypeId = '012j00000010Ha3');
+        Account accountParent3 = new Account(Name = accountName3, RecordTypeId = '012j00000010Ha3');
+        Account accountParent4 = new Account(Name = accountName4, RecordTypeId = '012j00000010Ha3');
+        Account accountParent5 = new Account(Name = accountName5, RecordTypeId = '012j00000010Ha3');
 
         insert new List<Account>{
             accountParent1, accountParent2, accountParent3, accountParent4, accountParent5
