@@ -7,6 +7,13 @@ private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
 
     @TestSetup public static void setupTestData() {
+        if (System_Properties__c.getall().isEmpty()) {
+            insert new System_Properties__c(
+                Name = 'System',
+                DocuSign_Customer_Care_User__c = 'customercare@bluewavesolar.com'
+            );
+        }
+
         Account testAcct = new Account(Name='Test');
         insert testAcct;
         List<Contact> contactList = new List<Contact>();
@@ -35,6 +42,7 @@ private class PostSandboxRefresherTest {
         Test.startTest();
         PostSandboxRefresher.disableEmails();
         PostSandboxRefresher.deleteScheduledJob(JOBNAME);
+        PostSandboxRefresher.updateDocusignToDemoConfig();
         Test.stopTest();
  
         List<Contact> contactList = [SELECT Id, Email
@@ -50,6 +58,9 @@ private class PostSandboxRefresherTest {
                                    FROM CronTrigger
                                    WHERE CronJobDetail.Name = :JOBNAME];
         System.assertEquals(crons.size(), 0);
+
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
     }
 
     static testMethod void testBatchUpdateFailure() {
