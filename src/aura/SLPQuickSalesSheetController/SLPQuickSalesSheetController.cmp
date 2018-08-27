@@ -47,14 +47,18 @@
             </div> 
             <div class="slds-form-element slds-is-required">
               <div class="slds-form-element__control">
-                <ui:inputNumber aura:id="systemsizeinput" 
-                              label="System Size (kW)"
-                              class="slds-input"
-                              labelClass="slds-form-element__label"
-                              value="{!v.quicksalessheet.System_Size__c}"
-                              required="true"
-                              click="{!c.eraseZeros}"
-                              select="{!c.eraseZeros}"/>
+                <lightning:input
+                  type="number"
+                  name="systemsizeinput"
+                  label="System Size (kW)"
+                  value="{!v.quicksalessheet.System_Size__c}"
+                  required="true"
+                  onfocus="{!c.eraseZeros}"
+                  step=".01"
+                  max="100"
+                  min="0"
+                  messageWhenRangeOverflow="Please enter a system size less than 100 kW."
+                  messageWhenRangeUnderflow="System size cannot be negative"/>
               </div>
             </div>             
             <div class="slds-form-element slds-is-required">
