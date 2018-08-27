@@ -228,7 +228,7 @@ public with sharing class CSAPControllerTest {
                 Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id,
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, OwnerId,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'];
@@ -258,8 +258,15 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).srecProduct);
         System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).smartProduct.Id);
 
+        User apiUser = [SELECT Id, Name, Username
+        FROM User
+        WHERE Name = 'API'
+        AND IsActive = True
+        LIMIT 1];
+
         System.assertEquals('API', residentialLead.Parent_Account__r.Owner.Name);
         System.assertNotEquals('User Testing', residentialLead.Parent_Account__r.Owner.Name);
+        System.assertEquals(apiUser.Id, residentialLead.OwnerId);
 
         //Check for un-qualified
         pcr.LASERCA__Credit_Score__c = '200';
@@ -436,6 +443,12 @@ public with sharing class CSAPControllerTest {
 
     @IsTest
     static void testConversion() {
+        User apiUser = [SELECT Id, Name, Username
+                        FROM User
+                        WHERE Name = 'API'
+                        AND IsActive = True
+                        LIMIT 1];
+
         Lead residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -448,6 +461,7 @@ public with sharing class CSAPControllerTest {
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'];
         residentialLead.Status = 'Qualified';
+        residentialLead.OwnerId = apiUser.Id;
         update residentialLead;
         // Insert 10 other property accounts
         List<Utility_Account_Log__c> ualList = new List<Utility_Account_Log__c>();
@@ -457,6 +471,7 @@ public with sharing class CSAPControllerTest {
             nonResidentialLead.Id = null;
             nonResidentialLead.Application_Type__c = 'Non-Residential';
             CSAPController.processLead(nonResidentialLead);
+            nonResidentialLead.OwnerId = apiUser.Id;
             leadList.add(nonResidentialLead);
         }
         insert leadList;
@@ -483,9 +498,12 @@ public with sharing class CSAPControllerTest {
         ];
         // The lead in the testSetup is residential, and should be converted
         System.assertEquals(true, residentialLead.IsConverted);
-        opps = [SELECT Id, Name FROM Opportunity];
+        opps = [SELECT Id, OwnerId, Name FROM Opportunity];
         // And there should be 10 Non-Residential opps, plus the Residential opp after conversion
         System.assertEquals(11, opps.size());
+
+        System.assertEquals(apiUser.Id, opps[0].OwnerId);
+
         Test.stopTest();
     }
 }
