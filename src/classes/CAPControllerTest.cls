@@ -246,7 +246,9 @@ public with sharing class CAPControllerTest {
 
         Residential_Equipment__c re = [
             SELECT Id, Generator_Nameplate_Capacity__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
-                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c
+                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c,  Storage_Grid_Hybrid__c,
+                Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c,
+                Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c, Storage_Model__c
             FROM Residential_Equipment__c
             WHERE Loan__r.Lead__c = :lead.Id
         ];
@@ -257,6 +259,14 @@ public with sharing class CAPControllerTest {
         System.assertEquals(null, re.Inverter_Manufacturer__c);
         System.assertEquals(null, re.Inverter_Model_Number__c);
         System.assertEquals(null, re.Number_of_Inverters__c);
+        System.assertEquals(null, re.Storage_Capacity__c);
+        System.assertEquals(false, re.Storage_Grid_Hybrid__c);
+        System.assertEquals(null, re.Storage_Full_or_Partial_Home__c);
+        System.assertEquals(null, re.Storage_Inverter_Manufacturer__c);
+        System.assertEquals(null, re.Storage_Manufacturer__c);
+        System.assertEquals(null, re.Storage_Inverter_Model__c);
+        System.assertEquals(null, re.Storage_Model__c);
+
         Loan__c loan = [
             SELECT Id, Commencement_Datee__c
             FROM Loan__c
@@ -280,6 +290,13 @@ public with sharing class CAPControllerTest {
                 '\"module_model_number__c\" : \"\",' +
                 '\"module_manufacturer__c\" : \"\",' +
                 '\"number_of_modules__c\" : \"\",' +
+                '\"Storage_Grid_Hybrid__c\" : false,' +
+                '\"Storage_Capacity__c\" : \"\",' +
+                '\"Storage_Full_or_Partial_Home__c\" : \"N/A\",' +
+                '\"Storage_Inverter_Manufacturer__c\" : \"\",' +
+                '\"Storage_Inverter_Model__c\" : \"\",' +
+                '\"Storage_Manufacturer__c\" : \"\",' +
+                '\"Storage_Model__c\" : \"\",' +
                 '\"System_Cost__change\" : 3000,' +
                 '\"Requested_Loan_Amount__change\" : 2112,' +
                 '\"Estimated_Completion_Date__change\" : \"06/01/2018\",' +
@@ -290,6 +307,14 @@ public with sharing class CAPControllerTest {
                 '\"Inverter_Manufacturer__change\" : \"SolarInverters\",' +
                 '\"Inverter_Model_Number__change\" : \"EN\",' +
                 '\"Number_of_Inverters__change\" : 2,' +
+                '\"Storage__change\" : true,' +
+                '\"Storage_Grid_Hybrid__change\" : \"Yes\",' +
+                '\"Storage_Capacity__change\" : 10,' +
+                '\"Storage_Full_or_Partial_Home__change\" : \"Full home backup\",' +
+                '\"Storage_Inverter_Manufacturer__change\" : \"SolarEdge\",' +
+                '\"Storage_Inverter_Model__change\" : \"StorEdge 10kw\",' +
+                '\"Storage_Manufacturer__change\" : \"Tesla\",' +
+                '\"Storage_Model__change\" : \"Powerwall\",' +
                 '\"Down_Payment__change\" : 888,' +
                 '\"Reject_Reason\" : \"Need more panels\",' +
                 '\"RequestedBy__change\" : \"Rob Meyers\",' +
@@ -311,7 +336,9 @@ public with sharing class CAPControllerTest {
 
         re = [
             SELECT Id, Generator_Nameplate_Capacity__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
-                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Loan__r.DOER_Solar_Loann__c
+                Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Loan__r.DOER_Solar_Loann__c,
+                Storage_Capacity__c, Storage_Full_or_Partial_Home__c, Storage_Inverter_Manufacturer__c, Storage_Model__c,
+                Storage_Inverter_Model__c, Storage_Manufacturer__c, Loan__r.Lead__r.Storage__c, Storage_Grid_Hybrid__c
             FROM Residential_Equipment__c
             WHERE Loan__r.Lead__c = :lead.Id
         ];
@@ -322,6 +349,14 @@ public with sharing class CAPControllerTest {
         System.assertEquals('SolarInverters', re.Inverter_Manufacturer__c);
         System.assertEquals('EN', re.Inverter_Model_Number__c);
         System.assertEquals(2, re.Number_of_Inverters__c);
+        System.assertEquals(10, re.Storage_Capacity__c);
+        System.assertEquals(true, re.Storage_Grid_Hybrid__c);
+        System.assertEquals('Full home backup', re.Storage_Full_or_Partial_Home__c);
+        System.assertEquals('SolarEdge', re.Storage_Inverter_Manufacturer__c);
+        System.assertEquals('Tesla', re.Storage_Manufacturer__c);
+        System.assertEquals('StorEdge 10kw', re.Storage_Inverter_Model__c);
+        System.assertEquals('Powerwall', re.Storage_Model__c);
+
         loan = [
             SELECT Id, Commencement_Datee__c
             FROM Loan__c

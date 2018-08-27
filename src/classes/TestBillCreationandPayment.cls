@@ -123,6 +123,7 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
+                Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -145,6 +146,7 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
+                Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id
@@ -193,6 +195,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
@@ -201,6 +204,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
@@ -209,6 +213,7 @@ public class TestBillCreationandPayment {
                 AccountId = accountB.Id,
                 Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
+                Customer_Group__c = 'Non-Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
         insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
@@ -400,6 +405,184 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
+    @IsTest public static void testRadianGenAnchorBills(){
+        Test.startTest();
+
+        Shared_Solar_System__c sssRadianGen = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Name =  'Oxford Barrett St. P1'
+        ];
+
+
+        Schedule_Z__c schedZ = [
+            SELECT Id, Name
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+
+        Utility_Account_Log__c ualog = [
+            SELECT Id
+            FROM Utility_Account_Log__c
+            WHERE Name = '0000234'
+        ];
+
+        //create more opps
+        Opportunity opp1 = [
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, Product__c
+            FROM Opportunity
+            WHERE Name = 'AOpp One'
+        ];
+        Account accountParent = [SELECT Id FROM Account WHERE Name = 'Account Parent' LIMIT 1];
+
+        Account accountC = new Account(name = 'Account C',
+            Parent_Account__c = accountParent.Id);
+
+        Opportunity opp4 = new Opportunity(
+            Name = 'Opp Four',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'Complete',
+            Customer_Group__c = 'Anchor',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        Opportunity opp5 = new Opportunity(
+            Name = 'Opp Five',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'Complete',
+            Customer_Group__c = 'Public Offtake',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        Opportunity opp6 = new Opportunity(
+            Name = 'Opp Six',
+            AccountId = accountC.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            StageName = 'PPA/NMCPA Signed',
+            Customer_Group__c = 'Residential',
+            Product__c = opp1.Product__c,
+            CloseDate = System.today());
+
+        insert new List<Opportunity> {opp4, opp5, opp6};
+
+        Utility_Account_Subscription__c uas4 =
+            new Utility_Account_Subscription__c(Name = '0000444',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp4.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        Utility_Account_Subscription__c uas5 =
+            new Utility_Account_Subscription__c(Name = '0000555',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp5.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        Utility_Account_Subscription__c uas6 =
+            new Utility_Account_Subscription__c(Name = '0000666',
+                Utility_Account_Log__c = ualog.Id,
+                Opportunity__c = opp6.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Customer_Subscription_KW_DC_STATIC__c = 25,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        insert new List<Utility_Account_Subscription__c> {uas4, uas5, uas6};
+
+        Schedule_Z__c schedZ3 = new Schedule_Z__c(
+            Name = 'Z3 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Status__c = 'Billing'
+        );
+        insert schedZ3;
+
+        Date myDateMay = Date.newInstance(2016, 5, 5);
+        Date myDateApr = Date.newInstance(2016, 4, 4);
+
+        Energy_Usage_Update__c prodUpdateA = new Energy_Usage_Update__c (
+            Name = 'sssA RadianGen - April 2016',
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Schedule_Z__c = schedZ3.Id,
+            Production__c = 90000,
+            Net_Metering_Rate_Applied__c = 0.1848,
+            Billing_Period_End_Date__c = myDateMay,
+            Total_System_NMCs__c = 16632,
+            Date__c = myDateApr
+        );
+
+        insert prodUpdateA;
+
+        //Query to have Month_Number for bill generation
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Generate_Bills__c, Month_Number__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA RadianGen - April 2016'
+        ];
+
+        //4 Opps total: 1 Complete, 1 PPA/NMCPA, 1 Anchor, 1 Public Offtake
+        //The PPA/NMCPA Signed Opp should not be showing up in Previews
+        System.assertEquals(3, (PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
+
+        sssRadianGen.Billing_Anchors__c = 'RadianGen';
+        update sssRadianGen;
+        System.assertEquals(1,(PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
+
+        //Test whether bills have been generated for anchor bills
+        prodUpdate.Generate_Bills__c = true;
+        update  prodUpdate;
+
+        List<System_Bill__c> systemBills1 = [
+            SELECT Id, Opportunity__c, Name
+            FROM System_Bill__c
+            WHERE Opportunity__c = : opp1.Id
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        List<Account_Bill__c> accountBills1 = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : opp1.AccountId
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        List<System_Bill__c> systemBills4 = [
+            SELECT Id, Opportunity__c
+            FROM System_Bill__c
+            WHERE Opportunity__c = : opp4.Id
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        List<Account_Bill__c> accountBills4 = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = : opp4.AccountId
+            AND Month__c = :prodUpdate.Month_Number__c
+        ];
+
+        //Check that bills are generated for Complete Opp
+        System.assertEquals(1, systemBills1.size());
+        System.assertEquals(1, accountBills1.size());
+
+        //No bills generated for Anchor Opp
+        System.assertEquals(0, systemBills4.size());
+        System.assertEquals(0, accountBills4.size());
+
+        Test.stopTest();
+    }
+
+
+
     @isTest public static void testDontGenerateBills(){
         Test.startTest();
         Energy_Usage_Update__c productionupdateA3 = [
@@ -539,7 +722,8 @@ public class TestBillCreationandPayment {
         systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
         update systemBillList[1];
 
-        List <System_Bill__c> sbstoupdate = new list <System_Bill__c>();
+        List<Account_Bill__c> abList = new List<Account_Bill__c>();
+        List<System_Bill__c> sbstoupdate = new List<System_Bill__c>();
 
         for (Integer j = 3; j < 10 ; j++) {
             Boolean latefee = FALSE;
@@ -555,10 +739,12 @@ public class TestBillCreationandPayment {
                 new Account_Bill__c (Bill_Number__c = j,
                     Parent_Account__c = systemBillList[1].Property_Account_Id__c,
                     Name = 'First Last Month 2016' + j,
-                    Published__c = published,
+                    Published__c = false,
                     Unique_ID__c = '000111000111000111FAS' + j );
             insert accBillThree;
-
+            if (published) {
+                abList.add(accBillThree);
+            }
             System_Bill__c billThree =
                 new System_Bill__c (Shared_Solar_System__c = systemBillList[1].Shared_Solar_System_Id__c,
                     Shared_Solar_System_ID2__c = systemBillList[1].Shared_Solar_System_Id__c,
@@ -573,6 +759,11 @@ public class TestBillCreationandPayment {
         }
 
         insert sbstoupdate;
+
+        for (Account_Bill__c abToPub : abList){
+            abToPub.Published__c = true;
+        }
+        update abList;
 
         List<System_Bill__c> updatedsystemBillList =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -631,8 +822,93 @@ public class TestBillCreationandPayment {
         System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
         System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
         Test.stopTest();
+    }
 
+    @isTest public static void publishedBillsUnEditable() {
+        Test.startTest();
+        setBillsToPublished();
 
+        List<System_Bill__c> systemBillList =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c, Monthly_Late_Fee_Interest__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        WHERE Account_Bill__r.Published__c = true
+        ORDER BY Bill_Number__c];
+
+        // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
+        // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
+        System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
+        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
+        System.AssertEquals(0,systemBillList[0].Late_Fees__c);
+        System.AssertEquals(2.83,systembillList[1].Late_Fees__c);
+        System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
+        System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
+        System.AssertEquals(0,systembillList[1].Total_Payments_This_Month__c);
+
+        // This should work without throwing an error
+        systembillList[1].Total_Payments_This_Month__c = 200;
+        update systemBillList[1];
+
+        systembillList[1].Waive_Late_Fees__c = true;
+        systembillList[1].Total_Payments_This_Month__c = 200;
+
+        Boolean hitError = false;
+        try {
+            update systemBillList[1];
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains('Cannot update Late Fees on an already published bill'));
+            hitError = true;
+        }
+        System.assertEquals(true, hitError);
+
+        systembillList[1].Due_This_Month__c = 0;
+        systembillList[1].Total_Payments_This_Month__c = 200;
+        hitError = false;
+        try {
+            update systemBillList[1];
+        } catch (DMLException dmx) {
+            System.assert(dmx.getMessage().contains('Cannot update Due This Month on an already published bill'));
+            hitError = true;
+        }
+        System.assertEquals(true, hitError);
+
+        List<System_Bill__c> updatedSBs =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        WHERE Account_Bill__r.Published__c = true
+        ORDER BY Bill_Number__c];
+
+        // Bill fields should NOT change:
+        System.AssertEquals(282.96,updatedSBs[0].Total_Due__c);
+        System.AssertEquals(631.07,updatedSBs[1].Total_Due__c);
+        System.AssertEquals(0,updatedSBs[0].Late_Fees__c);
+        System.AssertEquals(2.83,updatedSBs[1].Late_Fees__c);
+        System.AssertEquals(258.96,updatedSBs[0].Due_This_Month__c);
+        System.AssertEquals(345.28,updatedSBs[1].Due_This_Month__c);
+
+        // Total payments should change:
+        System.AssertEquals(200,updatedSBs[1].Total_Payments_This_Month__c);
+
+        Test.stopTest();
     }
 
     @isTest public static void testAdjustments() {
@@ -921,7 +1197,7 @@ public class TestBillCreationandPayment {
         Account_Bill__c acctBillToInsert = new Account_Bill__c (Bill_Number__c = 10,
             Parent_Account__c = oppSSS2[0].AccountId,
             Name = 'First Last Month 2016 B',
-            Published__c = true,
+            Published__c = false,
             Unique_ID__c = '0001110001110022222AS');
         insert acctBillToInsert;
 
@@ -944,6 +1220,9 @@ public class TestBillCreationandPayment {
             Name = 'First Last March 2016 B',
             Unique_ID__c = '0001110001222222FAS');
         insert sysBillToInsertTwo;
+
+        acctBillToInsert.Published__c = true;
+        update acctBillToInsert;
 
         Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c,
             Send_Checks_Address__c, Client_Brand_Key__c
@@ -1257,7 +1536,6 @@ public class TestBillCreationandPayment {
         }
         Test.stopTest();
     }
-
 
     @isTest public static void testScheduleZStatusIsSaved() {
         Test.startTest();

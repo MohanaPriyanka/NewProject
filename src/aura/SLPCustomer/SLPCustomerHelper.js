@@ -119,6 +119,9 @@
                             component.set('v.bwExecuted', true);
                         }
                     }
+                    if (customer.Storage_Grid_Hybrid__c) {
+                        component.set('v.storageHybrid', 'Yes')
+                    }
                     helper.getDocuSignPresent(component, helper).then(
                         $A.getCallback(function() {
                             helper.setChangeOrder(component, customer, ltg)
@@ -162,6 +165,7 @@
             if (customer.Loan__r.Lead__r.Loan_System_Information__c) {
                 const changeOrder = JSON.parse(customer.Loan__r.Lead__r.Loan_System_Information__c);
                 helper.defaultChangeOrderLeadField(changeOrder, 'System_Cost', customer);
+                helper.defaultChangeOrderLeadField(changeOrder, 'Storage', customer);
                 helper.defaultChangeOrderLeadField(changeOrder, 'Requested_Loan_Amount', customer);
                 helper.defaultChangeOrderLoanField(changeOrder, 'Estimated_Completion_Date', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Generator_Nameplate_Capacity', customer);
@@ -171,9 +175,17 @@
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Manufacturer', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Inverter_Model_Number', customer);
                 helper.defaultChangeOrderEquipmentField(changeOrder, 'Number_of_Inverters', customer);
+                helper.defaultChangeOrderStringtoBooleanField(changeOrder, 'Storage_Grid_Hybrid', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Full_or_Partial_Home', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Capacity', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Manufacturer', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Model', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Inverter_Manufacturer', customer);
+                helper.defaultChangeOrderEquipmentField(changeOrder, 'Storage_Inverter_Model', customer);
                 if (!changeOrder.hasOwnProperty('Down_Payment__change')) {
                     changeOrder['Down_Payment__change'] = changeOrder.System_Cost__change - changeOrder.Requested_Loan_Amount__change;
                 }
+                helper.setGridHybridBooleanToString(component, customer);
                 component.set('v.changeOrder', changeOrder);
             }
             resolve();
@@ -198,6 +210,25 @@
         if (!changeOrder.hasOwnProperty(field + '__change')) {
             changeOrder[field + '__change'] = customer[field + '__c'];
         }
+    },
+
+    defaultChangeOrderStringtoBooleanField : function(changeOrder, field, customer) {
+        if (!changeOrder.hasOwnProperty(field + '__change')) {
+            if (customer[field + '__c']) {
+                changeOrder[field + '__change'] = 'Yes';
+            } else {
+                changeOrder[field + '__change'] = 'No';
+            }
+        }
+    },
+
+    setGridHybridBooleanToString : function(component, customer) {
+        // var incomingValue = component.get('v.customer.Storage_Grid_Hybrid__c');
+        if (customer.Storage_Grid_Hybrid__c) {
+            component.set('v.gridHybridBooleanToString', 'Yes');
+        } else {
+            component.set('v.gridHybridBooleanToString', 'No');
+        };
     },
 
     getCustomerAttachments : function(component, helper) {
@@ -417,4 +448,5 @@
         $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
     },
+
 })
