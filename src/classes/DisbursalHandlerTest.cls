@@ -706,4 +706,30 @@ public class DisbursalHandlerTest {
         ];
         System.assertEquals(Date.newInstance(2018,2,1), loan.First_Payment_Due_Date_Override__c);
     }
+
+    @isTest static void testDisbursalNameCreation() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM Loans__r)
+            FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
+        ];
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+        ];
+
+        System.assertEquals(3, disbursalRecords.size());
+        System.assertEquals('Bluewave Inside Sales - Cole Swain - D1 - 30%', disbursalRecords[0].Name);
+        System.assertEquals('Bluewave Inside Sales - Cole Swain - D2 - 60%', disbursalRecords[1].Name);
+        System.assertEquals('Bluewave Inside Sales - Cole Swain - D3 - 10%', disbursalRecords[2].Name);
+
+        Test.stopTest();
+
+    }
 }
+
+
