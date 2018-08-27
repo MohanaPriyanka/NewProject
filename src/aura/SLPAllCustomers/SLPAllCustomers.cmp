@@ -111,8 +111,8 @@
                          conditionalColorField="Status"
                          conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
                          buttonConditionalField="Status"
-                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application', 'Unfinished': 'Resend Application'}"
-                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication', 'Unfinished': 'resendApplication'}"
+                         buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application', 'Unfinished': 'Resend Application', 'Ready for Credit Check': 'Resend Application'}"
+                         buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication', 'Unfinished': 'resendApplication', 'Ready for Credit Check': 'resendApplication' }"
                          defaultButtonLabels=""
                          defaultButtonEvents=""/>
  <br></br>
