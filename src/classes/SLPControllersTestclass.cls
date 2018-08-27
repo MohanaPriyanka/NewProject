@@ -743,7 +743,10 @@ public without sharing class SLPControllersTestclass {
                     '"System_Cost__change":20000,' +
                     '"Number_of_Modules__change":"2","Module_Manufacturer__change":"LG","Module_Model_Number__change":"LG335",' +
                     '"Number_of_Inverters__change":"24","inverter_Manufacturer__change":"Enphase","Inverter_Model_Number__change":"IQ6Plus",' +
-                    '"Commencement_Datee__change":"04/30/2018","Generator_Nameplate_Capacity__change":"8.04"}');
+                    '"Commencement_Datee__change":"04/30/2018","Generator_Nameplate_Capacity__change":"8.04","Storage__change":true,' +
+                    '"Storage_Grid_Hybrid__change":"Yes","Storage_Capacity__change":10,"Storage_Full_or_Partial_Home__change":"Full home backup",' +
+                    '"Storage_Inverter_Manufacturer__change":"SolarEdge","Storage_Inverter_Model__change":"StorEdge 10kw",' +
+                    '"Storage_Manufacturer__change":"Tesla","Storage_Model__change":"Powerwall"}');
             System.assertEquals('Requested', updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
             Residential_Equipment__c withdrawnRE = SLPCustomerHandler.withdrawChangeOrder(loan.Id);
             System.assertEquals('Installer Withdrawn', withdrawnRE.Loan__r.Lead__r.Change_Order_Status__c);
@@ -792,7 +795,10 @@ public without sharing class SLPControllersTestclass {
                     '"System_Cost__change":' + lead.Requested_Loan_Amount__c + ',' +
                     '"Number_of_Modules__change":2,"Module_Manufacturer__change":"LG","Module_Model_Number__change":"LG335",' +
                     '"Number_of_Inverters__change":24,"Inverter_Manufacturer__change":"Enphase","Inverter_Model_Number__change":"IQ6Plus",' +
-                    '"Estimated_Completion_Date__change":"04/30/2018","Generator_Nameplate_Capacity__change":8.04}');
+                    '"Estimated_Completion_Date__change":"04/30/2018","Generator_Nameplate_Capacity__change":8.04,"Storage__change":true,' +
+                    '"Storage_Grid_Hybrid__change":"Yes","Storage_Capacity__change":10,"Storage_Full_or_Partial_Home__change":"Full home backup",' +
+                    '"Storage_Inverter_Manufacturer__change":"SolarEdge","Storage_Inverter_Model__change":"StorEdge 10kw",' +
+                    '"Storage_Manufacturer__change":"Tesla","Storage_Model__change":"Powerwall"}');
             Test.stopTest();
             System.assertEquals(null, updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
             re = SLPCustomerHandler.getCustomerInformation(loan.Id);
@@ -803,6 +809,13 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals('IQ6Plus', re.Inverter_Model_Number__c);
             System.assertEquals(24, re.Number_of_Inverters__c);
             System.assertEquals(8.04, re.Generator_Nameplate_Capacity__c);
+            System.assertEquals(10, re.Storage_Capacity__c);
+            System.assertEquals(true, re.Storage_Grid_Hybrid__c);
+            System.assertEquals('Full home backup', re.Storage_Full_or_Partial_Home__c);
+            System.assertEquals('SolarEdge', re.Storage_Inverter_Manufacturer__c);
+            System.assertEquals('Tesla', re.Storage_Manufacturer__c);
+            System.assertEquals('StorEdge 10kw', re.Storage_Inverter_Model__c);
+            System.assertEquals('Powerwall', re.Storage_Model__c);
         }
     }
 

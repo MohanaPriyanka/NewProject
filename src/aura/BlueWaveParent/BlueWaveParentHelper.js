@@ -57,7 +57,26 @@
         return promise;
     },
 
-    US_STATES : {'AL':'Alabama', 'AK':'Alaska', 'AZ':'Arizona', 'AR':'Arkansas', 'CA':'California', 
+    setListAttributeWithPicklistOptions : function(component, objectName, fieldName, attribute) {
+        var promise = new Promise(function(resolve) {
+            var action = component.get("c.getPicklistFields");
+            action.setParams({"objectName": objectName,
+                "fieldName": fieldName});
+            action.setStorable();
+            var opts=[];
+            action.setCallback(this, function(a) {
+                for (var i=0; i< a.getReturnValue().length; i++) {
+                    opts.push({"text": a.getReturnValue()[i]});
+                }
+
+                component.set(attribute, opts);
+            });
+            $A.enqueueAction(action);
+        });
+        return promise;
+    },
+
+    US_STATES : {'AL':'Alabama', 'AK':'Alaska', 'AZ':'Arizona', 'AR':'Arkansas', 'CA':'California',
                  'CO':'Colorado', 'CT':'Connecticut', 'DE':'Delaware', 'FL':'Florida', 'GA':'Georgia', 
                  'HI':'Hawaii', 'ID':'Idaho', 'IL':'Illinois', 'IN':'Indiana', 'IA':'Iowa', 'KS':'Kansas', 
                  'KY':'Kentucky', 'LA':'Louisiana', 'ME':'Maine', 'MD':'Maryland', 'MA':'Massachusetts', 

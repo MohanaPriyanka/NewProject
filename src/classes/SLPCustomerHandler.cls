@@ -7,7 +7,7 @@
  * and loan information. It returns disubrsal information, updates disbursals 
  * as confirmed and returns equipment information.
  *
- * Tested By: SLPControllerTestclass
+ * Tested By: SLPControllersTestclass
  *************************************************************************************/
 
 public without sharing class SLPCustomerHandler {
@@ -41,10 +41,11 @@ public without sharing class SLPCustomerHandler {
 		'Concatenated_Inverter_Type__c, Concatenated_Module_Type__c, Contract_Execution_Date__c, DOER_Solar_Loan__c, ' +
 		'Estimated_On_Site_Behind_the_Meter_Load__c, Generator_Energized_Online_Date__c, Generator_Installation_Date__c, ' +
 		'Generator_Interconnection_Date__c, Generator_Nameplate_Capacity__c, Generator_Type__c, Initial_Solar_Meter_Reading__c, ' +
-		'Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, ' +
+		'Initial_Solar_Meter_Reading_Date__c, Interconnected__c, Interconnection_Date__c, Inverter_Manufacturer__c, Storage_Inverter_Model__c, ' +
 		'Inverter_Model_Number__c, Lead__c, Loan__c, MA_Facility_Sector__c, MA_Facility_Type__c, Mechanical_Installation_Date__c, ' +
 		'Mechanically_Installed__c, Module_Array_Azimuth__c, Module_Array_Mounting_Type__c, Module_Array_Tilt__c, Module_Manufacturer__c, ' +
 		'Module_Model_Number__c, Module_Mounting_Location__c, Module_Power_Rating__c, Number_of_Inverters__c, Number_of_Meters__c, ' +
+        'Storage_Grid_Hybrid__c, Storage_Full_or_Partial_Home__c, Storage_Capacity__c, Storage_Model__c, Storage_Inverter_Manufacturer__c, ' +
 		'Number_of_Modules__c, Opportunity__c, Opportunity_Custom_ID__c, Opportunity_Name__c, Percentage_of_System_Shaded__c, ' +
 		'PowerClerk_Application_ID__c, Remote_Monitorin_Systegm_Identifier__c, Remote_Monitoring_System_Vendor__c, Solar_Meter_Manufacturer__c, ' +
 		'Solar_Meter_Model__c, Solar_Meter_Serial_Number__c, SREC_Opt_In_Calendar_Quarter__c, System_Size_from_Opp__c, ' +
@@ -53,7 +54,7 @@ public without sharing class SLPCustomerHandler {
 		'Loan__r.Lead__r.System_Cost__c, Loan__r.Lead__r.Requested_Loan_Amount__c, Opportunity__r.Loan_Principle__c, ' +
 		'Loan__r.Lead__r.Loan_System_Information__c, Loan__r.Lead__r.Change_Order_Status__c, Loan__r.Opportunity__c, ' +
         'Loan__r.Lead__r.Email, Loan__r.Sales_Agent__r.Email__c, Loan__r.Lead__c, Loan__r.Lead__r.FirstName, Loan__r.Lead__r.ConvertedContactId, ' +
-        'Loan__r.Lead__r.CAP_Stage__c, Loan__r.Estimated_Completion_Date__c, ' +
+        'Loan__r.Lead__r.CAP_Stage__c, Loan__r.Estimated_Completion_Date__c, Loan__r.Lead__r.Storage__c, Storage_Manufacturer__c, ' +
 		'(SELECT Id, Name, Description from Attachments) ' ;
 	equipQuery += '      FROM Residential_Equipment__c' ;
 	equipQuery += '      WHERE Loan__r.Id  =  \'' + loanId +  '\' ';
@@ -302,6 +303,7 @@ public without sharing class SLPCustomerHandler {
             changeOrder.put('RequestedDate__change', Datetime.now().format('MM/dd/yyyy HH:mm'));
             re.Loan__r.Lead__r.Change_Order_Status__c = 'Requested';
             re.Loan__r.Lead__r.Loan_System_Information__c = JSON.serializePretty(changeOrder);
+            re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
             update re.Loan__r.Lead__r;
             MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
             ee.emailTemplateName = 'RS_SLP_Review_Change_Order';
@@ -323,6 +325,32 @@ public without sharing class SLPCustomerHandler {
             re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
             re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
             re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
+            if ((Boolean) changeOrder.get('Storage__change')) {
+                re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
+                re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
+                re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
+                re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
+                re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
+                re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
+                re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
+                if (changeOrder.get('Storage_Grid_Hybrid__change') == 'Yes') {
+                    re.Storage_Grid_Hybrid__c = true;
+                } else {
+                    re.Storage_Grid_Hybrid__c = false;
+                    re.Storage_Full_or_Partial_Home__c = 'N/A';
+                }
+                update re.Loan__r.Lead__r;
+            } else {
+                re.Storage_Grid_Hybrid__c = false;
+                re.Storage_Full_or_Partial_Home__c = null;
+                re.Storage_Capacity__c = null;
+                re.Storage_Manufacturer__c = null;
+                re.Storage_Model__c = null;
+                re.Storage_Inverter_Manufacturer__c = null;
+                re.Storage_Inverter_Model__c = null;
+                re.Loan__r.Lead__r.Storage__c = false;
+                update re.Loan__r.Lead__r;
+            }
             if (changeOrder.get('Estimated_Completion_Date__change') != '') {
                 re.Loan__r.Estimated_Completion_Date__c = Date.parse((String) changeOrder.get('Estimated_Completion_Date__change'));
                 Loan__c loan = re.Loan__r;
@@ -334,6 +362,7 @@ public without sharing class SLPCustomerHandler {
                 update re.Loan__r;
             }
             update re;
+
             // Toggling Update Dummy on Lead checks RE and closes out the Provide System Info task if complete
             Lead lead = new Lead(
                 Id = re.Loan__r.Lead__c,
@@ -472,6 +501,12 @@ public without sharing class SLPCustomerHandler {
         } else {
             return maxLoanAmount;
         }
+    }
+
+    @AuraEnabled
+    public static Boolean getStorageEnabled() {
+        SLPUserHelper.PartnerProfile profile = SLPUserHelper.getPartnerProfile();
+        return profile.storageEnabled;
     }
 }
 

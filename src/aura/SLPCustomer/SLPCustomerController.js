@@ -15,10 +15,23 @@
             }
         });
         $A.enqueueAction(actionLicenseType);
+        var actionStorageEnabled = component.get("c.getStorageEnabled");
+        actionStorageEnabled.setCallback(this,function(resp) {
+            if (resp.getState() == 'SUCCESS') {
+                if (resp.getReturnValue()) {
+                    component.set("v.enableStorage", true);
+                }
+            } else {
+                $A.log("Errors", resp.getError());
+            }
+        });
+        $A.enqueueAction(actionStorageEnabled);
         component.set("v.vendorIdLabel", "Unique Identifier");
-        
         var leadId = sessionStorage.getItem('loanId');
         helper.openCustomerWindow(component, event, helper, leadId);
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Manufacturer__c', "v.availableStorageManufacturers");
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Inverter_Manufacturer__c', "v.availableStorageInverterManufacturers");
+        helper.setListAttributeWithPicklistOptions(component, 'Residential_Equipment__c', 'Storage_Full_or_Partial_Home__c', "v.homeBackupOptions");
     },
 
     exitCustomerWindow : function(component, event, helper) {
@@ -506,6 +519,14 @@
                    equipment.Inverter_Manufacturer__c != changeOrder.Inverter_Manufacturer__change ||
                    equipment.Inverter_Model_Number__c != changeOrder.Inverter_Model_Number__change ||
                    equipment.Number_of_Inverters__c != changeOrder.Number_of_Inverters__change ||
+                   equipment.Storage_Grid_Hybrid__c != changeOrder.Storage_Grid_Hybrid__change ||
+                   equipment.Storage_Full_or_Partial_Home__c != changeOrder.Storage_Full_or_Partial_Home__change ||
+                   equipment.Storage_Capacity__c != changeOrder.Storage_Capacity__change ||
+                   equipment.Storage_Manufacturer__c != changeOrder.Storage_Manufacturer__change ||
+                   equipment.Storage_Model__c != changeOrder.Storage_Model__change ||
+                   equipment.Storage_Inverter_Manufacturer__c != changeOrder.Storage_Inverter_Manufacturer__change ||
+                   equipment.Storage_Inverter_Model__c != changeOrder.Storage_Inverter_Model__change ||
+                   equipment.Loan__r.Lead__r.Storage__c != changeOrder.Storage__change ||
                    (!equipment.Loan__r.Estimated_Completion_Date__c?'':helper.getFormattedDate(equipment.Loan__r.Estimated_Completion_Date__c)) != changeOrder.Estimated_Completion_date__change) {
             // Ignore types above so that undefined == null
             component.set('v.requestButtonEnabled', true);
@@ -561,4 +582,5 @@
         });
         $A.enqueueAction(withdrawAction);
     },
+
 })

@@ -33,7 +33,7 @@ public without sharing class SLPAddCustomer {
         if (newLead.LASERCA__Home_State__c.length() > 2) {
             newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
         }
-        
+
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Unfinished_Lead__c = true;
@@ -134,13 +134,14 @@ public without sharing class SLPAddCustomer {
                                 AND SobjectType = 'Account'
                                 LIMIT 1];
         return [SELECT Id, Name, Logo__c, State__c, Default_Application__c,
-                (SELECT Disable_New_Loan_Applications_in_Portal__c
+                (SELECT Disable_New_Loan_Applications_in_Portal__c,
+                    Enable_Storage_Application_in_Portal__c
                  FROM Accounts__r
                  WHERE RecordTypeId = :partnerRT.Id LIMIT 1)
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];
-    }  
-       
+    }
+
     public static String getCAPUrl(Id leadId) {
         String host = Url.getSalesforceBaseUrl().toExternalForm() + '/';
         return (host + 'apply/s/loan-application?leadId=' + leadId);
