@@ -31,7 +31,7 @@ public without sharing class CSAPController {
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c
+                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -220,7 +220,7 @@ public without sharing class CSAPController {
         if(customerPartner.Email__c != null){
             lead.Partner_Email__c = customerPartner.Email__c;
         }
-
+        lead.OwnerId = apiUser.Id;
 
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
