@@ -9,6 +9,7 @@ trigger ChargentOrderTrigger on ChargentOrders__ChargentOrder__c (before insert,
         if(Trigger.isInsert && Trigger.isAfter){
             paymentGatewayAssignmentHandler.OnAfterInsert(Trigger.new);
             RecurringPaymentsHandler.updateAccountAutopay(Trigger.new);
+            RecurringPaymentsHandler.closeOrdersWithDuplicateAccountAndEntity(Trigger.new);
         }
         else if(Trigger.isUpdate && Trigger.isBefore){
             creditCardFeeUpdateHandler.OnBeforeUpdate(Trigger.old, Trigger.new);

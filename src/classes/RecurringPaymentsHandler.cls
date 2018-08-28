@@ -273,4 +273,65 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
         update accountsToUpdate.values();
     }
+
+    // Called by the ChargentOrderTrigger after a new Chargent Order is inserted
+    public static void closeOrdersWithDuplicateAccountAndEntity(List<ChargentOrders__ChargentOrder__c> newOrders) {
+
+        List<Id> orderIds = new List<Id>();
+        for (ChargentOrders__ChargentOrder__c order : newOrders) {
+            orderIds.add(order.Id);
+        }
+
+        List<ChargentOrders__ChargentOrder__c> orders =
+        [SELECT Id, ChargentOrders__Account__c, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Id IN : orderIds];
+
+        Map<String, ChargentOrders__ChargentOrder__c> entityToOrderMap = new Map<String, ChargentOrders__ChargentOrder__c>();
+
+        List<String> newOrderEntites = new List<String>();
+        for (ChargentOrders__ChargentOrder__c order : orders) {
+            entityToOrderMap.put(order.Entity_Name__c, order);
+            newOrderEntites.add(order.Entity_Name__c);
+        }
+
+        List<ChargentOrders__ChargentOrder__c> possibleDuplicates =
+        [SELECT Id, ChargentOrders__Account__c, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Entity_Name__c IN : newOrderEntites
+        AND ChargentOrders__Payment_Status__c = 'Recurring'
+        AND (NOT Id IN : orderIds)];
+
+        List<ChargentOrders__ChargentOrder__c> definiteDuplicates = new List<ChargentOrders__ChargentOrder__c>();
+
+        for (ChargentOrders__ChargentOrder__c possibleDuplicate : possibleDuplicates) {
+            if (entityToOrderMap.containsKey(possibleDuplicate.Entity_Name__c)) {
+
+                ChargentOrders__ChargentOrder__c newOrder = entityToOrderMap.get(possibleDuplicate.Entity_Name__c);
+
+                if (newOrder.ChargentOrders__Account__c != null) {
+                    if (newOrder.ChargentOrders__Account__c == possibleDuplicate.ChargentOrders__Account__c ||
+                        newOrder.ChargentOrders__Account__c == possibleDuplicate.Account_Bill__r.Parent_Account__c) {
+                        definiteDuplicates.add(possibleDuplicate);
+                    }
+                } else {
+                    if (newOrder.Account_Bill__r.Parent_Account__c != null &&
+                        (newOrder.Account_Bill__r.Parent_Account__c == possibleDuplicate.ChargentOrders__Account__c ||
+                            newOrder.Account_Bill__r.Parent_Account__c == possibleDuplicate.Account_Bill__r.Parent_Account__c)) {
+                        definiteDuplicates.add(possibleDuplicate);
+                    }
+                }
+            }
+        }
+
+        for (ChargentOrders__ChargentOrder__c dup : definiteDuplicates) {
+            dup.ChargentOrders__Payment_Status__c = 'Stopped';
+        }
+
+        if (definiteDuplicates.size() > 0) {
+            update definiteDuplicates;
+        }
+    }
 }
