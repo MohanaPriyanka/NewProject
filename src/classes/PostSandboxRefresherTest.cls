@@ -36,7 +36,35 @@ private class PostSandboxRefresherTest {
         ChargentOrders.sheduledBatchProcessing sbp = new ChargentOrders.sheduledBatchProcessing();
         String sch = '20 30 8 10 2 ?';
         System.schedule(JOBNAME, sch, sbp);
-    }    
+    }
+
+    @isTest
+    static public void testLetterStreamSetup() {
+        if (LetterStream_Settings__c.getAll().isEmpty()) {
+            insert new LetterStream_Settings__c(
+                Name = 'Global Settings',
+                API_Endpoint__c = 'https://secure.letterstream.com/apis/',
+                API_Id__c = 'production',
+                API_Key__c = 'productionKey'
+            );
+        }
+
+        Test.startTest();
+        PostSandboxRefresher.updateLetterStreamToTestConfig();
+        Test.stopTest();
+
+        List<LetterStream_Settings__c> letterStreamSettings = [
+            SELECT Id, Name, API_Id__c, API_Key__c
+            FROM LetterStream_Settings__c
+        ];
+
+        System.assertEquals(1, letterStreamSettings.size());
+        System.assertNotEquals('production', letterStreamSettings[0].API_Id__c);
+        System.assertNotEquals('productionKey', letterStreamSettings[0].API_Key__c);
+        System.assert(letterStreamSettings[0].API_Id__c.contains('test'));
+        System.assert(letterStreamSettings[0].API_Key__c.contains('test'));
+        System.assertEquals('Test Config', letterStreamSettings[0].Name);
+    }
 
     static testMethod void testSandboxRefresh() {
         Test.startTest();

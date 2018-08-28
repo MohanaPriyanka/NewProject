@@ -16,6 +16,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
+        updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
@@ -149,6 +150,29 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
     }
 
+    global static void updateLetterStreamToTestConfig() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.isSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Dont\'t update LetterStream config in production this way');
+        }
+
+        List<LetterStream_Settings__c> letterStreamSettings = [
+            SELECT Id, API_Id__c, API_Key__c
+            FROM LetterStream_Settings__c
+        ];
+
+        LetterStream_Settings__c newLetterStreamSetting = new LetterStream_Settings__c();
+        if (!letterStreamSettings.isEmpty()) {
+            newLetterStreamSetting.Id = letterStreamSettings[0].Id;
+        }
+        // credentials for bluewavetestAPI (see wiki)
+        newLetterStreamSetting.Name = 'Test Config';
+        newLetterStreamSetting.API_Id__c = 'ft5eh41g_test';
+        newLetterStreamSetting.API_Key__c = 'fhv4d7bèv9v6n7_test';
+        newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
+        upsert newLetterStreamSetting;
+    }
+  
     global static void updateDocusignToDemoConfig() {
         Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
         if (!org.IsSandbox && !Test.isRunningTest()) {

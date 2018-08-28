@@ -104,4 +104,8 @@ public without sharing class Util {
     }
 
     public class BWException extends Exception {}
+
+    public static String removeComma(String value) {
+        return value.replace(',', '');
+    }
 }

@@ -395,7 +395,7 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
+        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true, 1);
         mailer.sendAccountBills();
         Test.stopTest();
 
@@ -412,6 +412,11 @@ public with sharing class LetterStreamServiceTest {
             WHERE CreatedDate > : now.addSeconds(-5)
         ];
 
+        List<Id> jobIds = new List<Id>();
+        for (LetterStreamJob__c job : jobs) {
+            jobIds.add(job.Id);
+        }
+
         System.assertEquals(1, jobs.size());
 
         for (Account_Bill__c accountBill : accountBillsAfterSend) {
@@ -421,6 +426,14 @@ public with sharing class LetterStreamServiceTest {
                 System.assertNotEquals(null, accountBill.LetterStreamJob__c);
             }
         }
+
+        List<ContentDocument> attachments = [
+            SELECT Id, Title, LatestPublishedVersion.FirstPublishLocationId
+            FROM ContentDocument
+            WHERE LatestPublishedVersion.FirstPublishLocationId IN : jobIds
+        ];
+
+        System.assertEquals(jobs.size(), attachments.size());
     }
 
     @IsTest public static void testQueueSendLetters() {

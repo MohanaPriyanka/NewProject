@@ -7,7 +7,7 @@
  */
 
 
-public with sharing class ScheduledAccountBillLetterStreamMailer implements Schedulable {
+public without sharing class ScheduledAccountBillLetterStreamMailer implements Schedulable {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
@@ -27,6 +27,7 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
             FROM Account_Bill__c
             WHERE Published__c = TRUE
             AND Ready_For_Paper_Bill_Queue__c = TRUE
+            AND Bill_Attach_Document__c != NULL
         ];
 
         if (accountBills.isEmpty()) {
@@ -47,6 +48,7 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
         Integer packageSize = 0;
         Set<Id> packageAccountBills = new Set<Id>();
         Set<Id> packageContentDocuments = new Set<Id>();
+        Integer jobNumber = 1;
 
         for (ContentDocument doc : documents) {
             packageSize += doc.ContentSize;
@@ -54,23 +56,24 @@ public with sharing class ScheduledAccountBillLetterStreamMailer implements Sche
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
+                jobNumber += 1;
                 Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
             }
         }
         // if we never hit max heap size, send at end
         if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
-            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
         }
         Logger.flushLogs();
     }
 
     public String queuedLogMessage(Decimal packageSize, Id JobId) {
-        Decimal sizeInKB = (packageSize/1000).setScale(1);
+        Decimal sizeInKB = (packageSize/1000).setScale(3);
         String message = 'Package of ' + sizeInKB + ' kB queued for letter stream. ' + 'JobID: ' + jobId;
         return message;
     }
