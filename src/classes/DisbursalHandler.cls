@@ -74,7 +74,7 @@ public class DisbursalHandler {
 
     public static Disbursal__c createDisbursal (Decimal rate, String name, String disbursalType, Integer sequence, Loan__c loanRecord) {
         Disbursal__c disbursal = new Disbursal__c(
-            Name = loanRecord.Partner__r.Name + ' - ' + loanRecord.Name + ' - ' + 'D' + String.valueOf(sequence) + ' - ' + String.valueOf(rate) + '%' ,
+            Name = 'D' + String.valueOf(sequence) + ' - ' + String.valueOf(rate) + '%' + ' - ' + loanRecord.Name + ' - ' + loanRecord.Partner__r.Name,
             Unique_ID__c = loanRecord.Id + ' ' + name + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
             Loan__c = loanRecord.Id,
             Disbursal_Sequence__c = sequence,

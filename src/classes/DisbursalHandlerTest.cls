@@ -47,11 +47,12 @@ public class DisbursalHandlerTest {
         insert mslp;
 
         List<Lead> leads = new List<Lead>();
+        //Name is exceptionally long to test Disbursal naming validations
         Lead leadRecord = new Lead(
-            FirstName = 'Cole',
-            LastName = 'Swain',
+            FirstName = 'Constantineousinson',
+            LastName = 'Stephanopolousenbergson Senior',
             Loan_Amount__c = 30000,
-            Company = 'Cole Swain',
+            Company = 'Long Name',
             LASERCA__Social_Security_Number__c = '000000001',
             Product_line__c = 'Residential Loan',
             LASERCA__Home_State__c = 'MA',
@@ -722,10 +723,12 @@ public class DisbursalHandlerTest {
             WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
         ];
 
+        // if the Disbursal name is over 80 characters, it creates it from the first 80.
+        //  In this case it cuts off a portion of the partner name (Bluewave Inside Sales).
         System.assertEquals(3, disbursalRecords.size());
-        System.assertEquals('Bluewave Inside Sales - Cole Swain - D1 - 30%', disbursalRecords[0].Name);
-        System.assertEquals('Bluewave Inside Sales - Cole Swain - D2 - 60%', disbursalRecords[1].Name);
-        System.assertEquals('Bluewave Inside Sales - Cole Swain - D3 - 10%', disbursalRecords[2].Name);
+        System.assertEquals('D1 - 30% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[0].Name);
+        System.assertEquals('D2 - 60% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[1].Name);
+        System.assertEquals('D3 - 10% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[2].Name);
 
         Test.stopTest();
 
