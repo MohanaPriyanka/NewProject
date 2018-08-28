@@ -49,7 +49,8 @@ public without sharing class LeadTriggerHandler {
         'Sales_Person__c'=>'Sales_Person_Tag__c',
         'SREC_Product__c'=>'SREC_Product__c',
         'State_of_Issuance__c'=>'State_of_Issuance__c',
-        'System_Cost__c'=>'Loan_Principle__c'
+        'System_Cost__c'=>'Loan_Principle__c',
+        'OwnerId'=>'OwnerId'
     };
 
     public void onBeforeInsert(List<Lead> leadList){
@@ -239,6 +240,7 @@ public without sharing class LeadTriggerHandler {
         opp.Utility_Password__c = lead.Utility_Account_Password__c;
         opp.Username__c = lead.Utility_Account_Username__c;
         opp.Utility_Relationship__c = lead.Utility_Relationship__c;
+        opp.OwnerId = lead.OwnerId;
         return opp;
     }
 
