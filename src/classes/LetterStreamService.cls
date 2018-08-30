@@ -7,7 +7,7 @@
  */
 
 
-public with sharing class LetterStreamService {
+public without sharing class LetterStreamService {
     public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientName2,RecipientAddr1,RecipientAddr2,RecipientCity,' +
         'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
         'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
@@ -193,17 +193,17 @@ public with sharing class LetterStreamService {
             csv += csvHeaders;
         }
         csv += '\n';
-        csv += (params.fileId + ','); // UniqueDocId
-        csv += (params.fileName + ','); // PDFFileName
-        csv += (params.recipientName + ','); // RecipientName1
+        csv += (Util.removeComma(params.fileId) + ','); // UniqueDocId
+        csv += (Util.removeComma(params.fileName) + ','); // PDFFileName
+        csv += (Util.removeComma(params.recipientName) + ','); // RecipientName1
         csv += (','); // RecipientName2
-        csv += (params.recipientStreet + ','); // RecipientAddr1
+        csv += (Util.removeComma(params.recipientStreet) + ','); // RecipientAddr1
         csv += (','); // RecipientAddr2
-        csv += (params.recipientCity + ','); // RecipientCity
-        csv += (params.recipientState + ','); // RecipientState
-        csv += (params.recipientPostalCode + ','); //RecipientZip
+        csv += (Util.removeComma(params.recipientCity) + ','); // RecipientCity
+        csv += (Util.removeComma(params.recipientState) + ','); // RecipientState
+        csv += (Util.removeComma(params.recipientPostalCode) + ','); //RecipientZip
         csv += blueWaveAddress();
-        csv += (params.pages + ','); // page count
+        csv += (Util.removeComma(params.pages) + ','); // page count
         csv += 'firstclass,'; // mailType
         csv += 'N,'; // coversheet
         csv += 'N,'; // duplex

@@ -47,11 +47,12 @@ public class DisbursalHandlerTest {
         insert mslp;
 
         List<Lead> leads = new List<Lead>();
+        //Name is exceptionally long to test Disbursal naming validations
         Lead leadRecord = new Lead(
-            FirstName = 'Cole',
-            LastName = 'Swain',
+            FirstName = 'Constantineousinson',
+            LastName = 'Stephanopolousenbergson Senior',
             Loan_Amount__c = 30000,
-            Company = 'Cole Swain',
+            Company = 'Long Name',
             LASERCA__Social_Security_Number__c = '000000001',
             Product_line__c = 'Residential Loan',
             LASERCA__Home_State__c = 'MA',
@@ -706,4 +707,32 @@ public class DisbursalHandlerTest {
         ];
         System.assertEquals(Date.newInstance(2018,2,1), loan.First_Payment_Due_Date_Override__c);
     }
+
+    @isTest static void testDisbursalNameCreation() {
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM Loans__r)
+            FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
+        ];
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+        ];
+
+        // if the Disbursal name is over 80 characters, it creates it from the first 80.
+        //  In this case it cuts off a portion of the partner name (Bluewave Inside Sales).
+        System.assertEquals(3, disbursalRecords.size());
+        System.assertEquals('D1 - 30% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[0].Name);
+        System.assertEquals('D2 - 60% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[1].Name);
+        System.assertEquals('D3 - 10% - Constantineousinson Stephanopolousenbergson Senior - Bluewave Inside', disbursalRecords[2].Name);
+
+        Test.stopTest();
+
+    }
 }
+
+

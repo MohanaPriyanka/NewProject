@@ -70,11 +70,11 @@ public class DisbursalHandler {
             count = count + 1;
         }
         return disbursalList;
-    }        
+    }
 
     public static Disbursal__c createDisbursal (Decimal rate, String name, String disbursalType, Integer sequence, Loan__c loanRecord) {
-            Disbursal__c disbursal = new Disbursal__c(
-            Name = name  + ' - ' + loanRecord.Partner__r.Name + ' - ' + loanRecord.Name,
+        Disbursal__c disbursal = new Disbursal__c(
+            Name = 'D' + String.valueOf(sequence) + ' - ' + String.valueOf(rate) + '%' + ' - ' + loanRecord.Name + ' - ' + loanRecord.Partner__r.Name,
             Unique_ID__c = loanRecord.Id + ' ' + name + ' ' + loanRecord.Partner__r.Name + ' ' + loanRecord.Name,
             Loan__c = loanRecord.Id,
             Disbursal_Sequence__c = sequence,
@@ -85,8 +85,11 @@ public class DisbursalHandler {
             Amount__c = loanRecord.Requested_Loan_Amount__c * rate / 100,
             Type__c = disbursalType
         );
+        if (disbursal.Name.length() >= 80) {
+            disbursal.Name = disbursal.Name.substring(0,80);
+        }
         return disbursal;
-    }  
+    }
 
     public void updateDisbursalAmountsOnRLAChange (Map<Id,Loan__c> newMap, Map<Id, Loan__c> oldMap) {
         List<Id> updatedLoans = new List<Id>();
