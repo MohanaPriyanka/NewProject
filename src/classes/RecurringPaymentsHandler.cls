@@ -328,6 +328,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
         for (ChargentOrders__ChargentOrder__c dup : definiteDuplicates) {
             dup.ChargentOrders__Payment_Status__c = 'Stopped';
+            dup.Reason_for_Recurring_Stop__c = 'Another order was created with the same Account and Entity';
         }
 
         if (definiteDuplicates.size() > 0) {
