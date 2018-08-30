@@ -16,6 +16,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
+        updateLetterStreamToTestConfig();
+        updateDocusignToDemoConfig();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
@@ -146,6 +148,62 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!fieldList}', String.join(fieldList, ','))
             .replace('{!objectTypeName}', objectTypeName)
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
+    }
+
+    global static void updateLetterStreamToTestConfig() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.isSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Dont\'t update LetterStream config in production this way');
+        }
+
+        List<LetterStream_Settings__c> letterStreamSettings = [
+            SELECT Id, API_Id__c, API_Key__c
+            FROM LetterStream_Settings__c
+        ];
+
+        LetterStream_Settings__c newLetterStreamSetting = new LetterStream_Settings__c();
+        if (!letterStreamSettings.isEmpty()) {
+            newLetterStreamSetting.Id = letterStreamSettings[0].Id;
+        }
+        // credentials for bluewavetestAPI (see wiki)
+        newLetterStreamSetting.Name = 'Test Config';
+        newLetterStreamSetting.API_Id__c = 'ft5eh41g_test';
+        newLetterStreamSetting.API_Key__c = 'fhv4d7bèv9v6n7_test';
+        newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
+        upsert newLetterStreamSetting;
+    }
+  
+    global static void updateDocusignToDemoConfig() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.IsSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Don\'t update DocuSign config in production this way');
+        }
+
+        List<dsfs__DocuSignAccountConfiguration__c> docusignConfigs = [
+            SELECT Id, dsfs__OrganizationId__c, dsfs__AccountId__c, dsfs__DocuSignEnvironment__c
+            FROM dsfs__DocuSignAccountConfiguration__c
+        ];
+
+        dsfs__DocuSignAccountConfiguration__c docusignConfig = new dsfs__DocuSignAccountConfiguration__c();
+        if (!docusignConfigs.isEmpty()) {
+            // Not an empty sandbox, update the config
+            docusignConfig.Id = docusignConfigs[0].Id;
+        }
+        docusignConfig.dsfs__OrganizationId__c = org.Id;
+        // The demo instance with pyao@bluewavesolar.com login
+        docusignConfig.dsfs__AccountId__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+        docusignConfig.dsfs__DocuSignEnvironment__c = 'demo';
+        upsert docusignConfig;
+
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.size() > 0) {
+            systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+            systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+            systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+            systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+            systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+            update systemProperties[0];
+        }
     }
 
     /*

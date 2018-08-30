@@ -50,4 +50,5 @@
         this.selectTab(component, tabId);
         this.clearSearchSelections(component);
     },
+
 })
