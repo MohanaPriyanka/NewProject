@@ -68,8 +68,9 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
         
         Entity__c entity1 = new Entity__c (Name = 'Entityone', Gateway__c = chGateway.Id);
         Entity__c entity2 = new Entity__c (Name = 'Entitytwo');
+        Entity__c entity3 = new Entity__c (Name = 'Entitythree');
 
-        Insert new list <Entity__c>{entity1, entity2};
+        Insert new list <Entity__c>{entity1, entity2, entity3};
 // Create Shared Solar Systems 
 
         Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
@@ -273,7 +274,7 @@ update uastwo;
 
             if(accountbill.Bill_Number__c == 1){
                 ChargentOrders__ChargentOrder__c orderA  = new ChargentOrders__ChargentOrder__c(
-                    Entity__c = entity1.Id,
+                    Entity__c = entity2.Id,
                     ChargentOrders__Billing_First_Name__c = 'Cole',
                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
@@ -297,7 +298,7 @@ update uastwo;
 
                 // SECONDARY CREDIT CARD ORDER (CREATED BY FORM ASSEMBLY)
                 ChargentOrders__ChargentOrder__c orderB  = new ChargentOrders__ChargentOrder__c(
-                    Entity__c = entity1.Id,
+                    Entity__c = entity3.Id,
                     ChargentOrders__Billing_First_Name__c = 'Cole',
                     ChargentOrders__Billing_Last_Name__c = 'Swain',
                     ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
