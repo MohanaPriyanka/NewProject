@@ -508,6 +508,12 @@
         } else {
             component.set('v.requestButtonText', 'Save');
         }
+        let gridHyrbidStringToBoolean;
+        if (changeOrder.Storage_Grid_Hybrid__change === 'Yes') {
+            gridHyrbidStringToBoolean = true;
+        } else {
+            gridHyrbidStringToBoolean = false;
+        };
         if (equipment.Loan__r.Lead__r.System_Cost__c !== changeOrder.System_Cost__change ||
             equipment.Loan__r.Lead__r.System_Cost__c - equipment.Loan__r.Lead__r.Requested_Loan_Amount__c !== changeOrder.Down_Payment__change) {
             component.set('v.requestButtonText', 'Request Customer Authorization');
@@ -519,7 +525,7 @@
                    equipment.Inverter_Manufacturer__c != changeOrder.Inverter_Manufacturer__change ||
                    equipment.Inverter_Model_Number__c != changeOrder.Inverter_Model_Number__change ||
                    equipment.Number_of_Inverters__c != changeOrder.Number_of_Inverters__change ||
-                   equipment.Storage_Grid_Hybrid__c != changeOrder.Storage_Grid_Hybrid__change ||
+                   equipment.Storage_Grid_Hybrid__c != gridHyrbidStringToBoolean ||
                    equipment.Storage_Full_or_Partial_Home__c != changeOrder.Storage_Full_or_Partial_Home__change ||
                    equipment.Storage_Capacity__c != changeOrder.Storage_Capacity__change ||
                    equipment.Storage_Manufacturer__c != changeOrder.Storage_Manufacturer__change ||
@@ -536,6 +542,7 @@
     },
 
     saveAndRequestChangeOrder : function(component, event, helper) {
+        helper.validateStorageValues(component);
         const saveAction = component.get("c.saveChangeOrder");
         const changeOrder = component.get('v.changeOrder');
         changeOrder['Requested_Loan_Amount__change'] = changeOrder.System_Cost__change - changeOrder.Down_Payment__change;

@@ -218,6 +218,7 @@
         }
     },
 
+    //The value for grid hybrid is a Boolean in the database and a string ('Yes' or 'No') in the form
     setValueForStorageGridHybrid : function(component) {
         var gridHybrid = component.get("v.storageHybrid");
         if (gridHybrid === "Yes") {

@@ -215,15 +215,15 @@
     defaultChangeOrderStringtoBooleanField : function(changeOrder, field, customer) {
         if (!changeOrder.hasOwnProperty(field + '__change')) {
             if (customer[field + '__c']) {
-                changeOrder[field + '__change'] = 'Yes';
+                changeOrder[field + '__change'] = true;
             } else {
-                changeOrder[field + '__change'] = 'No';
+                changeOrder[field + '__change'] = false;
             }
         }
     },
 
+    //The value for grid hybrid is a Boolean in the database and a string ('Yes' or 'No') in the form
     setGridHybridBooleanToString : function(component, customer) {
-        // var incomingValue = component.get('v.customer.Storage_Grid_Hybrid__c');
         if (customer.Storage_Grid_Hybrid__c) {
             component.set('v.gridHybridBooleanToString', 'Yes');
         } else {
@@ -447,6 +447,22 @@
         $A.util.removeClass(component.find("closeBuildingPermitModalButton"), 'noDisplay');
         $A.util.addClass(component.find("buildingPermitInputs"), 'noDisplay');
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
+    },
+
+    validateStorageValues : function(component) {
+        let storageBoolean = component.get('v.changeOrder.Storage__change');
+        if (!storageBoolean) {
+            component.set('v.changeOrder.Storage_Capacity__change', null);
+            component.set('v.changeOrder.Storage_Manufacturer__change', null);
+            component.set('v.changeOrder.Storage_Model__change', null);
+            component.set('v.changeOrder.Storage_Inverter_Manufacturer__change', null);
+            component.set('v.changeOrder.Storage_Inverter_Model__change', null);
+            component.set('v.changeOrder.Storage_Grid_Hybrid__change', 'No');
+        }
+        let gridHybridString = component.get('v.changeOrder.Storage_Grid_Hybrid__change');
+        if (gridHybridString === 'No') {
+            component.set('v.changeOrder.Storage_Full_or_Partial_Home__change', null);
+        }
     },
 
 })

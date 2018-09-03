@@ -335,19 +335,20 @@ public without sharing class CAPController {
         re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
         re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
         re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
-        if ((Boolean) changeOrder.get('Storage__change')) {
-            re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
+        if ((changeOrder.get('Storage__change') != null) &&
+            (Boolean) changeOrder.get('Storage__change')) {
             re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
             re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
             re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
             re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
             re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
             re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
-            if (changeOrder.get('Storage_Grid_Hybrid__change') == 'Yes') {
+            if ((String) changeOrder.get('Storage_Grid_Hybrid__change') == 'Yes') {
                 re.Storage_Grid_Hybrid__c = true;
+                re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
             } else {
                 re.Storage_Grid_Hybrid__c = false;
-                re.Storage_Full_or_Partial_Home__c = 'N/A';
+                re.Storage_Full_or_Partial_Home__c = null;
             }
             update re.Loan__r.Lead__r;
         } else {
