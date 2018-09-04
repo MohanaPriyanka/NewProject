@@ -1,4 +1,4 @@
-public with sharing class utilityAccountLogConversionHandler {
+public without sharing class utilityAccountLogConversionHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     

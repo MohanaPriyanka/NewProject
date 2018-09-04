@@ -91,7 +91,8 @@
                     Application_Type__c : applicationType,
                     Application_Source_Phase_2__c : runCredit,
                     Credit_Check_Acknowledged__c : oldLead.Credit_Check_Acknowledged__c,
-                    Product_line__c : 'Community Solar'
+                    Product_line__c : 'Community Solar',
+                    OwnerId : oldLead.OwnerId
                 };
                 component.set("v.lead", newLead);
 

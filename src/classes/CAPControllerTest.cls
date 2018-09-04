@@ -292,7 +292,7 @@ public with sharing class CAPControllerTest {
                 '\"number_of_modules__c\" : \"\",' +
                 '\"Storage_Grid_Hybrid__c\" : false,' +
                 '\"Storage_Capacity__c\" : \"\",' +
-                '\"Storage_Full_or_Partial_Home__c\" : \"N/A\",' +
+                '\"Storage_Full_or_Partial_Home__c\" : \"\",' +
                 '\"Storage_Inverter_Manufacturer__c\" : \"\",' +
                 '\"Storage_Inverter_Model__c\" : \"\",' +
                 '\"Storage_Manufacturer__c\" : \"\",' +

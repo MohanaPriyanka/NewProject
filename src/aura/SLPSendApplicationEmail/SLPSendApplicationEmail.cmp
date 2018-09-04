@@ -257,8 +257,7 @@
                         <div class="slds-form-element__row">
                             <div class="slds-form-element slds-p-horizontal--small slds-size_1-of-3">
                               <label class="slds-form-element__label" for="input-03"><b>Partial or full home backup</b></label>
-                              <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" value="{!v.systemInfoObj.Storage_Full_or_Partial_Home__c}">
-                                <ui:inputSelectOption text="" label="Select"/>
+                              <ui:inputSelect aura:id="partialOrFullHome" class="slds-input" required="true" value="{!v.systemInfoObj.Storage_Full_or_Partial_Home__c}">
                                 <ui:inputSelectOption text="Partial home backup" label="Partial home backup"/>
                                 <ui:inputSelectOption text="Full home backup" label="Full home backup"/>
                               </ui:inputSelect>

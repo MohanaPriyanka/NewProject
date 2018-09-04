@@ -76,6 +76,10 @@
                 } else {
                     component.set('v.completionDateString', '');
                 }
+                //The value for grid hybrid is a Boolean in the database and a string ('Yes' or 'No') in the form
+                if (component.get('v.changeOrder.Storage_Grid_Hybrid__change') === 'Yes') {
+                    component.set('v.storageGridHybridStringToBoolean', true);
+                }
                 component.set('v.page', 'ChangeOrderConfirmation');
             } else {
                 helper.logError('CAPStartHelper', 'showChangeConfirm', 'Couldn\'t get change order information');

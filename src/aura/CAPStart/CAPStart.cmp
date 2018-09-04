@@ -12,6 +12,7 @@
   <aura:attribute name="rlaOverMaxModalOpen" type="Boolean"/>
   <aura:attribute name="warnOnMaxLoanAmount" type="Boolean"/>
   <aura:attribute name="approvedChange" type="Boolean"/>
+  <aura:attribute name="storageGridHybridStringToBoolean" type="Boolean" default="false"/>
   <aura:set attribute="STAGENAME" value="NAV_Getting_Started"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:registerEvent name="CAPNavigationEvent" type="c:CAPNavigationEvent"/>
@@ -313,7 +314,7 @@
                   </td>
                 </tr>
               </aura:if>
-              <aura:if isTrue="{!(v.equipment.Storage_Grid_Hybrid__c != v.changeOrder.Storage_Grid_Hybrid__change)}">
+              <aura:if isTrue="{!(v.equipment.Storage_Grid_Hybrid__c != v.storageGridHybridStringToBoolean)}">
                 <tr>
                   <td>
                     <ui:outputText value="Does the system provide backup power when the grid is down?"/>
@@ -333,7 +334,7 @@
                   </td>
                 </tr>
               </aura:if>
-              <aura:if isTrue="{!and((v.changeOrder.Storage_Grid_Hybrid__change),(v.equipment.Storage_Full_or_Partial_Home__c != v.changeOrder.Storage_Full_or_Partial_Home__change))}">
+              <aura:if isTrue="{!and((v.storageGridHybridStringToBoolean),(v.equipment.Storage_Full_or_Partial_Home__c != v.changeOrder.Storage_Full_or_Partial_Home__change))}">
                 <tr>
                   <td>
                     <ui:outputText value="Home Backup Options"/>
