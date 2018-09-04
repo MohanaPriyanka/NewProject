@@ -63,7 +63,7 @@
         });
     </script>    
     <apex:outputPanel layout="block" styleclass="footer">
-        <apex:outputText value="BlueWave Solar  | 137 Newbury Street, 4th Floor  |  Boston, MA 02114" 
+        <apex:outputText value="BlueWave Solar  |{!$Organization.Street} | {!$Organization.City}, {!$Organization.State} {!$Organization.PostalCode}"
                       styleClass="footertext"/>
         <br></br>
         <apex:outputText value="Have a question? Please email customercare@bluewavesolar.com or call (844) 786-4100 to access our Customer Care team." 

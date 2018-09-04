@@ -355,7 +355,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-lg-12">
-                    ©2016 BlueWave Capital. <span class="address">137 Newbury Street, Boston, Massachusetts 02116</span>
+                    ©2016 BlueWave Capital. <span class="address">{!$Organization.Street} | {!$Organization.City}, {!$Organization.State} {!$Organization.PostalCode}</span>
                 </div>
                 <!--
                 <div class="col-xs-12 col-sm-12 col-lg-6">
