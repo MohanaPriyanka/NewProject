@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="UAT" />
+        <option name="connectionName" value="Dev1" />
         <option name="defaultSourceRootUrl" value="file://$MODULE_DIR$/src" />
         <option name="moduleContents">
           <ModuleContents>
@@ -467,10 +467,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="Logger" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="MapCapacityAvailableHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -1160,7 +1156,6 @@
                             <option name="name" value="clientImageFiles" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-
                           <MetadataEntry>
                             <option name="name" value="Conga_Instructions" />
                             <option name="selected" value="true" />
@@ -1950,7 +1945,7 @@
       <excludeFolder url="file://$MODULE_DIR$/projectFilesBackup" />
       <excludePattern pattern="*~" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/UAT)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev1)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
