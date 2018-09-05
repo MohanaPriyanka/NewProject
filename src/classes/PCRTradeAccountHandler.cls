@@ -32,11 +32,12 @@ public with sharing class PCRTradeAccountHandler {
         // capital pool payment adjustments, could create an object that sets these. Want to wait until full solution
         // before creating a new object
         if (capitalPool == null || capitalPool.Investor__c == 'Avidia Bank') {
-            if (tradeAccount.LASERCA__Monthly_Payment__c != null && tradeAccount.LASERCA__Monthly_Payment__c != tradeAccount.LASERCA__Account_Balance__c) {
-                monthlyPayment = tradeAccount.LASERCA__Monthly_Payment__c;
-            } else if (tradeAccount.LASERCA__Account_Balance__c > 0 && (tradeAccount.LASERCA__Monthly_Payment__c == tradeAccount.LASERCA__Account_Balance__c ||
-                tradeAccount.LASERCA__Monthly_Payment__c == null)){
+            if (tradeAccount.LASERCA__Account_Balance__c > 0 &&
+                tradeAccount.LASERCA__Account_Type__c == 'Revolving' &&
+                (tradeAccount.LASERCA__Monthly_Payment__c == tradeAccount.LASERCA__Account_Balance__c || tradeAccount.LASERCA__Monthly_Payment__c == null)){
                 monthlyPayment = (tradeAccount.LASERCA__Account_Balance__c * 0.03);
+            } else if (tradeAccount.LASERCA__Monthly_Payment__c != null) {
+                monthlyPayment = tradeAccount.LASERCA__Monthly_Payment__c;
             }
         }
         return monthlyPayment;
