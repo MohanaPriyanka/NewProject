@@ -141,13 +141,21 @@ public with sharing class DocuSignHelperTest {
     }
 
     static testMethod void testVoidCalloutException() {
+        Opportunity opp = [
+            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
+            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
+            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+            WHERE Lead__r.FirstName = 'Retired'
+        ];
+
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
         DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
-        voidRequest.envelopeId = 'CalloutException';
-        voidRequest.reason = 'Test void reason';
+        voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
+        voidRequest.reason = 'CalloutException';
         DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
         Test.stopTest();
 
@@ -156,5 +164,50 @@ public with sharing class DocuSignHelperTest {
         System.assertEquals(1, errors.size());
         // And it should be the CalloutExcpetion message
         System.assertEquals('Callout Exception caught voiding envelope', errors[0].Message__c.left(41));
+    }
+
+    static testMethod void testVoidChildren() {
+        Opportunity opp = [
+            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
+            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
+            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+            FROM Opportunity
+            WHERE Lead__r.FirstName = 'Retired'
+        ];
+
+        dsfs__DocuSign_Status__c envelopeStatus = [
+            SELECT Id, dsfs__Envelope_Status__c
+            FROM dsfs__DocuSign_Status__c
+            WHERE dsfs__DocuSign_Envelope_ID__c = : opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c
+            LIMIT 1
+        ];
+
+        System.assertNotEquals('Voided', envelopeStatus.dsfs__Envelope_Status__c);
+
+        List<dsfs__DocuSign_Recipient_Status__c> recipientStatuses = [
+            SELECT Id, dsfs__Recipient_Status__c
+            FROM dsfs__DocuSign_Recipient_Status__c
+            WHERE dsfs__Parent_Status_Record__c = : envelopeStatus.Id
+        ];
+
+        for (dsfs__DocuSign_Recipient_Status__c recipientStatus : recipientStatuses) {
+            System.assertNotEquals('Voided', recipientStatus.dsfs__Recipient_Status__c);
+        }
+
+        Test.startTest();
+        envelopeStatus.dsfs__Envelope_Status__c = 'Voided';
+
+        update envelopeStatus;
+        Test.stopTest();
+
+        recipientStatuses = [
+            SELECT Id, dsfs__Recipient_Status__c
+            FROM dsfs__DocuSign_Recipient_Status__c
+            WHERE dsfs__Parent_Status_Record__c = : envelopeStatus.Id
+        ];
+
+        for (dsfs__DocuSign_Recipient_Status__c recipientStatus : recipientStatuses) {
+            System.assertEquals('Voided', recipientStatus.dsfs__Recipient_Status__c);
+        }
     }
 }
