@@ -1,4 +1,6 @@
- public with sharing class AccountTriggerHandler {
+//Test: AccountTriggerHandlerTestClass
+
+public without sharing class AccountTriggerHandler {
     private boolean m_isExecuting = false;
     private integer BatchSize = 0;
     

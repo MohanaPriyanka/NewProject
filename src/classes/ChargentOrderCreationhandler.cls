@@ -1,4 +1,4 @@
-public with sharing class ChargentOrderCreationhandler {
+public without sharing class ChargentOrderCreationhandler {
 
   public static void createChargentOrder(List<Opportunity> oppList, List<Opportunity> oldOppList){
     List<String> accountIds = new list<String> ();

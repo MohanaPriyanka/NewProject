@@ -4,7 +4,7 @@
  * Test: DocuSignHelperTest
  *************************************************************************************/
 
-public with sharing class DocuSignVoid_Invocable {
+public without sharing class DocuSignVoid_Invocable {
     @InvocableMethod(Label='Void DocuSign Envelopes' Description='Calls DocuSign API to void envelopes with reason provided')
     public static void voidPackages(List<VoidRequest> requests) {
         for (VoidRequest voidRequest : requests) {

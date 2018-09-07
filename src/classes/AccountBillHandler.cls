@@ -4,7 +4,7 @@
 + * Tested By: RecurringPaymentsHandlerTestClass
  + *************************************************************************************/
 
-public with sharing class AccountBillHandler{
+public without sharing class AccountBillHandler{
     public static void handleAccountBill(List<Account_Bill__c> accountBillList) {
         List<String> propertyaccountIds = new List<String>();
         List<Account_Bill__c> firstAccountBillList = new List<Account_Bill__c>();

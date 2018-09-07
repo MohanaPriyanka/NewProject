@@ -2,7 +2,7 @@
  * Test: OpportunityTriggerTest,LeadTriggerHandlerTest
  *************************************************************************************/
 
-public with sharing class OpportunityTriggerHandler {
+public without sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
     

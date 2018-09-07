@@ -5,7 +5,7 @@
  */
 
 
-public with sharing class PCRPublicRecordHandler {
+public without sharing class PCRPublicRecordHandler {
     public static Boolean appHasCurrentBankruptcy(List<LASERCA__Personal_Credit_Report__c> pcrs) {
         Boolean currentBankruptcy = false;
         for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {

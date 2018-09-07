@@ -5,7 +5,7 @@
  * Test: TaskHandlerTest
  *************************************************************************************/
 
-public with sharing class TaskHandler {
+public without sharing class TaskHandler {
      public static void moveTaskToConvertedContact(List<Task> newTasks) {
         String leadPrefix = Schema.SObjectType.Lead.getKeyPrefix();
         Set<Id> leadIds = new Set<Id>();

@@ -7,7 +7,7 @@
  * Tested by: ScheduleZTriggerHandlerTest
  */
 
-public with sharing class ScheduleZTriggerHandler {
+public without sharing class ScheduleZTriggerHandler {
     public static void createSubscriptions(List<Schedule_Z__c> scheduleZList) {
         Set<Id> scheduleZIds = new Set<Id>();
         Set<Id> sssList = new Set<Id>();

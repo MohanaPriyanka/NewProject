@@ -3,6 +3,6 @@
     <apiVersion>35.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <description>Default communities self registration confirmation page</description>
+    <description>Default  communities self registration confirmation page</description>
     <label>CommunitiesSelfRegConfirm</label>
 </ApexPage>

@@ -3,7 +3,7 @@
  * Description: Scheduled Job to send account bills that need to be mailed to customers. We send PDFs of the account
  * bills to LetterStream, who packages and mails the hard copies. Calls QueueAccountBillLetterStreamMailer which makes
  * the HttpRequest to the endpoint.
- * Test:
+ * Test: LetterStreamServiceTest
  */
 
 

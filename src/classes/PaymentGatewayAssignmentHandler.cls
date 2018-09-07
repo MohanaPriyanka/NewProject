@@ -8,7 +8,7 @@
  + * Tested By: PaymentGatewayAssignmentHandlerTestclass
  + *************************************************************************************/
 
-public with sharing class PaymentGatewayAssignmentHandler {
+public without sharing class PaymentGatewayAssignmentHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     

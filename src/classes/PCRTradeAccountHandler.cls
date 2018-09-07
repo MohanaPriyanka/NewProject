@@ -8,7 +8,7 @@
  */
 
 
-public with sharing class PCRTradeAccountHandler {
+public without sharing class PCRTradeAccountHandler {
     public static Decimal calculateHouseholdMonthlyDebt(Lead lead, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
         // capital pool is null until we figure out the flow for assigning banks
         Loan_Data__c capitalPool;

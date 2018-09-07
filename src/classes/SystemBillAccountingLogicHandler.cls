@@ -9,7 +9,7 @@
  + * Tested By: TestBillCreationandPayment
  + *************************************************************************************/
 
-public with sharing class SystemBillAccountingLogicHandler {
+public without sharing class SystemBillAccountingLogicHandler {
     public static void accountingRefresh (List <System_Bill__c> systemBill, Map<Id, System_Bill__c> oldSBMap) {
         Decimal carryoverbalance = 0;  
         Decimal pastbillamount = 0;
