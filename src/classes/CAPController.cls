@@ -383,6 +383,8 @@ public without sharing class CAPController {
         lead.Change_Order_Status__c = 'Customer Authorized';
         lead.Update_Dummy__c = !lead.Update_Dummy__c;
 
+        loan.Requested_Loan_Amount__c = lead.Requested_Loan_Amount__c;
+
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             Id = lead.Personal_Credit_Report__c,
             Avidia_Review_Status__c = PCRApprovalHandler.NOTYETREVIEWED
