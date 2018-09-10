@@ -14,6 +14,13 @@
         if(component.get("v.StaticTotalDue") === 0){
             component.set("v.chOrder.Autopay_Only__c", true);
         }
+
+        let thisYear = new Date().getFullYear();
+        let years = [];
+        for (let i=0; i<8; i++) {
+            years.push(''+(thisYear + i));
+        }
+        component.set('v.expirationYears', years);
     },
 
     returnToMyAccount : function(component, event, helper) {
@@ -30,10 +37,10 @@
     },
 
     makePaymentOrder : function(component, event, helper) {
-        if (component.get("v.ACH") === 'true'){
+        if (component.get("v.SelectedPaymentMethod") === 'ACH') {
             component.set("v.chOrder.ChargentOrders__Payment_Method__c", 'Check');
         } else {
-            component.set("v.chOrder.ChargentOrders__Payment_Method__c", 'Credit Card');
+            component.set("v.chOrder.ChargentOrders__Payment_Method__c", component.get("v.SelectedPaymentMethod"));
         }
         var chOrFields = component.get("v.chOrder");
         var errors = helper.checkInputs(component, chOrFields);
@@ -52,7 +59,5 @@
                 })
             );
         }
-    },    
+    },
 })
-
-

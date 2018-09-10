@@ -1,9 +1,9 @@
 /*************************************************************************************
- * Created By:  Cole Swain - colemswain@gmail.com | 508-320-5794
- * 
+ * Created By:  Cole Swain
+ *
  * Description: This class handles most actions needed to be performed by the Community Solar Customer Portal's My Account Page.
- * 
- Tested By: CommunitySolarCUstomerPortalTest
+ *
+ * Tested By: CommunitySolarCustomerPortalTest,CSPaymentTest
  *************************************************************************************/
 
 public without sharing class MyAccountController {
@@ -52,85 +52,147 @@ public without sharing class MyAccountController {
     }
 
     @AuraEnabled
-    public static List<AggregateResult> getSystemBills(String propertyAccountId) {
-        User u = customerUser;
-        List<AggregateResult> aggresultlist = new List<AggregateResult>();
-        Decimal maxBillNumber = 0;
-        if (propertyAccountId == 'All' || propertyAccountId == null) {
-            List<Account_Bill__c> acctBillsParent = [
-                SELECT Id, Name, Bill_Number__c, Parent_Account__r.Max_Account_Bill_Number__c
-                FROM Account_Bill__c
-                WHERE Account_ID__c = : u.Parent_Account_ID__c
-                AND Published__c = true
-                AND Is_Most_Recent__c = true
-                ORDER BY Bill_Number__c DESC
-            ];
+    public static List<String> getPaymentMethods(String propertyAccountId) {
+        return(convertPaymentMethods(getGatewayPaymentMethods(propertyAccountId)));
+    }
 
-            for (AggregateResult systemBillsListParent : [
-                SELECT Account_Bill__c,
-                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
-                    SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
-                FROM System_Bill__c
-                WHERE Account_Bill__c IN : acctBillsParent
-                GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c]) {
-                aggresultlist.add(systemBillsListParent);
-            }
-        } else {
-            Account_Bill__c mostRecentAccountBill = [
-                SELECT Id, Name
-                FROM Account_Bill__c
-                WHERE Parent_Account__r.Id = : propertyAccountId
-                AND Published__c = true
-                AND Is_Most_Recent__c = true
-                ORDER BY Bill_Number__c
-            ];
+    public static Map<String, String> PAYMENT_MAP = new Map<String, String>{
+        'eCheck'=>'ACH', 'Bank Transfer'=>'ACH', 'Cash Transfer'=>'ACH', 'Credit Card'=>'Credit Card'};
 
-            for ( AggregateResult systemBillsListProperty : [
-                SELECT Account_Bill__c,
-                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
-                    SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
-                FROM System_Bill__c
-                WHERE Account_Bill__r.Id = : mostRecentAccountBill.Id
-                GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c
-            ]) {
-                aggresultlist.add(systemBillsListProperty);
+    // Converts Gateway payment methods to {'ACH', 'Credit Card'} for use in Chargent Orders
+    // We only want to add a payment method if ALL gateways accept that payment method, since the order will be applied
+    // across all gateways
+    @TestVisible
+    private static List<String> convertPaymentMethods(List<String> gatewayPaymentMethods) {
+        List<String> chargentOrderList = new List<String>();
+        Map<String, Integer> paymentMethodCountMap = new Map<String, Integer>();
+        for (String gatewayMethods : gatewayPaymentMethods) {
+            updatePaymentMethodCountMap(gatewayMethods, paymentMethodCountMap);
+        }
+        for (String method : paymentMethodCountMap.keySet()) {
+            if (paymentMethodCountMap.get(method) == gatewayPaymentMethods.size()) {
+                chargentOrderList.add(method);
             }
         }
-        return aggresultlist;
+        chargentOrderList.sort();
+        return chargentOrderList;
+    }
+
+    private static void updatePaymentMethodCountMap(String gatewayMethods, Map<String, Integer> paymentMap) {
+        List<String> gatewayMethodList = gatewayMethods.split(';');
+        Set<String> gatewayMethodsSet = new Set<String>();
+        for (String gatewayMethod : gatewayMethodList) {
+            if (PAYMENT_MAP.get(gatewayMethod) != null) {
+                gatewayMethodsSet.add(PAYMENT_MAP.get(gatewayMethod));
+            } else {
+                throw new AuraHandledException('Unexpected payment method found: ' + gatewayMethod);
+            }
+        }
+        for (String method : gatewayMethodsSet) {
+            if (paymentMap.get(method) != null) {
+                paymentMap.put(method, paymentMap.get(method) + 1);
+            } else {
+                paymentMap.put(method, 1);
+            }
+        }
+    }
+
+    // Returns a list of strings like {'eCheck;Bank Transfer', 'Credit Card;eCheck'} from Gateways related to
+    // System Bills if they exist, or Opportunities if not. There will be one element in the list for each gateway
+    private static List<String> getGatewayPaymentMethods(String propertyAccountId) {
+        Set<String> paymentMethods = new Set<String>();
+        List<Account_Bill__c> accountBills = getAccountBills(propertyAccountId);
+        List<System_Bill__c> systemBills = [
+            SELECT Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN :accountBills
+        ];
+        if (systemBills.isEmpty()) {
+            List<Opportunity> opps;
+            if (propertyAccountId == 'All' || propertyAccountId == null) {
+                User u = customerUser;
+                opps = [
+                    SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c
+                    FROM Opportunity
+                    WHERE Account.Parent_Account__c = :u.Parent_Account_ID__c
+                ];
+            } else {
+                opps = [
+                    SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c
+                    FROM Opportunity
+                    WHERE AccountId = :propertyAccountId
+                ];
+            }
+            for (Opportunity opp : opps) {
+                if (opp.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c == null) {
+                    throw new AuraHandledException('Unconfigured gateway found for propertyAccountId: ' + propertyAccountId);
+                }
+                paymentMethods.add(opp.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c);
+            }
+        } else {
+            for (System_Bill__c systemBill : systemBills) {
+                if (systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c == null) {
+                    throw new AuraHandledException('Unconfigured gateway found for propertyAccountId: ' + propertyAccountId);
+                }
+                paymentMethods.add(systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.ChargentBase__Available_Payment_Methods__c);
+            }
+        }
+        return new List<String>(paymentMethods);
+    }
+
+    @AuraEnabled
+    public static List<AggregateResult> getSystemBills(String propertyAccountId) {
+        List<Account_Bill__c> accountBills = getAccountBills(propertyAccountId);
+        // Need to go backwards since we might be removing elements from the list
+        for (Integer i = accountBills.size()-1; i >= 0; i--) {
+            if (!accountBills[i].Is_Most_Recent__c) {
+                accountBills.remove(i);
+            }
+        }
+        return aggregateSystemBills(accountBills);
+    }
+
+    private static List<AggregateResult> aggregateSystemBills(List<Account_Bill__c> accountBills) {
+        return [
+            SELECT Account_Bill__c,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__c Entity__c,
+                SUM(Carry_Over_Balance__c) ChargentOrders__Subtotal__c
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN :accountBills
+            GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c
+        ];
     }
 
     @AuraEnabled
     public static List<Account_Bill__c> getAccountBills (String propertyAccountId) {
         User u = customerUser;
-        List<Account_Bill__c> accountBillList = new List<Account_Bill__c>();
         if (propertyAccountId == 'All' || propertyAccountId == null) {
-            for (Account_Bill__c accountBillAll : [  SELECT Parent_Account__r.Name, Date__c, Activity_Type__c,
-                Due_this_month__c, Total_Due_This_Month__c, Total_Due__c,
-                Carry_Over_Balance__c, Bill_number__c, Bill_Attach_Document__c,
-                Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
-                Balance_Net_Late_Payments__c, Date_of_Last_Payment__c,
-                Due_Date_SB__c, Total_due_minus_payment_plan__c
-            FROM Account_Bill__c
-            WHERE Account_ID__c = : u.Parent_Account_ID__c
-            AND Published__c = true
-            ORDER BY Bill_Number__c DESC]) {
-                accountBillList.add(accountBillAll);
-            }
+            return [
+                SELECT Parent_Account__r.Name, Date__c, Activity_Type__c,
+                    Due_This_Month__c, Total_Due_This_Month__c, Total_Due__c,
+                    Carry_Over_Balance__c, Bill_Number__c, Bill_Attach_Document__c,
+                    Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
+                    Balance_Net_Late_Payments__c, Date_of_Last_Payment__c,
+                    Due_Date_SB__c, Total_Due_Minus_Payment_Plan__c, Is_Most_Recent__c
+                FROM Account_Bill__c
+                WHERE Account_ID__c = : u.Parent_Account_ID__c
+                AND Published__c = TRUE
+                ORDER BY Bill_Number__c DESC
+            ];
         } else {
-            for(Account_Bill__c accountBillProperty : [ SELECT Parent_Account__r.Name, Date__c, Activity_Type__c,
-                Due_this_month__c, Balance_Net_Late_Payments__c,
-                Total_Due_This_Month__c, Total_due_minus_payment_plan__c,
-                Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
-                Total_Due__c, Due_Date_SB__c, Carry_Over_Balance__c,
-                Bill_number__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            WHERE Parent_Account__r.Id = : propertyAccountId
-            AND Published__c = true
-            ORDER BY Bill_Number__c DESC]) {
-                accountBillList.add(accountBillProperty);
-            }
+            return [
+                SELECT Parent_Account__r.Name, Date__c, Activity_Type__c,
+                    Due_This_Month__c, Balance_Net_Late_Payments__c,
+                    Total_Due_This_Month__c, Total_Due_Minus_Payment_Plan__c,
+                    Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
+                    Total_Due__c, Due_Date_SB__c, Carry_Over_Balance__c,
+                    Bill_Number__c, Bill_Attach_Document__c, Is_Most_Recent__c
+                FROM Account_Bill__c
+                WHERE Parent_Account__r.Id = :propertyAccountId
+                AND Published__c = TRUE
+                ORDER BY Bill_Number__c DESC
+            ];
         }
-        return accountBillList;
     }
 
     @AuraEnabled
@@ -182,7 +244,7 @@ public without sharing class MyAccountController {
                 Negative_Amount__c,
                 ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name,
                 ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
-                ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
+                ChargentOrders__Amount__c,
                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
                 ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
                 ChargentOrders__Order__r.ChargentOrders__Card_Number__c,
@@ -200,7 +262,7 @@ public without sharing class MyAccountController {
             for(ChargentOrders__Transaction__c chargentTransactionsProperty : [ SELECT ChargentOrders__Type__c, Activity_Type__c,Negative_Amount__c,
                 ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Name,
                 ChargentOrders__Gateway_Date__c, Date_of_transaction__c,
-                ChargentOrders__Amount__c, System_Bill_Remaining_Balance__c,
+                ChargentOrders__Amount__c,
                 ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
                 ChargentOrders__Order__r.ChargentOrders__Bank_Account_Number__c,
                 ChargentOrders__Order__r.ChargentOrders__Card_Number__c,

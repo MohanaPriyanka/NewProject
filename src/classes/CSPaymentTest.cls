@@ -57,12 +57,21 @@ public class CSPaymentTest {
         insert clientAccount2;
 
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Debug__c = True,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
+        ChargentBase__Gateway__c chGateway = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Debug__c = true,
+            ChargentBase__Active__c = true,
+            ChargentBase__Available_Payment_Methods__c = 'Bank Transfer'
+        );
+        ChargentBase__Gateway__c chGatewayB = new ChargentBase__Gateway__c(
+            Name = 'Chargent GatewayB',
+            ChargentBase__Merchant_ID__c = '235987',
+            ChargentBase__Debug__c = true,
+            ChargentBase__Active__c = true,
+            ChargentBase__Available_Payment_Methods__c = 'Credit Card'
+        );
+        insert new List<ChargentBase__Gateway__c>{chGateway, chGatewayB};
 
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
@@ -74,7 +83,7 @@ public class CSPaymentTest {
         Entity__c entity2 = new Entity__c(Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
             Client_Account__c = clientAccount2.Id,
-            Gateway__c = chGateway.Id
+            Gateway__c = chGatewayB.Id
         );
         insert entity2;
 
@@ -201,10 +210,10 @@ public class CSPaymentTest {
         };
 
         Opportunity opportunity1 = new Opportunity(Name = accountName1, AccountId = propAccount1.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity2 = new Opportunity(Name = accountName2, AccountId = propAccount2.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
+        Opportunity opportunity2 = new Opportunity(Name = accountName2, AccountId = propAccount2.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss2.Product__r.Id, CloseDate = System.today());
         Opportunity opportunity3 = new Opportunity(Name = accountName3, AccountId = propAccount3.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
         Opportunity opportunity4 = new Opportunity(Name = accountName4, AccountId = propAccount4.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity5 = new Opportunity(Name = accountName5, AccountId = propAccount5.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
+        Opportunity opportunity5 = new Opportunity(Name = accountName5, AccountId = propAccount5.Id, Shared_Solar_System__c = sss2.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
 
         insert new List<Opportunity>{
             opportunity1, opportunity2, opportunity3, opportunity4, opportunity5
@@ -236,8 +245,22 @@ public class CSPaymentTest {
             ContactId = contact1.Id,
             Timezonesidkey = 'America/Los_Angeles',
             Username = 'CSPaymentTest@bluewavesolar.com');
+        User userRecordB = new User(
+            FirstName = 'JordanB',
+            Lastname = 'CSPaymentTestB',
+            Alias = 'CSpyTtB',
+            Email = 'jpentalerib@bluewavesolar.com',
+            Emailencodingkey = 'UTF-8',
+            Languagelocalekey = 'en_US',
+            Localesidkey = 'en_US',
+            Profileid = profileRecord.Id,
+            Country = 'United States',
+            IsActive = true,
+            ContactId = contact5.Id,
+            Timezonesidkey = 'America/Los_Angeles',
+            Username = 'CSPaymentTestB@bluewavesolar.com');
 
-        Util.insertSobj(userRecord);
+        Util.insertSObjs(new List<User>{userRecord, userRecordB});
 
         Date myDateJan = Date.newInstance(2018, 1, 1);
         Date myDateFeb = Date.newInstance(2018, 2, 2);
@@ -290,7 +313,8 @@ public class CSPaymentTest {
                                                     Account_Bill__r.Is_Most_Recent__c
                                                 FROM System_Bill__c
                                                 ORDER BY Account_Bill__r.Name];
-        System.assertEquals(10, systemBillList.size());
+        // Only production updates for SSS1 (4 UASes * 2 Production Updates)
+        System.assertEquals(8, systemBillList.size());
 
         User userA = [  SELECT Id
                         FROM User
@@ -341,7 +365,8 @@ public class CSPaymentTest {
                                                 FROM System_Bill__c
                                                 ORDER BY Account_Bill__r.Name];
 
-        System.assertEquals(10, systemBillList.size());
+        // Only production updates for SSS1 (4 UASes * 2 Production Updates)
+        System.assertEquals(8, systemBillList.size());
 
         User userA = [  SELECT Id
                         FROM User
@@ -350,6 +375,11 @@ public class CSPaymentTest {
         System.runAs(userA) {
             Test.startTest();
             // Baseline: If you were to make a payment for all properties, there would be 4 payments
+            List<String> paymentMethods = MyAccountController.getPaymentMethods('All');
+            // There should only be one payment method for CSPaymentTest because those system bills point use a Gateway
+            // that only accepts Bank Transfer
+            System.assertEquals(1, paymentMethods.size());
+            System.assert(paymentMethods.contains('ACH'));
             List<ChargentOrders__ChargentOrder__c> initialOrderList = makePaymentInPortal('All');
             System.assertEquals(4, initialOrderList.size());
 
@@ -458,5 +488,67 @@ public class CSPaymentTest {
                 ChargentOrders__Billing_First_Name__c = '',
                 ChargentOrders__Billing_Last_Name__c = '');
         return paymentInfoACH;
+    }
+
+    @IsTest static void testPaymentMethodConversion() {
+        List<String> gatewayPaymentMethods = new List<String>{'eCheck;Bank Transfer', 'Credit Card;eCheck'};
+        List<String> paymentMethods = MyAccountController.convertPaymentMethods(gatewayPaymentMethods);
+        // Should one have one accepted method, since ACH is the only common method
+        System.assertEquals(1, paymentMethods.size());
+        System.assert(paymentMethods.contains('ACH'));
+
+        gatewayPaymentMethods = new List<String>{'Bank Transfer', 'eCheck'};
+        paymentMethods = MyAccountController.convertPaymentMethods(gatewayPaymentMethods);
+        System.assertEquals(1, paymentMethods.size());
+        System.assert(paymentMethods.contains('ACH'));
+
+        gatewayPaymentMethods = new List<String>{'Bank Transfer;Credit Card', 'eCheck;Credit Card'};
+        paymentMethods = MyAccountController.convertPaymentMethods(gatewayPaymentMethods);
+        System.assertEquals(2, paymentMethods.size());
+        System.assert(paymentMethods.contains('ACH'));
+        System.assert(paymentMethods.contains('Credit Card'));
+
+        gatewayPaymentMethods = new List<String>();
+        paymentMethods = MyAccountController.convertPaymentMethods(gatewayPaymentMethods);
+        System.assertEquals(0, paymentMethods.size());
+
+        gatewayPaymentMethods = new List<String>{'New Method'};
+        Boolean caughtException = false;
+        try {
+            paymentMethods = MyAccountController.convertPaymentMethods(gatewayPaymentMethods);
+        } catch (AuraHandledException ahe) {
+            caughtException = true;
+        }
+        System.assert(caughtException);
+    }
+
+    @IsTest public static void testPaymentForNoSystemBill() {
+        User userB = [
+            SELECT Id, Contact.AccountId
+            FROM User
+            WHERE Username='CSPaymentTestB@bluewavesolar.com'
+        ];
+        List<System_Bill__c> bills = [
+            SELECT Id
+            FROM System_Bill__c
+            WHERE Property_Account__r.Parent_Account__c = :userB.Contact.AccountId
+        ];
+        // Shouldn't have any System Bills because Production Updates haven't been made
+        System.assertEquals(0, bills.size());
+        List<Opportunity> opps = [
+            SELECT Id
+            FROM Opportunity
+            WHERE Account.Parent_Account__c = :userB.Contact.AccountId
+        ];
+        // But there should be an opportunity from which we can get the Gateway and accepted payment methods
+        System.assertEquals(1, opps.size());
+
+        System.runAs(userB) {
+            List<String> paymentMethods = MyAccountController.getPaymentMethods('All');
+            // There should only be one payment method for CSPaymentTest because those system bills point use a Gateway
+            // that only accepts Bank Transfer
+            System.assertEquals(1, paymentMethods.size());
+            System.assert(paymentMethods.contains('Credit Card'));
+        }
     }
  }

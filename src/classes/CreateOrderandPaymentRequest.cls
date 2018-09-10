@@ -72,6 +72,11 @@ public without sharing class CreateOrderandPaymentRequest {
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         Set<Id> accountBillIdSet = new Set<Id>();
         Set<Id> entityIdSet = new Set<Id>();
+        if (chargeAmounts.isEmpty()) {
+            Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert',
+                UserInfo.getUserName() + '(' + UserInfo.getUserId() + ') tried to save a chargent order, but there were ' +
+                    'no chargeAmounts (System Bills) to insert against');
+        }
         for (SObject chargeAmount : chargeAmounts) {
             Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
             if (amountToCharge > 0.01) {
@@ -92,6 +97,10 @@ public without sharing class CreateOrderandPaymentRequest {
                 accountBillIdSet.add(orderA.Account_Bill__c);
                 entityIdSet.add(orderA.Entity__c);
                 ordersToInsert.add(orderA);
+            } else {
+                Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert',
+                    UserInfo.getUserName() + '(' + UserInfo.getUserId() + ') tried to save a chargent order, with ' +
+                        'autopay (' + autopay + ') but there was no amount to charge');
             }
         }
         try {
