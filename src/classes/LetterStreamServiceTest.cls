@@ -153,7 +153,7 @@ public with sharing class LetterStreamServiceTest {
             PathOnClient = 'test_Doc.pdf',
             VersionData = Blob.valueOf('testDoc')
         );
-        insert documentVersion;
+        Util.insertSObj(documentVersion);
 
         accountBill = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
@@ -339,7 +339,7 @@ public with sharing class LetterStreamServiceTest {
             PathOnClient = 'test_Doc.pdf',
             VersionData = Blob.valueOf('testDoc')
         );
-        insert new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3};
+        Util.insertSObjs(new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3});
         List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id, documentVersion3.Id};
 
         List<ContentDocument> contentDocuments = [
@@ -487,7 +487,7 @@ public with sharing class LetterStreamServiceTest {
             PathOnClient = 'test_Doc.pdf',
             VersionData = Blob.valueOf('testDoc')
         );
-        insert new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3};
+        Util.insertSObjs(new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3});
         List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id, documentVersion3.Id};
 
         List<ContentDocument> contentDocuments = [

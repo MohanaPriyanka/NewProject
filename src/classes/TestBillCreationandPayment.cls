@@ -861,52 +861,71 @@ public class TestBillCreationandPayment {
         systembillList[1].Waive_Late_Fees__c = true;
         systembillList[1].Total_Payments_This_Month__c = 200;
 
-        Boolean hitError = false;
-        try {
-            update systemBillList[1];
-        } catch (DMLException dmx) {
-            System.assert(dmx.getMessage().contains('Cannot update Late Fees on an already published bill'));
-            hitError = true;
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='BFG Standard User'];
+        User userRecord = new User(
+            FirstName = 'Allie',
+            LastName ='Rand',
+            Alias = 'xxx234',
+            Email = 'user@bluewavesolar.com',
+            EmailEncodingKey ='UTF-8',
+            LanguageLocaleKey ='en_US',
+            LocaleSidKey ='en_US',
+            ProfileId = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            TimeZoneSidKey='America/Los_Angeles',
+            Username='user@bluewavesolar.com');
+
+        System.runAs(userRecord) {
+            Boolean hitError = false;
+            try {
+                update systemBillList[1];
+            } catch (DmlException dmx) {
+                System.assert(dmx.getMessage().contains('Cannot update Late Fees on an already published bill'),
+                    'Validation failed: Cannot update Late Fees on an already published bill');
+                hitError = true;
+            }
+            System.assert(hitError, 'Should have hit validation \'Cannot update Late Fees on an already published bill\', but didn\'t');
+
+            systemBillList[1].Due_This_Month__c = 0;
+            systemBillList[1].Total_Payments_This_Month__c = 200;
+            hitError = false;
+            try {
+                update systemBillList[1];
+            } catch (DmlException dmx) {
+                System.assert(dmx.getMessage().contains('Cannot update Due This Month on an already published bill'),
+                    'Validation failed: Cannot update Due This Month on an already published bill');
+                hitError = true;
+            }
+            System.assert(hitError, 'Should have hit validation \'Cannot update Due This Month on an already published bill\' but didn\'t');
+
+            List<System_Bill__c> updatedSBs =
+            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c,
+                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Adjustments_UASB__c,
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Published__c = TRUE
+            ORDER BY Bill_Number__c];
+
+            // Bill fields should NOT change:
+            System.assertEquals(282.96,updatedSBs[0].Total_Due__c);
+            System.assertEquals(631.07,updatedSBs[1].Total_Due__c);
+            System.assertEquals(0,updatedSBs[0].Late_Fees__c);
+            System.assertEquals(2.83,updatedSBs[1].Late_Fees__c);
+            System.assertEquals(258.96,updatedSBs[0].Due_This_Month__c);
+            System.assertEquals(345.28,updatedSBs[1].Due_This_Month__c);
+
+            // Total payments should change:
+            System.assertEquals(200,updatedSBs[1].Total_Payments_This_Month__c);
         }
-        System.assertEquals(true, hitError);
-
-        systembillList[1].Due_This_Month__c = 0;
-        systembillList[1].Total_Payments_This_Month__c = 200;
-        hitError = false;
-        try {
-            update systemBillList[1];
-        } catch (DMLException dmx) {
-            System.assert(dmx.getMessage().contains('Cannot update Due This Month on an already published bill'));
-            hitError = true;
-        }
-//        System.assertEquals(true, hitError);
-
-        List<System_Bill__c> updatedSBs =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        WHERE Account_Bill__r.Published__c = true
-        ORDER BY Bill_Number__c];
-
-        // Bill fields should NOT change:
-        System.AssertEquals(282.96,updatedSBs[0].Total_Due__c);
-        System.AssertEquals(631.07,updatedSBs[1].Total_Due__c);
-        System.AssertEquals(0,updatedSBs[0].Late_Fees__c);
-        System.AssertEquals(2.83,updatedSBs[1].Late_Fees__c);
-        System.AssertEquals(258.96,updatedSBs[0].Due_This_Month__c);
-        System.AssertEquals(345.28,updatedSBs[1].Due_This_Month__c);
-
-        // Total payments should change:
-        System.AssertEquals(200,updatedSBs[1].Total_Payments_This_Month__c);
 
         Test.stopTest();
     }
