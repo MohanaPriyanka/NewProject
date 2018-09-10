@@ -1,34 +1,27 @@
 ({
+	doInit : function(component) {
+		var reportObject = component.get('v.reportObject');
+		if (reportObject !== null) {
+			var groupList = Object.values(reportObject.sumResp.groupMap);
+			component.set('v.groupList', groupList);
+		}
+	},
+
 	openChildRecords : function(component, event, helper) {
-		var reportObject = component.get('v.reportObject');
-		for (i=0; i<reportObject.sumResp.groupList.length;i++) {
-			if (reportObject.sumResp.groupList[i].groupKey == event.currentTarget.dataset.groupkey) {
-				if (reportObject.sumResp.groupList[i].visibleChild) {
-					reportObject.sumResp.groupList[i].visibleChild = false;
-				} else {
-					reportObject.sumResp.groupList[i].visibleChild = true;
-				}
+		var groupList = component.get('v.groupList');
+		var groupKey = event.currentTarget.dataset.groupkey;
+		var asyncReportId = component.get('v.asyncReportId');
+		if (+groupList[+groupKey].groupKey === +groupKey) {
+			if (groupList[+groupKey].fieldDataList.length === 0) {
+				component.set('v.loading', true);
+				helper.getAsyncReportGroupRows(component, helper, asyncReportId, groupKey);
+			} else {
+				groupList[+groupKey].visibleChild = !groupList[+groupKey].visibleChild;
 			}
-		} 
-		component.set('v.reportObject', reportObject);
-	},
-
-	expandAllChilds : function(component, event, helper) {
-		var reportObject = component.get('v.reportObject');
-		for (i=0; i<reportObject.sumResp.groupList.length;i++) {
-			console.log(reportObject.sumResp.groupList[i].visibleChild);
-			reportObject.sumResp.groupList[i].visibleChild = true;
+		} else {
+		    let message = 'group key' + groupKey + 'does not exist';
+			helper.logError('LightningReportGroupComponentController', 'openChildRecords', message, component.get('v.reportObject'));
 		}
-		component.set('v.reportObject', reportObject);
-		component.set('v.expandAll', true);
+		component.set('v.groupList', groupList);
 	},
-
-	closeAllChilds : function(component, event, helper) {
-		var reportObject = component.get('v.reportObject');
-		for (i=0; i<reportObject.sumResp.groupList.length;i++) {
-			reportObject.sumResp.groupList[i].visibleChild = false;
-		}
-		component.set('v.reportObject', reportObject);
-		component.set('v.expandAll', false);
-	}
 })

@@ -2,22 +2,30 @@
 	<aura:attribute name="reportObject" type="Object"/>
 	<aura:attribute name="reportId" type="String"/>
 	<aura:attribute name="clientId" type="String"/>
+	<aura:attribute name="asyncReportId" type="String"/>
 	<aura:attribute name="selectedReport" type="String"/>
 	<aura:attribute name="expandAllButton" type="Boolean"/>
 	<aura:attribute name="loading" type="Boolean"/>
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<lightning:notificationsLibrary aura:id="notifLib"/>
 	<div class="slds-scrollable">
 		<aura:if isTrue="{!v.loading}">
 			<div role="status" class="slds-spinner slds-spinner_medium">
 				<div class="slds-spinner__dot-a"></div>
 				<div class="slds-spinner__dot-b"></div>
 			</div>
-			<aura:set attribute="else">
-				<c:LightningReportGroupComponent reportObject="{!v.reportObject}" expandAllButton="{!v.expandAllButton}"/>
-				<a class="slds-float_right slds-m-left_small" onclick="{!c.exportToCSV}"> 
-					<lightning:icon iconName="utility:download" size="xx-small"/> export
-				</a>
-			</aura:set>
+		</aura:if>
+		<aura:if isTrue="{!v.reportObject}">
+			<aura:if isTrue="{!v.reportObject.fullData}">
+				<span class="slds-float_left slds-m-left_small">Displaying the last 2 months of bills. Please click "Email Full Report" for the full report.</span>
+				<aura:set attribute="else">
+					<span class="slds-float_left slds-m-left_small">The selected report has too many lines, there may be some data missing on the page. Please click "Email Full Report" for the full report.</span>
+				</aura:set>
+			</aura:if>
+			<a class="slds-float_right slds-m-left_small" onclick="{!c.exportToCSV}">
+				<lightning:icon iconName="utility:email" size="xx-small"/> Email Full Report
+			</a>
+			<c:LightningReportGroupComponent reportObject="{!v.reportObject}" asyncReportId="{!v.asyncReportId}" loading="{!v.loading}"/>
 		</aura:if>
 	</div>
 </aura:component>

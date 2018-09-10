@@ -407,10 +407,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             FROM Shared_Solar_System__c
             ORDER BY Name DESC];
 
-            Date myDateJan = Date.newInstance(2018, 1, 15);
-            Date myDateFeb = Date.newInstance(2018, 2, 15);
-            Date myDateMar = Date.newInstance(2018, 3, 15);
-            Date myDateApr = Date.newInstance(2018, 4, 15);
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
 
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
@@ -430,11 +430,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - August 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 81869.00,
-                Due_Date__c = myDateJan,
-                Billing_Period_End_Date__c = myDateFeb,
+                Due_Date__c = threeMonthsAgo,
+                Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 13483.66,
                 Size_off_NMCs__c = true,
-                Date__c = myDateJan,
+                Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -444,11 +444,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - September 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 73072.00,
-                Due_Date__c = myDateFeb,
-                Billing_Period_End_Date__c = myDateMar,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 12033.73,
                 Size_off_NMCs__c = true,
-                Date__c = myDateFeb,
+                Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -458,11 +458,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - October 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 327001.00,
-                Due_Date__c = myDateMar,
-                Billing_Period_End_Date__c = myDateApr,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 36424.44,
                 Size_off_NMCs__c = true,
-                Date__c = myDateMar,
+                Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -472,11 +472,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - August 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 367918.00,
-                Due_Date__c = myDateJan,
-                Billing_Period_End_Date__c = myDateFeb,
+                Due_Date__c = threeMonthsAgo,
+                Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 40983.43,
                 Size_off_NMCs__c = true,
-                Date__c = myDateJan,
+                Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 
@@ -486,11 +486,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - September 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 81869.00,
-                Due_Date__c = myDateFeb,
-                Billing_Period_End_Date__c = myDateMar,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 13483.66,
                 Size_off_NMCs__c = true,
-                Date__c = myDateFeb,
+                Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 
@@ -500,11 +500,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - October 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 73072.00,
-                Due_Date__c = myDateMar,
-                Billing_Period_End_Date__c = myDateApr,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 12033.73,
                 Size_off_NMCs__c = true,
-                Date__c = myDateMar,
+                Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 

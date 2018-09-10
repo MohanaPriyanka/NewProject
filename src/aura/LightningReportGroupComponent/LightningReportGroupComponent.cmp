@@ -1,28 +1,25 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" access="global">
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:BlueWaveParent" controller="LightningReportsController" access="global">
 	<aura:attribute name="reportObject" type="Object"/>
-	<aura:attribute name="expandAllButton" type="Boolean"/>
-	<aura:attribute name="expandAll" type="Boolean"/>
+	<aura:attribute name="asyncReportId" type="String"/>
+	<aura:attribute name="groupList" type="List"/>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 	<aura:if isTrue="{!v.reportObject.reportType == 'summary'}">
-		<aura:if isTrue="{!v.expandAllButton}">
-			<a class="slds-float_right slds-m-left_small" onclick="{!v.expandAll?c.closeAllChilds:c.expandAllChilds}"> 
-				<lightning:icon iconName="{!v.expandAll?'utility:down':'utility:right'}" size="xx-small"/> expand all 
-			</a>
-		</aura:if>
 		<table class="slds-table slds-table_bordered slds-table_cell-buffer">
 			<thead scope="col">
 				<tr>
-					<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!v.reportObject.sumResp.groupList[0].groupColumnSize}">
-						<b>{!v.reportObject.sumResp.groupList[0].fieldName}</b>
+					<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!v.reportObject.sumResp.groupMap[0].groupColumnSize}">
+						<b>{!v.reportObject.sumResp.groupMap[0].fieldName}</b>
 					</th>
-					<aura:iteration var="groupSummary" items="{!v.reportObject.sumResp.groupList[0].fieldAggregateList}" indexVar="i">
-						<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!i+1==v.reportObject.sumResp.groupList[0].fieldAggregateListSize?v.reportObject.sumResp.groupList[0].lastColumnSize:v.reportObject.sumResp.groupList[0].groupColumnSize}">
+					<aura:iteration var="groupSummary" items="{!v.reportObject.sumResp.groupMap[0].fieldAggregateList}" indexVar="i">
+						<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!i+1==v.reportObject.sumResp.groupMap[0].fieldAggregateListSize?v.reportObject.sumResp.groupMap[0].lastColumnSize:v.reportObject.sumResp.groupMap[0].groupColumnSize}">
 							<b>{!groupSummary.label}</b>
 						</th>
 					</aura:iteration>
 				</tr>
 			</thead>
 			<tbody>
-				<aura:iteration var="group" items="{!v.reportObject.sumResp.groupList}">
+				<aura:iteration var="group" items="{!v.groupList}">
 					<tr>
 						<td class="{!group.visibleChild?'selectedBackground':''}" colspan="{!group.groupColumnSize}" data-groupkey="{!group.groupKey}" onclick="{!c.openChildRecords}">
 							<div class="slds-section__title">
