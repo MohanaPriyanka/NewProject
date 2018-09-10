@@ -415,7 +415,7 @@ public class CSPaymentTest {
             Account_Bill__r.Is_Most_Recent__c
         FROM System_Bill__c
         ORDER BY Account_Bill__r.Name];
-        System.assertEquals(10, systemBillList.size());
+        System.assertEquals(8, systemBillList.size());
 
         User userA = [SELECT Id FROM User WHERE Username='CSPaymentTest@bluewavesolar.com'];
 
