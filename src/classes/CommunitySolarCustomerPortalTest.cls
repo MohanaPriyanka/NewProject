@@ -215,7 +215,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
             String propertyAccountId = String.valueOf(customerAccountMap.get('Account A').Id).subString(0,15);
             List<AggregateResult> systemBillPrAccRespList = new List<AggregateResult>(MyAccountController.getSystemBills(propertyAccountId));
             List<AggregateResult> systemBillallList = new List<AggregateResult>(MyAccountController.getSystemBills('all'));
-            System.assertEquals(631.07, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
+            // If NOT waiving late fees:  System.assertEquals(631.07, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
+            System.assertEquals(628.24, systemBillPrAccRespList[0].get('ChargentOrders__Subtotal__c'));
             System.assertEquals(entity1.Id, systemBillallList[0].get('Entity__c'));
 
             //test the getAccountBills() method

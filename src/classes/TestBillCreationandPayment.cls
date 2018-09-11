@@ -369,9 +369,11 @@ public class TestBillCreationandPayment {
     }
 
     static void setBillsToPublished() {
-        List <Account_Bill__c> listAccountBills = [SELECT Id, Published__c
-                                                    FROM Account_Bill__c
-                                                    WHERE Published__c = FALSE];
+        List <Account_Bill__c> listAccountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+            WHERE Published__c = FALSE
+        ];
         for (Account_Bill__c acctBill : listAccountBills) {
             acctBill.Published__c = True;
         }
@@ -391,10 +393,10 @@ public class TestBillCreationandPayment {
 
         String parId = accountA.Parent_Account__r.Id;
         String acctId = accountA.Id;
-        System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
-        System.AssertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
-        System.AssertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
-        System.AssertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
+        System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
+        System.assertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
+        System.assertEquals( 5, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
         Energy_Usage_Update__c productionUpdate = [
             SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
             FROM Energy_Usage_Update__c
@@ -402,8 +404,8 @@ public class TestBillCreationandPayment {
         ];
 
         List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdate.Id, true, productionUpdate.Schedule_Z__r.Id);
-        System.AssertEquals(345.28, uasbList[0].PreGen_Discounted_Bill__c);
-        System.AssertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
+        System.assertEquals(345.28, uasbList[0].PreGen_Discounted_Bill__c);
+        System.assertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
         Test.stopTest();
     }
 
@@ -814,15 +816,20 @@ public class TestBillCreationandPayment {
 
         // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
         // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
-        System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
-        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
-        System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
-        System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
-        System.AssertEquals(24,systembillList[0].Adjustments_UASB__c);
-        System.AssertEquals(0,systembillList[1].Adjustments_UASB__c);
-        System.AssertEquals(24,systembillList[0].Balance_Adjustment__c);
-        System.AssertEquals(0,systembillList[1].Balance_Adjustment__c);
-        System.AssertEquals(0,systembillList[1].Previous_Overpayments__c);
+        // Waiving late fees --> Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) = 628.24 (total due)
+        System.assertEquals(282.96,systemBillList[0].Total_Due__c);
+        System.assertEquals(628.24, systemBillList[1].Total_Due__c);
+        System.assertEquals(258.96,systembillList[0].Due_This_Month__c);
+        System.assertEquals(345.28,systembillList[1].Due_This_Month__c);
+        System.assertEquals(24,systembillList[0].Adjustments_UASB__c);
+        System.assertEquals(0,systembillList[1].Adjustments_UASB__c);
+        System.assertEquals(24,systembillList[0].Balance_Adjustment__c);
+        System.assertEquals(0,systembillList[1].Balance_Adjustment__c);
+        System.assertEquals(0,systembillList[1].Previous_Overpayments__c);
+
+        // If NOT waiving late fees:
+        //System.assertEquals(631.07,systembillList[1].Total_Due__c);
+
         Test.stopTest();
     }
 
@@ -848,25 +855,29 @@ public class TestBillCreationandPayment {
 
         // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
         // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
-        System.AssertEquals(282.96,systemBillList[0].Total_Due__c);
-        System.AssertEquals(631.07,systembillList[1].Total_Due__c);
-        System.AssertEquals(0,systemBillList[0].Late_Fees__c);
-        System.AssertEquals(2.83,systembillList[1].Late_Fees__c);
-        System.AssertEquals(258.96,systembillList[0].Due_This_Month__c);
-        System.AssertEquals(345.28,systembillList[1].Due_This_Month__c);
-        System.AssertEquals(0,systembillList[1].Total_Payments_This_Month__c);
+        // Waiving late fees --> Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) = 628.24 (total due)
+        // If NOT waiving late fees:
+        // System.assertEquals(631.07,systemBillList[1].Total_Due__c);
+        // System.assertEquals(2.83,systemBillList[1].Late_Fees__c);
+        System.assertEquals(282.96,systemBillList[0].Total_Due__c);
+        System.assertEquals(628.24,systemBillList[1].Total_Due__c);
+        System.assertEquals(0,systemBillList[0].Late_Fees__c);
+        System.assertEquals(0,systemBillList[1].Late_Fees__c);
+        System.assertEquals(258.96,systemBillList[0].Due_This_Month__c);
+        System.assertEquals(345.28,systemBillList[1].Due_This_Month__c);
+        System.assertEquals(0,systemBillList[1].Total_Payments_This_Month__c);
 
         // This should work without throwing an error
-        systembillList[1].Total_Payments_This_Month__c = 200;
+        systemBillList[1].Total_Payments_This_Month__c = 200;
         update systemBillList[1];
 
-        systembillList[1].Waive_Late_Fees__c = true;
-        systembillList[1].Total_Payments_This_Month__c = 200;
+        systemBillList[1].Waive_Late_Fees__c = false;
+        systemBillList[1].Total_Payments_This_Month__c = 200;
 
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='BFG Standard User'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
         User userRecord = new User(
-            FirstName = 'Allie',
-            LastName ='Rand',
+            FirstName = 'User With',
+            LastName ='System Bill Edit',
             Alias = 'xxx234',
             Email = 'user@bluewavesolar.com',
             EmailEncodingKey ='UTF-8',
@@ -883,8 +894,8 @@ public class TestBillCreationandPayment {
             try {
                 update systemBillList[1];
             } catch (DmlException dmx) {
-                System.assert(dmx.getMessage().contains('Cannot update Late Fees on an already published bill'),
-                    'Validation failed: Cannot update Late Fees on an already published bill');
+                System.assert(dmx.getMessage().contains('Cannot update Late Fees'),
+                    'System Bill Late Fees validation failed, got this instead: ' + dmx.getMessage());
                 hitError = true;
             }
             System.assert(hitError, 'Should have hit validation \'Cannot update Late Fees on an already published bill\', but didn\'t');
@@ -895,8 +906,8 @@ public class TestBillCreationandPayment {
             try {
                 update systemBillList[1];
             } catch (DmlException dmx) {
-                System.assert(dmx.getMessage().contains('Cannot update Due This Month on an already published bill'),
-                    'Validation failed: Cannot update Due This Month on an already published bill');
+                System.assert(dmx.getMessage().contains('Cannot update Due This Month'),
+                    'System Bill Due This Month validation failed, got this instead: ' + dmx.getMessage());
                 hitError = true;
             }
             System.assert(hitError, 'Should have hit validation \'Cannot update Due This Month on an already published bill\' but didn\'t');
@@ -919,11 +930,15 @@ public class TestBillCreationandPayment {
 
             // Bill fields should NOT change:
             System.assertEquals(282.96,updatedSBs[0].Total_Due__c);
-            System.assertEquals(631.07,updatedSBs[1].Total_Due__c);
+            System.assertEquals(628.24,updatedSBs[1].Total_Due__c);
             System.assertEquals(0,updatedSBs[0].Late_Fees__c);
-            System.assertEquals(2.83,updatedSBs[1].Late_Fees__c);
+            System.assertEquals(0,updatedSBs[1].Late_Fees__c);
             System.assertEquals(258.96,updatedSBs[0].Due_This_Month__c);
             System.assertEquals(345.28,updatedSBs[1].Due_This_Month__c);
+
+            //If NOT waiving late fees:
+            //System.assertEquals(2.83,updatedSBs[1].Late_Fees__c);
+            //System.assertEquals(631.07,updatedSBs[1].Total_Due__c);
 
             // Total payments should change:
             System.assertEquals(200,updatedSBs[1].Total_Payments_This_Month__c);
@@ -1019,16 +1034,20 @@ public class TestBillCreationandPayment {
             Adjustment_Amount__c
         FROM Bill_Adjustment__c
         WHERE Overpayment__c = TRUE];
-        System.AssertEquals(1, adjustList.size());
-        System.AssertEquals(-118.93, adjustList[0].Adjustment_Amount__c);
+
+        System.assertEquals(1, adjustList.size());
+        System.assertEquals(-121.76, adjustList[0].Adjustment_Amount__c);
+
+        // If NOT waiving late fees: -2.83
+        //System.assertEquals(-118.93, adjustList[0].Adjustment_Amount__c);
 
         List<Adjustment_Application__c> adjustApp = [SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
             Overpayment_Amount__c, Adjustment_Amount__c,
             Bill_Adjustment__r.Outstanding__c,
             Bill_Adjustment__r.Overpayment__c
         FROM Adjustment_Application__c];
-        System.AssertEquals(1, adjustApp.size());
-        System.AssertEquals(0, adjustApp[0].Bill_Adjustment__r.Outstanding__c);
+        System.assertEquals(1, adjustApp.size());
+        System.assertEquals(0, adjustApp[0].Bill_Adjustment__r.Outstanding__c);
 
         List<System_Bill__c> updatedsystemBillListOne =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -1045,15 +1064,20 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
-        System.AssertEquals(282.96, updatedsystemBillListOne[0].Total_Due__c);
-        System.AssertEquals(282.96, updatedsystemBillListOne[0].Late_Payments__c);
-        System.AssertEquals(0, updatedsystemBillListOne[0].Balance_Net_Late_Payments__c);
-        System.AssertEquals(0, updatedsystemBillListOne[0].Total_Payments_This_Month__c);
-
+        System.assertEquals(282.96, updatedsystemBillListOne[0].Total_Due__c);
+        System.assertEquals(282.96, updatedsystemBillListOne[0].Late_Payments__c);
+        System.assertEquals(0, updatedsystemBillListOne[0].Balance_Net_Late_Payments__c);
+        System.assertEquals(0, updatedsystemBillListOne[0].Total_Payments_This_Month__c);
         System.Assert(updatedsystemBillListOne[1].Total_Due__c > 0);
-        System.AssertNotEquals(0, updatedsystemBillListOne[1].Late_Fees__c );
-        System.AssertEquals(0, updatedsystemBillListOne[1].Late_Payments__c );
-        System.AssertEquals(631.07, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
+        System.assertEquals(0, updatedsystemBillListOne[1].Late_Fees__c );
+        System.assertEquals(0, updatedsystemBillListOne[1].Late_Payments__c );
+        System.assertEquals(628.24, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
+
+
+        // If NOT waiving late fees:
+        // System.AssertNotEquals(0, updatedsystemBillListOne[1].Late_Fees__c );
+        // System.assertEquals(631.07, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
+
         Test.stopTest();
     }
 
@@ -1153,11 +1177,12 @@ public class TestBillCreationandPayment {
         String oldCheckAddressField;
         String propertyAccountId;
 
+        // NOT Waiving Late Fees
         for (System_Bill__c editBill : updatedsystemBillListOne) {
             if (editBill.Bill_Number__c == 2) {
                 oldCheckAddressField = editBill.Property_Account__r.Directions_To_Write_Paper_Check__c;
                 propertyAccountId = editBill.Property_Account__r.Id;
-                editBill.Waive_Late_Fees__c = True;
+                editBill.Waive_Late_Fees__c = FALSE;
             }
         }
         update updatedsystemBillListOne;
@@ -1187,8 +1212,8 @@ public class TestBillCreationandPayment {
             Bill_Adjustment__r.Overpayment__c
         FROM Adjustment_Application__c
         WHERE Bill_Adjustment__r.Overpayment__c = true];
-        System.AssertEquals(1, secondAdjustApp.size());
-        System.AssertEquals(-118.93, secondAdjustApp[0].Overpayment_Amount__c);
+        System.assertEquals(1, secondAdjustApp.size());
+        System.assertEquals(-121.76, secondAdjustApp[0].Overpayment_Amount__c);
 
         List<System_Bill__c> updatedsystemBillList =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -1205,9 +1230,10 @@ public class TestBillCreationandPayment {
         FROM System_Bill__c
         ORDER BY Bill_Number__c];
 
-        System.assertEquals(281.07, updatedsystemBillList[2].Total_Due__c );
-        System.assertEquals(283.90, updatedsystemBillList[2].Balance_Net_late_Payments__c );
-        System.assertEquals(-118.93, updatedsystemBillList[2].Previous_Overpayments__c );
+        //Not waiving late fees
+        System.assertEquals(283.90, updatedsystemBillList[2].Total_Due__c );
+        System.assertEquals(281.07, updatedsystemBillList[2].Balance_Net_late_Payments__c );
+        System.assertEquals(-121.76, updatedsystemBillList[2].Previous_Overpayments__c );
         System.assertEquals(0, updatedsystemBillList[2].Adjustments_UASB__c );
     }
 
@@ -1334,10 +1360,15 @@ public class TestBillCreationandPayment {
             System.assertEquals(2, newOrders.size());
             System.assertNotEquals(null, newOrders[0].Account_Bill__c);
             System.assertNotEquals(null, newOrders[1].Account_Bill__c);
-            System.assertEquals(631.07, newOrders[0].ChargentOrders__Subtotal__c);
-            System.assertEquals(631.07, newOrders[1].ChargentOrders__Subtotal__c);
+
+            System.assertEquals(628.24, newOrders[0].ChargentOrders__Subtotal__c);
+            System.assertEquals(628.24, newOrders[1].ChargentOrders__Subtotal__c);
             System.assertEquals('2020', newOrders[0].ChargentOrders__Card_Expiration_Year__c);
             System.assertEquals('Bank of America', newOrders[1].ChargentOrders__Bank_Name__c);
+
+            // If NOT waiving late fees
+            // System.assertEquals(631.07, newOrders[0].ChargentOrders__Subtotal__c);
+            // System.assertEquals(631.07, newOrders[1].ChargentOrders__Subtotal__c);
 
             String chargeResultOne = CreateOrderandPaymentRequest.chargeOrder(resultOne[0]);
             String chargeResultTwo = CreateOrderandPaymentRequest.chargeOrder(resultTwo[0]);
@@ -1527,10 +1558,15 @@ public class TestBillCreationandPayment {
             ChargentOrders__ChargentOrder__c achOrder = orders[1];
             System.assertNotEquals(null, ccOrder.Account_Bill__c);
             System.assertNotEquals(null, achOrder.Account_Bill__c);
-            System.assertEquals(631.07, ccOrder.ChargentOrders__Subtotal__c);
-            System.assertEquals(631.07, achOrder.ChargentOrders__Subtotal__c);
+
+            System.assertEquals(628.24, ccOrder.ChargentOrders__Subtotal__c);
+            System.assertEquals(628.24, achOrder.ChargentOrders__Subtotal__c);
             System.assertEquals('2020', ccOrder.ChargentOrders__Card_Expiration_Year__c);
             System.assertEquals('Bank of America', achOrder.ChargentOrders__Bank_Name__c);
+
+            // If NOT waiving late fees
+            //System.assertEquals(631.07, ccOrder.ChargentOrders__Subtotal__c);
+            //System.assertEquals(631.07, achOrder.ChargentOrders__Subtotal__c);
 
             // Set the non-recurring payment to be Error, this should get set to Complete when a new order is added
             achOrder.ChargentOrders__Payment_Status__c = 'Error';

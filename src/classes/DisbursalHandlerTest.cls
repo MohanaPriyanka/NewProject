@@ -721,6 +721,7 @@ public class DisbursalHandlerTest {
             SELECT Id, Name, Disbursal_Percentage__c, Amount__c
             FROM Disbursal__c
             WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ORDER BY Disbursal_Sequence__c
         ];
 
         // if the Disbursal name is over 80 characters, it creates it from the first 80.
