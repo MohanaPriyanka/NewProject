@@ -62,6 +62,21 @@
             helper.upsertRecords(component, event, helper);
         }
     },
+    saveUnsplitZone : function(component, event, helper) {
+        let unsplitLeadAction = component.get('c.unsplitLead');
+        unsplitLeadAction.setParams({
+           'lead': component.get('v.lead')
+        });
+        unsplitLeadAction.setCallback(this, function(actionResult) {
+            if (actionResult.getState() === 'SUCCESS') {
+                helper.finishStage(component, event, helper);
+            } else {
+                helper.raiseError('CSAPPersonalInfoController', 'saveUnsplitZone',
+                    'There was an issue saving your utility or load zone. Please call BlueWave at the contact info below',
+                    JSON.stringify(component.get('v.lead')));
+            }
+        });
+        $A.enqueueAction(unsplitLeadAction);
+    },
 })
-
 

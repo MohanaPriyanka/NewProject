@@ -34,7 +34,14 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    helper.finishStage(component, event, helper);
+                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
+                        component.set('v.loading', false);
+                        component.set('v.splitZones', lead.Load_Zone__c.split('/'));
+                        component.set('v.splitUtilities', lead.Utility_1__c.split('/'));
+                        component.set('v.page', 'SplitLoadZone');
+                    } else {
+                        helper.finishStage(component, event, helper);
+                    }
                 } else {
                     helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
                         'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',

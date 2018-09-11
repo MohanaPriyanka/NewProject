@@ -434,14 +434,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="LoanPipelineHandler" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="LoanPipelineUpdatehandler" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="LoanServicer" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -451,10 +443,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="LoanTestRecordWarehouse" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="LoanTrancheUpdateHandler" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -710,19 +698,11 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="createResidentialEquipmentHandler" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="customIdSwapLeadTriggerTestClass" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="customIdSwapOppTestClass" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="helperclass" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>

@@ -194,8 +194,15 @@ public without sharing class CSAPController {
         User apiUser = [SELECT Id, Name, Username 
                         FROM User 
                         WHERE Name = 'API'
-                        AND IsActive = True
+                        AND IsActive = TRUE
                         LIMIT 1];
+        Product2 smartProduct = [
+            SELECT Id
+            FROM Product2
+            WHERE IsActive = TRUE
+            AND Program__c = 'SMART - Community Solar'
+            LIMIT 1
+        ];
 
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
@@ -239,9 +246,13 @@ public without sharing class CSAPController {
                 Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
             }
         }
-        lead.Product__c = '01t0a000004Uk2x'; // Community Solar - SMART 18-02
+        lead.Product__c = smartProduct.Id;
         lead.Parent_Account__c = account.Id;
         upsert lead;
+        // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
+        Lead insertedLead = [SELECT Load_Zone__c, Utility_1__c FROM Lead WHERE Id = :lead.Id];
+        lead.Load_Zone__c = insertedLead.Load_Zone__c;
+        lead.Utility_1__c = insertedLead.Utility_1__c;
 
         //Update the Account with the lookup back to the lead
         account.Lead__c = lead.Id;
@@ -353,5 +364,18 @@ public without sharing class CSAPController {
         }
         Logger.flushLogs();
         return getLead(leadId, email);
+    }
+
+    @AuraEnabled
+    public static void unsplitLead(Lead lead) {
+        Lead primaryLead = getLead(lead.Id, lead.Email);
+        if (primaryLead == null) {
+            throw new AuraHandledException('Invalid lead');
+        }
+        primaryLead.Utility_1__c = lead.Utility_1__c;
+        primaryLead.Load_Zone__c = lead.Load_Zone__c;
+        primaryLead.LZU__c = lead.Load_Zone__c + ' ' + lead.Utility_1__c;
+        primaryLead.Status = 'Ready for Credit Check';
+        update primaryLead;
     }
 }
