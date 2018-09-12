@@ -161,9 +161,9 @@ public without sharing class LoanHandler{
                 updatePartnerTaskBlueWaveCounterSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));
             }
         }
-         if (!validateSalesAgreementList.isEmpty()) {
-             validateLoanInformationProvidedOnOpp(validateSalesAgreementList, getPartnerTasks(oppLeadIdsList));
-         }
+        if (!validateSalesAgreementList.isEmpty()) {
+            validateLoanInformationProvidedOnOpp(validateSalesAgreementList, getPartnerTasks(oppLeadIdsList));
+        }
     }
 
     public List<Partner_Task__c> checkForPartnerTasksOnOpportunity(List<Opportunity> opportunities) {
@@ -180,6 +180,7 @@ public without sharing class LoanHandler{
         List<String> equipmentLeadIdListNYBuildingPermit = new List<String>();
         List<String> equipmentLeadIdListMechInstall = new List<String>();
         List<String> equipmentLeadIdListInterconnection = new List<String>();
+        List<Id> interconnectionTaskToUpdateEquipIds = new List<Id>();
         List<String> oppIdList = new List<String>();
         List<Residential_Equipment__c> newEquipment = [
             SELECT Id, Interconnection_Update_Dummy__c, Mechanically_Installed__c, DOER_Solar_Loan__c, Opportunity__r.Id,
@@ -205,6 +206,9 @@ public without sharing class LoanHandler{
             }
             if (equipment.Interconnected__c && !oldEquipmentMap.get(equipment.Id).Interconnected__c) {
                 equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
+            }
+            if (!equipment.Interconnected__c && oldEquipmentMap.get(equipment.Id).Interconnected__c) {
+                interconnectionTaskToUpdateEquipIds.add(equipment.Id);
             }
             if (equipment.Interconnection_Update_Dummy__c != oldEquipmentMap.get(equipment.Id).Interconnection_Update_Dummy__c) {
                 equipmentLeadIdListInterconnection.add(equipment.Lead__r.Id);
@@ -233,6 +237,9 @@ public without sharing class LoanHandler{
         //if the equipment gets set to interconnected update the partner task to be complete.
         if (equipmentLeadIdListInterconnection.size() > 0 ) {
             updatePartnerTaskInterconnection(newEquipment, getPartnerTasks(equipmentLeadIdListInterconnection));
+        }
+        if (!interconnectionTaskToUpdateEquipIds.isEmpty()) {
+            rollbackEquipmentAndInterconnectionTask(interconnectionTaskToUpdateEquipIds);
         }
     }
 
@@ -1263,6 +1270,35 @@ public without sharing class LoanHandler{
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
         update nextTasksToUpdate;
+    }
+
+    // Sets status of Interconnection Partner task to Pending if the ResiEquip's interconnected status moves from true to false.
+    public void rollbackEquipmentAndInterconnectionTask(List<Id> equipIds) {
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        List<Partner_Task__c> taskUpdateList = new List<Partner_Task__c>();
+        List<Id> leadIds = new List<Id>();
+        List<Residential_Equipment__c> resiEquips = [
+            SELECT Id, Interconnected__c, Lead__r.Lead_ID__c, Opportunity__r.Interconnected__c
+            FROM Residential_Equipment__c
+            WHERE Id IN :equipIds
+        ];
+
+        for (Residential_Equipment__c resiEquip : resiEquips) {
+            resiEquip.Opportunity__r.Interconnected__c = false;
+            oppsToUpdate.add(resiEquip.Opportunity__r);
+            leadIds.add(resiEquip.Lead__r.Lead_ID__c);
+        }
+
+        update oppsToUpdate;
+
+        Map<String, Partner_Task__c> taskMap =  getPartnerTasks(leadIds);
+
+        for (Residential_Equipment__c equipmentLoopVar : resiEquips) {
+            String taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
+            taskMap.get(taskUniqueId).Status__c = 'Pending';
+            taskUpdateList.add(taskMap.get(taskUniqueId));
+        }
+        update taskUpdateList;
     }
 
     public static Boolean checkNullOrBlankField(Residential_Equipment__c equipment, List<String> fieldNames) {
