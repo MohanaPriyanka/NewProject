@@ -334,6 +334,8 @@ public with sharing class CAPControllerTest {
 
         CAPController.setApprovedChangeOrder(lead.Id, lead.Email);
 
+        Test.stopTest();
+
         re = [
             SELECT Id, Generator_Nameplate_Capacity__c, Module_Manufacturer__c, Module_Model_Number__c, Number_of_Modules__c,
                 Inverter_Manufacturer__c, Inverter_Model_Number__c, Number_of_Inverters__c, Loan__r.DOER_Solar_Loann__c,
@@ -358,7 +360,8 @@ public with sharing class CAPControllerTest {
         System.assertEquals('Powerwall', re.Storage_Model__c);
 
         loan = [
-            SELECT Id, Commencement_Datee__c
+            SELECT Id, Commencement_Datee__c, Requested_Loan_Amount__c, Loan_Term__c,
+            (SELECT Id, Amort_Starting_Principal__c FROM Loan_Payments__r ORDER BY Period__c)
             FROM Loan__c
             WHERE Lead__c = :lead.Id
         ];
@@ -370,9 +373,10 @@ public with sharing class CAPControllerTest {
         ];
         System.assertEquals(3000, lead.System_Cost__c);
         System.assertEquals(2112, lead.Requested_Loan_Amount__c);
+        System.assertEquals(2112, loan.Requested_Loan_Amount__c);
+        System.assertEquals(2112, loan.Loan_Payments__r[12].Amort_Starting_Principal__c);
         System.assertEquals('Customer Authorized', lead.Change_Order_Status__c);
 
-        Test.stopTest();
     }
 
     @IsTest static void testLoanCreation() {

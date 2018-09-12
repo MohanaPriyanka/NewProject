@@ -4,14 +4,15 @@ public with sharing class CreateOrderandPaymentRequestTest {
         List<String> partnerSetUpIds = new List<String>();  
         partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
 
-        List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
+        List<Lead> leadList = new List<Lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
         LoanHandler.createLoan(leadList);
+        leadList = [SELECT Id FROM Lead WHERE LASERCA__Home_State__c = 'NY'];
         LoanHandlerTestClass.convertLeads(leadList);
     }
 
     @isTest static void getLink() {
         List<Opportunity> oppList = [SELECT Id, Name, Email__c FROM Opportunity ORDER BY Name];
-        system.assertEquals(4, oppList.size());
+        System.assertEquals(1, oppList.size());
 
         ChargentOrders__ChargentOrder__c orderEntry = new ChargentOrders__ChargentOrder__c(
                                                 ChargentOrders__Bank_Account_Number__c = '123456789102',

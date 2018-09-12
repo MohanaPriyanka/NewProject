@@ -1,14 +1,14 @@
 /*************************************************************************************
- + * Created By: Cole Swain
- + * 
- + * JP Update: When a Chargent Order comes in with an entity id in the "Shipping Last Name" field
- + * update the gateway field to be the gateway that is linked to that entity
- + *            REQUIRED: Only one gateway in SF per Entity *** 
- + *  
- + * Tested By: PaymentGatewayAssignmentHandlerTestclass
- + *************************************************************************************/
+ * Created By: Cole Swain
+ *
+ * JP Update: When a Chargent Order comes in with an entity id in the "Shipping Last Name" field
+ * update the gateway field to be the gateway that is linked to that entity
+ *            REQUIRED: Only one gateway in SF per Entity ***
+ *
+ * Tested By: PaymentGatewayAssignmentHandlerTestclass
+ *************************************************************************************/
 
-public with sharing class PaymentGatewayAssignmentHandler {
+public without sharing class PaymentGatewayAssignmentHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
@@ -24,7 +24,6 @@ public with sharing class PaymentGatewayAssignmentHandler {
         List <ChargentOrders__ChargentOrder__c> chOrderUpdateList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderIdList = new List <ChargentOrders__ChargentOrder__c>();
         List <ChargentOrders__ChargentOrder__c> chargentOrderAssignmentList = new List <ChargentOrders__ChargentOrder__c>();
-        system.debug(chOrderList);
         Set<Id> entityIds = new Set<Id>();
        
         for (ChargentOrders__ChargentOrder__c chargentOrderVar : chOrderList) {

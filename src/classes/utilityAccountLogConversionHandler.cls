@@ -1,8 +1,14 @@
+/*
+*
+* Test: UtilityAccountLogConvertTestClass
+* */
+
+
 public without sharing class utilityAccountLogConversionHandler {
-    private boolean m_isExecuting = false;
+    private Boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
-    public utilityAccountLogConversionHandler(boolean isExecuting, Integer size){
+    public utilityAccountLogConversionHandler(Boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
         BatchSize = size;
     }
@@ -14,27 +20,27 @@ public without sharing class utilityAccountLogConversionHandler {
         Map<Id, Id> feedback2OppId = new Map<Id, Id>();
         Map<Id, Id> accountMap = new Map<Id, Id>();
 
-        for(Lead L : leadsList){
-             if (l.isConverted && l.convertedAccountId != null && l.Product_Line__c == 'Community Solar'){
-                      feedback2OppId.put(l.Id, l.convertedAccountId);
-                      accountMap.put(l.convertedAccountId,l.convertedAccountId);
+        for(Lead l : leadsList){
+             if (l.IsConverted && l.ConvertedAccountId != null && l.Product_line__c == 'Community Solar'){
+                      feedback2OppId.put(l.Id, l.ConvertedAccountId);
+                      accountMap.put(l.ConvertedAccountId, l.ConvertedAccountId);
             }
         }
 
         if(accountMap.size() > 0){
-                 List<utility_account_log__c> ual = [SELECT Lead__c, Opportunity__c, Account__c 
-                                                     FROM Utility_account_log__c 
+                 List<Utility_Account_Log__c> ual = [SELECT Lead__c, Opportunity__c, Account__c
+                                                     FROM Utility_Account_Log__c
                                                      WHERE Lead__c IN :feedback2OppId.keySet()];
-                for (utility_account_log__c u : ual){
+                for (Utility_Account_Log__c u : ual){
                     u.Account__c = feedback2OppId.get(u.Lead__c);
                 }            
                 update ual;
-                List<account> acc = [SELECT UAL_convert__c 
+                List<Account> acc = [SELECT UAL_Convert__c
                                      FROM Account 
                                      WHERE Id 
                                      IN :accountMap.keySet()];
                 for (Account a : acc){
-                    a.UAL_convert__c = TRUE;
+                    a.UAL_Convert__c = true;
                 }    
                 update acc;
         }

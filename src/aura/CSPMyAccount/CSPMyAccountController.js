@@ -4,10 +4,10 @@
         var label = source.get("v.label"); 
         var name = source.get("v.class"); 
         if (label === null || label === undefined ) {
-            helper.refreshTableData(component, 'All');  
-            component.set("v.selectedAccount", "All");                                       
+            helper.refreshTableData(component, 'All', helper);
+            component.set("v.selectedAccount", "All");
         } else {
-            helper.refreshTableData(component, label); 
+            helper.refreshTableData(component, label, helper);
             component.set("v.selectedAccount", name);                                       
         }
     },
@@ -39,7 +39,7 @@
             }
         });    
         $A.enqueueAction(actionGetPropertyAccounts);
-        helper.refreshTableData(component, 'All');
+        helper.refreshTableData(component, 'All', helper);
     },
 
     openPaymentWindow : function(component, event, helper) { 

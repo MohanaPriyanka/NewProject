@@ -1,9 +1,10 @@
 ({
-    refreshTableData : function(component, accountId) {
+    refreshTableData : function(component, accountId, helper) {
         var actionGetSystemBills = component.get("c.getSystemBills");  
         var actionGetAccountBills = component.get("c.getAccountBills");
         var actionGetTransactions = component.get("c.getTransactions");
         var actionGetChargentOrder = component.get("c.getChargentOrder");
+        var actionGetPaymentMethods = component.get("c.getPaymentMethods");
 
 
         actionGetSystemBills.setParams({
@@ -22,24 +23,30 @@
             "propertyAccountId" : accountId
         });
 
+        actionGetPaymentMethods.setParams({
+            "propertyAccountId" : accountId
+        });
+
         actionGetSystemBills.setCallback(this,function(resp){
-            if(resp.getState() === 'SUCCESS') {
+            if (resp.getState() === 'SUCCESS') {
                 component.set("v.SystemBills", resp.getReturnValue());
             } else {
                 $A.log("Errors", resp.getError());
             }
-            var systemBillList = resp.getReturnValue(); 
+            var systemBillList = resp.getReturnValue();
             var sbStep;
             var totalOutstandingBalance = 0;
-                if (systemBillList === undefined || systemBillList === null || systemBillList.length === 0) {
-                    component.set("v.myBill", 0);
-                } else {
-                    for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {
-                        totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].ChargentOrders__Subtotal__c*100);
-                    }
-                    var roundedBalance = totalOutstandingBalance/100;
-                    component.set("v.myBill", roundedBalance);
+            if (systemBillList === undefined || systemBillList === null || systemBillList.length === 0) {
+                component.set("v.myBill", 0);
+            } else {
+                var allMethods = [];
+                for (sbStep = 0; sbStep < systemBillList.length; sbStep++) {
+                    totalOutstandingBalance = totalOutstandingBalance + Math.round(systemBillList[sbStep].ChargentOrders__Subtotal__c*100);
+                    allMethods.push(systemBillList[sbStep].Available_Payment_Methods__c);
                 }
+                var roundedBalance = totalOutstandingBalance/100;
+                component.set("v.myBill", roundedBalance);
+            }
         }); 
        
         actionGetTransactions.setCallback(this,function(resp){
@@ -91,10 +98,20 @@
             else {
                 $A.log("Errors", resp.getError());
             }
-        });        
+        });
+
+        actionGetPaymentMethods.setCallback(this,function(resp){
+            if (resp.getState() === 'SUCCESS') {
+                component.set("v.PaymentMethodsAccepted", resp.getReturnValue());
+            } else {
+                helper.logError('CSPMyAccountHelper', 'refreshTableData', 'Couldn\'t get payment methods', resp);
+            }
+        });
+
         $A.enqueueAction(actionGetAccountBills);
         $A.enqueueAction(actionGetTransactions); 
         $A.enqueueAction(actionGetSystemBills);
         $A.enqueueAction(actionGetChargentOrder);
-    }
+        $A.enqueueAction(actionGetPaymentMethods);
+    },
 })

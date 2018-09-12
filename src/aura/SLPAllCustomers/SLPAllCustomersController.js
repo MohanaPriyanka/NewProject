@@ -131,7 +131,20 @@
                             helper.logError("SLPCreditStatusController", "openAddCoApplicant", resp.getError());
                         }
                     }
-                )
+                );
+            case 'resendApplication':
+                var action = component.get('c.sendApplication');
+                action.setParams({lead: record});
+                action.setCallback(this,function(resp) {
+                    if (resp.getState() === 'SUCCESS') {
+                        var title = 'Resent Application';
+                        var message = 'Application link has been resent to ' + resp.getReturnValue();
+                        helper.showToast(component, title, message);
+                    } else {
+                        helper.logError('SLPAllCustomersController', 'resendApplication', resp.getError(), record);
+                    }
+                });
+                $A.enqueueAction(action);
         }  
     },    
     changeTableToCompletedCustomers : function(component, event, helper) {

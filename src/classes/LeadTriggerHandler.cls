@@ -136,7 +136,7 @@ public without sharing class LeadTriggerHandler {
     private void updateLZUL(List<Lead> leadList, Map<ID, Lead> oldLeadMap){
         Set<String> zipCodeSet = new Set<String>();
         for (Lead l : leadList){
-            if (l.Parcel_Zip__c != null){
+            if (l.Parcel_Zip__c != null && (l.Load_Zone__c == null || l.Utility_1__c == null)) {
                 zipCodeSet.add(l.Parcel_Zip__c);
             }
         }

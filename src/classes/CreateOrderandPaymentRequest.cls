@@ -72,6 +72,11 @@ public without sharing class CreateOrderandPaymentRequest {
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         Set<Id> accountBillIdSet = new Set<Id>();
         Set<Id> entityIdSet = new Set<Id>();
+        if (chargeAmounts.isEmpty()) {
+            Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert',
+                UserInfo.getUserName() + '(' + UserInfo.getUserId() + ') tried to save a chargent order, but there were ' +
+                    'no chargeAmounts (System Bills) to insert against');
+        }
         for (SObject chargeAmount : chargeAmounts) {
             Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
             if (amountToCharge > 0.01) {
@@ -92,6 +97,10 @@ public without sharing class CreateOrderandPaymentRequest {
                 accountBillIdSet.add(orderA.Account_Bill__c);
                 entityIdSet.add(orderA.Entity__c);
                 ordersToInsert.add(orderA);
+            } else {
+                Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert',
+                    UserInfo.getUserName() + '(' + UserInfo.getUserId() + ') tried to save a chargent order, with ' +
+                        'autopay (' + autopay + ') but there was no amount to charge');
             }
         }
         try {
@@ -217,7 +226,10 @@ public without sharing class CreateOrderandPaymentRequest {
     }
 
     public static Map<String,String> responseMap = new Map<String,String>{
-        'Invalid Route' => 'Invalid Routing Number. Please check that Bank Account Number and Routing Number are not reversed.'
+        'Invalid Route' =>
+            'Invalid Routing Number. Please check that Bank Account Number and Routing Number are not reversed.',
+        'System.JSONException! Unexpected character (\'S\' (code 83)): expected a valid value (number, String, array, object, \'true\', \'fal' =>
+            'The transaction took too long. Please call BlueWave support and ask them to check the Gateway before trying again.'
     };
 
     public static void processDatabaseSaveResult(List<Database.SaveResult> saveResult, String specificMessage) {
@@ -230,15 +242,28 @@ public without sharing class CreateOrderandPaymentRequest {
         }
     }
 
+    @TestVisible private enum ChargentTestResult {
+        CHARGENT_TEST_RESULT_APPROVED,
+        CHARGENT_TEST_RESULT_TIMEOUT
+    }
+    @TestVisible private static ChargentTestResult testResult = ChargentTestResult.CHARGENT_TEST_RESULT_APPROVED;
     public static Id testAPICall(ChargentOrders__ChargentOrder__c orderTest, Boolean isCredit) {
-        ChargentOrders__Transaction__c transA = 
-            new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderTest.Id,
-                                                ChargentOrders__Amount__c = orderTest.ChargentOrders__Subtotal__c,
-                                                ChargentOrders__Response_Status__c ='Approved',
-                                                ChargentOrders__Response_Message__c = 'OK',
-                                                ChargentOrders__Type__c = 'Charge',                            
-                                                Activity_Type__c = 'Payment');
-        if (isCredit){
+        ChargentOrders__Transaction__c transA = new ChargentOrders__Transaction__c(
+            ChargentOrders__Order__c = orderTest.Id,
+            ChargentOrders__Amount__c = orderTest.ChargentOrders__Subtotal__c,
+            ChargentOrders__Response_Status__c ='Approved',
+            ChargentOrders__Response_Message__c = 'OK',
+            ChargentOrders__Type__c = 'Charge',
+            Activity_Type__c = 'Payment'
+        );
+        if (testResult == ChargentTestResult.CHARGENT_TEST_RESULT_TIMEOUT) {
+            transA.ChargentOrders__Response_Status__c = 'Error';
+            transA.ChargentOrders__Response_Message__c =
+                'System.JSONException! Unexpected character (\'S\' (code 83)): expected a valid value (number, String, ' +
+                    'array, object, \'true\', \'fal';
+            transA.ChargentOrders__Gateway_Response__c = 'System.CalloutException! Read timed out';
+        }
+        if (isCredit) {
             transA.ChargentOrders__Amount__c = -1 * orderTest.ChargentOrders__Credit_Amount__c;
         }
         insert transA;

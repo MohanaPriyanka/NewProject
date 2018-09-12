@@ -18,14 +18,19 @@
         component.set("v.page", "SSNPage");
     },
     goToPersonalInfoConfirmation : function(component, event, helper) {
-        if(helper.validatePageFields(component)){
-            var lead = component.get("v.lead");
-            helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
-            component.set("v.page", "PersonalInfoConfirmation");
+        var errorMessage = helper.checkBirthDate(component, event, helper);
+        if (errorMessage != ""){
+            component.set("v.ShowDateError", true);
+        } else {
+            if (helper.validatePageFields(component)) {
+                var lead = component.get("v.lead");
+                helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
+                component.set("v.page", "PersonalInfoConfirmation");
+            }
         }
     },
     checkCredit : function(component, event, helper) {
-        if(helper.validatePageFields(component)){
+        if (helper.validatePageFields(component)) {
             component.set("v.page", "CreditCheckResult");
             var lead = component.get("v.lead");
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
@@ -34,7 +39,7 @@
             var action = component.get("c.pullCreditStatus");
             action.setParams({"lead" : lead});
             action.setCallback(this, function(resp) {
-                if(resp.getState() == "SUCCESS") {
+                if (resp.getState() == "SUCCESS") {
                     window.setTimeout(function() {
                         $A.util.removeClass(component.find("creditStatus"), "noDisplay");
                         component.set("v.creditStatusText", "Sending request to TransUnion...");
@@ -51,7 +56,7 @@
                         component.set("v.creditStatusPoller", creditPollerInterval);
                     }, 10000);
 
-                    // checkCreditStatus should clearInterval if it finds a Credit Report Log or
+                    // checkCreditStatus should clearInterval it finds a Credit Report Log or
                     // a Credit Report on the Lead, but just in case, stop checking after a minute
                     const timeoutInterval = window.setTimeout(function() {
                         component.set("v.creditStatusText",

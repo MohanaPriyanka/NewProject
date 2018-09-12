@@ -7,7 +7,7 @@
  + * Tested By: TestBillCreationandPayment3
  + *************************************************************************************/
 
-public with sharing class   SystemBillPaymentRollUpHandler {
+public without sharing class   SystemBillPaymentRollUpHandler {
     public static void handleRecurringPayment (List<ChargentOrders__Transaction__c> newlycreatedTrans) {
         List<Id> recurringList = new List<Id >();
         for (ChargentOrders__Transaction__c trans: newlycreatedTrans) {

@@ -16,6 +16,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
+        updateLetterStreamToTestConfig();
+        updateDocusignToDemoConfig();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
@@ -146,6 +148,62 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!fieldList}', String.join(fieldList, ','))
             .replace('{!objectTypeName}', objectTypeName)
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
+    }
+
+    global static void updateLetterStreamToTestConfig() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.isSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Dont\'t update LetterStream config in production this way');
+        }
+
+        List<LetterStream_Settings__c> letterStreamSettings = [
+            SELECT Id, API_Id__c, API_Key__c
+            FROM LetterStream_Settings__c
+        ];
+
+        LetterStream_Settings__c newLetterStreamSetting = new LetterStream_Settings__c();
+        if (!letterStreamSettings.isEmpty()) {
+            newLetterStreamSetting.Id = letterStreamSettings[0].Id;
+        }
+        // credentials for bluewavetestAPI (see wiki)
+        newLetterStreamSetting.Name = 'Test Config';
+        newLetterStreamSetting.API_Id__c = 'ft5eh41g_test';
+        newLetterStreamSetting.API_Key__c = 'fhv4d7bèv9v6n7_test';
+        newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
+        upsert newLetterStreamSetting;
+    }
+  
+    global static void updateDocusignToDemoConfig() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.IsSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Don\'t update DocuSign config in production this way');
+        }
+
+        List<dsfs__DocuSignAccountConfiguration__c> docusignConfigs = [
+            SELECT Id, dsfs__OrganizationId__c, dsfs__AccountId__c, dsfs__DocuSignEnvironment__c
+            FROM dsfs__DocuSignAccountConfiguration__c
+        ];
+
+        dsfs__DocuSignAccountConfiguration__c docusignConfig = new dsfs__DocuSignAccountConfiguration__c();
+        if (!docusignConfigs.isEmpty()) {
+            // Not an empty sandbox, update the config
+            docusignConfig.Id = docusignConfigs[0].Id;
+        }
+        docusignConfig.dsfs__OrganizationId__c = org.Id;
+        // The demo instance with pyao@bluewavesolar.com login
+        docusignConfig.dsfs__AccountId__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+        docusignConfig.dsfs__DocuSignEnvironment__c = 'demo';
+        upsert docusignConfig;
+
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.size() > 0) {
+            systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+            systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+            systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+            systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+            systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+            update systemProperties[0];
+        }
     }
 
     /*
@@ -349,10 +407,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             FROM Shared_Solar_System__c
             ORDER BY Name DESC];
 
-            Date myDateJan = Date.newInstance(2018, 1, 15);
-            Date myDateFeb = Date.newInstance(2018, 2, 15);
-            Date myDateMar = Date.newInstance(2018, 3, 15);
-            Date myDateApr = Date.newInstance(2018, 4, 15);
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
 
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
@@ -372,11 +430,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - August 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 81869.00,
-                Due_Date__c = myDateJan,
-                Billing_Period_End_Date__c = myDateFeb,
+                Due_Date__c = threeMonthsAgo,
+                Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 13483.66,
                 Size_off_NMCs__c = true,
-                Date__c = myDateJan,
+                Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -386,11 +444,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - September 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 73072.00,
-                Due_Date__c = myDateFeb,
-                Billing_Period_End_Date__c = myDateMar,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 12033.73,
                 Size_off_NMCs__c = true,
-                Date__c = myDateFeb,
+                Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -400,11 +458,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssA - October 2016',
                 Shared_Solar_System__c = sssList[0].Id,
                 Production__c = 327001.00,
-                Due_Date__c = myDateMar,
-                Billing_Period_End_Date__c = myDateApr,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 36424.44,
                 Size_off_NMCs__c = true,
-                Date__c = myDateMar,
+                Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
 
@@ -414,11 +472,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - August 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 367918.00,
-                Due_Date__c = myDateJan,
-                Billing_Period_End_Date__c = myDateFeb,
+                Due_Date__c = threeMonthsAgo,
+                Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 40983.43,
                 Size_off_NMCs__c = true,
-                Date__c = myDateJan,
+                Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 
@@ -428,11 +486,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - September 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 81869.00,
-                Due_Date__c = myDateFeb,
-                Billing_Period_End_Date__c = myDateMar,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 13483.66,
                 Size_off_NMCs__c = true,
-                Date__c = myDateFeb,
+                Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 
@@ -442,11 +500,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = 'sssB - October 2016',
                 Shared_Solar_System__c = sssList[1].Id,
                 Production__c = 73072.00,
-                Due_Date__c = myDateMar,
-                Billing_Period_End_Date__c = myDateApr,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 12033.73,
                 Size_off_NMCs__c = true,
-                Date__c = myDateMar,
+                Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
 
@@ -576,7 +634,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Shared_Solar_System__c = sss.Id,
             StageName = 'Complete',
             Product__c = sss.Product__r.Id,
-            CloseDate = System.today()
+            CloseDate = System.today(),
+            RecordTypeId = '012j00000010HPE'
         );
         return opportunity1;
     }
@@ -619,11 +678,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         String accountName4 = firstName4 + ' ' + lastName4;
         String accountName5 = firstName5 + ' ' + lastName5;
 
-        Account accountParent1 = new Account(Name = accountName1);
-        Account accountParent2 = new Account(Name = accountName2);
-        Account accountParent3 = new Account(Name = accountName3);
-        Account accountParent4 = new Account(Name = accountName4);
-        Account accountParent5 = new Account(Name = accountName5);
+        Account accountParent1 = new Account(Name = accountName1, RecordTypeId = '012j00000010Ha3');
+        Account accountParent2 = new Account(Name = accountName2, RecordTypeId = '012j00000010Ha3');
+        Account accountParent3 = new Account(Name = accountName3, RecordTypeId = '012j00000010Ha3');
+        Account accountParent4 = new Account(Name = accountName4, RecordTypeId = '012j00000010Ha3');
+        Account accountParent5 = new Account(Name = accountName5, RecordTypeId = '012j00000010Ha3');
 
         insert new List<Account>{
             accountParent1, accountParent2, accountParent3, accountParent4, accountParent5

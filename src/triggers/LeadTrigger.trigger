@@ -6,7 +6,6 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
     LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
     AssignServiceTerritoryHandler assignServiceTerritoryHandler = new AssignServiceTerritoryHandler(Trigger.isExecuting, Trigger.size);
     UtilityAccountLogConversionHandler utilityAccountLogConversionHandler = new UtilityAccountLogConversionHandler(Trigger.isExecuting, Trigger.size);
-    MapCapacityAvailableHandler mapCapacityAvailableHandler = new MapCapacityAvailableHandler(Trigger.isExecuting, Trigger.size);
     ReferralCodeHandler referralCodeHandler  = new ReferralCodeHandler();
     LoanHandler loanHandler = new LoanHandler (Trigger.isExecuting, Trigger.size);
 
@@ -18,14 +17,12 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
         leadTriggerHandler.onBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
         assignServiceTerritoryHandler.OnBeforeUpdate(Trigger.new);
         utilityAccountLogConversionHandler.OnBeforeUpdate(Trigger.new);
-        mapCapacityAvailableHandler.OnBeforeUpdate(Trigger.new);
         referralCodeHandler.OnBeforeUpdate(Trigger.oldMap, Trigger.newMap);
         loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
     }  
     else if(Trigger.isInsert && Trigger.isBefore){
         leadTriggerHandler.onBeforeInsert(Trigger.new);
         assignServiceTerritoryHandler.OnBeforeInsert(Trigger.new);
-        mapCapacityAvailableHandler.OnBeforeInsert(Trigger.new);
         referralCodeHandler.OnBeforeInsert(Trigger.new);
     }
 }

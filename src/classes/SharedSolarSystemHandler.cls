@@ -1,4 +1,4 @@
-public with sharing class SharedSolarSystemHandler {
+public without sharing class SharedSolarSystemHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     

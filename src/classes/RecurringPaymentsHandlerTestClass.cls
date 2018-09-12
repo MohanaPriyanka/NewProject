@@ -83,6 +83,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
               SELECT Id,
+                     Entity_Name__c,
                      ChargentOrders__Payment_Status__c,
                      ChargentOrders__Charge_Date__c,
                      Reason_for_Recurring_Stop__c,
@@ -400,8 +401,9 @@ private class RecurringPaymentsHandlerTestClass {
             AccountId = propAccountA.Id,
             Shared_Solar_System__c = sssA.Id,
             StageName = 'Complete',
-            CloseDate = System.today()
-        );
+            Customer_Group__c = 'Non-Residential',
+            CloseDate = System.today());
+
         insert opportunityA;
 
         Utility_Account_Subscription__c uasA = new Utility_Account_Subscription__c(
@@ -665,5 +667,239 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals('Account A or B', chargentOrder.Opportunity__r.Account.Name);
             }
         }
+    }
+
+    static testMethod void testCloseDuplicateEntityAccountOrders() {
+
+        Test.startTest();
+
+        Account accA = [ SELECT Id, Name
+        FROM Account
+        WHERE Name = 'Account A'];
+
+        Entity__c entity1 = [ SELECT Id, Name
+        FROM Entity__c
+        WHERE Name = 'BarrettProjCo'];
+
+        Entity__c entity2 = [ SELECT Id, Name
+        FROM Entity__c
+        WHERE Name = 'NotBarrettProjCo'];
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1Before =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Gateway__c, Account_Bill__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity2Before =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Gateway__c, Account_Bill__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity2.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        Integer previousNumOrdersAccAEnt1 = ordersWithAccAEntity1Before.size();
+        Integer previousNumOrdersAccAEnt2 = ordersWithAccAEntity2Before.size();
+
+        Account_Bill__c ab = new Account_Bill__c (Name='Similar Account Bill',
+            Bill_Number__c = 1,
+            Parent_Account__c = accA.Id);
+
+        insert ab;
+
+        ChargentOrders__ChargentOrder__c newOrderWithSameEntity2AndAcc  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Gateway__c = ordersWithAccAEntity2Before.get(0).ChargentOrders__Gateway__c,
+            Entity__c = entity2.Id,
+            ChargentOrders__Shipping_Name__c = entity2.Id,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Unique Last Name 2 for order that should be still recurring',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 603.92,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Account__c = accA.Id,
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = system.today(),
+            ChargentOrders__Charge_Date__c = '30');
+
+        // Account is set through the Account__c field in this one, rather than through the account bill
+        ChargentOrders__ChargentOrder__c newOrderWithSameEntity1AndAcc  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Gateway__c = ordersWithAccAEntity1Before.get(0).ChargentOrders__Gateway__c,
+            Entity__c = entity1.Id,
+            ChargentOrders__Shipping_Name__c = entity1.Id,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Unique Last Name 1 for order that should be still recurring',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 603.92,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            Account_Bill__c = ab.Id,
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = system.today(),
+            ChargentOrders__Charge_Date__c = '30');
+
+        // inserting this should set the old order to Payment Status of 'Complete'
+        insert newOrderWithSameEntity1AndAcc;
+        insert newOrderWithSameEntity2AndAcc;
+
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1After =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Billing_Last_Name__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity2After =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Billing_Last_Name__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE ChargentOrders__Account__c =: accA.Id
+        AND Entity_Name__c =: entity2.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        Test.stopTest();
+
+        Integer finalNumOrdersAccAEnt1 = ordersWithAccAEntity1After.size();
+        Integer finalNumOrdersAccAEnt2 = ordersWithAccAEntity2After.size();
+
+
+        System.assertNotEquals(previousNumOrdersAccAEnt1, 0); // There was at least one previous order with duplicate (1, a) criteria
+        System.assertEquals(finalNumOrdersAccAEnt1, 1); // There is now ONLY 1 recurring order with this entity+account
+        System.assertEquals(ordersWithAccAEntity1After.get(0).ChargentOrders__Billing_Last_Name__c,
+            'Unique Last Name 1 for order that should be still recurring'); // The one that's still recurring is the order just inserted
+
+        // Same assertions but for an inserted chargent order with just the account field set, not the account bill
+        System.assertNotEquals(previousNumOrdersAccAEnt2, 0); // There was at least one previous order with duplicate (2, a) criteria
+        System.assertEquals(finalNumOrdersAccAEnt2, 1); // There is now ONLY 1 recurring order with this entity+account
+        System.assertEquals(ordersWithAccAEntity2After.get(0).ChargentOrders__Billing_Last_Name__c,
+            'Unique Last Name 2 for order that should be still recurring'); // The one that's still recurring is the order just inserted
+    }
+
+    static testMethod void testCloseDuplicatesWithManyRecords() {
+
+        Account accA = [ SELECT Id, Name
+        FROM Account
+        WHERE Name = 'Account A'];
+
+        Entity__c entity1 = [ SELECT Id, Name
+        FROM Entity__c
+        WHERE Name = 'BarrettProjCo'];
+
+        Account_Bill__c ab = new Account_Bill__c (Name='Similar Account Bill',
+            Bill_Number__c = 1,
+            Parent_Account__c = accA.Id);
+
+        insert ab;
+        Test.startTest();
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1Before =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Gateway__c, Account_Bill__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        List<ChargentOrders__ChargentOrder__c> newOrders = new List<ChargentOrders__ChargentOrder__c>();
+
+        for (Integer i = 0; i < 100; i++) {
+            ChargentOrders__ChargentOrder__c newOrder = new ChargentOrders__ChargentOrder__c(
+                ChargentOrders__Gateway__c = ordersWithAccAEntity1Before.get(0).ChargentOrders__Gateway__c,
+                Entity__c = entity1.Id,
+                ChargentOrders__Shipping_Name__c = entity1.Id,
+                ChargentOrders__Billing_First_Name__c = 'Jordan',
+                ChargentOrders__Billing_Last_Name__c = 'Unique Last Name 2 for order that should be still recurring',
+                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                ChargentOrders__Billing_Zip_Postal__c = '02467',
+                ChargentOrders__Subtotal__c = i,
+                ChargentOrders__Payment_Method__c = 'Credit Card',
+                ChargentOrders__Account__c = accA.Id,
+                Account_Bill__c = ab.Id,
+                ChargentOrders__Card_Type__c = 'Visa',
+                ChargentOrders__Card_Number__c = '411111111111',
+                ChargentOrders__Card_Security_Code__c = '999',
+                ChargentOrders__Card_Expiration_Month__c = '02',
+                ChargentOrders__Card_Expiration_Year__c = '2018',
+                ChargentOrders__Card_Last_4__c = '1111',
+                ChargentOrders__Payment_Status__c = 'Recurring',
+                ChargentOrders__Payment_Frequency__c = 'Monthly',
+                ChargentOrders__Payment_Start_Date__c = system.today(),
+                ChargentOrders__Charge_Date__c = '30');
+
+            newOrders.add(newOrder);
+        }
+
+        insert newOrders;
+
+        Test.stopTest();
+
+        // this test is mainly ensuring that query limits aren't breaking, but we'll assert that everything is how it
+        //  should be after
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1AfterCreation =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Gateway__c, Account_Bill__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        System.assertEquals(ordersWithAccAEntity1Before.size(), 1);
+        System.assertEquals(ordersWithAccAEntity1AfterCreation.size(), 100);
+
+        // add one more identical order
+        ChargentOrders__ChargentOrder__c newOrder = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Gateway__c = ordersWithAccAEntity1Before.get(0).ChargentOrders__Gateway__c,
+            Entity__c = entity1.Id,
+            ChargentOrders__Shipping_Name__c = entity1.Id,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Unique Last Name 2 for order that should be still recurring',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 1,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Account__c = accA.Id,
+            Account_Bill__c = ab.Id,
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = system.today(),
+            ChargentOrders__Charge_Date__c = '30');
+
+        insert newOrder;
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1AfterFinalInsert =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Gateway__c, Account_Bill__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        System.assertEquals(1, ordersWithAccAEntity1AfterFinalInsert.size());
     }
 }

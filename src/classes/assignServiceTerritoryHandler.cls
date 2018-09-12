@@ -1,4 +1,6 @@
-public with sharing class assignServiceTerritoryHandler {
+// Test: AssignServiceTerritoryTest
+
+public without sharing class assignServiceTerritoryHandler {
     private boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     

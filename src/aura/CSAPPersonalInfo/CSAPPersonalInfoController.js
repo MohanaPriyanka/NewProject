@@ -26,13 +26,10 @@
         component.set("v.page", "AboutYourself");
     },
     goToApplyingFor : function(component, event, helper) {
-        var errorMessage = helper.checkBirthDate(component, event, helper);
-        if (errorMessage != ""){
-            component.set("v.ShowDateError", true);
-        } else if(event.getSource().get("v.label") == "Previous"){
+        if (event.getSource().get("v.label") == "Previous") {
             component.set("v.page", "ApplyingFor");
-        } else if(helper.validatePageFields(component)){
-            component.set("v.page", "ApplyingFor");
+        } else if (helper.validatePageFields(component)) {
+            component.set("v.page", "ApplyingFor")
         }
     },
     goToAddressForm : function(component, event, helper) {
@@ -65,6 +62,21 @@
             helper.upsertRecords(component, event, helper);
         }
     },
+    saveUnsplitZone : function(component, event, helper) {
+        let unsplitLeadAction = component.get('c.unsplitLead');
+        unsplitLeadAction.setParams({
+           'lead': component.get('v.lead')
+        });
+        unsplitLeadAction.setCallback(this, function(actionResult) {
+            if (actionResult.getState() === 'SUCCESS') {
+                helper.finishStage(component, event, helper);
+            } else {
+                helper.raiseError('CSAPPersonalInfoController', 'saveUnsplitZone',
+                    'There was an issue saving your utility or load zone. Please call BlueWave at the contact info below',
+                    JSON.stringify(component.get('v.lead')));
+            }
+        });
+        $A.enqueueAction(unsplitLeadAction);
+    },
 })
-
 

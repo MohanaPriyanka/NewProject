@@ -1,4 +1,4 @@
-public with sharing class OverpaymentApplication {
+public without sharing class OverpaymentApplication {
    	public static Map<String, Bill_Adjustment__c> adjustMap;
    	public static List<Adjustment_Application__c> adjustmentsToInsertList;
 

@@ -9,7 +9,7 @@
  - * Tested By: DynamicToStaticSubscriptionHandlerTest / RecalculateUALCostControllerTest
  - *************************************************************************************/
 
-global with sharing class DynamicToStaticSubscriptionHandler {
+global without sharing class DynamicToStaticSubscriptionHandler {
     /* Used by the "Update Subscriptions" button on the Shared Solar System to mass update UASes
     once a new schedule z has been enacted */
     webservice static string DynamicToStaticSubscriptionHandler (String sssId){

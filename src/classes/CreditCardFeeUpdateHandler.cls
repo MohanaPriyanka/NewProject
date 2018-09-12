@@ -10,7 +10,7 @@
  + * Tested By: CreditCardFeeUpdateHandlerTest
  + *************************************************************************************/
 
-public with sharing class CreditCardFeeUpdateHandler {
+public without sharing class CreditCardFeeUpdateHandler {
 
     public void OnBeforeUpdate (ChargentOrders__ChargentOrder__c[] oldorders, ChargentOrders__ChargentOrder__c[] orders){
         duplicateCCFeeForRecurring(oldorders, orders);

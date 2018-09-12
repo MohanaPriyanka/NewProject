@@ -7,15 +7,17 @@
  */
 
 
-public class QueueAccountBillLetterStreamMailer implements Queueable, Database.AllowsCallouts {
+public without sharing class QueueAccountBillLetterStreamMailer implements Queueable, Database.AllowsCallouts {
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
     public Boolean makeCallout;
+    public Integer jobNumber;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout) {
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout, Integer jobNumber) {
         this.accountBills = accountBills;
         this.documentsIds = documentsIds;
         this.makeCallout = makeCallout;
+        this.jobNumber = jobNumber;
     }
 
     public void execute(QueueableContext context) {
@@ -59,13 +61,13 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
             LetterStreamService.LetterParameters letterParams = new LetterStreamService.LetterParameters();
             letterParams.generateFromAccountBill(accountBill, document);
             lss.addLetterToCSV(letterParams);
-            String fileName = letterParams.fileName;
+            String fileName = Util.removeComma(letterParams.fileName);
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = 'Job_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '.csv';
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
@@ -113,6 +115,13 @@ public class QueueAccountBillLetterStreamMailer implements Queueable, Database.A
                 Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
             } else {
                 update markAccountBillsAsMailed(accountBillIds, newJob.Id);
+
+                ContentVersion file = new ContentVersion();
+                file.VersionData = Blob.valueOf(responseXMLString);
+                file.Title = 'response.xml';
+                file.FirstPublishLocationId = newJob.Id;
+                file.pathOnClient = '/response.xml';
+                insert file;
             }
         }
     }

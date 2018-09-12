@@ -34,7 +34,8 @@ public class PublicCSTest {
                                            Town__c= 'Medfield');
 
         insert new List<Load_U__c>{everLZU};
-        insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
+        TestFactory.insertBWAddress();
+
 
         ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway',
@@ -228,10 +229,15 @@ public class PublicCSTest {
         Decimal secondBillAmount = (829.98*0.09).setScale(2);
         System.assertEquals(secondBillAmount,systembillList[1].Due_This_Month__c);
 
+        // Waiving Late Fees:
+        System.assertEquals(0, systemBillList[1].Late_Fees__c);
+        Decimal totalDueSecondMonth =  firstBillAmount + secondBillAmount;
+        System.assertEquals(totalDueSecondMonth, systemBillList[1].Total_Due__c);
+
         // Late Fees should be 10% Annually, not 12% 
-        Decimal calcLateFees = (firstBillAmount * 0.008333).setScale(2);
-        System.assertEquals(calcLateFees,systemBillList[1].Late_Fees__c);
-        Decimal totalDueSecondMonth = calcLateFees + firstBillAmount + secondBillAmount;
-        System.assertEquals(totalDueSecondMonth,systemBillList[1].Total_Due__c);
+        // Decimal calcLateFees = (firstBillAmount * 0.008333).setScale(2);
+        // System.assertEquals(calcLateFees,systemBillList[1].Late_Fees__c);
+        // Decimal totalDueSecondMonth = calcLateFees + firstBillAmount + secondBillAmount;
+        // System.assertEquals(totalDueSecondMonth,systemBillList[1].Total_Due__c);
     }
 }

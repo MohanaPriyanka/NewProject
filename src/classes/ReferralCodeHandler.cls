@@ -4,7 +4,7 @@
  * Tested By: ReferralCodeHandlerTest
  *************************************************************************************/
 
-public with sharing class ReferralCodeHandler {
+public without sharing class ReferralCodeHandler {
 
     public void OnBeforeInsert (Lead[] newLead) {
         List<Lead> leadsToUpdate = new List<Lead>();

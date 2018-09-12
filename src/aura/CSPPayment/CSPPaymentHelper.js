@@ -1,10 +1,10 @@
 ({
     checkInputs : function(component, inputFields) { 
-        var paymentMethod = component.get("v.ACH");
+        var paymentMethod = component.get("v.SelectedPaymentMethod");
         component.set("v.ErrorText","Please fill out all required fields. ");
         component.set("v.showErrorText", false);
 
-        if (paymentMethod === "true") {
+        if (paymentMethod === "ACH") {
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Bank_Name__c,'BankName',2, '');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Bank_Routing_Number__c,'BankRouting', 9, 'Your bank routing number should be 9 digits.');
             this.checkFieldIsPopulated(component, inputFields.ChargentOrders__Bank_Account_Type__c, 'BankAccountType', 7, '');
