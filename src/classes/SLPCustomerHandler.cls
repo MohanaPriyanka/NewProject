@@ -275,7 +275,7 @@ public without sharing class SLPCustomerHandler {
         String startApplicationUrl;
 
         String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
-        startApplicationUrl = host + 'apply/s/csap';
+        startApplicationUrl = host + 'slportal/s/community-solar-application';
         if (profile.partnerId != null && profile.salesRepId != null) {
             startApplicationUrl += '?partnerId=' + profile.partnerId + '&salesRepId=' + profile.salesRepId;
         }
