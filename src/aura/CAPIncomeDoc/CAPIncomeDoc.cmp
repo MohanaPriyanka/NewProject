@@ -71,51 +71,24 @@
 
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
     <div class="slds-m-left_small">
-    <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-      <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
-      <aura:set attribute="else">
-        <label class="slds-form-element__label slds-text-heading--medium "><b>{!$Label.c.ID_Employment_Question}</b></label>
-      </aura:set>
-    </aura:if> 
-    <fieldset class="slds-form-element">
-      <div class="slds-form-element__control">
-        <span class="slds-radio">
-          <input type="radio" id="radio-1" name="employment" checked="{!v.lead.Employed__c}" onchange="{!c.setEmployment}" value="true" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-1">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">
-              <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-                Yes, we have paystubs to upload.
-                <aura:set attribute="else">
-                  Yes, I have paystubs to upload.
-                </aura:set>
-              </aura:if>
-            </span>
-          </label>
-        </span>
-        <span class="slds-radio">
-          <input type="radio" id="radio-2" name="employment" checked="{!v.lead.Not_Employed__c}" onchange="{!c.setEmployment}" value="false" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-2">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">
-              <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-                No, we don't have paystubs to upload
-                <aura:set attribute="else">
-                  No, I don't have paystubs to upload
-                </aura:set>
-              </aura:if>
-            </span>
-          </label>
-        </span>
+      <c:CAPIncomeDocQuestion
+        singleQuestion="{!$Label.c.ID_Employment_Question}"
+        jointQuestion="{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}"
+        singleAffirmative="Yes, I have paystubs to upload."
+        jointAffirmative="Yes, we have paystubs to upload."
+        singleNegative="No, I don't have paystubs to upload"
+        jointNegative="No, we don't have paystubs to upload"
+        affirmativeValue="{!v.lead.Employed__c}"
+        negativeValue="{!v.lead.Not_Employed__c}"
+        isJoint="{!v.lead.Application_Type__c == 'Joint'}"
+      />
+      <div class="slds-form-element__row slds-p-top--small">
+        <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
+          <lightning:button label="Back" onclick="{!c.goBack}" name="EmployedQuestion"/>
+        </aura:if>
+        <lightning:button label="Next" onclick="{!c.getPayStubs}"/>
       </div>
-    </fieldset>
-    <div class="slds-form-element__row slds-p-top--small">
-      <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
-        <lightning:button label="Back" onclick="{!c.goBack}" name="EmployedQuestion"/>
-      </aura:if>
-      <lightning:button label="Next" onclick="{!c.getPayStubs}"/>
     </div>
-  </div>
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetPayStubs'}">
@@ -279,30 +252,17 @@
 
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
     <div class="slds-m-left_small">
-      <fieldset class="slds-form-element">
-        <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-          <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
-          <aura:set attribute="else">
-            <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Self_Employment_Question}</b></label>
-          </aura:set>
-        </aura:if>
-        <div class="slds-form-element__control">
-          <span class="slds-radio">
-            <input type="radio" id="radio-5" name="selfEmployment" checked="{!v.lead.Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="true" disabled="{!v.piLocked}"/>
-            <label class="slds-radio__label" for="radio-5">
-              <span class="slds-radio_faux"></span>
-              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us is self-employed':'I am self-employed'}</span>
-            </label>
-          </span>
-          <span class="slds-radio">
-            <input type="radio" id="radio-6" name="selfEmployment" checked="{!v.lead.Not_Self_Employed__c}" onchange="{!c.setSelfEmployment}" value="false" disabled="{!v.piLocked}"/>
-            <label class="slds-radio__label" for="radio-6">
-              <span class="slds-radio_faux"></span>
-              <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us are self-employed':'I am not self-employed'}</span>
-            </label>
-          </span>
-        </div>
-      </fieldset>
+      <c:CAPIncomeDocQuestion
+        singleQuestion="{!$Label.c.ID_Self_Employment_Question}"
+        jointQuestion="{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}"
+        singleAffirmative="I am self-employed"
+        jointAffirmative="At least one of us is self-employed"
+        singleNegative="I am not self-employed"
+        jointNegative="Neither of us are self-employed"
+        affirmativeValue="{!v.lead.Self_Employed__c}"
+        negativeValue="{!v.lead.Not_Self_Employed__c}"
+        isJoint="{!v.lead.Application_Type__c == 'Joint'}"
+      />
       <div class="slds-form-element__row slds-p-top--small">
         <lightning:button label="Back" onclick="{!c.goBack}" name="SelfEmployedQuestion"/>
         <lightning:button aura:id="getTaxReturns" label="Next" onclick="{!c.getTaxReturns}"/>
@@ -403,30 +363,17 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'RetirementQuestion'}">
-    <fieldset class="slds-form-element slds-m-left_small">
-      <aura:if isTrue="{!v.lead.Application_Type__c=='Joint'}">
-        <label class="slds-form-element__label slds-text-heading--medium"><b>{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}</b></label>
-        <aura:set attribute="else">
-            <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Retirement_Question}</b></label>
-        </aura:set>
-      </aura:if>
-      <div class="slds-form-element__control">
-        <span class="slds-radio">
-          <input type="radio" id="radio-7" name="retirement" checked="{!v.lead.Retired__c}" onchange="{!c.setRetired}" value="true" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-7">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'At least one of us receives retirement income.':'I receive retirement income.'}</span>
-          </label>
-        </span>
-        <span class="slds-radio">
-          <input type="radio" id="radio-8" name="retirement" checked="{!v.lead.Not_Retired__c}" onchange="{!c.setRetired}" value="false" disabled="{!v.piLocked}"/>
-          <label class="slds-radio__label" for="radio-8">
-            <span class="slds-radio_faux"></span>
-            <span class="slds-form-element__label">{!v.lead.Application_Type__c == 'Joint'?'Neither of us receive retirement income.':'I do not receive retirement income.'}</span>
-          </label>
-        </span>
-      </div>
-    </fieldset>
+    <c:CAPIncomeDocQuestion
+      singleQuestion="{!$Label.c.ID_Retirement_Question}"
+      jointQuestion="{!format($Label.c.ID_Joint_Retirement_Question, v.lead.Co_Applicant_First_Name__c)}"
+      singleAffirmative="I receive retirement income."
+      jointAffirmative="At least one of us receives retirement income."
+      singleNegative="I do not receive retirement income."
+      jointNegative="Neither of us receive retirement income."
+      affirmativeValue="{!v.lead.Retired__c}"
+      negativeValue="{!v.lead.Not_Retired__c}"
+      isJoint="{!v.lead.Application_Type__c == 'Joint'}"
+    />
     <div class="slds-col slds-col--padded">
       <div class="slds-form-element__row slds-p-top--medium">
         <lightning:button label="Back" onclick="{!c.goBack}" name="RetirementQuestion"/>
@@ -517,39 +464,21 @@
 
   <aura:if isTrue="{!v.page == 'VeteranQuestion'}">
     <div class="slds-col slds-col--padded">
-      <form class="slds-form--stacked">
-        <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-            <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Veteran_Question}</b></label>
-            <fieldset class="slds-form-element">
-              <div class="slds-form-element__control">
-                <span class="slds-radio">
-                  <input type="radio" id="radio-10" name="veteranOrDisability" checked="{!v.lead.Veteran_Disability__c }" onchange="{!c.setVeteran}" value="true" disabled="{!v.piLocked}"/>
-                  <label class="slds-radio__label" for="radio-10">
-                    <span class="slds-radio_faux"></span>
-                    <span class="slds-form-element__label">
-                      Yes, I will use a veteran pension or disability compensation to pay this loan.
-                    </span>
-                  </label>
-                </span>
-                <span class="slds-radio">
-                  <input type="radio" id="radio-11" name="veteranOrDisability" checked="{!v.lead.No_Veteran_Disability__c}" onchange="{!c.setVeteran}" value="false" disabled="{!v.piLocked}"/>
-                  <label class="slds-radio__label" for="radio-11">
-                    <span class="slds-radio_faux"></span>
-                    <span class="slds-form-element__label">
-                      No, a veteran pension or disability compensation is not applicable.
-                    </span>
-                  </label>
-                </span>
-              </div>
-            </fieldset>
-          </div>
-        </div>
+        <c:CAPIncomeDocQuestion
+          singleQuestion="{!$Label.c.ID_Veteran_Question}"
+          jointQuestion="{!format($Label.c.ID_Veteran_Question, v.lead.Co_Applicant_First_Name__c)}"
+          singleAffirmative="Yes, I will use a veteran pension or disability compensation to pay this loan."
+          jointAffirmative="Yes, We will use a veteran pension or disability compensation to pay this loan."
+          singleNegative="No, a veteran pension or disability compensation is not applicable."
+          jointNegative="No, a veteran pension or disability compensation is not applicable."
+          affirmativeValue="{!v.lead.Veteran_Disability__c }"
+          negativeValue="{!v.lead.No_Veteran_Disability__c}"
+          isJoint="{!v.lead.Application_Type__c == 'Joint'}"
+        />
         <div class="slds-form-element__row slds-p-top--small">
           <lightning:button label="Back" onclick="{!c.goBack}" name="VeteranQuestion"/>
           <lightning:button aura:id="getVeteranIncome" label="Next" onclick="{!c.getVeteranIncome}"/>
         </div>
-      </form>
     </div>
   </aura:if>
 
@@ -622,37 +551,24 @@
 
   <aura:if isTrue="{!v.page == 'AlimonyQuestion'}">
     <div class="slds-col slds-col--padded">
-      <form class="slds-form--stacked">
-        <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control">
-        <fieldset class="slds-form-element">
-          <label class="slds-form-element__label slds-text-heading--medium"><b>{!$Label.c.ID_Alimony_Question}</b></label>
-          <div class="slds-form-element__control">
-            <span class="slds-radio">
-              <input type="radio" id="radio-12" name="alimony" checked="{!v.lead.Reliant_on_Alimony_Child_Support_Other__c}" value="true" onchange="{!c.setAlimony}" disabled="{!v.piLocked}"/>
-              <label class="slds-radio__label" for="radio-12">
-                <span class="slds-radio_faux"></span>
-                <span class="slds-form-element__label">Yes, I will rely on these payments to repay this obligation.</span>
-              </label>
-            </span>
-            <span class="slds-radio">
-              <input type="radio" id="radio-13" name="alimony" checked="{!v.lead.Not_Reliant_on_Alimony_Child_Support_Oth__c}" value="false" onchange="{!c.setAlimony}" disabled="{!v.piLocked}"/>
-              <label class="slds-radio__label" for="radio-13">
-                <span class="slds-radio_faux"></span>
-                <span class="slds-form-element__label">No, I will not rely on these payments to repay this obligation.</span>
-              </label>
-            </span>
-          </div>
-        </fieldset>
-          </div>
-        </div>
+        <c:CAPIncomeDocQuestion
+          singleQuestion="{!$Label.c.ID_Alimony_Question}"
+          jointQuestion="{!format($Label.c.ID_Alimony_Question, v.lead.Co_Applicant_First_Name__c)}"
+          singleAffirmative="Yes, I will rely on these payments to repay this obligation."
+          jointAffirmative="Yes, we will rely on these payments to repay this obligation."
+          singleNegative="No, I will not rely on these payments to repay this obligation."
+          jointNegative="No, we will not rely on these payments to repay this obligation."
+          affirmativeValue="{!v.lead.Reliant_on_Alimony_Child_Support_Other__c }"
+          negativeValue="{!v.lead.Not_Reliant_on_Alimony_Child_Support_Oth__c}"
+          isJoint="{!v.lead.Application_Type__c == 'Joint'}"
+        />
         <div class="slds-form-element__row slds-p-top--medium">
           <lightning:button label="Back" onclick="{!c.goBack}" name="AlimonyQuestion"/>
           <lightning:button aura:id="getAlimonyIncome" label="Next" onclick="{!c.getAlimonyIncome}"/>
         </div>
-      </form>
     </div>
   </aura:if>
+
   <aura:if isTrue="{!v.page == 'GetAlimonyIncome'}">
     <div class="slds-col">
       <form class="slds-form--stacked">
@@ -721,6 +637,7 @@
             </div>
           </div>
         </aura:if>
+
         <div class="slds-form-element__row slds-p-top--small">
           <lightning:button label="Back" onclick="{!c.goBack}" name="OtherIncome"/>
           <lightning:button aura:id="getOtherIncome" label="Next" onclick="{!c.finishStage}"/>
