@@ -855,6 +855,127 @@ public class LoanHandlerTestClass {
         Test.stopTest();
     }
 
+    @isTest static void testInterconnectionTaskRollback() {
+        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];
+        List<Attachment> attachList = new List<Attachment>();
+        List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+        Date myDate = Date.newInstance(2015, 2, 17);
+        Test.startTest();
+
+        convertLeads(leadList);
+
+        List<Residential_Equipment__c> equipmentList = [
+            SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c
+            FROM Residential_Equipment__c
+            WHERE Loan__r.State__c = 'MA'
+            AND DOER_Solar_Loan__c = FALSE
+            AND Lead__r.Retired__c = TRUE
+        ];
+        for (Residential_Equipment__c equipment : equipmentList){
+            equipment.Mechanically_Installed__c = true;
+            equipmentListToUpdate.add(equipment);
+        }
+        update equipmentListToUpdate;
+        equipmentListToUpdate.clear();
+
+        for (Residential_Equipment__c equipment : equipmentList){
+            equipment.Interconnected__c = true;
+            equipment.Annual_Production_kWh_kW__c = 1400;
+            equipment.Interconnection_Date__c = mydate;
+            equipment.Estimated_On_Site_Behind_the_Meter_Load__c = 4500;
+            equipment.Percentage_of_System_Shaded__c = 4;
+            equipment.SREC_Opt_In_Calendar_Quarter__c = 'Q1';
+            equipment.Generator_Type__c = 'SolarWorld';
+            equipment.MA_Facility_Sector__c = 'Residential';
+            equipment.MA_Facility_Type__c = 'Residential';
+            equipment.Generator_Nameplate_Capacity__c = 5;
+            equipment.Contract_Execution_Date__c = myDate;
+            equipment.Generator_Interconnection_Date__c = myDate;
+            equipment.Generator_Installation_Date__c = myDate;
+            equipment.Generator_Energized_Online_Date__c = myDate;
+            equipment.Module_Manufacturer__c = 'SolarWorld';
+            equipment.Module_Model_Number__c = 'SW500';
+            equipment.Module_Power_Rating__c = 'A';
+            equipment.Number_of_Modules__c = 5;
+            equipment.Module_Array_Mounting_Type__c = 'SolarWorld';
+            equipment.Module_Array_Azimuth__c = '5';
+            equipment.Module_Array_Tilt__c = 5;
+            equipment.Module_Mounting_Location__c = 'Roof';
+            equipment.Inverter_Manufacturer__c = 'Enphase';
+            equipment.Inverter_Model_Number__c = 'ENPH340';
+            equipment.Remote_Monitoring_System_Vendor__c = 'SolarEdge';
+            equipment.Remote_Monitorin_Systegm_Identifier__c = '302948';
+            equipment.Number_of_Meters__c = 3;
+            equipment.Solar_Meter_Manufacturer__c = 'Eversource';
+            equipment.Solar_Meter_Model__c = 'EV200';
+            equipment.Solar_Meter_Serial_Number__c = '2304938';
+            equipment.Initial_Solar_Meter_Reading__c = 45000;
+            equipment.Initial_Solar_Meter_Reading_Date__c = myDate;
+            equipmentListToUpdate.add(equipment);
+
+            Attachment attach=new Attachment();
+            attach.Name='Unit Test Attachment';
+            Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+            attach.Body=bodyBlob;
+            attach.ParentId=equipment.id;
+            attach.Description = 'PTO Documentation';
+            attachList.add(attach);
+        }
+
+        insert attachList;
+
+        if (equipmentListToUpdate.size() > 0) {
+            update equipmentListToUpdate;
+        }
+
+        List<Partner_Task__c> partnerTasks = [
+            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
+            FROM Partner_Task__c
+            WHERE Loan__r.State__c = 'MA'
+            AND Lead__r.Retired__c = TRUE
+        ];
+
+        for (Partner_Task__c partnerTaskAssertion : partnerTasks) {
+            if (!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
+                if (partnerTaskAssertion.Name == 'Interconnection') {
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
+                }
+            } else {
+                if (partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
+                }
+            }
+        }
+
+        List<Residential_Equipment__c> equipsToUpdate = new List<Residential_Equipment__c>();
+
+        for (Residential_Equipment__c resiEquip : equipmentList){
+            resiEquip.Interconnected__c = false;
+            equipsToUpdate.add(resiEquip);
+        }
+        update equipsToUpdate;
+
+        List<Partner_Task__c> updatedPartnerTasks = [
+            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
+            FROM Partner_Task__c
+            WHERE Loan__r.State__c = 'MA'
+            AND Lead__r.Retired__c = TRUE];
+
+        for (Partner_Task__c partnerTaskAssertion : updatedPartnerTasks) {
+            if (!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
+                if (partnerTaskAssertion.Name == 'Interconnection') {
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
+                }
+            } else {
+                if (partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
+                }
+            }
+        }
+
+        Test.stopTest();
+    }
+
     public static void convertLeads(List<Lead> leadList) {
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
         for (Lead leadRecord : leadList) {

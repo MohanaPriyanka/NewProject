@@ -36,6 +36,8 @@
             //TODO - Add the Electricty_Provider__c on the ual
             //Save the lead record for the Utility
             //lead.Electricty_Provider__c = ual.Electricty_Provider__c;
+            component.set("v.loading", true);
+            component.set("v.loadingText", "Saving utility account information...");
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
             if(ual.Lead__c == null){
@@ -46,12 +48,14 @@
                 ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.ual", retVal);
                     component.set("v.page", "GridUsageHistory");
+                    component.set("v.loading", false);
                 }));
             }else{
                 var ualPromise = helper.insertSObject(component, ual);
                 ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.ual", retVal);
                     component.set("v.page", "GridUsageHistory");
+                    component.set("v.loading", false);
                 }));
             }
         }
