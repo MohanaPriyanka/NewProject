@@ -193,17 +193,17 @@ public without sharing class LetterStreamService {
             csv += csvHeaders;
         }
         csv += '\n';
-        csv += (Util.removeComma(params.fileId) + ','); // UniqueDocId
-        csv += (Util.removeComma(params.fileName) + ','); // PDFFileName
-        csv += (Util.removeComma(params.recipientName) + ','); // RecipientName1
+        csv += (Util.prepForCSV(params.fileId) + ','); // UniqueDocId
+        csv += (Util.prepForCSV(params.fileName) + ','); // PDFFileName
+        csv += (Util.prepForCSV(params.recipientName) + ','); // RecipientName1
         csv += (','); // RecipientName2
-        csv += (Util.removeComma(params.recipientStreet) + ','); // RecipientAddr1
+        csv += (Util.prepForCSV(params.recipientStreet) + ','); // RecipientAddr1
         csv += (','); // RecipientAddr2
-        csv += (Util.removeComma(params.recipientCity) + ','); // RecipientCity
-        csv += (Util.removeComma(params.recipientState) + ','); // RecipientState
-        csv += (Util.removeComma(params.recipientPostalCode) + ','); //RecipientZip
+        csv += (Util.prepForCSV(params.recipientCity) + ','); // RecipientCity
+        csv += (Util.prepForCSV(params.recipientState) + ','); // RecipientState
+        csv += (Util.prepForCSV(params.recipientPostalCode) + ','); //RecipientZip
         csv += blueWaveAddress();
-        csv += (Util.removeComma(params.pages) + ','); // page count
+        csv += (Util.prepForCSV(params.pages) + ','); // page count
         csv += 'firstclass,'; // mailType
         csv += 'N,'; // coversheet
         csv += 'N,'; // duplex
