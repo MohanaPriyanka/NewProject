@@ -69,6 +69,11 @@ public without sharing class ScheduledAccountBillLetterStreamMailer implements S
             Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
         }
+
+        if (packageAccountBills.isEmpty() || packageContentDocuments.isEmpty()) {
+            String message = 'Bills: ' + packageAccountBills + ', Docs: ' + packageContentDocuments;
+            Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', message);
+        }
         Logger.flushLogs();
     }
 
