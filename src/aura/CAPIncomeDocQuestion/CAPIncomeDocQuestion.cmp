@@ -3,6 +3,7 @@
  -->
 
 <aura:component description="CAPIncomeDocQuestion" access="global" extends="c:CAPParent">
+  <aura:attribute name="questionType" type="String"/>
   <aura:attribute name="singleQuestion" type="String"/>
   <aura:attribute name="jointQuestion" type="String"/>
   <aura:attribute name="singleAffirmative" type="String"/>

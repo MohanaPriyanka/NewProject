@@ -190,8 +190,8 @@
             alert('Please specify ' + component.get('v.lead.Co_Applicant_First_Name__c') + '\'s employment length.')
             return;
         }
-        if (!component.get('v.paystubs') ||
-            component.get('v.paystubs').length === 0) {
+        if ((!component.get('v.paystubs') || component.get('v.paystubs').length === 0) &&
+            !component.get('v.isLargeFile')) {
             alert('Please upload paystubs as income documentation before continuing');
             return;
         }
@@ -224,6 +224,8 @@
         } else {
             leadPromise.then($A.getCallback(function resolve(retVal) {
                 component.set('v.page', 'SelfEmployedQuestion');
+                component.set('v.boxFileUploader', false);
+                component.set('v.isLargeFile', false);
             }));
         }
     },
@@ -253,8 +255,9 @@
     },
 
     saveAndAskRetirement : function(component, event, helper) {
-        if (!component.get('v.lastYearReturns') || component.get('v.lastYearReturns').length === 0 ||
-            !component.get('v.twoYearReturns') || component.get('v.twoYearReturns').length === 0){
+        if ((!component.get('v.lastYearReturns') || component.get('v.lastYearReturns').length === 0 ||
+            !component.get('v.twoYearReturns') || component.get('v.twoYearReturns').length === 0 ) &&
+            !component.get('v.isLargeFile')){
             alert('Please document self-employment income by uploading two years of federal tax returns');
             return;
         }
@@ -286,8 +289,9 @@
     },
 
     saveAndAskVeteran : function(component, event, helper) {
-        if (!component.get('v.retirementIncome') ||
-            component.get('v.retirementIncome').length === 0){
+        if ((!component.get('v.retirementIncome') ||
+            component.get('v.retirementIncome').length === 0) &&
+            !component.get('v.isLargeFile')){
             alert('Please upload supporting retirement income documentation');
             return;
         }
@@ -319,8 +323,9 @@
     },
 
     saveAndAskAlimony : function(component, event, helper) {
-        if (!component.get('v.veteranIncome') ||
-            component.get('v.veteranIncome').length === 0){
+        if ((!component.get('v.veteranIncome') ||
+            component.get('v.veteranIncome').length === 0) &&
+            !component.get('v.isLargeFile')){
             alert('Please upload supporting veteran income documentation');
             return;
         }
@@ -504,5 +509,5 @@
         pageMap.set('GetAlimonyIncome', 'AlimonyQuestion');
         pageMap.set('OtherIncome', 'AlimonyQuestion');
         component.set('v.page', pageMap.get(event.getSource().get('v.name')));
-    }
+    },
 })

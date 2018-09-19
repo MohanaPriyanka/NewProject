@@ -197,7 +197,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
         Decimal shareOfSystem = szs.Percent_Share__c;
 
         // Calculate % Share of Production (kWh)
-        Decimal subscriptionProduction = (shareOfSystem/100) * systemProduction;
+        Decimal subscriptionProduction = ((shareOfSystem/100) * systemProduction).setScale(2, roundingMode.HALF_UP);
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
@@ -226,7 +226,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                     Total_System_Production_kWh__c = systemProduction,
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
-                                    Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP),
+                                    Subscription_Production_kWh_Static__c = subscriptionProduction,
                                     Schedule_Z_Subscription__c = szs.Id);
       
         if (billingMethod == 'NMC'){

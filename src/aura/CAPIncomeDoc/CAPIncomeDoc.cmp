@@ -19,6 +19,9 @@
   <aura:attribute name="otherIncome" type="Object"/>
   <aura:attribute name="inFirstQuarter" type="Boolean" default="false"/>
   <aura:attribute name="lastYear" type="Integer"/>
+  <aura:attribute name="isLargeFile" type="Boolean" default="false"/>
+  <aura:attribute name="boxFileUploader" type="Boolean" default="false"/>
+  <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <aura:if isTrue="{!v.page == 'MSLPTechnicalConfirm'}">
     <div class="slds-col slds-col--padded">
@@ -72,6 +75,7 @@
   <aura:if isTrue="{!v.page == 'EmployedQuestion'}">
     <div class="slds-m-left_small">
       <c:CAPIncomeDocQuestion
+        questionType="employed"
         singleQuestion="{!$Label.c.ID_Employment_Question}"
         jointQuestion="{!format($Label.c.ID_Joint_Employment_Question, v.lead.Co_Applicant_First_Name__c)}"
         singleAffirmative="Yes, I have paystubs to upload."
@@ -253,6 +257,7 @@
   <aura:if isTrue="{!v.page == 'SelfEmployedQuestion'}">
     <div class="slds-m-left_small">
       <c:CAPIncomeDocQuestion
+        questionType="self employed"
         singleQuestion="{!$Label.c.ID_Self_Employment_Question}"
         jointQuestion="{!format($Label.c.ID_Joint_Self_Employment_Question, v.lead.Co_Applicant_First_Name__c)}"
         singleAffirmative="I am self-employed"
