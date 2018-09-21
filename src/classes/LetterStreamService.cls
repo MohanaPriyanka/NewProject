@@ -194,7 +194,10 @@ public without sharing class LetterStreamService {
         }
         csv += '\n';
         csv += (Util.prepForCSV(params.fileId) + ','); // UniqueDocId
-        csv += (Util.prepForCSV(params.fileName) + ','); // PDFFileName
+        String fileName = Util.prepForCSV(params.fileName);
+        // Can't have ' in file names to letterstream
+        filename = fileName.replace('\'', '');
+        csv += (fileName + ','); // PDFFileName
         csv += (Util.prepForCSV(params.recipientName) + ','); // RecipientName1
         csv += (','); // RecipientName2
         csv += (Util.prepForCSV(params.recipientStreet) + ','); // RecipientAddr1

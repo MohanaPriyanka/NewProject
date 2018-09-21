@@ -62,6 +62,8 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             letterParams.generateFromAccountBill(accountBill, document);
             lss.addLetterToCSV(letterParams);
             String fileName = Util.prepForCSV(letterParams.fileName);
+            // Can't have ' in file names to letterstream
+            filename = fileName.replace('\'', '');
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
