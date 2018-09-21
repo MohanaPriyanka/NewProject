@@ -1,0 +1,120 @@
+/**
+ * Created by mstackhouse on 9/21/2018.
+ * Description: 
+ * Test: 
+ */
+
+@IsTest
+public with sharing class UtilTest {
+    @IsTest
+    public static void testInsertSObj() {
+        Profile profile = [
+            SELECT Id
+            FROM Profile
+            WHERE Name='BFG Standard User'
+        ];
+
+        User u = new User(
+            Alias = 'testUtil',
+            Email='testUtil@test.test',
+            EmailEncodingKey='UTF-8',
+            LastName='testUtil',
+            LanguageLocaleKey='en_US',
+            LocaleSidKey='en_US',
+            ProfileId = profile.Id,
+            Country='United States',
+            IsActive = true,
+            TimeZoneSidKey='America/New_York',
+            Username='testUtil@test.test');
+        Util.insertSObj(u);
+
+        User newUser = [
+            SELECT Id, Alias, Email
+            FROM User
+            WHERE LastName = 'testUtil'
+        ];
+
+        System.assertNotEquals(null, newUser);
+    }
+
+    @IsTest
+    public static void testNullToZero() {
+        Decimal nullToZero;
+        System.assertEquals(null, nullToZero);
+
+        nullToZero = Util.nullToZero(nullToZero);
+        System.assertEquals(0, nullToZero);
+    }
+
+    @IsTest
+    public static void testGetActiveProducts() {
+        LoanTestRecordWarehouse.partnerSetup();
+        insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 product = [
+            SELECT Id, Name, Product_Type__c, Program__c, State__c,
+                Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
+            FROM Product2
+            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)'
+            AND Require_Junctions_to_Enable__c = TRUE
+            LIMIT 1
+        ];
+        // Let the product be seen by getActiveProducts below...
+        product.Hide_in_Requested_Product__c = false;
+        update product;
+        Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
+            Partner__c = partner.Id);
+        Product2 bwsl = [
+            SELECT Id
+            FROM Product2
+            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%'
+            LIMIT 1
+        ];
+        insert ppj;
+
+        System.assertEquals(8, Util.getActiveProducts(new List<String>{
+            'MA'
+        }, partner.Id, 'Residential Loan').size());
+    }
+
+    @IsTest
+    public static void testGetCommunitySiteURL() {
+        String siteURL = Util.getCommunitySiteURL('Apply');
+        System.assert(siteURL.contains('bluewavememberportal'), 'Should contain link to BlueWave Member Portal');
+        System.assert(siteURL.contains('apply'), 'Should include apply in the URL');
+    }
+
+    @IsTest
+    public static void testMinAndMax() {
+        List<Decimal> listOfNumbers = new List<Decimal>{12,342,1,342,-12,10000};
+
+        System.assertEquals(-12, Util.min(listOfNumbers));
+        System.assertEquals(10000, Util.max(listOfNumbers));
+    }
+
+    @IsTest
+    public static void testPrintLimits() {
+        Boolean errorCaught = false;
+        try {
+            Util.printCPULimit('Print CPU Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
+
+        try {
+            Util.printSOQLLimit('Print SOQL Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
+    }
+
+    @IsTest
+    public static void testPrepForCSV() {
+        String unprepped = 'this is an \n unprepped, string';
+        String expected = 'this is an  unprepped string';
+
+        System.assertEquals(expected, Util.prepForCSV(unprepped));
+    }
+}
