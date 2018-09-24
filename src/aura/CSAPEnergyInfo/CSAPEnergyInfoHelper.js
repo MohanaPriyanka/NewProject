@@ -52,6 +52,7 @@
         component.set("v.electricBill1", "");
         component.set("v.electricBill2", "");
         component.set("v.annualElectricHistory","");
+        component.set('v.isLargeFile', false);
     },
     addNewLead : function(component, event, helper, applicationType) {
         var action = component.get("c.getLead");
