@@ -23,14 +23,16 @@ public without sharing class AccountBillHandler{
             }
         }
 
-        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Account__c, ChargentOrders__Billing_First_Name__c
+        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Account__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c
                                                                 FROM ChargentOrders__ChargentOrder__c
                                                                 WHERE ChargentOrders__Account__c IN :firstABMap.keySet() ];
 
         if(!ordersList.isEmpty()) {
             for(ChargentOrders__ChargentOrder__c firstOrder : ordersList){
                 String billID = firstABMap.get(firstOrder.ChargentOrders__Account__c);
-                ordersByABMap.put(billID, firstOrder );
+                if (firstOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c <= 1) {
+                    ordersByABMap.put(billID, firstOrder );
+                }
             }
             retrieveFirstChargentOrder(firstAccountBillList, ordersByABMap);
         }

@@ -4,3 +4,5 @@ TestAccountB-AccountBillOne,Account B February 2016,TestAccountB,TestSolarSystem
 TestAccountC-AccountBillOne,Account Bill Cancelled,TestAccountC,,,,Statement,1,0.00,,,
 TestAccountC-AccountBillTwo,Account Bill Cancelled,TestAccountC,,,,Statement,2,0.00,,,
 TestAccountD-AccountBillOne,Account Bill Cancelled,TestAccountD,,,,Statement,1,0.00,,,
+TestAccountE-AccountBillOne,First Account Bill,TestAccountE,,,,Statement,1,0.00,,,
+TestAccountE-AccountBillTwo,Second Account Bill,TestAccountE,,,,Statement,2,0.00,,,

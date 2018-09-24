@@ -18,7 +18,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
-                        ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
+                        ' ChargentOrders__Charge_Amount__c, Account_Bill__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c,' +
                         ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
                         ' Account_Bill__r.Is_First_Bill__c, ' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
@@ -125,7 +125,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     private String getChargentOrderKey(ChargentOrders__ChargentOrder__c recurOrder) {
         Integer newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
-        if (recurOrder.Account_Bill__r.Is_First_Bill__c) {
+        if (recurOrder.Account_Bill__r.Is_First_Bill__c &&
+            recurOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c == 1) {
             return Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
         } else {
             return newBillNumber + '_' + recurOrder.Property_Account_ID__c;
@@ -335,4 +336,5 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             update definiteDuplicates;
         }
     }
+
 }
