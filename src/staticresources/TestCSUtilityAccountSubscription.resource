@@ -2,3 +2,11 @@ Id,Name,RecordTypeId,calculated_annual_cost_of_electricity__c,Opportunity__c,Sub
 TestUASAccountAOppOne,0000234,012j00000004TNgAAM,4000.00,TestAccountAOppOne,4000.000000,TestUAL-AccountA,25.0000,true,Active Subscription
 TestUASAccountAOppTwo,000-0235,012j00000004TNgAAM,6000.00,TestAccountAOppTwo,6000.000000,TestUAL-AccountA,20.0000,true,Active Subscription
 TestUASAccountBOpp,000-0236,012j00000004TNgAAM,1800.00,TestAccountBOpp,1800.000000,TestUAL-AccountB,20.0000,true,Active Subscription
+UASADonut,0000234,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-ADonut,25.0000,true,Active Subscription
+UASBDonut,0000235,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-BDonut,10.0000,true,Active Subscription
+UASCDonut,0000236,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-CDonut,20.0000,true,Active Subscription
+UASDDonut,0000237,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-DDonut,19.0000,true,Active Subscription
+UASUnrelated,0000238,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-Unrelated,17.0000,true,Active Subscription
+UASPaymentTest1,0000239,012j00000004TNgAAM,1400.00,PaymentTestOpp1,1400.000000,TestUAL-PaymentTest1,25.0000,true,Active Subscription
+UASPaymentTest2,0000240,012j00000004TNgAAM,1400.00,PaymentTestOpp2,1400.000000,TestUAL-PaymentTest2,10.0000,true,Active Subscription
+UASPaymentTest3,0000241,012j00000004TNgAAM,1400.00,PaymentTestOpp3,1400.000000,TestUAL-PaymentTest3,20.0000,true,Active Subscription

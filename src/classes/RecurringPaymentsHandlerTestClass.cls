@@ -70,6 +70,10 @@ private class RecurringPaymentsHandlerTestClass {
                  Bill_Number__c,
                  Property_Account_ID__c
             FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account B'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account C'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account D'
             ORDER BY Bill_Number__c DESC];
 
         // Two accounts:
@@ -164,6 +168,10 @@ private class RecurringPaymentsHandlerTestClass {
                  Bill_Number__c,
                  Property_Account_ID__c
             FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account B'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account C'
+            OR Account_Bill__r.Parent_Account__r.Name = 'Account D'
             ORDER BY Bill_Number__c DESC];
 
         // Two accounts:
@@ -455,7 +463,15 @@ private class RecurringPaymentsHandlerTestClass {
         update productionUpdateA;
         update sssA;
 
-        List<Account_Bill__c> acctBills = [SELECT Id, Name, Is_First_Bill__c FROM Account_Bill__c];
+        List<Account_Bill__c> acctBills = [
+            SELECT Id, Name, Is_First_Bill__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+            OR Parent_Account__r.Name = 'Account B'
+            OR Parent_Account__r.Name = 'Account C'
+            OR Parent_Account__r.Name = 'Account D'
+            OR Parent_Account__r.Name = 'Property Account A'
+        ];
         System.assertEquals(5, acctBills.size());
 
         List<Energy_Usage_Update__c> productionUpdateList = [
@@ -478,7 +494,15 @@ private class RecurringPaymentsHandlerTestClass {
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
-        List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c];
+        List<Account_Bill__c> acctBillsList = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+            OR Parent_Account__r.Name = 'Account B'
+            OR Parent_Account__r.Name = 'Account C'
+            OR Parent_Account__r.Name = 'Account D'
+            OR Parent_Account__r.Name = 'Property Account A'
+        ];
         System.assertEquals(7, acctBillsList.size() );
 
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();

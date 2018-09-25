@@ -1,318 +1,99 @@
 @isTest
 public class CSPaymentTest {
+    private static Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
+
     @testSetup public static void CSPaymentSetupTestData() {
-        Utility__c eversource = new Utility__c(
-            Name = 'Eversource',
-            Number_of_Decimal_Places__c = 2
-        );
-
-        Utility__c national_grid = new Utility__c(
-            Name = 'National Grid',
-            Number_of_Decimal_Places__c = 2
-        );
-
-        insert new List<Utility__c>{
-            eversource, national_grid
-        };
-
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
-            Utility__c = 'Eversource',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-
-        Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(Name = 'National Grid WCMA Class 2',
-            Utility__c = 'National Grid',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-
-        insert new List<Utility_NMC_Tariff__c>{
-            eversizeNMC, ngridsizeNMC
-        };
-
-        Load_U__c everLZU = new Load_U__c(Name = '02633',
-            Load_zone__c = 'SEMA Eversource',
-            LZ__c = 'SEMA',
-            Utility__C = 'Eversource',
-            Town__c = 'Medfield');
-
-        Load_U__c ngridLZU = new Load_U__c(Name = '01570',
-            Load_zone__c = 'WCMA National Grid',
-            LZ__c = 'WCMA',
-            Utility__C = 'National Grid',
-            Town__c = 'Westtown');
-
-        insert new List<Load_U__c>{
-            everLZU, ngridLZU
-        };
         TestFactory.insertBWAddress();
+        Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
+        Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
+        Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
+        Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
+        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
+        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Account.SObjectType, 'TestCSAccount');
+        Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
+        Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
+        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
+        Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
+        Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
+        Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
+        Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
+        System_Properties__c sysProp = new System_Properties__c(Name = 'System', Disable_System_Bill_Trigger__c = true);
+        insert sysProp;
+        Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
+        sysProp.Disable_System_Bill_Trigger__c = false;
+        update sysProp;
+        Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
+        Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
+        Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
 
-        Account clientAccount = new Account(name = 'Client Account',
-            Client_Brand_Key__c = 'AmpBlack');
-        insert clientAccount;
+        // Because there's no way to populate self lookups:
+        // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
+        // We put the parent account's name in AccountNumber and use that to update the accounts.
+        Map<String, Account> accountNameMap = new Map<String, Account>();
+        List<Account> accounts = [SELECT Id, Name, AccountNumber FROM Account];
+        for (Account acct : accounts) {
+            accountNameMap.put(acct.Name, acct);
+        }
+        for (Account acct : accounts) {
+            if (accountNameMap.get(acct.AccountNumber) != null) {
+                acct.Parent_Account__c = accountNameMap.get(acct.AccountNumber).Id;
+            }
+        }
+        update accounts;
+        for (Account acct : accounts) {
+            if (acct.Name == 'ADonut Shop Parent') {
+                insertUser(acct, 'CSPaymentTest@bluewavesolar.com');
+            } else if (acct.Name == 'Unrelated OtherAccount Parent') {
+                insertUser(acct, 'CSPaymentTestB@bluewavesolar.com');
+            } else if (acct.Name == 'PaymentTestParentAccountA') {
+                insertUser(acct, 'PaymentTestParentAccountA@bluewavesolar.com');
+            } else if (acct.Name == 'PaymentTestParentAccountC') {
+                insertUser(acct, 'PaymentTestParentAccountC@bluewavesolar.com');
+            }
+        }
 
-        Account clientAccount2 = new Account(name = 'Client Account 2',
-            Client_Brand_Key__c = 'AmpBlack');
-        insert clientAccount2;
-
-
-        ChargentBase__Gateway__c chGateway = new ChargentBase__Gateway__c(
-            Name = 'Chargent Gateway',
-            ChargentBase__Merchant_ID__c = '235986',
-            ChargentBase__Debug__c = true,
-            ChargentBase__Active__c = true,
-            ChargentBase__Available_Payment_Methods__c = 'Bank Transfer'
-        );
-        ChargentBase__Gateway__c chGatewayB = new ChargentBase__Gateway__c(
-            Name = 'Chargent GatewayB',
-            ChargentBase__Merchant_ID__c = '235987',
-            ChargentBase__Debug__c = true,
-            ChargentBase__Active__c = true,
-            ChargentBase__Available_Payment_Methods__c = 'Credit Card'
-        );
-        insert new List<ChargentBase__Gateway__c>{chGateway, chGatewayB};
-
-        Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1',
-            Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id,
-            Gateway__c = chGateway.Id
-        );
-        insert entity1;
-
-        Entity__c entity2 = new Entity__c(Name = 'Oxford Barrett St. P2',
-            Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id,
-            Gateway__c = chGatewayB.Id
-        );
-        insert entity2;
-
-        Shared_Solar_System__c sss1 =
-            new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'SEMA',
-                Service_Territories__c = 'SEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '0',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                System_Utility__c = 'Eversource',
-                Credit_Score_Requirement__c = 200,
-                Assignment_order__c = '1',
-                Billing_Method__c = 'NMC',
-                Utility_NMC_Tariff__c = eversizeNMC.Id,
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Sales_Partners__c = 'All',
-                BWC_Project_Entity_Manual__c = entity1.Id,
-                Maximum_Subscription_Assemblage__c = 25,
-                Utility__c = eversource.Id
-            );
-
-        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1);
-        insert normalCSProduct;
-
-        Shared_Solar_System__c sss2 =
-            new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
-                Service_Territory__c = 'SEMA',
-                Service_Territories__c = 'SEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '0',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                System_Utility__c = 'Eversource',
-                Credit_Score_Requirement__c = 200,
-                Assignment_order__c = '2',
-                Billing_Method__c = 'NMC',
-                Utility_NMC_Tariff__c = eversizeNMC.Id,
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Sales_Partners__c = 'All',
-                BWC_Project_Entity_Manual__c = entity2.Id,
-                Product__c = normalCSProduct.Id,
-                Maximum_Subscription_Assemblage__c = 25,
-                Utility__c = eversource.Id
-            );
-
-        insert new List<Shared_Solar_System__c>{
-            sss1, sss2
-        };
-
-
-        // 4 Properties Under the Same Parent, 1 Alone:
-        String firstName1 = 'ADonut';
-        String firstName2 = 'BDonut';
-        String firstName3 = 'CDonut';
-        String firstName4 = 'DDonut';
-        String firstName5 = 'Unrelated';
-
-        String lastName1 = 'Shop';
-        String lastName2 = 'Shop';
-        String lastName3 = 'Shop';
-        String lastName4 = 'Shop';
-        String lastName5 = 'OtherAccount';
-
-        String accountName1 = firstName1 + ' ' + lastname1;
-        String accountName2 = firstName2 + ' ' + lastname2;
-        String accountName3 = firstName3 + ' ' + lastname3;
-        String accountName4 = firstName4 + ' ' + lastname4;
-        String accountName5 = firstName5 + ' ' + lastname5;
-
-        Id parentAccountRT = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        Account accountParent1 = new Account(name = accountName1, RecordTypeId = parentAccountRT);
-        Account accountParent2 = new Account(name = accountName5, RecordTypeId = parentAccountRT);
-
-        insert new List<Account>{
-            accountParent1, accountParent2
-        };
-
-        Contact contact1 = new Contact(FirstName = firstName1, LastName = lastname1, AccountId = accountParent1.Id);
-        Contact contact2 = new Contact(FirstName = firstName2, LastName = lastname2, AccountId = accountParent1.Id);
-        Contact contact3 = new Contact(FirstName = firstName3, LastName = lastname3, AccountId = accountParent1.Id);
-        Contact contact4 = new Contact(FirstName = firstName4, LastName = lastname4, AccountId = accountParent1.Id);
-        Contact contact5 = new Contact(FirstName = firstName5, LastName = lastname5, AccountId = accountParent2.Id);
-
-        insert new List<Contact>{
-            contact1, contact2, contact3, contact4, contact5
-        };
-
-        Account propAccount1 = new Account(name = accountName1, Parent_Account__c = accountParent1.Id, Send_Bills_Contact__c = contact1.Id);
-        Account propAccount2 = new Account(name = accountName2, Parent_Account__c = accountParent1.Id, Send_Bills_Contact__c = contact1.Id);
-        Account propAccount3 = new Account(name = accountName3, Parent_Account__c = accountParent1.Id, Send_Bills_Contact__c = contact1.Id);
-        Account propAccount4 = new Account(name = accountName4, Parent_Account__c = accountParent1.Id, Send_Bills_Contact__c = contact1.Id);
-        Account propAccount5 = new Account(name = accountName5, Parent_Account__c = accountParent2.Id, Send_Bills_Contact__c = contact3.Id);
-
-        insert new List<Account>{
-            propAccount1, propAccount2, propAccount3, propAccount4, propAccount5
-        };
-
-        Utility_Account_Log__c ualog1 = new Utility_Account_Log__c(Name = '0000234', Account__c = propAccount1.Id, Annual_Cost_of_Electricity__c = 10000, Name_on_Account__c = accountName1);
-        Utility_Account_Log__c ualog2 = new Utility_Account_Log__c(Name = '0000235', Account__c = propAccount2.Id, Annual_Cost_of_Electricity__c = 10000, Name_on_Account__c = accountName2);
-        Utility_Account_Log__c ualog3 = new Utility_Account_Log__c(Name = '0000236', Account__c = propAccount3.Id, Annual_Cost_of_Electricity__c = 10000, Name_on_Account__c = accountName3);
-        Utility_Account_Log__c ualog4 = new Utility_Account_Log__c(Name = '0000237', Account__c = propAccount4.Id, Annual_Cost_of_Electricity__c = 10000, Name_on_Account__c = accountName4);
-        Utility_Account_Log__c ualog5 = new Utility_Account_Log__c(Name = '0000238', Account__c = propAccount5.Id, Annual_Cost_of_Electricity__c = 10000, Name_on_Account__c = accountName5);
-
-        insert new List<Utility_Account_Log__c>{
-            ualog1, ualog2, ualog3, ualog4, ualog5
-        };
-
-        Opportunity opportunity1 = new Opportunity(Name = accountName1, AccountId = propAccount1.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity2 = new Opportunity(Name = accountName2, AccountId = propAccount2.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss2.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity3 = new Opportunity(Name = accountName3, AccountId = propAccount3.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity4 = new Opportunity(Name = accountName4, AccountId = propAccount4.Id, Shared_Solar_System__c = sss1.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-        Opportunity opportunity5 = new Opportunity(Name = accountName5, AccountId = propAccount5.Id, Shared_Solar_System__c = sss2.Id, StageName = 'Complete', Product__c = sss1.Product__r.Id, CloseDate = System.today());
-
-        insert new List<Opportunity>{
-            opportunity1, opportunity2, opportunity3, opportunity4, opportunity5
-        };
-
-        Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(Name = '0000234', Utility_Account_Log__c = ualog1.Id, Opportunity__c = opportunity1.Id, Next_Schedule_Z_Status__c = 'Active Subscription', Calculated_Annual_Cost_of_Electricity__c = 1400, Subscribed_Annual_Cost_of_Electricity__c = 1400, Customer_Subscription_KW_DC_STATIC__c = 25);
-        Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(Name = '0000235', Utility_Account_Log__c = ualog2.Id, Opportunity__c = opportunity2.Id, Next_Schedule_Z_Status__c = 'Active Subscription', Calculated_Annual_Cost_of_Electricity__c = 1400, Subscribed_Annual_Cost_of_Electricity__c = 1400, Customer_Subscription_KW_DC_STATIC__c = 10);
-        Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(Name = '0000236', Utility_Account_Log__c = ualog3.Id, Opportunity__c = opportunity3.Id, Next_Schedule_Z_Status__c = 'Active Subscription', Calculated_Annual_Cost_of_Electricity__c = 1400, Subscribed_Annual_Cost_of_Electricity__c = 1400, Customer_Subscription_KW_DC_STATIC__c = 20);
-        Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(Name = '0000237', Utility_Account_Log__c = ualog4.Id, Opportunity__c = opportunity4.Id, Next_Schedule_Z_Status__c = 'Active Subscription', Calculated_Annual_Cost_of_Electricity__c = 1400, Subscribed_Annual_Cost_of_Electricity__c = 1400, Customer_Subscription_KW_DC_STATIC__c = 19);
-        Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(Name = '0000238', Utility_Account_Log__c = ualog5.Id, Opportunity__c = opportunity5.Id, Next_Schedule_Z_Status__c = 'Active Subscription', Calculated_Annual_Cost_of_Electricity__c = 1400, Subscribed_Annual_Cost_of_Electricity__c = 1400, Customer_Subscription_KW_DC_STATIC__c = 17);
-
-        insert new List<Utility_Account_Subscription__c>{
-            uas1, uas2, uas3, uas4, uas5
-        };
-
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
-
-        User userRecord = new User(
-            FirstName = 'Jordan',
-            Lastname = 'CSPaymentTest',
-            Alias = 'CSpyTt',
-            Email = 'jpentaleri@bluewavesolar.com',
-            Emailencodingkey = 'UTF-8',
-            Languagelocalekey = 'en_US',
-            Localesidkey = 'en_US',
-            Profileid = profileRecord.Id,
-            Country = 'United States',
-            IsActive = true,
-            ContactId = contact1.Id,
-            Timezonesidkey = 'America/Los_Angeles',
-            Username = 'CSPaymentTest@bluewavesolar.com');
-        User userRecordB = new User(
-            FirstName = 'JordanB',
-            Lastname = 'CSPaymentTestB',
-            Alias = 'CSpyTtB',
-            Email = 'jpentalerib@bluewavesolar.com',
-            Emailencodingkey = 'UTF-8',
-            Languagelocalekey = 'en_US',
-            Localesidkey = 'en_US',
-            Profileid = profileRecord.Id,
-            Country = 'United States',
-            IsActive = true,
-            ContactId = contact5.Id,
-            Timezonesidkey = 'America/Los_Angeles',
-            Username = 'CSPaymentTestB@bluewavesolar.com');
-
-        Util.insertSObjs(new List<User>{userRecord, userRecordB});
-
-        Date myDateJan = Date.newInstance(2018, 1, 1);
-        Date myDateFeb = Date.newInstance(2018, 2, 2);
-        Date myDateMar = Date.newInstance(2018, 3, 3);
-
-        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
-            Name = '18-0515 Oxford Barrett St. P1',
-            Shared_Solar_System__c = sss1.Id,
-            Status__c = 'Billing'
-        );
-
-        insert scheduleZ1;
-
-        Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c(
-            Name = 'sssA - January 2016',
-            Shared_Solar_System__c = sss1.id,
-            Schedule_Z__c = scheduleZ1.id,
-            Production__c = 90000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateFeb,
-            Total_System_NMCs__c = 16632,
-            Date__c = myDateJan
-        );
-
-        Energy_Usage_Update__c productionupdateA2 = new Energy_Usage_Update__c(
-            Name = 'sssA - February 2016',
-            Shared_Solar_System__c = sss1.id,
-            Schedule_Z__c = scheduleZ1.id,
-            Production__c = 120000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMar,
-            Total_System_NMCs__c = 22176,
-            Date__c = myDateFeb
-        );
-
-        insert productionupdateA1;
-        productionupdateA1.Generate_Bills__c = TRUE;
-        update productionupdateA1;
-        setBillsToPublished();
-
-        insert productionupdateA2;
-        productionupdateA2.Generate_Bills__c = TRUE;
-        update productionupdateA2;
-        setBillsToPublished();
+        List<Account_Bill__c> abs = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Name LIKE '%Donut Shop%'
+            OR Name LIKE '%Payment Test%'
+        ];
+        for (Account_Bill__c ab : abs) {
+            ab.Published__c = true;
+        }
+        update abs;
     }
 
-    @isTest public static void testPayOffOne(){
+    private static void insertUser(Account account, String email) {
+        Contact contact = new Contact(FirstName = 'First', LastName = account.Name, AccountId = account.Id);
+        insert contact;
+        User user = new User(
+            FirstName = 'First',
+            LastName = account.Name,
+            Alias = ((String) account.Id).right(6),
+            Email = email,
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profileRecord.Id,
+            Country = 'United States',
+            IsActive = true,
+            ContactId = contact.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Username = email);
+        Util.insertSObj(user);
+    }
+
+    @isTest public static void testPayOffOne() {
         // assert Bills were inserted for each property account, for 2 billing periods:
-        List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
-                                                    Account_Bill__r.Is_Most_Recent__c
-                                                FROM System_Bill__c
-                                                ORDER BY Account_Bill__r.Name];
+        List<System_Bill__c> systemBillList = [
+            SELECT Id, Account_Bill__r.Name, Total_Due__c,
+                Account_Bill__r.Is_Most_Recent__c, Account_Bill__c
+            FROM System_Bill__c
+            WHERE Name LIKE '%Donut Shop%'
+            ORDER BY Account_Bill__r.Name
+        ];
         // Only production updates for SSS1 (4 UASes * 2 Production Updates)
         System.assertEquals(8, systemBillList.size());
 
@@ -333,18 +114,23 @@ public class CSPaymentTest {
 
         // Make a payment for only ONE property account:
         List<System_Bill__c> sbList = new List<System_Bill__c>();
-        System.assertEquals('BDonut Shop February 2018',systemBillList[2].Account_Bill__r.Name);
-        System.assertEquals(true,systemBillList[2].Account_Bill__r.Is_Most_Recent__c);
+        Account_Bill__c billToPay = systemBillList[2].Account_Bill__r;
+        System.assertEquals('BDonut Shop February 2018', billToPay.Name);
+        System.assertEquals(true, billToPay.Is_Most_Recent__c);
         sbList.add(systemBillList[2]);
         mockMakeASinglePayment(sbList);
 
         System.runAs(userA) {
-            // Try again to make a payment for all property accounts, now this list should be 3 not 4:
+            // Try again to make a payment for all property accounts, 4 orders, but one at $0
             List<ChargentOrders__ChargentOrder__c> secondOrderList = makePaymentInPortal('All');
-            System.assertEquals(3,secondOrderList.size());
+            System.assertEquals(4,secondOrderList.size());
 
             for (ChargentOrders__ChargentOrder__c orderToCharge : secondOrderList) {
-                System.assert(orderToCharge.ChargentOrders__Subtotal__c > 0);
+                if (orderToCharge.Account_Bill__c == billToPay.Id) {
+                    System.assertEquals(0, orderToCharge.ChargentOrders__Subtotal__c);
+                } else {
+                    System.assert(orderToCharge.ChargentOrders__Subtotal__c > 0);
+                }
             }
 
             String response1 = CreateOrderandPaymentRequest.chargeOrder(secondOrderList[0]);
@@ -360,11 +146,13 @@ public class CSPaymentTest {
 
     @isTest public static void testPayOffAll(){
         // assert Bills were inserted for each property account, for 2 billing periods:
-        List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
-                                                    Account_Bill__r.Is_Most_Recent__c
-                                                FROM System_Bill__c
-                                                ORDER BY Account_Bill__r.Name];
-
+        List<System_Bill__c> systemBillList = [
+            SELECT Id, Account_Bill__r.Name, Total_Due__c,
+                Account_Bill__r.Is_Most_Recent__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Name LIKE '%Donut Shop%'
+            ORDER BY Account_Bill__r.Name
+        ];
         // Only production updates for SSS1 (4 UASes * 2 Production Updates)
         System.assertEquals(8, systemBillList.size());
 
@@ -401,9 +189,13 @@ public class CSPaymentTest {
         mockMakeASinglePayment(sbList);
 
         System.runAs(userA) {
-            // Try again to make a payment for all property accounts, now this list should be 3 not 4:
+            // Try again to make a payment for all property accounts - we'll make 4 orders, but for $0
             List<ChargentOrders__ChargentOrder__c> secondOrderList = makePaymentInPortal('All');
-            System.assertEquals(0,secondOrderList.size());
+            System.assertEquals(4, secondOrderList.size());
+
+            for (ChargentOrders__ChargentOrder__c orderToCharge : secondOrderList) {
+                System.assertEquals(0, orderToCharge.ChargentOrders__Subtotal__c);
+            }
 
             Test.stopTest();
         }
@@ -411,10 +203,13 @@ public class CSPaymentTest {
 
     @IsTest public static void testPayOffFailed() {
         // assert Bills were inserted for each property account, for 2 billing periods:
-        List<System_Bill__c> systemBillList = [ SELECT Id, Account_Bill__r.Name, Total_Due__c,
-            Account_Bill__r.Is_Most_Recent__c
-        FROM System_Bill__c
-        ORDER BY Account_Bill__r.Name];
+        List<System_Bill__c> systemBillList = [
+            SELECT Id, Account_Bill__r.Name, Total_Due__c,
+                Account_Bill__r.Is_Most_Recent__c
+            FROM System_Bill__c
+            WHERE Name LIKE '%Donut Shop%'
+            ORDER BY Account_Bill__r.Name
+        ];
         System.assertEquals(8, systemBillList.size());
 
         User userA = [SELECT Id FROM User WHERE Username='CSPaymentTest@bluewavesolar.com'];
@@ -460,9 +255,13 @@ public class CSPaymentTest {
     }
 
     static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId) {
+        return makePaymentInPortal(propertyAccountId, false);
+    }
+
+    static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId, Boolean autopay) {
         List<AggregateResult> aggResult = MyAccountController.getSystemBills(propertyAccountId);
         ChargentOrders__ChargentOrder__c orderB = getPaymentInput();
-        List<ChargentOrders__ChargentOrder__c> choList = CreateOrderandPaymentRequest.setChargeAmountAndInsert(aggResult, orderB, false);
+        List<ChargentOrders__ChargentOrder__c> choList = CreateOrderandPaymentRequest.setChargeAmountAndInsert(aggResult, orderB, autopay);
 
         return choList;
     }
@@ -536,7 +335,7 @@ public class CSPaymentTest {
         // Shouldn't have any System Bills because Production Updates haven't been made
         System.assertEquals(0, bills.size());
         List<Opportunity> opps = [
-            SELECT Id
+            SELECT Id, AccountId
             FROM Opportunity
             WHERE Account.Parent_Account__c = :userB.Contact.AccountId
         ];
@@ -549,6 +348,47 @@ public class CSPaymentTest {
             // that only accepts Bank Transfer
             System.assertEquals(1, paymentMethods.size());
             System.assert(paymentMethods.contains('Credit Card'));
+        }
+    }
+
+    @IsTest public static void testAutopayWithNoBalance() {
+        User user = [
+            SELECT Id, Contact.AccountId
+            FROM User
+            WHERE Username='PaymentTestParentAccountA@bluewavesolar.com'
+        ];
+        List<Opportunity> opps = [
+            SELECT Id, Name, AccountId, Account.Parent_Account__c
+            FROM Opportunity
+            WHERE Account.Parent_Account__c =: user.Contact.AccountId
+        ];
+        // Should be three opportunities, one hasn't had bills generated yet.
+        System.assertEquals(3, opps.size());
+
+        System.runAs(user) {
+            List<AggregateResult> aggregateSystemBills = MyAccountController.getSystemBills('All');
+            // Should have two bills, both $0
+            System.assertEquals(2, aggregateSystemBills.size());
+            System.assertEquals(0, aggregateSystemBills[0].get('ChargentOrders__Subtotal__c'));
+
+            List<ChargentOrders__ChargentOrder__c> autopayOrders = makePaymentInPortal('All', true);
+            // Should be two autopay orders (three, when we create the autopay order for the opp that hasn't been billed yet)
+            System.assertEquals(2, autopayOrders.size());
+            for (ChargentOrders__ChargentOrder__c order : autopayOrders) {
+                if (order.Account_Bill__c != null) {
+                    // If there's already an account bill and we're adding recurring, they're ready for billing and
+                    // we set the payment status to Recurring
+                    System.assertEquals('Recurring', order.ChargentOrders__Payment_Status__c);
+                } else {
+                    // If billing hasn't started, we wait for the Chargent Move to to set the payment status to Recurring
+                    System.assertEquals(null, order.ChargentOrders__Payment_Status__c);
+                }
+            }
+
+            // If the customer tries to make a one-time payment, but doesn't have a balance,
+            // we'll make orders but not charge them
+            autopayOrders = makePaymentInPortal('All', false);
+            System.assertEquals(2, autopayOrders.size());
         }
     }
  }

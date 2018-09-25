@@ -2,3 +2,9 @@ Id,Customer_Subscription_kW_DC__c,Number_of_Decimal_Places__c,System_Size_kW_DC_
 TestSZS-AccountABarrettP1,25.0000,2,1445.86,TestUASAccountAOppOne,TestSZBarrettP1
 TestSZS-AccountABarrettP2,20.0000,2,1445.86,TestUASAccountAOppTwo,TestSZBarrettP2
 TestSZS-AccountBBarrettP2,20.0000,2,1445.86,TestUASAccountBOpp,TestSZBarrettP2
+TestSZS-ADonut,25.0000,2,1445.86,UASADonut,TestSZBarrettP1
+TestSZS-BDonut,10.0000,2,1445.86,UASBDonut,TestSZBarrettP1
+TestSZS-CDonut,20.0000,2,1445.86,UASCDonut,TestSZBarrettP1
+TestSZS-DDonut,19.0000,2,1445.86,UASDDonut,TestSZBarrettP1
+TestSZS-PropertyA-UAS1,25.0000,2,1445.86,UASPaymentTest1,TestSZBarrettP1
+TestSZS-PropertyA-UAS2,10.0000,2,1445.86,UASPaymentTest2,TestSZBarrettP2

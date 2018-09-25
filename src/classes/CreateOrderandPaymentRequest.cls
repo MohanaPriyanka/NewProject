@@ -79,29 +79,23 @@ public without sharing class CreateOrderandPaymentRequest {
         }
         for (SObject chargeAmount : chargeAmounts) {
             Decimal amountToCharge = (Decimal) chargeAmount.get('ChargentOrders__Subtotal__c');
-            if (amountToCharge > 0.01) {
-                ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false, true, true, false);
-                orderA.Entity__c = (String) chargeAmount.get('Entity__c');
-                orderA.ChargentOrders__Subtotal__c = amountToCharge;
-                orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
-                orderA.Comments__c = 'Created from Lightning';
+            ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false, true, true, false);
+            orderA.Entity__c = (String) chargeAmount.get('Entity__c');
+            orderA.ChargentOrders__Subtotal__c = amountToCharge;
+            orderA.Account_Bill__c = (String) chargeAmount.get('Account_Bill__c');
+            orderA.Comments__c = 'Created from Lightning';
 
-                if (autopay) {
-                    orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
-                    orderA.ChargentOrders__Payment_Status__c = 'Recurring';
-                    orderA.ChargentOrders__Payment_Stop__c = 'Unending';
-                    orderA.ChargentOrders__Charge_Date__c = '01';
-                    orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
-                }
-
-                accountBillIdSet.add(orderA.Account_Bill__c);
-                entityIdSet.add(orderA.Entity__c);
-                ordersToInsert.add(orderA);
-            } else {
-                Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert',
-                    UserInfo.getUserName() + '(' + UserInfo.getUserId() + ') tried to save a chargent order, with ' +
-                        'autopay (' + autopay + ') but there was no amount to charge');
+            if (autopay) {
+                orderA.ChargentOrders__Payment_Frequency__c = 'Monthly';
+                orderA.ChargentOrders__Payment_Status__c = 'Recurring';
+                orderA.ChargentOrders__Payment_Stop__c = 'Unending';
+                orderA.ChargentOrders__Charge_Date__c = '01';
+                orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
             }
+
+            accountBillIdSet.add(orderA.Account_Bill__c);
+            entityIdSet.add(orderA.Entity__c);
+            ordersToInsert.add(orderA);
         }
         try {
             insert ordersToInsert;
