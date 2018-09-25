@@ -7,6 +7,21 @@ private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
 
     @TestSetup public static void setupTestData() {
+        insert new BW_Address__c(
+            Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street 4th Floor',
+            Address_Line_Two__c = 'Boston, MA 02114'
+        );
+        Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
+        Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
+        Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
+        Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
+        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
+        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Account.SObjectType, 'TestCSAccount');
+        Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
+        Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
+        Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
+
         if (System_Properties__c.getall().isEmpty()) {
             insert new System_Properties__c(
                 Name = 'System',
@@ -67,10 +82,25 @@ private class PostSandboxRefresherTest {
     }
 
     static testMethod void testSandboxRefresh() {
+        List<ChargentBase__Gateway__c> gateways = [
+            SELECT Id, ChargentBase__Merchant_ID__c
+            FROM ChargentBase__Gateway__c
+            WHERE Name LIKE 'Test%'
+        ];
+        System.assertEquals(0, gateways.size(), 'Did not expect to load test gateways');
+
+        List<ChargentOrders__ChargentOrder__c> chargentOrders = [
+            SELECT Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Card_Type__c = 'American Express'
+        ];
+        System.assertEquals(0, chargentOrders.size(), 'Did not expect to load Amex orders');
+
         Test.startTest();
         PostSandboxRefresher.disableEmails();
         PostSandboxRefresher.deleteScheduledJob(JOBNAME);
         PostSandboxRefresher.updateDocusignToDemoConfig();
+        PostSandboxRefresher.switchChargentToTestMode();
         Test.stopTest();
  
         List<Contact> contactList = [SELECT Id, Email
@@ -89,6 +119,22 @@ private class PostSandboxRefresherTest {
 
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
         System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
+
+        gateways = [
+            SELECT Id, ChargentBase__Merchant_ID__c
+            FROM ChargentBase__Gateway__c
+            WHERE Name LIKE 'Test%'
+        ];
+        // The two loaded gateways should be Test
+        System.assertEquals(2, gateways.size());
+
+        chargentOrders = [
+            SELECT Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Card_Type__c != 'American Express'
+        ];
+        // All loaded orders should be Amex now
+        System.assertEquals(0, chargentOrders.size());
     }
 
     static testMethod void testBatchUpdateFailure() {

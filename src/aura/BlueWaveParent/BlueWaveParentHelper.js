@@ -180,10 +180,12 @@
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
                 if (file.size > ltg.MAX_FILE_SIZE) {
-                    helper.logError('BlueWaveParentHelper', 'uploadFiles',
-                        'File size cannot exceed: ' + helper.precisionRound(ltg.MAX_FILE_SIZE/ltg.BYTES_IN_MB,2) + ' MB.\n' +
-                        'Your file size is: ' + helper.precisionRound(file.size/ltg.BYTES_IN_MB,2) + ' MB.\n' +
-                        'Please email us for help with large files.');
+                    let message = 'We\'re sorry, we cannot handle files this large in this portal. \n';
+                    message += 'We\'ll open a Box Upload Widget in a new window. Please make sure your popup blocker is disabled\n\n';
+                    message += 'File size cannot exceed: ' + helper.precisionRound(ltg.MAX_FILE_SIZE/ltg.BYTES_IN_MB,2) + ' MB.\n';
+                    message += 'Your file size is: ' + helper.precisionRound(file.size/ltg.BYTES_IN_MB,2) + ' MB.';
+                    helper.showNotice(component, helper.openBoxUploader, 'File Too Large', message, description);
+                    component.set('v.isLargeFile', true);
                     return;
                 }
                 var fr = new FileReader();
@@ -486,5 +488,26 @@
             "title": title,
             "message": message
         });
+    },
+
+    showNotice : function(component, callback, header, message, callbackParams) {
+        component.find('notifLib').showNotice({
+            "variant": "error",
+            "header": header,
+            "message": message,
+            closeCallback: function() {
+                callback(callbackParams)
+            }
+        });
+    },
+
+    openBoxUploader : function (description) {
+        let title = 'Submit%20Documentation%20to%20BlueWave';
+        let instructions = 'Please include "' + description + '" in the File Description';
+        let link = "https://bluewave-capital.app.box.com/upload-widget/preview?folderID=52259130943&title=";
+        link += title;
+        link += "&instructions=" + instructions.replace(' ', "%20");
+        link += "&isDescriptionFieldShown=1&isEmailRequired=1&width=385&height=420&token=nzwxuyckgi5aqvj6dhg2ppn1ws6y1n6s"
+        window.open(link);
     }
 })

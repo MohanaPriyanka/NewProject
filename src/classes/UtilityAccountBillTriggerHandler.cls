@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:
  * Description:
- * Test: MultipleMonthProductionUpdateTest
+ * Test: TestBillCreationandPayment, MultipleMonthProductionUpdateTest
  *************************************************************************************/
 
 public without sharing class UtilityAccountBillTriggerHandler {
@@ -77,7 +77,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         printSOQLLimits('Before Building UASBs');
         Set<UASB__c> uasbSet = new Set<UASB__c>();
-        Map<String, Bill_Adjustment__c> adjustmentsToUpdateMap = new Map<String, Bill_Adjustment__c>();
+        Map<String, List<Bill_Adjustment__c>> adjustmentsToUpdateMap = new Map<String, List<Bill_Adjustment__c>>();
         for(Utility_Account_Subscription__c uas : uasList){
             if (utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
                 Utility_Account_Bill__c uab = utilityAccountLogIdToUABMap.get(uas.Utility_Account_Log__c);
@@ -137,7 +137,12 @@ public without sharing class UtilityAccountBillTriggerHandler {
                             }
                             if (adjust.Utility_Account_Subscription__r.Id == uasb.Utility_Account_Subscription__c) {
                                 uasb.Adjustment_Amount__c = uasb.Adjustment_Amount__c + adjust.Adjustment_Amount__c;
-                                adjustmentsToUpdateMap.put(uasb.Unique_Id__c, adjust);
+                                List<Bill_Adjustment__c> adjustments = new List<Bill_Adjustment__c>();
+                                if (adjustmentsToUpdateMap.containsKey(uasb.Unique_Id__c)) {
+                                    adjustments = adjustmentsToUpdateMap.get(uasb.Unique_Id__c);
+                                }
+                                adjustments.add(adjust);
+                                adjustmentsToUpdateMap.put(uasb.Unique_Id__c, adjustments);
                             }
                         }
                         uasbSet.add(uasb);
@@ -163,12 +168,20 @@ public without sharing class UtilityAccountBillTriggerHandler {
             printSOQLLimits('After Inserting UASBs');
             for (UASB__c bill : billList) {
                 if (adjustmentsToUpdateMap.containsKey(bill.Unique_Id__c)) {
-                    adjustmentsToUpdateMap.get(bill.Unique_Id__c).UASB__c = bill.Id;
+                    List<Bill_Adjustment__c> adjustments = adjustmentsToUpdateMap.get(bill.Unique_Id__c);
+                    for (Bill_Adjustment__c adjustment : adjustments) {
+                        adjustment.UASB__c = bill.Id;
+                    }
+                    adjustmentsToUpdateMap.put(bill.Unique_ID__c, adjustments);
                 }
             }
             printSOQLLimits('Before Updating Adjustments');
             if(adjustmentsToUpdateMap.size() > 0) {
-                update adjustmentsToUpdateMap.Values();
+                List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+                for (List<Bill_Adjustment__c> adjustments : adjustmentsToUpdateMap.values()) {
+                    adjustmentsToUpdate.addAll(adjustments);
+                }
+                update adjustmentsToUpdate;
             }
             printSOQLLimits('After Updating Adjustments');
         }
@@ -184,7 +197,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
         Decimal shareOfSystem = szs.Percent_Share__c;
 
         // Calculate % Share of Production (kWh)
-        Decimal subscriptionProduction = (shareOfSystem/100) * systemProduction;
+        Decimal subscriptionProduction = ((shareOfSystem/100) * systemProduction).setScale(2, roundingMode.HALF_UP);
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
@@ -213,7 +226,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                     Total_System_Production_kWh__c = systemProduction,
                                     Share_of_System__c = shareOfSystem,
                                     Credits_Allocated__c = subscriptionNMCs.setScale(2, roundingMode.HALF_UP),
-                                    Subscription_Production_kWh_Static__c = subscriptionProduction.setScale(2, roundingMode.HALF_UP),
+                                    Subscription_Production_kWh_Static__c = subscriptionProduction,
                                     Schedule_Z_Subscription__c = szs.Id);
       
         if (billingMethod == 'NMC'){

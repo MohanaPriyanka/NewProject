@@ -135,22 +135,31 @@ public without sharing class DocuSignHelper {
 
     @Future(Callout=true)
     public static void sendCSPackageFuture(List<Id> oppIdList) {
-        List<Opportunity> oppList = [
-            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
-                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
-            FROM Opportunity
-            WHERE Id IN : oppIdList
-        ];
-        Integer oppNumber = 1;
-        for (Opportunity opp : oppList) {
-            try {
-                sendCSPackage(opp, oppNumber, oppIdList.size());
-            } catch (Util.BWException bwe) {
-                break;
+        try {
+            List<Opportunity> oppList = [
+                SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
+                    Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
+                FROM Opportunity
+                WHERE Id IN : oppIdList
+            ];
+            Integer oppNumber = 1;
+            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Sending contracts for these opportunities ' + oppIdList);
+            for (Opportunity opp : oppList) {
+                try {
+                    Logger.logLater('DocuSignHelper', 'sendCSPackageFuture',
+                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppIdList.size());
+                    sendCSPackage(opp, oppNumber, oppIdList.size());
+                } catch (Util.BWException bwe) {
+                    break;
+                }
+                oppNumber++;
             }
-            oppNumber++;
+        } catch (Exception e) {
+            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Caught unhandled exception sending contracts: ' +
+                e.getMessage());
+        } finally {
+            Logger.flushLogs();
         }
-        Logger.flushLogs();
     }
 
     // Makes callouts to DocuSign to send loan docs, and sets Contract Signature partner task to Pending

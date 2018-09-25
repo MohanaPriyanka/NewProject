@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: LoanUnderwritingTest,PCRApprovalHandlerTest,SLPControllersTestclass,SLPQuickSalesSheetTestclass
+ * Tested by: UtilTest
  *************************************************************************************/
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
@@ -107,5 +107,14 @@ public without sharing class Util {
 
     public static String removeComma(String value) {
         return value.replace(',', '');
+    }
+
+    public static String removeNewLine(String value) {
+        return value.replace('\n', '');
+    }
+
+    public static String prepForCSV(String value) {
+        value = removeComma(value);
+        return removeNewLine(value);
     }
 }
