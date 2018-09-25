@@ -291,4 +291,41 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(778.87, generatedBill.Subscription_Production_kWh_Static__c);
         System.assertEquals(778.87, previewedUASBs[1].PreGen_Subscription_Production__c);
     }
+
+    @isTest public static void testMNRounding() {
+        Test.startTest();
+        Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c, Production__c
+                                                        FROM Energy_Usage_Update__c
+                                                        WHERE Name = 'sssA - March 2016'];
+
+        prodUpdateSizeoffKwh.Production__c = 159817;
+        prodUpdateSizeoffKwh.Net_Metering_Rate_Applied__c = 0.15539;
+        update prodUpdateSizeoffKwh;
+
+        Schedule_Z_Subscription__c szs = [SELECT Id, Name, Customer_Subscription_kW_DC__c,
+                                            Number_of_Decimal_Places__c
+                                            FROM Schedule_Z_Subscription__c
+                                            WHERE Customer_Subscription_kW_DC__c = 14];
+
+        szs.Customer_Subscription_kW_DC__c = 6.988;
+        szs.Number_of_Decimal_Places__c = 4;
+        update szs;
+
+        prodUpdateSizeoffKwh.Generate_Bills__c = true;
+        update prodUpdateSizeoffKwh;
+        Test.stopTest();
+
+        UASB__c generatedBill =
+        [SELECT Id, Name, Utility_Account_Subscription__r.Name,
+            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
+        FROM UASB__c
+        WHERE Schedule_Z_Subscription__r.Name = : szs.Name
+        AND Production_Update__r.Id = : prodUpdateSizeoffKwh.Id];
+
+        // 0.15539 (nmc Rate) & 159817 (total system kWh) & 0.4833 (share of system) should = $120.03 NOT $120.02
+        System.assertEquals(120.03, generatedBill.Credits_Allocated__c);
+        System.assertNotEquals(120.02, generatedBill.Credits_Allocated__c);
+        System.assertEquals(0.4833, generatedBill.Share_of_System__c);
+        System.assertEquals(772.40, generatedBill.Subscription_Production_kWh_Static__c);
+    }
 }

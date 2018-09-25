@@ -1479,6 +1479,198 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
+    @isTest public static void testMultipleAdjustments() {
+        Account accountA = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Name = 'Account A'
+        ];
+        List<Account_Bill__c> accountbilllist = [
+            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
+            FROM Account_Bill__c
+        ];
+        Utility_Account_Subscription__c uas = [
+            SELECT Id
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__r.Account__c = : accountA.Id
+            AND Name = '0000234'
+            Limit 1
+        ];
+
+        Entity__c entity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+
+        Test.startTest();
+
+        List<Bill_Adjustment__c> newBillAdjustments = new List<Bill_Adjustment__c>();
+        for (Account_Bill__c accountbill : accountbilllist) {
+            if(accountbill.Bill_Number__c == 2) {
+                Bill_Adjustment__c overpayment1 = new Bill_Adjustment__c(
+                    Name = 'Overpayment: ' + accountbill.Name + ' ' + Date.today().format(),
+                    Adjustment_Amount__c = -1000,
+                    Account_Bill__c = accountbill.Id,
+                    Overpayment__c = true,
+                    Entity__c = entity.Id
+                );
+                newBillAdjustments.add(overpayment1);
+
+                Bill_Adjustment__c overpayment2 = new Bill_Adjustment__c(
+                    Name = 'Overpayment: ' + accountbill.Name + ' ' + Date.today().format(),
+                    Adjustment_Amount__c = -100,
+                    Account_Bill__c = accountbill.Id,
+                    Overpayment__c = true,
+                    Entity__c = entity.Id
+                );
+                newBillAdjustments.add(overpayment2);
+
+                Bill_Adjustment__c adjustment1 = new Bill_Adjustment__c(
+                    Name = 'Returned Payment 1',
+                    Adjustment_Amount__c = 50,
+                    Utility_Account_Subscription__c = uas.Id
+                );
+                newBillAdjustments.add(adjustment1);
+
+                Bill_Adjustment__c adjustment2 = new Bill_Adjustment__c(
+                    Name = 'Returned Payment 2',
+                    Adjustment_Amount__c = 5,
+                    Utility_Account_Subscription__c = uas.Id
+                );
+                newBillAdjustments.add(adjustment2);
+            }
+        }
+
+        insert newBillAdjustments;
+
+
+        List<Bill_Adjustment__c> billAdjustments = [
+            SELECT Id, Name, Account_Bill__c,
+                Entity__r.Id, Adjustment_Amount__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Property_Account_ID__c,
+                Property_Account_ID__c,
+                Outstanding__c,
+                Opportunity_ID__c,
+                Overpayment__c,
+                UASB__c
+            FROM Bill_Adjustment__c
+            WHERE Outstanding__c != 0
+            ORDER BY Adjustment_Amount__c
+        ];
+
+        System.assertEquals(4, billAdjustments.size());
+        for (Bill_Adjustment__c billAdjustment : billAdjustments) {
+            System.assertNotEquals(0, billAdjustment.Outstanding__c);
+        }
+
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Name, Generate_Bills__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+        ];
+        prodUpdate.Generate_Bills__c = true;
+        update prodUpdate;
+
+        List<System_Bill__c> originalSystemBillList = [
+            SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c,
+                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Adjustments_UASB__c,
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
+                Account_Bill__r.Published__c
+            FROM System_Bill__c
+            ORDER BY Bill_Number__c
+        ];
+
+        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
+        insert congaRecord;
+        congaRecord.Apply_Overpay_Adjust__c = true;
+        update congaRecord;
+
+        List<System_Bill__c> updatedSystemBillList = [
+            SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c,
+                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Adjustments_UASB__c,
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
+                Account_Bill__r.Published__c
+            FROM System_Bill__c
+            ORDER BY Bill_Number__c
+        ];
+        Test.stopTest();
+
+        // don't apply overpayments to already published bills
+        System.assertEquals(true, originalSystemBillList[0].Account_Bill__r.Published__c);
+        System.assertEquals(updatedSystemBillList[0].Id, originalSystemBillList[0].Id);
+        System.assertEquals(1, updatedSystemBillList[0].Bill_Number__c);
+        System.assertEquals(0, updatedSystemBillList[0].Previous_Overpayments__c );
+        System.assertEquals(282.96, updatedSystemBillList[0].Balance_Net_Late_Payments__c);
+
+        System.assertEquals(false, originalSystemBillList[1].Account_Bill__r.Published__c);
+        System.assertEquals(updatedSystemBillList[1].Id, originalSystemBillList[1].Id);
+        System.assertEquals(2, updatedSystemBillList[1].Bill_Number__c);
+        System.assertEquals(-400.28, updatedSystemBillList[1].Previous_Overpayments__c );
+        System.assertEquals(0, updatedSystemBillList[1].Balance_Net_Late_Payments__c);
+
+        System.assertEquals(false, originalSystemBillList[1].Account_Bill__r.Published__c);
+        System.assertEquals(updatedSystemBillList[2].Id, originalSystemBillList[2].Id);
+        System.assertEquals(3, updatedSystemBillList[2].Bill_Number__c);
+        System.assertEquals(-402.83, updatedSystemBillList[2].Previous_Overpayments__c );
+        System.assertEquals(0, updatedsystemBillList[2].Balance_Net_Late_Payments__c);
+
+        List<Adjustment_Application__c> secondAdjustApp =   [
+            SELECT Id, Name, Bill_Adjustment__c, System_Bill__c,
+                Overpayment_Amount__c, Adjustment_Amount__c,
+                Bill_Adjustment__r.Overpayment__c
+            FROM Adjustment_Application__c
+            WHERE Bill_Adjustment__r.Overpayment__c = TRUE
+            ORDER BY Overpayment_Amount__c ASC
+        ];
+
+        System.assertEquals(3, secondAdjustApp.size());
+        // pay off full system bill 3 with $1000 overpayment
+        System.assertEquals(-402.83, secondAdjustApp[0].Overpayment_Amount__c);
+        // First, pay off system bill 2 with $100 overpayment
+        System.assertEquals(-100, secondAdjustApp[2].Overpayment_Amount__c);
+        // pay off remainder of  system bill 2 with $1000 overpayment
+        System.assertEquals(-300.28, secondAdjustApp[1].Overpayment_Amount__c);
+
+        billAdjustments = [
+            SELECT Id, Name, Account_Bill__c,
+                Entity__r.Id, Adjustment_Amount__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Property_Account_ID__c,
+                Property_Account_ID__c,
+                Outstanding__c,
+                Opportunity_ID__c,
+                Overpayment__c,
+                UASB__c
+            FROM Bill_Adjustment__c
+            WHERE Id IN : billAdjustments
+        ];
+
+        Decimal outstanding = 0;
+        for (Bill_Adjustment__c billAdjustment : billAdjustments) {
+            outstanding += billAdjustment.Outstanding__c;
+        }
+        // original overpayments $1100 - system bill 2 $400.28 - system bill 3 $402.83
+        System.assertEquals(-296.89, outstanding);
+    }
+
     @IsTest
     public static void testPriorBillHandling(){
         List<SObject> chOrderList = new List<SObject>();
