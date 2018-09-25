@@ -87,7 +87,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         List<AggregateResult> aggregateResults = [
-            SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
+            SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Carry_Over_Balance__c) totaldue
             FROM System_Bill__c
             WHERE Account_Bill__c IN :newAcctBillList
             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c

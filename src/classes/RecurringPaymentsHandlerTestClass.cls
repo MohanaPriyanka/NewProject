@@ -25,7 +25,7 @@ private class RecurringPaymentsHandlerTestClass {
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
     }
 
-    static testMethod void scheduleJob(){
+    @IsTest static void scheduleJob(){
         Test.startTest();
 
         // Test scheduling of batch:
@@ -37,7 +37,7 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
     }
 
-    static testMethod void testScheduledJobResults() {
+    @IsTest static void testScheduledJobResults() {
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
                                                               YearDate__c, Credits_on_Bill_Period__c,
@@ -123,7 +123,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
     }
 
-    static testMethod void cloneOrderCorrectly() {
+    @IsTest static void cloneOrderCorrectly() {
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
                                                               YearDate__c, Credits_on_Bill_Period__c,
@@ -222,7 +222,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
     }
 
-    static testMethod void updateParentAccountOnStop() {
+    @IsTest static void updateParentAccountOnStop() {
         Account oldAccountC = [
             SELECT Id,
                    Recurring_Billing__c
@@ -254,7 +254,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(false, newAccountC.Recurring_Billing__c);
     }
 
-    static testMethod void updateParentAccountOnRecurring() {
+    @IsTest static void updateParentAccountOnRecurring() {
         Account oldAccountC = [
             SELECT Id,
                    Recurring_Billing__c
@@ -291,7 +291,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(true, newAccountC.Recurring_Billing__c);
     }
 
-    static testMethod void doNotUpdateParentAccountIfOneRecurringOrder() {
+    @IsTest static void doNotUpdateParentAccountIfOneRecurringOrder() {
         /*
         Tests if a chargent order is updated and the account has active
         recurring payments. Then, the parent account still has recurring_billing
@@ -377,7 +377,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(true, newAccountC.Recurring_Billing__c);
     }
 
-    static testMethod void moveChargentOrderFromPropertyAcctToFirstAcctBill (){
+    @IsTest static void moveChargentOrderFromPropertyAcctToFirstAcctBill (){
         //Tests the moving of the Chargent Order from the Property Account to the first Account Bill
 
         Account propAccountA = new Account(Name = 'Property Account A', RecordTypeId = '012j00000010HeQ');
@@ -529,7 +529,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(false, checkAB.Is_First_Bill__c);
     }
 
-    static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
+    @IsTest static void updateParentAccountIfOtherOrdersNotRecurring() {
         /*
         Tests if a chargent order is updated and the account does not have active
         recurring payments. Then, the parent account is not longer autopay
@@ -693,7 +693,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
     }
 
-    static testMethod void testCloseDuplicateEntityAccountOrders() {
+    @IsTest static void testCloseDuplicateEntityAccountOrders() {
 
         Test.startTest();
 
@@ -817,8 +817,8 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(ordersWithAccAEntity2After.get(0).ChargentOrders__Billing_Last_Name__c,
             'Unique Last Name 2 for order that should be still recurring'); // The one that's still recurring is the order just inserted
     }
-
-    static testMethod void testCloseDuplicatesWithManyRecords() {
+    
+    @IsTest static void testCloseDuplicatesWithManyRecords() {
 
         Account accA = [ SELECT Id, Name
         FROM Account
@@ -925,5 +925,102 @@ private class RecurringPaymentsHandlerTestClass {
         AND ChargentOrders__Payment_Status__c = 'Recurring'];
 
         System.assertEquals(1, ordersWithAccAEntity1AfterFinalInsert.size());
+    }
+
+    @IsTest static void testChargeCarryoverBalanceNotTotalDue() {
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Name, Bill_Number__c, Account_Bill__r.Bill_Number__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
+        ];
+        for (System_Bill__c systemBill : systemBills) {
+            // There should only be the first bills, loaded from setup
+            System.assertEquals(1, systemBill.Bill_Number__c);
+            System.assertEquals(1, systemBill.Account_Bill__r.Bill_Number__c);
+        }
+
+        Test.startTest();
+        List<Energy_Usage_Update__c> productionUpdateList = [
+            SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c, YearDate__c, Credits_on_Bill_Period__c, MonthDate__c,
+                Total_System_NMCs__c, Production__c, Generate_Bills__c, Total_System_NMCs_2_of_4__c, Total_System_NMCs_3_of_4__c,
+                Production_kWh_2_of_4__c, Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c, Production_kWh_4_of_4__c,
+                Net_Metering_Rate_Applied__c, Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c,
+                Month_Number__c, Net_Metering_Rate_Applied_2_of_4__c, Net_Metering_Rate_Applied_3_of_4__c,
+                Net_Metering_Rate_Applied_4_of_4__c
+        FROM Energy_Usage_Update__c
+        WHERE Name = 'sssB - March 2016'
+        OR Name = 'sssA - March 2016'
+        LIMIT 2];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        ee.runBills();
+
+        systemBills = [
+            SELECT Id, Name, Bill_Number__c, Total_Due__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
+            AND Bill_Number__c = 2
+        ];
+        // Now there should be two bills, one for each system for March
+        System.assertEquals(2, systemBills.size());
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Total_Due__c, Carry_Over_Balance__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+            AND Bill_Number__c = 2
+        ];
+        System.assertEquals(1, accountBills.size());
+        System.assertEquals(345.28, accountBills[0].Total_Due__c);
+        System.assertEquals(345.28, accountBills[0].Carry_Over_Balance__c);
+
+        // Simulate making a payment to pay off bills
+        for (System_Bill__c systemBill : systemBills) {
+            systemBill.Total_Payments_This_Month__c = systemBill.Total_Due__c;
+        }
+        update systemBills;
+
+        // Now, the second bill should be paid.
+        systemBills = [
+            SELECT Id, Name, Bill_Number__c, Total_Due__c, Carry_Over_Balance__c
+            FROM System_Bill__c
+            WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
+            AND Bill_Number__c = 2
+        ];
+        for (System_Bill__c systemBill : systemBills) {
+            System.assertEquals(0, systemBill.Carry_Over_Balance__c);
+        }
+        // And the account bill should be paid as well
+        accountBills = [
+            SELECT Id, Total_Due__c, Carry_Over_Balance__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+            AND Bill_Number__c = 2
+        ];
+        System.assertEquals(345.28, accountBills[0].Total_Due__c);
+        System.assertEquals(0, accountBills[0].Carry_Over_Balance__c);
+
+        List<ChargentOrders__ChargentOrder__c> chargentOrders = [
+            SELECT Id, ChargentOrders__Charge_Amount__c, ChargentOrders__Subtotal__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Account_Bill__c = :accountBills[0].Id
+        ];
+        // There are no chargent orders on the latest bill
+        System.assertEquals(0, chargentOrders.size());
+
+        // After the chargent move runs, chargent orders should be set to 0 and in the future
+        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
+        Database.executeBatch(batchToRun,50);
+        Test.stopTest();
+
+        chargentOrders = [
+            SELECT Id, ChargentOrders__Charge_Amount__c, ChargentOrders__Subtotal__c, ChargentOrders__Payment_Start_Date__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Account_Bill__c = :accountBills[0].Id
+        ];
+        // There should now be two orders on the latest bill, with 0 charge amount, and a payment start in the future
+        System.assertEquals(2, chargentOrders.size());
+        for (ChargentOrders__ChargentOrder__c chargentOrder : chargentOrders) {
+            System.assert(chargentOrder.ChargentOrders__Payment_Start_Date__c > Date.today());
+            System.assertEquals(0, chargentOrder.ChargentOrders__Charge_Amount__c);
+        }
     }
 }
