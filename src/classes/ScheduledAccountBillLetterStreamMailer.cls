@@ -7,16 +7,12 @@
  */
 
 
-public without sharing class ScheduledAccountBillLetterStreamMailer implements Schedulable {
+global without sharing class ScheduledAccountBillLetterStreamMailer {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
-    public Integer maxPackageSize = 1*1000*1000;
-    public Boolean makeCallout = true;
+    public static Integer maxPackageSize = 1*1000*1000;
+    public static Boolean makeCallout = true;
 
-    public void execute(SchedulableContext sc){
-        batchAccountBills();
-    }
-
-    public void batchAccountBills() {
+    webService static void batchAccountBills() {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         Set<Id> docIds = new Set<Id>();
 
@@ -77,7 +73,7 @@ public without sharing class ScheduledAccountBillLetterStreamMailer implements S
         Logger.flushLogs();
     }
 
-    public String queuedLogMessage(Decimal packageSize, Id JobId) {
+    public static String queuedLogMessage(Decimal packageSize, Id JobId) {
         Decimal sizeInKB = (packageSize/1000).setScale(3);
         String message = 'Package of ' + sizeInKB + ' kB queued for letter stream. ' + 'JobID: ' + jobId;
         return message;
