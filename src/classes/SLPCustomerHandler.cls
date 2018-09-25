@@ -264,7 +264,13 @@ public without sharing class SLPCustomerHandler {
 
     @AuraEnabled
     public static Boolean sendCommunitySolarApplication (String[] emailAddress) {
-        String startApplicationUrl = getCommunitySolarApplicationURL();
+        String startApplicationUrl;
+
+        String host = URL.getSalesforceBaseUrl().toExternalForm() + '/';
+        startApplicationUrl = host + 'apply/s/csap';
+        if (profile.partnerId != null && profile.salesRepId != null) {
+            startApplicationUrl += '?partnerId=' + profile.partnerId + '&salesRepId=' + profile.salesRepId;
+        }
 
         return MessagingService.createAndSendDynamicTemplateEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Start Your Community Solar Application Here',
                                                                      emailAddress, 'applicationURL', startApplicationUrl);
