@@ -5,6 +5,7 @@ public without sharing class ChargentOrderCreationhandler {
         Map<Id, Opportunity> oldvaluesmap = new Map<Id, Opportunity> ();
         List<Opportunity> oppToUpdateList = new list<Opportunity> ();
         Set<Id> sssIds = new Set<Id>();
+        List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
 
         for(Opportunity oppOld : oldOppList){
             oldvaluesmap.put(oppOld.id, oppOld);
@@ -34,19 +35,35 @@ public without sharing class ChargentOrderCreationhandler {
             sharedSolarSystemMap.put(sss.Id, sss);
         }
 
+        Entity__c defaultEntity = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'BWC Holdings, LLC'
+        ];
+
         if (oppToUpdateList.size() > 0) {
             for(Opportunity opp : oppToUpdateList) {
-            String paymentMethod;
-            if (opp.CC_Account_Number__c != null) {
-                paymentMethod = 'Credit Card';
-            } else {
-                paymentMethod = 'Check';
-            }
-            Shared_Solar_System__c sss = sharedSolarSystemMap.get(opp.Shared_Solar_System__c);
-            ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
+                String paymentMethod;
+                if (opp.CC_Account_Number__c != null) {
+                    paymentMethod = 'Credit Card';
+                } else {
+                    paymentMethod = 'Check';
+                }
+                Shared_Solar_System__c sss = sharedSolarSystemMap.get(opp.Shared_Solar_System__c);
+                Id entityId;
+                Id gatewayId;
+                if (sss.BWC_Project_Entity_Manual__c == null) {
+                    entityId = defaultEntity.Id;
+                    gatewayId = defaultEntity.Gateway__c;
+                } else {
+                    entityId = sss.BWC_Project_Entity_Manual__c;
+                    gatewayId = sss.BWC_Project_Entity_Manual__r.Gateway__c;
+                }
+                    
+                ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
                                                           ChargentOrders__Account__c = opp.AccountId,
-                                                          ChargentOrders__Gateway__c = sss.BWC_Project_Entity_Manual__r.Gateway__c,
-                                                          Entity__c = sss.BWC_Project_Entity_Manual__c,
+                                                          ChargentOrders__Gateway__c = gatewayId,
+                                                          Entity__c = entityId,
                                                           ChargentOrders__Payment_Method__c = paymentMethod,
                                                           ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
                                                           ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,
@@ -59,7 +76,7 @@ public without sharing class ChargentOrderCreationhandler {
                                                           ChargentOrders__Billing_Last_Name__c = opp.CC_CardHolder_Name__c,
                                                           ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
                                                           ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
-                insert orderA;
+                ordersToInsert.add(orderA);
                 accountids.add(opp.AccountId);
                 opp.ACH_Bank_Name__c = 'removed';
                 opp.ACH_Bank_Routing_Number__c = 'removed';
@@ -84,6 +101,10 @@ public without sharing class ChargentOrderCreationhandler {
                 }
             }
             update accountList;
+
+            if (!ordersToInsert.isEmpty()) {
+                insert ordersToInsert;
+            }
         }
     }
 }

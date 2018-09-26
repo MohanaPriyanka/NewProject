@@ -60,8 +60,27 @@ public without sharing class AccountBillHandler{
     public static void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap ){
         List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
 
-        if(!firstAccountBillList.isEmpty()){
+        Set<Id> firstBillIds = new Set<Id>();
+        for (Account_Bill__c accountBill : firstAccountBillList) {
+            firstBillIds.add(accountBill.Id);
+        }
 
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN : firstBillIds
+        ];
+
+        Set<Id> entities = new Set<Id>();
+
+        Map<Id, System_Bill__c> systemBillByAB = new Map<Id, System_Bill__c>();
+        for (System_Bill__c systemBill : systemBills) {
+            systemBillByAB.put(systemBill.Account_Bill__c, systemBill);
+            entities.add(systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__c);
+        }
+
+        if(!firstAccountBillList.isEmpty()){
             for(Account_Bill__c firstBill : firstAccountBillList) {
                 if (ordersByABMap.containsKey(firstBill.Id)) {
                     ChargentOrders__ChargentOrder__c firstChargentOrder = ordersByABMap.get(firstBill.Id);
@@ -79,6 +98,14 @@ public without sharing class AccountBillHandler{
                     //Remove the Chargent Order from the Property Account
                     firstChargentOrder.Property_Account__c = null;
                     firstChargentOrder.ChargentOrders__Account__c = null;
+
+                    // Waitlist entities should not have a system bill, so we should update to an entity that has a bill
+                    if (!entities.contains(firstChargentOrder.Entity__c)) {
+                        System_Bill__c systemBill = systemBillByAB.get(firstBill.Id);
+                        Id gatewayId = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__c;
+                        firstChargentOrder.ChargentOrders__Gateway__c = gatewayId;
+                        firstChargentOrder.Entity__c = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__c;
+                    }
 
                     //Tag account bill as being first account bill
                     firstBill.Is_First_Bill__c = true;
