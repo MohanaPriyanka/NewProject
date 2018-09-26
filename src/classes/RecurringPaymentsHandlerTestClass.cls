@@ -498,8 +498,6 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
 
-        System.assertEquals(false, checkAB.Is_First_Bill__c);
-
         //Confirm system bill shared solar system is sssA and make sure ChargentOrder entity matches
         System.assertEquals(sssA.Id, checkAB.System_Bills__r[0].Shared_Solar_System__c);
         System.assertEquals(sssA.BWC_Project_Entity_Manual__c, checkCO.Entity__c);
