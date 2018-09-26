@@ -15,33 +15,34 @@ public without sharing class ChargentOrderCreationhandler {
             String newACH = opp.ACH_Name_on_Account__c;
             String newvalueID = opp.Id;
             String oldACH = oldvaluesmap.get(newvalueID).ACH_Name_on_Account__c;
-            if (newACH != null && oldACH == null){
+            if (newACH != null && oldACH == null && opp.Product_Line__c == 'Community Solar'){
                 oppToUpdateList.add(opp);
                 sssIds.add(opp.Shared_Solar_System__c);
-            } else if (opp.CC_Account_Number__c != null && oldvaluesmap.get(newvalueID).CC_Account_Number__c == null){
+            } else if (opp.CC_Account_Number__c != null && oldvaluesmap.get(newvalueID).CC_Account_Number__c == null && opp.Product_Line__c == 'Community Solar'){
                 oppToUpdateList.add(opp);
                 sssIds.add(opp.Shared_Solar_System__c);
             }
         }
 
-        List<Shared_Solar_System__c> sharedSolarSystems = [
-            SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
-            FROM Shared_Solar_System__c
-            WHERE Id IN : sssIds
-        ];
-
-        Map<Id, Shared_Solar_System__c> sharedSolarSystemMap = new Map<Id, Shared_Solar_System__c>();
-        for (Shared_Solar_System__c sss : sharedSolarSystems) {
-            sharedSolarSystemMap.put(sss.Id, sss);
-        }
-
-        Entity__c defaultEntity = [
-            SELECT Id, Gateway__c
-            FROM Entity__c
-            WHERE Name = 'BWC Holdings, LLC'
-        ];
 
         if (oppToUpdateList.size() > 0) {
+            List<Shared_Solar_System__c> sharedSolarSystems = [
+                SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+                FROM Shared_Solar_System__c
+                WHERE Id IN : sssIds
+            ];
+
+            Map<Id, Shared_Solar_System__c> sharedSolarSystemMap = new Map<Id, Shared_Solar_System__c>();
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                sharedSolarSystemMap.put(sss.Id, sss);
+            }
+
+            Entity__c defaultEntity = [
+                SELECT Id, Gateway__c
+                FROM Entity__c
+                WHERE Name = 'BWC Holdings, LLC'
+            ];
+
             for(Opportunity opp : oppToUpdateList) {
                 String paymentMethod;
                 if (opp.CC_Account_Number__c != null) {

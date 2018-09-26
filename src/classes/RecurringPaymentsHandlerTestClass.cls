@@ -406,6 +406,7 @@ private class RecurringPaymentsHandlerTestClass {
             Shared_Solar_System__c = sssA.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Non-Residential',
+            Product_Line__c = 'Community Solar',
             CloseDate = System.today());
 
         insert opportunityA;
@@ -549,6 +550,7 @@ private class RecurringPaymentsHandlerTestClass {
             Shared_Solar_System__c = sssWaitlist.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Non-Residential',
+            Product_Line__c = 'Community Solar',
             CloseDate = System.today());
 
         insert opportunityA;
