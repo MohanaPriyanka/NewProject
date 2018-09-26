@@ -193,6 +193,55 @@ public class DisbursalHandlerTest {
         Test.stopTest();
     }
 
+    @isTest static void testUpdateDisbursalAmountsWithRLAChangeAfterContractSignature() {
+        Decimal totalAmount = 0;
+        Test.startTest();
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            FROM Opportunity
+            WHERE DOER_Solar_Loan__c = FALSE
+        ];
+        opportunityRecord.StageName = 'New';
+        update opportunityRecord;
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+         // update first disbursal to be disbursed
+        disbursalRecords.get(0).Status__c = 'Disbursed';
+        Decimal originalDisbursalAmount = disbursalRecords.get(0).Amount__c;
+        update disbursalRecords;
+
+        LoanHandler.resetTriggerContext();
+        opportunityRecord.Loans__r.get(0).Requested_Loan_Amount__c = 35000;
+        // update loan
+        update opportunityRecord.Loans__r.get(0);
+
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<Disbursal__c> updatedDisbursals = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c, Date_of_Disbursal__c, Disbursal_Method__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+        for (Disbursal__c disbursal : updatedDisbursals) {
+            totalAmount = totalAmount + disbursal.Amount__c;
+        }
+
+        System.assertEquals(originalDisbursalAmount, updatedDisbursals.get(0).Amount__c);
+        System.assertEquals(22500, updatedDisbursals.get(1).Amount__c);
+        System.assertEquals(3500, updatedDisbursals.get(2).Amount__c);
+        System.assertEquals(35000, totalAmount);
+        Test.stopTest();
+    }
+
     @isTest static void testOppStageCompleteContractDisbursalReady() {
         Test.startTest();
             Opportunity opportunityRecord = [
