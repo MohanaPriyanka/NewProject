@@ -10,3 +10,6 @@ UASUnrelated,0000238,012j00000004TNgAAM,1400.00,ADonutOpp,1400.000000,TestUAL-Un
 UASPaymentTest1,0000239,012j00000004TNgAAM,1400.00,PaymentTestOpp1,1400.000000,TestUAL-PaymentTest1,25.0000,true,Active Subscription
 UASPaymentTest2,0000240,012j00000004TNgAAM,1400.00,PaymentTestOpp2,1400.000000,TestUAL-PaymentTest2,10.0000,true,Active Subscription
 UASPaymentTest3,0000241,012j00000004TNgAAM,1400.00,PaymentTestOpp3,1400.000000,TestUAL-PaymentTest3,20.0000,true,Active Subscription
+UASPaymentTest6,0000244,012j00000004TNgAAM,1400.00,PaymentTestOpp6,1400.000000,TestUAL-PaymentTest6,25.0000,true,Active Subscription
+UASPaymentTest7,0000245,012j00000004TNgAAM,1400.00,PaymentTestOpp7,1400.000000,TestUAL-PaymentTest7,10.0000,true,Active Subscription
+

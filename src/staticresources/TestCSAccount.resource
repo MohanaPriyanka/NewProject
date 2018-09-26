@@ -12,7 +12,7 @@ DDonut,DDonut Shop,Landowner,012j00000010HeQAAU,United States,United States,true
 Unrelated,Unrelated OtherAccount,Landowner,012j00000010HeQAAU,United States,United States,true,,,Unrelated OtherAccount Parent
 PaymentTestParentAccountA,PaymentTestParentAccountA,Landowner,012j00000010HeQAAU,United States,United States,true,,,
 PaymentTestPropertyA,PaymentTestPropertyA,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountA
-PaymentTestPropertyB,PaymentTestPropertyA,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountA
+PaymentTestPropertyB,PaymentTestPropertyB,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountA
 PaymentTestParentAccountC,PaymentTestParentAccountC,Landowner,012j00000010HeQAAU,United States,United States,true,,,
 PaymentTestPropertyD,PaymentTestPropertyD,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC
 PaymentTestPropertyE,PaymentTestPropertyE,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC

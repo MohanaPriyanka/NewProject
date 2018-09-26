@@ -21,11 +21,12 @@ public class CSPaymentTest {
         System_Properties__c sysProp = new System_Properties__c(Name = 'System', Disable_System_Bill_Trigger__c = true);
         insert sysProp;
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
-        sysProp.Disable_System_Bill_Trigger__c = false;
-        update sysProp;
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
+
+        sysProp.Disable_System_Bill_Trigger__c = false;
+        update sysProp;
 
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
@@ -58,6 +59,8 @@ public class CSPaymentTest {
             FROM Account_Bill__c
             WHERE Name LIKE '%Donut Shop%'
             OR Name LIKE '%Payment Test%'
+            OR Name LIKE '%Account A%'
+            OR Name LIKE '%Account B%'
         ];
         for (Account_Bill__c ab : abs) {
             ab.Published__c = true;
@@ -65,6 +68,8 @@ public class CSPaymentTest {
         update abs;
     }
 
+    // We get System.UnexpectedException: Salesforce System Error: 900955498-340097 (1185570226) (1185570226)
+    // when trying to load users via Test.loadData
     private static void insertUser(Account account, String email) {
         Contact contact = new Contact(FirstName = 'First', LastName = account.Name, AccountId = account.Id);
         insert contact;
@@ -233,18 +238,7 @@ public class CSPaymentTest {
         Test.stopTest();
     }
 
-
-    static void setBillsToPublished() {
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-                                                    FROM Account_Bill__c
-                                                    WHERE Published__c = False];
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-    }
-
-    static List<System_Bill__c> mockMakeASinglePayment(List<System_Bill__c> systemBills) {
+    public static List<System_Bill__c> mockMakeASinglePayment(List<System_Bill__c> systemBills) {
         for (System_Bill__c systemBill : systemBills) {
             systemBill.Total_Payments_This_Month__c = systemBill.Total_Due__c;
             systemBill.Payments_Net_Previous_Balances__c = systemBill.Total_Due__c;
@@ -254,11 +248,11 @@ public class CSPaymentTest {
         return systemBills;
     }
 
-    static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId) {
+    public static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId) {
         return makePaymentInPortal(propertyAccountId, false);
     }
 
-    static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId, Boolean autopay) {
+    public static List<ChargentOrders__ChargentOrder__c> makePaymentInPortal(String propertyAccountId, Boolean autopay) {
         List<AggregateResult> aggResult = MyAccountController.getSystemBills(propertyAccountId);
         ChargentOrders__ChargentOrder__c orderB = getPaymentInput();
         List<ChargentOrders__ChargentOrder__c> choList = CreateOrderandPaymentRequest.setChargeAmountAndInsert(aggResult, orderB, autopay);
@@ -266,7 +260,7 @@ public class CSPaymentTest {
         return choList;
     }
 
-    static ChargentOrders__ChargentOrder__c getPaymentInput() {
+    public static ChargentOrders__ChargentOrder__c getPaymentInput() {
         ChargentOrders__ChargentOrder__c paymentInfoACH =
             new ChargentOrders__ChargentOrder__c(
                 ChargentOrders__Payment_Method__c = 'Check',
