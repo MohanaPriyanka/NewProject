@@ -147,8 +147,8 @@ public without sharing class DocuSignHelper {
             for (Opportunity opp : oppList) {
                 try {
                     Logger.logLater('DocuSignHelper', 'sendCSPackageFuture',
-                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppIdList.size());
-                    sendCSPackage(opp, oppNumber, oppIdList.size());
+                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppList.size());
+                    sendCSPackage(opp, oppNumber, oppList.size());
                 } catch (Util.BWException bwe) {
                     break;
                 }
