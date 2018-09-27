@@ -545,8 +545,6 @@ private class RecurringPaymentsHandlerTestClass {
             WHERE Name = 'Waitlist'
         ];
 
-
-
         Opportunity opportunityA = new Opportunity(
             Name = 'OppA',
             AccountId = propAccountA.Id,
@@ -599,8 +597,12 @@ private class RecurringPaymentsHandlerTestClass {
         update productionUpdateA;
         update sssA;
 
-        List<Account_Bill__c> acctBills = [SELECT Id, Name, Is_First_Bill__c FROM Account_Bill__c];
-        System.assertEquals(5, acctBills.size());
+        List<Account_Bill__c> acctBills = [
+            SELECT Id, Name, Is_First_Bill__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :propAccountA.Id
+        ];
+        System.assertEquals(0, acctBills.size());
 
         List<Energy_Usage_Update__c> productionUpdateList = [
             SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
@@ -622,8 +624,12 @@ private class RecurringPaymentsHandlerTestClass {
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
-        List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c];
-        System.assertEquals(7, acctBillsList.size() );
+        List<Account_Bill__c> acctBillsList = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :propAccountA.Id
+        ];
+        System.assertEquals(1, acctBillsList.size() );
 
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
         Database.executeBatch(batchToRun,50);
