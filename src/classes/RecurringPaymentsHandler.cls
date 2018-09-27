@@ -20,7 +20,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
                         ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
                         ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
-                        ' Account_Bill__r.Is_First_Bill__c, ' +
+                        ' Account_Bill__r.Is_First_Bill__c, Account_Bill__r.Due_Date_SB__c, ' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
                         ' Comments__c,' +
                         ' ChargentOrders__Payment_Method__c,' +
@@ -87,7 +87,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         List<AggregateResult> aggregateResults = [
-            SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Total_Due__c) totaldue
+            SELECT Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c entity, SUM(Carry_Over_Balance__c) totaldue
             FROM System_Bill__c
             WHERE Account_Bill__c IN :newAcctBillList
             GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__c, Account_Bill__c
@@ -155,8 +155,19 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                     'No System Bills found for this Account Bill: ' + abMap.get(chargentOrderKey).Id);
             }
         } else {
-            recurOrder = setChargentOrderToStopped(recurOrder,
-                'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
+            if (recurOrder.Account_Bill__r.Due_Date_SB__c >= Date.today()) {
+                // The chargent order is on a bill that's due today or in the future - could be because someone
+                // updated their autopay information which is saved on the most recent bill
+                // We just need to set the new charge amount
+                newChargeAmount = aggregateSbMap.remove(recurOrder.Account_Bill__c + '_' + entityId);
+                recurOrder.ChargentOrders__Charge_Amount__c = newChargeAmount.setScale(2, RoundingMode.HALF_UP);
+                if (recurOrder.ChargentOrders__Charge_Amount__c == 0) {
+                    pushPaymentStartDate(recurOrder);
+                }
+            } else {
+                recurOrder = setChargentOrderToStopped(recurOrder,
+                    'No Account Bill found for Bill Number and Property Account Id: ' + chargentOrderKey);
+            }
         }
     }
 
@@ -166,14 +177,45 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         if (recurOrder.ChargentOrders__Charge_Amount__c != 0) {
             return;
         }
-        Date nextMonth = Date.today().addMonths(1);
-        Date nextChargeDate = Date.newInstance(
-            nextMonth.year(),
-            nextMonth.month(),
-            Integer.valueOf(recurOrder.ChargentOrders__Charge_Date__c)
+        recurOrder.ChargentOrders__Payment_Start_Date__c = newPaymentStartDate(
+            Date.today(),
+            Integer.valueOf(recurOrder.ChargentOrders__Charge_Date__c),
+            recurOrder.ChargentOrders__Payment_Start_Date__c
         );
-        recurOrder.ChargentOrders__Payment_Start_Date__c = nextChargeDate;
     }
+
+    @TestVisible
+    private static Date newPaymentStartDate(Date today, Integer chargeDate, Date oldPaymentStartDate) {
+        Date nextAutopayRun = getNextAutopayDate(today, chargeDate);
+        Date nextTransactionDate = getNextTransactionDate(oldPaymentStartDate, nextAutopayRun, chargeDate);
+        if (nextTransactionDate > nextAutopayRun) {
+            return oldPaymentStartDate;
+        } else {
+            return Date.newInstance(nextTransactionDate.year(), nextTransactionDate.month() + 1, chargeDate);
+        }
+    }
+
+    private static Date getNextAutopayDate(Date today, Integer chargeDate) {
+        if (today.day() <= chargeDate) {
+            return Date.newInstance(today.year(), today.month(), chargeDate);
+        } else {
+            return Date.newInstance(today.year(), today.month() + 1, chargeDate);
+        }
+    }
+
+    // Chargent sets Next Transaction Date after charges, but it can be changed as well. We'll calculate it instead
+    private static Date getNextTransactionDate(Date oldPaymentStartDate, Date nextAutopayRun, Integer chargeDate) {
+        if (oldPaymentStartDate <= nextAutopayRun) {
+            return nextAutopayRun;
+        } else {
+            if (oldPaymentStartDate.day() == chargeDate) {
+                return Date.newInstance(oldPaymentStartDate.year(), oldPaymentStartDate.month(), chargeDate);
+            } else {
+                return Date.newInstance(oldPaymentStartDate.year(), oldPaymentStartDate.month() + 1, chargeDate);
+            }
+        }
+    }
+
 
     public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped(ChargentOrders__ChargentOrder__c orderToStop,
         String stopMessage) {
