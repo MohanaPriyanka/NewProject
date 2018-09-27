@@ -902,23 +902,28 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(1, ordersWithAccAEntity1AfterFinalInsert.size());
     }
 
-    // There was an error where Orders on the account were moved to the first ever account bill, even if there were
-    // subsequent account bills. This was due to unsetFirstAccountBill being run without checking whether there
-    // are subsquent bills.
+    // This test reproduces a bug where Chargent Orders would be moved from the account to the first account bill upon
+    // making any change to the first account bill, EVEN IF there was already a second account bill.
+    // This happened to Jyoti Enterprises in July/Aug 2018. A paper check was logged in August to pay off the July Bill,
+    // and when the balanced changed on the July bill and AccountBillTrigger(/AccountBillHandler) was run, Chargent
+    // Order 4105 was moved from the Account to July and set to recurring, and the August bill had already been created.
     static testMethod void  testOnlyUnsetIsFirstBillIfNoSubsequent() {
 
+        // Get the account
         Account accountWithOrder = [
             SELECT Id, Name
             FROM Account
             WHERE Name = 'Account E'
         ];
 
+        // Get the list of orders currently on that account
         List<ChargentOrders__ChargentOrder__c> ordersOnAccount = [
             SELECT Id, Property_Account__r.Id, Property_Account_ID__c, Entity__c, Account_Bill__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Property_Account__r.Id =: accountWithOrder.Id
         ];
 
+        // Get the first bill. There are TWO bills on the account.
         Account_Bill__c firstAccountBill = [
             SELECT Id, Parent_Account__c, Name,
             (SELECT Id FROM Chargent_Orders__r)
@@ -927,10 +932,22 @@ private class RecurringPaymentsHandlerTestClass {
             AND Name = 'First Account Bill'
         ];
 
+        // Get the first bill. There are TWO bills on the account.
+        List<Account_Bill__c> billsOnAccount = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+        ];
+
+        // Show that there is an order on the account, and no order on the first bill.
         System.assertEquals(ordersOnAccount.size(), 1);
         System.assertEquals(firstAccountBill.Chargent_Orders__r.size(), 0);
 
-        // make any change to trigger
+        // Assert that there are two bills for this account
+        System.assertEquals(billsOnAccount.size(), 2);
+
+        // make any change to the first account bill, so that AccountBillHandler runs
         firstAccountBill.Name = 'making any change';
         update firstAccountBill;
 
@@ -948,11 +965,12 @@ private class RecurringPaymentsHandlerTestClass {
             AND Name = 'making any change'
         ];
 
-
+        // Run updateRecurringOrders, which also contained the bug, to ensure that it does not cause the order to move
+        //  to the first account bill
         RecurringPaymentsHandler handler = new RecurringPaymentsHandler();
-
         handler.updateRecurringOrders(ordersOnAccount);
 
+        // Assert that there is still one order on the account, and none on the first bill (i.e. nothing has changed)
         System.assertEquals(ordersOnAccountAfter.size(), 1);
         System.assertEquals(firstAccountBillAfter.Chargent_Orders__r.size(), 0);
     }
