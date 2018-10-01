@@ -487,7 +487,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         Account_Bill__c checkAB = [
-            SELECT Id, Property_Account_Name__c, Is_First_Bill__c, Parent_Account__c,
+            SELECT Id, Property_Account_Name__c, Parent_Account__c,
             (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r)
             FROM Account_Bill__c
             WHERE Parent_Account__c = :propAccountA.Id

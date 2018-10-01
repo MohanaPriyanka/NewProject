@@ -20,7 +20,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
                         ' ChargentOrders__Charge_Amount__c, Account_Bill__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c,' +
                         ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
-                        ' Account_Bill__r.Is_First_Bill__c, ' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
                         ' Comments__c,' +
                         ' ChargentOrders__Payment_Method__c,' +
@@ -75,7 +74,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         List<Account_Bill__c> accountBills = [
-            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c, Is_First_Bill__c
+            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
             FROM Account_Bill__c
             WHERE Property_Account_ID__c IN :accountIDList
             ORDER BY Bill_Number__c

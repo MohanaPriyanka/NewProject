@@ -82,9 +82,6 @@ public without sharing class AccountBillHandler{
                     firstChargentOrder.Property_Account__c = null;
                     firstChargentOrder.ChargentOrders__Account__c = null;
 
-                    //Tag account bill as being first account bill
-                    firstBill.Is_First_Bill__c = true;
-
                     //Add Chargent Order to list for update
                     ordersToUpdate.add(firstChargentOrder);
                 }
