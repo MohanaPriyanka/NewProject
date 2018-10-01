@@ -50,7 +50,7 @@
                   <div aura:id="paymentAmount" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_small slds-p-bottom_medium">
                     <label><b>Payment Amount:</b>
                     </label>
-                    <ui:inputCurrency class="slds-input" value="{!v.DynamicTotalDue}"/>
+                    <ui:inputCurrency class="slds-input" value="{!v.DynamicTotalDue}" disabled="{!v.chOrder.AutoPay_Only__c == true}"/>
                   </div>
                   <h3 class="slds-text-body_regular slds-text-color_default slds-p-top_medium">
                     If you would you like to enroll in our Automatic Payment service please select yes below. We will automatically withdraw funds from the account listed below on a monthly basis.

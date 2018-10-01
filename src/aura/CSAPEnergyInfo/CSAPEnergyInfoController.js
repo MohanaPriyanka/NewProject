@@ -61,7 +61,7 @@
         }
     },
     goToUAServiceAddress : function(component, event, helper) {
-        if (!component.get("v.electricBill1")) {
+        if (!component.get("v.electricBill1") && !component.get('v.isLargeFile')) {
             alert("Please upload your recent electric bill");
             return;
         }

@@ -12,6 +12,8 @@
   <aura:attribute name="annualElectricHistory" type="Object"/>
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="String"/>
+  <aura:attribute name="isLargeFile" type="Boolean"/>
+  <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>

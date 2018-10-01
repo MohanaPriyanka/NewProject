@@ -162,18 +162,27 @@
     */
 
     submitPayments : function(component, orderList, helper, isFirstOrder) {
-        var chargePromise = this.submitPayment(component, orderList[0], helper, isFirstOrder);
-        var self = this;
-        chargePromise.then(
-            $A.getCallback(function(result) {
-                orderList.splice(0,1);
-                if (orderList.length > 0) {
-                    self.submitPayments(component, orderList, helper, false);
-                } else {
-                    self.postSubmitProcessing(component, helper, true);
-                }
-            })
-        );
+        if (orderList[0].ChargentOrders__Subtotal__c === 0) {
+            orderList.splice(0,1);
+            if (orderList.length > 0) {
+                helper.submitPayments(component, orderList, helper, false);
+            } else {
+                helper.postSubmitProcessing(component, helper, true);
+            }
+        } else {
+            var chargePromise = this.submitPayment(component, orderList[0], helper, isFirstOrder);
+            var self = this;
+            chargePromise.then(
+                $A.getCallback(function(result) {
+                    orderList.splice(0,1);
+                    if (orderList.length > 0) {
+                        self.submitPayments(component, orderList, helper, false);
+                    } else {
+                        self.postSubmitProcessing(component, helper, true);
+                    }
+                })
+            );
+        }
     },
 
     submitPayment : function(component, orderToCharge, helper, isFirstOrder) {
