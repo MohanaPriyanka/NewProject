@@ -18,9 +18,9 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Name, ChargentOrders__Payment_Status__c,' +
-                        ' ChargentOrders__Charge_Amount__c, Account_Bill__c,' +
+                        ' ChargentOrders__Charge_Amount__c, Account_Bill__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c,' +
                         ' Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,' +
-                        ' Account_Bill__r.Is_First_Bill__c, Account_Bill__r.Due_Date_SB__c, ' +
+                        ' Account_Bill__r.Due_Date_SB__c, ' +
                         ' Property_Account_ID__c, Reason_for_Recurring_Stop__c,' +
                         ' Comments__c,' +
                         ' ChargentOrders__Payment_Method__c,' +
@@ -75,7 +75,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
 
         List<Account_Bill__c> accountBills = [
-            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c, Is_First_Bill__c
+            SELECT Id, Name, Bill_Number__c, Property_Account_ID__c
             FROM Account_Bill__c
             WHERE Property_Account_ID__c IN :accountIDList
             ORDER BY Bill_Number__c
@@ -106,7 +106,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 && recurOrder.Account_Bill__r.Bill_Number__c != null
                 && entityId != null) {
                 chargentOrderKey = getChargentOrderKey(recurOrder);
-                unsetFirstAccountBill(recurOrder, uncheckedFirstAccountBills);
                 moveAndSetOrder(abMap, chargentOrderKey, recurOrder, aggregateSbMap, entityId);
             } else {
                 recurOrder = setChargentOrderToStopped(recurOrder,
@@ -125,20 +124,14 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     private String getChargentOrderKey(ChargentOrders__ChargentOrder__c recurOrder) {
         Integer newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
-        if (recurOrder.Account_Bill__r.Is_First_Bill__c) {
+        if (recurOrder.Account_Bill__r.Bill_Number__c == 1 &&
+            recurOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c == 1) {
             return Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
         } else {
             return newBillNumber + '_' + recurOrder.Property_Account_ID__c;
         }
     }
-
-    private void unsetFirstAccountBill(ChargentOrders__ChargentOrder__c recurOrder, List<Account_Bill__c> updateABs) {
-        if (recurOrder.Account_Bill__r.Is_First_Bill__c) {
-            recurOrder.Account_Bill__r.Is_First_Bill__c = false;
-            updateABs.add(recurOrder.Account_Bill__r);
-        }
-    }
-
+    
     private void moveAndSetOrder(Map<String, Account_Bill__c> abMap, String chargentOrderKey,
         ChargentOrders__ChargentOrder__c recurOrder, Map<String, Decimal> aggregateSbMap, Id entityId) {
         Decimal newChargeAmount;
@@ -377,4 +370,5 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             update definiteDuplicates;
         }
     }
+
 }

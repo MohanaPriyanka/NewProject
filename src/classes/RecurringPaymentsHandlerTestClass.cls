@@ -79,7 +79,7 @@ private class RecurringPaymentsHandlerTestClass {
         // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 3 that should have been moved to the newer bill
-        System.assertEquals(6,orderlist.size());
+        System.assertEquals(7,orderlist.size());
 
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
@@ -132,8 +132,8 @@ private class RecurringPaymentsHandlerTestClass {
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [SELECT Id
-        FROM ChargentOrders__ChargentOrder__c];
-        System.assertEquals(5,originalOrderCount.size());
+                                                                    FROM ChargentOrders__ChargentOrder__c];
+        System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
             SELECT Id,
@@ -177,7 +177,7 @@ private class RecurringPaymentsHandlerTestClass {
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 2 that should have been moved to the newer bill
         // 1 that should have been cloned
-        System.assertEquals(6,orderlist.size());
+        System.assertEquals(7,orderlist.size());
 
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
@@ -436,6 +436,10 @@ private class RecurringPaymentsHandlerTestClass {
         update productionUpdateA;
         update sssA;
 
+
+        //List<Account_Bill__c> acctBills = [SELECT Id, Name FROM Account_Bill__c];
+        //System.assertEquals(7, acctBills.size());
+
         List<Account_Bill__c> acctBills = [
             SELECT Id, Name, Is_First_Bill__c
             FROM Account_Bill__c
@@ -467,6 +471,9 @@ private class RecurringPaymentsHandlerTestClass {
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
+        //List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c];
+        //System.assertEquals(9, acctBillsList.size() );
+
         List<Account_Bill__c> acctBillsList = [
             SELECT Id, Name
             FROM Account_Bill__c
@@ -477,6 +484,7 @@ private class RecurringPaymentsHandlerTestClass {
             OR Parent_Account__r.Name = 'Property Account A'
         ];
         System.assertEquals(7, acctBillsList.size() );
+
 
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
         Database.executeBatch(batchToRun,50);
@@ -491,7 +499,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         Account_Bill__c checkAB = [
-            SELECT Id, Property_Account_Name__c, Is_First_Bill__c, Parent_Account__c,
+            SELECT Id, Property_Account_Name__c, Parent_Account__c,
                 (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r)
             FROM Account_Bill__c
             WHERE Parent_Account__c = :propAccountA.Id
@@ -501,7 +509,6 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertNotEquals(null, checkCO.Account_Bill__c);
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
-        System.assertEquals(false, checkAB.Is_First_Bill__c);
 
         //Confirm system bill shared solar system is sssA and make sure ChargentOrder entity matches
         System.assertEquals(sssA.Id, checkAB.System_Bills__r[0].Shared_Solar_System__c);
@@ -644,7 +651,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         Account_Bill__c checkAB = [
-            SELECT Id, Property_Account_Name__c, Is_First_Bill__c, Parent_Account__c,
+            SELECT Id, Property_Account_Name__c, Parent_Account__c,
             (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r)
             FROM Account_Bill__c
             WHERE Parent_Account__c = :propAccountA.Id
@@ -654,7 +661,6 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertNotEquals(null, checkCO.Account_Bill__c);
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
-        System.assertEquals(false, checkAB.Is_First_Bill__c);
 
         //Confirm system bill shared solar system is sssA and make sure ChargentOrder entity matches
         System.assertEquals(sssA.Id, checkAB.System_Bills__r[0].Shared_Solar_System__c);
@@ -1104,6 +1110,80 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(1, ordersWithAccAEntity1AfterFinalInsert.size());
     }
 
+    // This test reproduces a bug where Chargent Orders would be moved from the account to the first account bill upon
+    // making any change to the first account bill, EVEN IF there was already a second account bill.
+    // This happened to Jyoti Enterprises in July/Aug 2018. A paper check was logged in August to pay off the July Bill,
+    // and when the balanced changed on the July bill and AccountBillTrigger(/AccountBillHandler) was run, Chargent
+    // Order 4105 was moved from the Account to July and set to recurring, and the August bill had already been created.
+    static testMethod void  testOnlyUnsetIsFirstBillIfNoSubsequent() {
+
+        // Get the account
+        Account accountWithOrder = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Name = 'Account E'
+        ];
+
+        // Get the list of orders currently on that account
+        List<ChargentOrders__ChargentOrder__c> ordersOnAccount = [
+            SELECT Id, Property_Account__r.Id, Property_Account_ID__c, Entity__c, Account_Bill__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Property_Account__r.Id =: accountWithOrder.Id
+        ];
+
+        // Get the first bill. There are TWO bills on the account.
+        Account_Bill__c firstAccountBill = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+            AND Name = 'First Account Bill'
+        ];
+
+        // Get the first bill. There are TWO bills on the account.
+        List<Account_Bill__c> billsOnAccount = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+        ];
+
+        // Show that there is an order on the account, and no order on the first bill.
+        System.assertEquals(ordersOnAccount.size(), 1);
+        System.assertEquals(firstAccountBill.Chargent_Orders__r.size(), 0);
+
+        // Assert that there are two bills for this account
+        System.assertEquals(billsOnAccount.size(), 2);
+
+        // make any change to the first account bill, so that AccountBillHandler runs
+        firstAccountBill.Name = 'making any change';
+        update firstAccountBill;
+
+        // Run updateRecurringOrders, which also contained the bug, to ensure that it does not cause the order to move
+        //  to the first account bill
+        RecurringPaymentsHandler handler = new RecurringPaymentsHandler();
+        handler.updateRecurringOrders(ordersOnAccount);
+
+        List<ChargentOrders__ChargentOrder__c> ordersOnAccountAfter = [
+            SELECT Id, Property_Account__r.Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Property_Account__r.Id =: accountWithOrder.Id
+        ];
+
+        Account_Bill__c firstAccountBillAfter = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+            AND Name = 'making any change'
+        ];
+
+
+        // Assert that there is still one order on the account, and none on the first bill (i.e. nothing has changed)
+        System.assertEquals(ordersOnAccountAfter.size(), 1);
+        System.assertEquals(firstAccountBillAfter.Chargent_Orders__r.size(), 0);
+    }
+
     @IsTest static void testChargeCarryoverBalanceNotTotalDue() {
         List<System_Bill__c> systemBills = [
             SELECT Id, Name, Bill_Number__c, Account_Bill__r.Bill_Number__c, Total_Due__c
@@ -1437,5 +1517,4 @@ private class RecurringPaymentsHandlerTestClass {
             System.assertEquals(accountBill.Id, order.Account_Bill__c);
         }
     }
-
 }
