@@ -1159,6 +1159,11 @@ private class RecurringPaymentsHandlerTestClass {
         firstAccountBill.Name = 'making any change';
         update firstAccountBill;
 
+        // Run updateRecurringOrders, which also contained the bug, to ensure that it does not cause the order to move
+        //  to the first account bill
+        RecurringPaymentsHandler handler = new RecurringPaymentsHandler();
+        handler.updateRecurringOrders(ordersOnAccount);
+
         List<ChargentOrders__ChargentOrder__c> ordersOnAccountAfter = [
             SELECT Id, Property_Account__r.Id
             FROM ChargentOrders__ChargentOrder__c
@@ -1173,10 +1178,6 @@ private class RecurringPaymentsHandlerTestClass {
             AND Name = 'making any change'
         ];
 
-        // Run updateRecurringOrders, which also contained the bug, to ensure that it does not cause the order to move
-        //  to the first account bill
-        RecurringPaymentsHandler handler = new RecurringPaymentsHandler();
-        handler.updateRecurringOrders(ordersOnAccount);
 
         // Assert that there is still one order on the account, and none on the first bill (i.e. nothing has changed)
         System.assertEquals(ordersOnAccountAfter.size(), 1);
