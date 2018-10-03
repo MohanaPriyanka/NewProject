@@ -323,7 +323,6 @@ public with sharing class CAPControllerTest {
         update lead;
 
         Test.startTest();
-
         CAPController.setRejectedChangeOrder(lead.Id, lead.Email, lead.Loan_System_Information__c);
         lead = [
             SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c, Change_Order_Status__c
@@ -533,4 +532,148 @@ public with sharing class CAPControllerTest {
         System.assertEquals(null, DocuSignHelper.oppLoansSent);
     }
 
+    @IsTest static void testContractSendIfAbsent() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, (SELECT Id FROM Loans__r), (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699'
+            LIMIT 1
+        ];
+        CAPController.convertLead(lead.Id, lead.Email);
+
+        lead = CAPController.getLead(lead.Id, lead.Email);
+        Id mslpRTId = Schema.SObjectType.Residential_Equipment__c.getRecordTypeInfosByName().get('MSLP').getRecordTypeId();
+        Id bwslRTId = Schema.SObjectType.Residential_Equipment__c.getRecordTypeInfosByName().get('BlueWave Solar Loan').getRecordTypeId();
+        Residential_Equipment__c resi = new Residential_Equipment__c();
+        resi.Name = lead.FirstName + ' ' + lead.LastName;
+        resi.Lead__c = lead.Id;
+        resi.Opportunity__c = lead.ConvertedOpportunityId;
+        resi.RecordTypeId = (lead.DOER_Solar_Loan__c?mslpRTId:bwslRTId);
+        insert resi;
+
+        LoanHandler.createLoan(new List<Lead>{lead});
+        String searchCriteria = lead.Id + '%';
+        List<Partner_Task__c> tasks = [SELECT Id, Unique_ID__c, Parent__c, Status__c FROM Partner_Task__c WHERE Unique_ID__c LIKE :searchCriteria];
+        Map<String, Partner_Task__c> taskMap = new Map<String, Partner_Task__c>();
+        for (Partner_Task__c task : tasks) {
+            taskMap.put(task.Unique_ID__c, task);
+        }
+        LoanHandler lh = new LoanHandler();
+        lh.validateLoanInformationProvidedOnLead(new List<Lead>{lead}, taskMap);
+
+        lead.Loan_System_Information__c = '{' +
+            '\"generator_nameplate_capacity__c\" : null,' +
+            '\"commencement_datee__c\" : \"\",' +
+            '\"inverter_model_number__c\" : \"\",' +
+            '\"inverter_manufacturer__c\" : \"\",' +
+            '\"number_of_inverters__c\" : \"\",' +
+            '\"module_model_number__c\" : \"\",' +
+            '\"module_manufacturer__c\" : \"\",' +
+            '\"number_of_modules__c\" : \"\",' +
+            '\"Storage_Grid_Hybrid__c\" : false,' +
+            '\"Storage_Capacity__c\" : \"\",' +
+            '\"Storage_Full_or_Partial_Home__c\" : \"\",' +
+            '\"Storage_Inverter_Manufacturer__c\" : \"\",' +
+            '\"Storage_Inverter_Model__c\" : \"\",' +
+            '\"Storage_Manufacturer__c\" : \"\",' +
+            '\"Storage_Model__c\" : \"\",' +
+            '\"System_Cost__change\" : 3000,' +
+            '\"Requested_Loan_Amount__change\" : 2112,' +
+            '\"Estimated_Completion_Date__change\" : \"06/01/2018\",' +
+            '\"Generator_Nameplate_Capacity__change\" : 10.08,' +
+            '\"Module_Manufacturer__change\" : \"SolarModules\",' +
+            '\"Module_Model_Number__change\" : \"MM\",' +
+            '\"Number_of_Modules__change\" : 27,' +
+            '\"Inverter_Manufacturer__change\" : \"SolarInverters\",' +
+            '\"Inverter_Model_Number__change\" : \"EN\",' +
+            '\"Number_of_Inverters__change\" : 2,' +
+            '\"Storage__change\" : true,' +
+            '\"Storage_Grid_Hybrid__change\" : \"Yes\",' +
+            '\"Storage_Capacity__change\" : 10,' +
+            '\"Storage_Full_or_Partial_Home__change\" : \"Full home backup\",' +
+            '\"Storage_Inverter_Manufacturer__change\" : \"SolarEdge\",' +
+            '\"Storage_Inverter_Model__change\" : \"StorEdge 10kw\",' +
+            '\"Storage_Manufacturer__change\" : \"Tesla\",' +
+            '\"Storage_Model__change\" : \"Powerwall\",' +
+            '\"Down_Payment__change\" : 888,' +
+            '\"Reject_Reason\" : \"Need more panels\",' +
+            '\"RequestedBy__change\" : \"Rob Meyers\",' +
+            '\"RequestedDate__change\" : \"04/17/2018 14:19\"' +
+            '}';
+        update lead;
+        Test.startTest();
+
+        // Asserts that the task for obtaining the contract signature has not been updated to 'Pending' yet.
+        Partner_Task__c preApprovalContractTask = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+            AND Lead__c = :lead.Id
+        ];
+        System.assertEquals('Incomplete', preApprovalContractTask.Status__c);
+
+        lead = CAPController.getLead(lead.Id, lead.Email);
+        Map<String, Object> changeOrder = (Map<String, Object>) JSON.deserializeUntyped(lead.Loan_System_Information__c);
+        String completionDate = (String) changeOrder.get('Estimated_Completion_Date__change');
+        Residential_Equipment__c re = CAPController.getEquipment(lead.Id);
+        re.Generator_Nameplate_Capacity__c = (Decimal) changeOrder.get('Generator_Nameplate_Capacity__change');
+        re.Module_Manufacturer__c = (String) changeOrder.get('Module_Manufacturer__change');
+        re.Module_Model_Number__c = (String) changeOrder.get('Module_Model_Number__change');
+        re.Number_of_Modules__c = (Integer) changeOrder.get('Number_of_Modules__change');
+        re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
+        re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
+        re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
+        re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
+        re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
+        re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
+        re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
+        re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
+        re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
+        re.Storage_Grid_Hybrid__c = true;
+        re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
+        update re.Loan__r.Lead__r;
+
+        Loan__c loan = new Loan__c(
+                Id = re.Loan__c,
+                Estimated_Completion_Date__c = Date.parse(completionDate),
+                Commencement_Datee__c = Date.parse(completionDate) + (re.Loan__r.DOER_Solar_Loann__c?45:30)
+        );
+
+        lead.System_Cost__c = (Decimal) changeOrder.get('System_Cost__change');
+        lead.Requested_Loan_Amount__c = (Decimal) changeOrder.get('Requested_Loan_Amount__change');
+        lead.Change_Order_Status__c = 'Customer Authorized';
+        lead.Update_Dummy__c = !lead.Update_Dummy__c;
+
+        loan.Requested_Loan_Amount__c = lead.Requested_Loan_Amount__c;
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            Id = lead.Personal_Credit_Report__c,
+            Avidia_Review_Status__c = PCRApprovalHandler.NOTYETREVIEWED
+        );
+
+        try {
+            update re;
+            update loan;
+            update lead;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+        // the following method should update the Obtain Signature Partner task to 'Pending'
+        CAPController.sendContractIfAbsent(lead, lead.Email);
+
+        Test.stopTest();
+
+        Partner_Task__c pt = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+            AND Lead__c = :lead.Id
+        ];
+        System.assertEquals('Pending', pt.Status__c);
+    }
 }

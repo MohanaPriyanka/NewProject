@@ -399,6 +399,7 @@ public without sharing class CAPController {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+        sendContractIfAbsent(lead, email);
     }
 
     @AuraEnabled
@@ -452,11 +453,8 @@ public without sharing class CAPController {
                 lead.Residential_Equipment__r[0] + ' loans: ' + lead.Loans__r[0]);
         } else {
             try {
-                System.debug('Inside try block');
                 LoanHandler.createResidentialEquipment(new List<Lead>{lead});
-                System.debug('equipment created');
                 LoanHandler.createLoan(new List<Lead>{lead});
-                System.debug('Loan created');
                 // createLoan creates the Loan and Partner Tasks before associating the RE to the Loan. If the RE is complete,
                 // we should close out the system info partner task
                 String searchCriteria = lead.Id + '%';
@@ -540,6 +538,19 @@ public without sharing class CAPController {
             } else {
                 this.warnOnMaxLoanAmount = true;
             }
+        }
+    }
+
+    public static void sendContractIfAbsent(Lead lead, String email) {
+        List<Opportunity> opp = [
+            SELECT Id, DocuSign_Recipient__c
+            FROM Opportunity
+            WHERE Lead__c = :lead.Id
+            LIMIT 1
+        ];
+
+        if (!opp.isEmpty() && opp[0].DocuSign_Recipient__c == null) {
+            sendLoanDocs(lead.Id, email);
         }
     }
 
