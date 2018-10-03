@@ -244,12 +244,13 @@ public class LoanHandlerTestClass {
 
     @isTest static void testAfterLeadConversionCustomerSignature() {
         Date myDate = Date.newInstance(2015, 2, 17);
-        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];
+        List<Lead> leadList = [SELECT Id, Name, Application_Type__c FROM Lead WHERE DOER_Solar_Loan__c = FALSE AND LASERCA__Home_State__c = 'MA'];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+        Opportunity jointOpp = new Opportunity();
         Test.startTest();
 
-        convertLeads(leadlist);
+        convertLeads(leadlist, 0);
 
         List<Partner_Task__c> partnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
@@ -269,21 +270,20 @@ public class LoanHandlerTestClass {
         LoanUnderwriting.approveLeads(leadList);
 
         partnerTasks = [
-            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
+            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c, Opportunity__r.Name
             FROM Partner_Task__c
             WHERE Loan__r.DOER_Solar_Loann__c = FALSE AND Lead__r.LASERCA__Home_State__c = 'MA'
         ];
 
         for (Partner_Task__c partnerTaskAssertion : partnerTasks) {
-            if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
+            if (partnerTaskAssertion.Name == 'Under BlueWave Review') {
                 System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
-            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+            if (partnerTaskAssertion.Name == 'Obtain Contract Signature') {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }
         }
-
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c,
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Name, Application_Type__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r)
                                       FROM Opportunity
@@ -292,41 +292,67 @@ public class LoanHandlerTestClass {
             //Assert that the Eqiupment carried over to the Opportunity on conversion
             System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
-            if(!oppRecord.DOER_Solar_Loan__c) {
+            if (!oppRecord.DOER_Solar_Loan__c) {
                 //Assert that six parent partner tasks were created for the standard loan when the lead was set to qualified. 
                 System.assertEquals(8, oppRecord.Partner_Tasks__r.size());
             } else {
                 //Assert that six parent partner tasks were created for the MSLP loan when the lead was set to qualified. 
                 System.assertEquals(5, oppRecord.Partner_Tasks__r.size());
             }
-
-
             oppRecord.Contract_Status__c = 'Completed';
             oppListToUpdate.add(oppRecord);
+
+            //Assert that Joint Application Co_Applicant_Status is null (while Contract_Status is Completed)
+            //Story jointOpp for testing later
+            if (oppRecord.Application_Type__c == 'Joint') {
+                System.assertNotEquals('Completed', oppRecord.Co_Applicant_Signature_Status__c);
+                jointOpp = oppRecord;
+            }
         }
 
         update oppListToUpdate;
 
         partnerTasks = [
-            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
+            SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c, Opportunity__r.Name, Opportunity__r.Co_Applicant_Signature_Status__c,
+                Opportunity__r.Contract_Status__c, Opportunity__r.Application_Type__c
             FROM Partner_Task__c
             WHERE Loan__r.DOER_Solar_Loann__c = FALSE AND Lead__r.LASERCA__Home_State__c = 'MA'
         ];
 
+        //Partner Task of "Obtain Contract Signature" should be Pending for Joint Application
         for (Partner_Task__c partnerTaskAssertion : partnerTasks) {
             if (partnerTaskAssertion.Name == 'Obtain Contract Signature') {
-                System.assertEquals('Complete', partnerTaskAssertion.Status__c);
+                if (partnerTaskAssertion.Opportunity__r.Application_Type__c == 'Joint') {
+                    System.assertEquals('Pending', partnerTaskAssertion.Status__c);
+                } else {
+                    System.assertEquals('Complete', partnerTaskAssertion.Status__c);
+                }
             }
             if (partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if (partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
                     System.assertEquals( 'Pending', partnerTaskAssertion.Status__c);
-                }                 
+                }
             } else {
-                if (partnerTaskAssertion.Name == 'Provide Sales Agreement') {
+                if (partnerTaskAssertion.Opportunity__r.Application_Type__c == 'Joint' && partnerTaskAssertion.Name == 'Provide Sales Agreement') {
+                    System.assertEquals( 'Incomplete', partnerTaskAssertion.Status__c);
+                } else if (partnerTaskAssertion.Name == 'Provide Sales Agreement') {
                     System.assertEquals( 'Pending', partnerTaskAssertion.Status__c);
                 }                 
             }                
         }
+
+        jointOpp.Co_Applicant_Signature_Status__c = 'Completed';
+        update jointOpp;
+
+        Partner_Task__c jointPartnerTask = [
+            SELECT Name, Status__c, Opportunity__r.Id
+            FROM Partner_Task__c
+            WHERE Opportunity__r.Id = :jointOpp.Id
+            AND Name = 'Obtain Contract Signature'
+        ];
+
+        System.assertEquals('Complete', jointPartnerTask.Status__c);
+
         Test.stopTest();
     }
 
@@ -336,9 +362,8 @@ public class LoanHandlerTestClass {
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
 
-        convertLeads(leadList);
-
         Test.startTest();
+        convertLeads(leadList, 0);
 
         List<Partner_Task__c> partnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
@@ -347,10 +372,10 @@ public class LoanHandlerTestClass {
         ];
 
         for (Partner_Task__c partnerTaskAssertion : partnerTasks) {
-            if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
+            if (partnerTaskAssertion.Name == 'Under BlueWave Review') {
                 System.assertEquals('Incomplete', partnerTaskAssertion.Status__c);
             }
-            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+            if (partnerTaskAssertion.Name == 'Obtain Contract Signature') {
                 System.assertEquals('Incomplete', partnerTaskAssertion.Status__c);
             }
         }
@@ -364,15 +389,15 @@ public class LoanHandlerTestClass {
         ];
 
         for (Partner_Task__c partnerTaskAssertion : partnerTasks) {
-            if(partnerTaskAssertion.Name == 'Under BlueWave Review') {
+            if (partnerTaskAssertion.Name == 'Under BlueWave Review') {
                 System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }
-            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+            if (partnerTaskAssertion.Name == 'Obtain Contract Signature') {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }
         }
 
-        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Product__c,
+        for (Opportunity oppRecord : [SELECT Id, DOER_Solar_Loan__c, Product__c, Application_Type__c,
                                       (SELECT Id FROM Residential_Equipment__r), 
                                       (SELECT Id FROM Partner_Tasks__r),
                                       (SELECT Id, Product__r.Disbursal_Terms__c FROM Loans__r)
@@ -383,7 +408,11 @@ public class LoanHandlerTestClass {
             System.assertEquals(1, oppRecord.Residential_Equipment__r.size());
             //Assert that the Partner Tasks carried over to the Opportunity on conversion.
             System.assertEquals(8, oppRecord.Partner_Tasks__r.size());
+
             oppRecord.Contract_Status__c = 'Completed';
+            if (oppRecord.Application_Type__c == 'Joint'){
+                oppRecord.Co_Applicant_Signature_Status__c = 'Completed';
+            }
             oppRecord.BlueWave_Signature_Status__c = 'Completed';
             oppListToUpdate.add(oppRecord);
         }
@@ -394,15 +423,15 @@ public class LoanHandlerTestClass {
                                                      FROM Partner_Task__c
                                                      WHERE Loan__r.DOER_Solar_Loann__c = FALSE
                                                      AND Loan__r.State__c = 'MA']) {
-            if(partnerTaskAssertion.Name == 'Obtain Contract Signature') {
+            if (partnerTaskAssertion.Name == 'Obtain Contract Signature') {
                 System.assertEquals('Complete', partnerTaskAssertion.Status__c );
             }
-            if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
-                if(partnerTaskAssertion.Name == 'Mechanical Installation') {
+            if (!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
+                if (partnerTaskAssertion.Name == 'Mechanical Installation') {
                     System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }   
-            }else {
-                if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
+            } else {
+                if (partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
                     System.assertEquals('Pending', partnerTaskAssertion.Status__c);
                 }
             }
@@ -419,12 +448,12 @@ public class LoanHandlerTestClass {
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
-        convertLeads(leadList);
+        convertLeads(leadList, 0);
 
       List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c];
       for (Residential_Equipment__c equipment : equipmentList){
-            if(!equipment.DOER_Solar_Loan__c) {
+            if (!equipment.DOER_Solar_Loan__c) {
                 equipment.Mechanically_Installed__c = true;
                 equipmentListToUpdate.add(equipment);
             }
@@ -436,10 +465,10 @@ public class LoanHandlerTestClass {
                                                      FROM Partner_Task__c
                                                      WHERE Loan__r.DOER_Solar_Loann__c = FALSE
                                                      AND Loan__r.State__c = 'MA']) {
-            if(partnerTaskAssertion.Name == 'Mechanical Installation') {
+            if (partnerTaskAssertion.Name == 'Mechanical Installation') {
                 System.assertEquals('Complete', partnerTaskAssertion.Status__c);
             }    
-            if(partnerTaskAssertion.Name == 'Interconnection') {
+            if (partnerTaskAssertion.Name == 'Interconnection') {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
             }              
       }
@@ -678,7 +707,7 @@ public class LoanHandlerTestClass {
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Test.startTest();
 
-        convertLeads(leadList);
+        convertLeads(leadList, 0);
 
         List<Partner_Task__c> partnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
@@ -762,7 +791,7 @@ public class LoanHandlerTestClass {
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
-        convertLeads(leadList);
+        convertLeads(leadList, 0);
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c
@@ -862,7 +891,8 @@ public class LoanHandlerTestClass {
         Date myDate = Date.newInstance(2015, 2, 17);
         Test.startTest();
 
-        convertLeads(leadList);
+
+        convertLeads(leadList, 0);
 
         List<Residential_Equipment__c> equipmentList = [
             SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c
@@ -871,6 +901,8 @@ public class LoanHandlerTestClass {
             AND DOER_Solar_Loan__c = FALSE
             AND Lead__r.Retired__c = TRUE
         ];
+
+
         for (Residential_Equipment__c equipment : equipmentList){
             equipment.Mechanically_Installed__c = true;
             equipmentListToUpdate.add(equipment);
@@ -952,8 +984,10 @@ public class LoanHandlerTestClass {
         for (Residential_Equipment__c resiEquip : equipmentList){
             resiEquip.Interconnected__c = false;
             equipsToUpdate.add(resiEquip);
+
         }
         update equipsToUpdate;
+
 
         List<Partner_Task__c> updatedPartnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
@@ -976,7 +1010,11 @@ public class LoanHandlerTestClass {
         Test.stopTest();
     }
 
-    public static void convertLeads(List<Lead> leadList) {
+    public static void convertLeads(List<Lead> leadList){
+        convertLeads(leadList, 0);
+    }
+
+    public static void convertLeads(List<Lead> leadList, Integer counter) {
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
         for (Lead leadRecord : leadList) {
             leadRecord.Status = 'Qualified';
@@ -991,7 +1029,10 @@ public class LoanHandlerTestClass {
         }
         List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
         for (Database.LeadConvertResult lcr : lcrs)  {
-            if (!lcr.isSuccess()) {
+            if (!lcr.isSuccess() && counter < 3) {
+                Lead failedLead = new Lead (id = lcr.getLeadId());
+                convertLeads( new List<Lead>{failedLead}, counter+1);
+            } else if (!lcr.isSuccess()) {
                 System.assertEquals(null, System.JSON.serializePretty(lcr.getErrors()));
             }
         }
@@ -1060,7 +1101,7 @@ public class LoanHandlerTestClass {
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
             WHERE DOER_Solar_Loan__c = FALSE];
-        convertLeads(leadList);
+        convertLeads(leadList, 0);
         leadList = [
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
@@ -1157,7 +1198,7 @@ public class LoanHandlerTestClass {
             FROM Lead
             WHERE DOER_Solar_Loan__c = TRUE
         ];
-        convertLeads(leadList);
+        convertLeads(leadList, 0);
         leadList = [
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
@@ -1254,7 +1295,7 @@ public class LoanHandlerTestClass {
 
     @IsTest static void testDaysPastDue() {
         List<Loan__c> loans = [SELECT Id, Days_Past_Due__c, Number_of_Days_Past_Due__c FROM Loan__c];
-        System.assertEquals(4, loans.size());
+        System.assertEquals(5, loans.size());
 
         Map<Integer, String> expectedDPD = new Map<Integer, String>();
         expectedDPD.put(null, null);
@@ -1285,7 +1326,7 @@ public class LoanHandlerTestClass {
         update loans;
         checkDaysPastDue(expectedDPD);
         loansChecked += loans.size();
-        System.assertEquals(12, loansChecked);
+        System.assert(loansChecked >= expectedDPD.keySet().size(), 'We should check ' + expectedDPD.keySet().size() + ' + Days Past Due combinations, but only checked ' + loansChecked);
     }
 
     private static void checkDaysPastDue(Map<Integer, String> expectedDPD) {

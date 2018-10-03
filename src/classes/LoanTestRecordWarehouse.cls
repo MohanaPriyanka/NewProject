@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Description: Common methods used for test data setup
- * Used By: PCRApprovalHandlerTest, CAPControllerTest, LoanUnderwritingTest, 
- *          SLPControllersTestclass, DisbursalHandlerTest, LoanHandlerTestClass, others?
+ * Used By: CAPControllerTest, DisbursalHandlerTest, LoanHandlerTestClass, LoanUnderwritingTest,
+ *          PCRApprovalHandlerTest, SLPControllersTestclass,   others?
  *************************************************************************************/
 
 @isTest
@@ -74,7 +74,7 @@ public class LoanTestRecordWarehouse {
         productLoanMATerm20Rate875.Program__c = 'MSLP';
         productLoanMATerm20Rate875.IBLS_Category__c = 'Category 2';
         productLoanMATerm20Rate875.Lender_of_Record__c = 'Avidia';
-        
+
         Product2 productLoanRI = getDefaultProduct('RI', 6.49, 15, 5, '681', '699', capitalPool.Id);
         productLoanRI.Lender_of_Record__c = 'Avidia';
         Product2 productLoanNY = getDefaultProduct('NY', 1.23, 5, 5, '681', '699', capitalPool.Id);
@@ -85,10 +85,10 @@ public class LoanTestRecordWarehouse {
                 productLoanMATerm10Rate725, productLoanMATerm20Rate599, productLoanMATerm20Rate699,
                 productLoanMATerm20Rate725, productLoanRI, productLoanMATerm20Rate875, productLoanNY, productNonLoan,
                 getJunctionRequired(productLoanMATerm10Rate599), getJunctionRequired(productLoanMATerm10Rate699),
-                getJunctionRequired(productLoanMATerm10Rate725), getJunctionRequired(productLoanMATerm20Rate599), 
-                getJunctionRequired(productLoanMATerm20Rate699), getJunctionRequired(productLoanMATerm20Rate725), 
+                getJunctionRequired(productLoanMATerm10Rate725), getJunctionRequired(productLoanMATerm20Rate599),
+                getJunctionRequired(productLoanMATerm20Rate699), getJunctionRequired(productLoanMATerm20Rate725),
                 getJunctionRequired(productLoanMATerm20Rate875), getJunctionRequired(productLoanRI)};
-    }    
+    }
 
     public static List<Lead> getLoanLeadswithVariableFICOsandTerms () {
         Map<String, Id> productMap = new Map<String, Id>();
@@ -124,91 +124,92 @@ public class LoanTestRecordWarehouse {
 
         List<Lead> leadList = new List<Lead>();
         Lead leadMALoanTerm10Rate699 = new lead(FirstName = 'leadMALoanTerm10Rate699',
-                                                LastName = 'Test',
-                                                Email = 'cole.swain@yahoo.com',
-                                                Loan_Amount__c = 35000,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                Requested_Loan_Amount__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                Bs_Sales_ID__c = salesRep.Id,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = productMap.get('productLoanMATerm10Rate699'),
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Unfinished_Lead__c = true,
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
+            LastName = 'Test',
+            Email = 'cole.swain@yahoo.com',
+            Loan_Amount__c = 35000,
+            Company = 'Cole Swain',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 35000,
+            Custom_Id__c = 'test',
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('productLoanMATerm10Rate699'),
+            Product_Program__c = 'BlueWave Solar Loan',
+            Unfinished_Lead__c = true,
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
         Lead leadMALoanTerm10Rate725 = new lead(FirstName = 'leadMALoanTerm10Rate725',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                Requested_Loan_Amount__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                Bs_Sales_ID__c = salesRep.Id,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = productMap.get('productLoanMATerm10Rate725'),
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Unfinished_Lead__c = true,
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
+            LastName = 'Test',
+            Loan_Amount__c = 35000,
+            Company = 'Cole Swain',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 35000,
+            Custom_Id__c = 'test',
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('productLoanMATerm10Rate725'),
+            Product_Program__c = 'BlueWave Solar Loan',
+            Unfinished_Lead__c = true,
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
         Lead leadMALoanTerm20Rate699 = new lead(FirstName = 'leadMALoanTerm20Rate699',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                Requested_Loan_Amount__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                Bs_Sales_ID__c = salesRep.Id,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = productMap.get('productLoanMATerm20Rate699'),
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
+            LastName = 'Test',
+            Loan_Amount__c = 35000,
+            Company = 'Cole Swain',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 35000,
+            Custom_Id__c = 'test',
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('productLoanMATerm20Rate699'),
+            Product_Program__c = 'BlueWave Solar Loan',
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
         Lead leadMALoanTerm20Rate725 = new lead(FirstName = 'leadMALoanTerm20Rate725',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                DOER_Solar_Loan__c = true,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                Requested_Loan_Amount__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Partner_Lookup__c = partner.Id,
-                                                Bs_Sales_ID__c = salesRep.Id,
-                                                Product_Program__c = 'MSLP',
-                                                Unfinished_Lead__c = true,
-                                                Annual_Income_Currency__c = 150000,
-                                                Product__c = productMap.get('productLoanMATerm20Rate725'),
-                                                Automatic_Product_Assignment__c = true,
-                                                Status = 'Ready for Credit Check');
+            LastName = 'Test',
+            Loan_Amount__c = 35000,
+            DOER_Solar_Loan__c = true,
+            Company = 'Cole Swain',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 35000,
+            Custom_Id__c = 'test',
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Product_Program__c = 'MSLP',
+            Unfinished_Lead__c = true,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('productLoanMATerm20Rate725'),
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check');
         Lead coApplicantLead = new lead(FirstName = 'coApplicantLead',
-                                                LastName = 'Test',
-                                                Loan_Amount__c = 35000,
-                                                Partner_Email__c = 'jpentaleri@bluewave-capital.com',
-                                                DOER_Solar_Loan__c = false,
-                                                Company = 'Cole Swain',
-                                                Product_Line__c = 'Residential Loan',
-                                                LASERCA__Home_State__c = 'MA',
-                                                Requested_Loan_Amount__c = 35000,
-                                                Custom_Id__c = 'test',
-                                                Co_Applicant_Income__c = 2000,
-                                                Partner_Lookup__c = partner.Id,
-                                                Bs_Sales_ID__c = salesRep.Id,
-                                                Product_Program__c = 'BlueWave Solar Loan',
-                                                Unfinished_Lead__c = true,
-                                                Annual_Income_Currency__c = 1000,
-                                                Product__c = productMap.get('productLoanMATerm10Rate699'),
-                                                Automatic_Product_Assignment__c = false,
-                                                Status = 'Ready for Credit Check');
+            LastName = 'Test',
+            Loan_Amount__c = 35000,
+            Partner_Email__c = 'jpentaleri@bluewave-capital.com',
+            DOER_Solar_Loan__c = false,
+            Company = 'CoApplicantLead Test',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 35000,
+            Application_Type__c = 'Joint',
+            Custom_Id__c = 'test',
+            Co_Applicant_Income__c = 2000,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Unfinished_Lead__c = true,
+            Annual_Income_Currency__c = 1000,
+            Product__c = productMap.get('productLoanMATerm10Rate699'),
+            Automatic_Product_Assignment__c = false,
+            Status = 'Ready for Credit Check');
         Insert new List<Lead>{leadMALoanTerm10Rate699, leadMALoanTerm10Rate725,
-                                leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead};
+            leadMALoanTerm20Rate699, leadMALoanTerm20Rate725, coApplicantLead};
 
         Account coApplicantAccount = new Account( Name = 'CoapplicantAccount');
         insert coApplicantAccount;
@@ -223,91 +224,91 @@ public class LoanTestRecordWarehouse {
         insert coApplicantContact;
 
         LASERCA__Personal_Credit_Report__c pcr10710 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 1',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '710',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm10Rate699.Id);
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '710',
+            LASERCA__Lead__c = leadMALoanTerm10Rate699.Id);
         LASERCA__Personal_Credit_Report__c pcr10690 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 3',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '690',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm10Rate725.Id);
+            Name = 'Personal Credit Report 3',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '690',
+            LASERCA__Lead__c = leadMALoanTerm10Rate725.Id);
         LASERCA__Personal_Credit_Report__c pcr20710 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 4',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '710',
-                                                                                            Adjusted_DTI_Notes__c = 'Notes',
-                                                                                            LASERCA__TransUnion_Score_Factor__c = 
-                                                                                            '039 - SERIOUS DELINQUENCY\n' +
-                                                                                            '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +
-                                                                                            '027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n' +
-                                                                                            '003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\n' +
-                                                                                            'FA - INQUIRIES IMPACTED THE CREDIT SCORE\n',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm20Rate699.Id);
+            Name = 'Personal Credit Report 4',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '710',
+            Adjusted_DTI_Notes__c = 'Notes',
+            LASERCA__TransUnion_Score_Factor__c =
+                '039 - SERIOUS DELINQUENCY\n' +
+                    '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +
+                    '027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n' +
+                    '003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\n' +
+                    'FA - INQUIRIES IMPACTED THE CREDIT SCORE\n',
+            LASERCA__Lead__c = leadMALoanTerm20Rate699.Id);
         LASERCA__Personal_Credit_Report__c pcr20690 = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 6',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '690',
-                                                                                            LASERCA__Lead__c = leadMALoanTerm20Rate725.Id);
+            Name = 'Personal Credit Report 6',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '690',
+            LASERCA__Lead__c = leadMALoanTerm20Rate725.Id);
         LASERCA__Personal_Credit_Report__c pcrPrimaryApplicant = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 7',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '760',
-                                                                                            LASERCA__Confirming_Social_Security_Number__c = '000000001',
-                                                                                            LASERCA__Lead__c = coApplicantLead.Id);
+            Name = 'Personal Credit Report 7',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '760',
+            LASERCA__Confirming_Social_Security_Number__c = '000000001',
+            LASERCA__Lead__c = coApplicantLead.Id);
         LASERCA__Personal_Credit_Report__c pcrCoApplicant = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 8',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '760',
-                                                                                            LASERCA__Contact__c = coApplicantContact.Id,
-                                                                                            LASERCA__Confirming_Social_Security_Number__c = '000000002',
-                                                                                            LASERCA__Lead__c = coApplicantLead.Id);
+            Name = 'Personal Credit Report 8',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '760',
+            LASERCA__Contact__c = coApplicantContact.Id,
+            LASERCA__Confirming_Social_Security_Number__c = '000000002',
+            LASERCA__Lead__c = coApplicantLead.Id);
         insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690, pcrPrimaryApplicant};
         insert pcrCoApplicant;
 
         LASERCA__Trade_Accounts__c pcr10710Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 1',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr10710.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 1',
+            LASERCA__Personal_Credit_Report__c = pcr10710.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcr10690Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 3',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr10690.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 3',
+            LASERCA__Personal_Credit_Report__c = pcr10690.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcr20710Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 4',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr20710.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100,
-                                                                                LASERCA__Account_Balance__c = 10000);
+            Name = 'Personal Credit Report Trade 4',
+            LASERCA__Personal_Credit_Report__c = pcr20710.Id,
+            LASERCA__Monthly_Payment__c = 100,
+            LASERCA__Account_Balance__c = 10000);
         LASERCA__Trade_Accounts__c pcr20690Trade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 6',
-                                                                                LASERCA__Personal_Credit_Report__c = pcr20690.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 6',
+            LASERCA__Personal_Credit_Report__c = pcr20690.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcrPrimaryApplicantTrade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 6',
-                                                                                LASERCA__Personal_Credit_Report__c = pcrPrimaryApplicant.Id,
-                                                                                LASERCA__Monthly_Payment__c = 500);
+            Name = 'Personal Credit Report Trade 6',
+            LASERCA__Personal_Credit_Report__c = pcrPrimaryApplicant.Id,
+            LASERCA__Monthly_Payment__c = 500);
         LASERCA__Trade_Accounts__c pcrCoApplicantTrade = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 6',
-                                                                                LASERCA__Personal_Credit_Report__c = pcrCoApplicant.Id,
-                                                                                LASERCA__Monthly_Payment__c = 250);
+            Name = 'Personal Credit Report Trade 6',
+            LASERCA__Personal_Credit_Report__c = pcrCoApplicant.Id,
+            LASERCA__Monthly_Payment__c = 250);
         insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade};
         insert pcrCoApplicantTrade;
         return leadList;
@@ -316,9 +317,9 @@ public class LoanTestRecordWarehouse {
     private static void getLoanHandlerProductRecords () {
 
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-                                                Total_Capital__c = 10000000,
-                                                Investor__c = 'The Bank',
-                                                Pool_Type__c = 'Revolving Credit Line');
+            Total_Capital__c = 10000000,
+            Investor__c = 'The Bank',
+            Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
         Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
@@ -363,77 +364,80 @@ public class LoanTestRecordWarehouse {
 
         List<Lead> leadList = new List<Lead>();
         Lead leadRecordRetired = new lead(FirstName = 'Retired',
-                                    LastName = 'Test',
-                                    Loan_Amount__c = 25000,
-                                    Company = 'Cole Swain',
-                                    Retired__c = true,
-                                    Self_Employed__c = false,
-                                    LASERCA__Social_Security_Number__c = '000000001',
-                                    Product_Line__c = 'Residential Loan',
-                                    LASERCA__Home_State__c = 'MA',
-                                    Requested_Loan_Amount__c = 25000,
-                                    DOER_Solar_Loan__c = false,
-                                    Custom_Id__c = 'test',
-                                    Unfinished_Lead__c = true,
-                                    Partner_Lookup__c = partner.Id,
-                                    Bs_Sales_ID__c = salesRep.Id,
-                                    Annual_Income_Currency__c = 150000,
-                                    Product__c = productMap.get('BWSL'),
-                                    Product_Program__c = 'BlueWave Solar Loan',
-                                    Automatic_Product_Assignment__c = true,
-                                    Status = 'Ready for Credit Check',
-                                    Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
-                                    Viewed_by_Partner_Admin__c = false,
-                                    Viewed_by_Partner_Agent__c = false);
+            LastName = 'Test',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            Retired__c = true,
+            Self_Employed__c = false,
+            LASERCA__Social_Security_Number__c = '000000001',
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 25000,
+            DOER_Solar_Loan__c = false,
+            Custom_Id__c = 'test',
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('BWSL'),
+            Product_Program__c = 'BlueWave Solar Loan',
+            Application_Type__c = 'Individual',
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check',
+            Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
+            Viewed_by_Partner_Admin__c = false,
+            Viewed_by_Partner_Agent__c = false);
         Lead leadRecordSelfEmployed = new lead(FirstName = 'SelfEmployed',
-                                    LastName = 'Test',
-                                    Loan_Amount__c = 25000,
-                                    Company = 'Cole Swain',
-                                    LASERCA__Social_Security_Number__c = '000000001',
-                                    Retired__c = false,
-                                    DOER_Solar_Loan__c = false,
-                                    Self_Employed__c = true,
-                                    Product_Line__c = 'Residential Loan',
-                                    LASERCA__Home_State__c = 'MA',
-                                    Requested_Loan_Amount__c = 25000,
-                                    Custom_Id__c = 'test',
-                                    Unfinished_Lead__c = true,
-                                    Partner_Lookup__c = partner.Id,
-                                    Bs_Sales_ID__c = salesRep.Id,
-                                    Annual_Income_Currency__c = 150000,
-                                    Product__c = productMap.get('BWSL'),
-                                    Product_Program__c = 'BlueWave Solar Loan',
-                                    Automatic_Product_Assignment__c = true,
-                                    Status = 'Ready for Credit Check',
-                                    Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
-                                    Viewed_by_Partner_Admin__c = false,
-                                    Viewed_by_Partner_Agent__c = false);
+            LastName = 'Test',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Retired__c = false,
+            DOER_Solar_Loan__c = false,
+            Self_Employed__c = true,
+            Product_Line__c = 'Residential Loan',
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 25000,
+            Custom_Id__c = 'test',
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('BWSL'),
+            Product_Program__c = 'BlueWave Solar Loan',
+            Application_Type__c = 'Individual',
+            Automatic_Product_Assignment__c = true,
+            Status = 'Ready for Credit Check',
+            Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
+            Viewed_by_Partner_Admin__c = false,
+            Viewed_by_Partner_Agent__c = false);
         Lead leadRecordDOER = new Lead(FirstName = 'DOER',
-                                   LastName = 'Test',
-                                   Loan_Amount__c = 25000,
-                                   Company = 'Cole Swain',
-                                   LASERCA__Social_Security_Number__c = '000000001',
-                                   Retired__c = false,
-                                   Self_Employed__c = true,
-                                   Product_Line__c = 'Residential Loan',
-                                   DOER_Solar_Loan__c = true,
-                                   LASERCA__Home_State__c = 'MA',
-                                   Requested_Loan_Amount__c = 25000,
-                                   Custom_Id__c = 'test',
-                                   Unfinished_Lead__c = true,
-                                   Partner_Lookup__c = partner.Id,
-                                   Bs_Sales_ID__c = salesRep.Id,
-                                   Annual_Income_Currency__c = 150000,
-                                   Product__c = productMap.get('MSLP'),
-                                   Automatic_Product_Assignment__c = true,
-                                   Product_Program__c = 'MSLP',
-                                   Status = 'Ready for Credit Check',
-                                   Technical_Approval_Verified__c = true,
-                                   Income_Verified__c = true,
-                                   Is_there_a_Partner_Record__c = true,
-                                   Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
-                                   Viewed_by_Partner_Admin__c = false,
-                                   Viewed_by_Partner_Agent__c = false);
+            LastName = 'Test',
+            Loan_Amount__c = 25000,
+            Company = 'Cole Swain',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Retired__c = false,
+            Self_Employed__c = true,
+            Product_Line__c = 'Residential Loan',
+            DOER_Solar_Loan__c = true,
+            LASERCA__Home_State__c = 'MA',
+            Requested_Loan_Amount__c = 25000,
+            Custom_Id__c = 'test',
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('MSLP'),
+            Automatic_Product_Assignment__c = true,
+            Product_Program__c = 'MSLP',
+            Status = 'Ready for Credit Check',
+            Application_Type__c = 'Individual',
+            Technical_Approval_Verified__c = true,
+            Income_Verified__c = true,
+            Is_there_a_Partner_Record__c = true,
+            Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
+            Viewed_by_Partner_Admin__c = false,
+            Viewed_by_Partner_Agent__c = false);
         Lead leadRecordNY = new Lead(FirstName = 'NY',
             LastName = 'Test',
             Loan_Amount__c = 25000,
@@ -455,6 +459,35 @@ public class LoanTestRecordWarehouse {
             Automatic_Product_Assignment__c = true,
             Product_Program__c = 'BlueWave Solar Loan',
             Status = 'Ready for Credit Check',
+            Application_Type__c = 'Individual',
+            Technical_Approval_Verified__c = true,
+            Income_Verified__c = true,
+            Is_there_a_Partner_Record__c = true,
+            Viewed_by_Partner_Admin__c = false,
+            Viewed_by_Partner_Agent__c = false);
+        Lead leadCoApp = new Lead(FirstName = 'CoApp',
+            LastName = 'Test',
+            Loan_Amount__c = 25000,
+            Company = 'CoApp Test',
+            LASERCA__Social_Security_Number__c = '000000001',
+            Retired__c = false,
+            Self_Employed__c = true,
+            Product_Line__c = 'Residential Loan',
+            DOER_Solar_Loan__c = false,
+            LASERCA__Home_State__c = 'MA',
+            System_Cost__c = 25000,
+            Requested_Loan_Amount__c = 25000,
+            Application_Type__c = 'Joint',
+            Custom_Id__c = 'test',
+            Unfinished_Lead__c = true,
+            Partner_Lookup__c = partner.Id,
+            Bs_Sales_ID__c = salesRep.Id,
+            Annual_Income_Currency__c = 150000,
+            Product__c = productMap.get('BWSL'),
+            Automatic_Product_Assignment__c = true,
+            Product_Program__c = 'BlueWave Solar Loan',
+            Status = 'Ready for Credit Check',
+            Loan_System_Information__c = '{"number_of_modules__c":"10","module_manufacturer__c":"SWorld","module_model_number__c":"Sw500","number_of_inverters__c":"1","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"EN300","commencement_datee__c":"02/21/2018","generator_nameplate_capacity__c":"35"}',
             Technical_Approval_Verified__c = true,
             Income_Verified__c = true,
             Is_there_a_Partner_Record__c = true,
@@ -463,33 +496,42 @@ public class LoanTestRecordWarehouse {
         leadList.add(leadRecordRetired);
         leadList.add(leadRecordSelfEmployed);
         leadList.add(leadRecordDOER);
+        leadList.add(leadCoApp);
         leadList.add(leadRecordNY);
         insert leadList;
 
         LASERCA__Personal_Credit_Report__c creditReportRecordRetired = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 1',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '790',
-                                                                                            LASERCA__Lead__c = leadRecordRetired.Id);
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '790',
+            LASERCA__Lead__c = leadRecordRetired.Id);
         LASERCA__Personal_Credit_Report__c creditReportRecordSelfEmployed = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 1',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '790',
-                                                                                            LASERCA__Lead__c = leadRecordSelfEmployed.Id);
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '790',
+            LASERCA__Lead__c = leadRecordSelfEmployed.Id);
         LASERCA__Personal_Credit_Report__c creditReportRecordMSLP = new LASERCA__Personal_Credit_Report__c(
-                                                                                            Name = 'Personal Credit Report 1',
-                                                                                            LASERCA__Code__c ='001',
-                                                                                            LASERCA__Code_2__c ='001',
-                                                                                            LASERCA__Code_3__c = '001',
-                                                                                            LASERCA__Code_4__c = '001',
-                                                                                            LASERCA__Credit_Score_TransUnion__c = '790',
-                                                                                            LASERCA__Lead__c = leadRecordDOER.Id);
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '790',
+            LASERCA__Lead__c = leadRecordDOER.Id);
+        LASERCA__Personal_Credit_Report__c creditReportCoApp = new LASERCA__Personal_Credit_Report__c(
+            Name = 'Personal Credit Report 1',
+            LASERCA__Code__c ='001',
+            LASERCA__Code_2__c ='001',
+            LASERCA__Code_3__c = '001',
+            LASERCA__Code_4__c = '001',
+            LASERCA__Credit_Score_TransUnion__c = '790',
+            LASERCA__Lead__c = leadCoApp.Id);
         LASERCA__Personal_Credit_Report__c creditReportRecordNY = new LASERCA__Personal_Credit_Report__c(
             Name = 'Personal Credit Report 4',
             LASERCA__Code__c ='001',
@@ -499,25 +541,29 @@ public class LoanTestRecordWarehouse {
             LASERCA__Credit_Score_TransUnion__c = '790',
             LASERCA__Lead__c = leadRecordNY.Id);
 
-        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP, creditReportRecordNY};
+        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP, creditReportCoApp, creditReportRecordNY};
 
         LASERCA__Trade_Accounts__c tradeAccountRecordRetired = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 1',
-                                                                                LASERCA__Personal_Credit_Report__c = creditReportRecordRetired.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 1',
+            LASERCA__Personal_Credit_Report__c = creditReportRecordRetired.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c tradeAccountRecordSelfEmployed = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 1',
-                                                                                LASERCA__Personal_Credit_Report__c = creditReportRecordSelfEmployed.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 1',
+            LASERCA__Personal_Credit_Report__c = creditReportRecordSelfEmployed.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c tradeAccountRecordMSLP = new LASERCA__Trade_Accounts__c(
-                                                                                Name = 'Personal Credit Report Trade 1',
-                                                                                LASERCA__Personal_Credit_Report__c = creditReportRecordMSLP.Id,
-                                                                                LASERCA__Monthly_Payment__c = 100);
+            Name = 'Personal Credit Report Trade 1',
+            LASERCA__Personal_Credit_Report__c = creditReportRecordMSLP.Id,
+            LASERCA__Monthly_Payment__c = 100);
+        LASERCA__Trade_Accounts__c tradeAccountCoApp = new LASERCA__Trade_Accounts__c(
+            Name = 'Personal Credit Report Trade 1',
+            LASERCA__Personal_Credit_Report__c = creditReportCoApp.Id,
+            LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c tradeAccountRecordNY = new LASERCA__Trade_Accounts__c(
             Name = 'Personal Credit Report Trade 4',
             LASERCA__Personal_Credit_Report__c = creditReportRecordNY.Id,
             LASERCA__Monthly_Payment__c = 100);
-        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP, tradeAccountRecordNY};
+        insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP, tradeAccountCoApp, tradeAccountRecordNY};
 
         return leadList;
 

@@ -345,7 +345,7 @@ public without sharing class SLPControllersTestclass {
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(5, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
@@ -394,7 +394,7 @@ public without sharing class SLPControllersTestclass {
         Loan__c loan = [SELECT Id FROM Loan__c LIMIT 1];
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             System.assertEquals(1, loanRecords.expiredApplicants.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
