@@ -441,7 +441,7 @@ private class RecurringPaymentsHandlerTestClass {
         //System.assertEquals(7, acctBills.size());
 
         List<Account_Bill__c> acctBills = [
-            SELECT Id, Name, Is_First_Bill__c
+            SELECT Id, Name
             FROM Account_Bill__c
             WHERE Parent_Account__r.Name = 'Account A'
             OR Parent_Account__r.Name = 'Account B'
@@ -605,7 +605,7 @@ private class RecurringPaymentsHandlerTestClass {
         update sssA;
 
         List<Account_Bill__c> acctBills = [
-            SELECT Id, Name, Is_First_Bill__c
+            SELECT Id, Name
             FROM Account_Bill__c
             WHERE Parent_Account__c = :propAccountA.Id
         ];
