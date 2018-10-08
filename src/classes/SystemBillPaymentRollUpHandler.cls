@@ -192,7 +192,8 @@ public without sharing class   SystemBillPaymentRollUpHandler {
                                                                     Account_Bill__c = maxSB.Account_Bill__c,
                                                                     Overpayment__c = TRUE,
                                                                     Entity__c = maxSB.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id,
-                                                                    Source_ID__c = transactionId);
+                                                                    Source_ID__c = transactionId,
+                                                                    Reason_For_Adjustment__c = 'Overpayment');
                 adjustmentsToInsertList.add(adjust);
                 accountBillMap.get(maxSB.Account_Bill__c).Overpayment_Amount__c = accountBillMap.get(maxSB.Account_Bill__c).Overpayment_Amount__c + payment;
                 accountBillsToUpdate.add(accountBillMap.get(maxSB.Account_Bill__c));
