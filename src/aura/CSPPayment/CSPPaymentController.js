@@ -60,4 +60,11 @@
             );
         }
     },
+
+    updateCVVRequirement : function(component, helper) {
+        var cardType = component.get('v.chOrder.ChargentOrders__Card_Type__c');
+        let CVV_Requirements = {'Visa':3, 'Mastercard': 3, 'Discover': 3, 'AMEX': 4, 'American Express': 4};
+        var cvvDigits = CVV_Requirements[cardType];
+        component.set('v.CVVRequirement', cvvDigits);
+    },
 })

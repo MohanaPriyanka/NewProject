@@ -7,7 +7,7 @@
   <aura:attribute name="transactionsCreated" type="ChargentOrders__Transaction__c[]" />
   <aura:attribute name="readyToChargeOrders" type="ChargentOrders__ChargentOrder__c[]" />
   <aura:attribute name="expirationYears" type="String[]"/>
-  <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"                
+  <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"
                   default="{ 'sobjectType': 'ChargentOrders__ChargentOrder__c',
                             'ChargentOrders__Payment_Method__c' : '',
                             'ChargentOrders__Bank_Name__c' : '',
@@ -38,6 +38,10 @@
   <aura:attribute name="ResponseText" type="String"/>  
   <aura:attribute name="ErrorText" type="String"/>
   <aura:attribute name="showErrorText" type="Boolean" default="false"/>
+  <aura:handler name="change" value="{!v.chOrder.ChargentOrders__Card_Type__c}" action="{!c.updateCVVRequirement}" />
+  <aura:attribute name="CVVRequirement" type="Integer" default="3"/>
+  <lightning:notificationsLibrary aura:id="notifLib"/>
+
   <c:LightningErrorHandler/>
   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
     <div class="slds-col slds-align--absolute-center">
@@ -94,11 +98,11 @@
               <div aura:id="BankRouting" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                 <label><b>Routing Number:</b>
                 </label>
-                <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}"/>
+                <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}" maxlength="11"/>
               </div>
               <div aura:id="BankAccountNumber" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                 <label><b>Bank Account Number:</b></label>
-                <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Number__c}"/>
+                <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Number__c}" maxlength="24"/>
               </div>
               <div aura:id="BankAccountName" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                 <label><b>Name on Account:</b></label>
@@ -133,11 +137,11 @@
                 <div class="slds-form-element__row">
                   <div aura:id="CCNumber" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                     <label><b>Credit Card Number:</b></label>
-                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Card_Number__c}"/>
+                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Card_Number__c}" maxlength="16"/>
                   </div>
                   <div aura:id="CVV" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                     <label><b>CVV:</b></label>
-                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Card_Security_Code__c}"/>
+                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Card_Security_Code__c}" maxlength="{!v.CVVRequirement}"/>
                   </div>
                 </div>
                 <div class="slds-form-element__row">
@@ -192,7 +196,7 @@
                   </div>
                   <div aura:id="BillingZipcode" class="slds-form-element slds-size_1-of-1 slds-large-size_1-of-2 slds-p-top_medium">
                     <label><b>Billing Zipcode:</b></label>
-                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Billing_Zip_Postal__c}"/>
+                    <ui:inputText class="slds-input" value="{!v.chOrder.ChargentOrders__Billing_Zip_Postal__c}" maxlength="5"/>
                   </div>
                 </div>
               </div>
@@ -231,6 +235,9 @@
                                 onclick="{!c.returnToMyAccount}"
                                 class="slds-text-body_small 
                                   slds-p-top_x-small slds-p-bottom_x-small slds-p-left_small slds-p-right_small"/>
+              <div class="slds-text-body_small slds-text-color_error slds-p-top_medium">
+                Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact BlueWave customer care.
+              </div>
               <div class="slds-text-body_small slds-text-color_default slds-p-top_medium">
                 By clicking the button, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
               </div>
