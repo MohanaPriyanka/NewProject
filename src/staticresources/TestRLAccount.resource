@@ -1,0 +1,2 @@
+Id,Name,Type,RecordTypeId
+CoapplicantAccount,CoapplicantAccount,Landowner,012j00000010Ha3AAE

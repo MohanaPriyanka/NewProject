@@ -1,0 +1,7 @@
+Id,Name,RecordTypeId,LASERCA__Code_2__c,LASERCA__Code_3__c,LASERCA__Code_4__c,LASERCA__Code__c,LASERCA__Contact__c,LASERCA__Credit_Score_TransUnion__c,LASERCA__Lead__c,LASERCA__TransUnion_Score_Factor__c,Adjusted_DTI_Notes__c
+ColeSwain10Yr699PCR,Personal Credit Report 1.leadMALoanTerm10Rate699,012j0000000n3DbAAI,1,1,1,1,,710,ColeSwain10Yr699Lead,,
+ColeSwain10Yr725PCR,Personal Credit Report 3.leadMALoanTerm10Rate725,012j0000000n3DbAAI,1,1,1,1,,690,ColeSwain10Yr725Lead,,
+ColeSwain20Yr699PCR,Personal Credit Report 4.leadMALoanTerm20Rate699,012j0000000n3DbAAI,1,1,1,1,,710,ColeSwain20Yr699Lead,039 - SERIOUS DELINQUENCY\n014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\nFA - INQUIRIES IMPACTED THE CREDIT SCORE,Notes
+ColeSwain20Yr725PCR,Personal Credit Report 6.leadMALoanTerm20Rate725,012j0000000n3DbAAI,1,1,1,1,,690,ColeSwain20Yr725Lead,,
+PentaleriPrimaryPCR,Personal Credit Report 7.coApplicantLead,012j0000000n3DbAAI,1,1,1,1,,760,JordanPentaleriCSLead,,
+PentaleriCoAppPCR,Personal Credit Report 8.coApplicantLead,012j0000000n3DbAAI,1,1,1,1,ColeSwainContact,760,JordanPentaleriCSLead

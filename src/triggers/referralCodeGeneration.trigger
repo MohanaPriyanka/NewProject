@@ -1,28 +1,29 @@
+/*
+ * Tested By: TestcaseRecordDeleterTest or CommunitySolarCustomerPortalTest
+ * TODO: Fix the SOQL in loop
+ */
 trigger referralCodeGeneration on Contact (before insert) {
-
-string referralCode;
-list <string> referralList = new list <string>();
-integer i = 0;
-
- for ( contact c : trigger.new) {
-    
-        If ( trigger.isInsert ) {
-                    
-        referralCode = 'bluewave' + c.firstName.left(1) + c.lastName;
-        
-string firstNameLetter = c.firstName.left(1);
-        
-        for(Aggregateresult obj : [SELECT count(custom_id__c)cntID FROM contact WHERE First_Letter_First_Name__c = : firstNameLetter AND lastName = : c.lastName]){
-        
-            If(integer.valueOf(obj.get('cntID')) < 1){
-            
-                c.custom_id__c = referralCode;}
-                
-            else{
-                           
-                referralCode = referralCode + obj.get('cntID');
-                
-                c.custom_id__c = referralCode;}}}}    
-       
-
+    if (Util.isDisabled('Disable_ContactTrigger__c')) {
+        return;
+    }
+    for (Contact c : Trigger.new) {
+        if (Trigger.isInsert) {
+            String referralCode = 'bluewave' + c.FirstName.left(1) + c.LastName;
+            String firstNameLetter = c.FirstName.left(1);
+            List<AggregateResult> aggregateResults = [
+                SELECT COUNT(Custom_ID__c) cntID
+                FROM Contact
+                WHERE First_Letter_First_Name__c = : firstNameLetter
+                AND LastName = : c.LastName
+            ];
+            for(AggregateResult obj : aggregateResults){
+                if (Integer.valueOf(obj.get('cntID')) < 1) {
+                    c.Custom_ID__c = referralCode;
+                } else {
+                    referralCode = referralCode + obj.get('cntID');
+                    c.Custom_ID__c = referralCode;
+                }
+            }
+        }
+    }
 }

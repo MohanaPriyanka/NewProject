@@ -1,0 +1,2 @@
+Id,Name,Credit_Check_Timeout__c,Flagged_Credit_Codes__c,DocuSign_Integrator_Key__c,Warn_on_Max_Loan_Amount__c,Disable_ChargentOrderTrigger__c,Disable_System_Bill_Trigger__c
+a2L4C000000HzN5UAK,System,60000,018020A06021022031034040039,2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed,TRUE,FALSE,FALSE

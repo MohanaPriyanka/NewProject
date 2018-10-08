@@ -1,0 +1,2 @@
+Id,AccountId,LastName,FirstName,RecordTypeId,LASERCA__Social_Security_Number__c,Custom_ID__c,Lead__c,Income__c
+ColeSwainContact,CoapplicantAccount,Swain,Cole,012j0000000n3HYAAY,2,bluewaveCSwain,JordanPentaleriCSLead,2000

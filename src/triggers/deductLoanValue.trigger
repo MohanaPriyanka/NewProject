@@ -1,57 +1,72 @@
-Trigger deductLoanValue on Loan_Traunch__c (after insert, after update) {
-if(helperclass2.bool != false){
-
-set <string> traunchNames = new Set <string>( ); 
-set<id> opId = new set<id>();
-List <Loan_Traunch__c> loanOutflows = new List <Loan_Traunch__c>( );
-Integer capExSum;
-integer capd1Sum;
-integer capExSumComp ;
-
-for (Loan_Traunch__c traunch: trigger.new) {
-
-    If (Loan_Traunch__c.name != null) {
-        traunchNames.add (traunch.name);
+/*
+ * Tested by: testTraunchCapitalMetrics
+ */
+trigger deductLoanValue on Loan_Traunch__c (after insert, after update) {
+    if (Util.isDisabled('Disable_LoanTrancheTrigger__c')) {
+        return;
     }
-}
+    if (helperclass2.bool != false) {
+        Set<String> traunchNames = new Set<String>( );
+        Set<Id> opId = new Set<Id>();
+        List<Loan_Traunch__c> loanOutflows = new List<Loan_Traunch__c>( );
+        Integer capExSum;
+        Integer capd1Sum;
+        Integer capExSumComp ;
 
-for(opportunity op : [select id,Requested_Loan_Amount__c, loan_traunch__r.name  FROM opportunity WHERE loan_traunch__r.name  IN :traunchNames])
-{
-    opId.add(op.id);
-}
+        for (Loan_Traunch__c traunch: Trigger.new) {
+            if (Loan_Traunch__c.name != null) {
+                traunchNames.add(traunch.Name);
+            }
+        }
+        List<Opportunity> opps = [
+            SELECT Id,Requested_Loan_Amount__c, loan_traunch__r.Name
+            FROM Opportunity
+            WHERE loan_traunch__r.Name IN :traunchNames
+        ];
+        for (Opportunity op : opps) {
+            opId.add(op.Id);
+        }
+        List<AggregateResult> aggregateResults = [
+            SELECT SUM(Requested_Loan_Amount__c)lc, SUM(Disbursal_1_Contract_Signature__c) d1
+            FROM Opportunity
+            WHERE Id IN: opId
+            AND StageName != 'Complete'
+            AND StageName != 'Declined'
+        ];
+        for (AggregateResult large :aggregateResults) {
+            capExSum = Integer.valueOf(large.get('lc'));
+            capd1Sum = Integer.valueOf(large.get('d1'));
 
+            if(capExSum == null) {
+                capExSum = 0;
+            }
+        }
+        aggregateResults = [
+            SELECT SUM(Disbursal_1_Contract_Signature__c)lc2, SUM(Requested_Loan_Amount__c) d1a
+            FROM Opportunity
+            WHERE Id IN: opId
+            AND StageName = 'Complete'
+        ];
+        for (AggregateResult large2 : aggregateResults) {
+            capExSumComp = Integer.valueOf(large2.get('d1a'));
+            if(capExSum == null) {
+                capExSum = 0;
+            }
+        }
 
-for(Aggregateresult large : [select SUM(Requested_Loan_Amount__c)lc, sum(Disbursal_1_Contract_Signature__c)d1 FROM opportunity WHERE id IN: opId AND stageName != 'Complete' AND stageName != 'Declined']){
-         capExSum = integer.valueOf(large.get('lc'));
-         capd1Sum = integer.valueOf(large.get('d1'));
-
-         if(capExSum == null) { 
-         
-         capExSum = 0; }    
-}
-
-for(Aggregateresult large2 : [select SUM(Disbursal_1_Contract_Signature__c)lc2, sum(Requested_Loan_Amount__c)d1a FROM opportunity WHERE id IN: opId AND stageName = 'Complete']){
-         capExSumComp = integer.valueOf(large2.get('d1a'));
-         
-         if(capExSum == null) { 
-         
-         capExSum = 0; }    
-}
-
-
-for(loan_traunch__c lt : [SELECT id FROM loan_traunch__c WHERE loan_traunch__c.name  IN :traunchNames]){
-    
-lt.capital_reserved__c = capExSumComp ;
-lt.capital_outflows__c = capexSum;
-loanOutflows.add(lt);
-}
-
-
-
-if(loanOutflows != null){
-    
-    helperclass2.bool = false; 
-    update loanOutflows;
-}
-}
+        List<Loan_Traunch__c> traunches = [
+            SELECT Id
+            FROM Loan_Traunch__c
+            WHERE loan_traunch__c.Name IN :traunchNames
+        ];
+        for (Loan_Traunch__c lt : traunches) {
+            lt.Capital_Reserved__c = capExSumComp ;
+            lt.Capital_Outflows__c = capExSum;
+            loanOutflows.add(lt);
+        }
+        if (loanOutflows != null) {
+            helperclass2.bool = false;
+            update loanOutflows;
+        }
+    }
 }

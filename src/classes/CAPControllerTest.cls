@@ -1,8 +1,25 @@
 @isTest
 public with sharing class CAPControllerTest {
     @testSetup static void setupTestData(){
-        List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
-        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Test.loadData(System_Properties__c.SObjectType, 'TestRLSystemProperties');
+        Util.disableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.disableTrigger('Disable_LeadTrigger__c');
+        Util.disableTrigger('Disable_ContactTrigger__c');
+
+        Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
+        Test.loadData(BSST__c.SObjectType, 'TestRLBSST');
+        Test.loadData(Loan_Data__c.SObjectType, 'TestRLLoanData');
+        Test.loadData(Loan_Traunch__c.SObjectType, 'TestRLLoanTraunch');
+        Test.loadData(Product2.SObjectType, 'TestRLProduct');
+        Test.loadData(Lead.SObjectType, 'TestRLLead');
+        Test.loadData(Account.SObjectType, 'TestRLAccount');
+        Test.loadData(Contact.SObjectType, 'TestRLContact');
+        Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
+        Test.loadData(LASERCA__Trade_Accounts__c.SObjectType, 'TestRLTradeAccounts');
+
+        Util.enableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.enableTrigger('Disable_LeadTrigger__c');
+        Util.enableTrigger('Disable_ContactTrigger__c');
     }
 
     @isTest static void testAddNewLeadRecord() {
@@ -170,13 +187,13 @@ public with sharing class CAPControllerTest {
     }
 
     @isTest static void testErrorParsing() {
-        System.assertEquals('CreditBureau - Invalid borrower first name', 
+        System.assertEquals('CreditBureau - Invalid borrower first name',
                             CAPController.parseError('ERROR: E999 - CreditBureau - Invalid borrower first name'));
 
-        System.assertEquals('SomethingElse - Invalid borrower first name', 
+        System.assertEquals('SomethingElse - Invalid borrower first name',
                             CAPController.parseError('ERROR: A103 - SomethingElse - Invalid borrower first name'));
 
-        System.assertEquals('WARN: ABC - Not Handled', 
+        System.assertEquals('WARN: ABC - Not Handled',
                             CAPController.parseError('WARN: ABC - Not Handled'));
     }
 
@@ -540,43 +557,9 @@ public with sharing class CAPControllerTest {
             LIMIT 1
         ];
         CAPController.convertLead(lead.Id, lead.Email);
-
-        lead = CAPController.getLead(lead.Id, lead.Email);
-        Id mslpRTId = Schema.SObjectType.Residential_Equipment__c.getRecordTypeInfosByName().get('MSLP').getRecordTypeId();
-        Id bwslRTId = Schema.SObjectType.Residential_Equipment__c.getRecordTypeInfosByName().get('BlueWave Solar Loan').getRecordTypeId();
-        Residential_Equipment__c resi = new Residential_Equipment__c();
-        resi.Name = lead.FirstName + ' ' + lead.LastName;
-        resi.Lead__c = lead.Id;
-        resi.Opportunity__c = lead.ConvertedOpportunityId;
-        resi.RecordTypeId = (lead.DOER_Solar_Loan__c?mslpRTId:bwslRTId);
-        insert resi;
-
-        LoanHandler.createLoan(new List<Lead>{lead});
-        String searchCriteria = lead.Id + '%';
-        List<Partner_Task__c> tasks = [SELECT Id, Unique_ID__c, Parent__c, Status__c FROM Partner_Task__c WHERE Unique_ID__c LIKE :searchCriteria];
-        Map<String, Partner_Task__c> taskMap = new Map<String, Partner_Task__c>();
-        for (Partner_Task__c task : tasks) {
-            taskMap.put(task.Unique_ID__c, task);
-        }
-        LoanHandler lh = new LoanHandler();
-        lh.validateLoanInformationProvidedOnLead(new List<Lead>{lead}, taskMap);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
 
         lead.Loan_System_Information__c = '{' +
-            '\"generator_nameplate_capacity__c\" : null,' +
-            '\"commencement_datee__c\" : \"\",' +
-            '\"inverter_model_number__c\" : \"\",' +
-            '\"inverter_manufacturer__c\" : \"\",' +
-            '\"number_of_inverters__c\" : \"\",' +
-            '\"module_model_number__c\" : \"\",' +
-            '\"module_manufacturer__c\" : \"\",' +
-            '\"number_of_modules__c\" : \"\",' +
-            '\"Storage_Grid_Hybrid__c\" : false,' +
-            '\"Storage_Capacity__c\" : \"\",' +
-            '\"Storage_Full_or_Partial_Home__c\" : \"\",' +
-            '\"Storage_Inverter_Manufacturer__c\" : \"\",' +
-            '\"Storage_Inverter_Model__c\" : \"\",' +
-            '\"Storage_Manufacturer__c\" : \"\",' +
-            '\"Storage_Model__c\" : \"\",' +
             '\"System_Cost__change\" : 3000,' +
             '\"Requested_Loan_Amount__change\" : 2112,' +
             '\"Estimated_Completion_Date__change\" : \"06/01/2018\",' +
@@ -601,7 +584,6 @@ public with sharing class CAPControllerTest {
             '\"RequestedDate__change\" : \"04/17/2018 14:19\"' +
             '}';
         update lead;
-        Test.startTest();
 
         // Asserts that the task for obtaining the contract signature has not been updated to 'Pending' yet.
         Partner_Task__c preApprovalContractTask = [
@@ -613,58 +595,10 @@ public with sharing class CAPControllerTest {
         ];
         System.assertEquals('Incomplete', preApprovalContractTask.Status__c);
 
-        lead = CAPController.getLead(lead.Id, lead.Email);
-        Map<String, Object> changeOrder = (Map<String, Object>) JSON.deserializeUntyped(lead.Loan_System_Information__c);
-        String completionDate = (String) changeOrder.get('Estimated_Completion_Date__change');
-        Residential_Equipment__c re = CAPController.getEquipment(lead.Id);
-        re.Generator_Nameplate_Capacity__c = (Decimal) changeOrder.get('Generator_Nameplate_Capacity__change');
-        re.Module_Manufacturer__c = (String) changeOrder.get('Module_Manufacturer__change');
-        re.Module_Model_Number__c = (String) changeOrder.get('Module_Model_Number__change');
-        re.Number_of_Modules__c = (Integer) changeOrder.get('Number_of_Modules__change');
-        re.Inverter_Manufacturer__c = (String) changeOrder.get('Inverter_Manufacturer__change');
-        re.Inverter_Model_Number__c = (String) changeOrder.get('Inverter_Model_Number__change');
-        re.Number_of_Inverters__c = (Integer) changeOrder.get('Number_of_Inverters__change');
-        re.Storage_Capacity__c = (Integer) changeOrder.get('Storage_Capacity__change');
-        re.Storage_Manufacturer__c = (String) changeOrder.get('Storage_Manufacturer__change');
-        re.Storage_Model__c = (String) changeOrder.get('Storage_Model__change');
-        re.Storage_Inverter_Manufacturer__c = (String) changeOrder.get('Storage_Inverter_Manufacturer__change');
-        re.Storage_Inverter_Model__c = (String) changeOrder.get('Storage_Inverter_Model__change');
-        re.Loan__r.Lead__r.Storage__c = (Boolean) changeOrder.get('Storage__change');
-        re.Storage_Grid_Hybrid__c = true;
-        re.Storage_Full_or_Partial_Home__c = (String) changeOrder.get('Storage_Full_or_Partial_Home__change');
-        update re.Loan__r.Lead__r;
-
-        Loan__c loan = new Loan__c(
-                Id = re.Loan__c,
-                Estimated_Completion_Date__c = Date.parse(completionDate),
-                Commencement_Datee__c = Date.parse(completionDate) + (re.Loan__r.DOER_Solar_Loann__c?45:30)
-        );
-
-        lead.System_Cost__c = (Decimal) changeOrder.get('System_Cost__change');
-        lead.Requested_Loan_Amount__c = (Decimal) changeOrder.get('Requested_Loan_Amount__change');
-        lead.Change_Order_Status__c = 'Customer Authorized';
-        lead.Update_Dummy__c = !lead.Update_Dummy__c;
-
-        loan.Requested_Loan_Amount__c = lead.Requested_Loan_Amount__c;
-
-        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-            Id = lead.Personal_Credit_Report__c,
-            Avidia_Review_Status__c = PCRApprovalHandler.NOTYETREVIEWED
-        );
-
-        try {
-            update re;
-            update loan;
-            update lead;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
+        Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-
-        // the following method should update the Obtain Signature Partner task to 'Pending'
-        CAPController.sendContractIfAbsent(lead, lead.Email);
-
+        CAPController.setApprovedChangeOrder(lead.Id, lead.Email);
         Test.stopTest();
 
         Partner_Task__c pt = [
