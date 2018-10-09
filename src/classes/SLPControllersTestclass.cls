@@ -784,11 +784,12 @@ public without sharing class SLPControllersTestclass {
         LoanHandler.createLoan(new List<Lead>{lead});
         Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
         System.runAs(execUser) {
-            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
-            System.assertEquals(null, re.Module_Manufacturer__c);
             Test.startTest();
             Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
             Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
+            System.assertEquals(null, re.Module_Manufacturer__c);
 
             Residential_Equipment__c updatedRE = SLPCustomerHandler.saveChangeOrder(loan.Id,
                 '{"number_of_modules__c":"24","module_manufacturer__c":"LG","module_model_number__c":"LG335",' +
