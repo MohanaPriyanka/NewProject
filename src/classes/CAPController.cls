@@ -395,7 +395,10 @@ public without sharing class CAPController {
             update loan;
             update lead;
             update pcr;
-            sendChangeOrderCompletionEmail(lead, '');
+            // Because we have a callout in sendContractIfAbsent, we can't send email here.
+            if (!Test.isRunningTest()) {
+                sendChangeOrderCompletionEmail(lead, '');
+            }
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
