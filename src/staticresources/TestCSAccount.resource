@@ -17,3 +17,5 @@ PaymentTestPropertyB,PaymentTestPropertyB,Landowner,012j00000010HeQAAU,United St
 PaymentTestParentAccountC,PaymentTestParentAccountC,Landowner,012j00000010HeQAAU,United States,United States,true,,,
 PaymentTestPropertyD,PaymentTestPropertyD,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC
 PaymentTestPropertyE,PaymentTestPropertyE,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC
+APizza,APizza Shop,Landowner,012j00000010HeQAAU,United States,United States,true,,,APizza Shop Parent
+APizzaParentAccount,APizza Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,""

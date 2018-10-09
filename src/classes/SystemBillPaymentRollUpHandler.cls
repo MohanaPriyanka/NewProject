@@ -34,7 +34,7 @@ public without sharing class   SystemBillPaymentRollUpHandler {
             SystemBillPaymentRollUpHandler.rollUpPayments(triggeredtransactions);
         }
     }
-    
+
     public static void rollUpPayments(List<Id> triggeredtransactions) {
         DateTime systemBillCreatedDate;
         List<ChargentOrders__Transaction__c> queriedTransactions;
@@ -77,10 +77,9 @@ public without sharing class   SystemBillPaymentRollUpHandler {
                                                             maxbillnumber, 
                                                             dateOfLastPayment, 
                                                             chTransaction.Id);
-            finalGroupedSystemBillsToUpdate.addAll(objectList.listOne);
-            finalAccountBillsToUpdate.addAll(objectList.listTwo);
-            finalAdjustmentsToInsertList.addAll(objectList.listThree);
-            propaccountMap.get(parentID).Date_of_Last_Payment__c = dateOfLastPayment; 
+            finalGroupedSystemBillsToUpdate.addAll(objectList.systemBills);
+            finalAccountBillsToUpdate.addAll(objectList.accountBills);
+            finalAdjustmentsToInsertList.addAll(objectList.billAdjustments);propaccountMap.get(parentID).Date_of_Last_Payment__c = dateOfLastPayment;
         }
         if (finalGroupedSystemBillsToUpdate.size() > 0) {
             update finalGroupedSystemBillsToUpdate;
@@ -120,9 +119,9 @@ public without sharing class   SystemBillPaymentRollUpHandler {
     }   
 
     public class listObject {
-        public List<System_Bill__c> listOne;
-        public List<Account_Bill__c> listTwo;
-        public List<Bill_Adjustment__c> listThree;
+        public List<System_Bill__c> systemBills;
+        public List<Account_Bill__c> accountBills;
+        public List<Bill_Adjustment__c> billAdjustments;
     }
 
     public static listObject distributePaymentToSBs (  List<System_Bill__c> groupedSystemBillsList, 
@@ -142,45 +141,30 @@ public without sharing class   SystemBillPaymentRollUpHandler {
             Decimal balanceOnBill = bills.Balance_Net_Late_Payments__c.setScale(2);
             // ** pay off late bills first
             if (balanceOnBill > 0 && bills.Account_Bill_Number__c < maxbillnumber) {
-                if (payment >= balanceOnBill)  {
-                    bills.Late_Payments__c = bills.Late_Payments__c + balanceOnBill; 
-                    addToPaymentsMap(bills.Opportunity__r.Id, balanceOnBill, paymentsmap);
-                    payment = payment - balanceOnBill;
-                } else if (payment < balanceOnBill) { 
-                    bills.Late_Payments__c = bills.Late_Payments__c + payment; 
-                    addToPaymentsMap(bills.Opportunity__r.Id, payment, paymentsmap);
-                    payment = 0;
-                } 
+                Decimal applicationAmount = Math.min(balanceOnBill, payment);
+                payment -= applicationAmount;
+                bills.Late_Payments__c += applicationAmount;
+                addToPaymentsMap(bills.Opportunity__r.Id, applicationAmount, paymentsmap);
                 groupedSystemBillstoUpdate.add(bills);
             }
             // ** if there's anything left, pay off this month's bill
-            if (bills.Account_Bill_Number__c == maxbillnumber) {
-                if (payment >= balanceOnBill && balanceOnBill > 0) {
-                    bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + balanceOnBill;
-                    addToPaymentsMap(bills.Opportunity__r.Id, balanceOnBill, paymentsmap);
-                    payment = payment - balanceOnBill;
-                } else if (payment < balanceOnBill) {
-                    bills.Payments_Net_Previous_Balances__c = bills.Payments_Net_Previous_Balances__c + payment;
-                    addToPaymentsMap(bills.Opportunity__r.Id, payment, paymentsmap);
-                    payment = 0;
-                }
+            if (bills.Account_Bill_Number__c == maxbillnumber ) {
+                Decimal applicationAmount = Math.min(balanceOnBill, payment);
+                payment -= applicationAmount;
+                bills.Payments_Net_Previous_Balances__c += applicationAmount;
+                addToPaymentsMap(bills.Opportunity__r.Id, applicationAmount, paymentsmap);
                 maxbillnumberlist.add(bills);
-            } 
+            }
         }
         if (payment > 0){ 
             for (System_Bill__c maxbills : maxbillnumberlist) {
                 Decimal lateFeesToPay = checkForLateFees(maxbills, lateFeeList);
                 if (payment > 0 && lateFeesToPay > 0){ 
                     // ** if there's anything left, pay off late fees
-                    if (payment > lateFeesToPay) {
-                        maxBills.Late_Fee_Payments__c = maxBills.Late_Fee_Payments__c + lateFeestoPay; 
-                        addToPaymentsMap(maxbills.Opportunity__r.Id, lateFeesToPay, paymentsmap);
-                        payment = payment - lateFeesToPay;
-                    } else {
-                        maxBills.Late_Fee_Payments__c = payment; 
-                        addToPaymentsMap(maxbills.Opportunity__r.Id, payment, paymentsmap);
-                        payment = 0;
-                    }
+                    Decimal applicationAmount = Math.min(lateFeesToPay, payment);
+                    payment -= applicationAmount;
+                    maxBills.Late_Fee_Payments__c = applicationAmount;
+                    addToPaymentsMap(maxbills.Opportunity__r.Id, applicationAmount, paymentsmap);
                 }
             }
         }
@@ -201,25 +185,25 @@ public without sharing class   SystemBillPaymentRollUpHandler {
             }
             if (paymentsmap.containsKey(maxSB.Opportunity__r.Id)) {
                 maxSB.Total_Payments_This_Month__c =  maxSB.Total_Payments_This_Month__c + paymentsmap.get(maxSB.Opportunity__r.Id);
-                maxSB.Date_of_Last_Payment__c = dateOfLastPayment; 
+                maxSB.Date_of_Last_Payment__c = dateOfLastPayment;
             }
             groupedSystemBillstoUpdate.add(maxSB); 
         }
         listObject lists = new listObject();
-        Lists.listOne = groupedSystemBillstoUpdate;
-        Lists.listTwo = accountBillsToUpdate;
-        Lists.listThree = adjustmentsToInsertList;
+        Lists.systemBills = groupedSystemBillstoUpdate;
+        Lists.accountBills = accountBillsToUpdate;
+        Lists.billAdjustments = adjustmentsToInsertList;
         return lists;
     }
 
-    private class SystemBillRepo {
+    public class SystemBillRepo {
         private List<ChargentOrders__Transaction__c> transactionList;
         private List<System_Bill__c> systemBills;
         private Map<Id, Account> propertyAccountMap;
         private Map<Id,Account_Bill__c> accountBillMap;
         private Map<Id, LateFee> lateFeeMap;
 
-        SystemBillRepo(List<Id> transactions) {
+        public SystemBillRepo(List<Id> transactions) {
             transactionList = [
                 SELECT Id, Name, ChargentOrders__Response_Status__c, Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
                     Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c,
@@ -245,8 +229,8 @@ public without sharing class   SystemBillPaymentRollUpHandler {
                     Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c, Shared_Solar_System_ID__c,
                     Entity_ID__c, Opportunity_Id__c, Account_Bill__c, Account_Bill_Number__c, Early_Payments__c,
                     Carry_Forward_Payments__c, Opportunity__r.Id, Opportunity__c, Late_Fees__c,
-                    Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id,
-                    Account_Bill__r.Name, Account_Bill__r.Overpayment_Amount__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id, Date__c, Account_Bill__r.Is_Most_Recent__c,
+                    Account_Bill__r.Name, Account_Bill__r.Overpayment_Amount__c, CreatedDate, Name,
                     Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c
                 FROM System_Bill__c
                 WHERE Account_Bill__r.Parent_Account__r.Id IN :propertyAccountMap.keySet()
@@ -298,7 +282,7 @@ public without sharing class   SystemBillPaymentRollUpHandler {
         }
     }
 
-    private class LateFee {
+    public class LateFee {
         Id opportunityId;
         Decimal totalLateFees;
         Decimal totalLateFeePayments;

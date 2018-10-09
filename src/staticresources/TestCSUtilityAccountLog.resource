@@ -11,4 +11,5 @@ TestUAL-PaymentTest2,0000240,,,10000,PaymentTestPropertyA,PaymentTestPropertyA
 TestUAL-PaymentTest3,0000241,,,10000,PaymentTestPropertyA,PaymentTestPropertyA
 TestUAL-PaymentTest6,0000244,,,10000,PaymentTestPropertyD,PaymentTestPropertyD
 TestUAL-PaymentTest7,0000245,,,10000,PaymentTestPropertyD,PaymentTestPropertyD
+TestUAL-APizza,0000246,,,10000,APizza Shop,APizza
 

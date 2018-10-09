@@ -16,3 +16,5 @@ TestCDonutFeb-AccountBillTwo,CDonut Shop February 2018,CDonut,TestSolarSystem-Ba
 TestDDonutFeb-AccountBillTwo,DDonut Shop February 2018,DDonut,TestSolarSystem-BarrettP1,2018-02-02 00:00:00,DDonut 2018-02,Statement,2,0.00,0.00,196.09,0.00,FALSE
 PaymentTestPropertyA-AccountBillOne,Payment Test Property A January 2018,PaymentTestPropertyA,TestSolarSystem-BarrettP1,2018-01-01 00:00:00,PaymentTest Property A 2018-01,Statement,1,0.00,0.00,0.00,0.00,FALSE
 PaymentTestPropertyD-AccountBillOne,Payment Test Property D January 2018,PaymentTestPropertyD,TestSolarSystem-BarrettP1,2018-01-01 00:00:00,PaymentTest Property D 2018-01,Statement,1,0.00,0.00,0.00,0.00,FALSE
+TestAPizzaJan-AccountBillOne,APizza Shop January 2018,APizza,TestSolarSystem-BarrettP1,2018-01-01 00:00:00,APizza 2018-01,Statement,1,0.00,0.00,0.00,0.00,FALSE
+TestAPizzaFeb-AccountBillTwo,APizza Shop February 2018,APizza,TestSolarSystem-BarrettP1,2018-02-02 00:00:00,APizza 2018-02,Statement,2,0.00,0.00,259.96,0.00,FALSE
