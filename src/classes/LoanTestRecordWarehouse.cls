@@ -281,8 +281,9 @@ public class LoanTestRecordWarehouse {
             LASERCA__Contact__c = coApplicantContact.Id,
             LASERCA__Confirming_Social_Security_Number__c = '000000002',
             LASERCA__Lead__c = coApplicantLead.Id);
-        insert new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690, pcrPrimaryApplicant};
-        insert pcrCoApplicant;
+        List<LASERCA__Personal_Credit_Report__c> pcrs =
+            new List<LASERCA__Personal_Credit_Report__c>{pcr10710, pcr10690, pcr20710, pcr20690, pcrPrimaryApplicant, pcrCoApplicant};
+        insert pcrs;
 
         LASERCA__Trade_Accounts__c pcr10710Trade = new LASERCA__Trade_Accounts__c(
             Name = 'Personal Credit Report Trade 1',
@@ -298,19 +299,29 @@ public class LoanTestRecordWarehouse {
             LASERCA__Monthly_Payment__c = 100,
             LASERCA__Account_Balance__c = 10000);
         LASERCA__Trade_Accounts__c pcr20690Trade = new LASERCA__Trade_Accounts__c(
-            Name = 'Personal Credit Report Trade 6',
+            Name = 'Personal Credit Report Trade 5',
             LASERCA__Personal_Credit_Report__c = pcr20690.Id,
             LASERCA__Monthly_Payment__c = 100);
         LASERCA__Trade_Accounts__c pcrPrimaryApplicantTrade = new LASERCA__Trade_Accounts__c(
             Name = 'Personal Credit Report Trade 6',
+            LASERCA__Name_of_the_Institution__c = 'Trade 6',
             LASERCA__Personal_Credit_Report__c = pcrPrimaryApplicant.Id,
             LASERCA__Monthly_Payment__c = 500);
         LASERCA__Trade_Accounts__c pcrCoApplicantTrade = new LASERCA__Trade_Accounts__c(
-            Name = 'Personal Credit Report Trade 6',
+            Name = 'Personal Credit Report Trade 7',
+            LASERCA__Name_of_the_Institution__c = 'Trade 7',
             LASERCA__Personal_Credit_Report__c = pcrCoApplicant.Id,
             LASERCA__Monthly_Payment__c = 250);
-        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade};
-        insert pcrCoApplicantTrade;
+        insert new List<LASERCA__Trade_Accounts__c>{pcr10710Trade, pcr10690Trade, pcr20710Trade, pcr20690Trade, pcrPrimaryApplicantTrade, pcrCoApplicantTrade};
+
+        List<LASERCA__Credit_Report_Log__c> crls = new List<LASERCA__Credit_Report_Log__c>();
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            crls.add(new LASERCA__Credit_Report_Log__c(
+                LASERCA__Personal_Credit_Report__c = pcr.Id,
+                LASERCA__Status__c = 'Completed'
+            ));
+        }
+        insert crls;
         return leadList;
     }
 
@@ -541,7 +552,9 @@ public class LoanTestRecordWarehouse {
             LASERCA__Credit_Score_TransUnion__c = '790',
             LASERCA__Lead__c = leadRecordNY.Id);
 
-        insert new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP, creditReportCoApp, creditReportRecordNY};
+        List<LASERCA__Personal_Credit_Report__c> pcrs =
+            new List<LASERCA__Personal_Credit_Report__c>{creditReportRecordRetired, creditReportRecordSelfEmployed, creditReportRecordMSLP, creditReportCoApp, creditReportRecordNY};
+        insert pcrs;
 
         LASERCA__Trade_Accounts__c tradeAccountRecordRetired = new LASERCA__Trade_Accounts__c(
             Name = 'Personal Credit Report Trade 1',
@@ -564,6 +577,15 @@ public class LoanTestRecordWarehouse {
             LASERCA__Personal_Credit_Report__c = creditReportRecordNY.Id,
             LASERCA__Monthly_Payment__c = 100);
         insert new List<LASERCA__Trade_Accounts__c>{tradeAccountRecordRetired, tradeAccountRecordSelfEmployed, tradeAccountRecordMSLP, tradeAccountCoApp, tradeAccountRecordNY};
+
+        List<LASERCA__Credit_Report_Log__c> crls = new List<LASERCA__Credit_Report_Log__c>();
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            crls.add(new LASERCA__Credit_Report_Log__c(
+                LASERCA__Personal_Credit_Report__c = pcr.Id,
+                LASERCA__Status__c = 'Completed'
+            ));
+        }
+        insert crls;
 
         return leadList;
 

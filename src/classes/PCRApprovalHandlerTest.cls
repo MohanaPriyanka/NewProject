@@ -28,12 +28,8 @@ private class PCRApprovalHandlerTest {
                 '  {"key":5, "income":90000, "loan":20000, "doer":false, "fico":810, "debt":200, "expectedStatus":"Unqualified"}, ' +
                 '  {"key":6, "income":90000, "loan":20000, "doer":false, "fico":815, "debt":200, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":7, "income":100000,"loan":30000, "doer":false, "fico":678, "debt":200, "sendEmails":true, "denialSent":true}, ' +
-                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Ready for Credit Check", "sendEmails":true, "denialSent":false} ' +
+                '  {"key":8, "income":100000,"loan":30000, "doer":false, "fico":null, "expectedStatus":"Pending Credit Review", "sendEmails":true, "denialSent":false} ' +
                 ']}';
-        /*
-        Changed the last assertion, because the PCR id doesn't get added to the parent Lead since fico is null.
-        Since the PCR doesn't get added, the lead isn't ready to go through the automated credit review.
-        */
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
@@ -1020,6 +1016,40 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Voided', updatedOpp2.StageName);
         System.assertEquals('New', updatedOpp3.StageName);
     }
+
+    static testMethod void testZeroDebtPCRs() {
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
+        mslp1.Program__c = 'MSLP';
+        mslp1.IBLS_Category__c = 'Category 1';
+        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
+        mslp2.Program__c = 'MSLP';
+        mslp2.IBLS_Category__c = 'Category 2';
+        insert new List<Product2>{bwsl1, mslp1, mslp2};
+
+        String applicationJSON =
+            '{"application":[ ' +
+                '  {"key":1, "income":20000, "loan":65000, "doer":false, "fico":680, "debt":0, "balance":0, "expectedSLAStatus":"Approved"} ' +
+                ']}';
+        ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+        Test.startTest();
+        applicationSet.insertTradeAccounts();
+        applicationSet.insertCreditReportLogs();
+
+        List<Lead> leads = [
+            SELECT Id, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c
+            FROM Lead
+            WHERE Partner_Lookup__c = :partner.Id
+        ];
+        for (Lead lead : leads) {
+            // The PCR should be mapped to the lead even if there's no debt
+            System.assertEquals(0, lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c);
+            System.assertNotEquals(null, lead.Personal_Credit_Report__c);
+        }
+    }
   
     public class Application {
         public Integer income, loan;
@@ -1250,16 +1280,18 @@ private class PCRApprovalHandlerTest {
             for (Application app : application) {
                 crls.add(new LASERCA__Credit_Report_Log__c(
                     LASERCA__Personal_Credit_Report__c = app.pcrId,
-                    LASERCA__Status__c = 'Completed'));
+                    LASERCA__Status__c = 'Pending'));
                 if (app.coAppPCRId != null) {
                     crls.add(new LASERCA__Credit_Report_Log__c(
                         LASERCA__Personal_Credit_Report__c = app.coAppPCRId,
-                        LASERCA__Status__c = 'Completed'));
+                        LASERCA__Status__c = 'Pending'));
                 }
             }
-            System.debug('Before Insert CRLs');
             insert crls;
-            System.debug('After Insert CRLs');
+            for (LASERCA__Credit_Report_Log__c crl : crls) {
+                crl.LASERCA__Status__c = 'Completed';
+            }
+            update crls;
         }
 
         public void connectJointPCRs() {

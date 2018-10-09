@@ -14,8 +14,22 @@ public with sharing class CAPControllerTest {
         Test.loadData(Lead.SObjectType, 'TestRLLead');
         Test.loadData(Account.SObjectType, 'TestRLAccount');
         Test.loadData(Contact.SObjectType, 'TestRLContact');
+        // We can't load in Leads and Contacts with PCR fields populated since PCRs don't exist yet, so we'll do that below
         Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
         Test.loadData(LASERCA__Trade_Accounts__c.SObjectType, 'TestRLTradeAccounts');
+
+        // This simulates creating CRLs as Complete. We don't actually insert them because this would run the trigger
+        // unnecessarily
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
+        List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
+                LASERCA__Personal_Credit_Report__c = pcr.Id,
+                LASERCA__Status__c = 'Completed'
+            );
+            triggerNewMap.put(pcr.Id, crl);
+        }
+        MapPCRtoLeadHandler.mapPCRtoLead(triggerNewMap, null);
 
         Util.enableTrigger('Disable_LoanTrancheTrigger__c');
         Util.enableTrigger('Disable_LeadTrigger__c');
@@ -201,7 +215,7 @@ public with sharing class CAPControllerTest {
         List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
 
-        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c,
+        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, Personal_Credit_Report__c,
                           (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead
                           WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
@@ -218,8 +232,10 @@ public with sharing class CAPControllerTest {
         System.assertEquals(0, productReturnList.size());
 
         List<LASERCA__Personal_Credit_Report__c> creditReportList = leadMap.get('coApplicantLead').LASERCA__Personal_Credit_Reports__r;
-        creditReportList[0].Adjusted_Income__c = 500000;
-        update creditReportList[0];
+        LASERCA__Personal_Credit_Report__c primaryPCR = new LASERCA__Personal_Credit_Report__c();
+        primaryPCR.Id = leadMap.get('coApplicantLead').Personal_Credit_Report__c;
+        primaryPCR.Adjusted_Income__c = 500000;
+        update primaryPCR;
 
         productReturnList.clear();
         productReturnList = CAPController.getCustomerProducts(leadMap.get('coApplicantLead').Id);
@@ -241,10 +257,10 @@ public with sharing class CAPControllerTest {
 
     @IsTest static void testGetProducts() {
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = TRUE AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = FALSE];
-        System.assertEquals(9, products.size());
+        System.assertEquals(11, products.size());
 
         products = CAPController.getProducts('MA', 'Residential Loan');
-        System.assertEquals(7, products.size());
+        System.assertEquals(8, products.size());
     }
 
     @IsTest static void rejectAndApproveChange() {
@@ -440,11 +456,11 @@ public with sharing class CAPControllerTest {
             '"number_of_inverters__c":22,"inverter_manufacturer__c":"baz","inverter_model_number__c":"biz",' +
             '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
         update lead;
-        CAPController.convertLead(lead.Id, lead.Email);
-        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         CAPController.sendLoanDocs(lead.Id, lead.Email);
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
