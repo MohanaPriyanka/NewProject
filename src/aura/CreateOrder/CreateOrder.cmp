@@ -68,8 +68,8 @@
               <div class="slds-form-element slds-size_1-of-2 slds-align_absolute-center white  slds-p-bottom_large ">
                 <label class="slds-text-body_medium slds-align_absolute-center white">Account Type:</label>
                 <ui:inputSelect aura:id="" class="slds-input" value="{!v.chOrder.ChargentOrders__Bank_Account_Type__c}" >
-                  <ui:inputSelectOption label="Checking" value="Checking"/>
-                  <ui:inputSelectOption label="Savings" value="Savings"/>
+                  <ui:inputSelectOption text="Checking" label="Checking"/>
+                  <ui:inputSelectOption text="Savings" label="Savings"/>
                 </ui:inputSelect>
               </div>
                 <lightning:button aura:id="viewLoanData" 
