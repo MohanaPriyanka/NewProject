@@ -197,10 +197,10 @@ public without sharing class SLPControllersTestclass {
     @isTest static void testGetCustomerProducts() {
         List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
 
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
-
+        Test.startTest();
+        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c,
                           (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead
@@ -209,8 +209,7 @@ public without sharing class SLPControllersTestclass {
         }
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
 
-        Test.startTest();
-        System.runAs(partnerUser) {         
+        System.runAs(partnerUser) {
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('leadMALoanTerm10Rate699').Id);
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
@@ -345,7 +344,7 @@ public without sharing class SLPControllersTestclass {
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(5, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
             equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
@@ -394,7 +393,7 @@ public without sharing class SLPControllersTestclass {
         Loan__c loan = [SELECT Id FROM Loan__c LIMIT 1];
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(3, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
+            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
             System.assertEquals(1, loanRecords.expiredApplicants.size());
             SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
             System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
@@ -697,6 +696,7 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testOrigination() {
+        Test.startTest();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = true AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = false];
         System.assertEquals(12, products.size());
@@ -709,6 +709,7 @@ public without sharing class SLPControllersTestclass {
 
         products = SLPAddCustomer.getProducts('MA');
         System.assertEquals(9, products.size());
+        Test.stopTest();
     }
 
     @isTest static void testSendCommunitySolarApplication() {
@@ -764,7 +765,9 @@ public without sharing class SLPControllersTestclass {
             }
         }
         lead.CAP_Stage__c = 'NAV_Confirmations';
+        Util.disableTrigger('Disable_LeadTrigger__c');
         update lead;
+        Util.enableTrigger('Disable_LeadTrigger__c');
 
         System.assertEquals(lead.LastName, 'Test');
         CAPController.convertLead(lead.Id, lead.Email);
@@ -780,13 +783,13 @@ public without sharing class SLPControllersTestclass {
         LoanHandler.resetTriggerContext();
         LoanHandler.createLoan(new List<Lead>{lead});
         Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
-        System.debug(LoggingLevel.ERROR, loan);
         System.runAs(execUser) {
-            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
-            System.assertEquals(null, re.Module_Manufacturer__c);
             Test.startTest();
             Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
             Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+
+            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
+            System.assertEquals(null, re.Module_Manufacturer__c);
 
             Residential_Equipment__c updatedRE = SLPCustomerHandler.saveChangeOrder(loan.Id,
                 '{"number_of_modules__c":"24","module_manufacturer__c":"LG","module_model_number__c":"LG335",' +

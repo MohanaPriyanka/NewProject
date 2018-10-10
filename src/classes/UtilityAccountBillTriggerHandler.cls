@@ -64,12 +64,14 @@ public without sharing class UtilityAccountBillTriggerHandler {
         List<Bill_Adjustment__c> adjustmentList = [ SELECT Id, Name, UASB__c,
                                                 Utility_Account_Subscription__c,
                                                 Adjustment_Amount__c, Discounted_Bill__c,
-                                                Utility_Account_Subscription__r.Id
+                                                Utility_Account_Subscription__r.Id,
+                                                Approval_Status__c
                                                 FROM Bill_Adjustment__c
                                                 WHERE Utility_Account_Subscription__r.Utility_Account_Log__c
                                                 IN : utilityAccountLogIdToUABMap.keySet()
                                                 AND Applied_to_Bill__c = false
                                                 AND Overpayment__c = false
+                                                AND Approval_Status__c = 'Approved'
                                                 ORDER BY CreatedDate];
 
         printSOQLLimits('After Collecting Adjustments');

@@ -19,35 +19,35 @@ private class RecurringPaymentsHandlerTestClass {
     @IsTest static void testScheduledJobResults() {
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
-                                                              YearDate__c, Credits_on_Bill_Period__c,
-                                                              MonthDate__c, Total_System_NMCs__c, Production__c,
-                                                              Generate_Bills__c, Total_System_NMCs_2_of_4__c,
-                                                              Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
-                                                              Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
-                                                              Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
-                                                              Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
-                                                              Billing_Period_End_Date__c, Month_Number__c,
-                                                              Net_Metering_Rate_Applied_2_of_4__c,
-                                                              Net_Metering_Rate_Applied_3_of_4__c,
-                                                              Net_Metering_Rate_Applied_4_of_4__c
-                                                             FROM Energy_Usage_Update__c
-                                                             WHERE Name = 'sssB - March 2016'
-                                                             OR Name = 'sssA - March 2016'
-                                                             LIMIT 2];
+            YearDate__c, Credits_on_Bill_Period__c,
+            MonthDate__c, Total_System_NMCs__c, Production__c,
+            Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+            Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+            Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+            Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+            Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+            Billing_Period_End_Date__c, Month_Number__c,
+            Net_Metering_Rate_Applied_2_of_4__c,
+            Net_Metering_Rate_Applied_3_of_4__c,
+            Net_Metering_Rate_Applied_4_of_4__c
+        FROM Energy_Usage_Update__c
+        WHERE Name = 'sssB - March 2016'
+        OR Name = 'sssA - March 2016'
+        LIMIT 2];
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
         List<System_Bill__c> systemBillListtwo = [
             SELECT Id,
-                 Name,
-                 Account_Bill__c,
-                 Waive_Late_Fees__c,
-                 Total_Due__c,
-                 Due_This_Month__c,
-                 Shared_Solar_System__c,
-                 Shared_Solar_System_ID__c,
-                 Bill_Number__c,
-                 Property_Account_ID__c
+                Name,
+                Account_Bill__c,
+                Waive_Late_Fees__c,
+                Total_Due__c,
+                Due_This_Month__c,
+                Shared_Solar_System__c,
+                Shared_Solar_System_ID__c,
+                Bill_Number__c,
+                Property_Account_ID__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
             OR Account_Bill__r.Parent_Account__r.Name = 'Account B'
@@ -65,21 +65,21 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
-              SELECT Id,
-                     Entity_Name__c,
-                     ChargentOrders__Payment_Status__c,
-                     ChargentOrders__Charge_Date__c,
-                     Reason_for_Recurring_Stop__c,
-                     Account_Bill__r.Bill_Number__c,
-                     Account_Bill__r.Name,
-                     ChargentOrders__Charge_Amount__c,
-                     Account_Bill__r.Parent_Account__r.Recurring_Billing__c
-              FROM ChargentOrders__ChargentOrder__c];
+            SELECT Id,
+                Entity_Name__c,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+            FROM ChargentOrders__ChargentOrder__c];
 
         // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 3 that should have been moved to the newer bill
-        System.assertEquals(6,orderlist.size());
+        System.assertEquals(7,orderlist.size());
 
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
@@ -105,47 +105,47 @@ private class RecurringPaymentsHandlerTestClass {
     @IsTest static void cloneOrderCorrectly() {
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
-                                                              YearDate__c, Credits_on_Bill_Period__c,
-                                                              MonthDate__c, Total_System_NMCs__c, Production__c,
-                                                              Generate_Bills__c, Total_System_NMCs_2_of_4__c,
-                                                              Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
-                                                              Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
-                                                              Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
-                                                              Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
-                                                              Billing_Period_End_Date__c, Month_Number__c,
-                                                              Net_Metering_Rate_Applied_2_of_4__c,
-                                                              Net_Metering_Rate_Applied_3_of_4__c,
-                                                              Net_Metering_Rate_Applied_4_of_4__c
-                                                             FROM Energy_Usage_Update__c
-                                                             WHERE Name = 'sssB - March 2016'
-                                                             OR Name = 'sssA - March 2016'
-                                                             LIMIT 2];
+            YearDate__c, Credits_on_Bill_Period__c,
+            MonthDate__c, Total_System_NMCs__c, Production__c,
+            Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+            Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+            Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+            Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+            Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+            Billing_Period_End_Date__c, Month_Number__c,
+            Net_Metering_Rate_Applied_2_of_4__c,
+            Net_Metering_Rate_Applied_3_of_4__c,
+            Net_Metering_Rate_Applied_4_of_4__c
+        FROM Energy_Usage_Update__c
+        WHERE Name = 'sssB - March 2016'
+        OR Name = 'sssA - March 2016'
+        LIMIT 2];
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
         // Remove the Recurring Order on Account A, SSS1 and check that it is created off a clone:
         ChargentOrders__ChargentOrder__c orderToDelete = [  SELECT Id
-                                                            FROM ChargentOrders__ChargentOrder__c
-                                                            WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
-                                                            AND ChargentOrders__Charge_Date__c = '30'
-                                                            LIMIT 1];
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
+        AND ChargentOrders__Charge_Date__c = '30'
+        LIMIT 1];
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [SELECT Id
                                                                     FROM ChargentOrders__ChargentOrder__c];
-        System.assertEquals(5,originalOrderCount.size());
+        System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
             SELECT Id,
-                 Name,
-                 Account_Bill__c,
-                 Waive_Late_Fees__c,
-                 Total_Due__c,
-                 Due_This_Month__c,
-                 Shared_Solar_System__c,
-                 Shared_Solar_System_ID__c,
-                 Bill_Number__c,
-                 Property_Account_ID__c
+                Name,
+                Account_Bill__c,
+                Waive_Late_Fees__c,
+                Total_Due__c,
+                Due_This_Month__c,
+                Shared_Solar_System__c,
+                Shared_Solar_System_ID__c,
+                Bill_Number__c,
+                Property_Account_ID__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'Account A'
             OR Account_Bill__r.Parent_Account__r.Name = 'Account B'
@@ -163,21 +163,21 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
-              SELECT Id,
-                     ChargentOrders__Payment_Status__c,
-                     ChargentOrders__Charge_Date__c,
-                     Reason_for_Recurring_Stop__c,
-                     Account_Bill__r.Bill_Number__c,
-                     Account_Bill__r.Name,
-                     ChargentOrders__Charge_Amount__c,
-                     Account_Bill__r.Parent_Account__r.Recurring_Billing__c
-              FROM ChargentOrders__ChargentOrder__c];
+            SELECT Id,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+            FROM ChargentOrders__ChargentOrder__c];
 
         // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
         // 2 that should have been moved to the newer bill
         // 1 that should have been cloned
-        System.assertEquals(6,orderlist.size());
+        System.assertEquals(7,orderlist.size());
 
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
@@ -204,13 +204,13 @@ private class RecurringPaymentsHandlerTestClass {
     @IsTest static void updateParentAccountOnStop() {
         Account oldAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
         List<ChargentOrders__ChargentOrder__c> accountOrders = new List<ChargentOrders__ChargentOrder__c>([
             SELECT Id,
-                   ChargentOrders__Payment_Status__c
+                ChargentOrders__Payment_Status__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Account_Bill__r.Parent_Account__r.Id = : oldAccountC.Id
         ]);
@@ -226,7 +226,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Account newAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -236,13 +236,13 @@ private class RecurringPaymentsHandlerTestClass {
     @IsTest static void updateParentAccountOnRecurring() {
         Account oldAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
         List<ChargentOrders__ChargentOrder__c> accountOrders = new List<ChargentOrders__ChargentOrder__c>([
             SELECT Id,
-                   ChargentOrders__Payment_Status__c
+                ChargentOrders__Payment_Status__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Account_Bill__r.Parent_Account__r.Id = : oldAccountC.Id
         ]);
@@ -263,7 +263,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Account newAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -279,7 +279,7 @@ private class RecurringPaymentsHandlerTestClass {
         Test.startTest();
         Account oldAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -349,7 +349,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Account newAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -381,7 +381,11 @@ private class RecurringPaymentsHandlerTestClass {
 
         insert entityA;
         Test.startTest();
-        Shared_Solar_System__c sssA = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Oxford Barrett St. P1'];
+        Shared_Solar_System__c sssA = [
+            SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
 
         Opportunity opportunityA = new Opportunity(
             Name = 'OppA',
@@ -389,6 +393,7 @@ private class RecurringPaymentsHandlerTestClass {
             Shared_Solar_System__c = sssA.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Non-Residential',
+            Product_Line__c = 'Community Solar',
             CloseDate = System.today());
 
         insert opportunityA;
@@ -411,26 +416,15 @@ private class RecurringPaymentsHandlerTestClass {
         );
         insert scheduleZA;
 
-        //Test first Account Bill - Chargent Order linked to Property Account
-        ChargentOrders__ChargentOrder__c orderFirstAcctBill = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Account__c = propAccountA.Id,
-            ChargentOrders__Gateway__c = chGatewayA.Id,
-            ChargentOrders__Shipping_Name__c = entityA.Id,
-            Entity__c = entityA.Id,
-            ChargentOrders__Billing_First_Name__c = 'SarahRenfro',
-            ChargentOrders__Billing_Last_Name__c = 'Renfro',
-            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-            ChargentOrders__Billing_Zip_Postal__c = '02467',
-            ChargentOrders__Subtotal__c = 555.44,
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            ChargentOrders__Card_Type__c = 'Visa',
-            ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
-            ChargentOrders__Card_Expiration_Month__c = '02',
-            ChargentOrders__Card_Expiration_Year__c = '2018',
-            ChargentOrders__Card_Last_4__c = '1111',
-            ChargentOrders__Payment_Frequency__c = 'Once');
-        insert orderFirstAcctBill;
+
+        opportunityA.CC_Card_Type__c = 'Visa';
+        opportunityA.CC_Account_Number__c = '411111111111';
+        opportunityA.CC_CVV__c = '999';
+        opportunityA.CC_CardHolder_Name__c = 'Renfro';
+        opportunityA.CC_Expiration_Month__c = '02';
+        opportunityA.CC_Expiration_Year__c = '2018';
+
+        update opportunityA;
 
         //Create first Account Bill. Created through Production Updates
         Energy_Usage_Update__c productionUpdateA = [
@@ -442,8 +436,12 @@ private class RecurringPaymentsHandlerTestClass {
         update productionUpdateA;
         update sssA;
 
+
+        //List<Account_Bill__c> acctBills = [SELECT Id, Name FROM Account_Bill__c];
+        //System.assertEquals(7, acctBills.size());
+
         List<Account_Bill__c> acctBills = [
-            SELECT Id, Name, Is_First_Bill__c
+            SELECT Id, Name
             FROM Account_Bill__c
             WHERE Parent_Account__r.Name = 'Account A'
             OR Parent_Account__r.Name = 'Account B'
@@ -473,6 +471,9 @@ private class RecurringPaymentsHandlerTestClass {
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
+        //List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c];
+        //System.assertEquals(9, acctBillsList.size() );
+
         List<Account_Bill__c> acctBillsList = [
             SELECT Id, Name
             FROM Account_Bill__c
@@ -484,19 +485,22 @@ private class RecurringPaymentsHandlerTestClass {
         ];
         System.assertEquals(7, acctBillsList.size() );
 
+
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
         Database.executeBatch(batchToRun,50);
         Test.stopTest();
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
         ChargentOrders__ChargentOrder__c checkCO = [
-            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c, Entity_Name__c
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+                Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
             FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Billing_First_Name__c = 'SarahRenfro'
+            WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
         ];
 
         Account_Bill__c checkAB = [
-            SELECT Id, Property_Account_Name__c, Is_First_Bill__c, Parent_Account__c
+            SELECT Id, Property_Account_Name__c, Parent_Account__c,
+                (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r)
             FROM Account_Bill__c
             WHERE Parent_Account__c = :propAccountA.Id
         ];
@@ -505,10 +509,166 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertNotEquals(null, checkCO.Account_Bill__c);
         System.assertEquals(null, checkCO.ChargentOrders__Account__c);
         System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
-        System.assertEquals(false, checkAB.Is_First_Bill__c);
+
+        //Confirm system bill shared solar system is sssA and make sure ChargentOrder entity matches
+        System.assertEquals(sssA.Id, checkAB.System_Bills__r[0].Shared_Solar_System__c);
+        System.assertEquals(sssA.BWC_Project_Entity_Manual__c, checkCO.Entity__c);
+        System.assertEquals(sssA.BWC_Project_Entity_Manual__r.Gateway__c, checkCO.ChargentOrders__Gateway__c);
     }
 
-    @IsTest static void updateParentAccountIfOtherOrdersNotRecurring() {
+    @IsTest static void moveChargentOrderFromPropertyAcctToFirstAcctBillFromWaitlist() {
+        //Tests the moving of the Chargent Order from the Property Account to the first Account Bill
+
+        Account propAccountA = new Account(Name = 'Property Account A', RecordTypeId = '012j00000010HeQ');
+        insert propAccountA;
+
+        Utility_Account_Log__c ualog3 = new Utility_Account_Log__c(
+            Name = '0000333',
+            Account__c = propAccountA.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'sarah renfro'
+        );
+        insert ualog3;
+
+        ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway A',
+            ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Active__c = true
+        );
+        insert chGatewayA;
+
+        Entity__c entityA = new Entity__c (Name = 'BarrettProjCo', Gateway__c = chGatewayA.Id);
+
+        insert entityA;
+        Test.startTest();
+        Shared_Solar_System__c sssA = [
+            SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+        Shared_Solar_System__c sssWaitlist = [
+            SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Waitlist'
+        ];
+
+        Opportunity opportunityA = new Opportunity(
+            Name = 'OppA',
+            AccountId = propAccountA.Id,
+            Shared_Solar_System__c = sssWaitlist.Id,
+            StageName = 'Complete',
+            Customer_Group__c = 'Non-Residential',
+            Product_Line__c = 'Community Solar',
+            CloseDate = System.today());
+
+        insert opportunityA;
+
+        opportunityA.CC_Card_Type__c = 'Visa';
+        opportunityA.CC_Account_Number__c = '411111111111';
+        opportunityA.CC_CVV__c = '999';
+        opportunityA.CC_CardHolder_Name__c = 'Renfro';
+        opportunityA.CC_Expiration_Month__c = '02';
+        opportunityA.CC_Expiration_Year__c = '2018';
+
+        update opportunityA;
+
+        opportunityA.Shared_Solar_System__c = sssA.Id;
+
+        update opportunityA;
+
+        Utility_Account_Subscription__c uasA = new Utility_Account_Subscription__c(
+            Name = '0000333',
+            Utility_Account_Log__c = ualog3.Id,
+            Opportunity__c = opportunityA.Id,
+            calculated_annual_cost_of_electricity__c = 10000,
+            Subscribed_Annual_Cost_of_Electricity__c = 10000);
+        insert uasA;
+
+        uasA.Customer_Subscription_KW_DC_STATIC__c = 25;
+        update uasA;
+
+        Schedule_Z__c scheduleZA = new Schedule_Z__c(
+            Name = '18-0333 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssA.Id,
+            Status__c = 'Billing'
+        );
+        insert scheduleZA;
+
+        //Create first Account Bill. Created through Production Updates
+        Energy_Usage_Update__c productionUpdateA = [
+            SELECT Id
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+        ];
+        productionUpdateA.Schedule_Z__c = scheduleZA.Id;
+        update productionUpdateA;
+        update sssA;
+
+        List<Account_Bill__c> acctBills = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :propAccountA.Id
+        ];
+        System.assertEquals(0, acctBills.size());
+
+        List<Energy_Usage_Update__c> productionUpdateList = [
+            SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
+                YearDate__c, Credits_on_Bill_Period__c,
+                MonthDate__c, Total_System_NMCs__c, Production__c,
+                Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+                Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+                Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+                Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+                Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+                Billing_Period_End_Date__c, Month_Number__c,
+                Net_Metering_Rate_Applied_2_of_4__c,
+                Net_Metering_Rate_Applied_3_of_4__c,
+                Net_Metering_Rate_Applied_4_of_4__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+        ];
+
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        ee.runBills();
+
+        List<Account_Bill__c> acctBillsList = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :propAccountA.Id
+        ];
+        System.assertEquals(1, acctBillsList.size() );
+
+        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
+        Database.executeBatch(batchToRun,50);
+        Test.stopTest();
+
+        //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
+        ChargentOrders__ChargentOrder__c checkCO = [
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+                Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
+        ];
+
+        Account_Bill__c checkAB = [
+            SELECT Id, Property_Account_Name__c, Parent_Account__c,
+            (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :propAccountA.Id
+        ];
+
+        //Check if CO and AB were created
+        System.assertNotEquals(null, checkCO.Account_Bill__c);
+        System.assertEquals(null, checkCO.ChargentOrders__Account__c);
+        System.assertEquals(checkCO.Account_Bill__c, checkAB.Id);
+
+        //Confirm system bill shared solar system is sssA and make sure ChargentOrder entity matches
+        System.assertEquals(sssA.Id, checkAB.System_Bills__r[0].Shared_Solar_System__c);
+        System.assertEquals(sssA.BWC_Project_Entity_Manual__c, checkCO.Entity__c);
+        System.assertEquals(sssA.BWC_Project_Entity_Manual__r.Gateway__c, checkCO.ChargentOrders__Gateway__c);
+    }
+
+    static testMethod void updateParentAccountIfOtherOrdersNotRecurring() {
         /*
         Tests if a chargent order is updated and the account does not have active
         recurring payments. Then, the parent account is not longer autopay
@@ -516,7 +676,7 @@ private class RecurringPaymentsHandlerTestClass {
         Test.startTest();
         Account oldAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -564,7 +724,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Account newAccountC = [
             SELECT Id,
-                   Recurring_Billing__c
+                Recurring_Billing__c
             FROM Account
             WHERE Name = 'Account C'];
 
@@ -950,6 +1110,80 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(1, ordersWithAccAEntity1AfterFinalInsert.size());
     }
 
+    // This test reproduces a bug where Chargent Orders would be moved from the account to the first account bill upon
+    // making any change to the first account bill, EVEN IF there was already a second account bill.
+    // This happened to Jyoti Enterprises in July/Aug 2018. A paper check was logged in August to pay off the July Bill,
+    // and when the balanced changed on the July bill and AccountBillTrigger(/AccountBillHandler) was run, Chargent
+    // Order 4105 was moved from the Account to July and set to recurring, and the August bill had already been created.
+    static testMethod void  testOnlyUnsetIsFirstBillIfNoSubsequent() {
+
+        // Get the account
+        Account accountWithOrder = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Name = 'Account E'
+        ];
+
+        // Get the list of orders currently on that account
+        List<ChargentOrders__ChargentOrder__c> ordersOnAccount = [
+            SELECT Id, Property_Account__r.Id, Property_Account_ID__c, Entity__c, Account_Bill__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Property_Account__r.Id =: accountWithOrder.Id
+        ];
+
+        // Get the first bill. There are TWO bills on the account.
+        Account_Bill__c firstAccountBill = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+            AND Name = 'First Account Bill'
+        ];
+
+        // Get the first bill. There are TWO bills on the account.
+        List<Account_Bill__c> billsOnAccount = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+        ];
+
+        // Show that there is an order on the account, and no order on the first bill.
+        System.assertEquals(ordersOnAccount.size(), 1);
+        System.assertEquals(firstAccountBill.Chargent_Orders__r.size(), 0);
+
+        // Assert that there are two bills for this account
+        System.assertEquals(billsOnAccount.size(), 2);
+
+        // make any change to the first account bill, so that AccountBillHandler runs
+        firstAccountBill.Name = 'making any change';
+        update firstAccountBill;
+
+        // Run updateRecurringOrders, which also contained the bug, to ensure that it does not cause the order to move
+        //  to the first account bill
+        RecurringPaymentsHandler handler = new RecurringPaymentsHandler();
+        handler.updateRecurringOrders(ordersOnAccount);
+
+        List<ChargentOrders__ChargentOrder__c> ordersOnAccountAfter = [
+            SELECT Id, Property_Account__r.Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Property_Account__r.Id =: accountWithOrder.Id
+        ];
+
+        Account_Bill__c firstAccountBillAfter = [
+            SELECT Id, Parent_Account__c, Name,
+            (SELECT Id FROM Chargent_Orders__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__c =: accountWithOrder.Id
+            AND Name = 'making any change'
+        ];
+
+
+        // Assert that there is still one order on the account, and none on the first bill (i.e. nothing has changed)
+        System.assertEquals(ordersOnAccountAfter.size(), 1);
+        System.assertEquals(firstAccountBillAfter.Chargent_Orders__r.size(), 0);
+    }
+
     @IsTest static void testChargeCarryoverBalanceNotTotalDue() {
         List<System_Bill__c> systemBills = [
             SELECT Id, Name, Bill_Number__c, Account_Bill__r.Bill_Number__c, Total_Due__c
@@ -1283,5 +1517,4 @@ private class RecurringPaymentsHandlerTestClass {
             System.assertEquals(accountBill.Id, order.Account_Bill__c);
         }
     }
-
 }

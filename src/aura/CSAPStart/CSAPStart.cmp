@@ -16,7 +16,7 @@
           Login
         </legend>
         <form class="slds-form--stacked">
-          Enter the email associated with this loan application to confirm your identity before starting or continuing your application.
+          Enter the email associated with this application to confirm your identity before starting or continuing your application.
           <lightning:layout horizontalAlign="spread">
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
               <lightning:input name="leadEmail"

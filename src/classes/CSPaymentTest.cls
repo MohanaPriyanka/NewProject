@@ -85,7 +85,7 @@ public class CSPaymentTest {
             Country = 'United States',
             IsActive = true,
             ContactId = contact.Id,
-            TimeZoneSidKey = 'America/Los_Angeles',
+            TimeZoneSidKey = 'Pacific/Tongatapu',
             Username = email);
         Util.insertSObj(user);
     }

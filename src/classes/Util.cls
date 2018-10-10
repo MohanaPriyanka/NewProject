@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: LoanUnderwritingTest,PCRApprovalHandlerTest,SLPControllersTestclass,SLPQuickSalesSheetTestclass
+ * Tested by: UtilTest
  *************************************************************************************/
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
@@ -107,5 +107,42 @@ public without sharing class Util {
 
     public static String removeComma(String value) {
         return value.replace(',', '');
+    }
+
+    public static String removeNewLine(String value) {
+        return value.replace('\n', '');
+    }
+
+    public static String prepForCSV(String value) {
+        value = removeComma(value);
+        return removeNewLine(value);
+    }
+
+    public static Boolean isDisabled(String triggerType) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0 &&
+            systemProperties[0].get(triggerType) != null &&
+            (Boolean) systemProperties[0].get(triggerType)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static void enableTrigger(String triggerType) {
+        toggleTrigger(triggerType, false);
+    }
+    public static void disableTrigger(String triggerType) {
+        toggleTrigger(triggerType, true);
+    }
+    private static void toggleTrigger(String triggerType, Boolean onOrOff) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            systemProperties[0].put(triggerType, onOrOff);
+            update systemProperties[0];
+        } else {
+            System_Properties__c property = new System_Properties__c(Name = 'System');
+            property.put(triggerType, onOrOff);
+            insert property;
+        }
     }
 }

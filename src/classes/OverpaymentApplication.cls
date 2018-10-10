@@ -25,9 +25,10 @@ public without sharing class OverpaymentApplication {
         List<Bill_Adjustment__c> adjustments = [
             SELECT Id, Name, Account_Bill__c, Entity__r.Id, Adjustment_Amount__c, Account_Bill__r.Bill_Number__c,
                 Account_Bill__r.Parent_Account__c, Outstanding__c, Opportunity_ID__c,
-                Overpayment__c,UASB__c, UASB__r.Opportunity__c
+                Overpayment__c,UASB__c, UASB__r.Opportunity__c, Approval_Status__c
             FROM Bill_Adjustment__c
             WHERE Outstanding__c != 0
+            AND(Approval_Status__c = 'Approved' OR Overpayment__c = TRUE)
             ORDER BY Adjustment_Amount__c DESC
         ];
 

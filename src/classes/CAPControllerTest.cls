@@ -1,8 +1,39 @@
 @isTest
 public with sharing class CAPControllerTest {
     @testSetup static void setupTestData(){
-        List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
-        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Test.loadData(System_Properties__c.SObjectType, 'TestRLSystemProperties');
+        Util.disableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.disableTrigger('Disable_LeadTrigger__c');
+        Util.disableTrigger('Disable_ContactTrigger__c');
+
+        Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
+        Test.loadData(BSST__c.SObjectType, 'TestRLBSST');
+        Test.loadData(Loan_Data__c.SObjectType, 'TestRLLoanData');
+        Test.loadData(Loan_Traunch__c.SObjectType, 'TestRLLoanTraunch');
+        Test.loadData(Product2.SObjectType, 'TestRLProduct');
+        Test.loadData(Lead.SObjectType, 'TestRLLead');
+        Test.loadData(Account.SObjectType, 'TestRLAccount');
+        Test.loadData(Contact.SObjectType, 'TestRLContact');
+        // We can't load in Leads and Contacts with PCR fields populated since PCRs don't exist yet, so we'll do that below
+        Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
+        Test.loadData(LASERCA__Trade_Accounts__c.SObjectType, 'TestRLTradeAccounts');
+
+        // This simulates creating CRLs as Complete. We don't actually insert them because this would run the trigger
+        // unnecessarily
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
+        List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
+                LASERCA__Personal_Credit_Report__c = pcr.Id,
+                LASERCA__Status__c = 'Completed'
+            );
+            triggerNewMap.put(pcr.Id, crl);
+        }
+        MapPCRtoLeadHandler.mapPCRtoLead(triggerNewMap, null);
+
+        Util.enableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.enableTrigger('Disable_LeadTrigger__c');
+        Util.enableTrigger('Disable_ContactTrigger__c');
     }
 
     @isTest static void testAddNewLeadRecord() {
@@ -170,13 +201,13 @@ public with sharing class CAPControllerTest {
     }
 
     @isTest static void testErrorParsing() {
-        System.assertEquals('CreditBureau - Invalid borrower first name', 
+        System.assertEquals('CreditBureau - Invalid borrower first name',
                             CAPController.parseError('ERROR: E999 - CreditBureau - Invalid borrower first name'));
 
-        System.assertEquals('SomethingElse - Invalid borrower first name', 
+        System.assertEquals('SomethingElse - Invalid borrower first name',
                             CAPController.parseError('ERROR: A103 - SomethingElse - Invalid borrower first name'));
 
-        System.assertEquals('WARN: ABC - Not Handled', 
+        System.assertEquals('WARN: ABC - Not Handled',
                             CAPController.parseError('WARN: ABC - Not Handled'));
     }
 
@@ -184,7 +215,7 @@ public with sharing class CAPControllerTest {
         List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
 
-        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c,
+        for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, Personal_Credit_Report__c,
                           (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
                           FROM Lead
                           WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
@@ -201,8 +232,10 @@ public with sharing class CAPControllerTest {
         System.assertEquals(0, productReturnList.size());
 
         List<LASERCA__Personal_Credit_Report__c> creditReportList = leadMap.get('coApplicantLead').LASERCA__Personal_Credit_Reports__r;
-        creditReportList[0].Adjusted_Income__c = 500000;
-        update creditReportList[0];
+        LASERCA__Personal_Credit_Report__c primaryPCR = new LASERCA__Personal_Credit_Report__c();
+        primaryPCR.Id = leadMap.get('coApplicantLead').Personal_Credit_Report__c;
+        primaryPCR.Adjusted_Income__c = 500000;
+        update primaryPCR;
 
         productReturnList.clear();
         productReturnList = CAPController.getCustomerProducts(leadMap.get('coApplicantLead').Id);
@@ -224,10 +257,10 @@ public with sharing class CAPControllerTest {
 
     @IsTest static void testGetProducts() {
         List<Product2> products = [SELECT Id FROM Product2 WHERE IsActive = TRUE AND Product_Type__c = 'Residential Loan' AND Require_Junctions_to_Enable__c = FALSE];
-        System.assertEquals(9, products.size());
+        System.assertEquals(11, products.size());
 
         products = CAPController.getProducts('MA', 'Residential Loan');
-        System.assertEquals(7, products.size());
+        System.assertEquals(8, products.size());
     }
 
     @IsTest static void rejectAndApproveChange() {
@@ -323,7 +356,6 @@ public with sharing class CAPControllerTest {
         update lead;
 
         Test.startTest();
-
         CAPController.setRejectedChangeOrder(lead.Id, lead.Email, lead.Loan_System_Information__c);
         lead = [
             SELECT Id, Email, Unfinished_Lead__c, Status, System_Cost__c, Requested_Loan_Amount__c, Change_Order_Status__c
@@ -424,11 +456,11 @@ public with sharing class CAPControllerTest {
             '"number_of_inverters__c":22,"inverter_manufacturer__c":"baz","inverter_model_number__c":"biz",' +
             '"commencement_datee__c":"06/01/2018","generator_nameplate_capacity__c":10.2,"provideSystemInfo":true}';
         update lead;
-        CAPController.convertLead(lead.Id, lead.Email);
-        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         CAPController.sendLoanDocs(lead.Id, lead.Email);
         lead = [
             SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
@@ -533,4 +565,65 @@ public with sharing class CAPControllerTest {
         System.assertEquals(null, DocuSignHelper.oppLoansSent);
     }
 
+    @IsTest static void testContractSendIfAbsent() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, (SELECT Id FROM Loans__r), (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699'
+            LIMIT 1
+        ];
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+
+        lead.Loan_System_Information__c = '{' +
+            '\"System_Cost__change\" : 3000,' +
+            '\"Requested_Loan_Amount__change\" : 2112,' +
+            '\"Estimated_Completion_Date__change\" : \"06/01/2018\",' +
+            '\"Generator_Nameplate_Capacity__change\" : 10.08,' +
+            '\"Module_Manufacturer__change\" : \"SolarModules\",' +
+            '\"Module_Model_Number__change\" : \"MM\",' +
+            '\"Number_of_Modules__change\" : 27,' +
+            '\"Inverter_Manufacturer__change\" : \"SolarInverters\",' +
+            '\"Inverter_Model_Number__change\" : \"EN\",' +
+            '\"Number_of_Inverters__change\" : 2,' +
+            '\"Storage__change\" : true,' +
+            '\"Storage_Grid_Hybrid__change\" : \"Yes\",' +
+            '\"Storage_Capacity__change\" : 10,' +
+            '\"Storage_Full_or_Partial_Home__change\" : \"Full home backup\",' +
+            '\"Storage_Inverter_Manufacturer__change\" : \"SolarEdge\",' +
+            '\"Storage_Inverter_Model__change\" : \"StorEdge 10kw\",' +
+            '\"Storage_Manufacturer__change\" : \"Tesla\",' +
+            '\"Storage_Model__change\" : \"Powerwall\",' +
+            '\"Down_Payment__change\" : 888,' +
+            '\"Reject_Reason\" : \"Need more panels\",' +
+            '\"RequestedBy__change\" : \"Rob Meyers\",' +
+            '\"RequestedDate__change\" : \"04/17/2018 14:19\"' +
+            '}';
+        update lead;
+
+        // Asserts that the task for obtaining the contract signature has not been updated to 'Pending' yet.
+        Partner_Task__c preApprovalContractTask = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+            AND Lead__c = :lead.Id
+        ];
+        System.assertEquals('Incomplete', preApprovalContractTask.Status__c);
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.setApprovedChangeOrder(lead.Id, lead.Email);
+        Test.stopTest();
+
+        Partner_Task__c pt = [
+            SELECT Id, Name, Status__c, Completion_Date__c,
+            (SELECT Id, Name FROM SubTasks__r)
+            FROM Partner_Task__c
+            WHERE Name = 'Obtain Contract Signature'
+            AND Lead__c = :lead.Id
+        ];
+        System.assertEquals('Pending', pt.Status__c);
+    }
 }

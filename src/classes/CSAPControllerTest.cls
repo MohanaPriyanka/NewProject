@@ -223,9 +223,34 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(userRecord) {
-            CSAPController.upsertCSAPRecords(leadToInsert, partner.Id, salesRep.Id, customerContact.Id);
-            leadToInsert.Application_Type__c = 'Non-Residential';
-            CSAPController.addAdditionalLead(leadToInsert);
+            Lead insertedLead = CSAPController.upsertCSAPRecords(leadToInsert, partner.Id, salesRep.Id, customerContact.Id);
+            // CSAPEnergyInfoController.addNewLead creates a new lead
+            Lead additionalLead = new Lead(
+                Application_Type__c = 'Non-Residential',
+                Parcel_Zip__c = '02052',
+                LASERCA__Home_Zip__c = '02052',
+                Personal_Credit_Report__c = leadToInsert.Personal_Credit_Report__c,
+                Parent_Account__c = leadToInsert.Parent_Account__c,
+                Partner_Lookup__c = leadToInsert.Partner_Lookup__c,
+                Customer_Referral__c = leadToInsert.Customer_Referral__c,
+                bs_Sales_ID__c = leadToInsert.bs_Sales_ID__c,
+                Email = leadToInsert.Email,
+                FirstName = leadToInsert.FirstName,
+                LastName = leadToInsert.LastName,
+                MobilePhone = leadToInsert.MobilePhone,
+                Phone = leadToInsert.Phone,
+                LASERCA__Birthdate__c = leadToInsert.LASERCA__Birthdate__c,
+                LASERCA__SSN__c = leadToInsert.LASERCA__SSN__c,
+                Application_Source_Phase_1__c = 'CSAP with Partner',
+                Application_Source_Phase_2__c = 'CSAP Additional Property',
+                Product_line__c = 'Community Solar',
+                OwnerId = leadToInsert.OwnerId,
+                Company = leadToInsert.FirstName + ' ' + leadToInsert.LastName
+            );
+            insertedLead = CSAPController.addAdditionalLead(additionalLead);
+            // The CSAP looks at Load Zone and Utility to see if they're split, and they should get updated
+            System.assertEquals('SEMA', insertedLead.Load_Zone__c);
+            System.assertEquals('Eversource', insertedLead.Utility_1__c);
         }
 
         List<Lead> leads = [

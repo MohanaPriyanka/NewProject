@@ -178,6 +178,10 @@ public without sharing class CSAPController {
         lead = processLead(lead);
         lead.Id = null;
         insert lead;
+        // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
+        Lead insertedLead = [SELECT Load_Zone__c, Utility_1__c FROM Lead WHERE Id = :lead.Id];
+        lead.Load_Zone__c = insertedLead.Load_Zone__c;
+        lead.Utility_1__c = insertedLead.Utility_1__c;
         return lead;
     }
     public static Lead processLead(Lead lead){

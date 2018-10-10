@@ -45,11 +45,13 @@ private class ChargentOrderCreationhandlertest {
 
 
         
-        Opportunity oppone = new Opportunity(Name = 'Jordan Jordan',
-                                             AccountId = accountA.Id,
-                                             Shared_Solar_System__c = sss1.Id,
-                                             StageName = 'Complete',
-                                             CloseDate = System.today());
+        Opportunity oppone = new Opportunity(
+            Name = 'Jordan Jordan',
+            AccountId = accountA.Id,
+            Shared_Solar_System__c = sss1.Id,
+            StageName = 'Complete',
+            Product_Line__c = 'Community Solar',
+            CloseDate = System.today());
         insert oppone;
         
         oppone.ACH_Account_Number__c = '123456790';
@@ -60,11 +62,13 @@ private class ChargentOrderCreationhandlertest {
 
         update oppone;
 
-        Opportunity opptwo = new Opportunity(Name = 'Jordan Testcase',
-                                             AccountId = accountA.Id,
-                                             Shared_Solar_System__c = sss1.Id,
-                                             StageName = 'Complete',
-                                             CloseDate = System.today());
+        Opportunity opptwo = new Opportunity(
+            Name = 'Jordan Testcase',
+            AccountId = accountA.Id,
+            Shared_Solar_System__c = sss1.Id,
+            StageName = 'Complete',
+            Product_Line__c = 'Community Solar',
+            CloseDate = System.today());
         insert opptwo;
         
         opptwo.CC_Account_Number__c = '1112223334545';
@@ -76,6 +80,7 @@ private class ChargentOrderCreationhandlertest {
 
         update opptwo;
 
+        Test.StartTest();
         List<ChargentOrders__ChargentOrder__c > orderlist = [  SELECT Id, ChargentOrders__Bank_Name__c,
                                                                 ChargentOrders__Bank_Routing_Number__c, 
                                                                 ChargentOrders__Bank_Account_Type__c,
@@ -87,7 +92,6 @@ private class ChargentOrderCreationhandlertest {
                                                                 ChargentOrders__Card_Expiration_Month__c,
                                                                 ChargentOrders__Card_Expiration_Year__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
-        Test.StartTest();
             System.assertEquals(2, orderList.size());
             System.assertEquals('Bank of America', orderlist[0].ChargentOrders__Bank_Name__c);
             System.assertEquals('129383578', orderlist[0].ChargentOrders__Bank_Routing_Number__c);

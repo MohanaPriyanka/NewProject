@@ -537,12 +537,11 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
-        mailer.makeCallout = false;
+        ScheduledAccountBillLetterStreamMailer.makeCallout = false;
         // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
         // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
-        mailer.maxPackageSize = 10;
-        mailer.execute(null);
+        ScheduledAccountBillLetterStreamMailer.maxPackageSize = 10;
+        ScheduledAccountBillLetterStreamMailer.batchAccountBills();
         Test.stopTest();
 
         List<AsyncApexJob> asyncApexJobs = [
@@ -553,14 +552,5 @@ public with sharing class LetterStreamServiceTest {
 
         // sometimes overlaps with other requests
         System.assert(asyncApexJobs.size() >= 2);
-    }
-
-    @isTest static void testCanScheduleJob() {
-        Test.startTest();
-        ScheduledAccountBillLetterStreamMailer mailer = new ScheduledAccountBillLetterStreamMailer();
-        Datetime dt = Datetime.now().addMinutes(0);
-        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        System.schedule('ScheduledAccountBillLetterStreamMailer', CRON_EXP, mailer);
-        Test.stopTest();
     }
 }

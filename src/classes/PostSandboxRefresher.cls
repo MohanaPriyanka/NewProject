@@ -18,6 +18,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         deleteScheduledJob('Recurring Billing');
         updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
+        switchChargentToTestMode();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
@@ -204,6 +205,39 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
             update systemProperties[0];
         }
+    }
+
+    global static void switchChargentToTestMode() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (!org.IsSandbox && !Test.isRunningTest()) {
+            throw new Util.BWException('Don\'t switch Chargent to Test Mode!');
+        }
+
+        List<ChargentOrders__ChargentOrder__c> orders = [
+            SELECT Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Card_Type__c != null
+            OR ChargentOrders__Bank_Account_Type__c != null
+        ];
+        for (ChargentOrders__ChargentOrder__c chargentOrder : orders) {
+            chargentOrder.ChargentOrders__Payment_Method__c = 'Credit Card';
+            chargentOrder.ChargentOrders__Card_Type__c = 'American Express';
+            chargentOrder.ChargentOrders__Card_Number__c = '370000000000002';
+            chargentOrder.ChargentOrders__Card_Security_Code__c = '1234';
+        }
+        update orders;
+
+        // We'll switch all gateways to Authorize for now since they have a test gateway.
+        RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
+        List<ChargentBase__Gateway__c> gateways = [SELECT Id, Name FROM ChargentBase__Gateway__c];
+        for (ChargentBase__Gateway__c gateway : gateways) {
+            gateway.Name = 'Test ' + gateway.Name;
+            gateway.ChargentBase__Test_Mode__c = true;
+            gateway.RecordTypeId = authorizeRT.Id;
+            gateway.ChargentBase__Merchant_ID__c = '2EBsLaEw64D';
+            gateway.ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG';
+        }
+        update gateways;
     }
 
     /*
@@ -713,9 +747,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         Utility_Account_Log__c ualog3 = getUtilityAccountLog('0000236', 10000, propAccount3, accountName3);
         Utility_Account_Log__c ualog4 = getUtilityAccountLog('0000237', 10000, propAccount4, accountName4);
         Utility_Account_Log__c ualog5 = getUtilityAccountLog('0000238', 10000, propAccount5, accountName5);
+        Utility_Account_Log__c ualog6 = getUtilityAccountLog('0000239', 10000, propAccount5, accountName5);
 
         insert new List<Utility_Account_Log__c>{
-            ualog1, ualog2, ualog3, ualog4, ualog5
+            ualog1, ualog2, ualog3, ualog4, ualog5, ualog6
         };
 
         Opportunity opportunity1 = getOpportunity(accountName1, propAccount1, sssList[sssIndex]);
@@ -723,9 +758,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         Opportunity opportunity3 = getOpportunity(accountName3, propAccount3, sssList[sssIndex]);
         Opportunity opportunity4 = getOpportunity(accountName4, propAccount4, sssList[sssIndex]);
         Opportunity opportunity5 = getOpportunity(accountName5, propAccount5, sssList[sssIndex]);
+        Opportunity opportunity6 = getOpportunity(accountName5, propAccount5, sssList[sssIndex==0?1:0]);
 
         insert new List<Opportunity>{
-            opportunity1, opportunity2, opportunity3, opportunity4, opportunity5
+            opportunity1, opportunity2, opportunity3, opportunity4, opportunity5, opportunity6
         };
 
         Utility_Account_Subscription__c uas1 = getUtilityAccountSubscription('000234', 25, ualog1, opportunity1);
@@ -733,9 +769,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         Utility_Account_Subscription__c uas3 = getUtilityAccountSubscription('000234', 20, ualog3, opportunity3);
         Utility_Account_Subscription__c uas4 = getUtilityAccountSubscription('000234', 19, ualog4, opportunity4);
         Utility_Account_Subscription__c uas5 = getUtilityAccountSubscription('000234', 17, ualog5, opportunity5);
+        Utility_Account_Subscription__c uas6 = getUtilityAccountSubscription('000235', 17, ualog6, opportunity6);
 
         insert new List<Utility_Account_Subscription__c>{
-            uas1, uas2, uas3, uas4, uas5
+            uas1, uas2, uas3, uas4, uas5, uas6
         };
     }
 

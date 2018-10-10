@@ -1,0 +1,2 @@
+Id,Name,RecordTypeId,Generator_Nameplate_Capacity__c,Module_Manufacturer__c,Module_Model_Number__c,Number_of_Modules__c,Inverter_Manufacturer__c,Inverter_Model_Number__c,Loan__c,Opportunity__c,Unique_ID__c,Number_of_Inverters__c,Lead__c
+a003C000001DaAfQAK,Retired Test,012j0000000uhqUAAQ,35,SWorld,Sw500,10,Enphase,EN300,a0y3C000000AovUQAS,0063C000004J7y3QAC,,1,00Q3C000001mAqBUAU

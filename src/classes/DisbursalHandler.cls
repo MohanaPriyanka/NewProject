@@ -10,6 +10,7 @@ public class DisbursalHandler {
     public void createDisbursalsFromOpportunity(Map<Id,Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         List<Loan__c> loanList = new List<Loan__c>();
         Map<String, String> disbursalStatuses = new Map<String, String>();
+        Map<String, Decimal> disbursalAmounts = new Map<String, Decimal>();
         List<String> opportunityIdList = new List<String>();
         List<Disbursal__c> disbursalsToInsert = new List<Disbursal__c>();
 
@@ -33,23 +34,37 @@ public class DisbursalHandler {
             }
 
             List<Disbursal__c> disbursals = [
-                SELECT Id, Unique_ID__c, Status__c
+                SELECT Id, Unique_ID__c, Status__c, Amount__c
                 FROM Disbursal__c
                 WHERE Loan__c IN : loanIds
             ];
 
             for (Disbursal__c disbursal : disbursals) {
                 disbursalStatuses.put(disbursal.Unique_ID__c, disbursal.Status__c);
+                disbursalAmounts.put(disbursal.Unique_ID__c, disbursal.Amount__c);
             }
 
             for (Loan__c loanRecord : loanList) {
+                List<Disbursal__c> stagedDisbursals = new List<Disbursal__c>();
+                Decimal disbursalTotal = 0;
                 for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
-//                    We want to check for a disbursal with the same unique ID and get its status
                     String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
-                    // If the disbursal status is protected we don't want to update it
                     if (!protectedDisbursalStatuses.contains(previousStatus)) {
-                        disbursalsToInsert.add(disbursal);
+                        // if the disbursal's previous status is not protected, use the new amount
+                        disbursalTotal += disbursal.Amount__c;
+                    } else {
+                        // if the disbursal's previous status is protected, use its original amount since it gets filtered out later.
+                        disbursalTotal += disbursalAmounts.get(disbursal.Unique_ID__c);
                     }
+                    stagedDisbursals.add(disbursal);
+                }
+                /* If the total Amount to be disbursed matches the loan amount,
+                   we filter the list to only update the disbursals without protected statuses.
+                   Otherwise we adjust the disbursal amounts to match the loan amount. */
+                if (disbursalTotal == loanRecord.Requested_Loan_Amount__c) {
+                    disbursalsToInsert.addAll(filterProtectedDisbursals(stagedDisbursals, disbursalStatuses));
+                } else {
+                    disbursalsToInsert.addAll(trueUpNewDisbursals(stagedDisbursals, disbursalStatuses, disbursalAmounts, loanRecord.Requested_Loan_Amount__c));
                 }
             }
             upsert disbursalsToInsert Unique_ID__c;
@@ -63,9 +78,6 @@ public class DisbursalHandler {
         for (String subString : disbursalSubStrings) {
             List<String> rateAndType = subString.split('%');
             String disbursalName = subString;
-            if (disbursalName.length() >= 80) {
-                disbursalName = disbursalName.subString(0,80);
-            }
             disbursalList.add(createDisbursal(Decimal.valueOf(rateAndType.get(0).remove(' ')), disbursalName, rateAndType.get(1), count, loanRecord));
             count = count + 1;
         }
@@ -89,6 +101,45 @@ public class DisbursalHandler {
             disbursal.Name = disbursal.Name.substring(0,80);
         }
         return disbursal;
+    }
+
+    public List<Disbursal__c> filterProtectedDisbursals(List<Disbursal__c> stagedDisbursals, Map<String, String> disbursalStatuses) {
+        List<Disbursal__c> approvedDisbursals = new List<Disbursal__c>();
+        for (Disbursal__c disbursal : stagedDisbursals) {
+            // We want to check for a disbursal with the same unique ID and get its status
+            String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
+            // If the disbursal status is protected we don't want to update it
+            if (!protectedDisbursalStatuses.contains(previousStatus)) {
+                approvedDisbursals.add(disbursal);
+            }
+        }
+        return approvedDisbursals;
+    }
+
+    public List<Disbursal__c> trueUpNewDisbursals(List<Disbursal__c> stagedDisbursals, Map<String, String> disbursalStatuses, Map<String, Decimal> disbursalAmounts, Decimal loanAmount) {
+        List<Disbursal__c> approvedDisbursals = new List<Disbursal__c>();
+        Decimal remainingDisbursalAmount = loanAmount;
+        // Iterate through the disbursals once to get the remainder after removing protected disbursals and the D3 disbursal.
+        for (Disbursal__c disbursal : stagedDisbursals) {
+            String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
+            // If the disbursal status is protected we don't want to update it, just subtract it's total from the remaining balance.
+            if (protectedDisbursalStatuses.contains(previousStatus)) {
+                remainingDisbursalAmount -=  disbursalAmounts.get(disbursal.Unique_ID__c);
+            } else if (disbursal.Disbursal_Sequence__c != 2) {
+                remainingDisbursalAmount -= disbursal.Amount__c;
+                approvedDisbursals.add(disbursal);
+            }
+        }
+        // Iterate through the disbursals a second time to isolate the D2 disbural and assign the remaining amount to it.
+        for (Disbursal__c disbursal : stagedDisbursals) {
+            String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
+            if (!protectedDisbursalStatuses.contains(previousStatus) &&
+               disbursal.Disbursal_Sequence__c == 2) {
+                disbursal.Amount__c = remainingDisbursalAmount;
+                approvedDisbursals.add(disbursal);
+            }
+        }
+        return approvedDisbursals;
     }
 
     public void updateDisbursalAmountsOnRLAChange (Map<Id,Loan__c> newMap, Map<Id, Loan__c> oldMap) {

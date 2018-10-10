@@ -61,13 +61,15 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             LetterStreamService.LetterParameters letterParams = new LetterStreamService.LetterParameters();
             letterParams.generateFromAccountBill(accountBill, document);
             lss.addLetterToCSV(letterParams);
-            String fileName = Util.removeComma(letterParams.fileName);
+            String fileName = Util.prepForCSV(letterParams.fileName);
+            // Can't have ' in file names to letterstream
+            filename = fileName.replace('\'', '');
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '.csv';
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '_' + jobNumber + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
@@ -81,7 +83,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         response = http.send(request);
         Dom.Document responseXML = response.getBodyDocument();
         String responseXMLString = responseXML.toXmlString();
-        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds));
+        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv));
     }
 
     public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
@@ -101,10 +103,12 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
     public class QueueHandleResponse implements Queueable {
         public String responseXMLString;
         public Set<Id> accountBillIds;
+        public String csv;
 
-        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds) {
+        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv) {
             this.responseXMLString = responseXMLString;
             this.accountBillIds = accountBillIds;
+            this.csv = csv;
         }
 
         public void execute(QueueableContext contact) {
@@ -112,7 +116,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
             if (newJob == null) {
-                Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString);
+                Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString + '\n CSV: ' + csv);
             } else {
                 update markAccountBillsAsMailed(accountBillIds, newJob.Id);
 

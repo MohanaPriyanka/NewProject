@@ -4,11 +4,8 @@
  *************************************************************************************/
 
 trigger PCRApprovalTrigger on LASERCA__Personal_Credit_Report__c (before update, before insert, after insert, after update) {
-    MapPCRtoLeadHandler mapPCRtoLeadHandler = new MapPCRtoLeadHandler(Trigger.isExecuting, Trigger.size);
-
     if (Trigger.isUpdate && Trigger.isBefore) {
-        mapPCRtoLeadHandler.OnBeforeUpdate (Trigger.new);
-        // Whever a PCR is updated calculate DTI if the PCR isn't in the insert process (if it's old)
+        // Whenever a PCR is updated calculate DTI if the PCR isn't in the insert process (if it's old)
         PCRApprovalHandler.calcDTIAndEmailOnlyOld(Trigger.new);
     }
 }

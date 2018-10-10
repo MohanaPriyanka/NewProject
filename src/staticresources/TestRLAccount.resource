@@ -1,0 +1,3 @@
+Id,Name,Type,RecordTypeId
+CoapplicantAccount,CoapplicantAccount,Landowner,012j00000010Ha3AAE
+0013C00000AIz6rQAD,Cole Swain,Landowner,012j0000000ude6AAA

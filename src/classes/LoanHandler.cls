@@ -77,7 +77,7 @@ public without sharing class LoanHandler{
                                          Map<Id, Opportunity> updatedOpportunityMap,
                                          Map<Id, Opportunity> oldOpportunityMap) {
         List<String> completedOppIds = new List<String>();
-        List<String> signedCustomerOppIds = new List<String>();
+        List<Opportunity> signedCustomerOpps = new List<Opportunity>();
         List<String> counterSignedCustomerOppIds = new List<String>();
         List<String> uploadedSalesAgreementCustomerOppIds = new List<String>();
         List<Opportunity> validateSalesAgreementList = new List<Opportunity>();
@@ -95,8 +95,8 @@ public without sharing class LoanHandler{
                 newOpp.Requested_Loan_Amount__c != oldOpportunityMap.get(newOpp.Id).Requested_Loan_Amount__c) {
                 oppsWithRequestedLoanAmountChange.add(newOpp.Id);
             }
-            if (newOpp.Contract_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).Contract_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
-                signedCustomerOppIds.add(newOpp.Id);
+            if (checkCustomerContractSignatures(newOpp, oldOpportunityMap.get(newOpp.Id))) {
+                signedCustomerOpps.add(newOpp);
             }
             if (newOpp.BlueWave_Signature_Status__c == 'Completed' && oldOpportunityMap.get(newOpp.Id).BlueWave_Signature_Status__c != 'Completed' && newOpp.Product_Line__c == 'Residential Loan') {
                 counterSignedCustomerOppIds.add(newOpp.Id);
@@ -149,10 +149,11 @@ public without sharing class LoanHandler{
                 oppLeadIds.add(oppRecord.Lead_ID__c);
             }
         }
-        if (!signedCustomerOppIds.isEmpty()) {
-            List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(updatedOpportunities);
+
+        if (!signedCustomerOpps.isEmpty()) {
+            List<Partner_Task__c> partnerTaskList = checkForPartnerTasksOnOpportunity(signedCustomerOpps);
             if (partnerTaskList.size() > 0) {
-                updatePartnerTaskObtainContractSignature(updatedOpportunities, getPartnerTasks(oppLeadIds));
+                updatePartnerTaskObtainContractSignature(signedCustomerOpps, getPartnerTasks(oppLeadIds));
             }
         }
         if (!counterSignedCustomerOppIds.isEmpty()) {
@@ -756,6 +757,21 @@ public without sharing class LoanHandler{
             taskMap.put(partnerTask.Unique_ID__c, partnerTask);
         }
         return taskMap;
+    }
+
+    //Check if Individual or Joint Application for Contract Signature
+    public static Boolean checkCustomerContractSignatures(Opportunity newOpp, Opportunity oldOpp){
+        if (newOpp.Application_Type__c == 'Joint' &&  newOpp.Product_Line__c == 'Residential Loan'
+            && newOpp.Contract_Status__c == 'Completed' && newOpp.Co_Applicant_Signature_Status__c == 'Completed'
+            && (oldOpp.Contract_Status__c != 'Completed' || oldOpp.Co_Applicant_Signature_Status__c != 'Completed')){
+            return true;
+        } else if (newOpp.Application_Type__c == 'Individual' && newOpp.Contract_Status__c == 'Completed'
+            && oldOpp.Contract_Status__c != 'Completed'
+            && newOpp.Product_Line__c == 'Residential Loan') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void validateLoanInformationProvidedOnLead(List<Lead> leadList, Map<String, Partner_Task__c> taskMap) {

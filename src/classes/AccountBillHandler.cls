@@ -23,14 +23,16 @@ public without sharing class AccountBillHandler{
             }
         }
 
-        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Account__c, ChargentOrders__Billing_First_Name__c
+        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Account__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c
                                                                 FROM ChargentOrders__ChargentOrder__c
                                                                 WHERE ChargentOrders__Account__c IN :firstABMap.keySet() ];
 
         if(!ordersList.isEmpty()) {
             for(ChargentOrders__ChargentOrder__c firstOrder : ordersList){
                 String billID = firstABMap.get(firstOrder.ChargentOrders__Account__c);
-                ordersByABMap.put(billID, firstOrder );
+                if (firstOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c <= 1) {
+                    ordersByABMap.put(billID, firstOrder );
+                }
             }
             retrieveFirstChargentOrder(firstAccountBillList, ordersByABMap);
         }
@@ -60,8 +62,27 @@ public without sharing class AccountBillHandler{
     public static void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap ){
         List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
 
-        if(!firstAccountBillList.isEmpty()){
+        Set<Id> firstBillIds = new Set<Id>();
+        for (Account_Bill__c accountBill : firstAccountBillList) {
+            firstBillIds.add(accountBill.Id);
+        }
 
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Account_Bill__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__c,
+                    Shared_Solar_System__r.BWC_Project_Entity_Manual__c
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN : firstBillIds
+        ];
+
+        Set<Id> entities = new Set<Id>();
+
+        Map<Id, System_Bill__c> systemBillByAB = new Map<Id, System_Bill__c>();
+        for (System_Bill__c systemBill : systemBills) {
+            systemBillByAB.put(systemBill.Account_Bill__c, systemBill);
+            entities.add(systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__c);
+        }
+
+        if(!firstAccountBillList.isEmpty()){
             for(Account_Bill__c firstBill : firstAccountBillList) {
                 if (ordersByABMap.containsKey(firstBill.Id)) {
                     ChargentOrders__ChargentOrder__c firstChargentOrder = ordersByABMap.get(firstBill.Id);
@@ -80,8 +101,14 @@ public without sharing class AccountBillHandler{
                     firstChargentOrder.Property_Account__c = null;
                     firstChargentOrder.ChargentOrders__Account__c = null;
 
-                    //Tag account bill as being first account bill
-                    firstBill.Is_First_Bill__c = true;
+                    // Waitlist entities should not have a system bill, so we should update to an entity that has a bill
+                    if (!entities.contains(firstChargentOrder.Entity__c)) {
+                        System_Bill__c systemBill = systemBillByAB.get(firstBill.Id);
+                        Id gatewayId = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__c;
+                        firstChargentOrder.ChargentOrders__Gateway__c = gatewayId;
+                        firstChargentOrder.Entity__c = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__c;
+                    }
+
 
                     //Add Chargent Order to list for update
                     ordersToUpdate.add(firstChargentOrder);

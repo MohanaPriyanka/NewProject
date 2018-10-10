@@ -2,3 +2,4 @@ Id,Name,Utility__c,Utility_NMC_Tariff__c,BWC_Project_Entity_Manual__c,Billing_Me
 TestSolarSystem-BarrettP1,Oxford Barrett St. P1,TestUtilityEversource,TestUtilityNMCEversource,TestEntityBarrett,NMC,012j0000000n3EZAAY,1300.0000,1445.86,996.00,Eversource,25.00,true,1,25.00,All,200,1,SEMA
 TestSolarSystem-BarrettP2,Oxford Barrett St. P2,TestUtilityEversource,TestUtilityNMCEversource,TestEntityNotBarrett,NMC,012j0000000n3EZAAY,1300.0000,1445.86,996.00,Eversource,40.00,true,1,25.00,All,200,2,SEMA
 TestSolarSystem-BarrettP3,Oxford Barrett St. P3,TestUtilityEversource,TestUtilityNMCEversource,TestEntityPlaceholder,NMC,012j0000000n3EZAAY,1300.0000,1445.86,996.00,Eversource,40.00,true,1,25.00,All,200,2,SEMA
+TestSolarSystem-Waitlist,Waitlist,TestUtilityEversource,TestUtilityNMCEversource,,,012j0000000n3EUAAY,1300,2222.5,390.65,Eversource,202.1022,true,1,32,All,680,1,SEMA

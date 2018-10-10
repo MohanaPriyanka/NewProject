@@ -7,6 +7,8 @@
  + *************************************************************************************/
 
 public without sharing class CreateOrderandPaymentRequest {
+    private static String timeZoneString;
+
     @AuraEnabled
     public static Boolean submitDDInfoWithoutCharge(String oppId, String emailInput, ChargentOrders__ChargentOrder__c chOrder) {
         Loan__c loanRecord = getLoanAndCheckEmail(oppId, emailInput);
@@ -90,7 +92,7 @@ public without sharing class CreateOrderandPaymentRequest {
                 orderA.ChargentOrders__Payment_Status__c = 'Recurring';
                 orderA.ChargentOrders__Payment_Stop__c = 'Unending';
                 orderA.ChargentOrders__Charge_Date__c = '01';
-                orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1);
+                orderA.ChargentOrders__Payment_Start_Date__c = tomorrow();
             }
 
             accountBillIdSet.add(orderA.Account_Bill__c);
@@ -141,6 +143,22 @@ public without sharing class CreateOrderandPaymentRequest {
             }
         }
         return ordersToInsert;
+    }
+
+    // Returns tomorrow's date in the organization's timezone, not the user's timezone
+    private static Date tomorrow() {
+        if (timeZoneString == null) {
+            // Amazingly, this doesn't work in apex, but the SOQL works:
+            // Organization org = [SELECT Id, TimeZoneSidKey FROM Organization];
+            // No such column 'TimeZoneSidKey' on entity 'Organization'.
+            timeZoneString = 'America/New_York';
+        }
+        Datetime todayInGMT = Datetime.now();
+        Date todayInEST = Date.newInstance(
+            Integer.valueOf(todayInGMT.format('yyyy', timeZoneString)),
+            Integer.valueOf(todayInGMT.format('MM', timeZoneString)),
+            Integer.valueOf(todayInGMT.format('dd', timeZoneString)));
+        return todayInEST.addDays(1);
     }
 
     // Chargent API will only allow the "Charge" functionality for one order passed at a time

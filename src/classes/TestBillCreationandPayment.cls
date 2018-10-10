@@ -261,8 +261,18 @@ public class TestBillCreationandPayment {
         //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasOne.Id,
-            Adjustment_Amount__c = 24);
+            Adjustment_Amount__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
         insert adjustOne;
+
+        //Equivalent adjustment as adjustOne, but with an unnaproved status. This should be ignored by all system bills.
+        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(  Name = 'UASoneAdjustment2',
+            Utility_Account_Subscription__c = uasOne.Id,
+            Adjustment_Amount__c = 30,
+            Approval_Status__c = 'Unapproved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+        insert adjustTwo;
 
         uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
         uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
@@ -1513,7 +1523,9 @@ public class TestBillCreationandPayment {
                     Adjustment_Amount__c = -1000,
                     Account_Bill__c = accountbill.Id,
                     Overpayment__c = true,
-                    Entity__c = entity.Id
+                    Entity__c = entity.Id,
+                    Approval_Status__c = 'Approved',
+                    Reason_For_Adjustment__c = 'Overpayment'
                 );
                 newBillAdjustments.add(overpayment1);
 
@@ -1522,21 +1534,27 @@ public class TestBillCreationandPayment {
                     Adjustment_Amount__c = -100,
                     Account_Bill__c = accountbill.Id,
                     Overpayment__c = true,
-                    Entity__c = entity.Id
+                    Entity__c = entity.Id,
+                    Approval_Status__c = 'Approved',
+                    Reason_For_Adjustment__c = 'Overpayment'
                 );
                 newBillAdjustments.add(overpayment2);
 
                 Bill_Adjustment__c adjustment1 = new Bill_Adjustment__c(
                     Name = 'Returned Payment 1',
                     Adjustment_Amount__c = 50,
-                    Utility_Account_Subscription__c = uas.Id
+                    Utility_Account_Subscription__c = uas.Id,
+                    Approval_Status__c = 'Approved',
+                    Reason_For_Adjustment__c = 'Test'
                 );
                 newBillAdjustments.add(adjustment1);
 
                 Bill_Adjustment__c adjustment2 = new Bill_Adjustment__c(
                     Name = 'Returned Payment 2',
                     Adjustment_Amount__c = 5,
-                    Utility_Account_Subscription__c = uas.Id
+                    Utility_Account_Subscription__c = uas.Id,
+                    Approval_Status__c = 'Approved',
+                    Reason_For_Adjustment__c = 'Test'
                 );
                 newBillAdjustments.add(adjustment2);
             }
@@ -1554,9 +1572,11 @@ public class TestBillCreationandPayment {
                 Outstanding__c,
                 Opportunity_ID__c,
                 Overpayment__c,
-                UASB__c
+                UASB__c,
+                Approval_Status__c
             FROM Bill_Adjustment__c
             WHERE Outstanding__c != 0
+            AND Approval_Status__c = 'Approved'
             ORDER BY Adjustment_Amount__c
         ];
 
@@ -1955,5 +1975,84 @@ public class TestBillCreationandPayment {
         //simulate batching in production
         handler.createBills(batch1);
         handler.createBills(batch2);
+    }
+
+    static testMethod void testOnlyAllowApprovedAdjustments() {
+        Test.startTest();
+        
+        List<System_Bill__c> systemBillBefore =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c,
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        ORDER BY Bill_Number__c];
+
+        // Before the adjustment is set to approved, only the 1 approved adjustment of $24 in testSetup is applied
+        System.assertEquals(282.96, systemBillBefore[0].Total_Due__c);
+        System.assertEquals(24, systemBillBefore[0].Adjustments__c);
+
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Name
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - January 2016'
+        ];
+
+        List<Account_Bill__c> abs = [
+            SELECT Id, Name
+            FROM Account_Bill__c
+        ];
+
+        delete abs;
+
+        Bill_Adjustment__c unapprovedAdjustment = [
+            SELECT Id, Adjustment_Amount__c, Approval_Status__c, UASB__c
+            FROM Bill_Adjustment__c
+            WHERE Approval_Status__c = 'Unapproved'
+        ];
+
+        unapprovedAdjustment.Approval_Status__c = 'Approved';
+        update unapprovedAdjustment;
+
+        prodUpdate.Generate_Bills__c = false;
+        update prodUpdate;
+
+
+        prodUpdate.Generate_Bills__c = true;
+        update prodUpdate;
+
+        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
+        insert newConga;
+        newConga.Apply_Overpay_Adjust__c = true;
+        update newConga;
+
+        // This time the bill should be for $30 more since the adjustment should be applied
+        List<System_Bill__c> SystemBillsAfter =
+        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
+            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
+            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
+            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
+            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
+            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
+            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+            Adjustments_UASB__c, (SELECT  Id, Name FROM Adjustment_Applications__r),
+            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
+        FROM System_Bill__c
+        ORDER BY Bill_Number__c];
+
+        // The $30 adjustment is now applied
+        System.assertEquals(312.96, systemBillsAfter[0].Total_Due__c);
+
+
+        Test.stopTest();
     }
 }

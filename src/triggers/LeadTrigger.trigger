@@ -3,6 +3,9 @@
  *************************************************************************************/
 
 trigger LeadTrigger on Lead (before insert, after insert, before update, after update ) {
+    if (Util.isDisabled('Disable_LeadTrigger__c')) {
+        return;
+    }
     LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
     AssignServiceTerritoryHandler assignServiceTerritoryHandler = new AssignServiceTerritoryHandler(Trigger.isExecuting, Trigger.size);
     UtilityAccountLogConversionHandler utilityAccountLogConversionHandler = new UtilityAccountLogConversionHandler(Trigger.isExecuting, Trigger.size);

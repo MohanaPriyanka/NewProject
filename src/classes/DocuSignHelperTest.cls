@@ -2,43 +2,105 @@
 public with sharing class DocuSignHelperTest {
 
     @TestSetup public static void setupTestData() {
-        System_Properties__c sysProp = new System_Properties__c(
-            Name = 'System',
-            DocuSign_API_Account_ID__c = '123',
-            DocuSign_Customer_Care_User__c = '123@123.com',
-            DocuSign_Guest_User__c = '123@345.com',
-            DocuSign_Guest_User_Credential__c = '234234',
-            DocuSign_Integrator_Key__c = '123123-123123'
-        );
-        insert sysProp;
+        Test.loadData(System_Properties__c.SObjectType, 'TestRLSystemProperties');
+        Util.disableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.disableTrigger('Disable_LeadTrigger__c');
+        Util.disableTrigger('Disable_ContactTrigger__c');
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Util.disableTrigger('Disable_LoanTrigger__c');
 
-        LoanTestRecordWarehouse.partnerSetup();
-        List<Lead> leads = LoanTestRecordWarehouse.getLoanHandlerLeadRecords();
-        System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
-        Lead leadToConvert;
+        Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
+        Test.loadData(BSST__c.SObjectType, 'TestRLBSST');
+        Test.loadData(Loan_Data__c.SObjectType, 'TestRLLoanData');
+        Test.loadData(Loan_Traunch__c.SObjectType, 'TestRLLoanTraunch');
+        Test.loadData(Product2.SObjectType, 'TestRLProduct');
+        Test.loadData(Account.SObjectType, 'TestRLAccount');
+        Test.loadData(Contact.SObjectType, 'TestRLContact');
+        List<Opportunity> opportunities =
+            Test.loadData(Opportunity.SObjectType, 'TestRLOpportunity');
+        List<Lead> leads =
+            Test.loadData(Lead.SObjectType, 'TestRLLead');
+        List<LASERCA__Personal_Credit_Report__c> pcrs =
+            Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
+        Test.loadData(LASERCA__Trade_Accounts__c.SObjectType, 'TestRLTradeAccounts');
+        Test.loadData(Loan__c.SObjectType, 'TestRLLoan');
+        Test.loadData(Residential_Equipment__c.SObjectType, 'TestRLResidentialEquipment');
+        List<Partner_Task__c> partnerTasks =
+            Test.loadData(Partner_Task__c.SObjectType, 'TestRLPartnerTask');
+        Test.loadData(dsfs__DocuSign_Status__c.SObjectType, 'TestRLDocuSignStatus');
+        Test.loadData(dsfs__DocuSign_Recipient_Status__c.SObjectType, 'TestRLDocuSignRecipient');
+
+        mapPCRtoLead(pcrs);
+        mapPCRAndLeadToOpp(leads, pcrs, opportunities);
+        setPartnerTaskParentAndUniqueId(partnerTasks);
+
+        Util.enableTrigger('Disable_LoanTrancheTrigger__c');
+        Util.enableTrigger('Disable_LeadTrigger__c');
+        Util.enableTrigger('Disable_ContactTrigger__c');
+        Util.enableTrigger('Disable_OpportunityTrigger__c');
+        Util.enableTrigger('Disable_LoanTrigger__c');
+    }
+
+    private static void mapPCRAndLeadToOpp(List<Lead> leads, List<LASERCA__Personal_Credit_Report__c> pcrs, List<Opportunity> opportunities) {
+        Map<Id, Lead> oppIdToLeadMap = new Map<Id, Lead>();
         for (Lead lead : leads) {
-            if (lead.FirstName == 'Retired') {
-                leadToConvert = lead;
+            if (lead.ConvertedOpportunityId != null) {
+                oppIdToLeadMap.put(lead.ConvertedOpportunityId, lead);
             }
         }
-        Lead convertedLead = CAPController.convertLead(leadToConvert.Id, leadToConvert.Email);
-        CAPController.createLoanAndEquipment(leadToConvert.Id, leadToConvert.Email);
+        Map<Id, LASERCA__Personal_Credit_Report__c> leadToPCRMap = new Map<Id, LASERCA__Personal_Credit_Report__c>();
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            leadToPCRMap.put(pcr.LASERCA__Lead__c, pcr);
+        }
+        for (Opportunity opp : opportunities) {
+            opp.Lead__c = oppIdToLeadMap.get(opp.Id).Id;
+            if (opp.Lead__c != null) {
+                opp.Lead_ID__c = ((String) opp.Lead__c).left(15);
+            }
+            opp.Personal_Credit_Report2__c = leadToPCRMap.get(opp.Lead__c).Id;
+        }
+        update opportunities;
+    }
 
-        dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
-            dsfs__Opportunity__c = convertedLead.ConvertedOpportunityId,
-            dsfs__Envelope_Status__c = 'Sent',
-            dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
-        );
-        insert newDocStat;
+    private static void setPartnerTaskParentAndUniqueId(List<Partner_Task__c> partnerTasks) {
+        Map<Id, Partner_Task__c> partnerTaskMap = new Map<Id, Partner_Task__c>();
+        for (Partner_Task__c task : partnerTasks) {
+            partnerTaskMap.put(task.Progress_Bar_Name__c, task);
+        }
+        for (Partner_Task__c task : partnerTasks) {
+            Id leadId = task.Lead__c;
+            if (leadId == null) {
+                leadId = getParentTaskLead(task, partnerTaskMap);
+            }
+            task.Unique_ID__c = task.Unique_ID__c.replace('LeadId', leadId);
+            if (task.Comments__c != null) {
+                task.Parent_Task__c = partnerTaskMap.get(task.Comments__c).Id;
+            }
+        }
+        update partnerTasks;
+    }
 
-        dsfs__DocuSign_Recipient_Status__c newDRS = new dsfs__DocuSign_Recipient_Status__c(
-            Name = 'TestCase',
-            dsfs__Parent_Status_Record__c =newDocStat.Id,
-            dsfs__DocuSign_Recipient_Id__c = 'D50030',
-            dsfs__DocuSign_Recipient_Email__c = 'nobody@bluewavesolar.com',
-            dsfs__Recipient_Status__c = 'Sent'
-        );
-        insert newDRS;
+    private static Id getParentTaskLead(Partner_Task__c task, Map<Id, Partner_Task__c> partnerTaskMap) {
+        System.assertNotEquals(null, task.Comments__c,
+            'A task with no lead is a subtask, which should have a parent task Id in the Comments__c field for loading');
+        Partner_Task__c parentTask = partnerTaskMap.get(task.Comments__c);
+        if (parentTask.Lead__c != null) {
+            return parentTask.Lead__c;
+        } else {
+            return getParentTaskLead(parentTask, partnerTaskMap);
+        }
+    }
+
+    private static void mapPCRtoLead(List<LASERCA__Personal_Credit_Report__c> pcrs) {
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+            LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
+                LASERCA__Personal_Credit_Report__c = pcr.Id,
+                LASERCA__Status__c = 'Completed'
+            );
+            triggerNewMap.put(pcr.Id, crl);
+        }
+        MapPCRtoLeadHandler.mapPCRtoLead(triggerNewMap, null);
     }
 
     static testMethod void testLoanCreationAndUpdate() {
