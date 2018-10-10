@@ -82,7 +82,7 @@
                         <label class="slds-form-element__label"> <b>Email Address</b> </label>
                         <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
                       </div>
-                      <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <div aura:id="stateElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label"><b>Home State</b></label>
                         <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" change="{!c.getAvailableProducts}"> 
                           <ui:inputSelectOption text="Select"/> 

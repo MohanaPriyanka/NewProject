@@ -54,35 +54,35 @@
       <c:BlueWaveInputToolTip popoverText="Applicants who have begun an application but have not yet been qualified or declined.">
         <li aura:id="applications" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToApplications}" role="tab">
-            <b>Applications</b>
+            <b>APPLICATIONS</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Qualified customers that have not been fully disbursed and require additional action.">
         <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
-            <b>In Process</b>
+            <b>IN PROCESS</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Customers that have been fully disbursed and are complete.">
         <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
-            <b>Completed</b>
+            <b>COMPLETED</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Customers that did not meet BlueWave's credit criteria. They can add a Co-Signer to their application if they haven't already.">
         <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
-            <b>Declined</b>
+            <b>DECLINED</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Applications that have expired.">
         <li aura:id="expiredApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToExpiredApplicants}" role="tab">
-            <b>Expired</b>
+            <b>EXPIRED</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
