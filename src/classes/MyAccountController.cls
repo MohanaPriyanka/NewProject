@@ -172,7 +172,7 @@ public without sharing class MyAccountController {
                     Due_This_Month__c, Total_Due_This_Month__c, Total_Due__c,
                     Carry_Over_Balance__c, Bill_Number__c, Bill_Attach_Document__c,
                     Savings_Rollup__c, Subscription_Production_kWh__c, Published__c,
-                    Balance_Net_Late_Payments__c, Date_of_Last_Payment__c,
+                    Balance_Net_Late_Payments__c,
                     Due_Date_SB__c, Total_Due_Minus_Payment_Plan__c, Is_Most_Recent__c
                 FROM Account_Bill__c
                 WHERE Account_ID__c = : u.Parent_Account_ID__c
