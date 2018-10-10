@@ -1,0 +1,305 @@
+/**
+ * Created by WParker on 7/31/2018.
+ *
+ * This class handles the creation and deletion of Cases related to faulty Chargent Orders.
+ * If there's no existing Case, a Case should be created for a Chargent Order if:
+ *          a. the order has Payment Status equal to 'Error',
+ *          b. the order has a Next Transaction Date set to the current date or a past date,
+ *          c. the order has an account with bills but is not tied to any account bill
+ *
+ * If there is a Case open pertaining to a Chargent Order, and the Chargent Order in question
+ *    does not fall into one of the above categories, that Case should be closed.
+ *
+ */
+
+public without sharing class PaymentCaseCreator implements Schedulable {
+
+    public enum OrderCaseType {
+        PaymentStatusError,
+        InvalidNextTransDate,
+        AccountBillError,
+        NoCaseNeeded
+    }
+
+
+    public static RecordType customerCare = [
+        SELECT Id, Name
+        FROM RecordType
+        Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+        LIMIT 1];
+
+    public static RecordType productSupport = [
+        SELECT Id, Name
+        FROM RecordType
+        WHERE SobjectType = 'Case' AND DeveloperName = 'Product_Support'
+        LIMIT 1
+    ];
+
+    public static String paymentStatusErrorDescription =
+        'The Payment Status of this Chargent Order is equal to Error. [Auto-generated]';
+    public static String invalidNextTransDateDescription =
+        'The Next Transaction Date on this Chargent Order is set to an invalid value(today or in the past). [Auto-generated]';
+    public static String accountBillErrorDescription =
+        'The Chargent Order has no Account Bill yet the Account it is tied to has Account Bills. [Auto-generated]';
+    private Map<OrderCaseType, String> caseTypeDescriptionMap =
+        new Map<OrderCaseType, String>{OrderCaseType.PaymentStatusError => paymentStatusErrorDescription,
+        OrderCaseType.InvalidNextTransDate => invalidNextTransDateDescription,
+        OrderCaseType.AccountBillError => accountBillErrorDescription};
+
+    private Map<OrderCaseType, String> caseTypeSubjectMap =
+        new Map<OrderCaseType, String>{OrderCaseType.PaymentStatusError => 'Transaction Failed',
+        OrderCaseType.InvalidNextTransDate => 'Internal - Send to Product Team',
+        OrderCaseType.AccountBillError => 'Internal - Send to Product Team'};
+
+    public Group CustomerCareQueueID = [
+        SELECT Id, DeveloperName
+        FROM Group
+        WHERE Type = 'Queue'
+        AND DeveloperName = 'Customer_Care'
+        LIMIT 1
+    ];
+
+    public Group ProductQueueID = [
+        SELECT Id, DeveloperName
+        FROM Group
+        WHERE Type = 'Queue'
+        AND DeveloperName = 'Product_Support'
+        LIMIT 1
+    ];
+
+
+    public void execute(SchedulableContext sc) {
+        // without batching just run this:
+        fetchOrdersAndRun();
+    }
+
+
+    public void fetchOrdersAndRun() {
+
+        // fetch orders
+        List<ChargentOrders__ChargentOrder__c> allOrders = getAllRelevantOrders();
+
+        // run the close/open cases method
+        if (allOrders.size() > 0) {
+            closeAndOpenNecessaryCases(allOrders);
+        }
+    }
+
+    // queries for all chargent orders
+    public List<ChargentOrders__ChargentOrder__c> getAllRelevantOrders() {
+        return
+        [SELECT Id, Property_Account_ID__c, ChargentOrders__Account__c, Account_Bill__c, Property_Account__r.Id,
+            ChargentOrders__Payment_Status__c, ChargentOrders__Next_Transaction_Date__c,
+            CreatedDate, ChargentOrders__Billing_Last_Name__c, Entity__c, ChargentOrders__Gateway__r.Name,
+            Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id,
+        (SELECT Id, Status, Chargent_Order__c FROM Cases__r WHERE Status != 'Closed'),
+        (SELECT Id, ChargentOrders__Response_Status__c, ChargentOrders__Response_Message__c,
+            CreatedDate
+        FROM ChargentOrders__Transactions__r
+        ORDER BY CreatedDate DESC
+        LIMIT 1)
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE ChargentOrders__Next_Transaction_Date__c <= : System.today()
+        OR ChargentOrders__Payment_Status__c = 'Error'
+        OR (Account_Bill__c = NULL
+            AND ChargentOrders__Gateway__r.Name != 'SREC')];
+    }
+
+    // Creates a case for every chargent order that needs one and doesn't yet have a case open
+    // Fetches all cases with chargent orders and deletes unnecessary cases
+    // Returns all chargent orders passed in, except those with cases assigned to them
+    public void closeAndOpenNecessaryCases(List<ChargentOrders__ChargentOrder__c> chOrders) {
+
+        Map<Id, List<Case>> orderToCaseMap = new Map<Id, List<Case>>();
+
+        // query for all Cases relating to a Chargent Order and put them into a map
+        List<Case> casesRelatedToOrders = [
+            SELECT Id, Chargent_Order__c, Status
+            FROM Case
+            WHERE Chargent_Order__c != NULL
+            AND Status != 'Closed'
+        ];
+
+        for (Case aCase: casesRelatedToOrders) {
+            List<Case> newListOfCases;
+            if (orderToCaseMap.containsKey(aCase.Chargent_Order__c)) {
+                newListOfCases = orderToCaseMap.get(aCase.Chargent_Order__c);
+                newListOfCases.add(aCase);
+            } else {
+                newListOfCases = new List<Case>{aCase};
+            }
+            orderToCaseMap.put(aCase.Chargent_Order__c, newListOfCases);
+        }
+
+        // create a map of order to boolean(whether that order has an account with account bills)
+        Map<ChargentOrders__ChargentOrder__c, Boolean> orderAccountHasBillsMap =
+            new Map<ChargentOrders__ChargentOrder__c, Boolean>();
+
+        List<Id> propertyAccountIds = new List<Id>();
+        for (ChargentOrders__ChargentOrder__c order: chOrders) {
+            propertyAccountIds.add(order.Property_Account__c);
+        }
+
+        List<Account_Bill__c> billsOnAccounts = [
+            SELECT Id, Parent_Account__c
+            FROM Account_Bill__c
+            WHERE Parent_Account__c IN : propertyAccountIds];
+
+        Map<Id, Account_Bill__c> billMap = new Map<Id, Account_Bill__c>();
+        for (Account_Bill__c bill: billsOnAccounts) {
+            billMap.put(bill.Parent_Account__c, bill);
+        }
+
+        for (ChargentOrders__ChargentOrder__c order : chOrders) {
+            orderAccountHasBillsMap.put(order, billMap.containsKey(order.Property_Account__c));
+           // orderToContactMap.put(order, billMap.get())
+        }
+
+        // iterate through orders and create a new case if needed, close an old case if doesn't fit case criteria
+        List<Case> allCasesToClose = new List<Case>();
+        List<Case> allCasesToOpen = new List<Case>();
+
+        // First, iterate through the relevant orders and
+        //    if there's no case already
+        //        check if it needs one and create it
+        //    else if there's already a case
+        //        check if it needs one and if not, close the existing case(s)
+        //        remove the order/case pairing from the orderToCaseMap (We already looked at these cases)
+        //
+        // Second, iterate through the remaining cases stored in the orderToCaseMap and close them ALL,
+        //   as there is no way that the order associated can have an error if it wasn't picked up in the first query
+        for (ChargentOrders__ChargentOrder__c order : chOrders) {
+
+            OrderCaseType caseType = needsCase(order, orderAccountHasBillsMap.get(order));
+
+            if (caseType == OrderCaseType.NoCaseNeeded) {                                     // shouldn't be a case
+                // if a Case is open for this order, it shouldn't be, so close it.
+                if (orderToCaseMap.containsKey(order.Id)) {
+                    List<Case> casesToClose = orderToCaseMap.get(order.Id);
+                    for (Case caseToClose : casesToClose) {
+                        caseToClose.Status = 'Closed';
+                    }
+
+                    allCasesToClose.addAll(casesToClose);
+
+                    // remove the order from the map
+                    orderToCaseMap.remove(order.Id);
+                }
+            } else {                                                                          // should be a case
+                if (orderToCaseMap.containsKey(order.Id)) {
+                    // there is already a case for this order, ignore it
+                    // remove the order from the map
+                    orderToCaseMap.remove(order.Id);
+                } else {
+                    // there needs to be a case for this order, create it
+                    allCasesToOpen.add(createCaseForOrder(order, caseType));
+                }
+            }
+        }
+
+        // Close leftover cases
+        for (Id order : orderToCaseMap.keySet()) {
+            for (Case caseToClose: orderToCaseMap.get(order)) {
+                caseToClose.Status = 'Closed';
+                allCasesToClose.add(caseToClose);
+            }
+        }
+
+        Database.SaveResult[] insertResults = Database.insert(allCasesToOpen, false);
+        Database.SaveResult[] updateResults = Database.update(allCasesToClose, false);
+
+        /////// LOGGING ////////
+        // Get # of successful opens/closes
+        Integer numOpened = 0;
+        String openLogString = '\n';
+        for (Database.SaveResult result : insertResults) {
+            if (result.isSuccess()) {
+                numOpened += 1;
+            } else {
+                openLogString += '(Attempting to Open) Error on item of id [' + result.getId() + ']: ' + result.getErrors()[0].getMessage();
+            }
+        }
+
+        Integer numClosed = 0;
+        String closedLogString = '\n';
+        for (Database.SaveResult result : updateResults) {
+            if (result.isSuccess()) {
+                numClosed += 1;
+            } else {
+                closedLogString += '(Attempting to Close) Error on item of id [' + result.getId() + ']: ' + result.getErrors()[0].getMessage();
+            }
+        }
+
+        Logger.logNow('PaymentCaseCreator',
+                        'closeAndOpenNecessaryCases',
+                        '# of cases opened: ' + numOpened + '; # of cases closed: ' + numClosed +
+                        openLogString +
+                        closedLogString);
+    }
+
+    // Determines whether a case needs to be created for a chargent order and returns the corresponding enum value
+    private OrderCaseType needsCase(ChargentOrders__ChargentOrder__c chOrder, Boolean accountHasBill) {
+
+        if (chOrder.ChargentOrders__Payment_Status__c != null &&
+            chOrder.ChargentOrders__Payment_Status__c.equals('Error')) {
+            return OrderCaseType.PaymentStatusError;
+        } else if (chOrder.ChargentOrders__Next_Transaction_Date__c != null &&
+            chOrder.ChargentOrders__Next_Transaction_Date__c.daysBetween(Date.today()) >= 0) {
+            return OrderCaseType.InvalidNextTransDate;
+        } else if (chOrder.ChargentOrders__Payment_Status__c != 'Stopped' &&
+            chOrder.ChargentOrders__Payment_Status__c != 'Complete' &&
+            chOrder.ChargentOrders__Payment_Status__c != null &&
+            chOrder.Account_Bill__c == null &&
+            accountHasBill){
+            return OrderCaseType.AccountBillError;
+        } else {
+            return OrderCaseType.NoCaseNeeded;
+        }
+    }
+
+    public Case createCaseForOrder(ChargentOrders__ChargentOrder__c chOrder, OrderCaseType type) {
+        if (type == OrderCaseType.NoCaseNeeded) {
+            return null;
+        }
+
+        Case newCase = new Case();
+        newCase.Subject = 'Automatic Payment Error [' + caseTypeSubjectMap.get(type) + ']';
+        newCase.Priority = 'Medium';
+        newCase.Product_Line__c = 'Community Solar';
+        newCase.Category__c = 'Billing';
+        newCase.Chargent_Order__c = chOrder.Id;
+        newCase.Description = this.caseTypeDescriptionMap.get(type);
+        newCase.Origin = 'Other';
+        newCase.ContactId = chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id;
+        newCase.Case_Type__c = 'BlueWave';
+        newCase.Disable_Followup_Email__c = true;
+
+
+        if (type == OrderCaseType.PaymentStatusError) {
+            newCase.RecordTypeId = PaymentCaseCreator.customerCare.Id;
+            newCase.RecordType = PaymentCaseCreator.customerCare;
+            newCase.OwnerId = this.CustomerCareQueueID.Id;
+        } else {
+            newCase.RecordTypeId = PaymentCaseCreator.productSupport.Id;
+            newCase.RecordType = PaymentCaseCreator.productSupport;
+            newCase.OwnerId = this.ProductQueueID.Id;
+        }
+
+        // Set related Account
+        if (chOrder.Account_Bill__c != null) {
+            newCase.AccountId = chOrder.Account_Bill__r.Parent_Account__r.Id;
+        } else {
+            newCase.AccountId = chOrder.ChargentOrders__Account__c;
+        }
+
+        // Set description to include error message from last transaction
+        if (chOrder.ChargentOrders__Transactions__r.size() == 1 &&
+            type == OrderCaseType.PaymentStatusError) {
+            newCase.Description += '\n\nMessage from Gateway: \'' +
+                chOrder.ChargentOrders__Transactions__r.get(0).ChargentOrders__Response_Message__c + '\'';
+        }
+
+        // successfully created case
+        return newCase;
+    }
+}

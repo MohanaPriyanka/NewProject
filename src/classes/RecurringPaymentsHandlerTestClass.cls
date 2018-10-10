@@ -65,16 +65,19 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
-            SELECT Id,
-                Entity_Name__c,
-                ChargentOrders__Payment_Status__c,
-                ChargentOrders__Charge_Date__c,
-                Reason_for_Recurring_Stop__c,
-                Account_Bill__r.Bill_Number__c,
-                Account_Bill__r.Name,
-                ChargentOrders__Charge_Amount__c,
-                Account_Bill__r.Parent_Account__r.Recurring_Billing__c
-            FROM ChargentOrders__ChargentOrder__c];
+              SELECT Id,
+                     Entity_Name__c,
+                     ChargentOrders__Payment_Status__c,
+                     ChargentOrders__Charge_Date__c,
+                     Reason_for_Recurring_Stop__c,
+                     Account_Bill__r.Bill_Number__c,
+                     Account_Bill__r.Name,
+                     ChargentOrders__Charge_Amount__c,
+                     Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                     ChargentOrders__Billing_Last_Name__c
+              FROM ChargentOrders__ChargentOrder__c
+              WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+
 
         // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
@@ -131,8 +134,11 @@ private class RecurringPaymentsHandlerTestClass {
         LIMIT 1];
         delete orderToDelete;
 
-        List<ChargentOrders__ChargentOrder__c> originalOrderCount = [SELECT Id
-                                                                    FROM ChargentOrders__ChargentOrder__c];
+        List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
+            SELECT Id
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+
         System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
@@ -163,15 +169,17 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
-            SELECT Id,
-                ChargentOrders__Payment_Status__c,
-                ChargentOrders__Charge_Date__c,
-                Reason_for_Recurring_Stop__c,
-                Account_Bill__r.Bill_Number__c,
-                Account_Bill__r.Name,
-                ChargentOrders__Charge_Amount__c,
-                Account_Bill__r.Parent_Account__r.Recurring_Billing__c
-            FROM ChargentOrders__ChargentOrder__c];
+              SELECT Id,
+                     ChargentOrders__Payment_Status__c,
+                     ChargentOrders__Charge_Date__c,
+                     Reason_for_Recurring_Stop__c,
+                     Account_Bill__r.Bill_Number__c,
+                     Account_Bill__r.Name,
+                     ChargentOrders__Charge_Amount__c,
+                     Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+              FROM ChargentOrders__ChargentOrder__c
+              WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+
 
         // Six Original Chargent Orders:
         // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
@@ -436,10 +444,6 @@ private class RecurringPaymentsHandlerTestClass {
         update productionUpdateA;
         update sssA;
 
-
-        //List<Account_Bill__c> acctBills = [SELECT Id, Name FROM Account_Bill__c];
-        //System.assertEquals(7, acctBills.size());
-
         List<Account_Bill__c> acctBills = [
             SELECT Id, Name
             FROM Account_Bill__c
@@ -449,6 +453,7 @@ private class RecurringPaymentsHandlerTestClass {
             OR Parent_Account__r.Name = 'Account D'
             OR Parent_Account__r.Name = 'Property Account A'
         ];
+
         System.assertEquals(5, acctBills.size());
 
         List<Energy_Usage_Update__c> productionUpdateList = [
@@ -471,9 +476,6 @@ private class RecurringPaymentsHandlerTestClass {
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
 
-        //List<Account_Bill__c> acctBillsList = [SELECT Id, Name FROM Account_Bill__c];
-        //System.assertEquals(9, acctBillsList.size() );
-
         List<Account_Bill__c> acctBillsList = [
             SELECT Id, Name
             FROM Account_Bill__c
@@ -483,6 +485,7 @@ private class RecurringPaymentsHandlerTestClass {
             OR Parent_Account__r.Name = 'Account D'
             OR Parent_Account__r.Name = 'Property Account A'
         ];
+
         System.assertEquals(7, acctBillsList.size() );
 
 

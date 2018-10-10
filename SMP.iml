@@ -989,18 +989,6 @@
                             <option name="name" value="ReportSenderTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="TestcaseRecordDeleter" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="TestcaseRecordDeleterTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="UtilTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -1865,10 +1853,6 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="CSPPayment" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CAPIncomeDocQuestion" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

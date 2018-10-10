@@ -129,9 +129,10 @@ private class PostSandboxRefresherTest {
         System.assertEquals(2, gateways.size());
 
         chargentOrders = [
-            SELECT Id
+            SELECT Id, ChargentOrders__Billing_Last_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Card_Type__c != 'American Express'
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
         ];
         // All loaded orders should be Amex now
         System.assertEquals(0, chargentOrders.size());
