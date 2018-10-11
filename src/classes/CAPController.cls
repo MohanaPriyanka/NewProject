@@ -382,6 +382,7 @@ public without sharing class CAPController {
         lead.Requested_Loan_Amount__c = (Decimal) changeOrder.get('Requested_Loan_Amount__change');
         lead.Change_Order_Status__c = 'Customer Authorized';
         lead.Update_Dummy__c = !lead.Update_Dummy__c;
+        lead.Status = 'Under BlueWave Review';
 
         loan.Requested_Loan_Amount__c = lead.Requested_Loan_Amount__c;
 
