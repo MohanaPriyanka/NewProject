@@ -470,10 +470,10 @@ public without sharing class CAPController {
                 LoanHandler lh = new LoanHandler();
                 lh.validateLoanInformationProvidedOnLead(new List<Lead>{lead}, taskMap);
             } catch (Exception e) {
-                throw new AuraHandledException(e.getMessage());
                 String message = 'Lead ID: ' + lead.Id;
                 message += ', Error Message: ' + e.getMessage();
                 Logger.logNow('CAPController', 'createLoanAndEquipment', message);
+                throw new AuraHandledException(e.getMessage());
             }
         }
         return getLeadWrapper(leadId, email).systemInfoComplete;
