@@ -157,7 +157,7 @@ public class TestcaseRecordDeleterTest {
         LASERCA__Personal_Credit_Report__c PCRtwo = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadTwo.Id,
             LASERCA__Credit_Score_TransUnion__c = '700',
-            CreatedDate = System.today().addDays(-15)
+            CreatedDate = System.today().addDays(-30)
         );
         LASERCA__Personal_Credit_Report__c PCRthree = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadThree.Id,
@@ -165,7 +165,7 @@ public class TestcaseRecordDeleterTest {
         );
         insert new List<LASERCA__Personal_Credit_Report__c>{PCRone, PCRtwo, PCRthree};
 
-        Date twoWeeksAgo = System.today().addDays(-15);
+        Date twoWeeksAgo = System.today().addDays(-30);
 
         Residential_Equipment__c resiEquipOne = new Residential_Equipment__c(
             Name = 'Testcase Residential Equipment 1',
@@ -222,7 +222,7 @@ public class TestcaseRecordDeleterTest {
 
 //      The following set of 5 Leads are the only ones that should be deleted
         for(Integer i = 0; i<5; i++){
-            Date dateTwoWeeksAgo = System.today().addDays(-15);
+            Date dateTwoWeeksAgo = System.today().addDays(-30);
             Lead testLead = new Lead (FirstName = 'OldLead' + i,
                 LastName = 'Testcase',
                 Company = 'CompanyOther',
@@ -232,7 +232,7 @@ public class TestcaseRecordDeleterTest {
             testLeads.add(testLead);
         }
         for(Integer i = 0; i<5; i++){
-            Date dateTwoWeeksAgo = System.today().addDays(-15);
+            Date dateTwoWeeksAgo = System.today().addDays(-30);
             Lead testLead = new Lead (FirstName = 'OldLead' + i,
                 LastName = 'Persist',
                 Company = 'CompanyOther',
@@ -289,7 +289,7 @@ public class TestcaseRecordDeleterTest {
 
 //      The following set of 5 Leads are the only ones that should be deleted
         for(Integer i = 0; i<5; i++){
-            Date dateTwoWeeksAgo = System.today().addDays(-15);
+            Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Testcase',
                 Partner_Lookup__c = partner2.Id,
@@ -299,7 +299,7 @@ public class TestcaseRecordDeleterTest {
         }
 
         for(Integer i = 0; i<5; i++){
-            Date dateTwoWeeksAgo = System.today().addDays(-15);
+            Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Testcase',
                 Partner_Lookup__c = partner1.Id,
@@ -309,7 +309,7 @@ public class TestcaseRecordDeleterTest {
         }
 
         for(Integer i = 0; i<5; i++){
-            Date dateTwoWeeksAgo = System.today().addDays(-15);
+            Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Persist',
                 Email = 'OldPersistEmail' + i + '@bluewavesolar.com',
@@ -349,7 +349,7 @@ public class TestcaseRecordDeleterTest {
         }
 
 //      The following set of 5 Leads are the only ones that should be deleted
-        Date dateTwoWeeksAgo = System.today().addDays(-15);
+        Date dateTwoWeeksAgo = System.today().addDays(-30);
         for(Integer i = 0; i<5; i++){
             Opportunity testOpportunity = new Opportunity (Name = 'NewContact' + i + ' Testcase',
                 CloseDate = dateTwoWeeksAgo,
@@ -395,7 +395,7 @@ public class TestcaseRecordDeleterTest {
         }
 
 //      The following set of 5 Leads are the only ones that should be deleted
-        Date dateTwoWeeksAgo = System.today().addDays(-15);
+        Date dateTwoWeeksAgo = System.today().addDays(-30);
         for(Integer i = 0; i<5; i++){
             Account testAccount = new Account (Name = 'NewContact' + i + ' Testcase',
                 CreatedDate = dateTwoWeeksAgo);
@@ -565,7 +565,7 @@ public class TestcaseRecordDeleterTest {
             Parent_Account__c = accountParent2.Id);
         insert new List<Account>{accountA, accountB};
 
-        Date twoWeeksAgo = System.today().addDays(-15);
+        Date twoWeeksAgo = System.today().addDays(-30);
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
