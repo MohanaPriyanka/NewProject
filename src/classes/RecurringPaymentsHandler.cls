@@ -219,12 +219,29 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     }
 
     public void cloneOrderForNewGateway(Map<String, Decimal> aggregateSbMap, Map<Id, ChargentOrders__ChargentOrder__c> orderMap) {
+        List<ChargentOrders__ChargentOrder__c> allOrders = [
+            SELECT Id, Name, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Amount__c, Account_Bill__c,
+                ChargentOrders__Account__r.Max_Account_Bill_Number__c, Property_Account_ID__c, Entity__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            ORDER BY CreatedDate
+        ];
+        Map<String, ChargentOrders__ChargentOrder__c> allChargentOrderMap = new Map<String, ChargentOrders__ChargentOrder__c>();
+        for (ChargentOrders__ChargentOrder__c order : allOrders) {
+            String entity = order.Entity__c;
+            String key = order.Property_Account_ID__c + '_' + entity.substring(0,15);
+            allChargentOrderMap.put(key, order);
+        }
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
         for (String sbWithoutOrder : aggregateSbMap.keySet()) {
             String acctBillid = sbWithoutOrder.substring(0,18);
+            String entityId = sbWithoutOrder.substring(19,34);
             Decimal amountToCharge = aggregateSbMap.get(sbWithoutOrder).setScale(2, RoundingMode.HALF_UP);
-            if (orderMap.containsKey(acctBillid) && orderMap.get(acctBillid).ChargentOrders__Payment_Status__c == 'Recurring') {
-                ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
+            ChargentOrders__ChargentOrder__c orderInput = orderMap.get(acctBillid);
+            if (orderInput != null
+                && orderInput.ChargentOrders__Payment_Status__c == 'Recurring'
+                && !allChargentOrderMap.containsKey(orderInput.Property_Account_ID__c + '_' + entityId)
+                ) {
                 ChargentOrders__ChargentOrder__c orderA = orderInput.clone(false,true,true,false);
                 orderA.ChargentOrders__Subtotal__c = amountToCharge;
                 orderA.ChargentOrders__Charge_Amount__c = amountToCharge;
@@ -234,7 +251,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 orderA.ChargentOrders__Charge_Date__c = '01';
                 orderA.Reason_for_Recurring_Stop__c = '';
                 orderA.Comments__c = 'Cloned Order';
-                orderA.Entity__c = sbWithoutOrder.substring(19,34);
+                orderA.Entity__c = entityId;
                 orderA.ChargentOrders__Payment_Start_Date__c = Date.today().addDays(-1);
                 ordersToInsert.add(orderA);  
             }

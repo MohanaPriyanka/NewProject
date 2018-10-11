@@ -60,8 +60,7 @@ private class RecurringPaymentsHandlerTestClass {
         // Account B has 1 opportunity, which has Feb and March Bill
         System.assertEquals(6, systemBillListtwo.size());
 
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
@@ -164,8 +163,7 @@ private class RecurringPaymentsHandlerTestClass {
         // Account B has 1 opportunity, which has Feb and March Bill
         System.assertEquals(6, systemBillListtwo.size());
 
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
@@ -489,8 +487,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(7, acctBillsList.size() );
 
 
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
@@ -641,8 +638,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
         System.assertEquals(1, acctBillsList.size() );
 
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
@@ -816,8 +812,7 @@ private class RecurringPaymentsHandlerTestClass {
             paymentStartDateMap.put(chargentOrder.Id, chargentOrder.ChargentOrders__Payment_Start_Date__c);
         }
 
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         chargentOrders = [
@@ -1269,8 +1264,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(0, chargentOrders.size());
 
         // After the chargent move runs, chargent orders should be set to 0 and in the future
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         chargentOrders = [
@@ -1351,8 +1345,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Test.startTest();
         // After the chargent move runs, there should still be two recurring orders on the account bill
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> chargentOrders = [
@@ -1432,8 +1425,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Test.startTest();
         // After the chargent move runs, there should still be two recurring orders on the account bill
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> chargentOrders = [
@@ -1502,8 +1494,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         Test.startTest();
         // After the chargent move runs, there should still be two recurring orders on the account bill
-        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
-        Database.executeBatch(batchToRun,50);
+        simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> chargentOrders = [
@@ -1519,5 +1510,38 @@ private class RecurringPaymentsHandlerTestClass {
             System.assertEquals('Stopped', order.ChargentOrders__Payment_Status__c);
             System.assertEquals(accountBill.Id, order.Account_Bill__c);
         }
+    }
+
+    private static void simulateBatchRecurringHandler() {
+        RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
+        List<ChargentOrders__ChargentOrder__c> orders = [
+            SELECT Id, Name, ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Amount__c, Account_Bill__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c,
+                Account_Bill__r.Bill_Number__c, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
+                Account_Bill__r.Due_Date_SB__c, Property_Account_ID__c, Reason_for_Recurring_Stop__c, Comments__c,
+                ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c, ChargentOrders__Bank_Routing_Number__c,
+                ChargentOrders__Bank_Account_Type__c, ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
+                ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c,
+                ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c, ChargentOrders__Card_Expiration_Year__c,
+                ChargentOrders__Billing_Address__c, ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
+                ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c,
+                ChargentOrders__Payment_Frequency__c, ChargentOrders__Payment_Stop__c, ChargentOrders__Charge_Date__c,
+                ChargentOrders__Payment_Start_Date__c, ChargentOrders__Shipping_Name__c, Entity__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            ORDER BY CreatedDate
+        ];
+        List<ChargentOrders__ChargentOrder__c> orders1 = new List<ChargentOrders__ChargentOrder__c>();
+        List<ChargentOrders__ChargentOrder__c> orders2 = new List<ChargentOrders__ChargentOrder__c>();
+        for (ChargentOrders__ChargentOrder__c order : orders) {
+            String entity = order.Entity__c;
+            if (orders1.size() > orders2.size()) {
+                orders2.add(order);
+            } else {
+                orders1.add(order);
+            }
+        }
+        batchToRun.updateRecurringOrders(orders1);
+        batchToRun.updateRecurringOrders(orders2);
     }
 }
