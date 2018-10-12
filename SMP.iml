@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="Dev1" />
+        <option name="connectionName" value="dev1" />
         <option name="defaultSourceRootUrl" value="file://$MODULE_DIR$/src" />
         <option name="moduleContents">
           <ModuleContents>
@@ -989,18 +989,6 @@
                             <option name="name" value="ReportSenderTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="TestcaseRecordDeleter" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="TestcaseRecordDeleterTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="UtilTest" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -1867,10 +1855,6 @@
                             <option name="name" value="CSPPayment" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
-                          <MetadataEntry>
-                            <option name="name" value="CAPIncomeDocQuestion" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="AuraDefinitionBundle" />
@@ -2061,7 +2045,7 @@
       <excludeFolder url="file://$MODULE_DIR$/projectFilesBackup" />
       <excludePattern pattern="*~" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev1)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/dev1)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

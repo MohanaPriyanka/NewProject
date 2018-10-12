@@ -45,9 +45,6 @@ public without sharing class AccountBillHandler{
         }
 
         for (Account_Bill__c trigAB : accountBillList) {
-            if (trigAB.Overpayment_Amount__c == NULL) {
-                trigAB.Overpayment_Amount__c = 0;
-            }
             String abKey = trigAB.Property_Account_ID__c+'_'+(trigAB.Bill_Number__c -1);
             if ( abMap.containsKey(abKey) ) {
                 trigAB.Past_Bill__c = abMap.get(abKey).Total_Due__c;

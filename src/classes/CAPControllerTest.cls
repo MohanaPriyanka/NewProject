@@ -313,6 +313,7 @@ public with sharing class CAPControllerTest {
         ];
         System.assertEquals(35000, lead.Requested_Loan_Amount__c);
         System.assertEquals(null, lead.System_Cost__c);
+        System.assertEquals('Ready for Credit Check', lead.Status);
         lead.Loan_System_Information__c =
             '{' +
                 '\"generator_nameplate_capacity__c\" : null,' +
@@ -408,6 +409,7 @@ public with sharing class CAPControllerTest {
         System.assertEquals(2112, loan.Requested_Loan_Amount__c);
         System.assertEquals(2112, loan.Loan_Payments__r[12].Amort_Starting_Principal__c);
         System.assertEquals('Customer Authorized', lead.Change_Order_Status__c);
+        System.assertEquals('Under BlueWave Review', lead.Status);
 
     }
 

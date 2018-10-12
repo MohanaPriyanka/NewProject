@@ -20,7 +20,7 @@
   <!-- LOGIN FORM -->
   <aura:if isTrue="{!v.page == 'Login'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      <form class="slds-form--stacked" aura:id="form" action="javascript:return false">
+      <div class="slds-form--stacked" aura:id="form">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control">
             {!$Label.c.START_Email_Confirmation_Instruction}
@@ -35,7 +35,7 @@
         <div class="slds-form-element__row slds-p-top--small">
           <lightning:button aura:id="loginButton" label="Submit" onclick="{!c.login}"/>
         </div>
-      </form>
+      </div>
     </div>
   </aura:if>
   <!-- / LOGIN FORM -->
@@ -107,17 +107,6 @@
           </aura:set>
         </aura:if>
       </p>
-
-      <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'MA'}">
-        <p class="slds-p-left--large slds-p-top--small slds-text-body--large">
-          <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
-            {!$Label.c.START_Disclosure_MSLP_SREC}
-            <aura:set attribute="else">
-              {!$Label.c.START_Disclosure_MA_SREC}
-            </aura:set>
-          </aura:if>
-        </p>
-      </aura:if>
 
       <div class="slds-form-element__row slds-m-top--medium">
         <lightning:button aura:id="confirmDisclaimer" label="Next" onclick="{!c.finishStage}"/>

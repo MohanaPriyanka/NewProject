@@ -15,17 +15,17 @@
         <legend id="loginForm" class="slds-text-heading--small slds-p-vertical--medium">
           Login
         </legend>
-        <form class="slds-form--stacked">
+        <div class="slds-form--stacked">
           Enter the email associated with this application to confirm your identity before starting or continuing your application.
           <lightning:layout horizontalAlign="spread">
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:input name="leadEmail"
-                               aura:id="field"
-                               type="email"
-                               placeholder="yourname@email.com"
-                               label="Email"
-                               value="{!v.leadEmail}"
-                               required="true"/> 
+              <ui:inputEmail aura:id="field"
+                             placeholder="yourname@email.com"
+                             label="Email"
+                             value="{!v.leadEmail}"
+                             required="true"
+                             updateOn="keydown,change"
+                             keydown="{!c.checkForEnter}"/>
             </lightning:layoutItem>
           </lightning:layout>
 
@@ -36,7 +36,7 @@
               <lightning:button label="Next" onclick="{!c.login}"/>
             </div>
           </div>
-        </form>
+        </div>
       </fieldset>
     </div>
   </aura:if>

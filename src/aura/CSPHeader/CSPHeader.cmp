@@ -41,30 +41,30 @@
         <ul class="slds-tabs--default__nav" role="tablist">
           <li class="slds-tabs_default__item" title="Dashboard" role="presentation">
               <a class="slds-tabs--default__link slds-text-body_small" href="/s/">
-                  <b>Dashboard</b>
+                  <b>DASHBOARD</b>
               </a>
           </li>
           <li class="slds-tabs_default__item" title="My Account" role="presentation">
               <a class="slds-tabs--default__link slds-text-body_small" href="myaccount">
-                  <b>My Account</b>
+                  <b>MY ACCOUNT</b>
               </a>
           </li>
           <li class="slds-tabs_default__item" title="My Solar" role="presentation">
               <a class="slds-tabs--default__link slds-text-body_small" href="mysolar">
-                  <b>My Solar</b>
+                  <b>MY SOLAR</b>
               </a>
           </li>
 
           <aura:if isTrue="{!v.showBW}">
             <li class="slds-tabs_default__item" title="Refer a Friend" role="presentation">
                 <a class="slds-tabs--default__link slds-text-body_small" href="referafriend" >
-                    <b>Refer a Friend</b>
+                    <b>REFER A FRIEND</b>
                 </a>
             </li>
           </aura:if>
           <li class="slds-tabs_default__item" title="Account Settings" role="presentation">
               <a class="slds-tabs--default__link slds-text-body_small" href="accountinfo" >
-                  <b>Settings</b>
+                  <b>SETTINGS</b>
               </a>
           </li>
         </ul>

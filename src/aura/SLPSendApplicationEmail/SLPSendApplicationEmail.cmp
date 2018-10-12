@@ -11,7 +11,6 @@
   <aura:attribute name="downPayment" type="Decimal" />
   <aura:attribute name="customerEmail" type="String" />
   <aura:attribute name="availableLoanProducts" type="Product2[]"/>
-  <aura:attribute name="availableSRECProducts" type="Product2[]"/>
   <aura:attribute name="productProgram" type="String"/>
   <aura:attribute name="iblsRequired" type="Boolean"/>
   <aura:attribute name="availableStorageManufacturers" type="List" />
@@ -82,7 +81,7 @@
                         <label class="slds-form-element__label"> <b>Email Address</b> </label>
                         <ui:inputText aura:id="emailAddress" class="slds-input" value="{!v.newLead.Email}"  />
                       </div>
-                      <div aura:id="stateElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-2 animated">
+                      <div aura:id="stateElement" class="slds-form-element slds-m-bottom_small slds-p-horizontal--small slds-size_1-of-2 animated">
                         <label class="slds-form-element__label"><b>Home State</b></label>
                         <ui:inputSelect aura:id="state" class="slds-input" value="{!v.newLead.LASERCA__Home_State__c}" change="{!c.getAvailableProducts}"> 
                           <ui:inputSelectOption text="Select"/> 
@@ -149,21 +148,6 @@
                       </div>
                     </div>
                   </div>
-                  <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
-                    <div class="slds-form-element__row">
-                      <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-                        <label class="slds-form-element__label"><b>SREC Product</b></label>
-                        <div class="slds-form-element__control">
-                          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.newLead.SREC_Product__c}">
-                            <ui:inputSelectOption label="Select"/>
-                            <aura:iteration items="{!v.availableSRECProducts}" var="product">
-                              <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
-                            </aura:iteration>
-                          </ui:inputSelect>
-                        </div>
-                      </div>
-                    </div>
-                  </aura:if>
                   <aura:if isTrue="{!and(v.iblsRequired, v.newLead.Product__c == 'MSLP')}">
                     <div class="slds-form-element__row slds-p-horizontal--small slds-m-top_medium slds-form-element__label">
                       <b>

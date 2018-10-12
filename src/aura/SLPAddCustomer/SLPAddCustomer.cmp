@@ -165,10 +165,6 @@
                 Pre-Qualification does not guarantee that a loan will be granted.  All loans issued under the Mass Solar Loan Program will require full documentation of income, technical approval from the Massachusetts Clean Energy Center, and proof of identification in order to be fully approved.   If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan.
               </p>
               <p class="slds-m-around_medium  proximaNovaDataBlue">
-                Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options.  This program ensures maximum revenue to our customers over time.
-              </p>
-
-              <p class="slds-m-around_medium  proximaNovaDataBlue">
                 The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver's license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.
               </p>
             </div>
@@ -178,11 +174,6 @@
             <p class="slds-m-around_medium proximaNovaDataBlue">
               Pre-Qualification does not guarantee that a loan will be granted. All loans issued will require full documentation of income in order to be fully approved. If you are pre-qualified, you will need to provide this additional documentation and complete a full application in order to fully process your loan. 
             </p>
-            <aura:if isTrue="{!v.newLead.LASERCA__Home_State__c == 'MA'}">
-              <p class="slds-m-around_medium  proximaNovaDataBlue">
-                For our customers in Massachusetts, BlueWave requires that solar loan customers sell their SRECs through BlueWave's long-term SREC purchase program. Our SREC purchase program offers competitive rates and both fixed and floating price options. This program ensures maximum revenue to our customers over time.
-              </p>
-            </aura:if>
             <p class="slds-m-around_medium  proximaNovaDataBlue">
               The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application, you will need to provide proof of your stated income, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.
             </p>

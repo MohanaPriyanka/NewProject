@@ -12,3 +12,5 @@ PaymentTestOpp2,PaymentTestPropertyA,012j0000000tL1yAAE,PaymentTestOpp2,Complete
 PaymentTestOpp3,PaymentTestPropertyA,012j0000000tL1yAAE,PaymentTestOpp3,Complete,2018-08-20 00:00:00,TestSolarSystem-BarrettP3,Non-Residential
 PaymentTestOpp6,PaymentTestPropertyD,012j0000000tL1yAAE,PaymentTestOpp6,Complete,2018-08-20 00:00:00,TestSolarSystem-BarrettP1,Non-Residential
 PaymentTestOpp7,PaymentTestPropertyD,012j0000000tL1yAAE,PaymentTestOpp7,Complete,2018-08-20 00:00:00,TestSolarSystem-BarrettP2,Non-Residential
+APizzaOpp1,APizza,012j0000000tL1yAAE,APizza Shop,Complete,2018-08-20 00:00:00,TestSolarSystem-BarrettP1,Non-Residential
+APizzaOpp2,APizza,012j0000000tL1yAAE,APizza Shop,Complete,2018-08-20 00:00:00,TestSolarSystem-BarrettP4,Non-Residential
