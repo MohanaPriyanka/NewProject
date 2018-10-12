@@ -59,10 +59,6 @@
             } else {
                 helper.setInputToCorrect(component, "productElement" );
             }
-            if (!lead.SREC_Product__c) {
-                helper.setInputToError(component, "srecElement", "shake");
-                errorMessage = errorMessage + "Please select an SREC Product" + "\n" + "\n";
-            }
         } else {
             // If they haven't selected a product, don't include undefined in the lead, it results in 
             // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
@@ -173,7 +169,6 @@
         component.set('v.newLead.Product__c', null);
         component.set('v.newLead.Product_Program__c', null);
         component.set('v.availableLoanProducts', null);
-        component.set('v.availableSRECProducts', null);
     },
 
     getAvailableLoanProducts : function(component, event, helper) {
@@ -185,20 +180,6 @@
                 component.set("v.availableLoanProducts", resp.getReturnValue());
             } else {
                 helper.logError("SLPSendApplicationEmailController", "availableLoanProducts", resp.getError());
-            }
-        });
-        $A.enqueueAction(action);
-    },
-
-    getAvailableSRECProducts : function(component, event, helper) { 
-        var action = component.get("c.getProducts");
-        action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c"),
-                          productType: 'SREC'});
-        action.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS') {
-                component.set("v.availableSRECProducts", resp.getReturnValue());
-            } else {
-                helper.logError("SLPSendApplicationEmailController", "availableSRECProducts", resp.getError());
             }
         });
         $A.enqueueAction(action);

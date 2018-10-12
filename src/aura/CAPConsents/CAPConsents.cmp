@@ -1,62 +1,7 @@
 <aura:component description="CAPConsents" controller="CAPController" access="global" extends="c:CAPParent">
-  <aura:attribute name="availableSRECProducts" type="Product2[]"/>
   <aura:set attribute="STAGENAME" value="NAV_Confirmations"/>
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
 
-  <aura:if isTrue="{!v.page == 'SREC'}">
-    <div class="slds-form-element__row">
-      <div aura:id="srecElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
-        <aura:if isTrue="{!v.contractSent}">
-          <div class="slds-text-longform proximaNovaDataBlue slds-m-bottom--small slds-text-heading--medium">
-            <b>{!format($Label.c.CAP_Contract_Sent, 'Your SREC selection')}</b>
-          </div>
-          <aura:set attribute="else">
-            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-              Please note that the current SREC II solar program will be replaced by a new solar program called the SMART (Solar Massachusetts Renewable Target) program. While Massachusetts will continue to provide incentives based on the production of your solar system, your payments and the way you receive them will change under the SMART program. You can read more details on this transition <a href="https://www.mass.gov/service-details/development-of-the-solar-massachusetts-renewable-target-smart-program" target="_blank">here.</a>
-            </label>
-            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-              The timing of the transition from the SREC program to the SMART program, currently expected to occur in summer 2018, has not yet been finalized by the MA Department of Energy Resources. The incentives you will receive are based on the date your solar system is connected to the electric grid; if your system is connected after the SMART program begins, your payments will be issued under that program. When the start date of the SMART program has been finalized, we will inform all MA loan customers and approved or in-process applicants.
-            </label>
-            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-              <b>Because of this transition, although you are signing an SREC agreement as part of your loan application, this agreement will not come into effect if the SMART program starts before your system is connected to the grid.</b> If your system falls under the SMART program, your incentive payments will be issued according to the terms of that program. If that is the case, we will notify you and provide additional details as soon as they are available.
-            </label>
-            <label class="slds-form-element__label slds-text-body--regular slds-p-bottom_small">
-              You have chosen the following SREC option with your installer but you may select a different option below.
-            </label>
-          </aura:set>
-        </aura:if>
-        <div class="slds-form-element__control">
-          <ui:inputSelect aura:id="srecSelection" class="slds-input" value="{!v.lead.SREC_Product__c}" disabled="{!v.contractSent}">
-            <aura:iteration items="{!v.availableSRECProducts}" var="product">
-              <ui:inputSelectOption label="{!product.External_Name__c}" text="{!product.Id}"/>
-            </aura:iteration>
-          </ui:inputSelect>
-        </div>
-      </div>
-    </div>
-    <div class="slds-col slds-col--padded slds-p-top--small">
-      <form class="slds-form--stacked">
-        <!--
-        When we're ready to capture account/routing number for SREC
-        <aura:if isTrue="{!v.lead.Electronic_Disbursal_Authorized__c == 'Yes'}">
-          <div class="slds-grid slds-wrap slds-form-element__row">
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="SRECAccountNumber">
-              <label class="proximaNovaDataBlue">Account Number</label>
-              <ui:inputCurrency value=""/>
-            </div>
-            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="SRECRoutingNumber">
-              <label class="proximaNovaDataBlue">Routing number</label>
-              <ui:inputText value=""/>
-            </div>
-          </div>
-        </aura:if>
-        -->
-        <div class="slds-form-element__row slds-p-top--small">
-          <lightning:button label="Next" class="slds-button" onclick="{!c.saveSRECAskDisbursal}"/>
-        </div>
-      </form>
-    </div>
-  </aura:if>
   <aura:if isTrue="{!v.page == 'Disbursal'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
