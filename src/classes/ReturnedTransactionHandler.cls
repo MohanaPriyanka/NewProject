@@ -11,12 +11,10 @@ global without sharing class ReturnedTransactionHandler {
         ChargentOrders__Transaction__c chTransaction;
         Map<Id,Account> propaccountMap;
         List<System_Bill__c> systemBills;
-        Map<Id,Account_Bill__c> accountBillMap;
         Datetime lastSystemBillDate;
 
         List<System_Bill__c> finalGroupedSystemBillsToUpdate = new List<System_Bill__c>();
-        List<Account_Bill__c> finalAccountBillsToUpdate = new List<Account_Bill__c>();
-        List<Bill_Adjustment__c> finalAdjustmentsToInsertList = new List<Bill_Adjustment__c>();
+        List<Overpayment__c> finalOverpaymentsToModifyList = new List<Overpayment__c>();
 
         SystemBillPaymentRollUpHandler.SystemBillRepo sbRepo = new SystemBillPaymentRollUpHandler.SystemBillRepo(new List<Id>{transactionId});
         if (sbRepo.getTransactions().size() != 1 || sbRepo.getTransactions()[0].Id != transactionId) {
@@ -24,7 +22,6 @@ global without sharing class ReturnedTransactionHandler {
         }
         chTransaction = sbRepo.getTransactions()[0];
         systemBills = sbRepo.getSystemBills();
-        accountBillMap = sbRepo.getAccountBillMap();
         propaccountMap = sbRepo.getPropertyAccountMap();
 
         List<System_Bill__c> groupedSystemBillsList = new List<System_Bill__c>();
@@ -53,24 +50,19 @@ global without sharing class ReturnedTransactionHandler {
         Date chCreatedDate = Date.newInstance(chCreatedDatetime.year(), chCreatedDatetime.month(), chCreatedDatetime.day());
         if (lastSystemBillDate < chCreatedDate) {
             SystemBillPaymentRollUpHandler.listObject objectList = removePaymentFromSBs( groupedSystemBillsList,
-                accountBillMap,
                 payment,
                 maxbillnumber,
                 dateOfLastPayment,
                 chTransaction);
             finalGroupedSystemBillsToUpdate.addAll(objectList.systemBills);
-            finalAccountBillsToUpdate.addAll(objectList.accountBills);
-            finalAdjustmentsToInsertList.addAll(objectList.billAdjustments);
+            finalOverpaymentsToModifyList.addAll(objectList.billOverpayments);
             propaccountMap.get(parentID).Date_of_Last_Payment__c = dateOfLastPayment;
 
             if (finalGroupedSystemBillsToUpdate.size() > 0) {
                 update finalGroupedSystemBillsToUpdate;
             }
-            if (finalAdjustmentsToInsertList.size() > 0) {
-                insert finalAdjustmentsToInsertList;
-            }
-            if (finalAccountBillsToUpdate.size() > 0) {
-                update finalAccountBillsToUpdate;
+            if (finalOverpaymentsToModifyList.size() > 0) {
+                update finalOverpaymentsToModifyList;
             }
             update propaccountMap.values();
         } else {
@@ -84,8 +76,6 @@ global without sharing class ReturnedTransactionHandler {
 
             Bill_Adjustment__c adjust = new Bill_Adjustment__c( Name = 'Returned Payment: ' + groupedSystemBillsList[0].Account_Bill__r.Name + ' ' + dateOfLastPayment.format(),
                 Adjustment_Amount__c = payment,
-                Overpayment__c = false,
-                Entity__c = utilAccSubs[0].Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
                 Utility_Account_Subscription__c = utilAccSubs[0].Id,
                 Source_ID__c = transactionId,
                 Approval_Status__c = 'Approved',
@@ -97,51 +87,41 @@ global without sharing class ReturnedTransactionHandler {
     }
 
     public static SystemBillPaymentRollUpHandler.listObject removePaymentFromSBs (  List<System_Bill__c> groupedSystemBillsList,
-        Map<Id,Account_Bill__c> accountBillMap,
         Decimal payment,
         Decimal maxbillnumber,
         Date dateOfLastPayment,
         ChargentOrders__Transaction__c chTransaction) {
-        String transactionId = chTransaction.Id;
+
         List<System_Bill__c> groupedSystemBillsToUpdate = new List <System_Bill__c>();
-        Map<String, Bill_Adjustment__c> adjustmentsToInsertList = new Map<String, Bill_Adjustment__c>();
         Map<Id, Decimal> reversedPaymentsToSSSThisMonth = new Map<Id, Decimal>();
+
+        Id entityId = chTransaction.ChargentOrders__Order__r.Entity__c;
+        Id accountBillId = chTransaction.ChargentOrders__Order__r.Account_Bill__c;
+
+        // reduce overpayments by reversed payment amount
+        Decimal entityOverpayments = getOverpaymentAmount(entityId, accountBillId);
+        Decimal overpaymentDeductionTotal = Math.min(payment, entityOverpayments);
+        payment -= overpaymentDeductionTotal;
+        if (overpaymentDeductionTotal > 0) {
+            for (Overpayment__c overpayToModify : overpayList){
+                Decimal overpayDeduction = Math.min(overpaymentDeductionTotal, overpayToModify.Outstanding__c);
+                overpaymentDeductionTotal -= overpayDeduction;
+                overpayToModify.Overpayment_Amount__c -= overpayDeduction;
+            }
+        }
+        Decimal applicationAmount;
         for (System_Bill__c systemBill : groupedSystemBillsList) {
-            Account_Bill__c accountBill = accountBillMap.get(systemBill.Account_Bill__c);
             if (systemBill.Account_Bill_Number__c == maxbillnumber) {
-                String entityId = chTransaction.ChargentOrders__Order__r.Entity__c;
-                Decimal sbEntityOverpayments = getOverpaymentAmount(entityId, accountBill.Id, adjustmentsToInsertList);
-                Decimal reversedAmount = Math.min(payment, systemBill.Total_Payments_This_Month__c + sbEntityOverpayments);
-
-                // reduce overpayments by reversed payment amount
-                Decimal applicationAmount = Math.min(reversedAmount, sbEntityOverpayments);
-                payment -= applicationAmount;
-                accountBill.Overpayment_Amount__c -= applicationAmount;
-                if (applicationAmount > 0) {
-                    Bill_Adjustment__c adjust = new Bill_Adjustment__c( Name = 'Reversed Overpayment: ' + systemBill.Account_Bill__r.Name + ' ' + dateOfLastPayment.format(),
-                        Adjustment_Amount__c = applicationAmount,
-                        Account_Bill__c = systemBill.Account_Bill__c,
-                        Overpayment__c = true,
-                        Entity__c = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id,
-                        Source_ID__c = transactionId,
-                        Approval_Status__c = 'Approved',
-                        Reason_For_Adjustment__c = 'Payment was Marked as Returned'
-                    );
-                    String key = adjust.Account_Bill__c + '_' + adjust.Entity__c;
-                    adjustmentsToInsertList.put(key, adjust);
-                }
-                accountBillMap.put(accountBill.Id, accountBill);
-
                 // remove late fee payments from maxBill
                 Decimal lateFeePayments = systemBill.Late_Fee_Payments__c;
-                applicationAmount = Math.min(reversedAmount, lateFeePayments);
+                applicationAmount = Math.min(payment, lateFeePayments);
                 payment -= applicationAmount;
                 systemBill.Late_Fee_Payments__c -= applicationAmount;
                 addAmountToMap(applicationAmount, systemBill.Shared_Solar_System__c, reversedPaymentsToSSSThisMonth);
 
                 // remove Payments Net Previous Balances from maxBill
                 Decimal paymentsNetPreviousBalances = systemBill.Payments_Net_Previous_Balances__c;
-                applicationAmount = Math.min(reversedAmount, paymentsNetPreviousBalances);
+                applicationAmount = Math.min(payment, paymentsNetPreviousBalances);
                 payment -= applicationAmount;
                 systemBill.Payments_Net_Previous_Balances__c -= applicationAmount;
                 addAmountToMap(applicationAmount, systemBill.Shared_Solar_System__c, reversedPaymentsToSSSThisMonth);
@@ -151,7 +131,7 @@ global without sharing class ReturnedTransactionHandler {
             } else if (systemBill.Account_Bill_Number__c < maxbillnumber) {
                 // remove Late Payments from Previous bills
                 Decimal latePayments = systemBill.Late_Payments__c;
-                Decimal applicationAmount = Math.min(payment, latePayments);
+                applicationAmount = Math.min(payment, latePayments);
                 payment -= applicationAmount;
                 systemBill.Late_Payments__c -= applicationAmount;
                 addAmountToMap(applicationAmount, systemBill.Shared_Solar_System__c, reversedPaymentsToSSSThisMonth);
@@ -165,37 +145,34 @@ global without sharing class ReturnedTransactionHandler {
             }
         }
         SystemBillPaymentRollUpHandler.listObject lists = new SystemBillPaymentRollUpHandler.listObject();
+
+        if (payment > 0){
+            Logger.logNow('ReturnedTransactionHandler', 'removePaymentFromSBs', 'Could not reverse entire transaction: ' + chTransaction.Id + ' / Payment Amount: ' + payment);
+        }
+
         lists.systemBills = groupedSystemBillsToUpdate;
-        lists.accountBills = accountBillMap.values();
-        lists.billAdjustments = adjustmentsToInsertList.values();
+        lists.billOverpayments = overpayList;
         return lists;
     }
 
+    public static List<Overpayment__c> overpayList;
+
     @testVisible
-    private static Decimal getOverpaymentAmount(String entityId, Id accountBillId, Map<String, Bill_Adjustment__c> adjustmentsToInsertList) {
-        List<Bill_Adjustment__c> overpayments = [
-            SELECT Id, Overpayment__c, Entity__c, Outstanding__c
-            FROM Bill_Adjustment__c
-            WHERE Overpayment__c = true
-            AND Entity__c = : entityId
+    private static Decimal getOverpaymentAmount(Id entityId, Id accountBillId) {
+        List<Overpayment__c> overpayments = [
+            SELECT Id, Entity__c, Overpayment_Amount__c, Outstanding__c
+            FROM Overpayment__c
+            WHERE Entity__c = : entityId
             AND Account_Bill__c = : accountBillId
-            AND Outstanding__c != 0
+            AND Overpayment_Amount__c != 0
         ];
-        Bill_Adjustment__c newAdjustment = adjustmentsToInsertList.get(accountBillId + '_'+ entityId);
-        if (newAdjustment != null) {
-            overpayments.add(newAdjustment);
-        }
-        System.debug(overpayments);
+
+        overpayList = overpayments;
+
         Decimal totalOverpayments = 0;
-        for (Bill_Adjustment__c overpayment : overpayments) {
-            if (overpayment.Outstanding__c != null) {
-                totalOverpayments += -1 * overpayment.Outstanding__c;
-            } else {
-                totalOverpayments += -1 * overpayment.Adjustment_Amount__c;
-            }
+        for (Overpayment__c overpayment : overpayments) {
+            totalOverpayments += overpayment.Outstanding__c;
         }
-        System.debug('Overpayments');
-        System.debug(totalOverpayments);
         return totalOverpayments;
     }
 

@@ -335,18 +335,18 @@ public class CSPaymentTest {
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
-                Account_Bill__r.Overpayment_Amount__c, Account_Bill__r.Bill_Number__c
+                Account_Bill__r.Overpayment_Amount_Rollup__c, Account_Bill__r.Bill_Number__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Name LIKE '%Pizza Shop%'
             ORDER BY Account_Bill__r.Bill_Number__c, Bill_Number__c
         ];
 
-        List<Bill_Adjustment__c> bill2Adjustments = [
-            SELECT Id, Adjustment_Amount__c
-            FROM Bill_Adjustment__c
+        List<Overpayment__c> bill2Adjustments = [
+            SELECT Id, Overpayment_Amount__c
+            FROM Overpayment__c
             WHERE Account_Bill__c = : systemBillList[0].Account_Bill__c
         ];
         System.assertEquals(1, updatedsystemBillListOne[0].Bill_Number__c);
@@ -373,11 +373,11 @@ public class CSPaymentTest {
         System.assertEquals(0, updatedsystemBillListOne[2].Carry_Over_Balance__c);
         System.assertEquals(604.24, updatedsystemBillListOne[2].Total_Payments_This_Month__c);
 
-        System.assertEquals(2, updatedsystemBillListOne[1].Account_Bill__r.Overpayment_Amount__c );
         System.assertEquals(1, bill2Adjustments.size());
-        System.assertEquals(-2, bill2Adjustments[0].Adjustment_Amount__c);
+        System.assertEquals(2, bill2Adjustments[0].Overpayment_Amount__c);
 
         ReturnedTransactionHandler.unrollPayments(transA.Id);
+        Test.stopTest();
 
         ChargentOrders__Transaction__c updatedTransA = [
             SELECT Id, ChargentOrders__Response_Status__c
@@ -398,21 +398,28 @@ public class CSPaymentTest {
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount__c
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount_Rollup__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Name LIKE '%Pizza Shop%'
-            ORDER BY Account_Bill__r.Bill_Number__c
+            ORDER BY Account_Bill__r.Bill_Number__c, Bill_Number__c
         ];
 
-        List<Bill_Adjustment__c> bill2AdjustmentsAfterReversal = [
-            SELECT Id, Adjustment_Amount__c
-            FROM Bill_Adjustment__c
+        List<Overpayment__c> bill2AdjustmentsAfterReversal = [
+            SELECT Id, Overpayment_Amount__c
+            FROM Overpayment__c
             WHERE Account_Bill__c = : systemBillList[0].Account_Bill__c
         ];
-        System.debug(bill2AdjustmentsAfterReversal);
-        System.debug(updatedsystemBillListAfterReversal);
+
+        System.assertEquals(1, bill2AdjustmentsAfterReversal.size());
+        System.assertEquals(0, bill2AdjustmentsAfterReversal[0].Overpayment_Amount__c);
+        System.assertEquals(updatedsystemBillListAfterReversal[0].Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
+                            updatedsystemBillListAfterReversal[1].Shared_Solar_System__r.BWC_Project_Entity_Manual__c);
+        System.assertEquals(updatedsystemBillListAfterReversal[0].Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
+                            updatedsystemBillListAfterReversal[2].Shared_Solar_System__r.BWC_Project_Entity_Manual__c);
+
 
         System.assertEquals(1, updatedsystemBillListAfterReversal[0].Bill_Number__c);
         System.assertEquals(1, updatedsystemBillListAfterReversal[0].Account_Bill__r.Bill_Number__c);
@@ -438,9 +445,8 @@ public class CSPaymentTest {
         System.assertEquals(554.24, updatedsystemBillListAfterReversal[2].Carry_Over_Balance__c);
         System.assertEquals(50, updatedsystemBillListAfterReversal[2].Total_Payments_This_Month__c);
 
-        System.assertEquals(2, bill2AdjustmentsAfterReversal.size());
-        System.assertEquals(-2, bill2AdjustmentsAfterReversal[0].Adjustment_Amount__c);
-        System.assertEquals(2, bill2AdjustmentsAfterReversal[1].Adjustment_Amount__c);
+        System.assertEquals(1, bill2AdjustmentsAfterReversal.size());
+        System.assertEquals(0, bill2AdjustmentsAfterReversal[0].Overpayment_Amount__c);
 
         try {
             ReturnedTransactionHandler.unrollPayments(updatedTransA.Id);
@@ -458,17 +464,17 @@ public class CSPaymentTest {
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount__c
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount_Rollup__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Name LIKE '%Pizza Shop%'
             ORDER BY Account_Bill__r.Bill_Number__c
         ];
 
         bill2AdjustmentsAfterReversal = [
-            SELECT Id, Adjustment_Amount__c
-            FROM Bill_Adjustment__c
+            SELECT Id, Overpayment_Amount__c
+            FROM Overpayment__c
             WHERE Account_Bill__c = : systemBillList[0].Account_Bill__c
         ];
 
@@ -496,10 +502,8 @@ public class CSPaymentTest {
         System.assertEquals(554.24, updatedsystemBillListAfterReversal[2].Carry_Over_Balance__c);
         System.assertEquals(50, updatedsystemBillListAfterReversal[2].Total_Payments_This_Month__c);
 
-        System.assertEquals(2, bill2AdjustmentsAfterReversal.size());
-        System.assertEquals(-2, bill2AdjustmentsAfterReversal[0].Adjustment_Amount__c);
-        System.assertEquals(2, bill2AdjustmentsAfterReversal[1].Adjustment_Amount__c);
-        Test.stopTest();
+        System.assertEquals(1, bill2AdjustmentsAfterReversal.size());
+        System.assertEquals(0, bill2AdjustmentsAfterReversal[0].Overpayment_Amount__c);
     }
 
     @isTest public static void testReversePaymentMonthAfter() {
@@ -587,6 +591,7 @@ public class CSPaymentTest {
         transB.Distributed_Among_System_Bills__c = true;
         update transA;
         update transB;
+        Test.stopTest();
 
         List<System_Bill__c> updatedsystemBillListOne = [
             SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -597,18 +602,18 @@ public class CSPaymentTest {
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
-                Account_Bill__r.Overpayment_Amount__c, Account_Bill__r.Bill_Number__c
+                Account_Bill__r.Overpayment_Amount_Rollup__c, Account_Bill__r.Bill_Number__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Name LIKE '%Pizza Shop%'
             ORDER BY AcCount_Bill__r.Bill_Number__c, Bill_Number__c
         ];
 
-        List<Bill_Adjustment__c> bill2Adjustments = [
-            SELECT Id, Adjustment_Amount__c
-            FROM Bill_Adjustment__c
+        List<Overpayment__c> bill2Adjustments = [
+            SELECT Id, Overpayment_Amount__c
+            FROM Overpayment__c
             WHERE Account_Bill__c = : systemBillList[0].Account_Bill__c
         ];
 
@@ -636,9 +641,9 @@ public class CSPaymentTest {
         System.assertEquals(0, updatedsystemBillListOne[2].Carry_Over_Balance__c);
         System.assertEquals(604.24, updatedsystemBillListOne[2].Total_Payments_This_Month__c);
 
-        System.assertEquals(2, updatedsystemBillListOne[1].Account_Bill__r.Overpayment_Amount__c );
+        System.assertEquals(2, updatedsystemBillListOne[1].Account_Bill__r.Overpayment_Amount_Rollup__c );
         System.assertEquals(1, bill2Adjustments.size());
-        System.assertEquals(-2, bill2Adjustments[0].Adjustment_Amount__c);
+        System.assertEquals(2, bill2Adjustments[0].Overpayment_Amount__c);
 
         ReturnedTransactionHandler.unrollPayments(transA.Id);
 
@@ -660,9 +665,9 @@ public class CSPaymentTest {
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-                Waive_Late_Fees__c, Previous_Overpayments__c, Balance_Adjustment__c,
+                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount__c
+                Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount_Rollup__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Name LIKE '%Pizza Shop%'
             ORDER BY Account_Bill__r.Bill_Number__c
@@ -674,7 +679,6 @@ public class CSPaymentTest {
             WHERE Name LIKE '%Returned Payment%'
             ORDER BY Adjustment_Amount__c ASC
         ];
-        Test.stopTest();
 
         // Bills should not be reversed if the bill it was applied to is not the most recent
         System.assertEquals(1, updatedsystemBillListAfterReversal[0].Bill_Number__c);
@@ -700,7 +704,7 @@ public class CSPaymentTest {
         System.assertEquals(0, updatedsystemBillListAfterReversal[2].Late_Payments__c);
         System.assertEquals(0, updatedsystemBillListAfterReversal[2].Carry_Over_Balance__c);
         System.assertEquals(604.24, updatedsystemBillListAfterReversal[2].Total_Payments_This_Month__c);
-        System.assertEquals(2, updatedsystemBillListAfterReversal[1].Account_Bill__r.Overpayment_Amount__c );
+        System.assertEquals(2, updatedsystemBillListAfterReversal[1].Account_Bill__r.Overpayment_Amount_Rollup__c );
 
         System.assertEquals(815.20, bill2AdjustmentsAfterReversal[0].Adjustment_Amount__c);
         System.assertNotEquals(null, bill2AdjustmentsAfterReversal[0].Utility_Account_Subscription__c);
@@ -871,4 +875,4 @@ public class CSPaymentTest {
             System.assertEquals(2, autopayOrders.size());
         }
     }
- }
+}

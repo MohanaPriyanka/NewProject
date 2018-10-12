@@ -96,7 +96,7 @@ public without sharing class SystemBillAccountingLogicHandler {
             }
             if (currentbill == 1) {
                 trigsb.Due_This_Month__c = dueThisMonth;
-                trigsb.Total_Due__c = dueThisMonth + trigsb.Adjustments__c + trigsb.Previous_Overpayments__c; 
+                trigsb.Total_Due__c = dueThisMonth + trigsb.Adjustments__c + trigsb.Previous_Overpayment__c;
                 trigsb.Previous_Month_Overdue_Balance__c = 0 ;
                 trigsb.Late_Fees__c = 0; 
                 trigsb.Payment_Plan_Balance__c = 0;
@@ -153,7 +153,7 @@ public without sharing class SystemBillAccountingLogicHandler {
                     trigsb.Late_Fees__c = 0;
                 }
                 trigsb.Adjustments__c = trigsb.Adjustments_UASB__c; 
-                trigsb.Total_Due__c = dueThisMonth + trigsb.Late_Fees__c + overdue + trigsb.Payment_Plan_Balance__c + trigsb.Adjustments__c + trigsb.Previous_Overpayments__c;
+                trigsb.Total_Due__c = dueThisMonth + trigsb.Late_Fees__c + overdue + trigsb.Payment_Plan_Balance__c + trigsb.Adjustments__c + trigsb.Previous_Overpayment__c;
             }
             balanceCalculations(trigsb, moreRecentBills);
         }
@@ -181,6 +181,6 @@ public without sharing class SystemBillAccountingLogicHandler {
             && !morerecentbills) {
                 trigsb.Payment_Plan_Balance_to_Distribute__c = trigsb.Carry_Over_Balance__c;
         }
-        trigsb.Balance_Net_Late_Payments__c  = trigsb.Due_This_Month__c + trigsb.Balance_Adjustment__c + trigsb.Previous_Overpayments__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c;
+        trigsb.Balance_Net_Late_Payments__c  = trigsb.Due_This_Month__c + trigsb.Balance_Adjustment__c + trigsb.Previous_Overpayment__c - trigsb.Late_Payments__c - trigsb.Payments_Net_Previous_Balances__c;
     }
 }
