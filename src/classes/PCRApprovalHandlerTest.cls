@@ -1024,10 +1024,12 @@ private class PCRApprovalHandlerTest {
             applicationSet.getLead(2),
             applicationSet.getLead(3)
         });
+        Test.startTest();
         applicationSet.insertCreditReportLogs();
         Lead lead = applicationSet.getLead(1);
         Lead lead2 = applicationSet.getLead(2);
         Lead lead3 = applicationSet.getLead(3);
+
         Opportunity opp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
         Opportunity opp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
         Opportunity opp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
@@ -1037,7 +1039,7 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Expired', opp.StageName);
         System.assertEquals('New', opp2.StageName);
         System.assertEquals('New', opp3.StageName);
-        Test.startTest();
+
         List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
         LASERCA__Personal_Credit_Report__c pcr = applicationSet.getPCR(1);
         LASERCA__Personal_Credit_Report__c pcr2 = applicationSet.getPCR(2);
