@@ -770,19 +770,12 @@ public without sharing class SLPControllersTestclass {
         Util.enableTrigger('Disable_LeadTrigger__c');
 
         System.assertEquals(lead.LastName, 'Test');
-        CAPController.convertLead(lead.Id, lead.Email);
-        lead = [
-            SELECT Id, FirstName, LastName, DOER_Solar_Loan__c, ConvertedOpportunityId, Product_line__c,
-                Loan_System_Information__c, Product__r.Loan_Interest_Rate__c, bs_Sales_ID__c,
-                Loan_Financing_Fee__c, Requested_Loan_Amount__c, System_Cost__c, Partner_Lookup__c,
-                LASERCA__Home_State__c, Product__c, Loan_Fee_1__c
-            FROM Lead
-            WHERE Id = :lead.Id
-        ];
+        lead = CAPController.convertLead(lead.Id, lead.Email);
         LoanHandler.createResidentialEquipment(new List<Lead>{lead});
         LoanHandler.resetTriggerContext();
         LoanHandler.createLoan(new List<Lead>{lead});
         Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        Util.printSOQLLimit('1');
         System.runAs(execUser) {
             Test.startTest();
             Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
