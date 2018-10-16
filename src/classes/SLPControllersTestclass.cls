@@ -755,6 +755,7 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testSaveNoChangeRequired() {
+        Test.startTest();
         User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
 
         Lead lead;
@@ -813,6 +814,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals('StorEdge 10kw', re.Storage_Inverter_Model__c);
             System.assertEquals('Powerwall', re.Storage_Model__c);
         }
+        Test.stopTest();
     }
 
     @isTest static void testMaxLoanAmount() {
