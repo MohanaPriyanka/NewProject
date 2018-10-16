@@ -155,6 +155,62 @@
 
           <p/>
 
+
+          <!--ADDITIONAL INFO-->
+          <div style="text-align: center; border-bottom: solid;">
+            Additional Info
+          </div>
+          <p/>
+          <div>
+            <table style="border: 0px">
+              <tr valign="top">
+                <td style="border: 0px">
+                  <table>
+                    <tr>
+                      <td>
+                        Reg O: <br/>
+                        <apex:outputText value="{!regO}"/>
+                      </td>
+                      <td>
+                        OFAC: <br/>
+                        <apex:outputText value="{!ofac}"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        TransUnion Alert Message: <br/>
+                        <apex:outputText value="{!lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Alert_Message__c}"/>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+            <apex:variable var="hasCoApp" value="{!hasCoApp}" rendered="{!hasCoApp}">
+                  <td style="border: 0px">
+                    <table>
+                      <tr>
+                        <td>
+                          Reg O: <br/>
+                          <apex:outputText value="{!coAppRegO}"/>
+                        </td>
+                        <td>
+                          OFAC: <br/>
+                          <apex:outputText value="{!coAppOFAC}"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          TransUnion Alert Message: <br/>
+                          <apex:outputText value="{!lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Alert_Message__c}"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+            </apex:variable>
+              </tr>
+            </table>
+          </div>
+
+
           <div style="text-align: center; border-bottom: solid;">
             Credit
           </div>

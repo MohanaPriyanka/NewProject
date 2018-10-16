@@ -10,5 +10,6 @@ trigger CreditReportLogTrigger on LASERCA__Credit_Report_Log__c (after insert, a
     } else if (Trigger.isAfter && Trigger.isInsert) {
         MapPCRtoLeadHandler.mapPCRtoLead(Trigger.newMap, null);
         PCRApprovalHandler.calcDTIAndEmailIfComplete(Trigger.newMap, null);
+        PCRApprovalHandler.addMortgage(Trigger.newMap, null);
     }
 }

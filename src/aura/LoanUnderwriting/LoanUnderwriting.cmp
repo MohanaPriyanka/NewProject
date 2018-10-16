@@ -130,6 +130,25 @@
       </div>
     </aura:if>
 
+    <!-- ADDITIONAL INFO -->
+    <div class="slds-grid slds-wrap slds-p-top_small">
+      <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">
+        <b>Additional Info</b>
+      </div>
+    </div>
+    <aura:if isTrue="{!v.lead != null}">
+      <div class="slds-grid slds-wrap slds-p-top_small">
+        <div class="{!'slds-col slds-p-right_small ' + if(v.hasCoApp,'slds-size--1-of-2','slds-size--1-of-1')}">
+          <c:LoanUnderwritingApplicantInfo pcr="{!v.lead.Personal_Credit_Report__r}" lead="{!v.lead}" isCoApp="false"/>
+        </div>
+        <aura:if isTrue="{!v.hasCoApp}">
+          <div class="slds-col slds-size--1-of-2 slds-p-left_small">
+            <c:LoanUnderwritingApplicantInfo pcr="{!v.lead.Personal_Credit_Report_Co_Applicant__r}" lead="{!v.lead}" isCoApp="true"/>
+          </div>
+        </aura:if>
+      </div>
+    </aura:if>
+
     <!-- CREDIT -->
     <div class="slds-grid slds-wrap slds-p-top_small">
       <div class = "slds-border_bottom slds-align_absolute-center slds-size_1-of-1 slds-text-color_inverse">

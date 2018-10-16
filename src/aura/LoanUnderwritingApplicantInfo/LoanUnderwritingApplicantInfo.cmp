@@ -1,0 +1,49 @@
+<!--
+ - Created by Sarah Renfro on 10/11/2018.
+ -->
+
+<aura:component extends="c:BlueWaveParent" controller="LoanUnderwriting">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="pcr" type="LASERCA__Personal_Credit_Report__c"/>
+  <aura:attribute name="avidiaProv" type="Boolean"/>
+  <aura:attribute name="otherExec" type="Boolean"/>
+  <aura:attribute name="ofac" type="String"/>
+  <aura:attribute name="monthlyMortgage" type="Decimal"/>
+  <aura:attribute name="alertMessage" type="String"/>
+  <aura:attribute name="isCoApp" type="Boolean"/>
+  <aura:attribute name="typeExec" type="String"/>
+  <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+    <div class="darkCell slds-col slds-size--1-of-2">
+      Reg O:
+      <br></br>
+      <aura:if isTrue="{!v.avidiaProv}">
+        Avidia Service Provider
+        <aura:if isTrue="{!v.typeExec != null}">
+          <ui:outputText value="{!': ' + v.typeExec}"/>
+        </aura:if>
+      </aura:if>
+      <aura:if isTrue="{!v.otherExec}">
+        Other Bank Executive
+      </aura:if>
+      <aura:if isTrue="{!and(v.avidiaProv != true, v.otherExec != true)}">
+        NA
+      </aura:if>
+    </div>
+    <div class="darkCell slds-col slds-size--1-of-2">
+      OFAC:
+      <br></br>
+      <ui:outputText value="{!v.ofac}"/>
+    </div>
+  </div>
+  <div class="slds-grid slds-wrap slds-grid--vertical-stretch">
+    <div class="lightCell slds-col slds-size--1-of-1">
+      <strong>
+        TransUnion Alert Message:
+      </strong>
+      <br></br>
+      <ui:outputText value = "{!v.alertMessage}"
+                     class="slds-size--1-of-1"/>
+    </div>
+  </div>
+</aura:component>

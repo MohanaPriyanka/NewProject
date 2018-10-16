@@ -500,6 +500,7 @@ public with sharing class CSAPControllerTest {
         // Insert 10 other property accounts
         List<Utility_Account_Log__c> ualList = new List<Utility_Account_Log__c>();
         List<Lead> leadList = new List<Lead>();
+        Test.startTest();
         for (Integer i = 0; i < 10; i++) {
             Lead nonResidentialLead = residentialLead.clone();
             nonResidentialLead.Id = null;
@@ -518,7 +519,6 @@ public with sharing class CSAPControllerTest {
         }
         insert ualList;
 
-        Test.startTest();
         List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
         // There shouldn't be any opportunities yet, because nothing has been converted
         System.assertEquals(0, opps.size());

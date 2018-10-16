@@ -1,7 +1,7 @@
-/**
+/*************************************************************************************
  * Created By: Peter Yao
  * Description: Tests actions taken after refreshing a sandbox
- **/
+ *************************************************************************************/
 @IsTest
 private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
@@ -254,7 +254,7 @@ private class PostSandboxRefresherTest {
         List<Contact> partnerContacts = [
             SELECT Id, Name
             FROM Contact
-            WHERE Partner_Lookup__c = : partners[0].Id
+            WHERE Partner_Lookup__c = :partners[0].Id
         ];
 
         System.assertEquals(2, partnerContacts.size());
@@ -262,11 +262,11 @@ private class PostSandboxRefresherTest {
         List<Account> partnerAccounts = [
             SELECT Id, Name
             FROM Account
-            WHERE Partner__c = : partners[0].Id
+            WHERE Partner__c = :partners[0].Id
         ];
 
         System.assertEquals(1, partnerAccounts.size());
-
+    }
     @IsTest
     static void testDataSetupForReportTest() {
         PostSandboxRefresher.setupDataForReportTest();

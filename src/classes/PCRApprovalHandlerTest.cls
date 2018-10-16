@@ -230,6 +230,54 @@ private class PCRApprovalHandlerTest {
         }
     }
 
+    static testMethod void testMortgageTradeAccount() {
+        //Test for both main applicant and Co-applicant
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+
+            String applicationJSON =
+                '{"application":[ ' +
+                    '  {"key":1, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                    '  {"key":2, "income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"} ' +
+                    + ']}';
+        ApplicationSet applicationSet = parse(applicationJSON);
+        applicationSet.insertLeads(partner.Id);
+        applicationSet.insertPCRs();
+        applicationSet.connectJointPCRs();
+        applicationSet.insertTradeAccounts();
+        applicationSet.insertCreditReportLogs();
+
+        Test.startTest();
+
+        List<LASERCA__Personal_Credit_Report__c> pcrList = [
+            SELECT Id, LASERCA__Contact__c, LASERCA__Credit_Score_TransUnion__c,
+                (SELECT LASERCA__Monthly_Payment__c, Exclude_From_Rollup__c
+                FROM LASERCA__Trade_Accounts__r
+                WHERE Name = 'Self-Reported Mortgage')
+            FROM LASERCA__Personal_Credit_Report__c
+        ];
+
+        //How do I not have the SOQL in the loop?
+        for (LASERCA__Personal_Credit_Report__c pcr : pcrList) {
+            LASERCA__Trade_Accounts__c mortgage = [
+                SELECT LASERCA__Monthly_Payment__c, Exclude_From_Rollup__c
+                FROM LASERCA__Trade_Accounts__c
+                WHERE LASERCA__Personal_Credit_Report__c = :pcr.Id AND Name = 'Self-Reported Mortgage'
+                LIMIT 1
+            ];
+
+            if (pcr.LASERCA__Contact__c != null) {
+                //Co-App's mortgage
+                System.assertEquals(500, mortgage.LASERCA__Monthly_Payment__c);
+                System.assertEquals(true, mortgage.Exclude_From_Rollup__c);
+            } else {
+                //Main applicant's mortgage
+                System.assertEquals(1000, mortgage.LASERCA__Monthly_Payment__c);
+                System.assertEquals(true, mortgage.Exclude_From_Rollup__c);
+            }
+        }
+        Test.stopTest();
+    }
+
     static testMethod void testPreQualified() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
@@ -967,7 +1015,6 @@ private class PCRApprovalHandlerTest {
                 '  {"key":2, "income":2, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":450, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
                 '  {"key":3, "income":200002, "coAppIncome":0, "loan":65000, "applicationType":"Individual", "doer":false, "fico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"} ' +
                 ']}';
-
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
@@ -978,11 +1025,9 @@ private class PCRApprovalHandlerTest {
             applicationSet.getLead(3)
         });
         applicationSet.insertCreditReportLogs();
-
         Lead lead = applicationSet.getLead(1);
         Lead lead2 = applicationSet.getLead(2);
         Lead lead3 = applicationSet.getLead(3);
-
         Opportunity opp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
         Opportunity opp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
         Opportunity opp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
@@ -992,7 +1037,6 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Expired', opp.StageName);
         System.assertEquals('New', opp2.StageName);
         System.assertEquals('New', opp3.StageName);
-
         Test.startTest();
         List<LASERCA__Personal_Credit_Report__c> pcrToUpdate = new List<LASERCA__Personal_Credit_Report__c>();
         LASERCA__Personal_Credit_Report__c pcr = applicationSet.getPCR(1);
@@ -1005,12 +1049,11 @@ private class PCRApprovalHandlerTest {
         pcrToUpdate.add(pcr2);
         pcrToUpdate.add(pcr3);
         update pcrToUpdate;
-        Test.stopTest();
 
         Opportunity updatedOpp = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead.Id LIMIT 1];
         Opportunity updatedOpp2 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead2.Id LIMIT 1];
         Opportunity updatedOpp3 = [SELECT Id, StageName FROM Opportunity WHERE Lead__c = :lead3.Id LIMIT 1];
-
+        Test.stopTest();
 //      Asserts that the pcr trigger didn't change the 'Expired' opp status
         System.assertEquals('Expired', updatedOpp.StageName);
         System.assertEquals('Voided', updatedOpp2.StageName);
@@ -1046,7 +1089,9 @@ private class PCRApprovalHandlerTest {
         ];
         for (Lead lead : leads) {
             // The PCR should be mapped to the lead even if there's no debt
-            System.assertEquals(0, lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c);
+            // "Self-Reported Mortgage" Trade Account is the only value that is being used to
+            // calculate the Sum of monthly personal debt
+            System.assertEquals(1000, lead.Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c);
             System.assertNotEquals(null, lead.Personal_Credit_Report__c);
         }
     }
@@ -1119,6 +1164,7 @@ private class PCRApprovalHandlerTest {
                     DOER_Solar_Loan__c = doer,
                     Product_Line__c = 'Residential Loan',
                     Product_Program__c = doer ? 'MSLP' : 'BlueWave Solar Loan',
+                    Monthly_Mortgage_Tax_and_Insurance__c = 1000,
                     LASERCA__Home_State__c = 'MA',
                     Unfinished_Lead__c = true,
                     IBLS_Category__c = app.ibls,
@@ -1128,9 +1174,11 @@ private class PCRApprovalHandlerTest {
                 if (app.applicationType == 'Joint Co-App') {
                     newLead.Application_Type__c = 'Joint';
                     newLead.Joint_Applicant_Type__c = 'Co-Applicant';
+                    newLead.Co_App_Monthly_Mortgage__c = 500;
                 } else if (app.applicationType == 'Joint Co-Sign') {
                     newLead.Application_Type__c = 'Joint';
                     newLead.Joint_Applicant_Type__c = 'Co-Signer';
+                    newLead.Co_App_Monthly_Mortgage__c = 500;
                 }
                 leads.add(newLead);
             }

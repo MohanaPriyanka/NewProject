@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="IlluminatedCloud" name="Illuminated Cloud">
       <configuration>
-        <option name="connectionName" value="dev1" />
+        <option name="connectionName" value="Dev2" />
         <option name="defaultSourceRootUrl" value="file://$MODULE_DIR$/src" />
         <option name="moduleContents">
           <ModuleContents>
@@ -989,6 +989,22 @@
                             <option name="name" value="ReportSenderTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentCaseCreator" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaymentCaseTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="ReturnedTransactionHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="DocuSignRecipientStatusHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -1406,6 +1422,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="TestRLResidentialEquipment" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="TestCSCase" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="TestCSTransaction" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -1855,6 +1879,10 @@
                             <option name="name" value="CSPPayment" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="LoanUnderwritingApplicantInfo" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="AuraDefinitionBundle" />
@@ -1990,6 +2018,10 @@
                             <option name="name" value="UserTrigger" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="DocuSignRecipientStatusTrigger" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexTrigger" />
@@ -2045,7 +2077,7 @@
       <excludeFolder url="file://$MODULE_DIR$/projectFilesBackup" />
       <excludePattern pattern="*~" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/dev1)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (SMP/Dev2)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
