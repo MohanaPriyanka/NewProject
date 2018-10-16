@@ -53,7 +53,7 @@ private class PostSandboxRefresherTest {
         System.schedule(JOBNAME, sch, sbp);
     }
 
-    @isTest
+    @IsTest
     static public void testLetterStreamSetup() {
         if (LetterStream_Settings__c.getAll().isEmpty()) {
             insert new LetterStream_Settings__c(
@@ -238,6 +238,34 @@ private class PostSandboxRefresherTest {
     static void testDeleteCSRecords() {
         PostSandboxRefresher.deleteCSRecords();
     }
+
+    @IsTest
+    static void testPartnerSetup() {
+        PostSandboxRefresher.setupBWTestPartner();
+
+        List<Partner__c> partners = [
+            SELECT Id, Name
+            FROM Partner__c
+        ];
+
+        System.assertEquals(1, partners.size());
+        System.assertEquals('BlueWave Test Partner', partners[0].Name);
+
+        List<Contact> partnerContacts = [
+            SELECT Id, Name
+            FROM Contact
+            WHERE Partner_Lookup__c = : partners[0].Id
+        ];
+
+        System.assertEquals(2, partnerContacts.size());
+
+        List<Account> partnerAccounts = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Partner__c = : partners[0].Id
+        ];
+
+        System.assertEquals(1, partnerAccounts.size());
 
     @IsTest
     static void testDataSetupForReportTest() {
