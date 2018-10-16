@@ -238,4 +238,12 @@ private class PostSandboxRefresherTest {
     static void testDeleteCSRecords() {
         PostSandboxRefresher.deleteCSRecords();
     }
+
+    @IsTest
+    static void testDataSetupForReportTest() {
+        PostSandboxRefresher.setupDataForReportTest();
+        List<Lead> leads = [SELECT Id FROM Lead WHERE LastName = 'TestLightningReports'];
+        // Should be one lead set up by the setup method
+        System.assertEquals(1, leads.size());
+    }
 }

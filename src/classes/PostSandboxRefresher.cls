@@ -19,6 +19,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
         switchChargentToTestMode();
+        setupDataForReportTest();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
@@ -804,4 +805,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
+    // With Winter '19, the LightningReportsControllerTest.testSummaryReportReponse started failing.
+    // It looks as if Reports.ReportManager methods in the test doesn't see the data created in the test method,
+    // just the SeeAllData=true data. So we'll create that data here.
+    public static void setupDataForReportTest() {
+        Account clientAccount = new Account(Name = 'Client Account');
+        insert clientAccount;
+
+        Lead lead = new Lead(FirstName='Cole',
+            LastName='TestLightningReports',
+            Company='Cole Swain',
+            Annual_Income_Currency__c = 100000,
+            Parent_Account__c = clientAccount.Id);
+        insert lead;
+    }
 }
