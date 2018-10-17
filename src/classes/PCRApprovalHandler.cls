@@ -294,6 +294,47 @@ public without sharing class PCRApprovalHandler {
         return lead;
     }
 
+    public static void addMortgage(
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap ,
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+        List<LASERCA__Trade_Accounts__c> mortgagesList = new List<LASERCA__Trade_Accounts__c>();
+        Set<Id> pcrIds = new Set<Id>();
+        if (triggerOldMap == null) {
+
+            for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
+                pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+            }
+
+            List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
+
+            Lead lead = [
+                SELECT Id, Monthly_Mortgage_Tax_and_Insurance__c, Co_App_Monthly_Mortgage__c
+                FROM Lead
+                WHERE Id = :pcrs[0].LASERCA__Lead__c
+                LIMIT 1
+            ];
+
+            for( LASERCA__Personal_Credit_Report__c pcr : pcrs ){
+                LASERCA__Trade_Accounts__c mortgage = new LASERCA__Trade_Accounts__c();
+                if (pcr.LASERCA__Contact__c != null) {
+                    mortgage.Name = 'Self-Reported Mortgage';
+                    mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
+                    mortgage.LASERCA__Monthly_Payment__c = lead.Co_App_Monthly_Mortgage__c;
+                    mortgage.Exclude_From_Rollup__c = true;
+                } else {
+                    mortgage.Name = 'Self-Reported Mortgage';
+                    mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
+                    mortgage.LASERCA__Monthly_Payment__c = lead.Monthly_Mortgage_Tax_and_Insurance__c;
+                    mortgage.Exclude_From_Rollup__c = true;
+                }
+
+                mortgagesList.add(mortgage);
+            }
+            insert mortgagesList;
+
+        }
+    }
+
     public Lead sendCreditDecisionEmails(Lead lead) {
         Boolean hasCoApp = false;
         String firstName = lead.FirstName;

@@ -166,6 +166,7 @@ public class LoanTestRecordWarehouse {
             Custom_Id__c = 'test',
             Partner_Lookup__c = partner.Id,
             Bs_Sales_ID__c = salesRep.Id,
+            Other_Bank_Executive__c = true,
             Annual_Income_Currency__c = 150000,
             Product__c = productMap.get('productLoanMATerm20Rate699'),
             Product_Program__c = 'BlueWave Solar Loan',
@@ -222,6 +223,10 @@ public class LoanTestRecordWarehouse {
             Income__c = 2000,
             LASERCA__Social_Security_Number__c = '000000002');
         insert coApplicantContact;
+
+        //NOTE: CoApplicantLead does not have CoApplicant_Contact__c populated with CoApplicantContact;
+        //  Must update lead with coApp contact for testing
+
 
         LASERCA__Personal_Credit_Report__c pcr10710 = new LASERCA__Personal_Credit_Report__c(
             Name = 'Personal Credit Report 1',

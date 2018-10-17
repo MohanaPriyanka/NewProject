@@ -11,10 +11,12 @@ public with sharing class LoanUnderwritingTest {
     }
 
     static testMethod void testQueries() {
-        Lead lead = [SELECT Id, Name
-                     FROM Lead
-                     WHERE FirstName = 'leadMALoanTerm20Rate699'
-                     LIMIT 1];
+        Lead lead = [
+            SELECT Id, Name
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm20Rate699'
+            LIMIT 1
+        ];
         LoanUnderwriting.LeadWithPCRAttachments retrievedLead = LoanUnderwriting.getLead(lead.Id);
         System.assertEquals(lead.Name, retrievedLead.lead.Name);
 
@@ -24,59 +26,71 @@ public with sharing class LoanUnderwritingTest {
         System.assertEquals('Notes', pcr.Adjusted_DTI_Notes__c);
 
         String[] avidiaReviewStatusOptions = BlueWaveParent.getpicklistFields('LASERCA__Personal_Credit_Report__c',
-                                                                              'Avidia_Review_Status__c');
+            'Avidia_Review_Status__c');
         String[] creditNoticeOptions = BlueWaveParent.getpicklistFields('LASERCA__Personal_Credit_Report__c',
-                                                                        'Adverse_Credit_Notice_1__c');
+            'Adverse_Credit_Notice_1__c');
     }
 
     static testMethod void testUpdate() {
-        LASERCA__Personal_Credit_Report__c pcr = [SELECT Id, Adverse_Credit_Notice_1__c
-                                                  FROM LASERCA__Personal_Credit_Report__c
-                                                  WHERE Name LIKE '%Personal Credit Report 4%'
-                                                  LIMIT 1];
+        LASERCA__Personal_Credit_Report__c pcr = [
+            SELECT Id, Adverse_Credit_Notice_1__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE Name LIKE '%Personal Credit Report 4%'
+            LIMIT 1
+        ];
         Test.startTest();
         System.assertEquals(null, pcr.Adverse_Credit_Notice_1__c);
         pcr.Adverse_Credit_Notice_1__c = 'Bankruptcy';
         BlueWaveParent.updateSObject(pcr);
 
         LASERCA__Trade_Accounts__c ta = new LASERCA__Trade_Accounts__c(Name = 'Test',
-                                                                       LASERCA__Personal_Credit_Report__c = pcr.Id,
-                                                                       LASERCA__Monthly_Payment__c = 100);
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Monthly_Payment__c = 100);
         BlueWaveParent.insertSObject(ta);
 
-        pcr = [SELECT Id, Adverse_Credit_Notice_1__c
-               FROM LASERCA__Personal_Credit_Report__c
-               WHERE Id = :pcr.Id];
+        pcr = [
+            SELECT Id, Adverse_Credit_Notice_1__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE Id = :pcr.Id
+        ];
         System.assertEquals('Bankruptcy', pcr.Adverse_Credit_Notice_1__c);
 
-        Lead lead = [SELECT Id, Name, Manual_Credit_Decline__c, Credit_Report_Detail_5__c
-                     FROM Lead
-                     WHERE FirstName = 'leadMALoanTerm20Rate699'
-                     LIMIT 1];
+        Lead lead = [
+            SELECT Id, Name, Manual_Credit_Decline__c, Credit_Report_Detail_5__c
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm20Rate699'
+            LIMIT 1
+        ];
         System.assertEquals(false, lead.Manual_Credit_Decline__c);
         System.assertEquals(null, lead.Credit_Report_Detail_5__c);
 
         LoanUnderwriting.LeadWithPCRAttachments retrievedLead = LoanUnderwriting.getLead(lead.Id);
         LoanUnderwriting.updateManualCreditDecline(retrievedLead.lead, false);
 
-        lead = [SELECT Id, Name, Manual_Credit_Decline__c, Credit_Report_Detail_5__c
-                FROM Lead
-                WHERE FirstName = 'leadMALoanTerm20Rate699'
-                LIMIT 1];
+        lead = [
+            SELECT Id, Name, Manual_Credit_Decline__c, Credit_Report_Detail_5__c
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm20Rate699'
+            LIMIT 1
+        ];
         System.assertEquals(true, lead.Manual_Credit_Decline__c);
         System.assertEquals('FA - INQUIRIES IMPACTED THE CREDIT SCORE', lead.Credit_Report_Detail_5__c);
 
-        List<Attachment> a = [SELECT Id, Body
-                              FROM Attachment
-                              WHERE ParentId = :lead.Id];
+        List<Attachment> a = [
+            SELECT Id, Body
+            FROM Attachment
+            WHERE ParentId = :lead.Id
+        ];
         System.assertEquals(true, a.isEmpty());
 
-        Id fileId = BlueWaveParent.saveTheChunk(lead.Id, 'testfile.txt', EncodingUtil.base64Encode(Blob.valueOf( 'This is ')), 'text/plain', '');
+        Id fileId = BlueWaveParent.saveTheChunk(lead.Id, 'testfile.txt', EncodingUtil.base64Encode(Blob.valueOf('This is ')), 'text/plain', '');
         BlueWaveParent.saveTheChunk(lead.Id, 'testfile.txt', EncodingUtil.base64Encode(Blob.valueOf('a test')), 'text/plain', fileId);
 
-        a = [SELECT Id, Body
-             FROM Attachment
-             WHERE ParentId = :lead.Id];
+        a = [
+            SELECT Id, Body
+            FROM Attachment
+            WHERE ParentId = :lead.Id
+        ];
         System.assertEquals(1, a.size());
         // Couldn't test body contents here (BLOB is not a valid UTF-8 string), but works through user testing
         Test.stopTest();
@@ -88,13 +102,73 @@ public with sharing class LoanUnderwritingTest {
         System.assertEquals(null, LoanUnderwriting.getFifthDetail(null));
         String s =
             '039 - SERIOUS DELINQUENCY\n' +
-            '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +
-            '027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n' +
-            '003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\n' +
-            'FA - INQUIRIES IMPACTED THE CREDIT SCORE\n';
+                '014 - LENGTH OF TIME ACCOUNTS HAVE BEEN ESTABLISHED\n' +
+                '027 - TOO FEW ACCOUNTS CURRENTLY PAID AS AGREED\n' +
+                '003 - PROPORTION OF LOAN BALANCES TO LOAN AMOUNTS IS TOO HIGH\n' +
+                'FA - INQUIRIES IMPACTED THE CREDIT SCORE\n';
         System.assertEquals('INQUIRIES IMPACTED THE CREDIT SCORE', LoanUnderwriting.getFifthDetail(s));
         Test.stopTest();
     }
+
+    static testMethod void testGetOFAC() {
+        Lead lead = [
+            SELECT Id, Name
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm20Rate699'
+            LIMIT 1
+        ];
+        LoanUnderwriting.LeadWithPCRAttachments retrievedLead = LoanUnderwriting.getLead(lead.Id);
+
+        LASERCA__Personal_Credit_Report__c pcr =
+            LoanUnderwriting.getPCRDebt(retrievedLead.lead.Personal_Credit_Report__r.Id);
+
+        //Create OFAC
+        LASERCA__Regulatory_Product__c OFAC = new LASERCA__Regulatory_Product__c(
+            Name = 'Test OFAC',
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Result_Status_Type__c = 'Clear'
+        );
+        insert OFAC;
+
+        String checkOFAC = LoanUnderwriting.getOFAC(pcr.Id);
+        System.assertEquals('Clear', checkOFAC);
+
+    }
+
+    static testMethod void testGetRegO() {
+        Test.startTest();
+        Lead lead = [
+            SELECT Id, Name, Avidia_Service_Provider__c, Type_of_Avidia_Service_Provider__c, Other_Bank_Executive__c
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm20Rate699'
+            LIMIT 1
+        ];
+
+        String checkRegO = LoanUnderwriting.getRegO(lead, false);
+        System.assertEquals('Other Bank Executive', checkRegO);
+
+        Test.stopTest();
+    }
+
+    static testMethod void testGetCoAppContact() {
+        Lead lead = [SELECT Id, Name, CoApplicant_Contact__c
+        FROM Lead
+        WHERE FirstName = 'coApplicantLead'
+        LIMIT 1];
+
+        Contact coApp = [SELECT Id, Name FROM Contact WHERE Lead__c = :lead.Id LIMIT 1];
+
+        //Lead didnt have CoApplicant_Contact__c populated in LoanWarehouse - would have thought this field was updated
+        lead.CoApplicant_Contact__c = coApp.Id;
+        update lead;
+
+        LoanUnderwriting.LeadWithPCRAttachments retrievedLead = LoanUnderwriting.getLead(lead.Id);
+        Contact checkCoApp = LoanUnderwriting.getCoAppContact(retrievedLead.lead);
+
+        System.assertEquals('000000002', checkCoApp.LASERCA__Social_Security_Number__c);
+
+    }
+
 
     static testMethod void testBlueWaveParentStateConversion() {
         Test.startTest();
@@ -241,6 +315,12 @@ public with sharing class LoanUnderwritingTest {
         PageReference pr = Page.LoanUnderwriting;
         Test.setCurrentPage(pr);
         ApexPages.currentPage().getParameters().put('leadId', lead.Id);
+
+        Contact coApp = [SELECT Id, Name FROM Contact WHERE Lead__c = :lead.Id LIMIT 1];
+
+        //Lead didnt have CoApplicant_Contact__c populated in LoanWarehouse - would have thought this field was updated
+        lead.CoApplicant_Contact__c = coApp.Id;
+        update lead;
 
         LoanUnderwriting lu = new LoanUnderwriting();
         System.assertEquals(true, lu.hasCoApp);

@@ -15,6 +15,7 @@ global without sharing class LoanUnderwriting {
     // For LoanUnderwritingSnapshot page
     public String renderAs { get; set; }
     public Id leadId;
+    public Contact coApp;
     public LeadWithPCRAttachments lead { get; set; }
     public Decimal monthlyPayment { get; set; }
     public Boolean hasCoApp { get; set; }
@@ -25,6 +26,10 @@ global without sharing class LoanUnderwriting {
     public String primaryFifthDetail { get; set; }
     public String coAppFifthCode { get; set; }
     public String coAppfifthDetail { get; set; }
+    public String regO { get; set; }
+    public String coAppRegO { get; set; }
+    public String ofac {get; set; }
+    public String coAppOFAC { get; set; }
     public LASERCA__Personal_Credit_Report__c primaryPCR { get; set; }
     public LASERCA__Personal_Credit_Report__c coAppPCR { get; set; }
     public Boolean employedYear { get; set; }
@@ -36,6 +41,8 @@ global without sharing class LoanUnderwriting {
         this.renderAs = ApexPages.currentPage().getParameters().get('renderAs');
         this.lead = getLead(leadId);
         this.monthlyPayment = lead.lead.Monthly_Payment__c;
+        this.ofac = getOFAC(lead.lead.Personal_Credit_Report__c);
+        regO = getRegO(lead.lead, FALSE);
         if (lead.lead.Product__r.DTI_After_Rate_Gross_Up__c != null) {
             this.monthlyPayment =
                 (lead.lead.Loan_Principal__c * (lead.lead.Product__r.Loan_Interest_Rate__c + lead.lead.Product__r.DTI_After_Rate_Gross_Up__c) / 100 / 12) /
@@ -44,6 +51,7 @@ global without sharing class LoanUnderwriting {
         if (lead.lead.Personal_Credit_Report_Co_Applicant__r != null &&
             lead.lead.Personal_Credit_Report__r != null) {
             hasCoApp = true;
+            coApp = getCoAppContact(lead.lead);
             bestFICO = Math.max(Integer.valueOf((Util.nullToZero(lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c))),
                 Integer.valueOf((Util.nullToZero(lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c))));
             primaryFifthCode = getFifthCode(lead.lead.Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c);
@@ -52,6 +60,8 @@ global without sharing class LoanUnderwriting {
             coAppFifthDetail = getFifthDetail(lead.lead.Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Score_Factor__c);
             primaryPCR = getPCRDebt(lead.lead.Personal_Credit_Report__r.Id);
             coAppPCR = getPCRDebt(lead.lead.Personal_Credit_Report_Co_Applicant__r.Id);
+            coAppOFAC = getOFAC(lead.lead.Personal_Credit_Report_Co_Applicant__c);
+            coAppRegO = getRegO(lead.lead, TRUE);
         } else if (lead.lead.Personal_Credit_Report__r != null) {
             hasCoApp = false;
             bestFICO = Integer.valueOf(Util.nullToZero(lead.lead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c));
@@ -126,13 +136,14 @@ global without sharing class LoanUnderwriting {
                 Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
                 Product__r.Loan_Interest_Rate__c, Product__r.DTI_After_Rate_Gross_Up__c,
                 Product__r.Loan_Term__c, Property_Type__c,
+                Avidia_Service_Provider__c, Other_Bank_Executive__c, Type_of_Avidia_Service_Provider__c,
                 Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment__c,
                 Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                 Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
                 lived_residence_six_months__c,
                 Employed_for_more_than_six_months__c, Employed_for_more_than_one_year__c,
                 Requested_Loan_Amount__c, System_Cost__c,
-                Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c,
+                Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, CoApplicant_Contact__c,
                 Personal_Credit_Report__r.Id,
                 Personal_Credit_Report__r.Name,
                 Personal_Credit_Report__r.DTI_Before__c,
@@ -151,6 +162,7 @@ global without sharing class LoanUnderwriting {
                 Personal_Credit_Report__r.LASERCA__Detail_2__c,
                 Personal_Credit_Report__r.LASERCA__Detail_3__c,
                 Personal_Credit_Report__r.LASERCA__Detail_4__c,
+                Personal_Credit_Report__r.LASERCA__TransUnion_Alert_Message__c,
                 Personal_Credit_Report__r.LASERCA__TransUnion_Score_Factor__c,
                 Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c,
                 Personal_Credit_Report__r.Annual_Income_from_Lead__c,
@@ -185,6 +197,7 @@ global without sharing class LoanUnderwriting {
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjusted_DTI__c,
                 Personal_Credit_Report_Co_Applicant__r.Adjustments_Comments__c,
+                Personal_Credit_Report_Co_Applicant__r.LASERCA__TransUnion_Alert_Message__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Total_High_Credit__c,
                 Personal_Credit_Report_Co_Applicant__r.LASERCA__Installment_Balance__c,
@@ -242,6 +255,59 @@ global without sharing class LoanUnderwriting {
             WHERE ParentID = :parentId
         ];
         return attachments;
+    }
+
+    public static String getRegO(Lead lead, Boolean isCoApp){
+        String regOString;
+        if (isCoApp){
+            Contact coApp = getCoAppContact(lead);
+            if (coApp.Avidia_Service_Provider__c) {
+                regOString = 'Avidia Service Provider: ' + coApp.Type_of_Avidia_Service_Provider__c;
+            } else if ( coApp.Other_Bank_Executive__c) {
+                regOString= 'Other Bank Executive';
+            } else {
+                regOString = 'NA';
+            }
+        } else {
+            if (lead.Avidia_Service_Provider__c) {
+                regOString = 'Avidia Service Provider: ' + lead.Type_of_Avidia_Service_Provider__c;
+            } else if ( lead.Other_Bank_Executive__c) {
+                regOString = 'Other Bank Executive';
+            } else {
+                regOString = 'NA';
+            }
+        }
+        return regOString;
+    }
+
+    @AuraEnabled
+    public static String getOFAC(Id pcrId) {
+        List<LASERCA__Regulatory_Product__c> regProducts = [
+            SELECT Id, Name, LASERCA__Result_Status_Type__c
+            FROM LASERCA__Regulatory_Product__c
+            WHERE LASERCA__Personal_Credit_Report__c = :pcrId
+        ];
+        if (regProducts.isEmpty()) {
+            String message = 'No OFAC on file';
+            return message;
+        } else if (regProducts.size() > 1){
+            throw new AuraHandledException('LoanUnderwriting.getOFAC, Multiple Regulatory Products found with ID: ' + pcrId);
+        } else {
+            return regProducts[0].LASERCA__Result_Status_Type__c;
+        }
+    }
+
+    @AuraEnabled
+    public static Contact getCoAppContact(Lead lead) {
+
+        Contact coAppContact = [
+            SELECT Id, Avidia_Service_Provider__c, Type_of_Avidia_Service_Provider__c, Other_Bank_Executive__c,
+                LASERCA__Social_Security_Number__c
+            FROM Contact
+            WHERE Id = :lead.CoApplicant_Contact__c
+            LIMIT 1
+        ];
+        return coAppContact;
     }
 
     // Can be called from custom buttons on the Lead page, or from the LoanUnderwriting screen
@@ -305,7 +371,8 @@ global without sharing class LoanUnderwriting {
     public static LASERCA__Personal_Credit_Report__c getPCRDebt(Id pcrId) {
         List<LASERCA__Personal_Credit_Report__c> pcrList = [
             SELECT Id, LASERCA__Sum_of_monthly_Personal_Debt__c, Adjusted_Monthly_Personal_Debt__c,
-                DTI_Before__c, DTI_After__c, Adjusted_DTI_Notes__c, Adjusted_DTI__c, Adjusted_Income__c, (
+                DTI_Before__c, DTI_After__c, Adjusted_DTI_Notes__c, Adjusted_DTI__c, Adjusted_Income__c,
+                LASERCA__TransUnion_Alert_Message__c, (
                 SELECT Id, Name, LASERCA__Account_Balance__c, LASERCA__Monthly_Payment__c,
                     LASERCA__Account_Ownership_Type__c, LASERCA__Credit_Loan_Type__c, Exclude_From_Rollup__c
                 FROM LASERCA__Trade_Accounts__r

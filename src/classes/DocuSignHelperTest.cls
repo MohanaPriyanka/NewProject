@@ -259,7 +259,16 @@ public with sharing class DocuSignHelperTest {
         Test.startTest();
         envelopeStatus.dsfs__Envelope_Status__c = 'Voided';
 
+        // DocuSign void transactions look like:
+        // 10/12/2018 | 9:10:11 am
+        // Salesforce attempt update ID: a0S210000007EnVEAU, table: dsfs__DocuSign_Status__c, fields:
+        // 10/12/2018 | 9:10:14 am
+        // Salesforce query: "select Id from dsfs__DocuSign_Recipient_Status__c where dsfs__DocuSign_Recipient_Id__c=
+        // 10/12/2018 | 9:10:14 am
+        // Salesforce attempt update ID: a0Q21000001YKHoEAO, table: dsfs__DocuSign_Recipient_Status__c, fields:
         update envelopeStatus;
+        update recipientStatuses;
+
         Test.stopTest();
 
         recipientStatuses = [

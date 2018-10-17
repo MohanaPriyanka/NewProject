@@ -755,6 +755,7 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testSaveNoChangeRequired() {
+        Test.startTest();
         User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
 
         Lead lead;
@@ -770,21 +771,13 @@ public without sharing class SLPControllersTestclass {
         Util.enableTrigger('Disable_LeadTrigger__c');
 
         System.assertEquals(lead.LastName, 'Test');
-        CAPController.convertLead(lead.Id, lead.Email);
-        lead = [
-            SELECT Id, FirstName, LastName, DOER_Solar_Loan__c, ConvertedOpportunityId, Product_line__c,
-                Loan_System_Information__c, Product__r.Loan_Interest_Rate__c, bs_Sales_ID__c,
-                Loan_Financing_Fee__c, Requested_Loan_Amount__c, System_Cost__c, Partner_Lookup__c,
-                LASERCA__Home_State__c, Product__c, Loan_Fee_1__c
-            FROM Lead
-            WHERE Id = :lead.Id
-        ];
+        lead = CAPController.convertLead(lead.Id, lead.Email);
         LoanHandler.createResidentialEquipment(new List<Lead>{lead});
         LoanHandler.resetTriggerContext();
         LoanHandler.createLoan(new List<Lead>{lead});
         Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
+        Util.printSOQLLimit('1');
         System.runAs(execUser) {
-            Test.startTest();
             Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
             Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
@@ -802,7 +795,6 @@ public without sharing class SLPControllersTestclass {
                     '"Storage_Grid_Hybrid__change":"Yes","Storage_Capacity__change":10,"Storage_Full_or_Partial_Home__change":"Full home backup",' +
                     '"Storage_Inverter_Manufacturer__change":"SolarEdge","Storage_Inverter_Model__change":"StorEdge 10kw",' +
                     '"Storage_Manufacturer__change":"Tesla","Storage_Model__change":"Powerwall"}');
-            Test.stopTest();
             System.assertEquals(null, updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
             re = SLPCustomerHandler.getCustomerInformation(loan.Id);
             System.assertEquals('LG', re.Module_Manufacturer__c);
@@ -820,6 +812,7 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals('StorEdge 10kw', re.Storage_Inverter_Model__c);
             System.assertEquals('Powerwall', re.Storage_Model__c);
         }
+        Test.stopTest();
     }
 
     @isTest static void testMaxLoanAmount() {

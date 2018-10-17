@@ -113,6 +113,7 @@ public without sharing class PCRTradeAccountHandler {
         }
     }
 
+
     private static Map<Id, LASERCA__Trade_Accounts__c> getTradeAccounts(Lead lead, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
         Map<Id, LASERCA__Trade_Accounts__c> tradeAccountsToAdjust = new Map<Id, LASERCA__Trade_Accounts__c>();
         if (tradeAccounts == null) {

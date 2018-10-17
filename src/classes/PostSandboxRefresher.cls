@@ -19,6 +19,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
         switchChargentToTestMode();
+        setupBWTestPartner();
+        setupDataForReportTest();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
     }
 
@@ -240,6 +242,64 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         update gateways;
     }
 
+    global static void setupBWTestPartner() {
+        Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
+        Total_Capital__c = 10000000,
+        Investor__c = 'The Bank',
+        Pool_Type__c = 'Revolving Credit Line');
+        insert capitalPool;
+
+        Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
+            Name = 'Avidia 1',
+            Tranche_Cap__c = 1000000,
+            Tranche_Type__c = 'Standard',
+            State__c = 'MA',
+            Stage__c = 'Open',
+            Loan_Data__c = capitalPool.id);
+        insert loanTrancheMA;
+
+        Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
+            Name = 'Tranche Assignment Pending',
+            Tranche_Type__c = 'Holding',
+            Stage__c = 'Closed',
+            Loan_Data__c = capitalPool.id);
+        insert loanTranchePending;
+
+        Partner__c partner = new Partner__c(Name = 'BlueWave Test Partner');
+        insert partner;
+
+        BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@bluewavesolar.com.test');
+        insert salesRep;
+
+        BSST__c salesRepExec = new BSST__c(Name = 'Mr Executive', Partner__c = partner.Id, Custom_ID__c = 'exec', Email__c = 'executive@bluewavesolar.com.test');
+        insert salesRepExec;
+        String states = 'AK;AL;AR;AZ;CA;CO;CT;DE;FL;GA;HI;IA;ID;IL;IN;KS;KY;LA;MA;MD;ME;MI;MN;MO;MS;MT;NC;ND;NE;NH;NJ;NM;NV;NY;OH;OK;OR;PA;RI;SC;SD;TN;TX;UT;VA;VT;WA;WI;WV;WY';
+
+        Account partnerAccount = new Account(Name='BlueWave Test Partner',
+            Partner__c = partner.Id,
+            RecordTypeId = '0120a000000uhu2',
+            State_Market__c = states,
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP');
+        insert partnerAccount;
+
+        Contact execContact = new Contact(  FirstName='Joe',
+            LastName='Bob',
+            AccountId = partnerAccount.Id,
+            Partner_Lookup__c = partner.Id,
+            RecordTypeId = '012j0000000uetM',
+            Sales_Representative__c = salesRep.Id);
+        insert execContact;
+
+        Contact salesRepContact = new Contact(  FirstName='Mr',
+            LastName='Executive',
+            AccountId = partnerAccount.Id,
+            Partner_Lookup__c = partner.Id,
+            RecordTypeId = '012j0000000uetM',
+            Sales_Representative__c = salesRepExec.Id);
+        insert salesRepContact;
+    }
+
     /*
      CS Record Loader loads community solar records for testing. Currently, bill numbers aren't advanced
      because roll-up summaries aren't recalculated before the next bills are loaded, but updating the
@@ -306,7 +366,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     global class SolarSystemHelper implements Queueable {
         global void execute(QueueableContext context) {
-            Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+            Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
                 State__c = 'MA',
@@ -316,12 +376,31 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
+                Program__c = 'SREC - Community Solar',
+                Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
+
+            Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - BlueWave - 10%',
+                IsActive = true,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 10,
+                Annual_kWh_Maximum__c = 100000000,
+                NM_Rate_Floor__c = 0,
+                Program__c = 'SMART - Community Solar',
+                Credit_Minimum__c = '200',
+                Monthly_Late_Fee__c = 1);
+
             insert new List<Product2>{
-                normalCSProduct
+                normalCSProduct,
+                normalSRECProduct
             };
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
+            Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
             Account clientAccount = new Account(Name = 'Test Client');
             insert clientAccount;
 
@@ -336,12 +415,17 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
             insert eversource;
+            Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2);
+            insert nationalGrid;
 
             Shared_Solar_System__c sss1 = getSolarSystem('Project A Oak Road', '1', clientAccount, eversizeNMC, normalCSProduct, entity1, eversource);
-            Shared_Solar_System__c sss2 = getSolarSystem('Project B Main St', '2', clientAccount, eversizeNMC, normalCSProduct, entity1, eversource);
+            Shared_Solar_System__c sss2 = getSolarSystem('Project B Main St', '2', clientAccount, eversizeNMC, normalCSProduct, entity2, eversource);
+            Shared_Solar_System__c sss3 = getSolarSystem('Project C Second St', '3', clientAccount, eversizeNMC, normalSRECProduct, entity2, eversource);
+            Shared_Solar_System__c sss4 = getSolarSystem('Project D Dee St', '4', clientAccount, nationalGridNMC, normalSRECProduct, entity2, nationalGrid);
+            Shared_Solar_System__c sss5 = getSolarSystem('Project E Dog St', '5', clientAccount, nationalGridNMC, normalCSProduct, entity2, nationalGrid);
 
             insert new List<Shared_Solar_System__c>{
-                sss1, sss2
+                sss1, sss2, sss3, sss4, sss5
             };
 
             if (!Test.isRunningTest()) {
@@ -361,14 +445,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     Capacity_Committed_kW_DC__c = 0,
                     Total_System_Size_kWh_DC__c = 1445.86,
                     Total_System_Size_kW_AC__c = 996,
-                    System_Utility__c = 'Eversource',
+                    System_Utility__c = utility.Name,
                     Credit_Score_Requirement__c = 200,
                     Assignment_Order__c = order,
                     Utility_NMC_Tariff__c = nmc.Id,
                     Expected_Yield_kWh_kW__c = 1300,
                     Assemblage_Count__c = 1,
                     Product__c = product.Id,
-                    Sales_Partners__c = 'All',
+                    Sales_Partners__c = 'All;BlueWave Test Partner',
+                    Service_Territories__c = 'NEMA;SEMA;WCMA',
                     BWC_Project_Entity_Manual__c = entity.Id,
                     Maximum_Subscription_Assemblage__c = 25,
                     Utility__c = utility.Id);
@@ -804,4 +889,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
+    // With Winter '19, the LightningReportsControllerTest.testSummaryReportReponse started failing.
+    // It looks as if Reports.ReportManager methods in the test doesn't see the data created in the test method,
+    // just the SeeAllData=true data. So we'll create that data here.
+    public static void setupDataForReportTest() {
+        Account clientAccount = new Account(Name = 'Client Account');
+        insert clientAccount;
+
+        Lead lead = new Lead(FirstName='Cole',
+            LastName='TestLightningReports',
+            Company='Cole Swain',
+            Annual_Income_Currency__c = 100000,
+            Parent_Account__c = clientAccount.Id);
+        insert lead;
+    }
 }

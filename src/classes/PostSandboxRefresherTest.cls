@@ -1,7 +1,7 @@
-/**
+/*************************************************************************************
  * Created By: Peter Yao
  * Description: Tests actions taken after refreshing a sandbox
- **/
+ *************************************************************************************/
 @IsTest
 private class PostSandboxRefresherTest {
     private static final String JOBNAME = 'Test Schedule';
@@ -53,7 +53,7 @@ private class PostSandboxRefresherTest {
         System.schedule(JOBNAME, sch, sbp);
     }
 
-    @isTest
+    @IsTest
     static public void testLetterStreamSetup() {
         if (LetterStream_Settings__c.getAll().isEmpty()) {
             insert new LetterStream_Settings__c(
@@ -237,5 +237,41 @@ private class PostSandboxRefresherTest {
     @IsTest
     static void testDeleteCSRecords() {
         PostSandboxRefresher.deleteCSRecords();
+    }
+
+    @IsTest
+    static void testPartnerSetup() {
+        PostSandboxRefresher.setupBWTestPartner();
+
+        List<Partner__c> partners = [
+            SELECT Id, Name
+            FROM Partner__c
+        ];
+
+        System.assertEquals(1, partners.size());
+        System.assertEquals('BlueWave Test Partner', partners[0].Name);
+
+        List<Contact> partnerContacts = [
+            SELECT Id, Name
+            FROM Contact
+            WHERE Partner_Lookup__c = :partners[0].Id
+        ];
+
+        System.assertEquals(2, partnerContacts.size());
+
+        List<Account> partnerAccounts = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Partner__c = :partners[0].Id
+        ];
+
+        System.assertEquals(1, partnerAccounts.size());
+    }
+    @IsTest
+    static void testDataSetupForReportTest() {
+        PostSandboxRefresher.setupDataForReportTest();
+        List<Lead> leads = [SELECT Id FROM Lead WHERE LastName = 'TestLightningReports'];
+        // Should be one lead set up by the setup method
+        System.assertEquals(1, leads.size());
     }
 }
