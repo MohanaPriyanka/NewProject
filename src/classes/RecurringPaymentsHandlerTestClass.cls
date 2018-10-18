@@ -130,11 +130,12 @@ private class RecurringPaymentsHandlerTestClass {
         FROM ChargentOrders__ChargentOrder__c
         WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
         AND ChargentOrders__Charge_Date__c = '30'
+        AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
         LIMIT 1];
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
-            SELECT Id
+            SELECT Id, ChargentOrders__Billing_Last_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
 
@@ -997,6 +998,44 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(finalNumOrdersAccAEnt2, 1); // There is now ONLY 1 recurring order with this entity+account
         System.assertEquals(ordersWithAccAEntity2After.get(0).ChargentOrders__Billing_Last_Name__c,
             'Unique Last Name 2 for order that should be still recurring'); // The one that's still recurring is the order just inserted
+
+        // Assert that if a new order is created that is NOT recurring, the old order is not closed
+        // Account is set through the Account__c field in this one, rather than through the account bill
+        ChargentOrders__ChargentOrder__c newOrderWithSameEntity1AndAccNotRecurring  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Gateway__c = ordersWithAccAEntity1Before.get(0).ChargentOrders__Gateway__c,
+            Entity__c = entity1.Id,
+            ChargentOrders__Shipping_Name__c = entity1.Id,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Pent',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 603.92,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            Account_Bill__c = ab.Id,
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = '',
+            ChargentOrders__Payment_Frequency__c = 'Once',
+            ChargentOrders__Payment_Start_Date__c = system.today(),
+            ChargentOrders__Charge_Date__c = '30');
+
+        insert newOrderWithSameEntity1AndAccNotRecurring;
+
+        List<ChargentOrders__ChargentOrder__c> ordersWithAccAEntity1AfterNonRecurring =
+        [SELECT Id, Account_Bill__r.Parent_Account__c,
+            Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Billing_Last_Name__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE Account_Bill__r.Parent_Account__c =: accA.Id
+        AND Entity_Name__c =: entity1.Name
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
+
+        System.assertEquals(ordersWithAccAEntity1AfterNonRecurring.size(), 1); // There is now ONLY 1 recurring order with this entity+account
+        System.assertEquals(ordersWithAccAEntity1AfterNonRecurring.get(0).ChargentOrders__Billing_Last_Name__c,
+            'Unique Last Name 1 for order that should be still recurring'); // The one that's still recurring is the order just inserted
     }
 
     @IsTest static void testCloseDuplicatesWithManyRecords() {

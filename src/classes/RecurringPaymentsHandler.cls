@@ -338,7 +338,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         [SELECT Id, ChargentOrders__Account__c, Account_Bill__r.Parent_Account__c,
             Entity_Name__c, ChargentOrders__Payment_Status__c, ChargentOrders__Charge_Date__c
         FROM ChargentOrders__ChargentOrder__c
-        WHERE Id IN : orderIds];
+        WHERE Id IN : orderIds
+        AND ChargentOrders__Payment_Status__c = 'Recurring'];
 
         Map<String, ChargentOrders__ChargentOrder__c> entityToOrderMap = new Map<String, ChargentOrders__ChargentOrder__c>();
 
