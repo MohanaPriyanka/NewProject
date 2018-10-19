@@ -25,6 +25,23 @@ private class PaymentCaseTest {
         Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         Test.loadData(Case.SObjectType, 'TestCSCase');
 
+
+        // Altering next transaction dates
+
+        // Change all orders not designed for this class to have valid next transaction dates
+        List<ChargentOrders__ChargentOrder__c> otherOrders = [
+            SELECT Id, ChargentOrders__Next_Transaction_Date__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'
+        ];
+
+        for (ChargentOrders__ChargentOrder__c order : otherOrders) {
+            order.ChargentOrders__Next_Transaction_Date__c = order.ChargentOrders__Next_Transaction_Date__c.addMonths(1);
+        }
+
+        update otherOrders;
+
+        // Set an error-causing next transaction date
         ChargentOrders__ChargentOrder__c orderWithBadNextTransDate = [
             SELECT Id, ChargentOrders__Billing_Last_Name__c, ChargentOrders__Next_Transaction_Date__c, ChargentOrders__Charge_Date__c
             FROM ChargentOrders__ChargentOrder__c
