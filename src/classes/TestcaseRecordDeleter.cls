@@ -1,22 +1,34 @@
 /**
  * Created by abarnes on 9/12/2018.
  *
+ * Can now run this to delete all testcases regardless of age:
+        TestcaseRecordDeleter deleter = new TestcaseRecordDeleter();
+        deleter.deleteAll = true;
+        deleter.execute(null);
+ *
  * Tested by: TestcaseRecordDeleterTest
  */
 
 global class TestcaseRecordDeleter implements Schedulable {
-    global void execute(SchedulableContext SC) {
+    public Boolean deleteAll = false;
 
+    global void execute(SchedulableContext SC) {
+        String createdDateFilter = 'AND CreatedDate < Last_N_DAYS:28';
+        String closedDateFilter = 'AND CloseDate < Last_N_DAYS:28';
+        if (deleteAll) {
+            createdDateFilter = '';
+            closedDateFilter = '';
+        }
         List<String> queries = new List<String>{
-            'SELECT Id, Name_on_Account__c FROM Utility_Account_Log__c WHERE (Name_on_Account__c like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, First_Name_from_Lead__c, Last_Name_from_Lead__c FROM LASERCA__Personal_Credit_Report__c WHERE (Last_Name_from_Lead__c like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, Name FROM Residential_Equipment__c WHERE (Name like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, Name FROM Loan__c WHERE (Name like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, Lead__r.Name FROM Partner_Task__c WHERE (Lead__r.Name like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, Name FROM Opportunity WHERE (Name like \'%Testcase%\' AND CloseDate < Last_N_DAYS:28)',
-            'SELECT Id, FirstName, LastName FROM Contact WHERE (LastName = \'Testcase\' AND CreatedDate < Last_N_DAYS:28) AND Partner_Lookup__r.Name != \'Bluewave Inside Sales\' AND Name != \'BlueWave Testcase\'',
-            'SELECT Id, FirstName, LastName FROM Lead WHERE (LastName = \'Testcase\' AND CreatedDate < Last_N_DAYS:28)',
-            'SELECT Id, Name FROM Account WHERE (Name like \'%Testcase%\' AND CreatedDate < Last_N_DAYS:28)'
+            'SELECT Id, Name_on_Account__c FROM Utility_Account_Log__c WHERE (Name_on_Account__c like \'%Testcase%\' ' + createdDateFilter + ' )',
+            'SELECT Id, First_Name_from_Lead__c, Last_Name_from_Lead__c FROM LASERCA__Personal_Credit_Report__c WHERE (Last_Name_from_Lead__c like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id, Name FROM Residential_Equipment__c WHERE (Name like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id, Name FROM Loan__c WHERE (Name like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id, Lead__r.Name FROM Partner_Task__c WHERE (Lead__r.Name like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id, Name FROM Opportunity WHERE (Name like \'%Testcase%\' ' + closedDateFilter + ')',
+            'SELECT Id, FirstName, LastName FROM Contact WHERE (LastName = \'Testcase\' ' + createdDateFilter + ') AND Partner_Lookup__r.Name != \'Bluewave Inside Sales\' AND Name != \'BlueWave Testcase\'',
+            'SELECT Id, FirstName, LastName FROM Lead WHERE (LastName = \'Testcase\' ' + createdDateFilter + ')',
+            'SELECT Id, Name FROM Account WHERE (Name like \'%Testcase%\' ' + createdDateFilter + ')'
         };
 
         List<SObject> sobjects = new List<SObject>();

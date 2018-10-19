@@ -253,6 +253,14 @@ public class TestcaseRecordDeleterTest {
 //      The task should only delete the 5 of the 20 leads.
         List<Lead> postTaskLeadList = [SELECT Id FROM Lead];
         System.assertEquals(18, postTaskLeadList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+//      The task should delete 5 more of the leads.
+        postTaskLeadList = [SELECT Id FROM Lead];
+        System.assertEquals(10, postTaskLeadList.size());
+
         Test.stopTest();
     }
 
@@ -328,6 +336,11 @@ public class TestcaseRecordDeleterTest {
 //      The task should only delete the 5 of the 20 leads.
         List<Contact> postTaskContactList = [SELECT Id FROM Contact];
         System.assertEquals(25, postTaskContactList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+        postTaskContactList = [SELECT Id FROM Contact];
+        System.assertEquals(20, postTaskContactList.size());
         Test.stopTest();
     }
 
@@ -376,6 +389,12 @@ public class TestcaseRecordDeleterTest {
 //      The task should only delete the 5 of the 20 leads.
         List<Opportunity> postTaskOppList = [SELECT Id FROM Opportunity];
         System.assertEquals(18, postTaskOppList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postTaskOppList = [SELECT Id FROM Opportunity];
+        System.assertEquals(13, postTaskOppList.size());
         Test.stopTest();
     }
 
@@ -420,6 +439,12 @@ public class TestcaseRecordDeleterTest {
 //      The task should only delete the 5 of the 20 leads.
         List<Account> postTaskAccList = [SELECT Id FROM Account];
         System.assertEquals(18, postTaskAccList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postTaskAccList = [SELECT Id FROM Account];
+        System.assertEquals(13, postTaskAccList.size());
         Test.stopTest();
     }
 
@@ -435,6 +460,12 @@ public class TestcaseRecordDeleterTest {
 //      The method should only delete the one load that is over two weeks old with the last name 'Testcase'
         List<Loan__c> postTaskLoanList = [SELECT Id FROM Loan__c];
         System.assertEquals(2, postTaskLoanList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postTaskLoanList = [SELECT Id FROM Loan__c];
+        System.assertEquals(1, postTaskLoanList.size());
         Test.stopTest();
     }
 
@@ -450,6 +481,12 @@ public class TestcaseRecordDeleterTest {
 //      Only one of the Test Equipments created was over two weeks old.
         List<Residential_Equipment__c> postResiEquipList = [SELECT Id FROM Residential_Equipment__c];
         System.assertEquals(2, postResiEquipList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postResiEquipList = [SELECT Id FROM Residential_Equipment__c];
+        System.assertEquals(1, postResiEquipList.size());
         Test.stopTest();
     }
 
@@ -595,6 +632,12 @@ public class TestcaseRecordDeleterTest {
 
         List<Utility_Account_Log__c> postUALList = [SELECT Id FROM Utility_Account_Log__c];
         System.assertEquals(2, postUALList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postUALList = [SELECT Id FROM Utility_Account_Log__c];
+        System.assertEquals(1, postUALList.size());
         Test.stopTest();
     }
 
@@ -609,6 +652,12 @@ public class TestcaseRecordDeleterTest {
 //      Only one PCR is over two weeks old.
         List<LASERCA__Personal_Credit_Report__c> postTaskPCRList = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
         System.assertEquals(2, postTaskPCRList.size());
+
+        deleteRecords.deleteAll = true;
+        deleteRecords.execute(null);
+
+        postTaskPCRList = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
+        System.assertEquals(0, postTaskPCRList.size());
         Test.stopTest();
     }
 }
