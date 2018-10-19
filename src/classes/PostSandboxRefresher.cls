@@ -469,9 +469,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 ORDER BY Name DESC
             ];
 
+            RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
             ChargentBase__Gateway__c chGateway =
                 new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                    ChargentBase__Merchant_ID__c = '235986',
+                    ChargentBase__Test_Mode__c = true,
+                    RecordTypeId = authorizeRT.Id,
+                    ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
+                    ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
                     Shared_Solar_System__c = sssList[0].Id,
                     Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Active__c = true);
@@ -479,7 +483,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             ChargentBase__Gateway__c chGateway2 =
                 new ChargentBase__Gateway__c(Name = 'Chargent Gateway B',
-                    ChargentBase__Merchant_ID__c = '235986',
+                    ChargentBase__Test_Mode__c = true,
+                    RecordTypeId = authorizeRT.Id,
+                    ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
+                    ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
                     Shared_Solar_System__c = sssList[1].Id,
                     Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Active__c = true);
