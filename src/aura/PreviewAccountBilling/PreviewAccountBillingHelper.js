@@ -5,7 +5,7 @@
        $A.createComponent(
 		  "c:PregeneratedBillsTable", 
           {"parentId": accountRef,
-           "IsProdUpdate" : "FALSE"}, 
+           "IsProdUpdate" : false},
            
        function(newButton, status, errorMessage){
           if (status === "SUCCESS") {
