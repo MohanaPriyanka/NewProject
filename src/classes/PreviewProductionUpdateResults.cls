@@ -225,8 +225,10 @@ public without sharing class PreviewProductionUpdateResults{
     List<ChargentOrders__Transaction__c> transactionList = [SELECT Name, Id, ChargentOrders__Gateway_Date__c, 
                                                             ChargentOrders__Amount__c,
                                                             ChargentOrders__Response_Status__c, 
-                                                            ChargentOrders__Gateway__r.Name, 
-                                                            ChargentOrders__Order__r.ChargentOrders__Payment_Status__c
+                                                            ChargentOrders__Gateway__r.Name,
+                                                            ChargentOrders__Order__r.Name,
+                                                            ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                                                            ChargentOrders__Order__r.ChargentOrders__Payment_Method__c
                                                             FROM ChargentOrders__Transaction__c
                                                             WHERE Property_Account_ID__c IN : idList 
                                                             ORDER BY  ChargentOrders__Gateway_Date__c DESC];
