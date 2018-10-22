@@ -1,0 +1,7 @@
+Id,Name,Type,RecordTypeId,BillingCountry,ShippingCountry,Recurring_Billing__c,Send_Checks_Address__c,Directions_to_Write_Paper_Check__c,AccountNumber
+TestRecalcUALParentA,TestRecalcParentA,Landowner,012j00000010Ha3AAE,United States,United States,true,,,
+TestRecalcUALPropA,TestRecalcPropA,Landowner,012j00000010HeQAAU,United States,United States,true,,,TestRecalcParentA
+TestRecalcUALParentB,TestRecalcParentB,Landowner,012j00000010Ha3AAE,United States,United States,true,,,
+TestRecalcUALPropB,TestRecalcPropB,Landowner,012j00000010HeQAAU,United States,United States,true,,,TestRecalcParentB
+TestRecalcUALAnchorParent,TestRecalcAnchorParent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,
+TestRecalcUALAnchorProp,TestRecalcAnchorProp,Landowner,012j00000010HeQAAU,United States,United States,true,,,TestRecalcAnchorParent

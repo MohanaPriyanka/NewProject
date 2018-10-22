@@ -1,0 +1,26 @@
+Id,Name,RecordTypeId,calculated_annual_cost_of_electricity__c,Opportunity__c,Subscribed_Annual_Cost_of_Electricity__c,Utility_Account_Log__c,Customer_Subscription_KW_DC_STATIC__c,Auto_Unround__c,Next_Schedule_Z_Status__c,Custom_Deduction_Order__c,UAS_Number__c,Annual_kwh_subscription_future__c
+TestRecalcUAS1A,uas01A,012j00000004TNgAAM,"",RecalcOpp1A,5000,TestRecalcUAL-Joey,"","",Active Subscription,1,,
+TestRecalcUAS2A,uas02A,012j00000004TNgAAM,"",RecalcOpp2A,1000,TestRecalcUAL-Joey,"","",Inactive Subscription,2,,
+TestRecalcUAS3A,uas03A,012j00000004TNgAAM,"",RecalcOpp3A,1000,TestRecalcUAL-Joey,"","",Active Subscription,3,,
+TestRecalcUAS4A,uas04A,012j00000004TNgAAM,"",RecalcOpp4A,1000,TestRecalcUAL-Joey,"","",Active Subscription,4,,
+TestRecalcUAS5A,uas05A,012j00000004TNgAAM,"",RecalcOpp5A,1000,TestRecalcUAL-Joey,"","",Active Subscription,5,,
+TestRecalcUAS6A,uas06A,012j00000004TNgAAM,"",RecalcOpp6A,3000,TestRecalcUAL-Joey,"","",Active Subscription,6,,
+TestRecalcUAS7A,uas07A,012j00000004TNgAAM,"",RecalcOpp7A,1000,TestRecalcUAL-Joey,"","",Active Subscription,7,,
+TestRecalcUAS8A,uas08A,012j00000004TNgAAM,"",RecalcOpp8A,3000,TestRecalcUAL-Joey,"","",Active Subscription,8,2,
+TestRecalcUAS9A,uas09A,012j00000004TNgAAM,"",RecalcOpp8A,9000,TestRecalcUAL-Joey,"","",Inactive Subscription,9,3,
+TestRecalcUAS10A,uas10A,012j00000004TNgAAM,"",RecalcOpp8A,10000,TestRecalcUAL-Joey,"","",Active Subscription,10,4,
+TestRecalcUAS11A,uas11A,012j00000004TNgAAM,"",RecalcOpp9A,10000,TestRecalcUAL-Joey,"","",Active Subscription,11,4,
+TestRecalcUAS12A,uas12A,012j00000004TNgAAM,"",RecalcOpp10A,2000,TestRecalcUAL-Joey,"","",Active Subscription,12,4,
+TestRecalcUAS1B,uas01B,012j00000004TNgAAM,"",RecalcOpp1B,"",TestRecalcUAL-Bill,"","",Active Subscription,1,,27000
+TestRecalcUAS2B,uas02B,012j00000004TNgAAM,"",RecalcOpp2B,"",TestRecalcUAL-Bill,"","",Inactive Subscription,2,,5400
+TestRecalcUAS3B,uas03B,012j00000004TNgAAM,"",RecalcOpp3B,"",TestRecalcUAL-Bill,"","",Active Subscription,3,,5400
+TestRecalcUAS4B,uas04B,012j00000004TNgAAM,"",RecalcOpp4B,"",TestRecalcUAL-Bill,"","",Active Subscription,4,,5400
+TestRecalcUAS5B,uas05B,012j00000004TNgAAM,"",RecalcOpp5B,"",TestRecalcUAL-Bill,"","",Active Subscription,5,,5400
+TestRecalcUAS6B,uas06B,012j00000004TNgAAM,"",RecalcOpp6B,"",TestRecalcUAL-Bill,"","",Active Subscription,6,,15000
+TestRecalcUAS7B,uas07B,012j00000004TNgAAM,"",RecalcOpp7B,"",TestRecalcUAL-Bill,"","",Active Subscription,7,,5400
+TestRecalcUAS8B,uas08B,012j00000004TNgAAM,"",RecalcOpp8B,"",TestRecalcUAL-Bill,"","",Active Subscription,8,2,15000
+TestRecalcUAS9B,uas09B,012j00000004TNgAAM,"",RecalcOpp8B,"",TestRecalcUAL-Bill,"","",Inactive Subscription,9,3,49000
+TestRecalcUAS10B,uas10B,012j00000004TNgAAM,"",RecalcOpp8B,"",TestRecalcUAL-Bill,"","",Active Subscription,10,4,50000
+TestRecalcUAS11B,uas11B,012j00000004TNgAAM,"",RecalcOpp9B,"",TestRecalcUAL-Bill,"","",Active Subscription,11,4,50000
+TestRecalcUAS12B,uas12B,012j00000004TNgAAM,"",RecalcOpp10B,"",TestRecalcUAL-Bill,"","",Active Subscription,12,4,50000
+TestRecalcAnchorUAS1,uas1Anchor,012j00000004TNgAAM,"",RecalcAnchorOpp,"",TestRecalcUAL-Anchor,"","",Active Subscription,12,4,50000

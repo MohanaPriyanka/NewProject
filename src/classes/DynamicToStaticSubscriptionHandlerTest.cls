@@ -12,12 +12,12 @@ public with sharing class DynamicToStaticSubscriptionHandlerTest {
                                        WHERE Name = 'Closed Not Zed P2'];
 
         System.assertEquals(1300, sss9.Expected_Yield_kWh_Kw__c);
-        System.assertEquals(2, sss9.Opportunities__r.size());
+        System.assertEquals(4, sss9.Opportunities__r.size());
         Opportunity opp8, opp9;
         for (Opportunity o : sss9.Opportunities__r) {
-            if (o.Name.equals('Opp8')) {
+            if (o.Name.equals('RecalcUALOpp8A')) {
                 opp8 = o;
-            } else if (o.Name.equals('Opp9')) {
+            } else if (o.Name.equals('RecalcUALOpp9A')) {
                 opp9 = o;
             }
         }

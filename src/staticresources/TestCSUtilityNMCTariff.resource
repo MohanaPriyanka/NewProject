@@ -3,3 +3,4 @@ a1D4C0000008K3EUAU,Eversource SEMA Class 2,Eversource,Class 2,0.1848,false,false
 TestUtilityNMCEversource,Eversource SEMA Class 2,Eversource,Class 2,0.1848,false,true,false
 a1D4C0000008K3GUAU,National Grid WCMA Class 2,National Grid,Class 2,0.1848,false,true,false
 a1D4C0000008K3HUAU,National Grid WCMA Class 2,National Grid,Class 2,0.1848,false,false,true
+RecalcUALTest,National Grid WCMA Class 2,National Grid,Class 2,1,,true,

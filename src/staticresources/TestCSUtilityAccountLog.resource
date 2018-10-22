@@ -1,15 +1,14 @@
-Id,Name,Opportunity__c,Cost_not_yet_Allocated__c,Annual_Cost_of_Electricity__c,Name_on_Account__c,Account__c
-TestUAL-AccountA,0000234,,,10000.00,jordan pentaleri,TestAccountA
-TestUAL-AccountB,0000256,,,15000.00,nick speyer,TestAccountB
-TestUAL-ADonut,0000234,,,10000,ADonut Shop,ADonut
-TestUAL-BDonut,0000235,,,10000,BDonut Shop,BDonut
-TestUAL-CDonut,0000236,,,10000,CDonut Shop,CDonut
-TestUAL-DDonut,0000237,,,10000,DDonut Shop,DDonut
-TestUAL-Unrelated,0000238,,,10000,Unrelated OtherAccount,Unrelated
-TestUAL-PaymentTest1,0000239,,,10000,PaymentTestPropertyA,PaymentTestPropertyA
-TestUAL-PaymentTest2,0000240,,,10000,PaymentTestPropertyA,PaymentTestPropertyA
-TestUAL-PaymentTest3,0000241,,,10000,PaymentTestPropertyA,PaymentTestPropertyA
-TestUAL-PaymentTest6,0000244,,,10000,PaymentTestPropertyD,PaymentTestPropertyD
-TestUAL-PaymentTest7,0000245,,,10000,PaymentTestPropertyD,PaymentTestPropertyD
-TestUAL-APizza,0000246,,,10000,APizza Shop,APizza
-
+Id,Name,Opportunity__c,Cost_not_yet_Allocated__c,Annual_Cost_of_Electricity__c,Name_on_Account__c,Account__c,Annual_kWh__c
+TestUAL-AccountA,0000234,,,10000.00,jordan pentaleri,TestAccountA,
+TestUAL-AccountB,0000256,,,15000.00,nick speyer,TestAccountB,
+TestUAL-ADonut,0000234,,,10000,ADonut Shop,ADonut,
+TestUAL-BDonut,0000235,,,10000,BDonut Shop,BDonut,
+TestUAL-CDonut,0000236,,,10000,CDonut Shop,CDonut,
+TestUAL-DDonut,0000237,,,10000,DDonut Shop,DDonut,
+TestUAL-Unrelated,0000238,,,10000,Unrelated OtherAccount,Unrelated,
+TestUAL-PaymentTest1,0000239,,,10000,PaymentTestPropertyA,PaymentTestPropertyA,
+TestUAL-PaymentTest2,0000240,,,10000,PaymentTestPropertyA,PaymentTestPropertyA,
+TestUAL-PaymentTest3,0000241,,,10000,PaymentTestPropertyA,PaymentTestPropertyA,
+TestUAL-PaymentTest6,0000244,,,10000,PaymentTestPropertyD,PaymentTestPropertyD,
+TestUAL-PaymentTest7,0000245,,,10000,PaymentTestPropertyD,PaymentTestPropertyD,
+TestUAL-APizza,0000246,,,10000,APizza Shop,APizza,
