@@ -35,6 +35,10 @@ private class RecurringSRECHandlerTest{
                                         ChargentBase__Active__c = True);
         insert chGateway;
 
+        Entity__c srecEntity = new Entity__c(Name = 'BlueWave Finance Group, LLC',
+            Gateway__c = chGateway.Id);
+        insert srecEntity;
+
         /* Only one Chargent Order to avoid error: No more than one executeBatch can be called from within a test method. 
         Please make sure the iterable returned from your start method matches the batch size, resulting in one executeBatch invocation */
         ChargentOrders__ChargentOrder__c alreadyReady = new ChargentOrders__ChargentOrder__c(
@@ -45,6 +49,7 @@ private class RecurringSRECHandlerTest{
                                                         ChargentOrders__Bank_Account_Type__c = 'Checking',
                                                         ChargentOrders__Payment_Method__c = 'Check',
                                                         ChargentOrders__Gateway__c = chGateway.Id,
+                                                        Entity__c = srecEntity.Id,
                                                         ChargentOrders__Credit_Amount__c = 0.03,
                                                         SREC_Status__c = 'Ready');
         ChargentOrders__ChargentOrder__c orderOne = new ChargentOrders__ChargentOrder__c(
@@ -55,6 +60,7 @@ private class RecurringSRECHandlerTest{
                                                         ChargentOrders__Bank_Account_Type__c = 'Checking',
                                                         ChargentOrders__Payment_Method__c = 'Check',
                                                         ChargentOrders__Gateway__c = chGateway.Id,
+                                                        Entity__c = srecEntity.Id,
                                                         ChargentOrders__Credit_Amount__c = 0,
                                                         SREC_Status__c = '');
         ChargentOrders__ChargentOrder__c orderTwo = new ChargentOrders__ChargentOrder__c(
@@ -65,6 +71,7 @@ private class RecurringSRECHandlerTest{
                                                         ChargentOrders__Bank_Account_Type__c = 'Checking',
                                                         ChargentOrders__Payment_Method__c = 'Check',
                                                         ChargentOrders__Gateway__c = chGateway.Id,
+                                                        Entity__c = srecEntity.Id,
                                                         ChargentOrders__Credit_Amount__c = 0,
                                                         SREC_Status__c = '');
         ChargentOrders__ChargentOrder__c orderThree = new ChargentOrders__ChargentOrder__c(
@@ -75,6 +82,7 @@ private class RecurringSRECHandlerTest{
                                                         ChargentOrders__Bank_Account_Type__c = 'Checking',
                                                         ChargentOrders__Payment_Method__c = 'Check',
                                                         ChargentOrders__Gateway__c = chGateway.Id,
+                                                        Entity__c = srecEntity.Id,
                                                         ChargentOrders__Credit_Amount__c = 0,
                                                         SREC_Status__c = '');
         insert new List<ChargentOrders__ChargentOrder__c>{alreadyReady, orderOne, orderTwo, orderThree};

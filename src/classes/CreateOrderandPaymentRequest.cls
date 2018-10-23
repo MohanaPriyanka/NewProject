@@ -16,30 +16,38 @@ public without sharing class CreateOrderandPaymentRequest {
         if (loanRecord == null) {
             return false;
         } else {
-            ChargentBase__Gateway__c srecGateway = [SELECT Id, Name 
-                                                    FROM ChargentBase__Gateway__c 
-                                                    WHERE Name = 'SREC' 
-                                                    LIMIT 1];
+            Entity__c srecEntity = [ SELECT Id, Name, Gateway__r.Id
+                                     FROM Entity__c
+                                     WHERE Name = 'BlueWave Finance Group, LLC'
+                                     LIMIT 1];
 
             ChargentOrders__ChargentOrder__c chargentOrder = new ChargentOrders__ChargentOrder__c(
                                                                 Comments__c = 'Created For Payment Request',
                                                                 ChargentOrders__Subtotal__c = 0.01,
                                                                 ChargentOrders__Billing_Email__c = emailInput,
                                                                 ChargentOrders__Charge_Amount__c = 0.01,
-                                                                ChargentOrders__Gateway__c = srecGateway.Id,
+                                                                ChargentOrders__Gateway__c = srecEntity.Gateway__r.Id,
+                                                                Entity__c = srecEntity.Id,
                                                                 ChargentOrders__Bank_Account_Number__c = chOrder.ChargentOrders__Bank_Account_Number__c,
                                                                 ChargentOrders__Bank_Routing_Number__c = chOrder.ChargentOrders__Bank_Routing_Number__c,
                                                                 ChargentOrders__Bank_Account_Name__c = chOrder.ChargentOrders__Bank_Account_Name__c,
                                                                 ChargentOrders__Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c,             
                                                                 ChargentOrders__Bank_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c,
                                                                 Loan__c = loanRecord.Id,
-                                                                Opportunity__c = oppId); 
-            insert chargentOrder;
+                                                                Opportunity__c = oppId);
+
+            try {
+                insert chargentOrder;
+            } catch (Exception excep) {
+                Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Could not insert Ch Order: ' + String.valueOf(excep));
+                throw new AuraHandledException(excep.getMessage());
+            }
             loanRecord.SREC_Direct_Deposit_Order__c = chargentOrder.Id;
             try {
                 update loanRecord;
-            } catch (Exception excep) {
-                Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not Update Loan: ' + chargentOrder.Id + String.valueOf(excep));
+            } catch (Exception e) {
+                Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not Update Loan: ' + chargentOrder.Id + String.valueOf(e));
+                throw new AuraHandledException(e.getMessage());
             }
             return true;
         }
