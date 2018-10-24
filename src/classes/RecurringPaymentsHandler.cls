@@ -284,9 +284,9 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
         List<ChargentOrders__ChargentOrder__c> orderList = [
         	SELECT Id,
-               ChargentOrders__Payment_Status__c,
-               Property_Account_ID__c,
-               Account_Bill__r.Parent_Account__r.Recurring_Billing__c
+                ChargentOrders__Payment_Status__c, Account_Bill__r.Parent_Account__c, ChargentOrders__Account__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c, ChargentOrders__Account__r.Recurring_Billing__c,
+                Account_Bill__r.Parent_Account__r.RecordTypeId, ChargentOrders__Account__r.RecordTypeId
             FROM ChargentOrders__ChargentOrder__c
             WHERE Id IN : ordersIdList
         ];
@@ -296,30 +296,34 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         	exclude any 'Recurring' ChargentOrders that have been changed to 'Stopped'
         */
         List<ChargentOrders__ChargentOrder__c> ordersWithAutopay = new List<ChargentOrders__ChargentOrder__c>([
-    		SELECT Property_Account_ID__c
+    		SELECT Account_Bill__r.Parent_Account__c, ChargentOrders__Account__c
     		FROM ChargentOrders__ChargentOrder__c
     		WHERE ChargentOrders__Payment_Status__c = 'Recurring'
             AND Id NOT IN: ordersIdList
         ]);
 
-        Set<String> accountsWithAutopay = new Set<String>();
+        Set<Id> accountsWithAutopay = new Set<Id>();
 
         for (ChargentOrders__ChargentOrder__c order : ordersWithAutopay) {
-          accountsWithAutopay.add(order.Property_Account_ID__c);
+            if (order.Account_Bill__r == null && order.ChargentOrders__Account__c != null) {
+                accountsWithAutopay.add(order.ChargentOrders__Account__c);
+            } else {
+                accountsWithAutopay.add(order.Account_Bill__r.Parent_Account__c);
+            }
         }
 
         Map<String, Account> accountsToUpdate = new Map<String, Account>();
 
         for (ChargentOrders__ChargentOrder__c order : orderList) {
-            if (order.Account_Bill__r != null ) {
-                if (order.ChargentOrders__Payment_Status__c == 'Recurring') {
-                    order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = true;
-                    accountsToUpdate.put(order.Property_Account_ID__c, order.Account_Bill__r.Parent_Account__r);
-                } else if (!accountsWithAutopay.contains(order.Property_Account_ID__c)){
-                    order.Account_Bill__r.Parent_Account__r.Recurring_Billing__c = false;
-                    accountsToUpdate.put(order.Property_Account_ID__c, order.Account_Bill__r.Parent_Account__r);
-                }
+            Account account = getChOrderAccount(order);
+            if (account == null) break;
 
+            if (order.ChargentOrders__Payment_Status__c == 'Recurring') {
+                account.Recurring_Billing__c = true;
+                accountsToUpdate.put(account.Id, account);
+            } else if (!accountsWithAutopay.contains(account.Id)){
+                account.Recurring_Billing__c = false;
+                accountsToUpdate.put(account.Id, account);
             }
         }
 
@@ -389,4 +393,15 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
     }
 
+    public static Account getChOrderAccount(ChargentOrders__ChargentOrder__c order) {
+        Account account;
+        if (order.Account_Bill__r != null) {
+            account = order.Account_Bill__r.Parent_Account__r;
+        } else if (order.ChargentOrders__Account__r != null) {
+            account = order.ChargentOrders__Account__r;
+        } else {
+            return null;
+        }
+        return account;
+    }
 }
