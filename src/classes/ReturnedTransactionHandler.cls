@@ -2,7 +2,7 @@
  * Created by mstackhouse on 10/1/2018.
  * Description: Provides a method for reversing transactions that have been returned due to an ACH issue. Implemented as a button
  * on the transaction page and has validations to make sure there isn't another system bill published.
- * Test: TestBillCreationandPayment
+ * Test: CSPaymentTest
  */
 
 

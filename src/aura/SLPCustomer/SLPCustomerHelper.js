@@ -449,6 +449,16 @@
         $A.util.removeClass(component.find("buildingPermitSubmitConfirmation"), 'noDisplay');
     },
 
+    hasValidIntegerValues : function(component, helper) {
+        var moduleNum = component.get("v.changeOrder.Number_of_Modules__change");
+        var inverterNum = component.get("v.changeOrder.Number_of_Inverters__change");
+        if (!Number.isInteger(moduleNum) || !Number.isInteger(inverterNum)) {
+            return false;
+        } else {
+            return true;
+        }
+    },
+
     validateStorageValues : function(component) {
         let storageBoolean = component.get('v.changeOrder.Storage__change');
         if (!storageBoolean) {

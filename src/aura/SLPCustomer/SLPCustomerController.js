@@ -543,16 +543,20 @@
 
     saveAndRequestChangeOrder : function(component, event, helper) {
         helper.validateStorageValues(component);
+        if (!helper.hasValidIntegerValues(component, helper)) {
+            helper.raiseError('SLPCustomerHelper', 'validateIntegerValues', 'Please use a whole number for Number of Modules and Number of Inverters.', '', {supressDBSave: true});
+            return;
+        }
         const saveAction = component.get("c.saveChangeOrder");
         const changeOrder = component.get('v.changeOrder');
         changeOrder['Requested_Loan_Amount__change'] = changeOrder.System_Cost__change - changeOrder.Down_Payment__change;
         helper.startSpinner(component, "customerInformationSpinner");
         saveAction.setParams({
-            "loanId" : component.get('v.customer.Loan__c'),
-            "loanSystemInformation" : JSON.stringify(changeOrder)
+            "loanId": component.get('v.customer.Loan__c'),
+            "loanSystemInformation": JSON.stringify(changeOrder)
         });
 
-        saveAction.setCallback(this, function(resp) {
+        saveAction.setCallback(this, function (resp) {
             if (resp.getState() === "SUCCESS") {
                 component.set('v.customerInformation', resp.getReturnValue());
                 component.set('v.changeOrder', JSON.parse(resp.getReturnValue().Loan__r.Lead__r.Loan_System_Information__c));
