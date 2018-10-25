@@ -99,7 +99,7 @@ public without sharing class AccountBillHandler{
                     firstChargentOrder.ChargentOrders__Account__c = null;
 
                     // Waitlist entities should not have a system bill, so we should update to an entity that has a bill
-                    if (!entities.contains(firstChargentOrder.Entity__c)) {
+                    if (!entities.contains(firstChargentOrder.Entity__c) && systemBillByAB.containsKey(firstBill.Id)) {
                         System_Bill__c systemBill = systemBillByAB.get(firstBill.Id);
                         Id gatewayId = systemBill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__c;
                         firstChargentOrder.ChargentOrders__Gateway__c = gatewayId;

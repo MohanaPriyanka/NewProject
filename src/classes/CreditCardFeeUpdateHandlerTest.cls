@@ -63,6 +63,9 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
 
     ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
         ChargentBase__Merchant_ID__c = '235986',
+        ChargentBase__Available_Payment_Methods__c = 'eCheck',
+        ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+        ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
         ChargentBase__Active__c = TRUE);
     insert chGateway;
         
@@ -259,7 +262,6 @@ update uastwo;
                     Account_Bill__c = accountbill.Id,
                     ChargentOrders__Card_Type__c = 'Visa',
                     ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2018',
                     ChargentOrders__Card_Last_4__c = '1111'
@@ -284,7 +286,6 @@ update uastwo;
                     Account_Bill__c = accountbill.Id,
                     ChargentOrders__Card_Type__c = 'Visa',
                     ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2018',
                     ChargentOrders__Card_Last_4__c = '1111'
@@ -307,7 +308,6 @@ update uastwo;
                     ChargentOrders__Payment_Method__c = 'Credit Card',
                     ChargentOrders__Card_Type__c = 'Visa',
                     ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2018',
                     ChargentOrders__Card_Last_4__c = '1111'

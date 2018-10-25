@@ -165,7 +165,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
                                                          Account_Bill__c = accountBillList[0].Id,
                                                          ChargentOrders__Card_Type__c = 'Visa',
                                                          ChargentOrders__Card_Number__c = '411111111111',
-                                                         ChargentOrders__Card_Security_Code__c = '999',
                                                          ChargentOrders__Card_Expiration_Month__c = '02',
                                                          ChargentOrders__Card_Expiration_Year__c = '2018',
                                                          ChargentOrders__Card_Last_4__c = '1111');

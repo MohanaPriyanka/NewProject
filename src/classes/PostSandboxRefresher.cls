@@ -225,7 +225,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             chargentOrder.ChargentOrders__Payment_Method__c = 'Credit Card';
             chargentOrder.ChargentOrders__Card_Type__c = 'American Express';
             chargentOrder.ChargentOrders__Card_Number__c = '370000000000002';
-            chargentOrder.ChargentOrders__Card_Security_Code__c = '1234';
         }
         update orders;
 
@@ -476,6 +475,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     RecordTypeId = authorizeRT.Id,
                     ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
                     ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
+                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
+                    ChargentBase__Default_Payment_Method_for_PC__c = 'Credit Card',
+                    ChargentBase__Default_Payment_Method_for_PR__c = 'Credit Card',
                     Shared_Solar_System__c = sssList[0].Id,
                     Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Active__c = true);
@@ -487,6 +489,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     RecordTypeId = authorizeRT.Id,
                     ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
                     ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
+                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
+                    ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+                    ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                     Shared_Solar_System__c = sssList[1].Id,
                     Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Active__c = true);
@@ -704,7 +709,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                         Account_Bill__c = accountbill.Id,
                         ChargentOrders__Card_Type__c = 'Visa',
                         ChargentOrders__Card_Number__c = '411111111111',
-                        ChargentOrders__Card_Security_Code__c = '999',
                         ChargentOrders__Card_Expiration_Month__c = '02',
                         ChargentOrders__Card_Expiration_Year__c = '2018',
                         ChargentOrders__Card_Last_4__c = '1111');
@@ -759,6 +763,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             AccountId = propAccount1.Id,
             Shared_Solar_System__c = sss.Id,
             StageName = 'Complete',
+            Customer_Group__c = 'Residential',
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
             RecordTypeId = '012j00000010HPE'

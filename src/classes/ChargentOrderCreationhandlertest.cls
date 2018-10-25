@@ -12,6 +12,9 @@ private class ChargentOrderCreationhandlertest {
 
         ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'BW Community Solar Payments Account Gateway',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = TRUE);
         insert chGateway;
 
@@ -88,7 +91,6 @@ private class ChargentOrderCreationhandlertest {
                                                                 ChargentOrders__Bank_Account_Name__c,
                                                                 ChargentOrders__Gateway__c,
                                                                 ChargentOrders__Card_Number__c,
-                                                                ChargentOrders__Card_Security_Code__c,
                                                                 ChargentOrders__Card_Expiration_Month__c,
                                                                 ChargentOrders__Card_Expiration_Year__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
@@ -101,7 +103,6 @@ private class ChargentOrderCreationhandlertest {
             System.assertEquals(chGateway.Id, orderlist[0].ChargentOrders__Gateway__c);
 
             System.assertEquals('1112223334545', orderlist[1].ChargentOrders__Card_Number__c);
-            System.assertEquals('123', orderlist[1].ChargentOrders__Card_Security_Code__c);
             System.assertEquals('02', orderlist[1].ChargentOrders__Card_Expiration_Month__c);
             System.assertEquals('2020', orderlist[1].ChargentOrders__Card_Expiration_Year__c);
             System.assertEquals(chGateway.Id, orderlist[1].ChargentOrders__Gateway__c);

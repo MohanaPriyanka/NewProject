@@ -313,7 +313,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -334,7 +333,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -399,7 +397,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -420,7 +417,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -466,6 +462,9 @@ private class RecurringPaymentsHandlerTestClass {
         ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway A',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = true
         );
         insert chGatewayA;
@@ -579,7 +578,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
         ChargentOrders__ChargentOrder__c checkCO = [
-            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c,
                 Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
@@ -620,6 +619,9 @@ private class RecurringPaymentsHandlerTestClass {
         ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway A',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = true
         );
         insert chGatewayA;
@@ -730,7 +732,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
         ChargentOrders__ChargentOrder__c checkCO = [
-            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c,
                 Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
@@ -789,7 +791,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1015,7 +1016,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Account__c = accA.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1038,7 +1038,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1100,7 +1099,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1166,7 +1164,6 @@ private class RecurringPaymentsHandlerTestClass {
                 Account_Bill__c = ab.Id,
                 ChargentOrders__Card_Type__c = 'Visa',
                 ChargentOrders__Card_Number__c = '411111111111',
-                ChargentOrders__Card_Security_Code__c = '999',
                 ChargentOrders__Card_Expiration_Month__c = '02',
                 ChargentOrders__Card_Expiration_Year__c = '2018',
                 ChargentOrders__Card_Last_4__c = '1111',
@@ -1211,7 +1208,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1647,7 +1643,7 @@ private class RecurringPaymentsHandlerTestClass {
                 ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c, ChargentOrders__Bank_Routing_Number__c,
                 ChargentOrders__Bank_Account_Type__c, ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
                 ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c,
-                ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c, ChargentOrders__Card_Expiration_Year__c,
+                ChargentOrders__Card_Expiration_Month__c, ChargentOrders__Card_Expiration_Year__c,
                 ChargentOrders__Billing_Address__c, ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
                 ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c,
                 ChargentOrders__Payment_Frequency__c, ChargentOrders__Payment_Stop__c, ChargentOrders__Charge_Date__c,

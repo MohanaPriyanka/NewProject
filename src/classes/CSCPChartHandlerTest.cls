@@ -76,6 +76,9 @@ public class CSCPChartHandlerTest {
 		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
 			//Shared_Solar_System__c = sss1.Id
 			ChargentBase__Merchant_ID__c = '235986',
+			ChargentBase__Available_Payment_Methods__c = 'eCheck',
+			ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+			ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
 			ChargentBase__Active__c = TRUE);
 		insert chGateway;
 
@@ -338,7 +341,6 @@ public class CSCPChartHandlerTest {
 			ChargentOrders__Payment_Frequency__c = 'Monthly',
 			ChargentOrders__Card_Type__c = 'Visa',
 			ChargentOrders__Card_Number__c = '411111111111',
-			ChargentOrders__Card_Security_Code__c = '999',
 			ChargentOrders__Card_Expiration_Month__c = '02',
 			ChargentOrders__Card_Expiration_Year__c = '2018',
 			ChargentOrders__Card_Last_4__c = '1111');  

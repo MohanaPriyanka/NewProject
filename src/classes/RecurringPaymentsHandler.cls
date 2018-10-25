@@ -32,7 +32,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                         ' ChargentOrders__Billing_Email__c,' +
                         ' ChargentOrders__Card_Type__c,' +
                         ' ChargentOrders__Card_Number__c,' +
-                        ' ChargentOrders__Card_Security_Code__c,' +
                         ' ChargentOrders__Card_Expiration_Month__c,' +
                         ' ChargentOrders__Card_Expiration_Year__c,' +
                         ' ChargentOrders__Billing_Address__c,' +

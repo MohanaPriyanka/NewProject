@@ -39,6 +39,9 @@ public class MultipleMonthProductionUpdateTest {
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                 ChargentBase__Merchant_ID__c = '235986',
+                ChargentBase__Available_Payment_Methods__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
 
