@@ -10,9 +10,6 @@
  */
 global class PostSandboxRefresher implements SandboxPostCopy {
     global void runApexClass(SandboxContext context) {
-        System.debug(context.organizationId());
-        System.debug(context.sandboxId());
-        System.debug(context.sandboxName());
 
         disableEmails();
         deleteScheduledJob('Recurring Billing');
@@ -72,8 +69,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 if (field.getType() != Schema.DisplayType.EMAIL) {
                     continue;
                 }
-                // Skip emails that cannot be filtered on
-                if (!field.isFilterable()) {
+                // Skip emails that cannot be filtered on or updated
+                if (!field.isFilterable() || !field.isUpdateable()) {
                     continue;
                 }
                 // Collect all Email fields found
@@ -105,7 +102,22 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             fieldList.addAll(conditionals.keySet());
             // Generate a SOQL query to get records with non null emails
             String soql = getSOQL(objectName, fieldList);
-            System.debug(soql);
+            System.enqueueJob(new PostSandboxRefresher.RecordUpdater(soql, conditionals, emailFields));
+        }
+    }
+
+    global class RecordUpdater implements Queueable {
+        String soql;
+        Map<String, Object> conditionals;
+        List<String> emailFields;
+
+        global RecordUpdater(String soql, Map<String, Object> conditionals, List<String> emailFields) {
+            this.soql = soql;
+            this.conditionals = conditionals;
+            this.emailFields = emailFields;
+        }
+
+        global void execute(QueueableContext context) {
             List<SObject> records = new List<SObject>();
             // Iterate over queried SObject records
             for (SObject record : Database.query(soql)) {
@@ -124,7 +136,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 records.add(record);
             }
             if (records.size() > 0) {
-                System.debug('Updating ' + records.size() + ' ' + objectName + ' records');
                 Database.executeBatch(new GenericBatchDMLOperation(records, 'Update'));
             }
         }
@@ -226,7 +237,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             chargentOrder.ChargentOrders__Card_Type__c = 'American Express';
             chargentOrder.ChargentOrders__Card_Number__c = '370000000000002';
         }
-        update orders;
+        if (orders.size() > 0) {
+            Database.executeBatch(new GenericBatchDMLOperation(orders, 'Update'));
+        }
 
         // We'll switch all gateways to Authorize for now since they have a test gateway.
         RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
@@ -238,7 +251,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             gateway.ChargentBase__Merchant_ID__c = '2EBsLaEw64D';
             gateway.ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG';
         }
-        update gateways;
+        if (gateways.size() > 0) {
+            Database.executeBatch(new GenericBatchDMLOperation(gateways, 'Update'));
+        }
     }
 
     global static void setupBWTestPartner() {
@@ -480,6 +495,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     ChargentBase__Default_Payment_Method_for_PR__c = 'Credit Card',
                     Shared_Solar_System__c = sssList[0].Id,
                     Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
+                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
                     ChargentBase__Active__c = true);
             insert chGateway;
 
@@ -494,8 +510,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                     Shared_Solar_System__c = sssList[1].Id,
                     Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
+                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
                     ChargentBase__Active__c = true);
             insert chGateway2;
+
+            Entity__c entity1 = [SELECT Id FROM Entity__c WHERE Name = 'Project A Oak Road' LIMIT 1];
+            entity1.Gateway__c = chGateway.Id;
+            Entity__c entity2 = [SELECT Id FROM Entity__c WHERE Name = 'Project B Main St' LIMIT 1];
+            entity2.Gateway__c = chGateway2.Id;
+            update new List<Entity__c>{entity1, entity2};
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper());
@@ -685,6 +708,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 SELECT Id, Entity__r.Id
                 FROM ChargentBase__Gateway__c
                 WHERE Name = 'Chargent Gateway'
+                LIMIT 1
             ];
 
             List<Account_Bill__c> accountbilllist = [
@@ -733,8 +757,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     // Helper methods used when loading CS records
-    private static Contact getContact(String firstName1, String lastName1, Account accountParent1) {
-        Contact contact1 = new Contact(FirstName = firstName1, LastName = lastName1, AccountId = accountParent1.Id);
+    private static Contact getContact(String firstName1, String lastName1, Account accountParent1, User owner) {
+        Contact contact1 = new Contact(
+            FirstName = firstName1,
+            LastName = lastName1,
+            AccountId = accountParent1.Id,
+            OwnerId = owner.Id
+        );
         return contact1;
     }
 
@@ -791,6 +820,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             FROM Shared_Solar_System__c
             ORDER BY Name DESC
         ];
+        User api = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
+
         String firstName1 = firstNames[0];
         String firstName2 = firstNames[1];
         String firstName3 = firstNames[2];
@@ -809,21 +840,21 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         String accountName4 = firstName4 + ' ' + lastName4;
         String accountName5 = firstName5 + ' ' + lastName5;
 
-        Account accountParent1 = new Account(Name = accountName1, RecordTypeId = '012j00000010Ha3');
-        Account accountParent2 = new Account(Name = accountName2, RecordTypeId = '012j00000010Ha3');
-        Account accountParent3 = new Account(Name = accountName3, RecordTypeId = '012j00000010Ha3');
-        Account accountParent4 = new Account(Name = accountName4, RecordTypeId = '012j00000010Ha3');
-        Account accountParent5 = new Account(Name = accountName5, RecordTypeId = '012j00000010Ha3');
+        Account accountParent1 = new Account(Name = accountName1, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
+        Account accountParent2 = new Account(Name = accountName2, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
+        Account accountParent3 = new Account(Name = accountName3, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
+        Account accountParent4 = new Account(Name = accountName4, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
+        Account accountParent5 = new Account(Name = accountName5, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
 
         insert new List<Account>{
             accountParent1, accountParent2, accountParent3, accountParent4, accountParent5
         };
 
-        Contact contact1 = getContact(firstName1, lastName1, accountParent1);
-        Contact contact2 = getContact(firstName2, lastName2, accountParent2);
-        Contact contact3 = getContact(firstName3, lastName3, accountParent3);
-        Contact contact4 = getContact(firstName4, lastName4, accountParent4);
-        Contact contact5 = getContact(firstName5, lastName5, accountParent5);
+        Contact contact1 = getContact(firstName1, lastName1, accountParent1, api);
+        Contact contact2 = getContact(firstName2, lastName2, accountParent2, api);
+        Contact contact3 = getContact(firstName3, lastName3, accountParent3, api);
+        Contact contact4 = getContact(firstName4, lastName4, accountParent4, api);
+        Contact contact5 = getContact(firstName5, lastName5, accountParent5, api);
 
         insert new List<Contact>{
             contact1, contact2, contact3, contact4, contact5

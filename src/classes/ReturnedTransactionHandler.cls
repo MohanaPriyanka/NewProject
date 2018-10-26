@@ -79,6 +79,7 @@ global without sharing class ReturnedTransactionHandler {
                 Utility_Account_Subscription__c = utilAccSubs[0].Id,
                 Source_ID__c = transactionId,
                 Approval_Status__c = 'Approved',
+                Adjustment_Type__c = 'Returned Payment',
                 Reason_For_Adjustment__c = 'Payment was Marked as Returned after new Bills have been Published'
             );
             insert adjust;
