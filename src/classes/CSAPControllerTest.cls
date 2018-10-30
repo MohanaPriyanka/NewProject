@@ -483,6 +483,14 @@ public with sharing class CSAPControllerTest {
                         AND IsActive = True
                         LIMIT 1];
 
+        Product2 smartProduct = [
+            SELECT Id
+            FROM Product2
+            WHERE IsActive = TRUE
+            AND Program__c = 'SMART - Community Solar'
+            LIMIT 1
+        ];
+
         Lead residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -496,6 +504,7 @@ public with sharing class CSAPControllerTest {
             WHERE Email = 'testymctesterson@tester.com'];
         residentialLead.Status = 'Qualified';
         residentialLead.OwnerId = apiUser.Id;
+        residentialLead.Product__c = smartProduct.Id;
         update residentialLead;
         // Insert 10 other property accounts
         List<Utility_Account_Log__c> ualList = new List<Utility_Account_Log__c>();
@@ -591,6 +600,7 @@ public with sharing class CSAPControllerTest {
         lead.Parcel_Zip__c = '02021';
         lead.Load_Zone__c = null;
         lead.Status = 'Qualified';
+        lead.Product__c = smartProducts[0].Id;
         insert lead;
         Test.startTest();
 

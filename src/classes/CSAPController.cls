@@ -200,13 +200,6 @@ public without sharing class CSAPController {
                         WHERE Name = 'API'
                         AND IsActive = TRUE
                         LIMIT 1];
-        Product2 smartProduct = [
-            SELECT Id
-            FROM Product2
-            WHERE IsActive = TRUE
-            AND Program__c = 'SMART - Community Solar'
-            LIMIT 1
-        ];
 
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
@@ -250,7 +243,6 @@ public without sharing class CSAPController {
                 Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
             }
         }
-        lead.Product__c = smartProduct.Id;
         lead.Parent_Account__c = account.Id;
         upsert lead;
         // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
