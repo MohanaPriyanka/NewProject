@@ -12,3 +12,4 @@ CaseCreation-OrderPaymentStatus,,,TestGatewayOne,TestEntityA,,,,30,2017-09-20 00
 CaseCreation-OrderNextTrans,,,TestGatewayOne,TestEntityB,,,,30,2017-09-20 00:00:00,,Monthly,Recurring,,Will,CaseCreationNextTrans,,,,,,,,,,,,TestAccountForCaseCreator-NoBill
 CaseCreation-OrderTransResponse,TestAccountForCaseCreator-AccountBillOne,,TestGatewayOne,TestEntityC,,,,30,2017-09-20 00:00:00,,Monthly,Error,,Will,CaseCreationTransResponse,,,,,,,,,,,,TestAccountForCaseCreator-NoBill
 CaseCreation-OrderAccountBill,,,TestGatewayOne,TestEntityD,,,,30,2017-09-20 00:00:00,,Monthly,Recurring,,Will,CaseCreationAccountBill,,,,,,,,,,,,TestAccountForCaseCreator-WithBill
+AutoEmailer-Order1,TestAccountBillForAutoEmailer,,TestGatewayOne,TestEntityBarrett,,,,30,2017-09-20 00:00:00,,Monthly,Recurring,,Will,AutoEmailer-Order1,,,,,,,,,,,,TestAccountForAutoEmailer

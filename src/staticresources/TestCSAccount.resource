@@ -1,4 +1,4 @@
-Id,Name,Type,RecordTypeId,BillingCountry,ShippingCountry,Recurring_Billing__c,Send_Checks_Address__c,Directions_to_Write_Paper_Check__c,AccountNumber
+Id,Name,Type,RecordTypeId,BillingCountry,ShippingCountry,Recurring_Billing__c,Send_Checks_Address__c,Directions_to_Write_Paper_Check__c,AccountNumber,Send_Bills_Contact__c
 TestAccountA,Account A,Landowner,012j00000010Ha3AAE,United States,United States,true,BlueWave 137 Newbury Street Boston MA 02114,No Payment Due,
 TestAccountB,Account B,Landowner,012j00000010Ha3AAE,United States,United States,true,BlueWave 137 Newbury Street Boston MA 02114,No Payment Due,
 TestAccountC,Account C,Landowner,012j00000010Ha3AAE,United States,United States,true,,,
@@ -18,6 +18,7 @@ PaymentTestParentAccountC,PaymentTestParentAccountC,Landowner,012j00000010HeQAAU
 PaymentTestPropertyD,PaymentTestPropertyD,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC
 PaymentTestPropertyE,PaymentTestPropertyE,Landowner,012j00000010HeQAAU,United States,United States,true,,,PaymentTestParentAccountC
 TestAccountForCaseCreator-NoBill,Account CaseCreator-NoBill,Property,012j00000010HeQ,United States,United States,true,,
-TestAccountForCaseCreator-WithBill,Account CaseCreator-WithBill,Property,012j00000010HeQ,United States,United States,true,,
+TestAccountForCaseCreator-WithBill,Account CaseCreator-WithBill,Property,012j00000010HeQ,United States,United States,true,,,,CaseCreationContact
+TestAccountForAutoEmailer,AutoEmailer Account A,Property,012j00000010HeQ,United States,United States,true,,,,AutoEmailerContact
 APizza,APizza Shop,Landowner,012j00000010HeQAAU,United States,United States,true,,,APizza Shop Parent
 APizzaParentAccount,APizza Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,""
