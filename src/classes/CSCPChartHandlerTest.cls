@@ -208,13 +208,11 @@ public class CSCPChartHandlerTest {
 			Date__c = billingDate1,
 			Parent_Account__c = propertyAcc.Id,
 			Bill_Number__c = 1,
-			Date_Sent__c = billingDate1,                                                 
 			Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
 		Account_Bill__c ab2 = new Account_Bill__c(Name = propertyAcc2.Name,
 			Date__c = billingDate1,
 			Parent_Account__c = propertyAcc2.Id,
 			Bill_Number__c = 1,
-			Date_Sent__c = billingDate1,
 			Unique_ID__c = propertyAcc2.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
 		insert new List<Account_Bill__c>{ab, ab2};                                                     
 
@@ -374,8 +372,8 @@ public class CSCPChartHandlerTest {
 		test.stopTest();		
 			
 		List<Account_Bill__c> accountBills = new List<Account_Bill__c>();
-		for (Account_Bill__c accountBill : [SELECT Id, Date_Sent__c FROM Account_Bill__c]) {
-			accountBill.Date_Sent__c = myDate;
+		for (Account_Bill__c accountBill : [SELECT Id, Date__c FROM Account_Bill__c]) {
+			accountBill.Date__c = myDate;
 			accountBills.add(accountBill);
 		}
 		update accountBills;
