@@ -17,6 +17,7 @@ private class PostSandboxRefresherTest {
         Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
@@ -133,6 +134,7 @@ private class PostSandboxRefresherTest {
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Card_Type__c != 'American Express'
             AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         ];
         // All loaded orders should be Amex now
         System.assertEquals(0, chargentOrders.size());

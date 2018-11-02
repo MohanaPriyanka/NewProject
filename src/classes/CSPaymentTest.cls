@@ -3,6 +3,17 @@ public class CSPaymentTest {
     private static Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
 
     @testSetup public static void CSPaymentSetupTestData() {
+        Util.disableTrigger('Disable_System_Bill_Trigger__c');
+        Util.disableTrigger('Disable_AccountBillTrigger__c');
+        Util.disableTrigger('Disable_UASBTrigger__c');
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Util.disableTrigger('Disable_ChargentOrderTrigger__c');
+        Util.disableTrigger('Disable_EnergyUsageUpdateTrigger__c');
+        Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
+        Util.disableTrigger('Disable_AccountTrigger__c');
+        Util.disableTrigger('Disable_ContactTrigger__c');
+        Util.disableTrigger('Disable_UserTrigger__c');
+
         TestFactory.insertBWAddress();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
@@ -10,6 +21,7 @@ public class CSPaymentTest {
         Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
@@ -18,15 +30,10 @@ public class CSPaymentTest {
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
         Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
-        System_Properties__c sysProp = new System_Properties__c(Name = 'System', Disable_System_Bill_Trigger__c = true);
-        insert sysProp;
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
-
-        sysProp.Disable_System_Bill_Trigger__c = false;
-        update sysProp;
 
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
@@ -42,6 +49,7 @@ public class CSPaymentTest {
             }
         }
         update accounts;
+
         for (Account acct : accounts) {
             if (acct.Name == 'ADonut Shop Parent') {
                 insertUser(acct, 'CSPaymentTest@bluewavesolar.com');
@@ -53,6 +61,17 @@ public class CSPaymentTest {
                 insertUser(acct, 'PaymentTestParentAccountC@bluewavesolar.com');
             }
         }
+        Util.printCPULimit('1');
+        Util.enableTrigger('Disable_System_Bill_Trigger__c');
+        Util.enableTrigger('Disable_AccountBillTrigger__c');
+        Util.enableTrigger('Disable_UASBTrigger__c');
+        Util.enableTrigger('Disable_OpportunityTrigger__c');
+        Util.enableTrigger('Disable_ChargentOrderTrigger__c');
+        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
+        Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
+        Util.enableTrigger('Disable_AccountTrigger__c');
+        Util.enableTrigger('Disable_ContactTrigger__c');
+        Util.enableTrigger('Disable_UserTrigger__c');
 
         List<Account_Bill__c> abs = [
             SELECT Id, Name, Bill_Number__c
@@ -69,6 +88,7 @@ public class CSPaymentTest {
             }
         }
         update abs;
+
     }
 
     // We get System.UnexpectedException: Salesforce System Error: 900955498-340097 (1185570226) (1185570226)

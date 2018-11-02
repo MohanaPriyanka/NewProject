@@ -39,6 +39,7 @@ public with sharing class Logger {
                 }
                 log(className, methodName, message, System.now());
             }
+            logs = null;
         }
     }
 

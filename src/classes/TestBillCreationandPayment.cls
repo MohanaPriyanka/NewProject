@@ -263,6 +263,7 @@ public class TestBillCreationandPayment {
             Utility_Account_Subscription__c = uasOne.Id,
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
             Approval_Status__c = 'Approved',
             Reason_For_Adjustment__c = 'Needs adjustment');
         insert adjustOne;
@@ -1536,6 +1537,7 @@ public class TestBillCreationandPayment {
                 Bill_Adjustment__c adjustment1 = new Bill_Adjustment__c(
                     Name = 'Returned Payment 1',
                     Adjustment_Amount__c = 50,
+                    Credits_Allocated__c = 50,
                     Adjustment_Type__c = 'Production',
                     Utility_Account_Subscription__c = uas.Id,
                     Approval_Status__c = 'Approved',
@@ -1546,6 +1548,7 @@ public class TestBillCreationandPayment {
                 Bill_Adjustment__c adjustment2 = new Bill_Adjustment__c(
                     Name = 'Returned Payment 2',
                     Adjustment_Amount__c = 5,
+                    Credits_Allocated__c = 5,
                     Adjustment_Type__c = 'Production',
                     Utility_Account_Subscription__c = uas.Id,
                     Approval_Status__c = 'Approved',

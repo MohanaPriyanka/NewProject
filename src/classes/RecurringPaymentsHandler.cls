@@ -11,9 +11,40 @@
 + * Tested By: RecurringPaymentsHandlerTestClass
  + *************************************************************************************/
 
-public without sharing class RecurringPaymentsHandler implements Database.Batchable<SObject>, Schedulable {
-    public void execute(SchedulableContext sc){
-       Database.executeBatch(this, 20);
+public without sharing class RecurringPaymentsHandler implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
+    @TestVisible
+    private Integer ordersCloned = 0;
+    @TestVisible
+    private Integer ordersMovedOrSet = 0;
+    @TestVisible
+    private Integer ordersStopped = 0;
+    private Autopay_Schedule__c autopaySchedule;
+
+    public RecurringPaymentsHandler() {
+    }
+
+    public RecurringPaymentsHandler(Autopay_Schedule__c autopaySchedule) {
+        this.autopaySchedule = autopaySchedule;
+    }
+
+    public void execute(SchedulableContext sc) {
+        checkAutopaySchedule(sc, Date.today());
+    }
+
+    @TestVisible
+    private void checkAutopaySchedule(SchedulableContext sc, Date today) {
+        List<Autopay_Schedule__c> autopaySchedules = [
+            SELECT Id
+            FROM Autopay_Schedule__c
+            WHERE Run_Date__c = :today
+        ];
+        if (!autopaySchedules.isEmpty()) {
+            autopaySchedule = autopaySchedules[0];
+            autopaySchedule.Time_Started__c = Datetime.now();
+            update autopaySchedule;
+            RecurringPaymentsHandler rph = new RecurringPaymentsHandler(autopaySchedule);
+            Database.executeBatch(rph, 20);
+        }
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
@@ -68,7 +99,6 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         Map<String, Decimal> aggregateSbMap = new Map<String,Decimal>();
         Map<String, Account_Bill__c> abMap = new Map<String,Account_Bill__c>();
         Map<Id, ChargentOrders__ChargentOrder__c> orderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
-        List<Account_Bill__c> uncheckedFirstAccountBills = new List<Account_Bill__c>();
 
         for (ChargentOrders__ChargentOrder__c recOrders : chOrders) {
             accountIDList.add(recOrders.Property_Account_ID__c);
@@ -113,8 +143,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             }
             orderMap.put(recurOrder.Account_Bill__c, recurOrder);
         }
-        update uncheckedFirstAccountBills;
-        update chOrders;
+        Util.updateAndLog(chOrders, 'RecurringPaymentsHandler', 'updateRecurringOrders');
 
         /* If there are any bills that are left over that don't have a Ch Order, clone one:*/
         if (aggregateSbMap.size() > 0) {
@@ -124,12 +153,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
 
     private String getChargentOrderKey(ChargentOrders__ChargentOrder__c recurOrder) {
         Integer newBillNumber = Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + 1;
-        if (recurOrder.Account_Bill__r.Bill_Number__c == 1 &&
-            recurOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c == 1) {
-            return Integer.valueOf(recurOrder.Account_Bill__r.Bill_Number__c) + '_' + recurOrder.Property_Account_ID__c;
-        } else {
-            return newBillNumber + '_' + recurOrder.Property_Account_ID__c;
-        }
+        return newBillNumber + '_' + recurOrder.Property_Account_ID__c;
     }
     
     private void moveAndSetOrder(Map<String, Account_Bill__c> abMap, String chargentOrderKey,
@@ -140,6 +164,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             if (aggregateSbMap.containsKey(abMap.get(chargentOrderKey).Id + '_' + entityId)) {
                 newChargeAmount = aggregateSbMap.remove(abMap.get(chargentOrderKey).Id + '_' + entityId);
                 recurOrder.ChargentOrders__Charge_Amount__c = newChargeAmount.setScale(2, RoundingMode.HALF_UP);
+                ordersMovedOrSet++;
                 if (recurOrder.ChargentOrders__Charge_Amount__c == 0) {
                     pushPaymentStartDate(recurOrder);
                 }
@@ -154,6 +179,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 // We just need to set the new charge amount
                 newChargeAmount = aggregateSbMap.remove(recurOrder.Account_Bill__c + '_' + entityId);
                 recurOrder.ChargentOrders__Charge_Amount__c = newChargeAmount.setScale(2, RoundingMode.HALF_UP);
+                ordersMovedOrSet++;
                 if (recurOrder.ChargentOrders__Charge_Amount__c == 0) {
                     pushPaymentStartDate(recurOrder);
                 }
@@ -188,7 +214,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
         }
     }
 
-    private static Date getNextAutopayDate(Date today, Integer chargeDate) {
+    public static Date getNextAutopayDate(Date today, Integer chargeDate) {
         if (today.day() <= chargeDate) {
             return Date.newInstance(today.year(), today.month(), chargeDate);
         } else {
@@ -210,11 +236,12 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
     }
 
 
-    public static ChargentOrders__ChargentOrder__c setChargentOrderToStopped(ChargentOrders__ChargentOrder__c orderToStop,
+    public ChargentOrders__ChargentOrder__c setChargentOrderToStopped(ChargentOrders__ChargentOrder__c orderToStop,
         String stopMessage) {
         orderToStop.ChargentOrders__Charge_Amount__c = 0;
         orderToStop.ChargentOrders__Payment_Status__c = 'Stopped';
         orderToStop.Reason_for_Recurring_Stop__c = stopMessage;
+        ordersStopped++;
         return orderToStop;
     }
 
@@ -256,7 +283,8 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
                 ordersToInsert.add(orderA);  
             }
         } 
-        insert ordersToInsert;
+        Util.insertAndLog(ordersToInsert, 'RecurringPaymentsHander', 'cloneOrderForNewGateway');
+        ordersCloned += ordersToInsert.size();
     }
 
     public void finish(Database.BatchableContext bc) {
@@ -274,6 +302,21 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             MessagingService.createAndSendEmail(emailBody,
                 'customercare@bluewavesolar.com', 'CS Recurring Processing Complete', postJobEmailAddresses);
         }
+
+        autopaySchedule.Time_Finished__c = Datetime.now();
+        List<Error_Log__c> errors = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE CreatedDate > :autopaySchedule.Time_Started__c
+            AND CreatedDate < :autopaySchedule.Time_Finished__c
+        ];
+        autopaySchedule.Summary__c = ordersMovedOrSet + ' orders moved or set\n';
+        autopaySchedule.Summary__c += ordersCloned + ' orders cloned\n';
+        autopaySchedule.Summary__c += ordersStopped + ' orders stopped\n';
+        autopaySchedule.Summary__c += errors.size() + ' errors handled\n';
+        autopaySchedule.Summary__c += job.NumberOfErrors + ' errors unhandled\n';
+        update autopaySchedule;
+        System.enqueueJob(new AutopayChecker(autopaySchedule.Id));
     }
 
     public static void updateAccountAutopay(List<ChargentOrders__ChargentOrder__c> newOrders) {
@@ -323,7 +366,7 @@ public without sharing class RecurringPaymentsHandler implements Database.Batcha
             }
         }
 
-        update accountsToUpdate.values();
+        Util.updateAndLog(accountsToUpdate.values(), 'RecurringPaymentsHandler', 'updateAccountAutopay');
     }
 
     // Called by the ChargentOrderTrigger after a new Chargent Order is inserted
