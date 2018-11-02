@@ -38,6 +38,26 @@ public with sharing class UtilTest {
     }
 
     @IsTest
+    public static void testDatabaseOperation() {
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        // Shouldn't be any error logs yet
+        System.assertEquals(0, errorLogs.size());
+        Account foo = new Account(Name = 'foo');
+        Account bar = new Account();
+        // Datbase insert shouldn't be successful
+        System.assertEquals(false, Util.insertAndLog(new List<Account>{foo, bar}, 'UtilTest', 'testDatabaseOperation'));
+        // Shouldn't error, and should have a log
+        errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size());
+
+        foo.Name = 'baz';
+        System.assertEquals(true, Util.updateAndLog(new List<Account>{foo}, 'UtilTest', 'testDatabaseOperation'));
+        // Should be successful
+        errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size());
+    }
+
+    @IsTest
     public static void testNullToZero() {
         Decimal nullToZero;
         System.assertEquals(null, nullToZero);

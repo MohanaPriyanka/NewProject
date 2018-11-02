@@ -1,4 +1,7 @@
 trigger AccountTrigger on Account (before insert, before update) {
+    if (Util.isDisabled('Disable_AccountTrigger__c')) {
+        return;
+    }
     AccountTriggerHandler accountTriggerHandler = new AccountTriggerHandler(Trigger.isExecuting, Trigger.size);
     
     if(Trigger.isInsert && Trigger.isBefore){

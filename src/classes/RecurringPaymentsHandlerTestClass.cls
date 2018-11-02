@@ -11,7 +11,7 @@ private class RecurringPaymentsHandlerTestClass {
         Datetime dt = Datetime.now().addMinutes(0);
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
         String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        System.schedule('RecurringPaymentsHandler', CRON_EXP, batchToRun);
+        System.schedule('RecurringPaymentsHandlerTest', CRON_EXP, batchToRun);
 
         Test.stopTest();
     }
@@ -60,10 +60,10 @@ private class RecurringPaymentsHandlerTestClass {
         // Account B has 1 opportunity, which has Feb and March Bill
         System.assertEquals(6, systemBillListtwo.size());
 
-        simulateBatchRecurringHandler();
+        RecurringPaymentsHandler rph = simulateBatchRecurringHandler();
         Test.stopTest();
 
-        List<ChargentOrders__ChargentOrder__c> orderlist = [
+        List<ChargentOrders__ChargentOrder__c> nonCaseCreationOrders = [
               SELECT Id,
                      Entity_Name__c,
                      ChargentOrders__Payment_Status__c,
@@ -75,15 +75,22 @@ private class RecurringPaymentsHandlerTestClass {
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
                      ChargentOrders__Billing_Last_Name__c
               FROM ChargentOrders__ChargentOrder__c
-              WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+              WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+              AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
 
-
-        // Six Original Chargent Orders:
-        // 3 that should be marked as stopped (all charge date of 15) because 0 SBs
+        // Seven non-CaseCreation Chargent Orders:
+        // 4 that should be stopped (three with charge date of 15 and 1 without charge date) because 0 SBs
         // 3 that should have been moved to the newer bill
-        System.assertEquals(7,orderlist.size());
 
-        for (ChargentOrders__ChargentOrder__c cho : orderlist) {
+        // 5 CaseCreation orders (excluding 2 in error):
+        // 5 that should be stopped
+        System.assertEquals(7, nonCaseCreationOrders.size());
+        System.assertEquals(9, rph.ordersStopped);
+        System.assertEquals(3, rph.ordersMovedOrSet);
+        System.assertEquals(0, rph.ordersCloned);
+
+        for (ChargentOrders__ChargentOrder__c cho : nonCaseCreationOrders) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
                 System.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
                 System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
@@ -137,7 +144,9 @@ private class RecurringPaymentsHandlerTestClass {
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
             SELECT Id, ChargentOrders__Billing_Last_Name__c
             FROM ChargentOrders__ChargentOrder__c
-            WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+            WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
 
         System.assertEquals(6,originalOrderCount.size());
 
@@ -164,7 +173,7 @@ private class RecurringPaymentsHandlerTestClass {
         // Account B has 1 opportunity, which has Feb and March Bill
         System.assertEquals(6, systemBillListtwo.size());
 
-        simulateBatchRecurringHandler();
+        RecurringPaymentsHandler rph = simulateBatchRecurringHandler();
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> orderlist = [
@@ -177,7 +186,9 @@ private class RecurringPaymentsHandlerTestClass {
                      ChargentOrders__Charge_Amount__c,
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c
               FROM ChargentOrders__ChargentOrder__c
-              WHERE NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%'];
+              WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+              AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
 
 
         // Six Original Chargent Orders:
@@ -185,6 +196,7 @@ private class RecurringPaymentsHandlerTestClass {
         // 2 that should have been moved to the newer bill
         // 1 that should have been cloned
         System.assertEquals(7,orderlist.size());
+        System.assertEquals(1, rph.ordersCloned);
 
         for (ChargentOrders__ChargentOrder__c cho : orderlist) {
             if (cho.ChargentOrders__Charge_Date__c == '15') {
@@ -1633,7 +1645,218 @@ private class RecurringPaymentsHandlerTestClass {
         }
     }
 
-    private static void simulateBatchRecurringHandler() {
+    @IsTest static void testNoAutopayScheduleSet() {
+        List<Energy_Usage_Update__c> productionUpdateList = [
+            SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
+                YearDate__c, Credits_on_Bill_Period__c,
+                MonthDate__c, Total_System_NMCs__c, Production__c,
+                Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+                Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+                Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+                Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+                Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+                Billing_Period_End_Date__c, Month_Number__c,
+                Net_Metering_Rate_Applied_2_of_4__c,
+                Net_Metering_Rate_Applied_3_of_4__c,
+                Net_Metering_Rate_Applied_4_of_4__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - March 2016'
+            OR Name = 'sssA - March 2016'
+            LIMIT 2
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        ee.runBills();
+
+        // Save the chargent orders before recurring payment handler runs
+        List<ChargentOrders__ChargentOrder__c> orderListBeforeRPH = [
+            SELECT Id,
+                Entity_Name__c,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                ChargentOrders__Billing_Last_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
+        Map<Id, ChargentOrders__ChargentOrder__c> beforeRPHOrderMap =
+            new Map<Id, ChargentOrders__ChargentOrder__c>(orderListBeforeRPH);
+
+        Test.startTest();
+        Date today = Date.newInstance(2018, 12, 31);
+        List<Autopay_Schedule__c> autopaySchedules = [
+            SELECT Id
+            FROM Autopay_Schedule__c
+            WHERE Run_Date__c = :today
+        ];
+        // There shouldn't be a schedule for 12/31, so the RPH shouldn't run
+        System.assertEquals(0, autopaySchedules.size());
+        RecurringPaymentsHandler rph = new RecurringPaymentsHandler();
+        rph.checkAutopaySchedule(null, today);
+        Test.stopTest();
+
+        List<ChargentOrders__ChargentOrder__c> orderListAfterRPH = [
+            SELECT Id,
+                Entity_Name__c,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                ChargentOrders__Billing_Last_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
+        // None of the orders should have changed because RPH shouldn't have run
+        for (ChargentOrders__ChargentOrder__c order : orderListAfterRPH) {
+            System.assertEquals(order, beforeRPHOrderMap.get(order.Id));
+        }
+    }
+
+    @IsTest static void testAutopayScheduleForToday() {
+        List<Energy_Usage_Update__c> productionUpdateList = [
+            SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
+                YearDate__c, Credits_on_Bill_Period__c,
+                MonthDate__c, Total_System_NMCs__c, Production__c,
+                Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+                Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+                Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+                Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+                Size_off_NMCs__c, Date__c, Billing_Period_Start_Date__c,
+                Billing_Period_End_Date__c, Month_Number__c,
+                Net_Metering_Rate_Applied_2_of_4__c,
+                Net_Metering_Rate_Applied_3_of_4__c,
+                Net_Metering_Rate_Applied_4_of_4__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - March 2016'
+            OR Name = 'sssA - March 2016'
+            LIMIT 2
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        ee.runBills();
+
+        // Save the chargent orders before recurring payment handler runs
+        List<ChargentOrders__ChargentOrder__c> orderListBeforeRPH = [
+            SELECT Id,
+                Entity_Name__c,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                ChargentOrders__Billing_Last_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
+
+        Test.startTest();
+        Date today = Date.newInstance(2018, 12, 31);
+        Autopay_Schedule__c aps = new Autopay_Schedule__c(Run_Date__c = today);
+        insert aps;
+        List<Autopay_Schedule__c> autopaySchedules = [
+            SELECT Id
+            FROM Autopay_Schedule__c
+            WHERE Run_Date__c = :today
+        ];
+        System.assertEquals(1, autopaySchedules.size());
+        RecurringPaymentsHandler rph = new RecurringPaymentsHandler();
+        rph.checkAutopaySchedule(null, today);
+        Test.stopTest();
+
+        List<ChargentOrders__ChargentOrder__c> orderListAfterRPH = [
+            SELECT Id,
+                Entity_Name__c,
+                ChargentOrders__Payment_Status__c,
+                ChargentOrders__Charge_Date__c,
+                Reason_for_Recurring_Stop__c,
+                Account_Bill__r.Bill_Number__c,
+                Account_Bill__r.Name,
+                ChargentOrders__Charge_Amount__c,
+                Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                ChargentOrders__Billing_Last_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
+        ];
+
+        // Seven non-CaseCreation Chargent Orders:
+        // 4 that should be stopped (three with charge date of 15 and 1 without charge date) because 0 SBs
+        // 3 that should have been moved to the newer bill
+        System.assertEquals(7, orderListAfterRPH.size());
+
+        for (ChargentOrders__ChargentOrder__c cho : orderListAfterRPH) {
+            if (cho.ChargentOrders__Charge_Date__c == '15') {
+                System.assertEquals(0, cho.ChargentOrders__Charge_Amount__c);
+                System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
+                System.assertNotEquals(null, cho.Reason_for_Recurring_Stop__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '30') {
+                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '27') {
+                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+            } else if (cho.ChargentOrders__Charge_Date__c == '25') {
+                System.assertEquals('Account B March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
+                System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
+            }
+        }
+    }
+
+    @IsTest public static void testOrdersOnNewBill() {
+        // If a chargent order is on Bill Number 1, and it's the only bill it shouldn't be stopped
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Bill_Number__c, Due_Date_SB__c,
+            (SELECT Id FROM Chargent_Orders__r WHERE ChargentOrders__Payment_Status__c = 'Recurring'),
+            (SELECT Id, Date__c FROM System_Bills__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+        ];
+        // There should be just one Account Bill for Account A with a two Chargent Orders (for different entities)
+        System.assertEquals(1, accountBills.size());
+        System.assertEquals(1, accountBills[0].Bill_Number__c);
+        System.assertEquals(2, accountBills[0].Chargent_Orders__r.size());
+        for (System_Bill__c systemBill : accountBills[0].System_Bills__r) {
+            systemBill.Date__c = Date.today();
+        }
+        update accountBills[0].System_Bills__r;
+        accountBills = [
+            SELECT Id, Bill_Number__c, Due_Date_SB__c,
+            (SELECT Id FROM Chargent_Orders__r WHERE ChargentOrders__Payment_Status__c = 'Recurring'),
+            (SELECT Id, Date__c FROM System_Bills__r)
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+        ];
+        System.assert(accountBills[0].Due_Date_SB__c > Date.today(), 'Account Bill shouldn\'t be due yet');
+
+        Test.startTest();
+        simulateBatchRecurringHandler();
+        Test.stopTest();
+        accountBills = [
+            SELECT Id, Bill_Number__c,
+            (SELECT Id FROM Chargent_Orders__r WHERE ChargentOrders__Payment_Status__c = 'Recurring')
+            FROM Account_Bill__c
+            WHERE Parent_Account__r.Name = 'Account A'
+        ];
+        // There should be just one Account Bill for Account A with a two Chargent Orders (for different entities)
+        System.assertEquals(1, accountBills.size());
+        System.assertEquals(1, accountBills[0].Bill_Number__c);
+        System.assertEquals(2, accountBills[0].Chargent_Orders__r.size());
+    }
+
+    private static RecurringPaymentsHandler simulateBatchRecurringHandler() {
         RecurringPaymentsHandler batchToRun = new RecurringPaymentsHandler();
         List<ChargentOrders__ChargentOrder__c> orders = [
             SELECT Id, Name, ChargentOrders__Payment_Status__c,
@@ -1655,7 +1878,6 @@ private class RecurringPaymentsHandlerTestClass {
         List<ChargentOrders__ChargentOrder__c> orders1 = new List<ChargentOrders__ChargentOrder__c>();
         List<ChargentOrders__ChargentOrder__c> orders2 = new List<ChargentOrders__ChargentOrder__c>();
         for (ChargentOrders__ChargentOrder__c order : orders) {
-            String entity = order.Entity__c;
             if (orders1.size() > orders2.size()) {
                 orders2.add(order);
             } else {
@@ -1664,5 +1886,6 @@ private class RecurringPaymentsHandlerTestClass {
         }
         batchToRun.updateRecurringOrders(orders1);
         batchToRun.updateRecurringOrders(orders2);
+        return batchToRun;
     }
 }

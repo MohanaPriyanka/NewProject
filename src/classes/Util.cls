@@ -32,6 +32,35 @@ public without sharing class Util {
         }
     }
 
+    private enum DatabaseOperation {DBINSERT, DBUPDATE}
+    public static Boolean updateAndLog(List<SObject> sobjs, String classname, String method) {
+        return databaseOperationAndLog(DatabaseOperation.DBUPDATE, sobjs, classname, method);
+    }
+    public static Boolean insertAndLog(List<SObject> sobjs, String classname, String method) {
+        return databaseOperationAndLog(DatabaseOperation.DBINSERT, sobjs, classname, method);
+    }
+    private static Boolean databaseOperationAndLog(DatabaseOperation operation, List<SObject> sobjs, String classname, String method) {
+        Database.SaveResult[] saveResults;
+        if (operation == DatabaseOperation.DBINSERT) {
+            saveResults = Database.insert(sobjs, false);
+        } else if (operation == DatabaseOperation.DBUPDATE) {
+            saveResults = Database.update(sobjs, false);
+        }
+        Boolean allSuccessful = true;
+        for (Database.SaveResult result : saveResults) {
+            if (!result.isSuccess()) {
+                allSuccessful = false;
+                for (Database.Error err : result.getErrors()) {
+                    Logger.logLater(classname, method,
+                        'Database error ' + err.getStatusCode() + ': ' + err.getMessage() + ' on ' + err.getFields());
+
+                }
+            }
+        }
+        Logger.flushLogs();
+        return allSuccessful;
+    }
+
     public static Decimal nullToZero(Decimal value) {
         return (value==null?0:value);
     }
