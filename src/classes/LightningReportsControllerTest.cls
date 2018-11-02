@@ -56,17 +56,26 @@ public class LightningReportsControllerTest {
         response = LightningReportsController.getAsyncReportResponseWithoutRows(asyncReportId);
         System.assertEquals('summary', response.reportType);
 
+        // In case there are lead records created outside of the lead insert above
+        List<AggregateResult> leadAggregateResults = [
+            SELECT LastName, SUM(Annual_Income_Currency__c) annualIncome
+            FROM Lead
+            WHERE LastName = 'TestLightningReports'
+            GROUP BY LastName
+        ];
+
         LightningReportsController.SummaryReportGroup srgWithoutRows = response.sumResp.groupMap.values()[0];
         System.assert(srgWithoutRows.fieldDataList.isEmpty());
         System.assertEquals(srgWithoutRows.fieldAggregateList.get(0).label, 'Annual Income');
-        System.assertEquals(srgWithoutRows.fieldAggregateList.get(0).value, '$100,000.00');
+        // $200,000.00 should contain 200,000.0
+        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()));
 
         LightningReportsController.SummaryReportGroup srgWithRows = new LightningReportsController.SummaryReportGroup();
         srgWithRows = LightningReportsController.getAsyncSummaryReportGroup((String) asyncReportId, '0');
         System.assert(!srgWithRows.fieldDataList.isEmpty());
 
         System.assertEquals(srgWithRows.fieldAggregateList.get(0).label, 'Annual Income');
-        System.assertEquals(srgWithRows.fieldAggregateList.get(0).value, '$100,000.00');
+        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()));
     }
 
     @IsTest (SeeAllData=true)
