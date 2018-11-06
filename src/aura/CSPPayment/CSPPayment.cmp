@@ -29,6 +29,7 @@
                             'Autopay_Only__c': false}"/>
 
   <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
+  <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
   <aura:attribute name="Autopay" type="Boolean" default="true"/>
   <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
   <aura:attribute name="Spinner" type="Boolean" default="false"/>
