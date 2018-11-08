@@ -127,10 +127,10 @@
                 <p>
                   <br></br>
                   <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'Eversource'}">
-                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www.eversource.com/security/account/login?ReturnUrl=/nstar/CustomerCare/Residential/GreenButton" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/Eversource-Green-Button-Instructions-e1478199020569.jpg" label="here" target="_blank"/>. Please ensure the file is in csv format.
+                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www.eversource.com/security/account/login?ReturnUrl=/nstar/CustomerCare/Residential/GreenButton" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewavesolar.com/wp-content/uploads/2016/11/Eversource-Green-Button-Instructions-e1478199020569.jpg" label="here" target="_blank"/>. Please ensure the file is in csv format.
                   </aura:if>
                   <aura:if isTrue="{!v.lead.Electricity_Provider__c == 'National Grid'}">
-                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www1.nationalgridus.com/UsageCostGraphElectric" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewaverenewables.com/wp-content/uploads/2016/11/NGRID-Green-Button-Instructions.jpg" label="here" target="_blank"/>. Please ensure the file is in xls format.
+                    Download your annual usage via the Green Button at the bottom of <lightning:formattedUrl value="https://www1.nationalgridus.com/UsageCostGraphElectric" label="this page" target="_blank"/>. If you are having trouble, please follow the steps outlined <lightning:formattedUrl value="http://bluewavesolar.com/wp-content/uploads/2016/11/NGRID-Green-Button-Instructions.jpg" label="here" target="_blank"/>. Please ensure the file is in xls format.
                   </aura:if>
                 </p>
               </div>
