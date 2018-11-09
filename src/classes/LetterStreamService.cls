@@ -248,7 +248,7 @@ public without sharing class LetterStreamService {
             recipientCity = accountBill.Parent_Account__r.BillingCity;
             recipientState = accountBill.Parent_Account__r.BillingState;
             recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
-            pages = accountBill.Number_of_Pages_in_Template__c.toPlainString();
+            pages = String.valueOf(accountBill.Bill_PDF_Page_Count__c);
         }
     }
 

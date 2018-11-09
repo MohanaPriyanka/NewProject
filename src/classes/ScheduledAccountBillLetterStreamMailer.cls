@@ -18,7 +18,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
 
         List<Account_Bill__c> accountBills = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
-                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Number_of_Pages_in_Template__c,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c
                 Calendar_Month__c, Year__c, Bill_Attach_Document__c
             FROM Account_Bill__c
             WHERE Published__c = TRUE

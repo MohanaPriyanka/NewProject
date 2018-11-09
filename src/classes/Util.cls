@@ -134,16 +134,16 @@ public without sharing class Util {
 
     public class BWException extends Exception {}
 
-    public static String removeComma(String value) {
-        return value.replace(',', '');
+    public static String removeSpecialCharacters(String value) {
+        return value.replaceAll('(?i)[^a-z0-9 ._]', '');
     }
 
     public static String removeNewLine(String value) {
-        return value.replace('\n', '');
+        return value.replaceAll('\n', '');
     }
 
     public static String prepForCSV(String value) {
-        value = removeComma(value);
+        value = removeSpecialCharacters(value);
         return removeNewLine(value);
     }
 

@@ -136,14 +136,9 @@ public with sharing class LetterStreamServiceTest {
         );
         insert accountParent;
 
-        APXTConga4__Conga_Template__c billTemplate = new APXTConga4__Conga_Template__c(
-            Number_of_Pages_in_Template__c = 4
-        );
-        insert billTemplate;
-
         Account_Bill__c accountBill = new Account_Bill__c(
             Parent_Account__c = accountParent.Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
 
         insert accountBill;
@@ -157,7 +152,7 @@ public with sharing class LetterStreamServiceTest {
 
         accountBill = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
-                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Number_of_Pages_in_Template__c,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
                 Calendar_Month__c, Year__c, Bill_Attach_Document__c
             FROM Account_Bill__c
             WHERE Parent_Account__c = : accountParent.Id
@@ -348,11 +343,6 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
-        APXTConga4__Conga_Template__c billTemplate = new APXTConga4__Conga_Template__c(
-            Number_of_Pages_in_Template__c = 4
-        );
-        insert billTemplate;
-
         Account_Bill__c accountBill1 = new Account_Bill__c(
             Parent_Account__c = accountParent1.Id,
             Bill_Number__c = 2,
@@ -360,7 +350,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[0].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
 
         Account_Bill__c accountBill2 = new Account_Bill__c(
@@ -370,7 +360,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[1].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
 
         Account_Bill__c accountBill3 = new Account_Bill__c(
@@ -380,7 +370,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[2].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
         List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
         insert accountBills;
@@ -496,11 +486,6 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
-        APXTConga4__Conga_Template__c billTemplate = new APXTConga4__Conga_Template__c(
-            Number_of_Pages_in_Template__c = 4
-        );
-        insert billTemplate;
-
         Account_Bill__c accountBill1 = new Account_Bill__c(
             Parent_Account__c = accountParent1.Id,
             Bill_Number__c = 2,
@@ -508,7 +493,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[0].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
 
         Account_Bill__c accountBill2 = new Account_Bill__c(
@@ -518,7 +503,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[1].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
 
         Account_Bill__c accountBill3 = new Account_Bill__c(
@@ -528,7 +513,7 @@ public with sharing class LetterStreamServiceTest {
             Ready_For_Paper_Bill_Queue__c = true,
             Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
             Bill_Attach_Document__c = contentDocuments[2].Id,
-            Bill_Template__c = billTemplate.Id
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
         List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
         insert accountBills;
