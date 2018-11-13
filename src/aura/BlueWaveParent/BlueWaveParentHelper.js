@@ -476,8 +476,13 @@
         var pageFields = component.find('field');
         if (!pageFields) return;
         var isAllValid = [].concat(pageFields).reduce(function (validSoFar, inputCmp) {
-            inputCmp.showHelpMessageIfInvalid();
-            return validSoFar && inputCmp.get('v.validity').valid;
+            // showHelpMessageIfInvalid exists for lightning:input, but not ui:input
+            if (typeof inputCmp.showHelpMessageIfInvalid === 'function') {
+                inputCmp.showHelpMessageIfInvalid();
+                return validSoFar && inputCmp.get('v.validity').valid;
+            } else {
+                return true;
+            }
             }, true
         );
         return isAllValid;
