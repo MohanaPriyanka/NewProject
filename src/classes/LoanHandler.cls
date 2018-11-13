@@ -1301,7 +1301,7 @@ public without sharing class LoanHandler{
         update provideAddIncomeTask;
         LoanHandler lh = new LoanHandler();
         lh.updatePartnerParentTaskStatus(taskMap);
-        lh.updateNextTaskToPending(new List<String> {leadId}, taskMap.values());
+        updateNextTaskToPending(new List<String> {leadId}, taskMap.values());
     }
 
     // Sets status of Interconnection Partner task to Pending if the ResiEquip's interconnected status moves from true to false.
