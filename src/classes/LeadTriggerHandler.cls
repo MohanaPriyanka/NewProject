@@ -88,17 +88,22 @@ public without sharing class LeadTriggerHandler {
                 firstRun) {
                 convertedCSLeads.add(lead);
             }
+            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted) {
+                convertCasestoAccount(lead);
+            }
+            if (!lead.Docs_Requested__c && oldLeadMap.get(lead.Id).Docs_Requested__c) {
+                LoanHandler.completeAdditionalIncomeDocTask(lead.Id);
+            }
+            if (lead.Status == 'Qualified' &&
+                oldLeadMap.get(lead.Id).Status != 'Qualified' &&
+                !Test.isRunningTest()) {
+                CAPController.sendContractIfAbsent(lead, lead.Email);
+            }
         }
         if (!convertedCSLeads.isEmpty()) {
             deleteDuplicateContact(convertedCSLeads);
             customerSubscriptionProcess(convertedCSLeads);
             firstRun = false;
-        } 
-
-        for (Lead lead : updatedLeads) {
-            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted) {
-                convertCasestoAccount(lead);
-            }
         }
 
         List<Opportunity> oppsToUpdate = new List<Opportunity>();

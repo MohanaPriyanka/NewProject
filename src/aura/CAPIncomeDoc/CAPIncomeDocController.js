@@ -1,6 +1,9 @@
 ({
     handleNavEvent : function(component, event, helper) {
         const lead = event.getParam('lead');
+        if (lead) {
+            component.set('v.docsRequested', lead.Docs_Requested__c);
+        }
         if (lead && lead.Product_Program__c === "MSLP") {
             helper.handleNavEvent(component, event, helper, 'MSLPTechnicalConfirm');
             if (event.getParam("eventType") === "INITIATED" &&
@@ -435,15 +438,25 @@
 
     finishStage : function(component, event, helper) {
         const lead = component.get('v.lead');
-        let leadToSave = {
-            sobjectType: 'Lead',
-            Id: lead.Id,
-            Unfinished_Lead__c: false
-        };
+        let leadToSave;
+        if (lead.Status === 'Awaiting Info Requested from Customer') {
+            leadToSave = {
+                sobjectType: 'Lead',
+                Status: 'Under BlueWave Review',
+                Id: lead.Id,
+                Unfinished_Lead__c: false
+            };
+        } else {
+            leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Unfinished_Lead__c: false
+            };
+        }
         helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave)
         .then($A.getCallback(function resolve() {
             return helper.insertPartnerTaskFunction(component, event, helper);
-            }))
+        }))
         .then($A.getCallback(function resolve() {
             helper.finishStage(component, event, helper);
         }));

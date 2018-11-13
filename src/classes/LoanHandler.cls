@@ -748,8 +748,8 @@ public without sharing class LoanHandler{
     public static Map<String, Partner_Task__c> getPartnerTasks(List<String> leadList) {
         Map<String, Partner_Task__c> taskMap = new Map<String, Partner_Task__c>();
         for (Partner_Task__c partnerTask : [SELECT Id, Name, Parent_Task__c, Unique_ID__c, Partner__c, Parent__c,  Task_Sequence__c,
-                                                Status__c, Start_Date__c, Task_Type__c, Lead__c, Lead__r.Id, Comments__c,
-                                                (SELECT Id, Name, Status__c, Parent_Task__c, Parent_Task__r.Name
+                                                Status__c, Start_Date__c, Task_Type__c, Lead__c, Lead__r.Id, Comments__c, Completion_Date__c,
+                                                (SELECT Id, Name, Status__c, Parent_Task__c, Parent_Task__r.Name, Completion_Date__c
                                                  FROM subTasks__r)
                                             FROM Partner_Task__c
                                             WHERE (Lead__c IN : leadList
@@ -1286,6 +1286,22 @@ public without sharing class LoanHandler{
         update taskUpdateList;
         nextTasksToUpdate.addAll(updateNextTaskToPending(equipmentLeadIdList, taskUpdateList));
         update nextTasksToUpdate;
+    }
+
+    public static void completeAdditionalIncomeDocTask(Id leadId){
+        Map<String, Partner_Task__c> taskMap = getPartnerTasks(new List<String>{
+            leadId
+        });
+        Partner_Task__c provideAddIncomeTask = taskMap.get(leadId + ' Additional Income Documentation');
+        provideAddIncomeTask.Status__c = 'Complete';
+        provideAddIncomeTask.Completion_Date__c = Date.today();
+        taskMap.remove(leadId + ' Additional Income Documentation');
+        taskMap.put(leadId + ' Additional Income Documentation', provideAddIncomeTask);
+
+        update provideAddIncomeTask;
+        LoanHandler lh = new LoanHandler();
+        lh.updatePartnerParentTaskStatus(taskMap);
+        lh.updateNextTaskToPending(new List<String> {leadId}, taskMap.values());
     }
 
     // Sets status of Interconnection Partner task to Pending if the ResiEquip's interconnected status moves from true to false.

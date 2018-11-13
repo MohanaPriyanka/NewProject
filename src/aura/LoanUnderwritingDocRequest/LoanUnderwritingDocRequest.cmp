@@ -1,0 +1,101 @@
+<!--
+ - Created by abarnes on 10/25/2018.
+ -->
+<aura:component extends="c.BlueWaveParent" controller="LoanUnderwriting">
+  <aura:attribute name="lead" type="Lead"/>
+  <aura:attribute name="showInfoRequestModal" type="Boolean"/>
+  <aura:attribute name="informationType" type="String"/>
+  <aura:attribute name="informationTypeOther" type="String"/>
+  <aura:attribute name="docsToRequest" type="List"/>
+
+  <!--REQUEST CUSTOMER INFORMATION MODAL-->
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Request Customer Information</h2>
+        </header>
+        <aura:if isTrue="{!or(v.lead.CAP_Stage__c == 'NAV_Income_Doc', v.lead.CAP_Stage__c == 'NAV_Complete')}">
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div aura:id="fileTypePicklist" class="slds-form-element slds-p-horizontal--small animated">
+              <label class="slds-form-element__label proximaNovaBlue"><b>What information does the customer need to provide?</b></label>
+              <ui:inputSelect aura:id="inputSelect"
+                              class="slds-input"
+                              value="{!v.informationType}">
+                <ui:inputSelectOption text="Select File Type" label="Select File Type"/>
+                <ui:inputSelectOption text="Pay Stub" label="Pay Stub"/>
+                <ui:inputSelectOption text="Tax Return (Previous Year)" label="Tax Return (Previous Year)"/>
+                <ui:inputSelectOption text="Tax Return (Two Years Previous)" label="Tax Return (Two Years Previous)"/>
+                <ui:inputSelectOption text="SSN Award Letter" label="SSN Award Letter"/>
+                <ui:inputSelectOption text="Pension Award Letter" label="Pension Award Letter"/>
+                <ui:inputSelectOption text="Bank Statement (SSN Income)" label="Bank Statement (SSN Income)"/>
+                <ui:inputSelectOption text="Veteran Income Documentation" label="Veteran Income Documentation"/>
+                <ui:inputSelectOption text="Business Tax Return (Previous Year)" label="Business Tax Return (Previous Year)"/>
+                <ui:inputSelectOption text="Business Tax Return (Two Years Previous)" label="Business Tax Return (Two Years Previous)"/>
+                <ui:inputSelectOption text="Lease Agreement" label="Lease Agreement"/>
+                <ui:inputSelectOption text="Other" label="Other"/>
+              </ui:inputSelect><br/>
+              <aura:if isTrue="{!v.informationType == 'Other'}">
+                <div class="slds-p-top_small">
+                  <p class="slds-form-element__label">Please enter the name of the required document below</p>
+                  <ui:inputText aura:id="InformationOther" class="slds-input" value="{!v.informationTypeOther}"/>
+                </div>
+              </aura:if>
+              <div><br/>
+                <lightning:button variant="neutral"
+                                  label="Add Document"
+                                  title="Add Document"
+                                  onclick="{!c.addDocumentToRequestList }"/>
+                <lightning:button variant="neutral"
+                                  label="Clear Document List"
+                                  title="Clear Document List"
+                                  onclick="{!c.clearDocRequestList }"/>
+              </div><br/>
+              <div>
+                <aura:if isTrue="{!not(empty(v.docsToRequest))}">
+                  Documents to request from customer:
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size--1-of-1">
+                      <table class="slds-table">
+                        <tbody>
+                        <aura:iteration items="{!v.docsToRequest}" var="attachment">
+                          <tr>
+                            <td style="border: hidden; font-weight: bold">
+                              <div class="slds-text-body_small">- {!attachment}</div>
+                            </td>
+                          </tr>
+                        </aura:iteration>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </aura:if>
+              </div>
+            </div>
+          </div>
+          <aura:set attribute="else">
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+              <div class="slds-p-horizontal--medium">
+                Need more information from the customer?<br/><br/>
+                It looks like the customer hasn't completed their application.<br/><br/>
+
+                Select "Send Email" below to send a request to the customer finish their application.
+                By doing so they will be required to declare income sources and provide supporting
+                documentation.
+              </div>
+            </div>
+          </aura:set>
+        </aura:if>
+        <footer class="slds-modal__footer">
+          <lightning:button variant="neutral"
+                            label="Cancel"
+                            title="Cancel"
+                            onclick="{!c.closeInfoRequestModal }"/>
+          <lightning:button variant="brand"
+                            label="Send Email"
+                            title="Send Email"
+                            onclick="{!c.sendInfoRequestEmail }"/>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</aura:component>

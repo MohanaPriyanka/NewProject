@@ -146,6 +146,14 @@
                               onclick="{!c.selectProduct}"/>
           </div>
         </aura:if>
+        <aura:if isTrue="{!v.lead.Status == 'Awaiting Info Requested from Customer'}">
+          <div class="slds-form-element__row slds-p-top--small">
+            <lightning:button aura:id="continueApplicationNoCheck"
+                              class="box"
+                              label="Application Approval Pending, Click Here To Complete Application"
+                              onclick="{!c.selectProduct}"/>
+          </div>
+        </aura:if>
         <div class="slds-align--absolute-center slds-p-top--small">
           <ui:spinner aura:id="creditSpinner" isVisible="false"/>
         </div>
