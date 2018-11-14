@@ -42,30 +42,6 @@ public without sharing class CSAPController {
         return lead;
     }
     @AuraEnabled
-    public static Contact getContact(Id leadId, String email) {
-        List<Contact> contactList = [
-            SELECT Id, FirstName, LastName, Email, Phone, AccountId, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, MobilePhone, Product_Line__c
-            FROM Contact
-            WHERE Account.Lead__c = :leadId
-            AND Account.Lead__r.Email = :email
-            LIMIT 1
-        ];
-        return (contactList.size() > 0) ? contactList[0] : new Contact();
-    }
-    @AuraEnabled
-    public static Account getAccount(Id leadId, String email) {
-        List<Account> accountList = [
-            SELECT Id, Name, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, BillingStreet, BillingCity, BillingState, BillingPostalCode, Social_Security_Number__c
-            FROM Account
-            WHERE Lead__c = :leadId
-            AND Lead__r.Email = :email];
-
-        Account account = (accountList.size() > 0) ? accountList[0] : new Account();
-        account.ShippingState = (account.ShippingState != null) ? BlueWaveParent.convertStateToAbbreviation(account.ShippingState) : null;
-        account.BillingState = (account.BillingState != null) ? BlueWaveParent.convertStateToAbbreviation(account.BillingState) : null;
-        return account;
-    }
-    @AuraEnabled
     public static List<Attachment> getAttachments(Id parentId) {
         return [SELECT Id, Name, Description from Attachment Where ParentId = :parentId];
     }
@@ -195,43 +171,11 @@ public without sharing class CSAPController {
     }
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
-        User apiUser = [SELECT Id, Name, Username 
-                        FROM User 
-                        WHERE Name = 'API'
-                        AND IsActive = TRUE
-                        LIMIT 1];
-        Product2 smartProduct = [
-            SELECT Id
-            FROM Product2
-            WHERE IsActive = TRUE
-            AND Program__c = 'SMART - Community Solar'
-            LIMIT 1
-        ];
-
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
-        Account account = getAccount(lead.Id, lead.Email);
-        account.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-        account.Name = lead.FirstName + ' ' + lead.LastName;
-        account.ShippingStreet = lead.Street;
-        account.ShippingCity = lead.City;
-        account.ShippingState = BlueWaveParent.convertAbbreviationToState(lead.State);
-        account.ShippingPostalCode = lead.PostalCode;
-        account.BillingStreet = lead.LASERCA__Home_Address__c;
-        account.BillingCity = lead.LASERCA__Home_City__c;
-        account.BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c);
-        account.BillingPostalCode = lead.LASERCA__Home_Zip__c;
-        account.Social_Security_Number__c = lead.LASERCA__SSN__c;
-        account.OwnerId = apiUser.Id;
-        upsert account;
-
-        lead = processLead(lead);
-
-        lead.Partner_Lookup__c = customerPartner.Id;
-        if(customerPartner.Email__c != null){
-            lead.Partner_Email__c = customerPartner.Email__c;
+        if (lead.Parent_Account__c == null) {
+            lead = setupParentAccount(lead, customerPartner);
         }
-        lead.OwnerId = apiUser.Id;
 
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
@@ -242,6 +186,8 @@ public without sharing class CSAPController {
             lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
 
+        lead = processLead(lead);
+
         if (String.isNotBlank(referralCode) && referralCode != 'undefined'){
             List<Contact> referralContacts = [SELECT Id FROM Contact WHERE Id = :referralCode];
             if(referralContacts.size() == 1){
@@ -250,35 +196,15 @@ public without sharing class CSAPController {
                 Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
             }
         }
-        lead.Product__c = smartProduct.Id;
-        lead.Parent_Account__c = account.Id;
-        upsert lead;
-        // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
+
+
+        insert lead;
         Lead insertedLead = [SELECT Load_Zone__c, Utility_1__c FROM Lead WHERE Id = :lead.Id];
         lead.Load_Zone__c = insertedLead.Load_Zone__c;
         lead.Utility_1__c = insertedLead.Utility_1__c;
 
-        //Update the Account with the lookup back to the lead
-        account.Lead__c = lead.Id;
-        update account;
-
-        Contact contact = getContact(lead.Id, lead.Email);
-        contact.FirstName = lead.FirstName;
-        contact.LastName = lead.LastName;
-        contact.MobilePhone = lead.MobilePhone;
-        contact.Email = lead.Email;
-        contact.Phone = lead.Phone;
-        contact.AccountId = account.Id;
-        contact.LASERCA__Home_Address__c = lead.LASERCA__Home_Address__c;
-        contact.LASERCA__Home_City__c = lead.LASERCA__Home_City__c;
-        contact.LASERCA__Home_State__c = lead.LASERCA__Home_State__c;
-        contact.LASERCA__Home_Zip__c = lead.LASERCA__Home_Zip__c;
-        contact.MobilePhone = lead.Phone;
-        contact.Product_Line__c = 'Community Solar';
-        upsert contact;
         return lead;
     }
-
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
         Lead lead = [SELECT Id, Load_Zone__c, Utility__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
@@ -381,5 +307,56 @@ public without sharing class CSAPController {
         primaryLead.LZU__c = lead.Load_Zone__c + ' ' + lead.Utility_1__c;
         primaryLead.Status = 'Ready for Credit Check';
         update primaryLead;
+    }
+
+    private static Lead setupParentAccount(Lead lead, Partner__c customerPartner) {
+        User apiUser = [SELECT Id, Name, Username
+        FROM User
+        WHERE Name = 'API'
+        AND IsActive = TRUE
+        LIMIT 1];
+
+
+        Account account = new Account(
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId(),
+            Name = lead.FirstName + ' ' + lead.LastName,
+            ShippingStreet = lead.Street,
+            ShippingCity = lead.City,
+            ShippingState = BlueWaveParent.convertAbbreviationToState(lead.State),
+            ShippingPostalCode = lead.PostalCode,
+            BillingStreet = lead.LASERCA__Home_Address__c,
+            BillingCity = lead.LASERCA__Home_City__c,
+            BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c),
+            BillingPostalCode = lead.LASERCA__Home_Zip__c,
+            Social_Security_Number__c = lead.LASERCA__SSN__c,
+            OwnerId = apiUser.Id
+        );
+        insert account;
+        lead.Parent_Account__c = account.Id;
+        lead.OwnerId = apiUser.Id;
+
+        lead.Partner_Lookup__c = customerPartner.Id;
+        if(customerPartner.Email__c != null){
+            lead.Partner_Email__c = customerPartner.Email__c;
+        }
+
+
+
+        // only need to insert contact if they don't have a parent account already
+        Contact contact = new Contact();
+        contact.FirstName = lead.FirstName;
+        contact.LastName = lead.LastName;
+        contact.MobilePhone = lead.MobilePhone;
+        contact.Email = lead.Email;
+        contact.Phone = lead.Phone;
+        contact.AccountId = account.Id;
+        contact.LASERCA__Home_Address__c = lead.LASERCA__Home_Address__c;
+        contact.LASERCA__Home_City__c = lead.LASERCA__Home_City__c;
+        contact.LASERCA__Home_State__c = lead.LASERCA__Home_State__c;
+        contact.LASERCA__Home_Zip__c = lead.LASERCA__Home_Zip__c;
+        contact.Product_Line__c = 'Community Solar';
+        insert contact;
+
+        return lead;
     }
 }

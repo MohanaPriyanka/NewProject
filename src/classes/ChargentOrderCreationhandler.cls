@@ -73,7 +73,6 @@ public without sharing class ChargentOrderCreationhandler {
                                                           ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c,
                                                           ChargentOrders__Card_Type__c = opp.CC_Card_Type__c,
                                                           ChargentOrders__Card_Number__c = opp.CC_Account_Number__c,
-                                                          ChargentOrders__Card_Security_Code__c = opp.CC_CVV__c,
                                                           ChargentOrders__Billing_Last_Name__c = opp.CC_CardHolder_Name__c,
                                                           ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
                                                           ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
@@ -87,7 +86,6 @@ public without sharing class ChargentOrderCreationhandler {
                 opp.CC_Card_Type__c = 'removed';
                 opp.CC_Account_Number__c = 'removed';
                 opp.CC_CardHolder_Name__c = 'removed';
-                opp.CC_CVV__c = 'rmvd';
                 opp.CC_Expiration_Month__c = 'rd';
                 opp.CC_Expiration_Year__c = 'rmvd';
             }

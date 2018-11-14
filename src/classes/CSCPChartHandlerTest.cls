@@ -76,6 +76,9 @@ public class CSCPChartHandlerTest {
 		ChargentBase__Gateway__c chGateway  = new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
 			//Shared_Solar_System__c = sss1.Id
 			ChargentBase__Merchant_ID__c = '235986',
+			ChargentBase__Available_Payment_Methods__c = 'eCheck',
+			ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+			ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
 			ChargentBase__Active__c = TRUE);
 		insert chGateway;
 
@@ -205,13 +208,11 @@ public class CSCPChartHandlerTest {
 			Date__c = billingDate1,
 			Parent_Account__c = propertyAcc.Id,
 			Bill_Number__c = 1,
-			Date_Sent__c = billingDate1,                                                 
 			Unique_ID__c = propertyAcc.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
 		Account_Bill__c ab2 = new Account_Bill__c(Name = propertyAcc2.Name,
 			Date__c = billingDate1,
 			Parent_Account__c = propertyAcc2.Id,
 			Bill_Number__c = 1,
-			Date_Sent__c = billingDate1,
 			Unique_ID__c = propertyAcc2.Id + ' ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));        
 		insert new List<Account_Bill__c>{ab, ab2};                                                     
 
@@ -338,7 +339,6 @@ public class CSCPChartHandlerTest {
 			ChargentOrders__Payment_Frequency__c = 'Monthly',
 			ChargentOrders__Card_Type__c = 'Visa',
 			ChargentOrders__Card_Number__c = '411111111111',
-			ChargentOrders__Card_Security_Code__c = '999',
 			ChargentOrders__Card_Expiration_Month__c = '02',
 			ChargentOrders__Card_Expiration_Year__c = '2018',
 			ChargentOrders__Card_Last_4__c = '1111');  
@@ -372,8 +372,8 @@ public class CSCPChartHandlerTest {
 		test.stopTest();		
 			
 		List<Account_Bill__c> accountBills = new List<Account_Bill__c>();
-		for (Account_Bill__c accountBill : [SELECT Id, Date_Sent__c FROM Account_Bill__c]) {
-			accountBill.Date_Sent__c = myDate;
+		for (Account_Bill__c accountBill : [SELECT Id, Date__c FROM Account_Bill__c]) {
+			accountBill.Date__c = myDate;
 			accountBills.add(accountBill);
 		}
 		update accountBills;

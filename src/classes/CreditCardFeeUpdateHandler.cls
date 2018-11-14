@@ -42,7 +42,7 @@ public without sharing class CreditCardFeeUpdateHandler {
             List<ChargentOrders__ChargentOrder__c> allRecurringOrders = [
                 SELECT Id, ChargentOrders__Payment_Status__c, Property_Account_ID__c,
                     ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c ,
-                    ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c,
+                    ChargentOrders__Card_Expiration_Month__c,
                     Order_Type__c, ChargentOrders__Gateway__c, ChargentOrders__Billing_Address__c,
                     ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c,
                     ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Subtotal__c,
@@ -88,7 +88,6 @@ public without sharing class CreditCardFeeUpdateHandler {
                                 ChargentOrders__Payment_Method__c = orderToCheck.ChargentOrders__Payment_Method__c,
                                 ChargentOrders__Card_Type__c = orderToCheck.ChargentOrders__Card_Type__c,
                                 ChargentOrders__Card_Number__c = orderToCheck.ChargentOrders__Card_Number__c,
-                                ChargentOrders__Card_Security_Code__c = orderToCheck.ChargentOrders__Card_Security_Code__c,
                                 ChargentOrders__Card_Expiration_Month__c = orderToCheck.ChargentOrders__Card_Expiration_Month__c,
                                 ChargentOrders__Card_Expiration_Year__c = orderToCheck.ChargentOrders__Card_Expiration_Year__c,
                                 ChargentOrders__Card_Last_4__c = orderToCheck.ChargentOrders__Card_Last_4__c,

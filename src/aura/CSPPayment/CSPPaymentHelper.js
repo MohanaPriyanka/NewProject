@@ -25,16 +25,6 @@
                     'Your ' + inputFields.ChargentOrders__Card_Type__c +
                     ' number is too long. Please use numbers only, no spaces');
             }
-            if (inputFields.ChargentOrders__Card_Security_Code__c.length !==
-                this.CVV_REQUIREMENTS[inputFields.ChargentOrders__Card_Type__c]) {
-                this.addErrorAnimation(component, 'CVV');
-                this.unhideFieldsShowError(
-                    component,
-                    'Your ' + inputFields.ChargentOrders__Card_Type__c + ' security code should be ' +
-                    this.CVV_REQUIREMENTS[inputFields.ChargentOrders__Card_Type__c] + ' digits');
-            } else {
-                this.removeErrorAnimation(component, 'CVV');
-            }
         }
 
         // Because it is a picklist, v.Autopay & v.ACH are stored as text:
@@ -53,7 +43,6 @@
         return errorsExist; 
     },
 
-    CVV_REQUIREMENTS : {'Visa':3, 'Mastercard': 3, 'Discover': 3, 'AMEX': 4, 'American Express': 4},
 
     addErrorAnimation : function(component, fieldName) { 
         $A.util.addClass(component.find(fieldName), 'slds-has-error'); 

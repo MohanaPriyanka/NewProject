@@ -53,27 +53,50 @@
     </script>
     <apex:form id="theForm">
         <apex:outputLink value="{!URLFOR($Action.Utility_Account_Log__c.View, ualId)}">Return to Utility Account Log</apex:outputLink><br /><br />
-        <apex:pageBlock title="Recalculate Utility Account Log's Annual Cost of Electricity" id="main">
+        <apex:pageBlock title="Recalculate Utility Account Log's Energy Subscription" id="main">
             <apex:pageMessages />
-            <apex:pageBlockSection columns="2" title="Information">
-                <apex:pageBlockSectionItem >
-                    <apex:outputLabel value="Annual Cost Of Electricity" />
-                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!ualCostOfElectricity}" /></apex:outputText>
-                </apex:pageBlockSectionItem>
+            <apex:outputPanel rendered="{!sizeBy=='Electricity Cost ($)'}">
+                <apex:pageBlockSection columns="2" title="Information">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Annual Cost Of Electricity" />
+                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!ualCostOfElectricity}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
 
-                <apex:pageBlockSectionItem >
-                    <apex:outputLabel value="Subscribed Cost Of Electricity" />
-                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!subscribedCostOfElectricity}" /></apex:outputText>
-                </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Subscribed Cost Of Electricity" />
+                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!subscribedCostOfElectricity}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
 
-                <apex:pageBlockSectionItem >
-                    <apex:outputLabel value="Adjustment Amount" />
-                    <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!adjustmentAmount}" /></apex:outputText>
-                </apex:pageBlockSectionItem>
-                <apex:actionStatus id="updateStatus"
-                                   startText="updating"
-                                   stopText="" />
-            </apex:pageBlockSection>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Adjustment Amount" />
+                        <apex:outputText value="{0, number,$###,###,##0.00}"><apex:param value="{!adjustmentAmount}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:actionStatus id="updateStatus"
+                                       startText="updating"
+                                       stopText="" />
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!sizeBy=='kWh'}">
+                <apex:pageBlockSection columns="2" title="Information">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Annual kWh Of Electricity" />
+                        <apex:outputText value="{0, number,###,###,##0.00 kWh}"><apex:param value="{!ualkWhOfElectricity}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Subscribed kWh Of Electricity" />
+                        <apex:outputText value="{0, number,###,###,##0.00 kWh}"><apex:param value="{!subscribedkWhOfElectricity}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Adjustment Amount" />
+                        <apex:outputText value="{0, number,###,###,##0.00 kWh}"><apex:param value="{!adjustmentAmount}" /></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:actionStatus id="updateStatus"
+                                       startText="updating"
+                                       stopText="" />
+                </apex:pageBlockSection>
+            </apex:outputPanel>
             <apex:actionfunction name="updateCustomDeductionOrder" action="{!updateCustomDeductionOrder}"/>
             <apex:actionfunction name="rerenderSummary" rerender="AdjustmentSummary"/>
             <apex:pageBlockSection title="Adjustment Summary" rendered="{!BLANKVALUE(uasActionList.size, 0) > 0}" columns="1" 
@@ -93,7 +116,7 @@
                                 <td>Capacity Available to be Reserved</td>
                                 <td>COD Date</td>
                                 <td>Subscribed Amount</td>
-                                <td>Amount to be deducted</td>
+                                <td>Change Amount</td>
                                 <td>Action</td>
                             </tr>
                         </thead>
@@ -110,17 +133,34 @@
                                     <td><apex:inputCheckbox value="{!uasAction.sss.ScheduleZ_Filed__c}" disabled="true"/></td>
                                     <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
                                     <td>{!uasAction.sss.Estimated_COD_Date_QC__c}</td>
-                                    <td>
-                                        <apex:outputText value="{0, number,$###,###,##0.00}">
-                                            <apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/>
-                                        </apex:outputText>
-                                    </td>
-                                    <td>
-                                        <apex:outputText styleClass="deductionAmount"
-                                                         value="{0, number,$###,###,##0.00}">
-                                            <apex:param value="{!uasAction.deductionAmount}"/>
-                                        </apex:outputText>
-                                    </td>
+                                    <apex:outputPanel rendered="{!sizeBy=='Electricity Cost ($)'}">
+                                        <td>
+
+                                            <apex:outputText value="{0, number,$###,###,##0.00}">
+                                                <apex:param value="{!uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c}"/>
+                                            </apex:outputText>
+                                        </td>
+                                        <td>
+                                            <apex:outputText styleClass="deductionAmount"
+                                                             value="{0, number,$###,###,##0.00}">
+                                                <apex:param value="{!uasAction.adjustmentAmount}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!sizeBy=='kWh'}">
+                                        <td>
+                                            <apex:outputText value="{0, number,###,###,##0.00 kWh}">
+                                                <apex:param value="{!uasAction.uas.Annual_kwh_subscription_future__c}"/>
+                                            </apex:outputText>
+                                        </td>
+                                        <td>
+                                            <apex:outputText styleClass="deductionAmount"
+                                                             value="{0, number,###,###,##0.00 kWh}">
+                                                <apex:param value="{!uasAction.adjustmentAmount}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </apex:outputPanel>
+
                                     <td>
                                         <apex:outputPanel rendered="{!uasAction.sss.Open__c}" layout="none">
                                             <apex:outputText styleClass="action"
@@ -159,7 +199,7 @@
 
             <apex:pageBlockButtons >
                 <apex:commandButton rendered="{!uasActionList.size > 0}" 
-                                    value="Process Deduction" 
+                                    value="Update Subscription"
                                     action="{!processDeduction}" 
                                     id="confirmDeductionButton"/>
             </apex:pageBlockButtons>
@@ -195,7 +235,7 @@
                }
             });
 
-            message += '\nAre you sure you want to process the deductions? This process cannot be reversed.';
+            message += '\nAre you sure you want to process the updates? This process cannot be reversed.';
             return confirm(message);
         });
     </script>

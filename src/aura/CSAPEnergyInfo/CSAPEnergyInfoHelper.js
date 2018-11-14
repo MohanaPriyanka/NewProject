@@ -75,11 +75,11 @@
                 if (oldLead.Credit_Check_Acknowledged__c === false){
                     runCredit = 'CSAP Duplicate Attempt';
                 }
-                console.log(oldLead.Parent_Account__c);
                 var newLead = {
                     sobjectType: "Lead",
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
                     Parent_Account__c: oldLead.Parent_Account__c,
+                    // where we are setting parent account for the new leads
                     Partner_Lookup__c : oldLead.Partner_Lookup__c,
                     bs_Sales_ID__c : oldLead.bs_Sales_ID__c,
                     Email : oldLead.Email,

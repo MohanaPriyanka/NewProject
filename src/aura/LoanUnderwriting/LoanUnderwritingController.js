@@ -127,5 +127,10 @@
             }
         });
         $A.enqueueAction(action);
-    }
+    },
+
+    openInfoRequestModal : function(component, event, helper) {
+        component.set("v.showInfoRequestModal", true);
+    },
+
 })

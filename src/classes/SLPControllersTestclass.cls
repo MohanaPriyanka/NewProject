@@ -101,33 +101,36 @@ public without sharing class SLPControllersTestclass {
             Status = 'Ready for Credit Check',
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
-            );
+        );
         List<Lead> leadList;
 
         System.assertEquals(SLPAddCustomer.getCreditCheckTimeout(), 60000);
         System.runAs(partnerUser) {
             SLPAddCustomer.addNewLeadRecord(newLead);
+        }
 
-            leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
-                        FROM Lead
-                        WHERE LastName = 'Swain'];
-            System.assertEquals(leadList.size(), 1);
-            System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+        leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
+        FROM Lead
+        WHERE LastName = 'Swain'];
 
+        System.assertEquals(leadList.size(), 1);
+        System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
+
+        System.runAs(partnerUser) {
             SLPAddCustomer.pullCreditStatus(leadList[0]);
-
+        }
             // Laser Credit Access trigger should unset the pull credit report checkbox
             leadList = [SELECT Id, LASERCA__Pull_Credit_Report__c
-                        FROM Lead
-                        WHERE LastName = 'Swain'];
+            FROM Lead
+            WHERE LastName = 'Swain'];
             System.assertEquals(leadList[0].LASERCA__Pull_Credit_Report__c, false);
-        }
+
         Test.stopTest();
 
         // LCA should set pull credit once the future method fires
         List<LASERCA__Personal_Credit_Report__c> pcrs = [SELECT Id
-                                                         FROM LASERCA__Personal_Credit_Report__c
-                                                         WHERE LASERCA__Lead__c = :leadList[0].Id];
+        FROM LASERCA__Personal_Credit_Report__c
+        WHERE LASERCA__Lead__c = :leadList[0].Id];
         System.assertEquals(pcrs.size(), 1);
 
         System.assertEquals(SLPAddCustomer.checkCreditStatus(leadList[0]), 'Pending Credit Review');
@@ -160,8 +163,8 @@ public without sharing class SLPControllersTestclass {
         insert new List<Partner_Alert__c>{partnerAlert, execAlert};
 
         List<Partner_Alert_Filter__c> partnerAlertFilterList = [SELECT Id, Name, Partner__r.Name
-                                                                FROM Partner_Alert_Filter__c
-                                                                WHERE Partner_Alert__r.Name = 'Test Alert'];
+        FROM Partner_Alert_Filter__c
+        WHERE Partner_Alert__r.Name = 'Test Alert'];
 
         List<User> managerList = new List<User>();
         List<User> executiveList = new List<User>();
@@ -174,9 +177,9 @@ public without sharing class SLPControllersTestclass {
         ];
         for (User user : activeUsers) {
             if (user.UserRole.Name.Contains('Manager')) {
-                managerList.add(user);                
+                managerList.add(user);
             } else if (user.UserRole.Name.Contains('Executive')) {
-                executiveList.add(user);                
+                executiveList.add(user);
             }
         }
         System.assertEquals(managerList.size()+executiveList.size(), partnerAlertFilterList.size());
@@ -198,13 +201,13 @@ public without sharing class SLPControllersTestclass {
         List<Product2> productReturnList = new List<Product2>();
         Map<String, Lead> leadMap = new Map<String, Lead>();
 
-        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         Test.startTest();
+        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
         for (Lead lead : [SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c,
-                          (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
-                          FROM Lead
-                          WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
+        (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Contact__c FROM LASERCA__Personal_Credit_Reports__r)
+        FROM Lead
+        WHERE FirstName = 'leadMALoanTerm10Rate699' OR FirstName = 'coApplicantLead' LIMIT 2]) {
             leadMap.put(lead.FirstName, lead);
         }
         System.assertEquals('710', leadMap.get('leadMALoanTerm10Rate699').LASER_Credit_Score__c);
@@ -214,8 +217,8 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(2, productReturnList.size());
             Product2 prod = SLPCreditStatus.getSelectedProduct(productReturnList[0].Id);
             System.assertEquals(prod.Name, 'BlueWave Solar Loan - MA - 10 Year Term - 6.99%');
-        
-            Lead leadRecord = leadMap.get('leadMALoanTerm10Rate699');            
+
+            Lead leadRecord = leadMap.get('leadMALoanTerm10Rate699');
 
             SLPCreditStatus.sendApplication(leadRecord.Id, 12);
             System.assertEquals(1, MessagingService.emailsSent.size());
@@ -241,7 +244,7 @@ public without sharing class SLPControllersTestclass {
         }
         creditReportList[0].Adjusted_Income__c = 0;
         update creditReportList;
-
+        
         System.runAs(partnerUser) {
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);
@@ -277,7 +280,7 @@ public without sharing class SLPControllersTestclass {
             Product_Program__c = 'BlueWave Solar Loan',
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
-            );
+        );
         insert newLead;
 
         System.runAs(partnerUser) {
@@ -313,7 +316,7 @@ public without sharing class SLPControllersTestclass {
             Product_Program__c = 'BlueWave Solar Loan',
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
-            );
+        );
         insert newLead;
 
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
@@ -339,8 +342,8 @@ public without sharing class SLPControllersTestclass {
         LoanHandler.createResidentialEquipment(leadList);
         LoanHandler.createLoan(leadList);
 
-        List<Loan__c> loanList = [SELECT Id, Partner__c, Sales_Agent__c, 
-                                  (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1) FROM Loan__c];
+        List<Loan__c> loanList = [SELECT Id, Partner__c, Sales_Agent__c,
+        (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1) FROM Loan__c];
         update loanList;
         System.runAs(partnerUser) {
             SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
@@ -481,10 +484,10 @@ public without sharing class SLPControllersTestclass {
         List<Loan__c> loanList = [SELECT Id, Name, Commencement_Datee__c, Estimated_Completion_Date__c, Requested_Loan_Amount__c  FROM Loan__c];
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Lead__r.Id, Name, Generator_Nameplate_Capacity__c, Type_of_Module__c, Number_of_Modules__c,
-                                                        Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
-                                                        Mechanically_Installed__c, Interconnected__c, Module_Model_Number__c, Module_Manufacturer__c,
-                                                        Inverter_Manufacturer__c, Inverter_Model_Number__c
-                                                        FROM Residential_Equipment__c];
+            Type_of_Inverter__c, Number_of_Inverters__c, Mechanical_Installation_Date__c, Interconnection_date__c,
+            Mechanically_Installed__c, Interconnected__c, Module_Model_Number__c, Module_Manufacturer__c,
+            Inverter_Manufacturer__c, Inverter_Model_Number__c
+        FROM Residential_Equipment__c];
         //Set the equipment name to a value greater than 80 characters for code coverage
         equipmentList.get(0).Module_Manufacturer__c = 'SolarEdgeSolarEdgeSolarEdgeSolarEdgeSolarEdge';
         equipmentList.get(0).Inverter_Manufacturer__c = 'SolarWorldSolarWorldSolarWorld';
@@ -524,7 +527,7 @@ public without sharing class SLPControllersTestclass {
     @isTest static void testSLPSendApplicationEmail() {
         if (SLPortal_Settings__c.getall().isEmpty()) {
             insert new SLPortal_Settings__c(Name = 'System',
-                                            Require_IBLS_for_MSL_Loans__c = true);
+                Require_IBLS_for_MSL_Loans__c = true);
         }
         User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
         Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
@@ -546,7 +549,7 @@ public without sharing class SLPControllersTestclass {
             Product_Program__c = 'BlueWave Solar Loan',
             Unfinished_Lead__c = true,
             Utility_Bill_Access_Acknowledged__c = true
-            );
+        );
 
         Test.startTest();
 
@@ -604,8 +607,8 @@ public without sharing class SLPControllersTestclass {
             BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com', newFileId);
 
             List<Attachment> attachList = [SELECT Id, Body
-                                            FROM Attachment
-                                            WHERE Id = : newFileId];
+            FROM Attachment
+            WHERE Id = : newFileId];
 
             System.Assert(attachList.size()>0);
             System.AssertEquals(customSetting.size(), 1);
@@ -628,26 +631,26 @@ public without sharing class SLPControllersTestclass {
         insert coAppPlaceholder;
 
         Contact coAppInfo = new Contact(FirstName = 'Jordan',
-                                        LastName = 'CoApplicant',
-                                        Email = 'jpentaleri@bluewavesolar.com');
+            LastName = 'CoApplicant',
+            Email = 'jpentaleri@bluewavesolar.com');
         Contact preExisting = new Contact(FirstName = 'Jordan',
-                                          LastName = 'PreExist',
-                                          Email = 'jpentaleri@bluewavesolar.com');
+            LastName = 'PreExist',
+            Email = 'jpentaleri@bluewavesolar.com');
         insert preExisting;
 
         Contact newCoApp = new Contact(FirstName = 'Jordan',
-                                       LastName = 'PreExist',
-                                       Email = 'jpentaleri@bluewavesolar.com',
-                                       LASERCA__Home_Address__c = '200 Street',
-                                       LASERCA__Home_State__c = 'MA',
-                                       LASERCA__Home_City__c = 'Boston',
-                                       LASERCA__Home_Zip__c = '02114',
-                                       Income__c = 40000,
-                                       LASERCA__Co_Applicant_DOB__c = dob,
-                                       LASERCA__Social_Security_Number__c = '000000001',
-                                       Credit_Check_Acknowledged__c = TRUE,
-                                       Privacy_Policy_Acknowledged__c = TRUE,
-                                       LASERCA__Co_Applicant_Social_Security_Number__c  = '000000001');
+            LastName = 'PreExist',
+            Email = 'jpentaleri@bluewavesolar.com',
+            LASERCA__Home_Address__c = '200 Street',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_City__c = 'Boston',
+            LASERCA__Home_Zip__c = '02114',
+            Income__c = 40000,
+            LASERCA__Co_Applicant_DOB__c = dob,
+            LASERCA__Social_Security_Number__c = '000000001',
+            Credit_Check_Acknowledged__c = TRUE,
+            Privacy_Policy_Acknowledged__c = TRUE,
+            LASERCA__Co_Applicant_Social_Security_Number__c  = '000000001');
 
 
         Test.startTest();
@@ -685,14 +688,14 @@ public without sharing class SLPControllersTestclass {
     }
 
     @isTest static void testErrorParsing() {
-        System.assertEquals('CreditBureau - Invalid borrower first name', 
-                            SLPAddCustomer.parseError('ERROR: E999 - CreditBureau - Invalid borrower first name'));
+        System.assertEquals('CreditBureau - Invalid borrower first name',
+            SLPAddCustomer.parseError('ERROR: E999 - CreditBureau - Invalid borrower first name'));
 
-        System.assertEquals('SomethingElse - Invalid borrower first name', 
-                            SLPAddCustomer.parseError('ERROR: A103 - SomethingElse - Invalid borrower first name'));
+        System.assertEquals('SomethingElse - Invalid borrower first name',
+            SLPAddCustomer.parseError('ERROR: A103 - SomethingElse - Invalid borrower first name'));
 
-        System.assertEquals('WARN: ABC - Not Handled', 
-                            SLPAddCustomer.parseError('WARN: ABC - Not Handled'));
+        System.assertEquals('WARN: ABC - Not Handled',
+            SLPAddCustomer.parseError('WARN: ABC - Not Handled'));
     }
 
     @isTest static void testOrigination() {

@@ -13,7 +13,9 @@
         };
         helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave).then(
             $A.getCallback(function resolve(retVal) {
-                helper.sendLoanDocs(component, event, helper);
+                if	(lead.Status !== "Awaiting Info Requested from Customer") {
+                    helper.sendLoanDocs(component, event, helper);
+                }
             })).then(
             $A.getCallback(function resolve(retVal) {
                 component.set('v.page', 'ContingentConfirmation');

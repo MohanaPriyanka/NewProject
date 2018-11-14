@@ -208,7 +208,7 @@ public without sharing class DocuSignHelper {
                 r.UserName = opp.Name;
                 r.Email = opp.Email__c;
             } else {
-                Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
+                Logger.logLater('DocuSignHelper', 'sendLoanPackage',
                     'Found unexpected recipient role: ' + System.JSON.serializePretty(r) +
                         ' while processing Opportunity: ' + System.JSON.serializePretty(opp));
             }
@@ -235,21 +235,24 @@ public without sharing class DocuSignHelper {
         it.Envelope.CustomFields = arrayOfCustomField;
 
         DocuSignAPI.EnvelopeStatus result;
+        Boolean queuedJobForSending = false;
         try {
             result = dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
         } catch (CalloutException e) {
-            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
-                'Callout Exception caught in CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
-                    ' error message: ' + e.getMessage());
-        }
-        if (result == null || result.EnvelopeID == null) {
-            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'Unsuccessful CreateEnvelopeFromTemplatesAndForms ' +
-                'for Opportunity ' + opp.Id);
-        } else {
-            if (opp.Partner_Tasks__r[0] != null) {
-                opp.Partner_Tasks__r[0].Status__c = 'Pending';
-                update opp.Partner_Tasks__r[0];
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains('Exceeded maximum time allotted for callout')) {
+                System.enqueueJob(new AutoRetryContractSend(dsAPI, envelope, compositeTemplates, true, 1));
+                queuedJobForSending = true;
+            } else {
+                Logger.logLater('DocuSignHelper', 'sendLoanPackage',
+                    'Unsuccessful CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
+                        ' error message: ' + e.getMessage());
             }
+        }
+        if (opp.Partner_Tasks__r[0] != null && (queuedJobForSending || result != null)) {
+            // need to update partner task to pending after sending
+            opp.Partner_Tasks__r[0].Status__c = 'Pending';
+            update opp.Partner_Tasks__r[0];
         }
         Logger.flushLogs();
         if (oppLoansSent == null) {
@@ -283,7 +286,7 @@ public without sharing class DocuSignHelper {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
             } else {
-                Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'error in mapping this recipient:' + String.valueOf(r.RoleName));
+                Logger.logLater('DocuSignHelper', 'sendCSPackage', 'error in mapping this recipient:' + String.valueOf(r.RoleName));
             }
         }
         DocuSignAPI.InlineTemplate it = new DocuSignAPI.InlineTemplate();
@@ -308,13 +311,14 @@ public without sharing class DocuSignHelper {
             result = dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
             // if we want to i-frame in the portal we could use: RequestRecipientToken
         } catch (CalloutException e) {
-            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate',
-                'Callout Exception caught in CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
-                    ' error message: ' + e.getMessage());
-        }
-        if (result == null || result.EnvelopeID == null) {
-            Logger.logLater('DocuSignHelper', 'sendFromInlineTemplate', 'Unsuccessful CreateEnvelopeFromTemplatesAndForms ' +
-                'for Opportunity ' + opp.Id);
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains('Exceeded maximum time allotted for callout')) {
+                System.enqueueJob(new AutoRetryContractSend(dsAPI, envelope, compositeTemplates, true, 1));
+            } else {
+                Logger.logLater('DocuSignHelper', 'sendCSPackage',
+                    'Unsuccessful CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
+                        ' error message: ' + e.getMessage());
+            }
         }
         // Don't flush logs here, since this is called in a loop which will result in another callout
         // Logger.flushLogs();
@@ -357,6 +361,38 @@ public without sharing class DocuSignHelper {
             throw new Util.BWException(result.message);
         }
         return result;
+    }
+
+    public class AutoRetryContractSend implements Queueable, Database.AllowsCallouts  {
+        public DocuSignAPI.APIServiceSoap  dsAPI;
+        public DocuSignAPI.EnvelopeInformation envelope;
+        public DocuSignAPI.ArrayOfCompositeTemplate compositeTemplates;
+        public Boolean activateEnvelope;
+        public Integer attempt;
+        public Integer maxAttempts = 3;
+
+        public AutoRetryContractSend(DocuSignAPI.APIServiceSoap  dsAPI, DocuSignAPI.EnvelopeInformation envelope, DocuSignAPI.ArrayOfCompositeTemplate compositeTemplates,Boolean activateEnvelope, Integer attempt) {
+            this.dsAPI = dsAPI;
+            this.envelope = envelope;
+            this.compositeTemplates = compositeTemplates;
+            this.activateEnvelope = activateEnvelope;
+            this.attempt = attempt;
+        }
+
+        public void execute(QueueableContext context) {
+            try {
+                dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
+            } catch (CalloutException e) {
+                String errorMessage = e.getMessage();
+                if (attempt <= maxAttempts && errorMessage.contains('Exceeded maximum time allotted for callout')) {
+                    System.enqueueJob(new AutoRetryContractSend(dsAPI, envelope, compositeTemplates, true, attempt++));
+                } else {
+                    String message = 'Tried to send contracts ' + attempt + ' times, but it failed.'
+                        + '. Message: ' + errorMessage;
+                    Logger.logNow('DocuSignHelper', 'AutoRetryContractSend', message);
+                }
+            }
+        }
     }
 
     public String errorCode;

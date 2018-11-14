@@ -61,10 +61,26 @@
         }
     },
 
-    updateCVVRequirement : function(component, helper) {
-        var cardType = component.get('v.chOrder.ChargentOrders__Card_Type__c');
-        let CVV_Requirements = {'Visa':3, 'Mastercard': 3, 'Discover': 3, 'AMEX': 4, 'American Express': 4};
-        var cvvDigits = CVV_Requirements[cardType];
-        component.set('v.CVVRequirement', cvvDigits);
-    },
+    clearFields : function(component, event, helper) {
+        let chOrder = component.get('v.chOrder');
+        component.set('v.chOrder', { 'sobjectType': 'ChargentOrders__ChargentOrder__c',
+            'ChargentOrders__Payment_Method__c' : '',
+            'ChargentOrders__Bank_Name__c' : '',
+            'ChargentOrders__Bank_Routing_Number__c' : '',
+            'ChargentOrders__Bank_Account_Type__c' : '',
+            'ChargentOrders__Bank_Account_Number__c' : '',
+            'ChargentOrders__Bank_Account_Name__c' : '',
+            'ChargentOrders__Billing_Email__c' : 'compliance@bluewavesolar.com',
+            'ChargentOrders__Card_Type__c' : '',
+            'ChargentOrders__Card_Number__c' : '',
+            'ChargentOrders__Card_Expiration_Month__c' : '',
+            'ChargentOrders__Card_Expiration_Year__c' : '',
+            'ChargentOrders__Billing_Address__c' : '',
+            'ChargentOrders__Billing_City__c' : '',
+            'ChargentOrders__Billing_State__c' : '',
+            'ChargentOrders__Billing_Zip_Postal__c' : '',
+            'ChargentOrders__Billing_First_Name__c' : '',
+            'ChargentOrders__Billing_Last_Name__c' : '',
+            'Autopay_Only__c': chOrder.Autopay_Only__c});
+    }
 })

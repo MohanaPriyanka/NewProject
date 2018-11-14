@@ -25,6 +25,9 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentBase__Gateway__c chGatewayOxfordBarretSt  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway Oxford Barret St',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = TRUE
         );
         insert chGatewayOxfordBarretSt;
@@ -32,6 +35,9 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentBase__Gateway__c chGatewayOxfordBarretSt2  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway Oxford Barret St',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = FALSE
         );
         insert chGatewayOxfordBarretSt2;
@@ -39,6 +45,9 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentBase__Gateway__c chGatewayMedfieldCountryWay  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway Medfield Country Way',
             ChargentBase__Merchant_ID__c = '123123',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = TRUE
         );
         insert chGatewayMedfieldCountryWay;
@@ -46,12 +55,18 @@ public class paymentGatewayAssignmentHandlerTestclass {
         ChargentBase__Gateway__c chGatewayMedfieldCountryWay2  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway Medfield Country Way',
             ChargentBase__Merchant_ID__c = '123123',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = TRUE
         );
         insert chGatewayMedfieldCountryWay2;
 
         ChargentBase__Gateway__c chGatewayFairhavenMillRd  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway Fairhaven Mill Rd',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Merchant_ID__c = '43543',
             ChargentBase__Active__c = TRUE
         );
@@ -244,7 +259,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
             ChargentOrders__Bank_Account_Name__c = null,
             ChargentOrders__Card_Type__c = 'VISA',
             ChargentOrders__Card_Number__c = '1234567812345678',
-            ChargentOrders__Card_Security_Code__c = '123',
             ChargentOrders__Billing_Last_Name__c = 'CupCake',
             ChargentOrders__Card_Expiration_Month__c = '01',
             ChargentOrders__Card_Expiration_Year__c = '2020');
@@ -262,7 +276,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
             ChargentOrders__Bank_Account_Name__c = null,
             ChargentOrders__Card_Type__c = 'VISA',
             ChargentOrders__Card_Number__c = '1234567812345678',
-            ChargentOrders__Card_Security_Code__c = '123',
             ChargentOrders__Billing_Last_Name__c = 'CupCake',
             ChargentOrders__Card_Expiration_Month__c = '01',
             ChargentOrders__Card_Expiration_Year__c = '2020');
@@ -283,7 +296,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
                     System_Bill__c = systemBillJan.Id,
                     ChargentOrders__Card_Type__c = 'Visa',
                     ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2018',
                     ChargentOrders__Card_Last_4__c = '1111'
@@ -325,7 +337,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
                     System_Bill__c = systemBillJan.Id,
                     ChargentOrders__Card_Type__c = 'Visa',
                     ChargentOrders__Card_Number__c = '411111111111',
-                    ChargentOrders__Card_Security_Code__c = '999',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2018',
                     ChargentOrders__Card_Last_4__c = '1111'

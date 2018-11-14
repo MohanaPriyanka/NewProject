@@ -628,4 +628,50 @@ public with sharing class CAPControllerTest {
         ];
         System.assertEquals('Pending', pt.Status__c);
     }
+
+    @IsTest static void testDocRequest() {
+        Lead lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted,
+            (SELECT Id FROM Loans__r),
+            (SELECT Id FROM Residential_Equipment__r)
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.convertLead(lead.Id, lead.Email);
+        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
+        CAPController.sendLoanDocs(lead.Id, lead.Email);
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId,
+                Status, Name, Docs_Requested__c, Sales_Person_Name__c
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+        lead.CAP_Stage__c = 'NAV_Income_Doc';
+        List<String> docs = new String[]{'Pay Stub','SSN Letter'};
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        LoanUnderwriting.updateLeadAndRequestDocument(lead, docs);
+
+        Test.stopTest();
+        // We're asserting that the NAV_Stage and Status changes are in accordance with the Lead Updates in updateLeadAndRequestDocument
+        System.assertEquals('Awaiting Info Requested From Customer', lead.Status);
+        System.assertEquals('NAV_Complete', lead.CAP_Stage__c);
+        System.assertEquals(true, lead.Docs_Requested__c);
+
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        CAPController.finishDocRequestAndNotifyOps(lead.Id);
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, Email, FirstName, Product__c, IsConverted, ConvertedOpportunityId,
+                Status, Name, Docs_Requested__c, CAP_Stage__c
+            FROM Lead
+            WHERE FirstName = 'leadMALoanTerm10Rate699' LIMIT 1];
+
+//         Here we're asserting that the lead is back in Avidia's queue for review and that the customer no longer
+//         has access to the file upload page.
+        System.assertEquals('Under BlueWave Review', lead.Status);
+        System.assertEquals('NAV_Complete', lead.CAP_Stage__c);
+        System.assertEquals(false, lead.Docs_Requested__c);
+    }
 }

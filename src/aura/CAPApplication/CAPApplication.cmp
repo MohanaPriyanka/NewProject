@@ -9,4 +9,5 @@
   <c:CAPIncomeDoc supressWaiting="true"/>
   <c:CAPConsents supressWaiting="true"/>
   <c:CAPComplete supressWaiting="true"/>
+  <c:CAPDocRequest supressWaiting="true"/>
 </aura:component>

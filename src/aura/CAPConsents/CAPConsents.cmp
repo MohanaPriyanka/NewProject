@@ -40,14 +40,16 @@
           <b>You should have received your contract via DocuSign already. Before we can finish processing your application, we need to collect some documents to verify your income.</b>
         </div>
         <aura:set attribute="else">
-          <aura:if isTrue="{!v.systemInfoComplete}">
+          <aura:if isTrue="{!and(v.systemInfoComplete, v.lead.Status != 'Awaiting Info Requested from Customer')}">
             <div class="slds-text-heading--medium">
               <b>It looks like we have the information we need and will send you your loan contract to sign.</b>
             </div>
             <aura:set attribute="else">
+              <aura:if isTrue="{!v.lead.Status != 'Awaiting Info Requested from Customer'}">
               <div class="slds-text-heading--medium">
                 <b>We will send you your loan contract as soon as your installer provides us with your system information.</b>
               </div>
+              </aura:if>
             </aura:set>
           </aura:if>
           <div class="slds-text-heading--medium slds-p-top--small">

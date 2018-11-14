@@ -86,6 +86,9 @@ public class TestBillCreationandPayment {
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                 ChargentBase__Merchant_ID__c = '235986',
                 ChargentBase__Debug__c = True,
+                ChargentBase__Available_Payment_Methods__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
 
@@ -996,7 +999,6 @@ public class TestBillCreationandPayment {
                         Account_Bill__c = accountbill.Id,
                         ChargentOrders__Card_Type__c = 'Visa',
                         ChargentOrders__Card_Number__c = '411111111111',
-                        ChargentOrders__Card_Security_Code__c = '999',
                         ChargentOrders__Card_Expiration_Month__c = '02',
                         ChargentOrders__Card_Expiration_Year__c = '2018',
                         ChargentOrders__Card_Last_4__c = '1111');
@@ -1165,7 +1167,6 @@ public class TestBillCreationandPayment {
                         Account_Bill__c = accountbill.Id,
                         ChargentOrders__Card_Type__c = 'Visa',
                         ChargentOrders__Card_Number__c = '411111111111',
-                        ChargentOrders__Card_Security_Code__c = '999',
                         ChargentOrders__Card_Expiration_Month__c = '02',
                         ChargentOrders__Card_Expiration_Year__c = '2018',
                         ChargentOrders__Card_Last_4__c = '1111');
@@ -1327,7 +1328,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Name__c = 'Jordan Testcase',
                     ChargentOrders__Card_Type__c = '',
                     ChargentOrders__Card_Number__c = '',
-                    ChargentOrders__Card_Security_Code__c = '',
                     ChargentOrders__Card_Expiration_Month__c = '',
                     ChargentOrders__Card_Expiration_Year__c = '',
                     ChargentOrders__Billing_Address__c = '',
@@ -1346,7 +1346,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Number__c = '',
                     ChargentOrders__Bank_Account_Name__c = '',
                     ChargentOrders__Card_Number__c = '111111111',
-                    ChargentOrders__Card_Security_Code__c = '121',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2020',
                     ChargentOrders__Billing_Address__c = '200 Street',
@@ -1438,7 +1437,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Number__c = '',
                     ChargentOrders__Bank_Account_Name__c = '',
                     ChargentOrders__Card_Number__c = '12345678901234567',
-                    ChargentOrders__Card_Security_Code__c = '121',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2020',
                     ChargentOrders__Card_Type__c = 'Master Card',
@@ -1458,7 +1456,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Number__c = '',
                     ChargentOrders__Bank_Account_Name__c = '',
                     ChargentOrders__Card_Number__c = '123456789012345',
-                    ChargentOrders__Card_Security_Code__c = '12134',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2020',
                     ChargentOrders__Card_Type__c = 'Mastercard',
@@ -1476,15 +1473,6 @@ public class TestBillCreationandPayment {
                 caughtException = true;
             }
             // We should catch credit cards that are too long and throw an AHE for the lighting component to handle
-            System.assertEquals(true, caughtException);
-
-            caughtException = false;
-            try {
-                CreateOrderandPaymentRequest.setChargeAmountAndInsert(chOrderList, paymentInfoCSCTooLong, true);
-            } catch (AuraHandledException ahe) {
-                caughtException = true;
-            }
-            // We should catch security codes that are too long and throw an AHE for the lighting component to handle
             System.assertEquals(true, caughtException);
         }
         Test.stopTest();
@@ -1707,7 +1695,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Name__c = 'Jordan Testcase',
                     ChargentOrders__Card_Type__c = '',
                     ChargentOrders__Card_Number__c = '',
-                    ChargentOrders__Card_Security_Code__c = '',
                     ChargentOrders__Card_Expiration_Month__c = '',
                     ChargentOrders__Card_Expiration_Year__c = '',
                     ChargentOrders__Billing_Address__c = '',
@@ -1726,7 +1713,6 @@ public class TestBillCreationandPayment {
                     ChargentOrders__Bank_Account_Number__c = '',
                     ChargentOrders__Bank_Account_Name__c = '',
                     ChargentOrders__Card_Number__c = '111111111',
-                    ChargentOrders__Card_Security_Code__c = '121',
                     ChargentOrders__Card_Expiration_Month__c = '02',
                     ChargentOrders__Card_Expiration_Year__c = '2020',
                     ChargentOrders__Billing_Address__c = '200 Street',

@@ -289,7 +289,7 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(true, newAccountC.Recurring_Billing__c);
     }
 
-    @IsTest static void doNotUpdateParentAccountIfOneRecurringOrder() {
+    @IsTest static void doNotUpdateParentAccountIfOneRecurringOrderOnAccountBills() {
         /*
         Tests if a chargent order is updated and the account has active
         recurring payments. Then, the parent account still has recurring_billing
@@ -325,7 +325,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -346,7 +345,90 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = System.today(),
+            ChargentOrders__Charge_Date__c = '15');
+
+
+        insert new List<ChargentOrders__ChargentOrder__c>{recurringPayment1, recurringPayment2};
+
+        System.assertEquals(true, oldAccountC.Recurring_Billing__c);
+
+        for (ChargentOrders__ChargentOrder__c order : accountOrders) {
+            order.ChargentOrders__Payment_Status__c = 'Stopped';
+        }
+        update accountOrders;
+        Test.stopTest();
+
+        Account newAccountC = [
+            SELECT Id,
+                Recurring_Billing__c
+            FROM Account
+            WHERE Name = 'Account C'];
+
+        System.assertEquals(true, newAccountC.Recurring_Billing__c);
+    }
+
+    @IsTest static void doNotUpdateParentAccountIfOneRecurringOrderOnAccount() {
+        /*
+        Tests if a chargent order is updated and the account has active
+        recurring payments. Then, the parent account still has recurring_billing
+        marked as true.
+        */
+        Test.startTest();
+        Account oldAccountC = [
+            SELECT Id,
+                Recurring_Billing__c
+            FROM Account
+            WHERE Name = 'Account C'];
+
+        List<ChargentOrders__ChargentOrder__c> accountOrders = new List<ChargentOrders__ChargentOrder__c>([
+            SELECT Id, ChargentOrders__Payment_Status__c, Account_Bill__c, ChargentOrders__Gateway__c,
+                Entity__c, ChargentOrders__Shipping_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Account_Bill__r.Parent_Account__r.Id = : oldAccountC.Id
+        ]);
+
+        /*
+        insert a recurring ChargentOrder after collecting all the other account orders
+        because we'll change those, but we want the account to stay flagged as 'autopay'
+        */
+        ChargentOrders__ChargentOrder__c recurringPayment1  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Account__c = oldAccountC.Id,
+            ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
+            Entity__c = accountOrders[0].Entity__c,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 555.44,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
+            ChargentOrders__Card_Expiration_Month__c = '02',
+            ChargentOrders__Card_Expiration_Year__c = '2018',
+            ChargentOrders__Card_Last_4__c = '1111',
+            ChargentOrders__Payment_Status__c = 'Recurring',
+            ChargentOrders__Payment_Frequency__c = 'Monthly',
+            ChargentOrders__Payment_Start_Date__c = System.today(),
+            ChargentOrders__Charge_Date__c = '15');
+
+        ChargentOrders__ChargentOrder__c recurringPayment2  = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Account__c = oldAccountC.Id,
+            ChargentOrders__Gateway__c = accountOrders[0].ChargentOrders__Gateway__c,
+            Entity__c = accountOrders[0].Entity__c,
+            ChargentOrders__Billing_First_Name__c = 'Jordan',
+            ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
+            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+            ChargentOrders__Billing_Zip_Postal__c = '02467',
+            ChargentOrders__Subtotal__c = 555.44,
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Card_Type__c = 'Visa',
+            ChargentOrders__Card_Number__c = '411111111111',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -392,6 +474,9 @@ private class RecurringPaymentsHandlerTestClass {
         ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway A',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = true
         );
         insert chGatewayA;
@@ -505,7 +590,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
         ChargentOrders__ChargentOrder__c checkCO = [
-            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c,
                 Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
@@ -546,6 +631,9 @@ private class RecurringPaymentsHandlerTestClass {
         ChargentBase__Gateway__c chGatewayA  = new ChargentBase__Gateway__c(
             Name = 'Chargent Gateway A',
             ChargentBase__Merchant_ID__c = '235986',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
             ChargentBase__Active__c = true
         );
         insert chGatewayA;
@@ -656,7 +744,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         //Check to see if Chargent Order's Account Name is null and Account Bill is = to AB
         ChargentOrders__ChargentOrder__c checkCO = [
-            SELECT Id, Account_Bill__c, ChargentOrders__Account__c, ChargentOrders__Card_Security_Code__c,
+            SELECT Id, Account_Bill__c, ChargentOrders__Account__c,
                 Entity_Name__c, Entity__c, ChargentOrders__Gateway__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Billing_Last_Name__c = 'Renfro'
@@ -715,7 +803,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Payment_Method__c = 'Credit Card',
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -941,7 +1028,6 @@ private class RecurringPaymentsHandlerTestClass {
             ChargentOrders__Account__c = accA.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -964,7 +1050,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1026,7 +1111,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1092,7 +1176,6 @@ private class RecurringPaymentsHandlerTestClass {
                 Account_Bill__c = ab.Id,
                 ChargentOrders__Card_Type__c = 'Visa',
                 ChargentOrders__Card_Number__c = '411111111111',
-                ChargentOrders__Card_Security_Code__c = '999',
                 ChargentOrders__Card_Expiration_Month__c = '02',
                 ChargentOrders__Card_Expiration_Year__c = '2018',
                 ChargentOrders__Card_Last_4__c = '1111',
@@ -1137,7 +1220,6 @@ private class RecurringPaymentsHandlerTestClass {
             Account_Bill__c = ab.Id,
             ChargentOrders__Card_Type__c = 'Visa',
             ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Security_Code__c = '999',
             ChargentOrders__Card_Expiration_Month__c = '02',
             ChargentOrders__Card_Expiration_Year__c = '2018',
             ChargentOrders__Card_Last_4__c = '1111',
@@ -1784,7 +1866,7 @@ private class RecurringPaymentsHandlerTestClass {
                 ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c, ChargentOrders__Bank_Routing_Number__c,
                 ChargentOrders__Bank_Account_Type__c, ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
                 ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c, ChargentOrders__Card_Number__c,
-                ChargentOrders__Card_Security_Code__c, ChargentOrders__Card_Expiration_Month__c, ChargentOrders__Card_Expiration_Year__c,
+                ChargentOrders__Card_Expiration_Month__c, ChargentOrders__Card_Expiration_Year__c,
                 ChargentOrders__Billing_Address__c, ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
                 ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Billing_Last_Name__c,
                 ChargentOrders__Payment_Frequency__c, ChargentOrders__Payment_Stop__c, ChargentOrders__Charge_Date__c,

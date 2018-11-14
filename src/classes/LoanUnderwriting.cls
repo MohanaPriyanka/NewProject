@@ -132,17 +132,17 @@ global without sharing class LoanUnderwriting {
     @AuraEnabled
     public static LeadWithPCRAttachments getLead(Id leadId) {
         List<Lead> leads = [
-            SELECT FirstName, LastName, Name, Loan_Principal__c,
+            SELECT FirstName, LastName, Name, Loan_Principal__c, CAP_Stage__c,
                 Product__r.Name, Product__r.Credit_Minimum__c, Product__r.Debt_To_Income_Maximum__c,
                 Product__r.Loan_Interest_Rate__c, Product__r.DTI_After_Rate_Gross_Up__c,
-                Product__r.Loan_Term__c, Property_Type__c,
+                Product__r.Loan_Term__c, Property_Type__c, Status, Partner_Email__c,
                 Avidia_Service_Provider__c, Other_Bank_Executive__c, Type_of_Avidia_Service_Provider__c,
                 Annual_Income_Currency__c, Co_Applicant_Income__c, Monthly_Payment__c,
                 Manual_Credit_Decline__c, Co_App_Manual_Credit_Decline__c,
                 Personal_Credit_Report__c, Personal_Credit_Report_Co_Applicant__c,
-                lived_residence_six_months__c,
+                lived_residence_six_months__c, ConvertedOpportunityId,
                 Employed_for_more_than_six_months__c, Employed_for_more_than_one_year__c,
-                Requested_Loan_Amount__c, System_Cost__c,
+                Requested_Loan_Amount__c, System_Cost__c, Sales_Person_Name__c, bs_Sales_ID__c,
                 Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, CoApplicant_Contact__c,
                 Personal_Credit_Report__r.Id,
                 Personal_Credit_Report__r.Name,
@@ -406,7 +406,7 @@ global without sharing class LoanUnderwriting {
             Date.today().year() + '-' + Date.today().month() + '-' + Date.today().day() + '.pdf';
         attach.ContentType = 'application/pdf';
         attach.IsPrivate = false;
-        attach.ParentId = (lead.ConvertedContactId!=null?lead.ConvertedContactId:leadId);
+        attach.ParentId = (lead.ConvertedContactId != null ? lead.ConvertedContactId : leadId);
         insert attach;
     }
 
@@ -415,7 +415,9 @@ global without sharing class LoanUnderwriting {
     @AuraEnabled
     public static void approveLead(Id leadId) {
         Lead lead = new Lead(Id = leadId);
-        approveLeads(new List<Lead>{lead});
+        approveLeads(new List<Lead>{
+            lead
+        });
     }
     public static void approveLeads(List<Lead> leads) {
         List<String> leadIds = new List<String>();
@@ -428,14 +430,14 @@ global without sharing class LoanUnderwriting {
     }
 
     public class LeadWithPCRAttachments {
-        @AuraEnabled 
-        public Lead lead {get;set;}
-        @AuraEnabled 
-        public Attachment mainPCRAttachment {get;set;}
-        @AuraEnabled 
-        public Attachment coAppPCRAttachment {get;set;}
         @AuraEnabled
-        public List<Attachment> contactAttachments {get;set;}
+        public Lead lead { get; set; }
+        @AuraEnabled
+        public Attachment mainPCRAttachment { get; set; }
+        @AuraEnabled
+        public Attachment coAppPCRAttachment { get; set; }
+        @AuraEnabled
+        public List<Attachment> contactAttachments { get; set; }
 
         public LeadWithPCRAttachments() {
         }
@@ -445,6 +447,204 @@ global without sharing class LoanUnderwriting {
             mainPCRAttachment = mainAttachment;
             coAppPCRAttachment = coAppAttachment;
             contactAttachments = attachments;
+        }
+    }
+
+    public static String getCAPUrlFromUnderwriting(Id leadId) {
+        String link;
+        ConnectApi.CommunityPage linkToForm;
+        if (Test.isRunningTest()) {
+            link = 'test link';
+        } else {
+            linkToForm = ConnectApi.Communities.getCommunities();
+            for (ConnectApi.Community community : linkToForm.communities) {
+                if (community.name == 'BlueWave Member Portal') {
+                    link = community.siteUrl + '/apply/s/loan-application?leadId=' + leadId;
+                }
+            }
+        }
+        return link;
+    }
+
+    @AuraEnabled public static void handleDocRequest(Lead lead, List<String> documentType, String capStage) {
+        if (capStage == 'NAV_Income_Doc' || capStage == 'NAV_Complete') {
+            updateLeadAndRequestDocument(lead, documentType);
+        } else {
+            sendContinueApplicationRequest(lead);
+        }
+    }
+
+    private static String prependComments(String existingComments, String newComment) {
+        if (existingComments == null) {
+            existingComments = newComment;
+        } else if (existingComments.length() + newComment.length() < 355){
+            existingComments = newComment + '\n' + existingComments;
+        } else {
+            existingComments = existingComments.substring(newComment.length());
+            existingComments = existingComments.substringAfter('\n');
+            existingComments = newComment + '\n' + existingComments;
+        }
+        return existingComments;
+    }
+
+    private static Messaging.SingleEmailMessage prepareEmailMessage(String emailSubject, Id targetId, String senderAddress, String htmlValue) {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        for (OrgWideEmailAddress senderEmail : [
+            SELECT Id, Address
+            FROM OrgWideEmailAddress
+            WHERE Address = :senderAddress
+            LIMIT 1]) {
+            mail.setOrgWideEmailAddressId(senderEmail.Id);
+        }
+        mail.setHtmlBody(htmlValue);
+        mail.setSubject(emailSubject);
+        mail.setTargetObjectId(targetId);
+        return mail;
+    }
+
+    private static List<Partner_Task__c> setIncomePartnerTasksToPending(Id leadId) {
+        List<Partner_Task__c> partnerTasksToUpdate = new List<Partner_Task__c>();
+        Map<String, Partner_Task__c> taskMap = LoanHandler.getPartnerTasks(new List<String>{
+            leadId
+        });
+        Partner_Task__c provideAllDocTask = taskMap.get(leadId + ' Provide All Customer Information');
+        Partner_Task__c provideIncomeDocTask = taskMap.get(leadId + ' Income Documentation');
+        provideAllDocTask.Status__c = 'Pending';
+        provideIncomeDocTask.Status__c = 'Pending';
+
+        if (taskMap.containsKey(leadId + ' Additional Income Documentation')) {
+            Partner_Task__c provideAddIncomeTask = taskMap.get(leadId + ' Additional Income Documentation');
+            provideAddIncomeTask.Status__c = 'Pending';
+            partnerTasksToUpdate.add(provideAddIncomeTask);
+        } else {
+            Partner_Task__c provideAddIncomeTask = createProvideAddIncomeTask(leadId, provideIncomeDocTask);
+            partnerTasksToUpdate.add(provideAddIncomeTask);
+        }
+
+        partnerTasksToUpdate.add(provideAllDocTask);
+        partnerTasksToUpdate.add(provideIncomeDocTask);
+        return partnerTasksToUpdate;
+    }
+
+    private static Partner_Task__c createProvideAddIncomeTask(Id leadId, Partner_Task__c incomeDocumentationTask) {
+        List<Partner_Task__c> subTaskInsertList = new List<Partner_Task__c>();
+        Loan__c loan = [
+            SELECT Id, Name, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name, Lead__r.Id, Lead__c, State__c,
+                Product__r.Disbursal_Terms__c, Opportunity__r.DOER_Solar_Loan__c, DOER_Solar_Loann__c,
+                Lead__r.Requested_Loan_Amount__c, Lead__r.Retired__c, Lead__r.Self_Employed__c, Lead__r.Application_Type__c,
+                Sales_Agent__r.Id, Lead__r.Employed__c, Lead__r.Veteran_Disability__c, Opportunity__c
+            FROM Loan__c
+            WHERE Lead_ID__c = :leadId
+            LIMIT 1];
+        LoanHandler lh = new LoanHandler();
+        RecordType childPartnerTaskRecordType = [SELECT Id FROM RecordType WHERE Name = 'Child Partner Task' AND SobjectType = 'Partner_Task__c' LIMIT 1];
+        Partner_Task__c provideAddIncomeTask = lh.createPartnerTask(loan, 'Child', 'Provide Additional Income Documentation',
+            'Additional Income Documentation', null, 'Pending', 'Customer Information', 'Income Documentation',
+            incomeDocumentationTask, childPartnerTaskRecordType, null, null, subTaskInsertList, null, null, null, true);
+        return provideAddIncomeTask;
+    }
+
+    private static String buildDocRequestHtml(String templateName, Lead lead, String missingDocs){
+        Date dateToday = Date.today();
+        String linkToForm = getCAPUrlFromUnderwriting(lead.Id);
+        EmailTemplate template = MessagingService.getHtml(templateName);
+
+        String htmlBody = template.HtmlValue;
+        htmlBody = htmlBody.replace('{!Lead.Today}', dateToday.format());
+        htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
+        htmlBody = htmlBody.replace('{!Lead.Missing_Document}', missingDocs);
+        htmlBody = htmlBody.replace('{!Lead.Link_To_Form}', linkToForm);
+        htmlBody = htmlBody.replace('{!Lead.Today_Plus_30}', dateToday.addDays(30).format());
+        return htmlBody;
+    }
+
+    private static String buildContinueAppRequestHtml(String templateName, Lead lead){
+        String linkToForm = getCAPUrlFromUnderwriting(lead.Id);
+        EmailTemplate template = MessagingService.getHtml(templateName);
+
+        String htmlBody = template.HtmlValue;
+        htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
+        htmlBody = htmlBody.replace('{!continueApplication}', linkToForm);
+        htmlBody = htmlBody.replace('{!partnerName}', 'Avidia Bank');
+        return htmlBody;
+    }
+
+    private static String buildPartnerNotificationHtml(String templateName, Lead lead){
+        EmailTemplate template = MessagingService.getHtml(templateName);
+
+        String htmlBody = template.HtmlValue;
+        htmlBody = htmlBody.replace('{!Lead.Name}', lead.Name);
+        htmlBody = htmlBody.replace('{!Lead.Sales_Person_Name__c}', lead.Sales_Person_Name__c);
+        return htmlBody;
+    }
+
+    private static String assembleDocList(List<String> docTypes) {
+        String docList;
+        for (String doc : docTypes) {
+            if (docList == null) {
+                docList = ('- ' + doc);
+            } else {
+                docList += ('<br/>- ' + doc);
+            }
+        }
+        return docList;
+    }
+
+    private static String assembleDocLog(List<String> docTypes) {
+        String formattedDate = Date.today().format();
+        String docLog;
+        for (String doc : docTypes) {
+            if (docLog == null) {
+                docLog =  'Avidia Req ' + doc + ' on ' + formattedDate;
+            } else {
+                docLog += '\n Avidia Req ' + doc + ' on ' + formattedDate;
+            }
+        }
+        return docLog;
+    }
+
+    public static void updateLeadAndRequestDocument(Lead lead, List<String> documentTypes) {
+        String docList = assembleDocList(documentTypes);
+        String docLog = assembleDocLog(documentTypes);
+
+        lead.Status = 'Awaiting Info Requested From Customer';
+        lead.CAP_Stage__c = 'NAV_Complete';
+        lead.Docs_Requested__c = true;
+
+        Opportunity opp = [SELECT Id, Comments__c FROM Opportunity WHERE Id = :lead.ConvertedOpportunityId];
+        opp.Comments__c = prependComments(opp.Comments__c, docLog);
+        List<Partner_Task__c> partnerTasksToUpdate = setIncomePartnerTasksToPending(lead.Id);
+        String docRequestHtml = buildDocRequestHtml('RS_Avidia_Information_Request', lead, docList);
+        String partnerNotificationHTML = buildPartnerNotificationHtml('RS_Partner_Additional_Information_Has_Been_Requested', lead);
+        Messaging.SingleEmailMessage customerMail = prepareEmailMessage('Application for Credit - More Information Needed', lead.Id, 'customercare@bluewavesolar.com', docRequestHtml);
+
+        try {
+            update lead;
+            update opp;
+            upsert partnerTasksToUpdate;
+            MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {customerMail});
+            MessagingService.createAndSendEmail(partnerNotificationHTML, 'customercare@bluewavesolar.com', 'Additional Income Documents Have Been Requested From Your Customer', new List<String> {lead.Partner_Email__c});
+        } catch (DmlException de) {
+            Logger.logNow('LoanUnderwriting', 'updateLeadAndRequestDocument', 'The following exception occurred while trying to request documents from the customer: ' + de.getMessage());
+        }
+    }
+
+    public static void sendContinueApplicationRequest (Lead lead) {
+        String formattedDate = Date.today().format();
+        String infoRequest = 'Avidia req the customer finish the app to provide income docs on ' + formattedDate;
+
+        lead.Comments__c = prependComments(lead.Comments__c, infoRequest);
+        lead.Status = 'Awaiting Info Requested From Customer';
+
+        String htmlBody = buildContinueAppRequestHtml('RS_SLP_Customer_Continue_Application', lead);
+        String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here';
+        Messaging.SingleEmailMessage mail = prepareEmailMessage(emailSubject, lead.Id, 'customercare@bluewavesolar.com', htmlBody);
+
+        try {
+            update lead;
+            MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+        } catch (DmlException de) {
+            Logger.logNow('LoanUnderwriting', 'sendContinueApplicationRequest', 'The following exception occurred while trying to request documents from the customer: ' + de.getMessage());
         }
     }
 }

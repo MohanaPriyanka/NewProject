@@ -19,13 +19,20 @@ public with sharing class CreateOrderandPaymentRequestTest {
                                                 ChargentOrders__Bank_Routing_Number__c = '123456789',
                                                 ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
                                                 ChargentOrders__Bank_Name__c = 'Bank of Bank',             
-                                                ChargentOrders__Bank_Account_Type__c = 'Checking');                       
+                                                ChargentOrders__Bank_Account_Type__c = 'Checking');
 
-        ChargentBase__Gateway__c chGateway  = 
+        ChargentBase__Gateway__c chGateway  =
         new ChargentBase__Gateway__c(   Name = 'SREC',
                                         ChargentBase__Merchant_ID__c = '235986',
+                                        ChargentBase__Available_Payment_Methods__c = 'eCheck',
+                                        ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+                                        ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                                         ChargentBase__Active__c = True);
         insert chGateway;
+
+        Entity__c srecEntity = new Entity__c(Name = 'BlueWave Finance Group, LLC',
+                                             Gateway__c = chGateway.Id);
+        insert srecEntity;
 
         oppList[0].Email__c = 'ddEmailTest@blue.com';
         update oppList[0];
@@ -47,11 +54,13 @@ public with sharing class CreateOrderandPaymentRequestTest {
                                             FROM Loan__c 
                                             WHERE Opportunity__r.Email__c = 'ddEmailTest@blue.com'];
 
-        List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c
+        List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c, Entity__r.Name
                                                                 FROM ChargentOrders__ChargentOrder__c];
         System.assertEquals(true, payRequest);
         System.assertEquals(1, chOrderList.size());
         System.assertEquals(1, updatedLoanList.size());
         System.assertEquals(chOrderList[0].Id, updatedLoanList[0].SREC_Direct_Deposit_Order__c);
+        System.assertEquals('BlueWave Finance Group, LLC',chOrderList[0].Entity__r.Name);
+
     }
 }

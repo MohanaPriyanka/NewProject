@@ -8,6 +8,9 @@
     VETERAN: 'Veteran Income Documentation',
     OTHER_INCOME: 'Income: Other',
     TC_DOC: 'MSLP Technical Confirmation',
+    BUS_TAX_PREV_YEAR: 'Business Tax Return (Previous Year)',
+    BUS_TAX_TWO_YEARS_PRIOR: 'Business Tax Return (Two Years Previous)',
+    LEASE_AGR: 'Lease Agreement',
 
     getLead : function(component, helper) {
         var action = component.get('c.getLeadWrapper');
@@ -37,6 +40,7 @@
             const veteran = [];
             const otherIncome = [];
             const tcDocs = [];
+            const requestedDocs = [];
             lead.Attachments.forEach(function(attachment) {
                 const desc = attachment.Description;
                 if (desc === helper.PAYSTUB) {
@@ -59,6 +63,8 @@
                     otherIncome.push(attachment.Name);
                 } else if (desc === helper.TC_DOC) {
                     tcDocs.push(attachment.Name);
+                } else if (desc.substring(0,9) === 'Requested') {
+                    requestedDocs.push(attachment.Name);
                 }
             });
             component.set('v.paystubs', paystubs);
@@ -69,6 +75,7 @@
             component.set('v.veteranIncome', veteran);
             component.set('v.otherIncome', otherIncome);
             component.set('v.tcDocs', tcDocs);
+            component.set('v.requestedDocs', requestedDocs);
         }
     },
 

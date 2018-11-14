@@ -31,7 +31,7 @@
 
     onStageClicked : function(component, event, helper) {
         const lead = component.get('v.lead');
-        if (lead) {
+        if (lead && lead.CAP_Stage__c !== 'NAV_Complete') {
             var stage = event.currentTarget.dataset.stage;
             var stageIndex = helper.getStage(stage);
             var maxIndex = helper.getStage(lead.CAP_Stage__c);

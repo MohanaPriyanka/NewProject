@@ -74,7 +74,7 @@ public class DisbursalHandler {
     public static List<Disbursal__c> createDisbursalsFromDisbursalTermsField (Loan__c loanRecord) {
         Integer count = 1;
         List<Disbursal__c> disbursalList = new List<Disbursal__c>();
-        List<String> disbursalSubStrings = loanRecord.Product__r.Disbursal_Terms__c.split(',');
+        List<String> disbursalSubStrings = loanRecord.Product__r.Disbursal_Terms__c.split(', ');
         for (String subString : disbursalSubStrings) {
             List<String> rateAndType = subString.split('%');
             String disbursalName = subString;

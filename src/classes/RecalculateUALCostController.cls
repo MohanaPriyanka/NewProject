@@ -6,8 +6,11 @@ public without sharing class RecalculateUALCostController {
     public Utility_Account_Log__c ual {get; set;}
 
     public Decimal ualCostOfElectricity {get; set;}
+    public Decimal ualkWhOfElectricity {get; set;}
     public Decimal subscribedCostOfElectricity {get; set;}
+    public Decimal subscribedkWhOfElectricity {get; set;}
     public Decimal adjustmentAmount {get; set;}
+    public String sizeBy {get; set;}
 
     public List<UASAction> uasActionList {get; set;}
 
@@ -50,10 +53,8 @@ public without sharing class RecalculateUALCostController {
 
     public RecalculateUALCostController(){
         uasActionList = new List<UASAction>();
-        //Get id from the URL parameters
         this.ualId = ApexPages.currentPage().getParameters().get('id');
 
-        //Uncomment this once we are in production. 
         adminMode = false;
         Profile userProfile = [Select Name from Profile where Id = :UserInfo.getProfileid()];
         if(userProfile.Name == 'System Administrator'){
@@ -61,23 +62,41 @@ public without sharing class RecalculateUALCostController {
         }
 
         //Query data and check the total Annual Cost of Electricity
-        for (Utility_Account_Log__c ual : [SELECT Id, Name, Annual_Cost_of_Electricity__c, Cost_not_yet_Allocated__c,
-                                           (SELECT Id, Subscribed_Annual_Cost_of_Electricity__c
-                                            FROM Utility_Account_Subscriptions__r
-                                            ORDER BY UAS_Number__c DESC)
-                                           FROM Utility_Account_Log__c
-                                           WHERE Id = :ualId Limit 1]) {
-            this.ual = ual;
-            ualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
+        Utility_Account_Log__c ual = [
+            SELECT Id, Name, Annual_Cost_of_Electricity__c, Cost_not_yet_Allocated__c, Annual_kWh__c,
+                Subscribed_Annual_kWhs__c, Lead__r.Product__r.Customer_Subscription_Type__c,
+                (SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Annual_kwh_subscription_future__c,
+                    Opportunity__r.Product__r.Customer_Subscription_Type__c
+                FROM Utility_Account_Subscriptions__r
+                ORDER BY UAS_Number__c DESC)
+           FROM Utility_Account_Log__c
+           WHERE Id = :ualId Limit 1
+        ];
+        this.ual = ual;
+        if (ual.Utility_Account_Subscriptions__r[0].Opportunity__r.Product__r != null
+            && ual.Utility_Account_Subscriptions__r[0].Opportunity__r.Product__r.Customer_Subscription_Type__c != null) {
+            sizeBy = ual.Utility_Account_Subscriptions__r[0].Opportunity__r.Product__r.Customer_Subscription_Type__c;
+        } else {
+            throw new Util.BWException('There is no customer subcription type for this Subscription. Subscriptions cannot be sized with this tool');
         }
-         
+        checkSubscriptionType(ual.Utility_Account_Subscriptions__r);
+
+        ualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
+        ualkWhOfElectricity = ual.Annual_kWh__c;
+
         this.subscribedCostOfElectricity = 0;
+        this.subscribedkWhOfElectricity = 0;
         for (Utility_Account_Subscription__c uas : ual.Utility_Account_Subscriptions__r) {
-            if (uas.Subscribed_Annual_Cost_of_Electricity__c > 0) {
+            if (sizeBy == 'Electricity Cost ($)') {
                 subscribedCostOfElectricity += uas.Subscribed_Annual_Cost_of_Electricity__c;
-            }
+            } else if (sizeBy == 'kWh') {
+                subscribedkWhOfElectricity += uas.Annual_kwh_subscription_future__c;            }
         }
-        adjustmentAmount = ualCostOfElectricity - subscribedCostOfElectricity;
+        if (sizeBy == 'Electricity Cost ($)') {
+            adjustmentAmount = ualCostOfElectricity - subscribedCostOfElectricity;
+        } else if (sizeBy == 'kWh') {
+            adjustmentAmount = ualkWhOfElectricity - subscribedkWhOfElectricity;
+        }
 
         // Query Utility Account Subscription Lists
         getSubscriptionLists(true);
@@ -111,8 +130,8 @@ public without sharing class RecalculateUALCostController {
     private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
         String query = 
             'SELECT Id, Name, ' +
-            'Subscribed_Annual_Cost_of_Electricity__c, ' +
-            'Custom_Deduction_Order__c, ' +
+            'Subscribed_Annual_Cost_of_Electricity__c, Annual_kwh_subscription_future__c,' +
+            'Custom_Deduction_Order__c, Maximum_Annual_kWh__c,' +
             'Opportunity__c, ' +
             'Opportunity__r.Project_Assignment__c, ' +
             'Opportunity__r.stageName, ' +
@@ -124,7 +143,10 @@ public without sharing class RecalculateUALCostController {
             'Opportunity__r.Shared_Solar_System__r.Open__c, ' +
             'Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c, ' +
-            'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c ' +
+            'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Cost__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.NMC_Value__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c ' +
             'FROM Utility_Account_Subscription__c ' +
             'WHERE Utility_Account_Log__c =: ualId ';
         if (defaultSortOrder) {
@@ -144,70 +166,99 @@ public without sharing class RecalculateUALCostController {
 
     public PageReference getSubscriptionLists(boolean defaultSortOrder) {
         uasActionList = new List<UASAction>();
-        Decimal amountToDeduct = Math.abs(adjustmentAmount);
+        Decimal amountToAdjust = adjustmentAmount;
         Integer deductionOrder = 1;
 
-        if(amountToDeduct > 0){
-            for(Utility_Account_Subscription__c uas : getUASList(defaultSortOrder)){
-                Decimal deductionAmount =  Math.min(amountToDeduct, uas.Subscribed_Annual_Cost_of_Electricity__c);
-                if (defaultSortOrder) {
-                    uas.Custom_Deduction_Order__c = deductionOrder;
-                    deductionOrder++;
+        List<Utility_Account_Subscription__c> uasList = getUASList(defaultSortOrder);
+
+        for (Utility_Account_Subscription__c uas : uasList) {
+            Decimal subscriptionAdjustment = 0;
+
+            if(amountToAdjust < 0) {
+                if (sizeBy == 'Electricity Cost ($)') {
+                    subscriptionAdjustment = -1 * Math.min(Math.abs(amountToAdjust), uas.Subscribed_Annual_Cost_of_Electricity__c);
+                } else if (sizeBy == 'kWh') {
+                    subscriptionAdjustment = -1 * Math.min(Math.abs(amountToAdjust), uas.Annual_kwh_subscription_future__c);
                 }
-                UASAction act = new UASAction(uas, deductionAmount);
-                if (uas.Opportunity__r.Shared_Solar_System__r.Open__c &&
-                    !uas.Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c) {
-                    act.action = 'Auto deduct';
+            } else if (amountToAdjust > 0) {
+                if (sizeBy == 'Electricity Cost ($)') {
+                    Decimal spaceToMaximum = uas.Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Cost__c - uas.Subscribed_Annual_Cost_of_Electricity__c;
+                    Decimal availableCapacity = calculateAvailableCostCapacity(uas.Opportunity__r.Shared_Solar_System__r);
+                    List<Decimal> possibleIncreases = new List<Decimal>{amountToAdjust, spaceToMaximum, availableCapacity};
+                    subscriptionAdjustment = Util.min(possibleIncreases);
+                } else if (sizeBy == 'kWh') {
+                    Decimal spaceToMaximum = uas.Maximum_Annual_kWh__c - uas.Annual_kwh_subscription_future__c;
+                    Decimal availableCapacity = calculateAvailablekWhCapacity(uas.Opportunity__r.Shared_Solar_System__r);
+                    List<Decimal> possibleIncreases = new List<Decimal>{amountToAdjust, spaceToMaximum, availableCapacity};
+                    subscriptionAdjustment = Util.min(possibleIncreases);
                 }
-                uasActionList.add(act);
-                amountToDeduct -= deductionAmount;
             }
+
+            if (defaultSortOrder) {
+                uas.Custom_Deduction_Order__c = deductionOrder;
+                deductionOrder++;
+            }
+            UASAction act = new UASAction(uas, subscriptionAdjustment);
+            if (uas.Opportunity__r.Shared_Solar_System__r.Open__c &&
+                !uas.Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c) {
+                act.action = 'Auto deduct';
+            }
+            uasActionList.add(act);
+            amountToAdjust -= subscriptionAdjustment;
         }
+
         return null;
     }
 
+    public Decimal calculateAvailablekWhCapacity(Shared_Solar_System__c sss) {
+        Decimal availableCapacity = sss.Capacity_Available_to_be_Reserved__c;
+        availableCapacity *= sss.Expected_Yield_kWh_kW__c;
+        return availableCapacity;
+    }
+
+    public Decimal calculateAvailableCostCapacity(Shared_Solar_System__c sss) {
+        Decimal availableCapacity = sss.Capacity_Available_to_be_Reserved__c;
+        availableCapacity *= sss.NMC_Value__c;
+        availableCapacity *= sss.Expected_Yield_kWh_kW__c;
+        return availableCapacity;
+    }
+
     public PageReference processDeduction(){
-        Decimal remainingBalance = Math.abs(adjustmentAmount);
+        Decimal remainingBalance = adjustmentAmount;
         List<Utility_Account_Subscription__c> uasToUpdate = new List<Utility_Account_Subscription__c>();
 
         Map<Id, Shared_Solar_System__c> sssToUpdate = new Map<Id, Shared_Solar_System__c>();
-        
-        if(uasActionList.size() > 0){
-            for(UASAction uasAction : uasActionList){
-                if (uasAction.sss.Open__c &&
-                    uasAction.action == 'Auto deduct' ||
-                    uasAction.action == 'Deduct and mark as Closed') {
-                    if(uasAction.deductionAmount > 0 && uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0){
-                        uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
-                        remainingBalance -= uasAction.deductionAmount;
+        System.debug(uasActionList);
+        for(UASAction uasAction : uasActionList){
+            if (uasAction.sss.Open__c && isNonAdminAction(uasAction.action)) {
+                if (sizeBy == 'Electricity Cost ($)') {
+                    uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c += uasAction.adjustmentAmount;
+                } else if (sizeBy == 'kWh') {
+                    uasAction.uas.Annual_kwh_subscription_future__c += uasAction.adjustmentAmount;
+                }
+                remainingBalance += uasAction.adjustmentAmount;
 
-                        if (uasAction.action == 'Deduct and mark as Closed') {
-                            uasAction.sss.Open__c = false;
-                            sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
-                        }
-                        uasToUpdate.add(uasAction.uas);
-                    }
-                } else {
-                    if (adminMode &&
-                        uasAction.deductionAmount > 0 && 
-                        uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c > 0 &&
-                        (uasAction.action == 'Deduct and mark as Open' || 
-                         uasAction.action == 'Deduct and keep as Closed' ||
-                         uasAction.action == 'Deduct from Schedule Z Filed')) {
-                        uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c -= uasAction.deductionAmount;
-                        remainingBalance -= uasAction.deductionAmount;
-                        uasToUpdate.add(uasAction.uas);
-                        if (uasAction.action == 'Deduct and mark as Open') {
-                            uasAction.sss.Open__c = true;
-                            sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
-                        }
-                    }
+                if (uasAction.action == 'Deduct and mark as Closed') {
+                    uasAction.sss.Open__c = false;
+                    sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
+                }
+                uasToUpdate.add(uasAction.uas);
+            } else if (adminMode && isAdminAction(uasAction.action)) {
+                if (sizeBy == 'Electricity Cost ($)') {
+                    uasAction.uas.Subscribed_Annual_Cost_of_Electricity__c += uasAction.adjustmentAmount;
+                } else if (sizeBy == 'kWh') {
+                    uasAction.uas.Annual_kwh_subscription_future__c += uasAction.adjustmentAmount;
+                }
+                uasToUpdate.add(uasAction.uas);
+                if (uasAction.action == 'Deduct and mark as Open') {
+                    uasAction.sss.Open__c = true;
+                    sssToUpdate.put(uasAction.sss.Id, uasAction.sss);
                 }
             }
         }
 
         //Check if there is a difference on the cost not yet allocated
-        if(remainingBalance != ual.Cost_not_yet_Allocated__c) {
+        if(remainingBalance != ual.Cost_not_yet_Allocated__c && sizeBy == 'Electricity Cost ($)') {
             ual.Cost_not_yet_Allocated__c = remainingBalance;
             update ual;
         }
@@ -221,15 +272,44 @@ public without sharing class RecalculateUALCostController {
         return new PageReference('/' + ualId);
     }
 
+    public Boolean isNonAdminAction(String action) {
+        Set<String> nonAdminActions = new Set<String>{
+            'Auto deduct',
+            'Deduct and mark as Closed'
+        };
+        return nonAdminActions.contains(action);
+    }
+
+    public Boolean isAdminAction(String action) {
+        Set<String> adminActions = new Set<String>{
+            'Deduct and mark as Open',
+            'Deduct and keep as Closed',
+            'Deduct from Schedule Z Filed'
+        };
+        return adminActions.contains(action);
+    }
+
     public class UASAction {
         public Utility_Account_Subscription__c uas {get; set;}
         public Shared_Solar_System__c sss {get; set;}
-        public Decimal deductionAmount {get; set;}
+        public Decimal adjustmentAmount {get; set;}
         public String action {get; set;}
-        public UASAction(Utility_Account_Subscription__c uas, Decimal deductionAmount){
+        public UASAction(Utility_Account_Subscription__c uas, Decimal adjustmentAmount){
             this.uas = uas;
             this.sss = uas.Opportunity__r.Shared_Solar_System__r;
-            this.deductionAmount = deductionAmount;
+            this.adjustmentAmount = adjustmentAmount;
+        }
+    }
+
+    public void checkSubscriptionType(List<Utility_Account_Subscription__c> uasesToCheck) {
+        Boolean hasDifferentSizing = false;
+        for (Utility_Account_Subscription__c uas : uasesToCheck) {
+            if (uas.Opportunity__r.Product__r.Customer_Subscription_Type__c != sizeBy) {
+                hasDifferentSizing = true;
+            }
+        }
+        if (hasDifferentSizing) {
+            throw new Util.BWException('Not all subscriptions have the same sizing method. Please review Opportunities and their Products');
         }
     }
 /*
